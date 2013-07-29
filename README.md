@@ -15,11 +15,17 @@ Execute `npm install` in the application directory:
 Copy and edit your .env file. -- This should never be committed to the repo.
 
 ```
-cp env.sample .env
+cp sample.env .env
 ```
 
 ### Start the Server
 
 ```
 foreman start
+```
+
+If you need foreman:
+
+```
+sudo gem install foreman
 ```
