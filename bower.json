@@ -1,0 +1,16 @@
+{
+  "name": "appmaker",
+  "version": "0.0.0",
+  "main": "server.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.0.3",
+    "angular": "~1.0.7"
+  }
+}
