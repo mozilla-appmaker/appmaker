@@ -11,3 +11,8 @@ exports.index = function(req, res){
   console.log('we be here?')
   res.render('index.ejs');
 };
+
+exports.designer = function(req, res){
+  res.render('designer');
+};
+
