@@ -5,15 +5,17 @@
 
 $(document).ready( function () {
 	Ceci.commencer(loadComponents)
-
 })
 
 
 var loadComponents = function () {
+	var colors = ['#358CCE', '#ff7b00', '#b4e319', '#e3197b']
+	var i = 0;
 	_.each(Ceci._components, function (value, tag) {
-	console.log(value)
-	var thumb = $('<div class="row clearfix"><div class="input"></div><div class="draggable" value="' + tag + '">' + tag + '</div><div class="output"></div></div>')
-	$('.tray').append(thumb)  
+		var bordercolor = colors[i]
+		var thumb = $('<div class="row clearfix"><div class="input"></div><div class="draggable" style="border-color:'+ bordercolor +'" value="' + tag + '">' + tag + '</div><div class="output"></div></div>')
+		$('.tray').append(thumb)
+		i++ 
 	})
 
 	$( ".draggable" ).draggable({
@@ -32,4 +34,23 @@ var loadComponents = function () {
 	    Ceci.faire(component[0])
 	  }
 	})
+
+	$('.output').mouseover(function () {
+		var offset = $(this).offset()
+		var posleft = offset.left + 40 + 'px'
+		$('.tooltip').css({'top': offset.top, 'left': posleft})
+		$('.tooltip').show()
+	}).mouseout(function () {
+		$('.tooltip').hide()
+	})
+
+	$('.output').click(function () {
+    	$('.modal-wrapper').addClass('flex')
+    	$('.tooltip').hide()
+	})
+
+	$('.close-modal').click(function () {
+    	$('.modal-wrapper').removeClass('flex');
+    })
+
 }

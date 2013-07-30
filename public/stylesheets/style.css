@@ -31,6 +31,10 @@ a {
 	text-decoration: none;
 }
 
+b {
+	font-weight: 600;
+}
+
 /*----------FONTS----------*/
 h1 {
 	font-size: 80px;
@@ -39,6 +43,12 @@ h1 {
 	font-weight: 300;
 	margin: 0;
 	padding: 0;
+}
+
+h3 {
+	font-weight: 400;
+	margin: 0px;
+	font-size: 18px;
 }
 
 h5 {
@@ -156,6 +166,19 @@ button.publish {
 	background-image: url(../images/output.png);
 	background-repeat: no-repeat;
 	background-position: center;
+	position: relative;
+}
+
+.tooltip {
+	position: absolute;
+	background-color: #111;
+	padding: 10px;
+	z-index: 99;
+	left: 40px;
+	top: 0px;
+	border-radius: 3px;
+	color: #EEE;
+	display: none;
 }
 
 .draggable {
@@ -169,6 +192,24 @@ button.publish {
 	text-indent: 10px;
 	border-left: 5px solid #358cce;
 	float: left;
+}
+
+.component-std {
+	cursor: pointer;
+	height: 40px;
+	width: 155px;
+	background-color: #eee;
+	margin-bottom: 10px;
+	border-radius: 3px;
+	line-height: 40px;
+	text-indent: 10px;
+	border-left: 5px solid #358cce;
+	float: left;
+	margin-left: 10px;
+}
+
+.component-std:nth-child(1) {
+	margin-left: 0px;
 }
 
 .phone-container {
@@ -207,7 +248,7 @@ button.publish {
 .cards {
 	float: left;
 	width: 80px;
-	padding-top: 80px;
+	padding-top: 40px;
 	margin-left: 40px;
 	position: relative;
 }
@@ -216,18 +257,6 @@ button.publish {
 	height: 100px;
 	width: 100%;
 	background-color: #FFF;
-}
-
-.add-card {
-	height: 40px;
-	width: 100%;
-	background-color: #ff7b00;
-	color: #fff;
-	line-height: 40px;
-	text-align: center;
-	font-size: 13px;
-	position: absolute;
-	top: 0px;
 }
 
 .console {
@@ -248,4 +277,80 @@ button.publish {
 
 .inner {
 	padding: 40px;
+}
+
+.modal-wrapper {
+   position: absolute;
+   top: 0px;
+   bottom: 0px;
+   left: 0px;
+   right: 0px;
+   background: rgba(0,0,0,.5);
+   display: none;
+}
+
+.flex {
+   display: -webkit-box;   /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
+   display: -moz-box;      /* OLD: Firefox (buggy) */ 
+   display: -ms-flexbox;   /* MID: IE 10 */
+   display: -webkit-flex;  /* NEW, Chrome 21+ */
+   display: flex;          /* NEW: Opera 12.1, Firefox 22+ */
+
+   -webkit-box-align: center; -moz-box-align: center; /* OLD… */
+   -ms-flex-align: center; 
+   -webkit-align-items: center;
+   align-items: center;
+
+   -webkit-box-pack: center; -moz-box-pack: center; 
+   -ms-flex-pack: center; 
+   -webkit-justify-content: center;
+   justify-content: center;
+}
+
+.modal {
+   width: 585px;
+   background-color: #DDD;
+   position: relative;
+}
+
+.close-modal {
+   height: 40px;
+   width: 40px;
+   background-color: #FFF;
+   background-image: url(../images/close.png);
+   background-position: center;
+   background-repeat: no-repeat;
+   position: absolute;
+   right: 0px;
+   top: 0px;
+   z-index: 99;
+}
+
+.mar-bot-twenty {
+	margin-bottom: 20px;
+}
+
+.filter {
+	height: 30px;
+	line-height: 30px;
+	background-color: #FFF;
+	float: left;
+	width: 80px;
+	text-align: center;
+}
+
+.filter:nth-child(1) {
+	border-radius: 2px 0px 0px 2px;
+}
+
+.filter:nth-child(2) {
+	border-radius: 0px 2px 2px 0px;
+}
+
+.active {
+	background-color: #AAA;
+}
+
+.txt-fixed {
+	color: #999;
 }
