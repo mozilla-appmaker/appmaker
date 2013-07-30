@@ -101,7 +101,7 @@ button.publish {
 	color: #999;
 	font-size: 16px;
 	text-indent: 25px;
-	background-image: url(img/alert-blue.png);
+	background-image: url(../images/alert-blue.png);
 	background-repeat: no-repeat;
 	background-position: left center;
 }
@@ -132,7 +132,7 @@ button.publish {
 	float: left;
 	height: 40px;
 	width: 40px;
-	background-image: url(img/output.png);
+	background-image: url(../images/output.png);
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -141,7 +141,7 @@ button.publish {
 	float: left;
 	height: 40px;
 	width: 40px;
-	background-image: url(img/output.png);
+	background-image: url(../images/output.png);
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -171,7 +171,7 @@ button.publish {
 	width: 100%;
 	margin-top: 40px;
 	border-radius: 6px 6px 0px 0px;
-	background-image: url(img/mic.png);
+	background-image: url(../images/mic.png);
 	background-position: center;
 	background-repeat: no-repeat;
 }
@@ -187,7 +187,7 @@ button.publish {
 	height: 40px;
 	width: 100%;
 	border-radius: 0px 0px 6px 6px;
-	background-image: url(img/circle.png);
+	background-image: url(../images/circle.png);
 	background-position: center;
 	background-repeat: no-repeat;
 }
