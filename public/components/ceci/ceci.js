@@ -75,7 +75,6 @@ Ceci.faire = function (element) {
   var avastElements = element.querySelectorAll('avast');
 
   element._innerHTML = element.innerHTML;
-  element._innerText = element.innerText;
 
   if (def.template){
     element.innerHTML = def.template.innerHTML;
@@ -116,7 +115,7 @@ Ceci.avoir = function (element) {
   });
 };
 
-Ceci.commencer = function () {
+Ceci.commencer = function (callback) {
   function scrape () {
     Array.prototype.slice.call(document.querySelectorAll('element')).forEach(Ceci.avoir);
   }
@@ -139,6 +138,9 @@ Ceci.commencer = function () {
         }
         if (--scriptsLeft === 0) {
           scrape();
+          if (callback) {
+            callback();
+          }
         }
       };
       xhr.send(null);
