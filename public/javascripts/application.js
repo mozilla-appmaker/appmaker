@@ -2,8 +2,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+
 $(document).ready( function () {
-	Ceci.commencer()
+	Ceci.commencer(loadComponents)
+
+})
+
+
+var loadComponents = function () {
 	_.each(Ceci._components, function (value, tag) {
 	console.log(value)
 	var thumb = $('<div class="row clearfix"><div class="input"></div><div class="draggable" value="' + tag + '">' + tag + '</div><div class="output"></div></div>')
@@ -26,5 +32,4 @@ $(document).ready( function () {
 	    Ceci.faire(component[0])
 	  }
 	})
-
-})
+}
