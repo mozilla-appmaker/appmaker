@@ -26,6 +26,10 @@ body {
    height:0
 }
 
+a {
+	text-decoration: none;
+}
+
 /*----------FONTS----------*/
 h1 {
 	font-size: 80px;
@@ -52,8 +56,22 @@ button.btn-lg {
 	width: 240px;
 }
 
-.btn-start {
+button.btn-md {
+	height: 40px;
+	width: 120px;
+	line-height: 40px;
+	font-size: 16px;
+}
+
+button.btn-start {
 	margin: 100px auto 0px auto;
+	display: block;
+}
+
+button.publish {
+	position: absolute;
+	top: -40px;
+	right: 40px;
 	display: block;
 }
 
@@ -73,4 +91,145 @@ button.btn-lg {
 	color: #FFF;
 	font-size: 28px;
 	padding: 40px 0px 100px 0px;
+}
+
+.tip {
+	width: 1100px;
+	margin: 0 auto;
+	height: 80px;
+	line-height: 80px;
+	color: #999;
+	font-size: 16px;
+	text-indent: 25px;
+	background-image: url(img/alert-blue.png);
+	background-repeat: no-repeat;
+	background-position: left center;
+}
+
+.container {
+	width: 1100px;
+	background-color: #ddd;
+	margin: 0px auto 40px auto;
+	position: relative;
+}
+
+.tray {
+	float: left;
+	width: 240px;
+	background-color: #ccc;
+	min-height: 560px;
+}
+
+.component-header {
+	margin: 40px 0px 20px 40px;
+}
+
+.row {
+	margin-bottom: 5px;
+}
+
+.input {
+	float: left;
+	height: 40px;
+	width: 40px;
+	background-image: url(img/output.png);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.output {
+	float: left;
+	height: 40px;
+	width: 40px;
+	background-image: url(img/output.png);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.draggable {
+	cursor: move;
+	height: 40px;
+	width: 155px;
+	background-color: #eee;
+	margin-bottom: 5px;
+	border-radius: 3px;
+	line-height: 40px;
+	text-indent: 10px;
+	border-left: 5px solid #358cce;
+	float: left;
+}
+
+.phone-container {
+	float: left;
+	width: 320px;
+	margin-left: 40px;
+}
+
+.phone-top {
+	background-color: #333;
+	height: 40px;
+	width: 100%;
+	margin-top: 40px;
+	border-radius: 6px 6px 0px 0px;
+	background-image: url(img/mic.png);
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.phone-canvas {
+	background-color: #FFF;
+	height: 400px;
+	width: 100%;
+}
+
+.phone-bottom {
+	background-color: #333;
+	height: 40px;
+	width: 100%;
+	border-radius: 0px 0px 6px 6px;
+	background-image: url(img/circle.png);
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.cards {
+	float: left;
+	width: 80px;
+	padding-top: 60px;
+	margin-left: 40px;
+	position: relative;
+}
+
+.card {
+	height: 100px;
+	width: 100%;
+	background-color: #FFF;
+}
+
+.add-card {
+	height: 40px;
+	width: 100%;
+	background-color: #ff7b00;
+	color: #fff;
+	line-height: 40px;
+	text-align: center;
+	font-size: 13px;
+	position: absolute;
+	top: 0px;
+}
+
+.console {
+	background-color: #444;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	left: 760px;
+	color: #999;
+}
+
+.component-log {
+	height: 160px;
+	width: 100%;
+	background-color: #333;
 }
