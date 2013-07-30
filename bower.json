@@ -11,6 +11,7 @@
   ],
   "dependencies": {
     "jquery": "~2.0.3",
-    "angular": "~1.0.7"
+    "angular": "~1.0.7",
+    "jqueryui-amd": "~0.0.2"
   }
 }

@@ -1,0 +1,24 @@
+{
+  "name": "ceci-bower",
+  "version": "0.0.0",
+  "description": "Bower package for the stable branch of Ceci",
+  "main": "ceci.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mozilla/ceci-bower.git"
+  },
+  "author": "",
+  "license": "MPLv2",
+  "readmeFilename": "README.md",
+  "gitHead": "9030f1c97c18dad65d8da6c0383e1a8813424415",
+  "bugs": {
+    "url": "https://github.com/mozilla/ceci-bower/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.2"
+  }
+}
