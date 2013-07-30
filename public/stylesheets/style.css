@@ -9,6 +9,7 @@ body {
 	font-size: 14px;
 	color: #222;
 	height: 100%;
+	background-color: #111;
 }
 
 .clear {
@@ -38,6 +39,12 @@ h1 {
 	font-weight: 300;
 	margin: 0;
 	padding: 0;
+}
+
+h5 {
+	font-size: 16px;
+	margin: 0px 0px 20px 0px;
+	text-transform: uppercase;
 }
 
 /*----------BUTTONS----------*/
@@ -83,7 +90,7 @@ button.publish {
 
 .banner-inner {
  	margin: 0 auto;
- 	max-width: 1000px;
+ 	max-width: 900px;
  	padding: 0px 50px;
 }
 
@@ -93,21 +100,26 @@ button.publish {
 	padding: 40px 0px 100px 0px;
 }
 
+.info-box {
+	height: 500px;
+	background-color: #FFF;
+}
+
 .tip {
-	width: 1100px;
+	width: 1000px;
 	margin: 0 auto;
 	height: 80px;
 	line-height: 80px;
 	color: #999;
 	font-size: 16px;
 	text-indent: 25px;
-	background-image: url(img/alert-blue.png);
+	background-image: url(../images/alert-blue.png);
 	background-repeat: no-repeat;
 	background-position: left center;
 }
 
 .container {
-	width: 1100px;
+	width: 1000px;
 	background-color: #ddd;
 	margin: 0px auto 40px auto;
 	position: relative;
@@ -132,7 +144,7 @@ button.publish {
 	float: left;
 	height: 40px;
 	width: 40px;
-	background-image: url(img/output.png);
+	background-image: url(../images/output.png);
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -141,7 +153,7 @@ button.publish {
 	float: left;
 	height: 40px;
 	width: 40px;
-	background-image: url(img/output.png);
+	background-image: url(../images/output.png);
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -161,7 +173,7 @@ button.publish {
 
 .phone-container {
 	float: left;
-	width: 320px;
+	width: 300px;
 	margin-left: 40px;
 }
 
@@ -171,7 +183,7 @@ button.publish {
 	width: 100%;
 	margin-top: 40px;
 	border-radius: 6px 6px 0px 0px;
-	background-image: url(img/mic.png);
+	background-image: url(../images/mic.png);
 	background-position: center;
 	background-repeat: no-repeat;
 }
@@ -187,7 +199,7 @@ button.publish {
 	height: 40px;
 	width: 100%;
 	border-radius: 0px 0px 6px 6px;
-	background-image: url(img/circle.png);
+	background-image: url(../images/circle.png);
 	background-position: center;
 	background-repeat: no-repeat;
 }
@@ -195,7 +207,7 @@ button.publish {
 .cards {
 	float: left;
 	width: 80px;
-	padding-top: 60px;
+	padding-top: 80px;
 	margin-left: 40px;
 	position: relative;
 }
@@ -224,7 +236,7 @@ button.publish {
 	top: 0px;
 	bottom: 0px;
 	right: 0px;
-	left: 760px;
+	left: 740px;
 	color: #999;
 }
 
@@ -232,4 +244,8 @@ button.publish {
 	height: 160px;
 	width: 100%;
 	background-color: #333;
+}
+
+.inner {
+	padding: 40px;
 }
