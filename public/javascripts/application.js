@@ -38,10 +38,19 @@ var loadComponents = function () {
 	$('.output').mouseover(function () {
 		var offset = $(this).offset()
 		var posleft = offset.left + 40 + 'px'
-		$('.tooltip').css({'top': offset.top, 'left': posleft})
-		$('.tooltip').show()
+		$('#tooltip-output').css({'top': offset.top, 'left': posleft})
+		$('#tooltip-output').show()
 	}).mouseout(function () {
-		$('.tooltip').hide()
+		$('#tooltip-output').hide()
+	})
+
+	$('.input').mouseover(function () {
+		var offset = $(this).offset()
+		var posleft = offset.left + 40 + 'px'
+		$('#tooltip-input').css({'top': offset.top, 'left': posleft})
+		$('#tooltip-input').show()
+	}).mouseout(function () {
+		$('#tooltip-input').hide()
 	})
 
 	$('.output').click(function () {
