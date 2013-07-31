@@ -13,7 +13,7 @@ var loadComponents = function () {
 	var i = 0;
 	_.each(Ceci._components, function (value, tag) {
 		var bordercolor = colors[i]
-		var thumb = $('<div class="row clearfix"><div class="input"></div><div class="draggable" style="border-color:'+ bordercolor +'" value="' + tag + '">' + tag + '</div><div class="output"></div></div>')
+		var thumb = $('<div class="row clearfix"><div class="input"></div><div class="draggable thumb" style="border-color:'+ bordercolor +'" value="' + tag + '">' + tag + '</div><div class="output"></div></div>')
 		$('.tray').append(thumb)
 		i++ 
 	})
