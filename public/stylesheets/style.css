@@ -184,7 +184,7 @@ button.btn-img {
 	float: left;
 	height: 40px;
 	width: 40px;
-	background-image: url(../images/output.png);
+	background-image: url(../images/listen.png);
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -201,7 +201,7 @@ button.btn-img {
 
 .tooltip {
 	position: absolute;
-	background-color: #111;
+	background: rgba(0,0,0,.8);
 	padding: 10px;
 	z-index: 99;
 	left: 40px;
@@ -263,7 +263,7 @@ button.btn-img {
 }
 
 .phone-canvas {
-	background-color: #FFF;
+	background-color: #444;
 	height: 400px;
 	width: 100%;
 }
@@ -289,7 +289,7 @@ button.btn-img {
 .card {
 	height: 100px;
 	width: 100%;
-	background-color: #FFF;
+	background-color: #555;
 }
 
 .console {
