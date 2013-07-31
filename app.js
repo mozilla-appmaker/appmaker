@@ -13,6 +13,9 @@ http = require('http'),
 engine = require('ejs-locals'),
 path = require('path');
 
+// .env files aren't great at empty values.
+process.env.ASSET_HOST = typeof process.env.ASSET_HOST === 'undefined' ? '' : process.env.ASSET_HOST
+
 var app = express();
 
 app.engine('ejs', engine);
