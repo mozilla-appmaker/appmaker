@@ -27,6 +27,10 @@ body {
    height:0
 }
 
+.left {
+	float: left;
+}
+
 a {
 	text-decoration: none;
 }
@@ -55,6 +59,13 @@ h5 {
 	font-size: 16px;
 	margin: 0px 0px 20px 0px;
 	text-transform: uppercase;
+}
+
+h6 {
+	color: #FFF;
+	font-size: 15px;
+	font-weight: 400;
+	margin: 0px;
 }
 
 /*----------BUTTONS----------*/
@@ -90,6 +101,31 @@ button.publish {
 	top: -40px;
 	right: 40px;
 	display: block;
+}
+
+button.btn-img {
+	height: 25px;
+	width: 25px;
+	padding: 0px;
+	border: none;
+	border-radius: 2px;
+	vertical-align: middle;
+	background-color: #555;
+	background-image: url(../images/image.png);
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+button.btn-add {
+	height: 20px;
+	width: 20px;
+	border-radius: 2px;
+	background-color: #ff7b00;
+	border: none;
+	float: right;
+	background-image: url(../images/add.png);
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
 /*----------LAYOUT----------*/
@@ -143,7 +179,8 @@ button.publish {
 }
 
 .component-header {
-	margin: 40px 0px 20px 40px;
+	margin: 40px 0px 0px 40px;
+	width: 160px;
 }
 
 .row {
@@ -154,7 +191,7 @@ button.publish {
 	float: left;
 	height: 40px;
 	width: 40px;
-	background-image: url(../images/output.png);
+	background-image: url(../images/listen.png);
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -171,8 +208,10 @@ button.publish {
 
 .tooltip {
 	position: absolute;
-	background-color: #111;
-	padding: 10px;
+	background: rgba(0,0,0,.8);
+	padding: 0px 10px;
+	height: 40px;
+	line-height: 40px;
 	z-index: 99;
 	left: 40px;
 	top: 0px;
@@ -183,6 +222,9 @@ button.publish {
 
 .draggable {
 	cursor: move;
+}
+
+.thumb {
 	height: 40px;
 	width: 155px;
 	background-color: #eee;
@@ -214,7 +256,7 @@ button.publish {
 
 .phone-container {
 	float: left;
-	width: 300px;
+	width: 310px;
 	margin-left: 40px;
 }
 
@@ -230,7 +272,7 @@ button.publish {
 }
 
 .phone-canvas {
-	background-color: #FFF;
+	background-color: #444;
 	height: 400px;
 	width: 100%;
 }
@@ -256,7 +298,7 @@ button.publish {
 .card {
 	height: 100px;
 	width: 100%;
-	background-color: #FFF;
+	background-color: #555;
 }
 
 .console {
@@ -265,12 +307,11 @@ button.publish {
 	top: 0px;
 	bottom: 0px;
 	right: 0px;
-	left: 740px;
+	left: 750px;
 	color: #999;
 }
 
-.component-log {
-	height: 160px;
+.component-customize {
 	width: 100%;
 	background-color: #333;
 }
@@ -353,4 +394,27 @@ button.publish {
 
 .txt-fixed {
 	color: #999;
+}
+
+.dropdown {
+	background-color: #555;
+	height: 25px;
+	line-height: 25px;
+	border-radius: 2px;
+	float: left;
+	width: 125px;
+	font-size: 12px;
+	text-indent: 10px;
+	margin-right: 5px;
+	background-image: url(../images/arrows.png);
+	background-repeat: no-repeat;
+	background-position: 110px center;
+}
+
+.tab-num {
+	line-height: 25px;
+	float: left;
+	margin-right: 5px;
+	font-size: 16px;
+	width: 10px;
 }

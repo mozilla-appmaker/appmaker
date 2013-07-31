@@ -13,7 +13,7 @@ var loadComponents = function () {
 	var i = 0;
 	_.each(Ceci._components, function (value, tag) {
 		var bordercolor = colors[i]
-		var thumb = $('<div class="row clearfix"><div class="input"></div><div class="draggable" style="border-color:'+ bordercolor +'" value="' + tag + '">' + tag + '</div><div class="output"></div></div>')
+		var thumb = $('<div class="row clearfix"><div class="input"></div><div class="draggable thumb" style="border-color:'+ bordercolor +'" value="' + tag + '">' + tag + '</div><div class="output"></div></div>')
 		$('.tray').append(thumb)
 		i++ 
 	})
@@ -38,10 +38,19 @@ var loadComponents = function () {
 	$('.output').mouseover(function () {
 		var offset = $(this).offset()
 		var posleft = offset.left + 40 + 'px'
-		$('.tooltip').css({'top': offset.top, 'left': posleft})
-		$('.tooltip').show()
+		$('#tooltip-output').css({'top': offset.top, 'left': posleft})
+		$('#tooltip-output').show()
 	}).mouseout(function () {
-		$('.tooltip').hide()
+		$('#tooltip-output').hide()
+	})
+
+	$('.input').mouseover(function () {
+		var offset = $(this).offset()
+		var posleft = offset.left + 40 + 'px'
+		$('#tooltip-input').css({'top': offset.top, 'left': posleft})
+		$('#tooltip-input').show()
+	}).mouseout(function () {
+		$('#tooltip-input').hide()
 	})
 
 	$('.output').click(function () {
