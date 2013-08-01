@@ -76,6 +76,15 @@ button.btn-std {
 	border: none;
 	color: #FFF;
 	font-weight: 400;
+	padding: 0px;
+}
+
+button.btn-std:hover {
+	background-color: #2a70a6;
+}
+
+button.btn-std:active {
+	background-color: #1f5680;
 }
 
 button.btn-lg {
@@ -87,7 +96,6 @@ button.btn-lg {
 button.btn-md {
 	height: 40px;
 	width: 120px;
-	line-height: 40px;
 	font-size: 16px;
 }
 
@@ -126,6 +134,13 @@ button.btn-add {
 	background-image: url(../images/add.png);
 	background-position: center;
 	background-repeat: no-repeat;
+}
+
+button.btn-done {
+	width: 160px;
+	font-size: 16px;
+	border-radius: 4px;
+	height: 40px;
 }
 
 /*----------LAYOUT----------*/
@@ -424,4 +439,14 @@ button.btn-add {
 	margin-right: 5px;
 	font-size: 16px;
 	width: 10px;
+}
+
+.inlib {
+	float: left;
+	margin-left: 10px;
+	margin-bottom: 10px;
+}
+
+.inlib:nth-child(1) {
+	margin-left: 0px;
 }

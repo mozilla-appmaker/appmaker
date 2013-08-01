@@ -13,7 +13,7 @@ var loadComponents = function () {
 	var i = 0;
 	_.each(Ceci._components, function (value, tag) {
 		var bordercolor = colors[i]
-		var thumb = $('<div class="row clearfix inlib"><div class="thumb" style="border-color:'+ bordercolor +'" value="' + tag + '">' + tag + '</div></div>')
+		var thumb = $('<div class="clearfix inlib"><div class="thumb" style="border-color:'+ bordercolor +'" value="' + tag + '">' + tag + '</div></div>')
 		$('.library-list').append(thumb)
 		i++ 
 	})
@@ -64,6 +64,11 @@ var loadComponents = function () {
 	})
 
 	$('.close-modal').click(function () {
+    	$('.output-options').removeClass('flex');
+    	$('.library').removeClass('flex');
+    })
+
+    $('.btn-done').click(function () {
     	$('.output-options').removeClass('flex');
     	$('.library').removeClass('flex');
     })
