@@ -141,6 +141,7 @@ button.btn-done {
 	font-size: 16px;
 	border-radius: 4px;
 	height: 40px;
+	margin-top: 10px;
 }
 
 /*----------LAYOUT----------*/
@@ -249,6 +250,10 @@ button.btn-done {
 	text-indent: 10px;
 	border-left: 5px solid #358cce;
 	float: left;
+}
+
+.thumb:hover {
+	background-color: #FFF;
 }
 
 .component-std {
@@ -398,16 +403,18 @@ button.btn-done {
 	line-height: 30px;
 	background-color: #FFF;
 	float: left;
-	width: 80px;
+	width: 110px;
 	text-align: center;
+	border-right: 1px solid #DDD;
 }
 
 .filter:nth-child(1) {
 	border-radius: 2px 0px 0px 2px;
 }
 
-.filter:nth-child(2) {
+.filter:nth-last-child(1) {
 	border-radius: 0px 2px 2px 0px;
+	border: none;
 }
 
 .active {
@@ -445,6 +452,7 @@ button.btn-done {
 	float: left;
 	margin-left: 10px;
 	margin-bottom: 10px;
+	cursor: pointer;
 }
 
 .inlib:nth-child(1) {
