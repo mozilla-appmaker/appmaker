@@ -209,7 +209,7 @@ button.btn-add {
 .tooltip {
 	position: absolute;
 	background: rgba(0,0,0,.8);
-	padding: 0px 10px;
+	padding: 0px 15px;
 	height: 40px;
 	line-height: 40px;
 	z-index: 99;
@@ -327,7 +327,14 @@ button.btn-add {
    left: 0px;
    right: 0px;
    background: rgba(0,0,0,.5);
+}
+
+.output-options {
    display: none;
+}
+
+.library {
+	display: none;
 }
 
 .flex {

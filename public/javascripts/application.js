@@ -13,8 +13,8 @@ var loadComponents = function () {
 	var i = 0;
 	_.each(Ceci._components, function (value, tag) {
 		var bordercolor = colors[i]
-		var thumb = $('<div class="row clearfix"><div class="input"></div><div class="draggable thumb" style="border-color:'+ bordercolor +'" value="' + tag + '">' + tag + '</div><div class="output"></div></div>')
-		$('.tray').append(thumb)
+		var thumb = $('<div class="row clearfix inlib"><div class="thumb" style="border-color:'+ bordercolor +'" value="' + tag + '">' + tag + '</div></div>')
+		$('.library-list').append(thumb)
 		i++ 
 	})
 
@@ -54,12 +54,33 @@ var loadComponents = function () {
 	})
 
 	$('.output').click(function () {
-    	$('.modal-wrapper').addClass('flex')
+    	$('.output-options').addClass('flex')
+    	$('.tooltip').hide()
+	})
+
+	$('#open-library').click(function () {
+    	$('.library').addClass('flex')
     	$('.tooltip').hide()
 	})
 
 	$('.close-modal').click(function () {
-    	$('.modal-wrapper').removeClass('flex');
+    	$('.output-options').removeClass('flex');
+    	$('.library').removeClass('flex');
+    })
+
+    $('.inlib').click(function () {
+    	var clone = $(this).clone()
+    	clone.prepend('<div class="input"></div>')
+    	     .append('<div class="output"></div>')
+    		 .removeClass('inlib')
+      	clone.find('.thumb').draggable({
+	  		appendTo: ".phone-canvas",
+	  		helper: "clone",
+	  		addClass: "clone",
+	  		snap: true,
+	  		snapTolerance: 5
+		}).addClass('draggable') 
+    	$('.tray').append(clone)
     })
 
 }
