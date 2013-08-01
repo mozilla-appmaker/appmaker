@@ -35,25 +35,25 @@ var loadComponents = function () {
 	  }
 	})
 
-	$('.output').mouseover(function () {
+	$(document).on('mouseover', '.output', function () {
 		var offset = $(this).offset()
 		var posleft = offset.left + 40 + 'px'
 		$('#tooltip-output').css({'top': offset.top, 'left': posleft})
 		$('#tooltip-output').show()
-	}).mouseout(function () {
+	}).on('mouseout', '.output', function () {
 		$('#tooltip-output').hide()
 	})
 
-	$('.input').mouseover(function () {
+	$(document).on('mouseover', '.input', function () {
 		var offset = $(this).offset()
 		var posleft = offset.left + 40 + 'px'
 		$('#tooltip-input').css({'top': offset.top, 'left': posleft})
 		$('#tooltip-input').show()
-	}).mouseout(function () {
+	}).on('mouseout', '.input', function () {
 		$('#tooltip-input').hide()
 	})
 
-	$('.output').click(function () {
+	$(document).on('click', '.output', function () {
     	$('.output-options').addClass('flex')
     	$('.tooltip').hide()
 	})
