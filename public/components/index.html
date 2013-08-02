@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+  <head>
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="components.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(Components.replace)
+    </script>
+  </head>
+  <body>
+    
+    <style>
+    .button {
+      background: blue;
+      color: white;
+      width: 200px;
+    }
+    .counter {
+      color: red;
+    }
+    </style>
+    
+    <template id="shutter-button">
+      <div style="" onclick="Components.broadcast('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==')">[ o ]</div>
+    </template>
+
+    <template id="picture-frame">
+      <img style="width: 100px; height: 100px; border: 1px solid black;" ondblclick="$(this).attr('src', arguments[1])" />
+    </template>
+    
+    <template id="button">
+      <div onclick="Components.broadcast()" style="">Click Me</div>
+    </template>
+    
+    <template id="counter">
+      <div style="width: 100px; height: 100px; font-size: 50px;" ondblclick="$(this).text(parseFloat($(this).text()) + 1)">2</div>
+    </template>
+    
+    <template id="input-form">
+      <input type="text">
+      <button onclick="Components.broadcast($(this).prev().val())">Submit</button>
+    </template>
+    
+    <template id="log">
+      <div ondblclick="$(this).append(arguments[1] + '<br>')"></div>
+    </template>
+  
+
+    <picture-frame></picture-frame>
+    
+    <counter></counter>
+    
+    <button></button>
+    
+    <shutter-button></shutter-button>
+    
+    <input-form></input-form>
+    
+    <log></log>
+    
+    
+    
+  </body>
+</html>
