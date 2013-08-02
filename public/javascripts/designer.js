@@ -14,7 +14,6 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
       $.each(Ceci._components, function (tag, e) {
         var bordercolor = colors[i];
         var thumb = $('<div class="clearfix inlib"><div class="thumb" style="border-color:'+ bordercolor +'" value="' + tag + '">' + tag + '</div></div>');
-        console.log($('.library-list'));
         $('.library-list').append(thumb);
         i++;
       });
@@ -79,15 +78,14 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
           .prepend('<div class="input"></div>')
           .append('<div class="output"></div>')
           .removeClass('inlib')
-          .find('.thumb').draggable({
-            appendTo: ".phone-canvas",
-            helper: "clone",
-            addClass: "clone",
-            snap: true,
-            snapTolerance: 5
-          })
+        clone.find('.thumb').draggable({
+          appendTo: ".phone-canvas",
+          helper: "clone",
+          addClass: "clone",
+          snap: true,
+          snapTolerance: 5
+        })
           .addClass('draggable');
-        
         $('.tray').append(clone);
       });
     });
