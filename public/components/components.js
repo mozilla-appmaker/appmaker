@@ -19,7 +19,6 @@ Components.log = function (message) {
 
 // Replace all Component tags with the components
 Components.replace = function () {
-  Components.scan()
   Components.tags.forEach(function (tagName, index) {
     $(tagName).each(function () {
       var clone = $(Components.templates[tagName])

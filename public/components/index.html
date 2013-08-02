@@ -5,7 +5,10 @@
     <script type="text/javascript" src="components.js"></script>
 
     <script type="text/javascript">
-    $(document).ready(Components.replace)
+    $(document).ready(function () {
+      Components.scan()
+      Components.replace()
+    })
     </script>
   </head>
   <body>
