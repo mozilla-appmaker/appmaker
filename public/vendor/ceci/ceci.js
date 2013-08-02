@@ -1,6 +1,8 @@
 define(function(){
   var Ceci = function (element, def) {
 
+    var reserved = ['init', 'editable'];
+
     Object.keys(def).filter(function (item) { return reserved.indexOf(item) === -1; }).forEach(function (key) {
       var entry = def[key];
       if (typeof entry === 'function') {
