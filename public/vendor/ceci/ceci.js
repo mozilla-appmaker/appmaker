@@ -108,7 +108,7 @@ define(function(){
     });
   };
 
-  Ceci.commencer = function () {
+  Ceci.commencer = function (callback) {
     function scrape () {
       Array.prototype.slice.call(document.querySelectorAll('element')).forEach(Ceci.avoir);
     }
@@ -131,6 +131,9 @@ define(function(){
           }
           if (--scriptsLeft === 0) {
             scrape();
+            if (callback){
+              callback();
+            }
           }
         };
         xhr.send(null);
@@ -140,11 +143,6 @@ define(function(){
       scrape();
     }
   };
-
-
-  document.addEventListener('DOMContentLoaded', function (e) {
-    Ceci.commencer();
-  }, false);
-
+  
   return Ceci
 });

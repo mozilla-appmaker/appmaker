@@ -1,15 +1,15 @@
 {
   "name": "ceci",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./ceci.js",
   "dependencies": {},
   "homepage": "https://github.com/mozilla/ceci-bower",
-  "_release": "0.0.1",
+  "_release": "0.0.2",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.1",
-    "commit": "f9e3191ad05f25959b621d1a6ce655a241234f8c"
+    "tag": "v0.0.2",
+    "commit": "79f4449b06b4674d2150bdae213ca31567512800"
   },
   "_source": "git://github.com/mozilla/ceci-bower.git",
-  "_target": "~0.0.1"
+  "_target": "~0.0.2"
 }
