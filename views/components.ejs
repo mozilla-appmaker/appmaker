@@ -1,13 +1,13 @@
-<template id="shutter-button">
-  <div style="" onclick="Components.broadcast('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==')">[ o ]</div>
+<template id="moz-shutter-button">
+  <div onclick="Components.broadcast('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==')"></div>
 </template>
 
-<template id="picture-frame">
-  <img style="width: 100px; height: 100px; border: 1px solid black;" ondblclick="$(this).attr('src', arguments[1])" />
+<template id="moz-picture-frame">
+  <img ondblclick="$(this).attr('src', arguments[1])" />
 </template>
 
-<template id="better-button">
-  <div onclick="Components.broadcast()" style="">Click Me</div>
+<template id="moz-button">
+  <button onclick="Components.broadcast()" style="">Click Me</button>
 </template>
 
 <template id="counter">

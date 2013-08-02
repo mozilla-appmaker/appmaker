@@ -5,13 +5,11 @@
 define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   // TODO: Fix this, we're essentially working around require.js.
   // This is gross and shouldn't happen, it's 
-  window.Ceci = Ceci;
 
-  $(function() {
-    Ceci.commencer(function () {
       var colors = ['#358CCE', '#ff7b00', '#b4e319', '#e3197b']
       var i = 0;
-      $.each(Ceci._components, function (tag, e) {
+      Components.scan()
+      Components.tags.forEach(function (tag, e) {
         var bordercolor = colors[i];
         var thumb = $('<div class="clearfix inlib"><div class="thumb" style="border-color:'+ bordercolor +'" value="' + tag + '">' + tag + '</div></div>');
         $('.library-list').append(thumb);
@@ -31,7 +29,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
         drop: function (event, ui) {
           var component = $('<' + $(ui.helper).attr('value') + '></' + $(ui.helper).attr('value') + '>');
           $(this).append(component);
-          Ceci.faire(component[0]);
+          Components.replace()
         }
       });
 
@@ -88,6 +86,5 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
           .addClass('draggable');
         $('.tray').append(clone);
       });
-    });
-  });
+
 });
