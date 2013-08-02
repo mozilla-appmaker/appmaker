@@ -76,6 +76,15 @@ button.btn-std {
 	border: none;
 	color: #FFF;
 	font-weight: 400;
+	padding: 0px;
+}
+
+button.btn-std:hover {
+	background-color: #2a70a6;
+}
+
+button.btn-std:active {
+	background-color: #1f5680;
 }
 
 button.btn-lg {
@@ -87,7 +96,6 @@ button.btn-lg {
 button.btn-md {
 	height: 40px;
 	width: 120px;
-	line-height: 40px;
 	font-size: 16px;
 }
 
@@ -126,6 +134,14 @@ button.btn-add {
 	background-image: url(../images/add.png);
 	background-position: center;
 	background-repeat: no-repeat;
+}
+
+button.btn-done {
+	width: 160px;
+	font-size: 16px;
+	border-radius: 4px;
+	height: 40px;
+	margin-top: 10px;
 }
 
 /*----------LAYOUT----------*/
@@ -209,7 +225,7 @@ button.btn-add {
 .tooltip {
 	position: absolute;
 	background: rgba(0,0,0,.8);
-	padding: 0px 10px;
+	padding: 0px 15px;
 	height: 40px;
 	line-height: 40px;
 	z-index: 99;
@@ -234,6 +250,10 @@ button.btn-add {
 	text-indent: 10px;
 	border-left: 5px solid #358cce;
 	float: left;
+}
+
+.thumb:hover {
+	background-color: #FFF;
 }
 
 .component-std {
@@ -327,7 +347,14 @@ button.btn-add {
    left: 0px;
    right: 0px;
    background: rgba(0,0,0,.5);
+}
+
+.output-options {
    display: none;
+}
+
+.library {
+	display: none;
 }
 
 .flex {
@@ -376,16 +403,18 @@ button.btn-add {
 	line-height: 30px;
 	background-color: #FFF;
 	float: left;
-	width: 80px;
+	width: 110px;
 	text-align: center;
+	border-right: 1px solid #DDD;
 }
 
 .filter:nth-child(1) {
 	border-radius: 2px 0px 0px 2px;
 }
 
-.filter:nth-child(2) {
+.filter:nth-last-child(1) {
 	border-radius: 0px 2px 2px 0px;
+	border: none;
 }
 
 .active {
@@ -417,4 +446,15 @@ button.btn-add {
 	margin-right: 5px;
 	font-size: 16px;
 	width: 10px;
+}
+
+.inlib {
+	float: left;
+	margin-left: 10px;
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+
+.inlib:nth-child(1) {
+	margin-left: 0px;
 }

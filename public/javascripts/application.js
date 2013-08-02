@@ -13,8 +13,8 @@ var loadComponents = function () {
 	var i = 0;
 	_.each(Ceci._components, function (value, tag) {
 		var bordercolor = colors[i]
-		var thumb = $('<div class="row clearfix"><div class="input"></div><div class="draggable thumb" style="border-color:'+ bordercolor +'" value="' + tag + '">' + tag + '</div><div class="output"></div></div>')
-		$('.tray').append(thumb)
+		var thumb = $('<div class="clearfix inlib"><div class="thumb" style="border-color:'+ bordercolor +'" value="' + tag + '">' + tag + '</div></div>')
+		$('.library-list').append(thumb)
 		i++ 
 	})
 
@@ -35,31 +35,57 @@ var loadComponents = function () {
 	  }
 	})
 
-	$('.output').mouseover(function () {
+	$(document).on('mouseover', '.output', function () {
 		var offset = $(this).offset()
 		var posleft = offset.left + 40 + 'px'
 		$('#tooltip-output').css({'top': offset.top, 'left': posleft})
 		$('#tooltip-output').show()
-	}).mouseout(function () {
+	}).on('mouseout', '.output', function () {
 		$('#tooltip-output').hide()
 	})
 
-	$('.input').mouseover(function () {
+	$(document).on('mouseover', '.input', function () {
 		var offset = $(this).offset()
 		var posleft = offset.left + 40 + 'px'
 		$('#tooltip-input').css({'top': offset.top, 'left': posleft})
 		$('#tooltip-input').show()
-	}).mouseout(function () {
+	}).on('mouseout', '.input', function () {
 		$('#tooltip-input').hide()
 	})
 
-	$('.output').click(function () {
-    	$('.modal-wrapper').addClass('flex')
+	$(document).on('click', '.output', function () {
+    	$('.output-options').addClass('flex')
+    	$('.tooltip').hide()
+	})
+
+	$('#open-library').click(function () {
+    	$('.library').addClass('flex')
     	$('.tooltip').hide()
 	})
 
 	$('.close-modal').click(function () {
-    	$('.modal-wrapper').removeClass('flex');
+    	$('.output-options').removeClass('flex');
+    	$('.library').removeClass('flex');
+    })
+
+    $('.btn-done').click(function () {
+    	$('.output-options').removeClass('flex');
+    	$('.library').removeClass('flex');
+    })
+
+    $('.inlib').click(function () {
+    	var clone = $(this).clone()
+    	clone.prepend('<div class="input"></div>')
+    	     .append('<div class="output"></div>')
+    		 .removeClass('inlib')
+      	clone.find('.thumb').draggable({
+	  		appendTo: ".phone-canvas",
+	  		helper: "clone",
+	  		addClass: "clone",
+	  		snap: true,
+	  		snapTolerance: 5
+		}).addClass('draggable') 
+    	$('.tray').append(clone)
     })
 
 }
