@@ -85,8 +85,8 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
         console.log('%s broadcasts: %s', tagName, broadcasts)
         console.log('%s listens: %s', tagName, listens)
         
-        clone.prepend('<div class="input"></div>')
-          .append('<div class="output"></div>')
+        clone.prepend('<div class="input"><span class="icon-headphones"></span></div>')
+          .append('<div class="output"><span class="icon-feed"></div>')
           .removeClass('inlib')
         clone.find('.thumb').draggable({
           appendTo: ".phone-canvas",
