@@ -84,10 +84,16 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
         var listens = $('template#' + tagName).attr('ondblclick') !== undefined
         console.log('%s broadcasts: %s', tagName, broadcasts)
         console.log('%s listens: %s', tagName, listens)
+
+        if (broadcasts) {
+          clone.append('<div class="output"><span class="icon-feed"></div>')
+        }
+
+        if (listens) {
+          clone.prepend('<div class="input"><span class="icon-headphones"></span></div>')
+        }
         
-        clone.prepend('<div class="input"><span class="icon-headphones"></span></div>')
-          .append('<div class="output"><span class="icon-feed"></div>')
-          .removeClass('inlib')
+        clone.removeClass('inlib')
         clone.find('.thumb').draggable({
           appendTo: ".phone-canvas",
           helper: "clone",
