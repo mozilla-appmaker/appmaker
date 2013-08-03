@@ -494,5 +494,10 @@ button.moz-button {
 }
 
 .moz-shutter-button {
-	background-image: url(camera.png);
+	background-image: url(../images/camera.png);
+	height: 40px;
+	width: 100%;
+	background-color: #222;
+	background-repeat: no-repeat;
+	background-position: center;
 }
