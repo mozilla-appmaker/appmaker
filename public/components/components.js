@@ -14,6 +14,7 @@ Components.broadcast = function (message) {
 }
 
 Components.log = function (message) {
+  $('.log .inner p').append('<div>' + message + '</div>')
   console.log(message)
 }
 
