@@ -14,7 +14,7 @@
   <div style="width: 100px; height: 100px; font-size: 50px;">2</div>
 </template>
 
-<template id="moz-input-form">
+<template id="moz-input-form" broadcasts>
   <input type="text">
   <button onclick="$(this).parent().trigger('broadcast', $(this).prev().val())">Submit</button>
 </template>
@@ -30,7 +30,7 @@
   </script>
 </template>
 
-<template id="moz-camera">
+<template id="moz-camera" broadcasts>
   
   <script src="/components/camera-action.min.js"></script>
   <div onclick="camera.takePhoto()" id="moz-camera-instance" style="width: 320px; height: 240px;"></div>
