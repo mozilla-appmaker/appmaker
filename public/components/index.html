@@ -9,6 +9,9 @@
       Components.scan()
       Components.replace()
     })
+    $(document).on('broadcast', function (message) {
+      console.log(message)
+    })
     </script>
   </head>
   <body>

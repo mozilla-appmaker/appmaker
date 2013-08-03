@@ -7,14 +7,9 @@ Components.add = function (tagName) {
   Components.templates[tagName] = $('template#' + tagName).html().trim()
 }
 
-
 Components.broadcast = function (message) {
   $('.component').trigger('dblclick', message)
-  Components.log(message)
-}
-
-Components.log = function (message) {
-  console.log(message)
+  $(document).trigger('braodcast', message)
 }
 
 // Replace all Component tags with the components
