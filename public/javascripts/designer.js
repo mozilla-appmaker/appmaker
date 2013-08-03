@@ -16,6 +16,12 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
         i++;
       });
 
+  //logs messages
+  $(document).on('broadcast', function (event, message) {
+    $('.log .inner p').append('<div>' + message + '</div>')
+    console.log(message)
+  })
+
       $( ".draggable" ).draggable({
         appendTo: ".phone-canvas",
         helper: "clone",
