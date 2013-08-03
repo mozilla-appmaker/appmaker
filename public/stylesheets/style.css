@@ -282,7 +282,6 @@ button.btn-done {
 	border-radius: 3px;
 	line-height: 40px;
 	text-indent: 10px;
-	border-left: 5px solid #358cce;
 	float: left;
 }
 
@@ -500,6 +499,12 @@ button.btn-done {
 
 .inlib:nth-child(3n) {
 	margin-right: 0px;
+}
+
+.color {
+	height: 40px;
+	width: 40px;
+	background-color: red;
 }
 
 /*----------COMPONENTS----------*/

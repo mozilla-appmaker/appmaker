@@ -11,7 +11,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
       Components.scan()
       Components.tags.forEach(function (tag, e) {
         var bordercolor = colors[i];
-        var thumb = $('<div class="clearfix inlib"><div class="thumb" style="border-color:'+ bordercolor +'" value="' + tag + '">' + tag + '</div></div>');
+        var thumb = $('<div class="clearfix inlib" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('moz-', '') + '</div></div>');
         $('.library-list').append(thumb);
         i++;
       });
@@ -58,6 +58,10 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
       })
 
       $(document).on('click', '.output', function () {
+        var i = 0;
+        for (var i; i < colors.length; i++) {
+          $('.color-options').append('<div class="color" style="background-color: '+ colors[i] +'"></div>')
+        } 
         $('.output-options').addClass('flex');
         $('.tooltip').hide();
       });
@@ -79,7 +83,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
 
       $('.inlib').click(function () {
         var clone = $(this).clone()
-        var tagName = $(this).text()
+        var tagName = $(this).attr('value')
         var broadcasts = $('template#' + tagName).attr('broadcasts') !== undefined
         var listens = $('template#' + tagName).attr('ondblclick') !== undefined
         console.log('%s broadcasts: %s', tagName, broadcasts)
@@ -92,7 +96,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
         if (listens) {
           clone.prepend('<div class="input"><span class="icon-headphones"></span></div>')
         }
-        
+
         clone.removeClass('inlib')
         clone.find('.thumb').draggable({
           appendTo: ".phone-canvas",
