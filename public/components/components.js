@@ -26,6 +26,7 @@ Components.replace = function () {
       if ($(this).hasClass('component'))
         return true
       $(this).addClass('component')
+      $(this).addClass(tagName)
       var template = $(Components.templates[tagName])
       $(this).attr('ondblclick', template.attr('ondblclick'))
       $(this).html(template.html().trim())
