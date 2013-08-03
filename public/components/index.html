@@ -28,34 +28,34 @@
     </style>
     
     <template id="moz-shutter-button" broadcasts>
-      <div style="" onclick="Components.broadcast('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==')">[ o ]</div>
+      <div style="" onclick="$(this).parent().trigger('broadcast', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==')">[ o ]</div>
     </template>
 
-    <template id="moz-picture-frame" listens>
-      <img style="width: 100px; height: 100px; border: 1px solid black;" ondblclick="$(this).attr('src', arguments[1])" />
+    <template id="moz-picture-frame" ondblclick="$(this).find('img').attr('src', arguments[1])">
+      <img style="width: 100px; height: 100px; border: 1px solid black;" />
     </template>
     
     <template id="moz-better-button" broadcasts>
-      <div onclick="Components.broadcast()" style="">Click Me</div>
+      <div onclick="$(this).parent().trigger('broadcast')" style="">Click Me</div>
     </template>
     
-    <template id="moz-counter" listens>
-      <div style="width: 100px; height: 100px; font-size: 50px;" ondblclick="$(this).text(parseFloat($(this).text()) + 1)">2</div>
+    <template id="moz-counter" ondblclick="$(this).find('div').text(parseFloat($(this).text()) + 1)">
+      <div style="width: 100px; height: 100px; font-size: 50px;">2</div>
     </template>
     
-    <template id="moz-input-form" broadcasts>
+    <template id="moz-input-form">
       <input type="text">
-      <button onclick="Components.broadcast($(this).prev().val())">Submit</button>
+      <button onclick="$(this).parent().trigger('broadcast', $(this).prev().val())">Submit</button>
     </template>
     
-    <template id="moz-log" listens>
-      <div ondblclick="$(this).append(arguments[1] + '<br>')"></div>
+    <template id="moz-log" ondblclick="$(this).append(arguments[1] + '<br>')">
+      <div></div>
     </template>
     
     <template id="moz-metronome" broadcasts>
-      <div>Metronome</div>
+      <div class="metro">Metronome</div>
       <script type="text/javascript">
-         setInterval('Components.broadcast()', 1000)
+        setInterval("$('.metro').parent().trigger('broadcast')", 1000)
       </script>
     </template>
     
@@ -74,7 +74,7 @@
       var camera = new Camera(container, options)
       camera.action()
       camera.on('photo', function (data) {
-        Components.broadcast(data)
+        $(this).parent().trigger('broadcast', data)
       })
       </script>
     </template>
@@ -86,13 +86,15 @@
     <moz-picture-frame></moz-picture-frame>
     <moz-picture-frame></moz-picture-frame>
     
-    <moz-counter></moz-counter>
+    <moz-counter listen-to="green"></moz-counter>
     
-    <moz-better-button></moz-better-button>
+    <moz-better-button broadcast-to="green"></moz-better-button>
     
     <moz-shutter-button></moz-shutter-button>
     
     <moz-input-form></moz-input-form>
+    
+
     
     <moz-log></log>
     

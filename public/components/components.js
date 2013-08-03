@@ -1,34 +1,48 @@
 var Components = {}
 Components.tags = []
 Components.templates = {}
+Components.defaultChannel = 'blue'
 
-Components.add = function (tagName) {
-  Components.tags.push(tagName)
-  Components.templates[tagName] = $('template#' + tagName).html().trim()
+Components.broadcast = function (message, channel) {
+  if (!channel)
+    channel = Components.defaultChannel
+
+  $(document).trigger('broadcast', message, channel)
+  
+  $('.component').each(function () {
+    var listensTo = $(this).attr('listen-to')
+    if (listensTo === undefined)
+      listensTo = Components.defaultChannel
+    if (listensTo === channel)
+      $(this).trigger('dblclick', message)
+  })
 }
 
-Components.broadcast = function (message) {
-  $('.component').trigger('dblclick', message)
-  $(document).trigger('broadcast', message)
-}
-
-// Replace all Component tags with the components
+// Initialize all user component tags with the component code
 Components.replace = function () {
   Components.tags.forEach(function (tagName, index) {
     $(tagName).each(function () {
-      var clone = $(Components.templates[tagName])
-      clone.addClass('component')
-      clone.addClass(tagName)
-      $(this).replaceWith(clone)
+      // If it has already been initialized, continue
+      if ($(this).hasClass('component'))
+        return true
+      $(this).addClass('component')
+      var template = $(Components.templates[tagName])
+      $(this).attr('ondblclick', template.attr('ondblclick'))
+      $(this).html(template.html().trim())
+      $(this).on('broadcast', function (event, message) {
+        Components.broadcast(message, $(this).attr('broadcast-to'))  
+      })
     })
   })
 }
 
+// Scan the page for components
 Components.scan = function () {
-  // Scan the page for components
+  Components.tags = []
   $('template').each(function () {
-    var id = $(this).attr('id')
-    Components.add(id)
+    var tagName = $(this).attr('id')
+    Components.tags.push(tagName)
+    Components.templates[tagName] = $('template#' + tagName)
   })
 }
 
