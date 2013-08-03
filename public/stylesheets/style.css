@@ -536,7 +536,7 @@ button.moz-button {
 	display: block;
 }
 
-.moz-shutter-button {
+.moz-shutter-button div {
 	background-image: url(../images/camera.png);
 	height: 40px;
 	width: 110px;
