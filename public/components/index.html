@@ -10,6 +10,7 @@
       Components.replace()
     })
     $(document).on('broadcast', function (message) {
+      $('.log .inner p').append('<div>' + message + '</div>')
       console.log(message)
     })
     </script>

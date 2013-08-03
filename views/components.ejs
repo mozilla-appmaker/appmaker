@@ -22,3 +22,10 @@
 <template id="moz-log">
   <div ondblclick="$(this).append(arguments[1] + '<br>')"></div>
 </template>
+
+  <template id="moz-metronome">
+      <div>Metronome</div>
+      <script type="text/javascript">
+         setInterval('Components.broadcast()', 1000)
+      </script>
+    </template>
