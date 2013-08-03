@@ -10,15 +10,15 @@
   <button onclick="Components.broadcast()" style="">Click Me</button>
 </template>
 
-<template id="counter">
+<template id="moz-counter">
   <div style="width: 100px; height: 100px; font-size: 50px;" ondblclick="$(this).text(parseFloat($(this).text()) + 1)">2</div>
 </template>
 
-<template id="input-form">
+<template id="moz-input-form">
   <input type="text">
   <button onclick="Components.broadcast($(this).prev().val())">Submit</button>
 </template>
 
-<template id="log">
+<template id="moz-log">
   <div ondblclick="$(this).append(arguments[1] + '<br>')"></div>
 </template>
