@@ -9,7 +9,7 @@ Components.add = function (tagName) {
 
 Components.broadcast = function (message) {
   $('.component').trigger('dblclick', message)
-  $(document).trigger('braodcast', message)
+  $(document).trigger('broadcast', message)
 }
 
 // Replace all Component tags with the components
