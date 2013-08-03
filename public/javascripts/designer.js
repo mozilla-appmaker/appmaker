@@ -81,7 +81,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
         var clone = $(this).clone()
         var tagName = $(this).text()
         var broadcasts = $('template#' + tagName).attr('broadcasts') !== undefined
-        var listens = $('template#' + tagName).attr('listens') !== undefined
+        var listens = $('template#' + tagName).attr('ondblclick') !== undefined
         console.log('%s broadcasts: %s', tagName, broadcasts)
         console.log('%s listens: %s', tagName, listens)
         
