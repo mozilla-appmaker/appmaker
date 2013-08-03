@@ -9,8 +9,7 @@
       Components.scan()
       Components.replace()
     })
-    $(document).on('broadcast', function (message) {
-      $('.log .inner p').append('<div>' + message + '</div>')
+    $(document).on('broadcast', function (event, message) {
       console.log(message)
     })
     </script>
@@ -28,32 +27,32 @@
     }
     </style>
     
-    <template id="moz-shutter-button">
+    <template id="moz-shutter-button" broadcasts>
       <div style="" onclick="Components.broadcast('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==')">[ o ]</div>
     </template>
 
-    <template id="moz-picture-frame">
+    <template id="moz-picture-frame" listens>
       <img style="width: 100px; height: 100px; border: 1px solid black;" ondblclick="$(this).attr('src', arguments[1])" />
     </template>
     
-    <template id="moz-better-button">
+    <template id="moz-better-button" broadcasts>
       <div onclick="Components.broadcast()" style="">Click Me</div>
     </template>
     
-    <template id="moz-counter">
+    <template id="moz-counter" listens>
       <div style="width: 100px; height: 100px; font-size: 50px;" ondblclick="$(this).text(parseFloat($(this).text()) + 1)">2</div>
     </template>
     
-    <template id="moz-input-form">
+    <template id="moz-input-form" broadcasts>
       <input type="text">
       <button onclick="Components.broadcast($(this).prev().val())">Submit</button>
     </template>
     
-    <template id="moz-log">
+    <template id="moz-log" listens>
       <div ondblclick="$(this).append(arguments[1] + '<br>')"></div>
     </template>
     
-    <template id="moz-metronome">
+    <template id="moz-metronome" broadcasts>
       <div>Metronome</div>
       <script type="text/javascript">
          setInterval('Components.broadcast()', 1000)
@@ -79,13 +78,7 @@
       })
       </script>
     </template>
-    
-    <moz-camera></moz-camera>
-    
-    <moz-camera></moz-camera>
   
-    <moz-metronome></moz-metronome>
-
     <moz-picture-frame></moz-picture-frame>
     
     <moz-picture-frame></moz-picture-frame>

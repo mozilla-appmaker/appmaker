@@ -1,29 +1,29 @@
-<template id="moz-shutter-button">
+<template id="moz-shutter-button" broadcasts>
   <div onclick="Components.broadcast('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==')"></div>
 </template>
 
-<template id="moz-picture-frame">
+<template id="moz-picture-frame" listens>
   <img ondblclick="$(this).attr('src', arguments[1])" />
 </template>
 
-<template id="moz-button">
+<template id="moz-button" broadcasts>
   <button onclick="Components.broadcast()" style="">Click Me</button>
 </template>
 
-<template id="moz-counter">
+<template id="moz-counter" listens>
   <div style="width: 100px; height: 100px; font-size: 50px;" ondblclick="$(this).text(parseFloat($(this).text()) + 1)">2</div>
 </template>
 
-<template id="moz-input-form">
+<template id="moz-input-form" broadcasts>
   <input type="text">
   <button onclick="Components.broadcast($(this).prev().val())">Submit</button>
 </template>
 
-<template id="moz-log">
+<template id="moz-log" listens>
   <div ondblclick="$(this).append(arguments[1] + '<br>')"></div>
 </template>
 
-  <template id="moz-metronome">
+  <template id="moz-metronome" broadcasts>
       <div>Metronome</div>
       <script type="text/javascript">
          setInterval('Components.broadcast()', 1000)
