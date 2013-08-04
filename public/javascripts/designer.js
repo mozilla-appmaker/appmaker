@@ -6,15 +6,41 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   // TODO: Fix this, we're essentially working around require.js.
   // This is gross and shouldn't happen, it's 
 
-      var colors = ['#358CCE', '#ff7b00', '#b4e319', '#e3197b']
-      var i = 0;
-      Components.scan()
-      Components.tags.forEach(function (tag, e) {
-        var bordercolor = colors[i];
-        var thumb = $('<div class="clearfix inlib" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('moz-', '') + '</div></div>');
-        $('.library-list').append(thumb);
-        i++;
-      });
+ 
+  var colors = ['#358CCE', '#ff7b00', '#b4e319', '#e3197b'];
+
+  var inputcolors = ['#358CCE'];
+
+  // Loads channel colors 
+  var i = 0;
+  for (var i; i < colors.length; i++) {
+    $('.color-options').append('<div class="color" value="'+ colors[i] +'" style="background-color: '+ colors[i] +'"></div>')
+  }
+
+  var selectthumb;
+
+  // Shows available output colors
+  $(document).on('click', '.output', function () {
+    $('.output-options').addClass('flex');
+    $('.tooltip').hide();
+    selectthumb = $(this).prev('.thumb')
+    console.log(selectthumb)
+  });
+
+  $(document).on('click', '.color', function (selectthumb) {
+    var channel = $(this).attr('value');
+    selectthumb.attr('broadcast-to', channel)
+    console.log(selectthumb.attr('broadcast-to'))
+  })
+
+
+  var i = 0;
+  Components.scan()
+  Components.tags.forEach(function (tag, e) {
+    var thumb = $('<div class="clearfix inlib" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('moz-', '') + '</div></div>');
+    $('.library-list').append(thumb);
+    i++;
+  });
 
   //logs messages
   $(document).on('broadcast', function (event, message) {
@@ -56,15 +82,6 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
       }).on('mouseout', '.input', function () {
         $('#tooltip-input').hide();
       })
-
-      $(document).on('click', '.output', function () {
-        var i = 0;
-        for (var i; i < colors.length; i++) {
-          $('.color-options').append('<div class="color" style="background-color: '+ colors[i] +'"></div>')
-        } 
-        $('.output-options').addClass('flex');
-        $('.tooltip').hide();
-      });
 
       $('#open-library').click(function () {
         $('.library').addClass('flex');
