@@ -33,6 +33,9 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     $(componentselected).next().children().css({'color': channel})
     // Adds new attribute broadcast-to to selected thumb
     componentselected.attr('broadcast-to', channel)
+    if ($(componentselected.attr('value')).length > 0) {
+      $(componentselected.attr('value')).attr('broadcast-to', channel)
+    }
   })
 
 
