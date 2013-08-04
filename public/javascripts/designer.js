@@ -27,14 +27,38 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     componentselected = $(this).prev('.thumb')
   });
 
+    var ii = 0;
+
+  $(document).on('click', '.input', function () {
+    for (ii; ii < inputcolors.length; ii++) {
+      $('.input-channels').append('<div class="inputcolor" value="'+ inputcolors[ii] +'" style="background-color: '+ inputcolors[ii] +'"></div>')
+    }
+    $('.input-options').addClass('flex');
+    $('.tooltip').hide();
+
+        // Stores selected thumb
+    componentselected = $(this).next('.thumb')
+  })
+
   $(document).on('click', '.color', function () {
     var channel = $(this).attr('value');
-    console.log($(componentselected).next('span.icon-feed'))
+    inputcolors.push(channel)
     $(componentselected).next().children().css({'color': channel})
     // Adds new attribute broadcast-to to selected thumb
     componentselected.attr('broadcast-to', channel)
     if ($(componentselected.attr('value')).length > 0) {
       $(componentselected.attr('value')).attr('broadcast-to', channel)
+    }
+  })
+
+  $(document).on('click', '.inputcolor', function () {
+    var channel = $(this).attr('value');
+    console.log(componentselected)
+    $(componentselected).prev().children().css({'color': channel})
+    // Adds new attribute broadcast-to to selected thumb
+    componentselected.attr('listen-to', channel)
+    if ($(componentselected.attr('value')).length > 0) {
+      $(componentselected.attr('value')).attr('listen-to', channel)
     }
   })
 
@@ -64,9 +88,19 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
       $('.phone-canvas').droppable({
         accept: '.draggable',
         drop: function (event, ui) {
-          var channel = $(ui.helper).attr('broadcast-to')
-          var component = $('<' + $(ui.helper).attr('value') + '></' + $(ui.helper).attr('value') + '>');
-          component.attr('broadcast-to', channel)
+          var componentname = $(ui.helper).attr('value')
+          var component = $('<' + componentname + '></' + componentname + '>');
+          var broadcasts = $('template#' + componentname).attr('broadcasts') !== undefined
+          var listens = $('template#' + componentname).attr('ondblclick') !== undefined
+          if (broadcasts) {
+            var broadcastChannel = $(ui.helper).attr('broadcast-to')
+            component.attr('broadcast-to', broadcastChannel)
+          }
+          if (listens) {
+            console.log('yes')
+            var listenChannel = $(ui.helper).attr('listen-to')
+            component.attr('listen-to', listenChannel)
+          }
           $(this).append(component);
           Components.replace()
         }
@@ -97,6 +131,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
 
       $('.close-modal').click(function () {
         $('.output-options').removeClass('flex');
+        $('.input-options').removeClass('flex');
         $('.library').removeClass('flex');
       });
 

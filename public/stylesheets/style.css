@@ -401,6 +401,10 @@ button.btn-done {
    display: none;
 }
 
+.input-options {
+   display: none;
+}
+
 .library {
 	display: none;
 }
@@ -508,6 +512,13 @@ button.btn-done {
 }
 
 .color {
+	height: 40px;
+	width: 40px;
+	float: left;
+	margin-right: 5px;
+}
+
+.inputcolor {
 	height: 40px;
 	width: 40px;
 	float: left;
