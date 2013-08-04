@@ -19,9 +19,9 @@
   <button onclick="$(this).parent().trigger('broadcast', $(this).prev().val())">Submit</button>
 </template>
 
-<template id="moz-log" ondblclick="$(this).append(arguments[1] + '<br>')">
+<!--<template id="moz-log" ondblclick="$(this).append(arguments[1] + '<br>')">
   <div></div>
-</template>
+</template>-->
 
 <template id="moz-metronome" broadcasts>
   <div class="metro">Metronome</div>
@@ -30,7 +30,7 @@
   </script>
 </template>
 
-<template id="moz-camera" broadcasts>
+<!--<template id="moz-camera" broadcasts>
   
   <script src="/components/camera-action.min.js"></script>
   <div onclick="camera.takePhoto()" id="moz-camera-instance" style="width: 320px; height: 240px;"></div>
@@ -46,6 +46,6 @@
   camera.action()
   camera.on('photo', function (data) {
     $(this).parent().trigger('broadcast', data)
-  })
+  })-->
   </script>
 </template>

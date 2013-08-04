@@ -7,7 +7,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   // This is gross and shouldn't happen, it's 
 
  
-  var colors = ['#358CCE', '#ff7b00', '#b4e319', '#e3197b'];
+  var colors = ['#358CCE', '#e81e1e', '#e3197b', '#27cfcf', '#e8d71e', '#ff7b00', '#71b806'];
 
   var inputcolors = ['#358CCE'];
 
@@ -17,20 +17,22 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     $('.color-options').append('<div class="color" value="'+ colors[i] +'" style="background-color: '+ colors[i] +'"></div>')
   }
 
-  var selectthumb;
+  var componentselected;
 
-  // Shows available output colors
   $(document).on('click', '.output', function () {
     $('.output-options').addClass('flex');
     $('.tooltip').hide();
-    selectthumb = $(this).prev('.thumb')
-    console.log(selectthumb)
+
+    // Stores selected thumb
+    componentselected = $(this).prev('.thumb')
   });
 
-  $(document).on('click', '.color', function (selectthumb) {
+  $(document).on('click', '.color', function () {
     var channel = $(this).attr('value');
-    selectthumb.attr('broadcast-to', channel)
-    console.log(selectthumb.attr('broadcast-to'))
+    console.log($(componentselected).next('span.icon-feed'))
+    $(componentselected).next().children().css({'color': channel})
+    // Adds new attribute broadcast-to to selected thumb
+    componentselected.attr('broadcast-to', channel)
   })
 
 
@@ -59,7 +61,9 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
       $('.phone-canvas').droppable({
         accept: '.draggable',
         drop: function (event, ui) {
+          var channel = $(ui.helper).attr('broadcast-to')
           var component = $('<' + $(ui.helper).attr('value') + '></' + $(ui.helper).attr('value') + '>');
+          component.attr('broadcast-to', channel)
           $(this).append(component);
           Components.replace()
         }
@@ -107,11 +111,13 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
         console.log('%s listens: %s', tagName, listens)
 
         if (broadcasts) {
+          clone.prepend('<div class="holder"></div>')
           clone.append('<div class="output"><span class="icon-feed"></div>')
         }
 
         if (listens) {
           clone.prepend('<div class="input"><span class="icon-headphones"></span></div>')
+          clone.append('<div class="holder"></div>')
         }
 
         clone.removeClass('inlib')

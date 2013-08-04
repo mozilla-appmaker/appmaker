@@ -249,6 +249,12 @@ button.btn-done {
 	margin-top: 12px;
 }
 
+.holder {
+	width: 40px;
+	height: 40px;
+	float: left;
+}
+
 .output {
 	float: left;
 	width: 28px;
