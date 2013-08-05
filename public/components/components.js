@@ -48,9 +48,5 @@ Components.scan = function () {
   })
 }
 
-$(document).ready(function () {
-  Components.scan()
-  Components.replace()
-})
 
 

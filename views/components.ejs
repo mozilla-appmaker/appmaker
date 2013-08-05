@@ -1,3 +1,4 @@
+
 <template id="moz-shutter-button" broadcasts>
   <div style="" onclick="$(this).parent().trigger('broadcast', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==')"> </div>
 </template>
@@ -6,7 +7,7 @@
   <img style="width: 100px; height: 100px; border: 1px solid black;" />
 </template>
 
-<template id="moz-button" broadcasts>
+<template id="moz-better-button" broadcasts>
   <div onclick="$(this).parent().trigger('broadcast')" style="">Click Me</div>
 </template>
 
@@ -19,33 +20,42 @@
   <button onclick="$(this).parent().trigger('broadcast', $(this).prev().val())">Submit</button>
 </template>
 
-<!--<template id="moz-log" ondblclick="$(this).append(arguments[1] + '<br>')">
+<template id="moz-log" ondblclick="$(this).append(arguments[1] + '<br>')">
   <div></div>
-</template>-->
+</template>
 
-<template id="moz-metronome" broadcasts>
-  <div class="metro">Metronome</div>
+<template id="moz-metronome" period="1000" broadcasts>
+  <div class="component-thumb">METRONOME</div>
+  <div>Metronome</div>
   <script type="text/javascript">
-    setInterval("$('.metro').parent().trigger('broadcast')", 1000)
+  (function () {
+    var element = $('.moz-metronome').last()
+    setInterval(function () {
+      element.trigger('broadcast')
+    }, element.attr('period') || 1000)
+  })()
   </script>
 </template>
 
-<!--<template id="moz-camera" broadcasts>
+<template id="moz-camera" broadcasts>
   
-  <script src="/components/camera-action.min.js"></script>
-  <div onclick="camera.takePhoto()" id="moz-camera-instance" style="width: 320px; height: 240px;"></div>
+  <script src="/camera-action.min.js"></script>
+  <div style="width: 320px; height: 240px;"></div>
   <script>
-  var id = 'moz-camera-instance-' + new Date().getTime()
-  $('#moz-camera-instance').attr('id', id)
-  var container = document.querySelector('#' + id)
-  var options = {
-          'width': 320,
-          'height': 240
-      }
-  var camera = new Camera(container, options)
-  camera.action()
-  camera.on('photo', function (data) {
-    $(this).parent().trigger('broadcast', data)
-  })-->
+  (function () {
+    var element = $('.moz-camera div').last()
+    var camera = new Camera(element[0], {
+      'width': 320,
+      'height': 240
+    })
+    element.on('click', function () {
+      camera.takePhoto()
+    })
+    camera.action()
+    camera.on('photo', function (data) {
+      element.parent().trigger('broadcast', data)
+    })
+    
+  })()
   </script>
 </template>
