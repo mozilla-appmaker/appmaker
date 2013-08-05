@@ -1,7 +1,7 @@
 var Components = {}
 Components.tags = []
 Components.templates = {}
-Components.defaultChannel = '#358CCE'
+Components.defaultChannel = 'blue'
 
 Components.broadcast = function (message, channel) {
   if (!channel)
@@ -30,6 +30,7 @@ Components.replace = function () {
       var template = $(Components.templates[tagName])
       $(this).attr('ondblclick', template.attr('ondblclick'))
       $(this).html(template.html().trim())
+      $(this).find('.component-thumb').remove()
       $(this).on('broadcast', function (event, message) {
         Components.broadcast(message, $(this).attr('broadcast-to'))  
       })
@@ -46,5 +47,10 @@ Components.scan = function () {
     Components.templates[tagName] = $('template#' + tagName)
   })
 }
+
+$(document).ready(function () {
+  Components.scan()
+  Components.replace()
+})
 
 
