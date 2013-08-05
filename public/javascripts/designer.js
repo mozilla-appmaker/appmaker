@@ -11,11 +11,14 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
 
   var inputcolors = ['#358CCE'];
 
-  // Loads channel colors 
-  var i = 0;
-  for (var i; i < colors.length; i++) {
+  var listBroadcastColors = function () {
+    var i = 0;
+    for (var i; i < colors.length; i++) {
     $('.color-options').append('<div class="color" value="'+ colors[i] +'" style="background-color: '+ colors[i] +'"></div>')
+    }
   }
+
+  listBroadcastColors(); 
 
   var componentselected;
 
@@ -27,16 +30,19 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     componentselected = $(this).prev('.thumb')
   });
 
-    var ii = 0;
+  var listInputColors = function () {
+    var i = 0;
+    for (i; i < inputcolors.length; i++) {
+      $('.input-channels').append('<div class="inputcolor" value="'+ inputcolors[i] +'" style="background-color: '+ inputcolors[i] +'"></div>')
+    }
+  }
 
   $(document).on('click', '.input', function () {
-    for (ii; ii < inputcolors.length; ii++) {
-      $('.input-channels').append('<div class="inputcolor" value="'+ inputcolors[ii] +'" style="background-color: '+ inputcolors[ii] +'"></div>')
-    }
+    listInputColors();
     $('.input-options').addClass('flex');
     $('.tooltip').hide();
 
-        // Stores selected thumb
+    // Stores selected thumb
     componentselected = $(this).next('.thumb')
   })
 
@@ -62,14 +68,17 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     }
   })
 
+  var listComponents = function () {
+    var i = 0;
+    Components.scan()
+    Components.tags.forEach(function (tag, e) {
+      var thumb = $('<div class="clearfix inlib" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('moz-', '') + '</div></div>');
+      $('.library-list').append(thumb);
+      i++;
+    });
+  }
 
-  var i = 0;
-  Components.scan()
-  Components.tags.forEach(function (tag, e) {
-    var thumb = $('<div class="clearfix inlib" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('moz-', '') + '</div></div>');
-    $('.library-list').append(thumb);
-    i++;
-  });
+  listComponents();
 
   //logs messages
   $(document).on('broadcast', function (event, message) {
