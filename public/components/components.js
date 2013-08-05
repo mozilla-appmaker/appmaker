@@ -1,7 +1,7 @@
 var Components = {}
 Components.tags = []
 Components.templates = {}
-Components.defaultChannel = 'blue'
+Components.defaultChannel = '#358CCE'
 
 Components.broadcast = function (message, channel) {
   if (!channel)

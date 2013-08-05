@@ -373,7 +373,8 @@ button.btn-done {
 .log {
 	width: 100%;
 	background-color: #333;
-	min-height: 200px;
+	height: 340px;
+	overflow-y: scroll; 
 }
 
 .log p {
@@ -428,7 +429,7 @@ button.btn-done {
 }
 
 .modal {
-   width: 585px;
+   max-width: 585px;
    background-color: #DDD;
    position: relative;
 }
@@ -518,7 +519,7 @@ button.btn-done {
 	margin-right: 5px;
 }
 
-.inputcolor {
+.input-color {
 	height: 40px;
 	width: 40px;
 	float: left;

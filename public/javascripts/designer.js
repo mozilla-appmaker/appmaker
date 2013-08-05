@@ -11,14 +11,15 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
 
   var inputcolors = ['#358CCE'];
 
-  var listBroadcastColors = function () {
+  var listColors = function () {
     var i = 0;
     for (var i; i < colors.length; i++) {
     $('.color-options').append('<div class="color" value="'+ colors[i] +'" style="background-color: '+ colors[i] +'"></div>')
+    $('.input-channels').append('<div class="input-color" value="'+ colors[i] +'" style="background-color: '+ colors[i] +'"></div>')
     }
   }
 
-  listBroadcastColors(); 
+  listColors(); 
 
   var componentselected;
 
@@ -30,15 +31,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     componentselected = $(this).prev('.thumb')
   });
 
-  var listInputColors = function () {
-    var i = 0;
-    for (i; i < inputcolors.length; i++) {
-      $('.input-channels').append('<div class="inputcolor" value="'+ inputcolors[i] +'" style="background-color: '+ inputcolors[i] +'"></div>')
-    }
-  }
-
   $(document).on('click', '.input', function () {
-    listInputColors();
     $('.input-options').addClass('flex');
     $('.tooltip').hide();
 
@@ -55,9 +48,10 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     if ($(componentselected.attr('value')).length > 0) {
       $(componentselected.attr('value')).attr('broadcast-to', channel)
     }
+    $('.output-options').removeClass('flex');
   })
 
-  $(document).on('click', '.inputcolor', function () {
+  $(document).on('click', '.input-color', function () {
     var channel = $(this).attr('value');
     console.log(componentselected)
     $(componentselected).prev().children().css({'color': channel})
@@ -66,6 +60,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     if ($(componentselected.attr('value')).length > 0) {
       $(componentselected.attr('value')).attr('listen-to', channel)
     }
+    $('.input-options').removeClass('flex');
   })
 
   var listComponents = function () {
