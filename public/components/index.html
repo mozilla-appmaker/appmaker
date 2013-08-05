@@ -1,14 +1,10 @@
 <!doctype html>
 <html>
   <head>
-    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="jquery.min.js"></script>
     <script type="text/javascript" src="components.js"></script>
 
     <script type="text/javascript">
-    $(document).ready(function () {
-      Components.scan()
-      Components.replace()
-    })
     $(document).on('broadcast', function (event, message) {
       console.log(message)
     })
@@ -52,39 +48,49 @@
       <div></div>
     </template>
     
-    <template id="moz-metronome" broadcasts>
-      <div class="metro">Metronome</div>
+    <template id="moz-metronome" period="1000" broadcasts>
+      <div class="component-thumb">METRONOME</div>
+      <div>Metronome</div>
       <script type="text/javascript">
-        setInterval("$('.metro').parent().trigger('broadcast')", 1000)
+      (function () {
+        var element = $('.moz-metronome').last()
+        setInterval(function () {
+          element.trigger('broadcast')
+        }, element.attr('period'))
+      })()
       </script>
     </template>
     
     <template id="moz-camera" broadcasts>
       
-      <script src="/components/camera-action.min.js"></script>
-      <div onclick="camera.takePhoto()" id="moz-camera-instance" style="width: 320px; height: 240px;"></div>
+      <script src="/camera-action.min.js"></script>
+      <div style="width: 320px; height: 240px;"></div>
       <script>
-      var id = 'moz-camera-instance-' + new Date().getTime()
-      $('#moz-camera-instance').attr('id', id)
-      var container = document.querySelector('#' + id)
-      var options = {
-              'width': 320,
-              'height': 240
-          }
-      var camera = new Camera(container, options)
-      camera.action()
-      camera.on('photo', function (data) {
-        $(this).parent().trigger('broadcast', data)
-      })
+      (function () {
+        var element = $('.moz-camera div').last()
+        var camera = new Camera(element[0], {
+          'width': 320,
+          'height': 240
+        })
+        element.on('click', function () {
+          camera.takePhoto()
+        })
+        camera.action()
+        camera.on('photo', function (data) {
+          element.parent().trigger('broadcast', data)
+        })
+        
+      })()
       </script>
     </template>
-  
-    <moz-picture-frame></moz-picture-frame>
     
-    <moz-picture-frame></moz-picture-frame>
+    <moz-camera broadcast-to="red"></moz-camera>
+    <moz-picture-frame listen-to="red"></moz-picture-frame>
     
-    <moz-picture-frame></moz-picture-frame>
-    <moz-picture-frame></moz-picture-frame>
+    <moz-camera broadcast-to="yellow"></moz-camera>
+    <moz-picture-frame listen-to="yellow"></moz-picture-frame>
+    
+
     
     <moz-counter listen-to="green"></moz-counter>
     
@@ -93,6 +99,10 @@
     <moz-shutter-button></moz-shutter-button>
     
     <moz-input-form></moz-input-form>
+    
+    <moz-counter listen-to="orange"></moz-counter>
+    
+    <moz-metronome broadcast-to="orange" period="500"></moz-metronome>
     
 
     
