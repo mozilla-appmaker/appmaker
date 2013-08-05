@@ -567,4 +567,44 @@ button.moz-button {
 	text-align: center;
 	background-repeat: no-repeat;
 	background-position: center;
+	margin: 0 auto;
+}
+
+.moz-button button{
+	width: 96%;
+	height: 40px;
+	background: #555;
+	border: none;
+	color: #FFF;
+	font-size: 16px;
+	margin: 0 auto;
+	display: block;
+	font-family: 'Source Sans Pro', arial;
+	border-radius: 3px;
+}
+
+
+.moz-input-form input[type="text"] {
+	-moz-box-sizing: border-box;
+	display: inline-block;
+	width: 70%;
+	border: none;
+	height: 3.8rem;
+	font-size: 16px;
+	box-shadow: none;
+	padding: 0px;
+	margin: 0px;
+	outline: none;
+}
+
+.moz-input-form button {
+	width: 30%;
+	height: 3.8rem;
+	background: #555;
+	border: none;
+	color: #FFF;
+	font-size: 16px;
+	padding: 0px;
+	display: inline-block;
+	margin: 0px;
 }

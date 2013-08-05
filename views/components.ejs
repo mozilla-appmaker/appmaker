@@ -7,7 +7,7 @@
 </template>
 
 <template id="moz-button" broadcasts>
-  <div onclick="$(this).parent().trigger('broadcast')" style="">Click Me</div>
+  <button onclick="$(this).parent().trigger('broadcast')">Click Me</button>
 </template>
 
 <template id="moz-counter" ondblclick="$(this).find('div').text(parseFloat($(this).text()) + 1)">
