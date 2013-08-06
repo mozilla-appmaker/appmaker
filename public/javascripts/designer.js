@@ -6,63 +6,6 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   // TODO: Fix this, we're essentially working around require.js.
   // This is gross and shouldn't happen, it's 
 
- 
-  var colors = ['#358CCE', '#e81e1e', '#e3197b', '#27cfcf', '#e8d71e', '#ff7b00', '#71b806'];
-
-  var inputcolors = ['#358CCE'];
-
-  var listColors = function () {
-    var i = 0;
-    for (var i; i < colors.length; i++) {
-    $('.color-options').append('<div class="color" value="'+ colors[i] +'" style="background-color: '+ colors[i] +'"></div>')
-    $('.input-channels').append('<div class="input-color" value="'+ colors[i] +'" style="background-color: '+ colors[i] +'"></div>')
-    }
-  }
-
-  listColors(); 
-
-  var componentselected;
-
-  $(document).on('click', '.output', function () {
-    $('.output-options').addClass('flex');
-    $('.tooltip').hide();
-
-    // Stores selected thumb
-    componentselected = $(this).prev('.thumb')
-  });
-
-  $(document).on('click', '.input', function () {
-    $('.input-options').addClass('flex');
-    $('.tooltip').hide();
-
-    // Stores selected thumb
-    componentselected = $(this).next('.thumb')
-  })
-
-  $(document).on('click', '.color', function () {
-    var channel = $(this).attr('value');
-    inputcolors.push(channel)
-    $(componentselected).next().children().css({'color': channel})
-    // Adds new attribute broadcast-to to selected thumb
-    componentselected.attr('broadcast-to', channel)
-    if ($(componentselected.attr('value')).length > 0) {
-      $(componentselected.attr('value')).attr('broadcast-to', channel)
-    }
-    $('.output-options').removeClass('flex');
-  })
-
-  $(document).on('click', '.input-color', function () {
-    var channel = $(this).attr('value');
-    console.log(componentselected)
-    $(componentselected).prev().children().css({'color': channel})
-    // Adds new attribute broadcast-to to selected thumb
-    componentselected.attr('listen-to', channel)
-    if ($(componentselected.attr('value')).length > 0) {
-      $(componentselected.attr('value')).attr('listen-to', channel)
-    }
-    $('.input-options').removeClass('flex');
-  })
-
   var listComponents = function () {
     var i = 0;
     Components.scan()
@@ -73,7 +16,36 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     });
   }
 
+  var listColors = function () {
+    var colors = ['#358CCE', '#e81e1e', '#e3197b', '#27cfcf', '#e8d71e', '#ff7b00', '#71b806'];
+    var i = 0;
+    for (var i; i < colors.length; i++) {
+    $('.color-options').append('<div class="color" value="'+ colors[i] +'" style="background-color: '+ colors[i] +'"></div>')
+    }
+  }
+
   listComponents();
+  listColors(); 
+
+  $(document).on('click', '.output, .input', function () {
+    $('.selected').removeClass('selected')
+    $('.color-modal').addClass('flex');
+    $('.tooltip').hide();
+    $(this).addClass('selected');
+  });
+
+  $(document).on('click', '.color', function () {
+    var channel = $(this).attr('value');
+    $('.selected').children().css({'color': channel})
+    var id = $('.selected').attr('belongsTo');
+    var isInput = $('.selected').hasClass('input')
+    if (isInput) {
+      $('.thumb[name='+id+'], #'+id).attr('listen-to', channel)
+    }else {
+      $('.thumb[name='+id+'], #'+id).attr('broadcast-to', channel)
+    }
+    $('.output-options').removeClass('flex');
+  })
 
   //logs messages
   $(document).on('broadcast', function (event, message) {
@@ -81,19 +53,13 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     console.log(message)
   })
 
-      $( ".draggable" ).draggable({
-        appendTo: ".phone-canvas",
-        helper: "clone",
-        addClass: "clone",
-        snap: true,
-        snapTolerance: 5
-      });
-
       $('.phone-canvas').droppable({
         accept: '.draggable',
         drop: function (event, ui) {
           var componentname = $(ui.helper).attr('value')
+          var componentId = $(ui.helper).attr('name')
           var component = $('<' + componentname + '></' + componentname + '>');
+          component.attr('id', componentId)
           var broadcasts = $('template#' + componentname).attr('broadcasts') !== undefined
           var listens = $('template#' + componentname).attr('ondblclick') !== undefined
           if (broadcasts) {
@@ -107,6 +73,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
           }
           $(this).append(component);
           Components.replace()
+          $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
         }
       });
 
@@ -134,8 +101,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
       })
 
       $('.close-modal').click(function () {
-        $('.output-options').removeClass('flex');
-        $('.input-options').removeClass('flex');
+        $('.color-modal').removeClass('flex');
         $('.library').removeClass('flex');
       });
 
@@ -151,14 +117,14 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
         var listens = $('template#' + tagName).attr('ondblclick') !== undefined
         console.log('%s broadcasts: %s', tagName, broadcasts)
         console.log('%s listens: %s', tagName, listens)
-
+        var id = 'component' + new Date().getTime()
         if (broadcasts) {
           clone.prepend('<div class="holder"></div>')
-          clone.append('<div class="output"><span class="icon-feed"></div>')
+          clone.append('<div class="output" belongsTo="'+id+'"><span class="icon-feed"></div>')
         }
 
         if (listens) {
-          clone.prepend('<div class="input"><span class="icon-headphones"></span></div>')
+          clone.prepend('<div class="input" belongsTo="'+id+'"><span class="icon-headphones"></span></div>')
           clone.append('<div class="holder"></div>')
         }
 
@@ -166,10 +132,9 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
         clone.find('.thumb').draggable({
           appendTo: ".phone-canvas",
           helper: "clone",
-          addClass: "clone",
-          snap: true,
-          snapTolerance: 5
+          addClass: "clone"
         })
+        .attr('name', id)
           .addClass('draggable');
         $('.tray').append(clone);
       });
