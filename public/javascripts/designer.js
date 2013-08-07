@@ -6,12 +6,29 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   // TODO: Fix this, we're essentially working around require.js.
   // This is gross and shouldn't happen, it's 
 
+  var selection = [];
+
+  var tagids = {};
+  var genId = function(tag) {
+    // generate a unique id that increments per tag ('moz-button-1', 'moz-button-2', etc.)
+    if (! tagids[tag]) {
+      tagids[tag] = 0;
+    }
+    return tag + '-' + String(++tagids[tag]);
+  }
+
+
   var listComponents = function () {
     var i = 0;
     Components.scan()
     Components.tags.forEach(function (tag, e) {
-      var thumb = $('<div class="clearfix inlib" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('moz-', '') + '</div></div>');
+      var thumb = $('<div class="clearfix inlib draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('moz-', '') + '</div></div>');
       $('.library-list').append(thumb);
+      thumb.draggable({
+        appendTo: ".phone-canvas",
+        helper: "clone",
+        addClass: "clone"
+      })
       i++;
     });
   }
@@ -48,40 +65,70 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     $('.color-modal').removeClass('flex');
   })
 
+  var clearSelection = function() {
+      selection = [];
+      $(".selected").removeClass("selected");
+      $("#inspector").addClass('hidden');
+  }
+
   $(document).on('keydown', function(event) {
     if (event.which == 27) {
       // escape hides all modal dialogs
       $('.color-modal').removeClass('flex');
-      $('.library').removeClass('flex');
+      // and clears the selection non-destructively
+      clearSelection();
+    } else if (event.which == 8) {
+      // delete removes the currently selected components and resets the selection
+      if (selection) {
+        // XXX currently only deals with one-item selection.
+        var selectedComponent = $("#" + selection[0]);
+        selectedComponent.remove();
+        clearSelection();
+      }
     }
   })
 
   //logs messages
   $(document).on('broadcast', function (event, message) {
-    $('.log .inner p').append('<div>' + message + '</div>')
+    var log = $('.log .inner p').append('<div>' + message + '</div>');
+    var scroll = $(".scroll")[0];
+    scroll.scrollTop = scroll.scrollHeight;
     console.log(message)
   })
 
       $('.phone-canvas').droppable({
         accept: '.draggable',
         drop: function (event, ui) {
-          var componentname = $(ui.helper).attr('value')
-          var componentId = $(ui.helper).attr('name')
+          var componentname = $(ui.helper).attr('value');
+          var componentId = genId($(ui.helper).attr('name'));
           var component = $('<' + componentname + '></' + componentname + '>');
           component.attr('id', componentId)
-          var broadcasts = $('template#' + componentname).attr('broadcasts') !== undefined
-          var listens = $('template#' + componentname).attr('ondblclick') !== undefined
-          if (broadcasts) {
-            var broadcastChannel = $(ui.helper).attr('broadcast-to')
-            component.attr('broadcast-to', broadcastChannel)
-          }
-          if (listens) {
-            console.log('yes')
-            var listenChannel = $(ui.helper).attr('listen-to')
-            component.attr('listen-to', listenChannel)
-          }
+          component.dblclick(function(evt) {
+            $(".selected").removeClass("selected");
+            var comp = $(evt.currentTarget);
+            var compId = evt.currentTarget.id
+            selection = [compId];
+            // select it
+            comp.addClass("selected");
+            // show its channels in the inspector
+            var componentname = comp[0].tagName.toLowerCase();
+            var broadcasts = $('template#' + componentname).attr('broadcasts') !== undefined
+            var listens = $('template#' + componentname).attr('ondblclick') !== undefined
+            if (broadcasts) {
+              $("#inputChannel").attr("belongsTo", compId);
+              var broadcastChannel = $(ui.helper).attr('broadcast-to')
+              component.attr('broadcast-to', broadcastChannel)
+            }
+            if (listens) {
+              var listenChannel = $(ui.helper).attr('listen-to')
+              component.attr('listen-to', listenChannel)
+            }
+            $("#inspector").removeClass('hidden');
+
+
+          })
           $(this).append(component);
-          Components.replace()
+          Components.replace(); // ???
           $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
         }
       });
@@ -104,11 +151,6 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
         $('#tooltip-input').hide();
       })
 
-      $('#open-library').click(function () {
-        $('.library').addClass('flex');
-        $('.tooltip').hide();
-      })
-
       $('.close-modal').click(function () {
         $('.color-modal').removeClass('flex');
         $('.library').removeClass('flex');
@@ -119,6 +161,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
         $('.library').removeClass('flex');
       });
 
+
       $('.inlib').click(function () {
         var clone = $(this).clone()
         var tagName = $(this).attr('value')
@@ -127,15 +170,15 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
         console.log('%s broadcasts: %s', tagName, broadcasts)
         console.log('%s listens: %s', tagName, listens)
         var id = 'component' + new Date().getTime()
-        if (broadcasts) {
-          clone.prepend('<div class="holder"></div>')
-          clone.append('<div class="output" belongsTo="'+id+'"><span class="icon-feed"></div>')
-        }
+        // if (broadcasts) {
+        //   clone.prepend('<div class="holder"></div>')
+        //   clone.append('')
+        // }
 
-        if (listens) {
-          clone.prepend('<div class="input" belongsTo="'+id+'"><span class="icon-headphones"></span></div>')
-          clone.append('<div class="holder"></div>')
-        }
+        // if (listens) {
+        //   clone.prepend('')
+        //   clone.append('<div class="holder"></div>')
+        // }
 
         clone.removeClass('inlib')
         clone.find('.thumb').draggable({
@@ -145,7 +188,6 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
         })
         .attr('name', id)
           .addClass('draggable');
-        $('.tray').append(clone);
       });
 
 });

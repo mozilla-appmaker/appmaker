@@ -13,7 +13,9 @@
 	<div class="tray">
 		<div class="component-header clearfix">
 			<h5 class="left">Components</h5>
-			<button class="btn-add" id="open-library"></button>
+			<div class="library-list clearfix">
+
+			</div>
 		</div>
 	</div>
 	<div class="phone-container">
@@ -34,37 +36,17 @@
 		<div class="log">
 			<div class="inner">
 				<h5>Log</h5>
-				<p></p>
+				<p class="scroll"></p>
 			</div>
 		</div>
-		<!--<div class="component-customize">
+		<div id="inspector" class="hidden">
 			<div class="inner">
-				<h5>Customize</h5>
-				<h6>Tabs</h6>
-				<p>Tabs allow users to navigate to new cards.</p>
-				<div class="row clearfix">
-					<div class="tab-num">1</div>
-					<div class="dropdown">
-						Select Card
-					</div>
-					<button class="btn-img"></button>
-				</div>
-				<div class="row clearfix">
-					<div class="tab-num">2</div>
-					<div class="dropdown">
-						Select Card
-					</div>
-					<button class="btn-img"></button>
-				</div>
-				<div class="row clearfix">
-					<div class="tab-num">3</div>
-					<div class="dropdown">
-						Select Card
-					</div>
-					<button class="btn-img"></button>
-				</div>
+				<h5>Listens on</h5>
+				<div id="inputChannel" class="input" belongsTo=""><span class="icon-headphones"></span></div>
+				<h5>Speaks on</h5>
+				<div id="outputChannel" class="output" belongsTo=""><span class="icon-feed"></div>
 			</div>
-		</div>-->
+		</div>
 	</div>
 </div>
 <div class="tooltip" id="tooltip-output"><span class="txt-fixed">Passes on </span>Images, Videos, Text</div>
@@ -84,9 +66,6 @@
 			<h3 class="mar-bot-twenty">Pick components to add to your app</h3>
 			<div class="clearfix mar-bot-twenty">
 				<div class="filter active">Recommended</div><div class="filter">Popular</div><div class="filter">Newest</div><div class="filter">All</div>
-			</div>
-			<div class="library-list clearfix">
-
 			</div>
 			<button class="btn-std btn-done">Done</button>
 		</div>

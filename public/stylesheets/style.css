@@ -241,22 +241,11 @@ button.btn-done {
 .row {
 	margin-bottom: 5px;
 }
-
-.input {
-	float: left;
-	width: 28px;
-	margin-left: 12px;
-	margin-top: 12px;
+.inspector {
+	display: block;
+	padding-bottom: 1em;
 }
-
-.holder {
-	width: 40px;
-	height: 40px;
-	float: left;
-}
-
-.output {
-	float: left;
+.input, .output {
 	width: 28px;
 	margin-left: 12px;
 	margin-top: 12px;
@@ -370,15 +359,25 @@ button.btn-done {
 	color: #999;
 }
 
+.log .inner {
+	padding-bottom: 1em;
+}
 .log {
 	width: 100%;
 	background-color: #333;
-	height: 340px;
+}
+
+.scroll {
+	height: 260px;
 	overflow-y: auto; 
 }
 
 .log p {
 	word-break:break-all;
+}
+
+.hidden {
+	display: none;
 }
 
 .component-customize {
@@ -404,6 +403,18 @@ button.btn-done {
 
 .library {
 	display: none;
+}
+
+.component {
+	display: block; /* so that the styling we do to component takes the space of its contents */
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.selected {
+	box-shadow: 0 0 5px 5px #a33;
 }
 
 .flex {
