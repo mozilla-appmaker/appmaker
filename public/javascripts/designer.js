@@ -46,12 +46,13 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     }
     $('.output-options').removeClass('flex');
     $('.color-modal').removeClass('flex');
-    $('.library').removeClass('flex');
   })
 
   $(document).on('keydown', function(event) {
     if (event.which == 27) {
+      // escape hides all modal dialogs
       $('.color-modal').removeClass('flex');
+      $('.library').removeClass('flex');
     }
   })
 
