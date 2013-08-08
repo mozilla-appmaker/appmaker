@@ -600,11 +600,14 @@ button.moz-button {
 	border-radius: 3px;
 }
 
+.ui-state-highlight { height: 1.5em; line-height: 1.2em; 
+background: red;}
+
 
 .moz-input-form input[type="text"] {
 	-moz-box-sizing: border-box;
 	display: inline-block;
-	width: 70%;
+	width: 69%; /* XXX not sure why 70 + 30 > 100 */
 	border: none;
 	height: 3.8rem;
 	font-size: 16px;

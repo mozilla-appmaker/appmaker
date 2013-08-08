@@ -46,8 +46,33 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     }
   }
 
+
+  var clearSelection = function() {
+      selection = [];
+      $(".selected").removeClass("selected");
+      $(".inspector").addClass('hidden');
+      disableReorder();
+  }
+
+  var sortable;
+  var enableReorder = function() {
+    console.log('enabling reorder');
+    $(".phone-canvas").disableSelection();
+    sortable = $(".phone-canvas").sortable({
+      placeholder: "ui-state-highlight"
+    });
+  }
+
+  var disableReorder = function() {
+    return;
+    console.log('disabling reorder')
+    $(".phone-canvas").sortable("disable");
+  }
+
   listComponents();
   listColors(); 
+  enableReorder();
+  disableReorder();
 
   $(document).on('click', '.output, .input', function () {
     $('.selected').removeClass('selected')
@@ -74,11 +99,6 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     $('.color-modal').removeClass('flex');
   })
 
-  var clearSelection = function() {
-      selection = [];
-      $(".selected").removeClass("selected");
-      $(".inspector").addClass('hidden');
-  }
 
   $(document).on('keydown', function(event) {
     if (event.which == 27) {
@@ -114,15 +134,16 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
           component.attr('id', componentId)
           component.dblclick(function(evt) {
             clearSelection();
+            enableReorder();
             var comp = $(evt.currentTarget);
             moveToFront(comp);
             var compId = evt.currentTarget.id
             selection = [compId];
             // select it
             comp.addClass("selected");
+
             // show its channels in the inspector
             var componentname = comp[0].tagName.toLowerCase();
-            console.log("selected: ", componentname);
             var broadcasts = $('template#' + componentname).attr('broadcasts') !== undefined
             var listens = $('template#' + componentname).attr('ondblclick') !== undefined
             $(".inspector .name").text(componentname);
