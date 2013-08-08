@@ -368,7 +368,7 @@ button.btn-done {
 }
 
 .scroll {
-	height: 260px;
+	height: 160px;
 	overflow-y: auto; 
 }
 
@@ -407,6 +407,7 @@ button.btn-done {
 
 .component {
 	display: block; /* so that the styling we do to component takes the space of its contents */
+	position: relative; /* so that box-shadow is always visible on selection */
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;

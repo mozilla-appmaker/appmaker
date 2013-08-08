@@ -17,6 +17,11 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     return tag + '-' + String(++tagids[tag]);
   }
 
+  var zindex = 100;
+  var moveToFront = function (elt) {
+    elt.css('z-index', ++zindex);
+  }
+
 
   var listComponents = function () {
     var i = 0;
@@ -49,6 +54,10 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     $('.color-modal').addClass('flex');
     $('.tooltip').hide();
     $(this).addClass('selected');
+  });
+
+  $(document).on('click', '.container', function () {
+    clearSelection();
   });
 
   $(document).on('click', '.color', function () {
@@ -106,6 +115,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
           component.dblclick(function(evt) {
             clearSelection();
             var comp = $(evt.currentTarget);
+            moveToFront(comp);
             var compId = evt.currentTarget.id
             selection = [compId];
             // select it
