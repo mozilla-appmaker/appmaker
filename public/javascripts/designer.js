@@ -68,7 +68,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   var clearSelection = function() {
       selection = [];
       $(".selected").removeClass("selected");
-      $("#inspector").addClass('hidden');
+      $(".inspector").addClass('hidden');
   }
 
   $(document).on('keydown', function(event) {
@@ -82,6 +82,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
       if (selection) {
         // XXX currently only deals with one-item selection.
         var selectedComponent = $("#" + selection[0]);
+        // XXX this doesn't actually remove it completely? e.g. metronome keeps on ticking.
         selectedComponent.remove();
         clearSelection();
       }
@@ -93,7 +94,6 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     var log = $('.log .inner p').append('<div>' + message + '</div>');
     var scroll = $(".scroll")[0];
     scroll.scrollTop = scroll.scrollHeight;
-    console.log(message)
   })
 
       $('.phone-canvas').droppable({
@@ -104,7 +104,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
           var component = $('<' + componentname + '></' + componentname + '>');
           component.attr('id', componentId)
           component.dblclick(function(evt) {
-            $(".selected").removeClass("selected");
+            clearSelection();
             var comp = $(evt.currentTarget);
             var compId = evt.currentTarget.id
             selection = [compId];
@@ -112,8 +112,10 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
             comp.addClass("selected");
             // show its channels in the inspector
             var componentname = comp[0].tagName.toLowerCase();
+            console.log("selected: ", componentname);
             var broadcasts = $('template#' + componentname).attr('broadcasts') !== undefined
             var listens = $('template#' + componentname).attr('ondblclick') !== undefined
+            $(".inspector .name").text(componentname);
             if (broadcasts) {
               $("#inputChannel").attr("belongsTo", compId);
               var broadcastChannel = $(ui.helper).attr('broadcast-to')
@@ -123,9 +125,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
               var listenChannel = $(ui.helper).attr('listen-to')
               component.attr('listen-to', listenChannel)
             }
-            $("#inspector").removeClass('hidden');
-
-
+            $(".inspector").removeClass('hidden');
           })
           $(this).append(component);
           Components.replace(); // ???
