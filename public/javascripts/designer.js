@@ -67,11 +67,36 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     $(".phone-canvas").sortable("disable");
   }
 
+  var mode;
+
+  var buildMode = function() {
+    $(".play").removeClass("on");
+    $(".build").addClass("on");
+    mode = 'build';
+    enableReorder();
+  }
+
+  var playMode = function() {
+    $(".play").addClass("on");
+    $(".build").removeClass("on");
+    mode = 'play';
+    clearSelection();
+    disableReorder();
+  }
+
   listComponents();
   listColors(); 
   enableReorder();
   disableReorder();
   clearSelection();
+  buildMode();
+
+  $(document).on('click', '.play', function() {
+    playMode();
+  });
+  $(document).on('click', '.build', function() {
+    buildMode();
+  });
 
   $(document).on('click', '.output, .input', function () {
     $('.inputoroutput').removeClass('inputoroutput')
@@ -134,45 +159,56 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
           var componentId = genId($(ui.helper).attr('name'));
           var component = $('<' + componentname + '></' + componentname + '>');
           component.attr('id', componentId)
-          component.dblclick(function(evt) {
-            clearSelection();
-            enableReorder();
-            var comp = $(evt.currentTarget);
-            moveToFront(comp);
-            var compId = evt.currentTarget.id
-            selection = [compId];
-            // select it
-            comp.addClass("selected");
+          component.on('mousedown', function(evt) {
+            if (mode == 'play') { 
+              component.children('button').addClass('active'); // to replace :active which is otherwise impossible to intercept
+            } else {
+              clearSelection();
+              var comp = $(evt.currentTarget);
+              moveToFront(comp);
+              var compId = evt.currentTarget.id
+              selection = [compId];
+              // select it
+              comp.addClass("selected");
 
-            // show its channels in the inspector
-            var componentname = comp[0].tagName.toLowerCase();
-            var broadcasts = $('template#' + componentname).attr('broadcasts') !== undefined
-            var listens = $('template#' + componentname).attr('ondblclick') !== undefined
-            $(".inspector .name").text(componentname);
-            if (broadcasts) {
-              var broadcastChannel = component.attr('broadcast-to')
-              if (!broadcastChannel) {
-                broadcastChannel = defaultChannel;
-                component.attr('broadcast-to', broadcastChannel)
+              // show its channels in the inspector
+              var componentname = comp[0].tagName.toLowerCase();
+              var broadcasts = $('template#' + componentname).attr('broadcasts') !== undefined
+              var listens = $('template#' + componentname).attr('ondblclick') !== undefined
+              $(".inspector .name").text(componentname);
+              if (broadcasts) {
+                var broadcastChannel = component.attr('broadcast-to')
+                if (!broadcastChannel) {
+                  broadcastChannel = defaultChannel;
+                  component.attr('broadcast-to', broadcastChannel)
+                }
+                $("#outputBlock").show();
+                $("#outputChannel").children().css({'color': broadcastChannel})
+              } else {
+                $("#outputBlock").hide();
               }
-              $("#outputBlock").show();
-              $("#outputChannel").children().css({'color': broadcastChannel})
-            } else {
-              $("#outputBlock").hide();
-            }
-            if (listens) {
-              var listenChannel = component.attr('listen-to')
-              if (!listenChannel) {
-                listenChannel = defaultChannel;
-                component.attr('listen-to', listenChannel)
+              if (listens) {
+                var listenChannel = component.attr('listen-to')
+                if (!listenChannel) {
+                  listenChannel = defaultChannel;
+                  component.attr('listen-to', listenChannel)
+                }
+                $("#inputBlock").show();
+                $("#inputChannel").children().css({'color': listenChannel})
+              } else {
+                $("#inputBlock").hide();
               }
-              $("#inputBlock").show();
-              $("#inputChannel").children().css({'color': listenChannel})
-            } else {
-              $("#inputBlock").hide();
+              $(".inspector").removeClass('hidden');
             }
-            $(".inspector").removeClass('hidden');
-          })
+          });
+          component.on('mouseup', function(evt) {
+            if (mode == 'play') {
+              component.children('button').removeClass('active'); // to replace :active which is otherwise impossible to intercept
+            } else {
+              event.stopPropagation();
+              event.preventDefault();
+            }
+          });
           $(this).append(component);
           Components.replace(); // ???
           $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
