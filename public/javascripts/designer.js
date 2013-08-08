@@ -73,6 +73,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   listColors(); 
   enableReorder();
   disableReorder();
+  clearSelection();
 
   $(document).on('click', '.output, .input', function () {
     $('.selected').removeClass('selected')
