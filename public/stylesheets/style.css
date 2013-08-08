@@ -308,6 +308,15 @@ button.btn-done {
 	margin-left: 40px;
 }
 
+.phone-canvas button:focus {
+	outline: none;
+}
+.phone-canvas button:active {
+	outline: none;
+	background: white;
+	color: black;
+}
+
 .phone-top {
 	background-color: #333;
 	height: 40px;
