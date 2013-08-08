@@ -74,11 +74,15 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     $(".build").addClass("on");
     mode = 'build';
     enableReorder();
+    $(".tray").show();
+    $(".cards").show();
   }
 
   var playMode = function() {
     $(".play").addClass("on");
     $(".build").removeClass("on");
+    $(".tray").hide();
+    $(".cards").hide();
     mode = 'play';
     clearSelection();
     disableReorder();
