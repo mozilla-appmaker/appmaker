@@ -7,7 +7,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   // This is gross and shouldn't happen, it's 
 
   var selection = [];
-
+  var defaultChannel = "#358CCE"; /* matches what's in style.css */
   var tagids = {};
   var genId = function(tag) {
     // generate a unique id that increments per tag ('moz-button-1', 'moz-button-2', etc.)
@@ -56,7 +56,6 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
 
   var sortable;
   var enableReorder = function() {
-    console.log('enabling reorder');
     $(".phone-canvas").disableSelection();
     sortable = $(".phone-canvas").sortable({
       placeholder: "ui-state-highlight"
@@ -64,8 +63,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   }
 
   var disableReorder = function() {
-    return;
-    console.log('disabling reorder')
+    return; // XXX
     $(".phone-canvas").sortable("disable");
   }
 
@@ -76,25 +74,28 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   clearSelection();
 
   $(document).on('click', '.output, .input', function () {
-    $('.selected').removeClass('selected')
+    $('.inputoroutput').removeClass('inputoroutput')
     $('.color-modal').addClass('flex');
     $('.tooltip').hide();
-    $(this).addClass('selected');
+    $(this).addClass('inputoroutput');
   });
 
-  $(document).on('click', '.container', function () {
-    clearSelection();
+  $(document).on('click', '.container', function (evt) {
+    if ($(evt.target).hasClass('container'))
+      clearSelection();
   });
 
   $(document).on('click', '.color', function () {
     var channel = $(this).attr('value');
-    $('.selected').children().css({'color': channel})
-    var id = $('.selected').attr('belongsTo');
-    var isInput = $('.selected').hasClass('input')
+    var selectedComponent = $("#" + selection[0])
+    var channelpicker = $(".inputoroutput");
+    channelpicker.children().css({'color': channel})
+    // var id = $('.selected').attr('belongsTo');
+    var isInput = $('.inputoroutput').hasClass('input')
     if (isInput) {
-      $('.thumb[name='+id+'], #'+id).attr('listen-to', channel)
+      selectedComponent.attr('listen-to', channel)
     }else {
-      $('.thumb[name='+id+'], #'+id).attr('broadcast-to', channel)
+      selectedComponent.attr('broadcast-to', channel)
     }
     $('.output-options').removeClass('flex');
     $('.color-modal').removeClass('flex');
@@ -149,13 +150,26 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
             var listens = $('template#' + componentname).attr('ondblclick') !== undefined
             $(".inspector .name").text(componentname);
             if (broadcasts) {
-              $("#inputChannel").attr("belongsTo", compId);
-              var broadcastChannel = $(ui.helper).attr('broadcast-to')
-              component.attr('broadcast-to', broadcastChannel)
+              var broadcastChannel = component.attr('broadcast-to')
+              if (!broadcastChannel) {
+                broadcastChannel = defaultChannel;
+                component.attr('broadcast-to', broadcastChannel)
+              }
+              $("#outputBlock").show();
+              $("#outputChannel").children().css({'color': broadcastChannel})
+            } else {
+              $("#outputBlock").hide();
             }
             if (listens) {
-              var listenChannel = $(ui.helper).attr('listen-to')
-              component.attr('listen-to', listenChannel)
+              var listenChannel = component.attr('listen-to')
+              if (!listenChannel) {
+                listenChannel = defaultChannel;
+                component.attr('listen-to', listenChannel)
+              }
+              $("#inputBlock").show();
+              $("#inputChannel").children().css({'color': listenChannel})
+            } else {
+              $("#inputBlock").hide();
             }
             $(".inspector").removeClass('hidden');
           })
@@ -197,20 +211,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
       $('.inlib').click(function () {
         var clone = $(this).clone()
         var tagName = $(this).attr('value')
-        var broadcasts = $('template#' + tagName).attr('broadcasts') !== undefined
-        var listens = $('template#' + tagName).attr('ondblclick') !== undefined
-        console.log('%s broadcasts: %s', tagName, broadcasts)
-        console.log('%s listens: %s', tagName, listens)
         var id = 'component' + new Date().getTime()
-        // if (broadcasts) {
-        //   clone.prepend('<div class="holder"></div>')
-        //   clone.append('')
-        // }
-
-        // if (listens) {
-        //   clone.prepend('')
-        //   clone.append('<div class="holder"></div>')
-        // }
 
         clone.removeClass('inlib')
         clone.find('.thumb').draggable({
