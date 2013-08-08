@@ -108,17 +108,37 @@ h6 {
 }
 
 
-button.build {
+.toggle .btn-toggle {
 	position: absolute;
-	top: -40px;
-	left: 40px;
+	top: -50px;
+	background-color: #555;
 	display: block;
+	border-radius: 3px;
+	height: 30px;
+	width: 130px;
 }
-button.play {
-	position: absolute;
-	top: -40px;
-	left: 180px;
-	display: block;
+
+.toggle button.off:active {
+	background-color: #333;
+}
+.toggle button.on:active {
+	background-color: #4db228;
+}
+
+.toggle button.build {
+	left: 0px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+.toggle button.play {
+	left: 120px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+button.btn-std.on {
+	outline: none;
+	background-color: #55b12e;
 }
 
 /*----------BUTTONS----------*/
@@ -136,11 +156,6 @@ button.btn-std:hover {
 	background-color: #2a70a6;
 }
 
-button.btn-std.on {
-	outline: none;
-	box-shadow: 0px 0px 5px 0px rgba(255, 255, 190, .75); 
-	background-color: orange !important;
-}
 
 button.btn-std:off {
 }
