@@ -105,6 +105,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   $(document).on('click', '.output, .input', function () {
     $('.inputoroutput').removeClass('inputoroutput')
     $('.color-modal').addClass('flex');
+    moveToFront($('.color-modal'));
     $('.tooltip').hide();
     $(this).addClass('inputoroutput');
   });
