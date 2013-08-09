@@ -5,10 +5,10 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300, 400,600' rel='stylesheet' type='text/css'>
 
-    <script data-ceci-components="<%= process.env.COMPONENTS_BASE_URL%>/package/timer+block+submit"></script>
+    <link rel="component" type="text/ceci" href="<%= process.env.COMPONENTS_BASE_URL%>/package/all">
+
 
     <script data-main="<%= process.env.ASSET_HOST%>/javascripts/requireConfig" src="/vendor/requirejs/require.js"></script>
-    <script src="/components/components.js"></script>
     <script src="<%= process.env.ASSET_HOST%>/javascripts/towtruckSupport.js"></script>
     <script src="https://towtruck.mozillalabs.com/towtruck.js"></script>
   </head>
