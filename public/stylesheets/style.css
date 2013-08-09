@@ -107,6 +107,40 @@ h6 {
 	margin: 0px;
 }
 
+
+.toggle .btn-toggle {
+	position: absolute;
+	top: -50px;
+	background-color: #555;
+	display: block;
+	border-radius: 3px;
+	height: 30px;
+	width: 130px;
+}
+
+.toggle button.off:active {
+	background-color: #333;
+}
+.toggle button.on:active {
+	background-color: #4db228;
+}
+
+.toggle button.build {
+	left: 0px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+.toggle button.play {
+	left: 120px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+button.btn-std.on {
+	outline: none;
+	background-color: #55b12e;
+}
+
 /*----------BUTTONS----------*/
 button.btn-std {
 	font-family: 'Source Sans Pro', arial;
@@ -120,6 +154,10 @@ button.btn-std {
 
 button.btn-std:hover {
 	background-color: #2a70a6;
+}
+
+
+button.btn-std:off {
 }
 
 button.btn-std:active {
@@ -208,8 +246,11 @@ button.btn-done {
 
 .tip {
 	width: 1000px;
+	position: absolute;
 	margin: 0 auto;
 	height: 80px;
+	left: 330px;
+	top: -60px;
 	line-height: 80px;
 	color: #999;
 	font-size: 16px;
@@ -221,6 +262,7 @@ button.btn-done {
 
 .container {
 	width: 1000px;
+	top: 70px;
 	background-color: #ddd;
 	margin: 0px auto 40px auto;
 	position: relative;
@@ -241,22 +283,11 @@ button.btn-done {
 .row {
 	margin-bottom: 5px;
 }
-
-.input {
-	float: left;
-	width: 28px;
-	margin-left: 12px;
-	margin-top: 12px;
+.inspector {
+	display: block;
+	padding-bottom: 1em;
 }
-
-.holder {
-	width: 40px;
-	height: 40px;
-	float: left;
-}
-
-.output {
-	float: left;
+.input, .output {
 	width: 28px;
 	margin-left: 12px;
 	margin-top: 12px;
@@ -319,6 +350,18 @@ button.btn-done {
 	margin-left: 40px;
 }
 
+.phone-canvas button:focus {
+	outline: none;
+}
+.phone-canvas button:active {
+	outline: none;
+}
+
+.phone-canvas button.active {
+	background: white;
+	color: black;
+}
+
 .phone-top {
 	background-color: #333;
 	height: 40px;
@@ -370,15 +413,25 @@ button.btn-done {
 	color: #999;
 }
 
+.log .inner {
+	padding-bottom: 1em;
+}
 .log {
 	width: 100%;
 	background-color: #333;
-	height: 340px;
+}
+
+.scroll {
+	height: 452px; /* ??? XXX */
 	overflow-y: auto; 
 }
 
 .log p {
 	word-break:break-all;
+}
+
+.hidden {
+	display: none;
 }
 
 .component-customize {
@@ -404,6 +457,19 @@ button.btn-done {
 
 .library {
 	display: none;
+}
+
+.component {
+	display: block; /* so that the styling we do to component takes the space of its contents */
+	position: relative; /* so that box-shadow is always visible on selection */
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.selected {
+	box-shadow: 0 0 0px 2px #ff7b00;
 }
 
 .flex {
@@ -579,11 +645,14 @@ button.moz-button {
 	border-radius: 3px;
 }
 
+.ui-state-highlight { height: 1.5em; line-height: 1.2em; 
+background: red;}
+
 
 .moz-input-form input[type="text"] {
 	-moz-box-sizing: border-box;
 	display: inline-block;
-	width: 70%;
+	width: 69%; /* XXX not sure why 70 + 30 > 100 */
 	border: none;
 	height: 3.8rem;
 	font-size: 16px;
