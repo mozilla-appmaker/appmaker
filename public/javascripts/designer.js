@@ -22,21 +22,18 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     elt.css('z-index', ++zindex);
   }
 
-
-  var listComponents = function () {
-    var i = 0;
-    Components.scan()
-    Components.tags.forEach(function (tag, e) {
-      var thumb = $('<div class="clearfix inlib draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('moz-', '') + '</div></div>');
+  Ceci.load(function(components) {
+    Object.keys(components).forEach(function (tag) {
+      console.log(tag);
+      var thumb = $('<div class="clearfix inlib draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('app-', '') + '</div></div>');
       $('.library-list').append(thumb);
       thumb.draggable({
         appendTo: ".phone-canvas",
         helper: "clone",
         addClass: "clone"
       })
-      i++;
     });
-  }
+  });
 
   var listColors = function () {
     var colors = ['#358CCE', '#e81e1e', '#e3197b', '#27cfcf', '#e8d71e', '#ff7b00', '#71b806'];
@@ -115,6 +112,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   $(document).on('click', '.play', function() {
     playMode();
   });
+
   $(document).on('click', '.build', function() {
     buildMode();
   });
@@ -146,7 +144,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     }
     $('.output-options').removeClass('flex');
     $('.color-modal').removeClass('flex');
-  })
+  });
 
 
   $(document).on('keydown', function(event) {
@@ -169,7 +167,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
       else { playMode(); }
       event.preventDefault();
     }
-  })
+  });
 
   var selectComponent = function(comp) {
     clearSelection();
@@ -213,83 +211,81 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     var log = $('.log .inner p').append('<div>' + message + '</div>');
     var scroll = $(".scroll")[0];
     scroll.scrollTop = scroll.scrollHeight;
-  })
+  });
 
-      $('.phone-canvas').droppable({
-        accept: '.draggable',
-        drop: function (event, ui) {
-          var componentname = $(ui.helper).attr('value');
-          var componentId = genId($(ui.helper).attr('name'));
-          var component = $('<' + componentname + '></' + componentname + '>');
-          component.attr('id', componentId)
-          component.on('mousedown', function(evt) {
-            if (mode == 'play') { 
-              component.children('button').addClass('active'); // to replace :active which is otherwise impossible to intercept
-            } else {
-              selectComponent($(evt.currentTarget));
-            }
-          });
-          component.on('mouseup', function(evt) {
-            if (mode == 'play') {
-              component.children('button').removeClass('active'); // to replace :active which is otherwise impossible to intercept
-            } else {
-              event.stopPropagation();
-              event.preventDefault();
-            }
-          });
-          $(this).append(component);
-
-          Components.replace(); // ???
-          if (mode == "build") {
-            disableComponents(component.children());
-          }
-          selectComponent(component);
-          $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
+  $('.phone-canvas').droppable({
+    accept: '.draggable',
+    drop: function (event, ui) {
+      var componentname = $(ui.helper).attr('value');
+      var componentId = genId($(ui.helper).attr('name'));
+      var component = $('<' + componentname + '></' + componentname + '>');
+      component.attr('id', componentId)
+      component.on('mousedown', function(evt) {
+        if (mode == 'play') {
+          component.children('button').addClass('active'); // to replace :active which is otherwise impossible to intercept
+        } else {
+          selectComponent($(evt.currentTarget));
         }
       });
-
-      $(document).on('mouseover', '.output', function () {
-        var offset = $(this).offset();
-        var posleft = offset.left + 40 + 'px';
-        $('#tooltip-output').css({'top': offset.top, 'left': posleft});
-        $('#tooltip-output').show();
-      }).on('mouseout', '.output', function () {
-        $('#tooltip-output').hide();
+      component.on('mouseup', function(evt) {
+        if (mode == 'play') {
+          component.children('button').removeClass('active'); // to replace :active which is otherwise impossible to intercept
+        } else {
+          event.stopPropagation();
+          event.preventDefault();
+        }
       });
+      $(this).append(component);
+      Ceci.convertElement(component[0]);
 
-      $(document).on('mouseover', '.input', function () {
-        var offset = $(this).offset();
-        var posleft = offset.left + 40 + 'px';
-        $('#tooltip-input').css({'top': offset.top, 'left': posleft});
-        $('#tooltip-input').show();
-      }).on('mouseout', '.input', function () {
-        $('#tooltip-input').hide();
-      })
+      if (mode == "build") {
+        disableComponents(component.children());
+      }
+      selectComponent(component);
+      $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
+    }
+  });
 
-      $('.close-modal').click(function () {
-        $('.color-modal').removeClass('flex');
-        $('.library').removeClass('flex');
-      });
+  $(document).on('mouseover', '.output', function () {
+    var offset = $(this).offset();
+    var posleft = offset.left + 40 + 'px';
+    $('#tooltip-output').css({'top': offset.top, 'left': posleft});
+    $('#tooltip-output').show();
+  }).on('mouseout', '.output', function () {
+    $('#tooltip-output').hide();
+  });
 
-      $('.btn-done').click(function () {
-        $('.output-options').removeClass('flex');
-        $('.library').removeClass('flex');
-      });
+  $(document).on('mouseover', '.input', function () {
+    var offset = $(this).offset();
+    var posleft = offset.left + 40 + 'px';
+    $('#tooltip-input').css({'top': offset.top, 'left': posleft});
+    $('#tooltip-input').show();
+  }).on('mouseout', '.input', function () {
+    $('#tooltip-input').hide();
+  });
+
+  $('.close-modal').click(function () {
+    $('.color-modal').removeClass('flex');
+    $('.library').removeClass('flex');
+  });
+
+  $('.btn-done').click(function () {
+    $('.output-options').removeClass('flex');
+    $('.library').removeClass('flex');
+  });
 
 
-      $('.inlib').click(function () {
-        var clone = $(this).clone()
-        var tagName = $(this).attr('value')
-        var id = 'component' + new Date().getTime()
+  $('.inlib').click(function () {
+    var clone = $(this).clone();
+    var tagName = $(this).attr('value');
+    var id = 'component' + new Date().getTime();
 
-        clone.removeClass('inlib')
-        clone.find('.thumb').draggable({
-          appendTo: ".phone-canvas",
-          helper: "clone",
-          addClass: "clone"
-        })
-        .attr('name', id)
-          .addClass('draggable');
-      });
+    clone.removeClass('inlib');
+    clone.find('.thumb').draggable({
+      appendTo: ".phone-canvas",
+      helper: "clone",
+      addClass: "clone"
+    }).attr('name', id).addClass('draggable');
+  });
 
 });
