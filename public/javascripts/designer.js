@@ -6,12 +6,34 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   // TODO: Fix this, we're essentially working around require.js.
   // This is gross and shouldn't happen, it's 
 
+  var selection = [];
+  var defaultChannel = "#358CCE"; /* matches what's in style.css */
+  var tagids = {};
+  var genId = function(tag) {
+    // generate a unique id that increments per tag ('moz-button-1', 'moz-button-2', etc.)
+    if (! tagids[tag]) {
+      tagids[tag] = 0;
+    }
+    return tag + '-' + String(++tagids[tag]);
+  }
+
+  var zindex = 100;
+  var moveToFront = function (elt) {
+    elt.css('z-index', ++zindex);
+  }
+
+
   var listComponents = function () {
     var i = 0;
     Components.scan()
     Components.tags.forEach(function (tag, e) {
-      var thumb = $('<div class="clearfix inlib" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('moz-', '') + '</div></div>');
+      var thumb = $('<div class="clearfix inlib draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('moz-', '') + '</div></div>');
       $('.library-list').append(thumb);
+      thumb.draggable({
+        appendTo: ".phone-canvas",
+        helper: "clone",
+        addClass: "clone"
+      })
       i++;
     });
   }
@@ -24,64 +46,205 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     }
   }
 
+
+  var clearSelection = function() {
+      selection = [];
+      $(".selected").removeClass("selected");
+      $(".inspector").addClass('hidden');
+      disableReorder();
+  }
+
+  var sortable;
+  var enableReorder = function() {
+    $(".phone-canvas").disableSelection();
+    sortable = $(".phone-canvas").sortable({
+      placeholder: "ui-state-highlight"
+    });
+  }
+
+  var disableReorder = function() {
+    return; // XXX
+    $(".phone-canvas").sortable("disable");
+  }
+
+  var mode;
+
+  var buildMode = function() {
+    $(".play").removeClass("on");
+    $(".build").addClass("on");
+    mode = 'build';
+    enableReorder();
+    $(".tray").css('visibility', 'visible');
+    $(".log").hide();
+    $(".cards").show();
+    disableComponents($(".component").children());
+  }
+
+  var disableComponents = function(elts) {
+    $.each(elts, function(i,elt) {
+      elt.onclick_ = elt.onclick;
+    });
+    elts.removeAttr('onclick');
+  }
+
+  var enableComponents = function(elts) {
+    $.each(elts, function(i,elt) {
+      elt.onclick = elt.onclick_;
+    });
+    elts.removeAttr('onclick_');
+  }
+
+  var playMode = function() {
+    $(".play").addClass("on");
+    $(".build").removeClass("on");
+    $(".tray").css('visibility', 'hidden');
+    $(".cards").hide();
+    $(".log").show();
+    mode = 'play';
+    clearSelection();
+    disableReorder();
+    enableComponents($(".component").children());
+  }
+
   listComponents();
   listColors(); 
+  enableReorder();
+  disableReorder();
+  clearSelection();
+  buildMode();
+
+  $(document).on('click', '.play', function() {
+    playMode();
+  });
+  $(document).on('click', '.build', function() {
+    buildMode();
+  });
 
   $(document).on('click', '.output, .input', function () {
-    $('.selected').removeClass('selected')
+    $('.inputoroutput').removeClass('inputoroutput')
     $('.color-modal').addClass('flex');
+    moveToFront($('.color-modal'));
     $('.tooltip').hide();
-    $(this).addClass('selected');
+    $(this).addClass('inputoroutput');
+  });
+
+  $(document).on('click', '.container', function (evt) {
+    if ($(evt.target).hasClass('container'))
+      clearSelection();
   });
 
   $(document).on('click', '.color', function () {
     var channel = $(this).attr('value');
-    $('.selected').children().css({'color': channel})
-    var id = $('.selected').attr('belongsTo');
-    var isInput = $('.selected').hasClass('input')
+    var selectedComponent = $("#" + selection[0])
+    var channelpicker = $(".inputoroutput");
+    channelpicker.children().css({'color': channel})
+    // var id = $('.selected').attr('belongsTo');
+    var isInput = $('.inputoroutput').hasClass('input')
     if (isInput) {
-      $('.thumb[name='+id+'], #'+id).attr('listen-to', channel)
+      selectedComponent.attr('listen-to', channel)
     }else {
-      $('.thumb[name='+id+'], #'+id).attr('broadcast-to', channel)
+      selectedComponent.attr('broadcast-to', channel)
     }
     $('.output-options').removeClass('flex');
     $('.color-modal').removeClass('flex');
   })
 
+
   $(document).on('keydown', function(event) {
-    if (event.which == 27) {
+    if (event.which == 27) { // escape
       // escape hides all modal dialogs
       $('.color-modal').removeClass('flex');
-      $('.library').removeClass('flex');
+      // and clears the selection non-destructively
+      clearSelection();
+    } else if (event.which == 8) { // delete
+      // delete removes the currently selected components and resets the selection
+      if (selection) {
+        // XXX currently only deals with one-item selection.
+        var selectedComponent = $("#" + selection[0]);
+        // XXX this doesn't actually remove it completely? e.g. metronome keeps on ticking.
+        selectedComponent.remove();
+        clearSelection();
+      }
+    } else if (event.which == 9) { // tab
+      if (mode == "play") { buildMode(); } 
+      else { playMode(); }
+      event.preventDefault();
     }
   })
 
+  var selectComponent = function(comp) {
+    clearSelection();
+    moveToFront(comp);
+    var compId = comp.id
+    selection = [compId];
+    comp.addClass("selected");
+
+    // show its channels in the inspector
+    var componentname = comp[0].tagName.toLowerCase();
+    var broadcasts = $('template#' + componentname).attr('broadcasts') !== undefined
+    var listens = $('template#' + componentname).attr('ondblclick') !== undefined
+    $(".inspector .name").text(componentname);
+    if (broadcasts) {
+      var broadcastChannel = comp.attr('broadcast-to')
+      if (!broadcastChannel) {
+        broadcastChannel = defaultChannel;
+        comp.attr('broadcast-to', broadcastChannel)
+      }
+      $("#outputBlock").show();
+      $("#outputChannel").children().css({'color': broadcastChannel})
+    } else {
+      $("#outputBlock").hide();
+    }
+    if (listens) {
+      var listenChannel = comp.attr('listen-to')
+      if (!listenChannel) {
+        listenChannel = defaultChannel;
+        comp.attr('listen-to', listenChannel)
+      }
+      $("#inputBlock").show();
+      $("#inputChannel").children().css({'color': listenChannel})
+    } else {
+      $("#inputBlock").hide();
+    }
+    $(".inspector").removeClass('hidden');
+  }
+
   //logs messages
   $(document).on('broadcast', function (event, message) {
-    $('.log .inner p').append('<div>' + message + '</div>')
-    console.log(message)
+    var log = $('.log .inner p').append('<div>' + message + '</div>');
+    var scroll = $(".scroll")[0];
+    scroll.scrollTop = scroll.scrollHeight;
   })
 
       $('.phone-canvas').droppable({
         accept: '.draggable',
         drop: function (event, ui) {
-          var componentname = $(ui.helper).attr('value')
-          var componentId = $(ui.helper).attr('name')
+          var componentname = $(ui.helper).attr('value');
+          var componentId = genId($(ui.helper).attr('name'));
           var component = $('<' + componentname + '></' + componentname + '>');
           component.attr('id', componentId)
-          var broadcasts = $('template#' + componentname).attr('broadcasts') !== undefined
-          var listens = $('template#' + componentname).attr('ondblclick') !== undefined
-          if (broadcasts) {
-            var broadcastChannel = $(ui.helper).attr('broadcast-to')
-            component.attr('broadcast-to', broadcastChannel)
-          }
-          if (listens) {
-            console.log('yes')
-            var listenChannel = $(ui.helper).attr('listen-to')
-            component.attr('listen-to', listenChannel)
-          }
+          component.on('mousedown', function(evt) {
+            if (mode == 'play') { 
+              component.children('button').addClass('active'); // to replace :active which is otherwise impossible to intercept
+            } else {
+              selectComponent($(evt.currentTarget));
+            }
+          });
+          component.on('mouseup', function(evt) {
+            if (mode == 'play') {
+              component.children('button').removeClass('active'); // to replace :active which is otherwise impossible to intercept
+            } else {
+              event.stopPropagation();
+              event.preventDefault();
+            }
+          });
           $(this).append(component);
-          Components.replace()
+
+          Components.replace(); // ???
+          if (mode == "build") {
+            disableComponents(component.children());
+          }
+          selectComponent(component);
           $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
         }
       });
@@ -104,11 +267,6 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
         $('#tooltip-input').hide();
       })
 
-      $('#open-library').click(function () {
-        $('.library').addClass('flex');
-        $('.tooltip').hide();
-      })
-
       $('.close-modal').click(function () {
         $('.color-modal').removeClass('flex');
         $('.library').removeClass('flex');
@@ -119,23 +277,11 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
         $('.library').removeClass('flex');
       });
 
+
       $('.inlib').click(function () {
         var clone = $(this).clone()
         var tagName = $(this).attr('value')
-        var broadcasts = $('template#' + tagName).attr('broadcasts') !== undefined
-        var listens = $('template#' + tagName).attr('ondblclick') !== undefined
-        console.log('%s broadcasts: %s', tagName, broadcasts)
-        console.log('%s listens: %s', tagName, listens)
         var id = 'component' + new Date().getTime()
-        if (broadcasts) {
-          clone.prepend('<div class="holder"></div>')
-          clone.append('<div class="output" belongsTo="'+id+'"><span class="icon-feed"></div>')
-        }
-
-        if (listens) {
-          clone.prepend('<div class="input" belongsTo="'+id+'"><span class="icon-headphones"></span></div>')
-          clone.append('<div class="holder"></div>')
-        }
 
         clone.removeClass('inlib')
         clone.find('.thumb').draggable({
@@ -145,7 +291,6 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
         })
         .attr('name', id)
           .addClass('draggable');
-        $('.tray').append(clone);
       });
 
 });
