@@ -1,8 +1,0 @@
-name components
-version 0.0.1
-description A components system for visual programming.
-repository git://github.com/nudgepad/components
-client-dependencies
- https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
-license MIT
-author Breck Yunits

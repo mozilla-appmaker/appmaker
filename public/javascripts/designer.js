@@ -106,7 +106,6 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     enableComponents($(".component").children());
   }
 
-  listComponents();
   listColors(); 
   enableReorder();
   disableReorder();
