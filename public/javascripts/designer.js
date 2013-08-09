@@ -76,6 +76,21 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     enableReorder();
     $(".tray").show();
     $(".cards").show();
+    disableComponents($(".component").children());
+  }
+
+  var disableComponents = function(elts) {
+    $.each(elts, function(i,elt) {
+      elt.onclick_ = elt.onclick;
+    });
+    elts.removeAttr('onclick');
+  }
+
+  var enableComponents = function(elts) {
+    $.each(elts, function(i,elt) {
+      elt.onclick = elt.onclick_;
+    });
+    elts.removeAttr('onclick_');
   }
 
   var playMode = function() {
@@ -86,6 +101,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     mode = 'play';
     clearSelection();
     disableReorder();
+    enableComponents($(".component").children());
   }
 
   listComponents();
@@ -150,6 +166,43 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     }
   })
 
+  var selectComponent = function(comp) {
+    clearSelection();
+    moveToFront(comp);
+    var compId = comp.id
+    selection = [compId];
+    comp.addClass("selected");
+
+    // show its channels in the inspector
+    var componentname = comp[0].tagName.toLowerCase();
+    var broadcasts = $('template#' + componentname).attr('broadcasts') !== undefined
+    var listens = $('template#' + componentname).attr('ondblclick') !== undefined
+    $(".inspector .name").text(componentname);
+    if (broadcasts) {
+      var broadcastChannel = comp.attr('broadcast-to')
+      if (!broadcastChannel) {
+        broadcastChannel = defaultChannel;
+        comp.attr('broadcast-to', broadcastChannel)
+      }
+      $("#outputBlock").show();
+      $("#outputChannel").children().css({'color': broadcastChannel})
+    } else {
+      $("#outputBlock").hide();
+    }
+    if (listens) {
+      var listenChannel = comp.attr('listen-to')
+      if (!listenChannel) {
+        listenChannel = defaultChannel;
+        comp.attr('listen-to', listenChannel)
+      }
+      $("#inputBlock").show();
+      $("#inputChannel").children().css({'color': listenChannel})
+    } else {
+      $("#inputBlock").hide();
+    }
+    $(".inspector").removeClass('hidden');
+  }
+
   //logs messages
   $(document).on('broadcast', function (event, message) {
     var log = $('.log .inner p').append('<div>' + message + '</div>');
@@ -168,42 +221,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
             if (mode == 'play') { 
               component.children('button').addClass('active'); // to replace :active which is otherwise impossible to intercept
             } else {
-              clearSelection();
-              var comp = $(evt.currentTarget);
-              moveToFront(comp);
-              var compId = evt.currentTarget.id
-              selection = [compId];
-              // select it
-              comp.addClass("selected");
-
-              // show its channels in the inspector
-              var componentname = comp[0].tagName.toLowerCase();
-              var broadcasts = $('template#' + componentname).attr('broadcasts') !== undefined
-              var listens = $('template#' + componentname).attr('ondblclick') !== undefined
-              $(".inspector .name").text(componentname);
-              if (broadcasts) {
-                var broadcastChannel = component.attr('broadcast-to')
-                if (!broadcastChannel) {
-                  broadcastChannel = defaultChannel;
-                  component.attr('broadcast-to', broadcastChannel)
-                }
-                $("#outputBlock").show();
-                $("#outputChannel").children().css({'color': broadcastChannel})
-              } else {
-                $("#outputBlock").hide();
-              }
-              if (listens) {
-                var listenChannel = component.attr('listen-to')
-                if (!listenChannel) {
-                  listenChannel = defaultChannel;
-                  component.attr('listen-to', listenChannel)
-                }
-                $("#inputBlock").show();
-                $("#inputChannel").children().css({'color': listenChannel})
-              } else {
-                $("#inputBlock").hide();
-              }
-              $(".inspector").removeClass('hidden');
+              selectComponent($(evt.currentTarget));
             }
           });
           component.on('mouseup', function(evt) {
@@ -215,7 +233,12 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
             }
           });
           $(this).append(component);
+
           Components.replace(); // ???
+          if (mode == "build") {
+            disableComponents(component.children());
+          }
+          selectComponent(component);
           $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
         }
       });
