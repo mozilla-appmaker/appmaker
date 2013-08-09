@@ -25,7 +25,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   Ceci.load(function(components) {
     Object.keys(components).forEach(function (tag) {
       console.log(tag);
-      var thumb = $('<div class="clearfix inlib draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('app-', '') + '</div></div>');
+      var thumb = $('<div class="clearfix draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('app-', '') + '</div></div>');
       $('.library-list').append(thumb);
       thumb.draggable({
         appendTo: ".phone-canvas",
