@@ -422,7 +422,7 @@ button.btn-done {
 }
 
 .scroll {
-	height: 160px;
+	height: 452px; /* ??? XXX */
 	overflow-y: auto; 
 }
 

@@ -151,12 +151,12 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
 
 
   $(document).on('keydown', function(event) {
-    if (event.which == 27) {
+    if (event.which == 27) { // escape
       // escape hides all modal dialogs
       $('.color-modal').removeClass('flex');
       // and clears the selection non-destructively
       clearSelection();
-    } else if (event.which == 8) {
+    } else if (event.which == 8) { // delete
       // delete removes the currently selected components and resets the selection
       if (selection) {
         // XXX currently only deals with one-item selection.
@@ -165,6 +165,10 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
         selectedComponent.remove();
         clearSelection();
       }
+    } else if (event.which == 9) { // tab
+      if (mode == "play") { buildMode(); } 
+      else { playMode(); }
+      event.preventDefault();
     }
   })
 
