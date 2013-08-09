@@ -469,7 +469,7 @@ button.btn-done {
 }
 
 .selected {
-	box-shadow: 0 0 5px 5px #a33;
+	box-shadow: 0 0 0px 2px #ff7b00;
 }
 
 .flex {
