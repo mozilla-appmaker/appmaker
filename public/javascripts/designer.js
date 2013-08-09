@@ -74,7 +74,8 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     $(".build").addClass("on");
     mode = 'build';
     enableReorder();
-    $(".tray").show();
+    $(".tray").css('visibility', 'visible');
+    $(".log").hide();
     $(".cards").show();
     disableComponents($(".component").children());
   }
@@ -96,8 +97,9 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   var playMode = function() {
     $(".play").addClass("on");
     $(".build").removeClass("on");
-    $(".tray").hide();
+    $(".tray").css('visibility', 'hidden');
     $(".cards").hide();
+    $(".log").show();
     mode = 'play';
     clearSelection();
     disableReorder();
