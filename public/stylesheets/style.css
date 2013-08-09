@@ -115,6 +115,27 @@ h6 {
 
 /*----------BUTTONS----------*/
 
+button.btn-std {
+	font-family: 'Source Sans Pro', arial;
+	-webkit-appearance: none;
+	border: none;
+	color: #FFF;
+	font-weight: 400;
+	padding: 0px;
+}
+
+button.btn-critical {
+	background-color: #358CCE;
+}
+
+button.btn-critical:hover {
+	background-color: #3999e3;
+}
+
+button.btn-critical:active {
+	background-color: #2a70a6;
+}
+
 button.btn-toggle {
 	background-color: #555;
 	display: block;
@@ -155,28 +176,14 @@ button.btn-std {
 	padding: 0px;
 }
 
-button.btn-std:hover {
-	background-color: #2a70a6;
-}
-
 
 button.btn-std:off {
-}
-
-button.btn-std:active {
-	background-color: #1f5680;
 }
 
 button.btn-lg {
 	font-size: 28px;
 	height: 70px;
 	width: 240px;
-}
-
-button.btn-md {
-	height: 40px;
-	width: 120px;
-	font-size: 16px;
 }
 
 button.btn-start {
@@ -189,7 +196,9 @@ button.publish {
 	top: -40px;
 	right: 40px;
 	display: block;
-	background-color: #358CCE;
+	height: 40px;
+	width: 120px;
+	font-size: 16px;
 }
 
 button.btn-img {
