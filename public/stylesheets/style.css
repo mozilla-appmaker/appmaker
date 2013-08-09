@@ -113,6 +113,8 @@ h6 {
 	top: -50px;
 }
 
+/*----------BUTTONS----------*/
+
 button.btn-toggle {
 	background-color: #555;
 	display: block;
@@ -144,7 +146,6 @@ button.btn-std.on {
 	background-color: #55b12e;
 }
 
-/*----------BUTTONS----------*/
 button.btn-std {
 	font-family: 'Source Sans Pro', arial;
 	-webkit-appearance: none;
