@@ -147,11 +147,14 @@ define(function() {
     });
   };
 
-  Runner = function (callback) {
-    function scrape () {
+  Ceci.load = function (callback) {
+    function scrape (callback) {
       var elements = document.querySelectorAll('element');
       elements = Array.prototype.slice.call(elements);
       elements.forEach(Ceci.processComponent);
+      if (callback){
+        callback(Ceci._components);
+      }
     }
 
     var ceciLinks = document.querySelectorAll('link[rel=component][type="text/ceci"]');
@@ -172,19 +175,16 @@ define(function() {
             document.body.appendChild(fragment);
           }
           if (--linksLeft === 0) {
-            scrape();
-            if (callback){
-              callback();
-            }
+            scrape(callback);
           }
         };
         xhr.send(null);
       });
     }
     else {
-      scrape();
+      scrape(callback);
     }
   };
 
-  return Runner;
+  return Ceci;
 });
