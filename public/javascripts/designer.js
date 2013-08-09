@@ -45,6 +45,15 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
       $('.thumb[name='+id+'], #'+id).attr('broadcast-to', channel)
     }
     $('.output-options').removeClass('flex');
+    $('.color-modal').removeClass('flex');
+  })
+
+  $(document).on('keydown', function(event) {
+    if (event.which == 27) {
+      // escape hides all modal dialogs
+      $('.color-modal').removeClass('flex');
+      $('.library').removeClass('flex');
+    }
   })
 
   //logs messages
