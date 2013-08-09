@@ -108,14 +108,28 @@ h6 {
 }
 
 
-.toggle .btn-toggle {
+.toggle {
 	position: absolute;
 	top: -50px;
+}
+
+button.btn-toggle {
 	background-color: #555;
 	display: block;
 	border-radius: 3px;
 	height: 30px;
 	width: 130px;
+	font-weight: 400;
+	float: left;
+	font-size: 14px;
+}
+
+button.btn-toggle:nth-child(1) {
+	border-radius: 3px 0px 0px 3px;
+}
+
+button.btn-toggle:nth-last-child(1) {
+	border-radius: 0px 3px 3px 0px;
 }
 
 .toggle button.off:active {
@@ -123,17 +137,6 @@ h6 {
 }
 .toggle button.on:active {
 	background-color: #4db228;
-}
-
-.toggle button.build {
-	left: 0px;
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
-}
-.toggle button.play {
-	left: 120px;
-	border-top-left-radius: 0;
-	border-bottom-left-radius: 0;
 }
 
 button.btn-std.on {
@@ -144,7 +147,6 @@ button.btn-std.on {
 /*----------BUTTONS----------*/
 button.btn-std {
 	font-family: 'Source Sans Pro', arial;
-	background-color: #358CCE;
 	-webkit-appearance: none;
 	border: none;
 	color: #FFF;
@@ -186,6 +188,7 @@ button.publish {
 	top: -40px;
 	right: 40px;
 	display: block;
+	background-color: #358CCE;
 }
 
 button.btn-img {
@@ -261,7 +264,7 @@ button.btn-done {
 }
 
 .container {
-	width: 1000px;
+	width: 1020px;
 	top: 70px;
 	background-color: #ddd;
 	margin: 0px auto 40px auto;
@@ -270,9 +273,10 @@ button.btn-done {
 
 .tray {
 	float: left;
-	width: 240px;
+	width: 180px;
 	background-color: #ccc;
 	min-height: 560px;
+	padding: 40px;
 }
 
 .component-header {
@@ -313,7 +317,7 @@ button.btn-done {
 
 .thumb {
 	height: 40px;
-	width: 160px;
+	width: 180px;
 	background-color: #eee;
 	margin-bottom: 5px;
 	border-radius: 3px;
@@ -409,7 +413,7 @@ button.btn-done {
 	top: 0px;
 	bottom: 0px;
 	right: 0px;
-	left: 750px;
+	left: 770px;
 	color: #999;
 }
 
