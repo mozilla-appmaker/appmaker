@@ -5,7 +5,6 @@
 requirejs.config({
     "baseUrl": "/vendor/",
     "paths": {
-    	"javascripts": "/javascripts",
       "jquery": "jquery/jquery.min",
       "ceci": "ceci/ceci",
       "jquery-ui": "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min",
@@ -19,4 +18,4 @@ requirejs.config({
     } 
 });
 
-requirejs(["javascripts/application"]);
+requirejs(["/javascripts/application.js"]);
