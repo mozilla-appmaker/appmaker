@@ -24,7 +24,6 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
 
   Ceci.load(function(components) {
     Object.keys(components).forEach(function (tag) {
-      console.log(tag);
       var thumb = $('<div class="clearfix draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('app-', '') + '</div></div>');
       $('.library-list').append(thumb);
       thumb.draggable({
@@ -74,7 +73,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     $(".tray").css('visibility', 'visible');
     $(".log").hide();
     $(".cards").show();
-    disableComponents($(".component").children());
+    disableComponents($(".phone-canvas").find("*"));
   }
 
   var disableComponents = function(elts) {
@@ -86,7 +85,9 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
 
   var enableComponents = function(elts) {
     $.each(elts, function(i,elt) {
-      elt.onclick = elt.onclick_;
+      if (elt.onclick_) {
+        elt.onclick = elt.onclick_;
+      }
     });
     elts.removeAttr('onclick_');
   }
@@ -100,7 +101,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     mode = 'play';
     clearSelection();
     disableReorder();
-    enableComponents($(".component").children());
+    enableComponents($(".phone-canvas").find("*"));
   }
 
   listColors(); 
@@ -222,15 +223,21 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
       component.attr('id', componentId)
       component.on('mousedown', function(evt) {
         if (mode == 'play') {
-          component.children('button').addClass('active'); // to replace :active which is otherwise impossible to intercept
+          $(evt.target).addClass('active'); // to replace :active which is otherwise impossible to intercept
         } else {
           selectComponent($(evt.currentTarget));
         }
       });
+      component.on('mouseleave', function(evt) {
+        if (mode == 'play') {
+          $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
+        }
+      });
       component.on('mouseup', function(evt) {
         if (mode == 'play') {
-          component.children('button').removeClass('active'); // to replace :active which is otherwise impossible to intercept
-        } else {
+          $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
+        }
+        if (mode == 'build') {
           event.stopPropagation();
           event.preventDefault();
         }
@@ -239,7 +246,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
       Ceci.convertElement(component[0]);
 
       if (mode == "build") {
-        disableComponents(component.children());
+        disableComponents(component.find());
       }
       selectComponent(component);
       $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');

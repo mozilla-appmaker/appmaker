@@ -30,9 +30,7 @@ define(function() {
     });
 
     element.emit = function (data) {
-      var customEvent = document.createEvent('CustomEvent');
-      customEvent.initCustomEvent(getChannel(element.broadcastChannel), {bubbles: true});
-      customEvent.data = data;
+      var customEvent = new CustomEvent(getChannel(element.broadcastChannel), {bubbles: true, detail: data});
       element.dispatchEvent(customEvent);
       console.log(element.id + " -> " + element.broadcastChannel);
     };
@@ -108,7 +106,7 @@ define(function() {
       document.addEventListener(getChannel(subscription.channel), function(e) {
         if(e.target !== element) {
           console.log(element.id + " <- " + subscription.channel);
-          element[subscription.listener](e.data, subscription.channel);
+          element[subscription.listener](e.detail, subscription.channel);
         }
         return true;
       })

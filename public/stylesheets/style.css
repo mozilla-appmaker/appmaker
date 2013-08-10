@@ -370,6 +370,7 @@ button.btn-done {
 .phone-canvas button:focus {
 	outline: none;
 }
+
 .phone-canvas button:active {
 	outline: none;
 }
