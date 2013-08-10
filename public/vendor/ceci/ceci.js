@@ -8,6 +8,8 @@ define(function() {
 
     var reserved = ['init', 'listeners', 'defaultListener'];
 
+    
+
     Object.keys(def).filter(function (item) {
       return reserved.indexOf(item) === -1;
     }).forEach(function (key) {
@@ -16,6 +18,10 @@ define(function() {
         element[key] = entry;
       }
     });
+
+    if (!def.defaultListener){
+      def.defaultListener = Object.keys(def.listeners)[0];
+    }
 
     Object.keys(def.listeners).forEach(function (key) {
       var entry = def.listeners[key];
@@ -29,10 +35,20 @@ define(function() {
       }
     });
 
+    if (def.defaultListener){
+      element.defaultListener = def.listeners[def.defaultListener];
+    }
+    else {
+      element.defaultListener = function(data){
+        console.log("No default listener set");
+      }
+    }
+
+
     element.emit = function (data) {
       var e = new CustomEvent(getChannel(element.broadcastChannel), {bubbles: true, detail: data});
       element.dispatchEvent(e);
-      console.log(element.id + " -> " + element.broadcastChannel);
+      // console.log(element.id + " -> " + element.broadcastChannel);
     };
 
     element.init = function() {
@@ -42,7 +58,7 @@ define(function() {
     };
   }
 
-  Ceci.reserved = ['init', 'listeners', 'defaultListener', 'initParams'];
+  
   Ceci.defaultChannel = "blue";
 
   Ceci._components = {};
@@ -62,9 +78,11 @@ define(function() {
     var subscriptions = element.getElementsByTagName('listen');
     subscriptions = Array.prototype.slice.call(subscriptions);
 
-    if(subscriptions.length===0) {
-      // TODO: add the default;
-      return [];
+    if(subscriptions.length === 0) {
+      return [{
+        listener: 'defaultListener',
+        channel: Ceci.defaultChannel
+      }];
     }
 
     subscriptions = subscriptions.map(function (e) {
@@ -82,10 +100,11 @@ define(function() {
 
   Ceci.convertElement = function (element) {
     var def = Ceci._components[element.localName];
+    console.log(def);
     // data channels this element needs to hook into
     element.broadcastChannel = getBroadcastChannel(element);
-    element.subscriptions = getSubscriptions(element);
-
+    element.subscriptions = getSubscriptions(element, def.defaultListener);
+    
     // real content
     element._innerHTML = element.innerHTML;
     element._innerText = element.innerText;
@@ -105,7 +124,7 @@ define(function() {
       );
       document.addEventListener(getChannel(subscription.channel), function(e) {
         if(e.target !== element) {
-          console.log(element.id + " <- " + subscription.channel);
+          // console.log(element.id + " <- " + subscription.channel);
           element[subscription.listener](e.detail, subscription.channel);
         }
         return true;
