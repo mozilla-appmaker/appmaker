@@ -108,14 +108,51 @@ h6 {
 }
 
 
-.toggle .btn-toggle {
+.toggle {
 	position: absolute;
 	top: -50px;
+}
+
+/*----------BUTTONS----------*/
+
+button.btn-std {
+	font-family: 'Source Sans Pro', arial;
+	-webkit-appearance: none;
+	border: none;
+	color: #FFF;
+	font-weight: 400;
+	padding: 0px;
+}
+
+button.btn-critical {
+	background-color: #358CCE;
+}
+
+button.btn-critical:hover {
+	background-color: #3999e3;
+}
+
+button.btn-critical:active {
+	background-color: #2a70a6;
+}
+
+button.btn-toggle {
 	background-color: #555;
 	display: block;
 	border-radius: 3px;
 	height: 30px;
 	width: 130px;
+	font-weight: 400;
+	float: left;
+	font-size: 14px;
+}
+
+button.btn-toggle:nth-child(1) {
+	border-radius: 3px 0px 0px 3px;
+}
+
+button.btn-toggle:nth-last-child(1) {
+	border-radius: 0px 3px 3px 0px;
 }
 
 .toggle button.off:active {
@@ -125,26 +162,13 @@ h6 {
 	background-color: #4db228;
 }
 
-.toggle button.build {
-	left: 0px;
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
-}
-.toggle button.play {
-	left: 120px;
-	border-top-left-radius: 0;
-	border-bottom-left-radius: 0;
-}
-
 button.btn-std.on {
 	outline: none;
 	background-color: #55b12e;
 }
 
-/*----------BUTTONS----------*/
 button.btn-std {
 	font-family: 'Source Sans Pro', arial;
-	background-color: #358CCE;
 	-webkit-appearance: none;
 	border: none;
 	color: #FFF;
@@ -152,28 +176,14 @@ button.btn-std {
 	padding: 0px;
 }
 
-button.btn-std:hover {
-	background-color: #2a70a6;
-}
-
 
 button.btn-std:off {
-}
-
-button.btn-std:active {
-	background-color: #1f5680;
 }
 
 button.btn-lg {
 	font-size: 28px;
 	height: 70px;
 	width: 240px;
-}
-
-button.btn-md {
-	height: 40px;
-	width: 120px;
-	font-size: 16px;
 }
 
 button.btn-start {
@@ -186,6 +196,9 @@ button.publish {
 	top: -40px;
 	right: 40px;
 	display: block;
+	height: 40px;
+	width: 120px;
+	font-size: 16px;
 }
 
 button.btn-img {
@@ -261,7 +274,7 @@ button.btn-done {
 }
 
 .container {
-	width: 1000px;
+	width: 1020px;
 	top: 70px;
 	background-color: #ddd;
 	margin: 0px auto 40px auto;
@@ -270,9 +283,10 @@ button.btn-done {
 
 .tray {
 	float: left;
-	width: 240px;
+	width: 180px;
 	background-color: #ccc;
 	min-height: 560px;
+	padding: 40px;
 }
 
 .component-header {
@@ -313,7 +327,7 @@ button.btn-done {
 
 .thumb {
 	height: 40px;
-	width: 160px;
+	width: 180px;
 	background-color: #eee;
 	margin-bottom: 5px;
 	border-radius: 3px;
@@ -374,7 +388,7 @@ button.btn-done {
 }
 
 .phone-canvas {
-	background-color: #444;
+	background-color: #FFF;
 	height: 400px;
 	width: 100%;
 }
@@ -400,16 +414,16 @@ button.btn-done {
 .card {
 	height: 100px;
 	width: 100%;
-	background-color: #555;
+	background-color: #FFF;
 }
 
 .console {
-	background-color: #444;
+	background-color: #333;
 	position: absolute;
 	top: 0px;
 	bottom: 0px;
 	right: 0px;
-	left: 750px;
+	left: 770px;
 	color: #999;
 }
 
