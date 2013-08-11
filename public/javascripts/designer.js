@@ -35,11 +35,24 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     });
   });
 
+  function Channel(name, hex) {
+    this.name = name;
+    this.hex = hex;
+  }
+
   var listColors = function () {
-    var colors = ['#358CCE', '#e81e1e', '#e3197b', '#27cfcf', '#e8d71e', '#ff7b00', '#71b806'];
+    var radio = new Array()
+    radio[0] = new Channel('Blue Moon', '#358CCE')
+    radio[1] = new Channel('Red Baloon', '#e81e1e')
+    radio[2] = new Channel('Pink Heart', '#e3197b')
+    radio[3] = new Channel('Purple Horseshoe', '#9f27cf')
+    radio[4] = new Channel('Green Clover', '#71b806')
+    radio[5] = new Channel('Yellow Pot of Gold', '#e8d71e')
+    radio[6] = new Channel('Orange Star', '#ff7b00')
+    //var colors = ['#358CCE', '#e81e1e', '#e3197b', '#27cfcf', '#e8d71e', '#ff7b00', '#71b806'];
     var i = 0;
-    for (var i; i < colors.length; i++) {
-    $('.color-options').append('<div class="color" value="'+ colors[i] +'" style="background-color: '+ colors[i] +'"></div>')
+    for (var i; i < radio.length; i++) {
+    $('.channel-options').append('<div class="color" value="'+ radio[i].hex +'" name="'+ radio[i].name +'" style="background-color: '+ radio[i].hex +'"></div>')
     }
   }
 
@@ -117,14 +130,6 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     buildMode();
   });
 
-  $(document).on('click', '.output, .input', function () {
-    $('.inputoroutput').removeClass('inputoroutput')
-    $('.color-modal').addClass('flex');
-    moveToFront($('.color-modal'));
-    $('.tooltip').hide();
-    $(this).addClass('inputoroutput');
-  });
-
   $(document).on('click', '.container', function (evt) {
     if ($(evt.target).hasClass('container'))
       clearSelection();
@@ -132,6 +137,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
 
   $(document).on('click', '.color', function () {
     var channel = $(this).attr('value');
+    var name = $(this).attr('name');
     var selectedComponent = $("#" + selection[0])
     var channelpicker = $(".inputoroutput");
     channelpicker.children().css({'color': channel})
@@ -142,8 +148,6 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     }else {
       selectedComponent.attr('broadcast-to', channel)
     }
-    $('.output-options').removeClass('flex');
-    $('.color-modal').removeClass('flex');
   });
 
 
@@ -182,6 +186,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     var broadcasts = $('template#' + componentname).attr('broadcasts') !== undefined
     var listens = $('template#' + componentname).attr('ondblclick') !== undefined
     $(".inspector .name").text(componentname);
+    $('.inspector .selected-channel').text(currentChannel)
     if (broadcasts) {
       var broadcastChannel = comp.attr('broadcast-to')
       if (!broadcastChannel) {
@@ -273,20 +278,6 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   $('.btn-done').click(function () {
     $('.output-options').removeClass('flex');
     $('.library').removeClass('flex');
-  });
-
-
-  $('.inlib').click(function () {
-    var clone = $(this).clone();
-    var tagName = $(this).attr('value');
-    var id = 'component' + new Date().getTime();
-
-    clone.removeClass('inlib');
-    clone.find('.thumb').draggable({
-      appendTo: ".phone-canvas",
-      helper: "clone",
-      addClass: "clone"
-    }).attr('name', id).addClass('draggable');
   });
 
 });

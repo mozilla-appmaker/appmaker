@@ -584,22 +584,16 @@ button.btn-done {
 	width: 10px;
 }
 
-.inlib {
-	float: left;
-	margin-right: 10px;
-	margin-bottom: 10px;
-	cursor: pointer;
-}
-
-.inlib:nth-child(3n) {
-	margin-right: 0px;
-}
-
 .color {
-	height: 40px;
-	width: 40px;
+	height: 20px;
+	width: 20px;
 	float: left;
 	margin-right: 5px;
+	border-radius: 2px;
+}
+
+.color:nth-last-child(1) {
+	margin-right: 0px;
 }
 
 .input-color {
