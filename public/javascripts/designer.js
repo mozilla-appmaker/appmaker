@@ -170,6 +170,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   });
 
   var selectComponent = function(comp) {
+    var currentChannel = comp[0].broadcastChannel
     clearSelection();
     moveToFront(comp);
     var compId = comp.id
