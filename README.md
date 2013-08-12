@@ -30,6 +30,14 @@ If you need foreman:
 sudo gem install foreman
 ```
 
+Authoring Components:
+---------------------
+
+Ideas to get you started:
+https://github.com/mozilla/appmaker/wiki/Component-Ideas
+
+
+
 Style Guide
 -----------
 
@@ -125,3 +133,4 @@ Describe layout here.
 ### Editable Properties
 
 Describe input styles/types here.
+=======
