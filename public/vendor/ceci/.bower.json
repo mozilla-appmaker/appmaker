@@ -11,5 +11,5 @@
     "commit": "f20d7f503ebecc8f7c085cd2c8bf76abf3fff4e7"
   },
   "_source": "git://github.com/mozilla/ceci-bower.git",
-  "_target": "~0.0.2"
+  "_target": "~0.0.9"
 }
