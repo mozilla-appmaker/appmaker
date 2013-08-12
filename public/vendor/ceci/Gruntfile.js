@@ -9,7 +9,8 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'ceci.min.js': ['ceci.js']
+          'ceci.min.js': ['ceci.js'],
+          'ceci-ui.min.js': ['ceci-ui.js']
         }
       }
     },
