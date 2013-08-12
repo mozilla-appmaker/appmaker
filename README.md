@@ -48,3 +48,7 @@ The color palette describes the colors used in the Appmaker app. It is not inten
 <div style="color: red">
 	hello
 </div> 
+
+```css
+background-color: red
+```
