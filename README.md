@@ -45,12 +45,63 @@ The visual guidelines outlined here are based on Appmaker’s fundamental charac
 
 The color palette describes the colors used in the Appmaker app. It is not intended to be a color guide for components, though you are certainly welcome to use it that way.
 
-<div style="height: 40px; width: 100%; background: #358CCE">
-	
-</div> 
 
-Appmaker Blue - Critical 
+Appmaker Blue - Critical call to action 
 
 ```css
 background-color: #358CCE
+```
+
+Appmaker Orange - Primary call to action 
+
+```css
+background-color: #FF7B00
+```
+
+Appmaker Green - Selected item 
+
+```css
+background-color: #55B12E
+```
+
+Almost Black - Page background 
+
+```css
+background-color: #111111
+```
+
+Gray Black - Default text
+
+```css
+color: #222222
+```
+
+Dark Gray - Side Panel 
+
+```css
+background-color: #333333
+```
+
+Medium Gray - Secondary call to action 
+
+```css
+background-color: #555555
+```
+
+Gray - Side Panel
+
+```css
+background-color: #CCCCCC
+```
+
+Medium Light Gray - Container background 
+
+```css
+background-color: #DDDDDD
+```
+
+Light Gray - Component background 
+
+```css
+background-color: #EEEEEE
 ```
