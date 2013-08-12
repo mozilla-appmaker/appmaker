@@ -45,10 +45,12 @@ The visual guidelines outlined here are based on Appmaker’s fundamental charac
 
 The color palette describes the colors used in the Appmaker app. It is not intended to be a color guide for components, though you are certainly welcome to use it that way.
 
-<div style="color: red">
-	hello
+<div style="height: 40px; width: 100%; background: #358CCE">
+	
 </div> 
 
+Appmaker Blue - Critical 
+
 ```css
-background-color: red
+background-color: #358CCE
 ```
