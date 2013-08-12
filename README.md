@@ -43,7 +43,7 @@ The visual guidelines outlined here are based on Appmaker’s fundamental charac
 
 ### Firefox OS Component Guide
 
-Firefox OS has its own [component guide](http://buildingfirefoxos.com/building-blocks/action-menu.html).
+Looking for guidance on how to make cool Firefox OS style components? Fret not, Firefox OS has its own [component guide](http://buildingfirefoxos.com/building-blocks/action-menu.html).
 
 ### Color Palette
 
