@@ -603,6 +603,12 @@ button.btn-done {
 	margin-right: 5px;
 }
 
+.selected-channel {
+	border-bottom: 2px solid #DDD;
+	display: inline-block;
+	margin-bottom: 10px;
+}
+
 /*----------COMPONENTS----------*/
 
 button.moz-button::-moz-focus-inner,

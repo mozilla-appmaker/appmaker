@@ -40,7 +40,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     this.hex = hex;
   }
 
-  var listColors = function () {
+  var listChannels = function () {
     var radio = new Array()
     radio[0] = new Channel('Blue Moon', '#358CCE')
     radio[1] = new Channel('Red Baloon', '#e81e1e')
@@ -116,7 +116,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     enableComponents($(".component").children());
   }
 
-  listColors(); 
+  listChannels(); 
   enableReorder();
   disableReorder();
   clearSelection();
@@ -133,21 +133,6 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   $(document).on('click', '.container', function (evt) {
     if ($(evt.target).hasClass('container'))
       clearSelection();
-  });
-
-  $(document).on('click', '.color', function () {
-    var channel = $(this).attr('value');
-    var name = $(this).attr('name');
-    var selectedComponent = $("#" + selection[0])
-    var channelpicker = $(".inputoroutput");
-    channelpicker.children().css({'color': channel})
-    // var id = $('.selected').attr('belongsTo');
-    var isInput = $('.inputoroutput').hasClass('input')
-    if (isInput) {
-      selectedComponent.attr('listen-to', channel)
-    }else {
-      selectedComponent.attr('broadcast-to', channel)
-    }
   });
 
 
@@ -180,6 +165,23 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     var compId = comp.id
     selection = [compId];
     comp.addClass("selected");
+
+    $(document).on('click', '.color', function () {
+      var channel = $(this).attr('value');
+      var name = $(this).attr('name');
+      $('.inspector .selected-channel').css({'color': channel, 'border-color': channel})
+      $('.inspector .selected-channel').text(name)
+      var selectedComponent = $("#" + selection[0])
+      var channelpicker = $(".inputoroutput");
+      channelpicker.children().css({'color': channel})
+      // var id = $('.selected').attr('belongsTo');
+      var isInput = $('.inputoroutput').hasClass('input')
+      if (isInput) {
+        selectedComponent.attr('listen-to', channel)
+      }else {
+        selectedComponent.attr('broadcast-to', channel)
+      }
+    });
 
     // show its channels in the inspector
     var componentname = comp[0].tagName.toLowerCase();
@@ -250,34 +252,6 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
       selectComponent(component);
       $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
     }
-  });
-
-  $(document).on('mouseover', '.output', function () {
-    var offset = $(this).offset();
-    var posleft = offset.left + 40 + 'px';
-    $('#tooltip-output').css({'top': offset.top, 'left': posleft});
-    $('#tooltip-output').show();
-  }).on('mouseout', '.output', function () {
-    $('#tooltip-output').hide();
-  });
-
-  $(document).on('mouseover', '.input', function () {
-    var offset = $(this).offset();
-    var posleft = offset.left + 40 + 'px';
-    $('#tooltip-input').css({'top': offset.top, 'left': posleft});
-    $('#tooltip-input').show();
-  }).on('mouseout', '.input', function () {
-    $('#tooltip-input').hide();
-  });
-
-  $('.close-modal').click(function () {
-    $('.color-modal').removeClass('flex');
-    $('.library').removeClass('flex');
-  });
-
-  $('.btn-done').click(function () {
-    $('.output-options').removeClass('flex');
-    $('.library').removeClass('flex');
   });
 
 });
