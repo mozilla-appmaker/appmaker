@@ -41,6 +41,10 @@ The overall design approach is based on making building apps fun and gamelike. W
 
 The visual guidelines outlined here are based on Appmaker’s fundamental characteristics, communicating a sense of fun, exploration, and play while building a space where developers and non developers can collaborate to create new and meaningful apps.
 
+### Firefox OS Component Guide
+
+Firefox OS has its own [component guide](http://buildingfirefoxos.com/building-blocks/action-menu.html).
+
 ### Color Palette
 
 The color palette describes the colors used in the Appmaker app. It is not intended to be a color guide for components, though you are certainly welcome to use it that way.

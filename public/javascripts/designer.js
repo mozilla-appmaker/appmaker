@@ -160,13 +160,14 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   });
 
   var selectComponent = function(comp) {
-    var currentChannel = comp[0].broadcastChannel
     clearSelection();
     moveToFront(comp);
+    var currentChannel = comp[0].broadcastChannel
     var compId = comp.id
     selection = [compId];
     comp.addClass("selected");
 
+    //Change component channel
     $(document).on('click', '.color', function () {
       var channel = $(this).attr('value');
       var name = $(this).attr('name');
