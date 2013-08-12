@@ -29,3 +29,6 @@ If you need foreman:
 ```
 sudo gem install foreman
 ```
+
+Style Guide
+-----------
