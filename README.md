@@ -109,3 +109,19 @@ background-color: #DDDDDD
 ```css
 background-color: #EEEEEE
 ```
+
+### Buttons
+
+Describe buttons here.
+
+### Elements
+
+Describe elements here.
+
+### Grid/Layout
+
+Describe layout here.
+
+### Editable Properties
+
+Describe input styles/types here.
