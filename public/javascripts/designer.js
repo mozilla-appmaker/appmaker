@@ -40,7 +40,6 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     this.hex = hex;
   }
 
-  var listChannels = function () {
     var radio = new Array()
     radio[0] = new Channel('blue', 'Blue Moon', '#358CCE')
     radio[1] = new Channel('red', 'Red Baloon', '#e81e1e')
@@ -49,7 +48,8 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     radio[4] = new Channel('green', 'Green Clover', '#71b806')
     radio[5] = new Channel('yellow', 'Yellow Pot of Gold', '#e8d71e')
     radio[6] = new Channel('orange', 'Orange Star', '#ff7b00')
-    //var colors = ['#358CCE', '#e81e1e', '#e3197b', '#27cfcf', '#e8d71e', '#ff7b00', '#71b806'];
+
+  var listChannels = function () {
     var i = 0;
     for (var i; i < radio.length; i++) {
     $('.broadcast-options, .listen-options').append('<div class="color" value="'+ radio[i].hex +'" name="'+ radio[i].name +'" title="'+ radio[i].title +'" style="background-color: '+ radio[i].hex +'"></div>')
@@ -160,15 +160,95 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     }
   });
 
+  var displayBroadcastChannel = function (channelName) {
+    switch (channelName) {
+    case 'red':
+        $('.inspector .broadcast-channel')
+        .text(radio[1].title)
+        .css({'color': radio[1].hex, 'border-color': radio[1].hex})
+        break;
+    case 'pink':
+        $('.inspector .broadcast-channel')
+        .text(radio[2].title)
+        .css({'color': radio[2].hex, 'border-color': radio[2].hex})
+        break;
+    case 'purple':
+        $('.inspector .broadcast-channel')
+        .text(radio[3].title)
+        .css({'color': radio[3].hex, 'border-color': radio[3].hex})
+        break;
+    case 'green':
+        $('.inspector .broadcast-channel')
+        .text(radio[4].title)
+        .css({'color': radio[4].hex, 'border-color': radio[4].hex})
+        break;
+    case 'yellow':
+        $('.inspector .broadcast-channel')
+        .text(radio[5].title)
+        .css({'color': radio[5].hex, 'border-color': radio[5].hex})
+        break;
+    case 'orange':
+        $('.inspector .broadcast-channel').text(radio[6].title)
+        .css({'color': radio[6].hex, 'border-color': radio[6].hex})
+        break;
+    default:
+       $('.inspector .broadcast-channel')
+       .text(radio[0].title)
+       .css({'color': radio[0].hex, 'border-color': radio[0].hex})
+    }
+  }
+
+  var displayListenChannel = function (channelName) {
+    switch (channelName) {
+    case 'red':
+        $('.inspector .listen-channel').text(radio[1].title)
+        .css({'color': radio[1].hex, 'border-color': radio[1].hex})
+        break;
+    case 'pink':
+        $('.inspector .listen-channel').text(radio[2].title)
+        .css({'color': radio[2].hex, 'border-color': radio[2].hex})
+        break;
+    case 'purple':
+        $('.inspector .listen-channel').text(radio[3].title)
+        .css({'color': radio[3].hex, 'border-color': radio[3].hex})
+        break;
+    case 'green':
+        $('.inspector .listen-channel').text(radio[4].title)
+        .css({'color': radio[4].hex, 'border-color': radio[4].hex})
+        break;
+    case 'yellow':
+        $('.inspector .listen-channel').text(radio[5].title)
+        .css({'color': radio[5].hex, 'border-color': radio[5].hex})
+        break;
+    case 'orange':
+        $('.inspector .listen-channel')
+        .text(radio[6].title)
+        .css({'color': radio[6].hex, 'border-color': radio[6].hex})
+        break;
+    default:
+       $('.inspector .listen-channel')
+       .text(radio[0].title)
+       .css({'color': radio[0].hex, 'border-color': radio[0].hex})
+    }
+  }
+
+
+
   var selectComponent = function(comp) {
-    console.log(comp)
     clearSelection();
     moveToFront(comp);
-    var currentListen = comp[0].subscriptions[0].channel
-    var currentBroadcast = comp[0].broadcastChannel
     var compId = comp.id
     selection = [compId];
     comp.addClass("selected");
+
+    //Set current component channel
+    var currentListen = $('.selected')[0].subscriptions[0].channel
+    var currentBroadcast = $('.selected')[0].broadcastChannel
+
+    console.log($('.selected')[0].subscriptions[0].channel)
+
+    displayListenChannel(currentListen)
+    displayBroadcastChannel(currentBroadcast)
 
     //Change component channel
     $(document).on('click', '.color', function () {
@@ -176,13 +256,11 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
       var name = $(this).attr('name');
       var title = $(this).attr('title');
       if ($(this).parent().hasClass('broadcast-options')) {
-        $('.inspector .broadcast-channel').css({'color': channelColor, 'border-color': channelColor})
-        $('.inspector .broadcast-channel').text(title)
-        comp[0].broadcastChannel = name
+        $('.selected')[0].broadcastChannel = name
+        displayBroadcastChannel(name)
       }else {
-        $('.inspector .listen-channel').css({'color': channelColor, 'border-color': channelColor})
-        $('.inspector .listen-channel').text(title)
-        comp[0].subscriptions[0].channel = name
+        $('.selected')[0].subscriptions[0].channel = name
+        displayListenChannel(name)
       }
     });
 
@@ -191,8 +269,6 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     var broadcasts = $('template#' + componentname).attr('broadcasts') !== undefined
     var listens = $('template#' + componentname).attr('ondblclick') !== undefined
     $(".inspector .name").text(componentname);
-    $('.inspector .broadcast-channel').text(currentBroadcast)
-    $('.inspector .listen-channel').text(currentListen)
     if (broadcasts) {
       var broadcastChannel = comp.attr('broadcast-to')
       if (!broadcastChannel) {
