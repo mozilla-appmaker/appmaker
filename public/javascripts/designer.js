@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
  
-define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
+define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ceci) {
   // TODO: Fix this, we're essentially working around require.js.
   // This is gross and shouldn't happen, it's 
 

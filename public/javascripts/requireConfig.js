@@ -7,6 +7,7 @@ requirejs.config({
     "paths": {
       "jquery": "jquery/jquery.min",
       "ceci": "ceci/ceci",
+      "ceci-ui": "ceci/ceci-ui",
       "jquery-ui": "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min",
       "angular": "angular/angular.min"
     },
