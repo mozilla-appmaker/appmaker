@@ -34,24 +34,25 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     });
   });
 
-  function Channel(name, hex) {
+  function Channel(name, title, hex) {
     this.name = name;
+    this.title = title;
     this.hex = hex;
   }
 
   var listChannels = function () {
     var radio = new Array()
-    radio[0] = new Channel('Blue Moon', '#358CCE')
-    radio[1] = new Channel('Red Baloon', '#e81e1e')
-    radio[2] = new Channel('Pink Heart', '#e3197b')
-    radio[3] = new Channel('Purple Horseshoe', '#9f27cf')
-    radio[4] = new Channel('Green Clover', '#71b806')
-    radio[5] = new Channel('Yellow Pot of Gold', '#e8d71e')
-    radio[6] = new Channel('Orange Star', '#ff7b00')
+    radio[0] = new Channel('blue', 'Blue Moon', '#358CCE')
+    radio[1] = new Channel('red', 'Red Baloon', '#e81e1e')
+    radio[2] = new Channel('pink', 'Pink Heart', '#e3197b')
+    radio[3] = new Channel('purple', 'Purple Horseshoe', '#9f27cf')
+    radio[4] = new Channel('green', 'Green Clover', '#71b806')
+    radio[5] = new Channel('yellow', 'Yellow Pot of Gold', '#e8d71e')
+    radio[6] = new Channel('orange', 'Orange Star', '#ff7b00')
     //var colors = ['#358CCE', '#e81e1e', '#e3197b', '#27cfcf', '#e8d71e', '#ff7b00', '#71b806'];
     var i = 0;
     for (var i; i < radio.length; i++) {
-    $('.broadcast-options, .listen-options').append('<div class="color" value="'+ radio[i].hex +'" name="'+ radio[i].name +'" style="background-color: '+ radio[i].hex +'"></div>')
+    $('.broadcast-options, .listen-options').append('<div class="color" value="'+ radio[i].hex +'" name="'+ radio[i].name +'" title="'+ radio[i].title +'" style="background-color: '+ radio[i].hex +'"></div>')
     }
   }
 
@@ -173,13 +174,14 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     $(document).on('click', '.color', function () {
       var channelColor = $(this).attr('value');
       var name = $(this).attr('name');
+      var title = $(this).attr('title');
       if ($(this).parent().hasClass('broadcast-options')) {
         $('.inspector .broadcast-channel').css({'color': channelColor, 'border-color': channelColor})
-        $('.inspector .broadcast-channel').text(name)
+        $('.inspector .broadcast-channel').text(title)
         comp[0].broadcastChannel = name
       }else {
         $('.inspector .listen-channel').css({'color': channelColor, 'border-color': channelColor})
-        $('.inspector .listen-channel').text(name)
+        $('.inspector .listen-channel').text(title)
         comp[0].subscriptions[0].channel = name
       }
     });
