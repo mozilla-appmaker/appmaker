@@ -603,6 +603,10 @@ button.btn-done {
 	margin-right: 5px;
 }
 
+.broadcast-options {
+	margin-bottom: 20px;
+}
+
 .selected-channel {
 	border-bottom: 2px solid #DDD;
 	display: inline-block;

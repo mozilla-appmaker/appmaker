@@ -51,7 +51,7 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     //var colors = ['#358CCE', '#e81e1e', '#e3197b', '#27cfcf', '#e8d71e', '#ff7b00', '#71b806'];
     var i = 0;
     for (var i; i < radio.length; i++) {
-    $('.channel-options').append('<div class="color" value="'+ radio[i].hex +'" name="'+ radio[i].name +'" style="background-color: '+ radio[i].hex +'"></div>')
+    $('.broadcast-options, .listen-options').append('<div class="color" value="'+ radio[i].hex +'" name="'+ radio[i].name +'" style="background-color: '+ radio[i].hex +'"></div>')
     }
   }
 
@@ -160,28 +160,27 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
   });
 
   var selectComponent = function(comp) {
+    console.log(comp)
     clearSelection();
     moveToFront(comp);
-    var currentChannel = comp[0].broadcastChannel
+    var currentListen = comp[0].subscriptions[0].channel
+    var currentBroadcast = comp[0].broadcastChannel
     var compId = comp.id
     selection = [compId];
     comp.addClass("selected");
 
     //Change component channel
     $(document).on('click', '.color', function () {
-      var channel = $(this).attr('value');
+      var channelColor = $(this).attr('value');
       var name = $(this).attr('name');
-      $('.inspector .selected-channel').css({'color': channel, 'border-color': channel})
-      $('.inspector .selected-channel').text(name)
-      var selectedComponent = $("#" + selection[0])
-      var channelpicker = $(".inputoroutput");
-      channelpicker.children().css({'color': channel})
-      // var id = $('.selected').attr('belongsTo');
-      var isInput = $('.inputoroutput').hasClass('input')
-      if (isInput) {
-        selectedComponent.attr('listen-to', channel)
+      if ($(this).parent().hasClass('broadcast-options')) {
+        $('.inspector .broadcast-channel').css({'color': channelColor, 'border-color': channelColor})
+        $('.inspector .broadcast-channel').text(name)
+        comp[0].broadcastChannel = name
       }else {
-        selectedComponent.attr('broadcast-to', channel)
+        $('.inspector .listen-channel').css({'color': channelColor, 'border-color': channelColor})
+        $('.inspector .listen-channel').text(name)
+        comp[0].subscriptions[0].channel = name
       }
     });
 
@@ -190,7 +189,8 @@ define(["jquery", "angular", "ceci", "jquery-ui"], function($, ng, Ceci) {
     var broadcasts = $('template#' + componentname).attr('broadcasts') !== undefined
     var listens = $('template#' + componentname).attr('ondblclick') !== undefined
     $(".inspector .name").text(componentname);
-    $('.inspector .selected-channel').text(currentChannel)
+    $('.inspector .broadcast-channel').text(currentBroadcast)
+    $('.inspector .listen-channel').text(currentListen)
     if (broadcasts) {
       var broadcastChannel = comp.attr('broadcast-to')
       if (!broadcastChannel) {
