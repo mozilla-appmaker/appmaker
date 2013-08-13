@@ -1,7 +1,8 @@
 define(["ceci"], function(Ceci) {
 
   var CeciUI = function(element, def) {
-    var elementAttributes = {};
+    var elementAttributes = {},
+        editableAttributes = [];
 
     var bindAttributeChanging = function(target, attrName, fallthrough) {
       // value tracking as "real" value
@@ -28,6 +29,7 @@ define(["ceci"], function(Ceci) {
       Object.keys(def.editable).forEach(function (key) {
         var props = def.editable[key];
         bindAttributeChanging(element, key, props.edit);
+        editableAttributes.push(key);
         eak = {};
         Object.keys(props).forEach(function(pkey) {
           if (pkey === "edit") return;
@@ -35,6 +37,10 @@ define(["ceci"], function(Ceci) {
         })
         elementAttributes[key] = eak;
       });
+    }
+
+    element.getEditableAttributes = function() {
+      return editableAttributes;
     }
 
     element.getAttributeDefinition = function (attrName) {
@@ -47,5 +53,5 @@ define(["ceci"], function(Ceci) {
   Ceci.registerCeciPlugin("constructor", CeciUI);
 
   // return this plugin, for good measure
-	return CeciUI;
+  return CeciUI;
 });
