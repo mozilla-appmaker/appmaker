@@ -108,6 +108,7 @@ h5 {
 	font-size: 16px;
 	margin: 0px 0px 20px 0px;
 	text-transform: uppercase;
+	font-weight: 600;
 }
 
 h6 {
@@ -607,7 +608,20 @@ button.btn-done {
 	margin-bottom: 20px;
 }
 
-.selected-channel {
+.label {
+	font-size: 16px;
+	margin: 0px 0px 5px 0px;
+	text-transform: uppercase;
+	font-weight: 600;
+}
+
+.description {
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #2a2a2a;
+}
+
+.channel-label {
 	border-bottom: 2px solid #DDD;
 	display: inline-block;
 	margin-bottom: 10px;
