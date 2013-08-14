@@ -27,7 +27,7 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
       var thumb = $('<div class="clearfix draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('app-', '') + '</div></div>');
       $('.library-list').append(thumb);
       thumb.draggable({
-        appendTo: ".phone-canvas",
+        connectToSortable: ".drophere",
         helper: "clone",
         addClass: "clone"
       })
@@ -66,24 +66,9 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
 
   var sortable;
   var enableReorder = function() {
-		//There shoudl be some way to combine these sortable calls into one.
-    $(".phone-canvas").disableSelection();
-    sortable = $(".phone-canvas").sortable({
-      connectWith: [".fixed-top, .fixed-bottom"],
-			placeholder: "ui-state-highlight",
-			start : function(){	$(".phone-container").addClass("dragging")},
-			stop : function(){	$(".phone-container").removeClass("dragging")}
-    });
-		
-		$(".fixed-top").sortable({
-			connectWith: [".phone-canvas, .fixed-bottom"],
-			placeholder: "ui-state-highlight",
-			start : function(){	$(".phone-container").addClass("dragging")},
-			stop : function(){	$(".phone-container").removeClass("dragging")}
-		});
 
-		$(".fixed-bottom").sortable({
-			connectWith: [".phone-canvas, .fixed-top"],
+    $(".phone-canvas,.fixed-top,.fixed-bottom").disableSelection().sortable({
+			connectWith: ".drophere",
 			placeholder: "ui-state-highlight",
 			start : function(){	$(".phone-container").addClass("dragging")},
 			stop : function(){	$(".phone-container").removeClass("dragging")}
@@ -320,44 +305,55 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     scroll.scrollTop = scroll.scrollHeight;
   });
 
-  $('.phone-canvas').droppable({
+  $('.drophere').sortable({
     accept: '.draggable',
-    drop: function (event, ui) {
-      var componentname = $(ui.helper).attr('value');
-      var componentId = genId($(ui.helper).attr('name'));
-      var component = $('<' + componentname + '></' + componentname + '>');
-      component.attr('id', componentId)
-      component.on('mousedown', function(evt) {
-        if (mode == 'play') {
-          $(evt.target).addClass('active'); // to replace :active which is otherwise impossible to intercept
-        } else {
-          selectComponent($(evt.currentTarget));
-        }
-      });
-      component.on('mouseleave', function(evt) {
-        if (mode == 'play') {
-          $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
-        }
-      });
-      component.on('mouseup', function(evt) {
-        if (mode == 'play') {
-          $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
-        }
-        if (mode == 'build') {
-          event.stopPropagation();
-          event.preventDefault();
-        }
-      });
-      
-			$(this).append(component);
-      Ceci.convertElement(component[0]);
+    receive: function (event, ui) {
 
-      if (mode == "build") {
-        disableComponents(component.find());
-      }
-      selectComponent(component);
-      $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
+			if(ui.helper){
+
+				var componentname = $(ui.helper).attr('value');
+	      var componentId = genId($(ui.helper).attr('name'));
+	      var component = $('<' + componentname + '></' + componentname + '>');
+
+	      component.attr('id', componentId)
+
+	      component.on('mousedown', function(evt) {
+	        if (mode == 'play') {
+	          $(evt.target).addClass('active'); // to replace :active which is otherwise impossible to intercept
+	        } else {
+	          selectComponent($(evt.currentTarget));
+	        }
+	      });
+	      component.on('mouseleave', function(evt) {
+	        if (mode == 'play') {
+	          $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
+	        }
+	      });
+	      component.on('mouseup', function(evt) {
+	        if (mode == 'play') {
+	          $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
+	        }
+	        if (mode == 'build') {
+	          event.stopPropagation();
+	          event.preventDefault();
+	        }
+	      });
+      
+				var item = $(".drophere").find(".draggable");
+				item.after(component);
+				item.remove();
+
+	      Ceci.convertElement(component[0]);
+
+	      if (mode == "build") {
+	        disableComponents(component.find());
+	      }
+	      selectComponent(component);
+	      $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
+			}
+		
     }
   });
+
 
 });
