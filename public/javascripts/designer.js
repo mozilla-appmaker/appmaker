@@ -66,10 +66,29 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
 
   var sortable;
   var enableReorder = function() {
+		//There shoudl be some way to combine these sortable calls into one.
     $(".phone-canvas").disableSelection();
     sortable = $(".phone-canvas").sortable({
-      placeholder: "ui-state-highlight"
+      connectWith: [".fixed-top, .fixed-bottom"],
+			placeholder: "ui-state-highlight",
+			start : function(){	$(".phone-container").addClass("dragging")},
+			stop : function(){	$(".phone-container").removeClass("dragging")}
     });
+		
+		$(".fixed-top").sortable({
+			connectWith: [".phone-canvas, .fixed-bottom"],
+			placeholder: "ui-state-highlight",
+			start : function(){	$(".phone-container").addClass("dragging")},
+			stop : function(){	$(".phone-container").removeClass("dragging")}
+		});
+
+		$(".fixed-bottom").sortable({
+			connectWith: [".phone-canvas, .fixed-top"],
+			placeholder: "ui-state-highlight",
+			start : function(){	$(".phone-container").addClass("dragging")},
+			stop : function(){	$(".phone-container").removeClass("dragging")}
+		});
+
   }
 
   var disableReorder = function() {
@@ -329,7 +348,8 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
           event.preventDefault();
         }
       });
-      $(this).append(component);
+      
+			$(this).append(component);
       Ceci.convertElement(component[0]);
 
       if (mode == "build") {

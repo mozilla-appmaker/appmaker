@@ -399,10 +399,43 @@ button.btn-done {
 	background-repeat: no-repeat;
 }
 
+.dragging .fixed-top, .dragging .fixed-bottom {
+	min-height: 20px;
+
+}
+
+.dragging .fixed-top {
+	background: url(../images/stick-to-top.png) no-repeat white center;
+	background-size: auto 12px;
+}
+
+.dragging .fixed-bottom {
+	background: url(../images/stick-to-bottom.png) no-repeat white center;
+	background-size: auto 12px;
+}
+
+.fixed-top {
+	-webkit-transition: linear .2s min-height;
+	min-height: 5px;
+	background: white;
+	border-bottom: dashed 2px #DDD;
+	padding-bottom: 4px;
+}
+
+.fixed-bottom {
+	-webkit-transition: linear .2s min-height;
+	min-height: 5px;
+	background: white;
+	border-top: dashed 2px #DDD;
+	padding-top: 4px;
+
+}
+
 .phone-canvas {
-	height: 400px;
+	min-height: 400px;
 	background-color: #FFF;
 	width: 100%;
+	padding: 4px 0;
 }
 
 .phone-bottom {
@@ -481,6 +514,8 @@ button.btn-done {
 	display: none;
 }
 
+.fixed-top *,
+.fixed-bottom *,
 .phone-canvas * {
 	display: block; /* so that the styling we do to component takes the space of its contents */
 	position: relative; /* so that box-shadow is always visible on selection */
