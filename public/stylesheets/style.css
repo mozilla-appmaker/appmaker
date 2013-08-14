@@ -373,6 +373,7 @@ button.btn-done {
 	float: left;
 	width: 310px;
 	margin-left: 40px;
+	margin-bottom: 20px;
 }
 
 .phone-canvas button:focus {
@@ -414,18 +415,19 @@ button.btn-done {
 	background-size: auto 12px;
 }
 
-.fixed-top {
-	-webkit-transition: linear .2s min-height;
+.fixed-top,.fixed-bottom {
+	transition: linear .2s min-height;
+	-moz-transition: linear .2s min-height;
 	min-height: 5px;
 	background: white;
+}
+
+.fixed-top {
 	border-bottom: dashed 2px #DDD;
 	padding-bottom: 4px;
 }
 
 .fixed-bottom {
-	-webkit-transition: linear .2s min-height;
-	min-height: 5px;
-	background: white;
 	border-top: dashed 2px #DDD;
 	padding-top: 4px;
 
