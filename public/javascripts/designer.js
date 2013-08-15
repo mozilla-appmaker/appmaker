@@ -26,7 +26,7 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
   
 	  var componentCount = Object.keys(components).length;
 		var addedCount = 0;
-		$(".library-list").addClass("library-loading");
+		// $(".library-list").addClass("library-loading");
 
 		Object.keys(components).forEach(function (tag) {
       var thumb = $('<div class="clearfix draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('app-', '') + '</div></div>');
