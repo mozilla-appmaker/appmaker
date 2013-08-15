@@ -359,4 +359,20 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     }
   });
 
+  $('.publish').click(function(){
+    var htmlData = $('.phone-canvas')[0].outerHTML;
+    $.ajax('/publish', {
+      data: { html: htmlData },
+      type: 'post',
+      success: function (data) {
+        $('.publish-url').html(data.filename);
+        $('.publish-url').attr('href', data.filename);
+      },
+      error: function (data) {
+        console.error('Error while publishing content:');
+        console.error(data);
+      }
+    });
+  });
+
 });
