@@ -7,8 +7,8 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
   // This is gross and shouldn't happen, it's
 
   var selection = [];
-  var defaultChannel = "#358CCE"; /* matches what's in style.css */
-  var defaultChannelName = "blue";
+  var defaultChannel = "#358CCE"; // matches what's in style.css
+  var emptyChannel = "false"; // channel names have to be strings
   var tagids = {};
   var genId = function(tag) {
     // generate a unique id that increments per tag ('moz-button-1', 'moz-button-2', etc.)
@@ -36,7 +36,8 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
   });
 
   function Channel(name, title, hex) {
-    this.name = name;
+    // make sure the name is a string
+    this.name = ""+name;
     this.title = title;
     this.hex = hex;
   }
@@ -49,7 +50,9 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
         new Channel('green', 'Green Clover', '#71b806'),
         new Channel('yellow', 'Yellow Pot of Gold', '#e8d71e'),
         new Channel('orange', 'Orange Star', '#ff7b00'),
+        new Channel(emptyChannel, 'Disabled', '#444')
       ];
+
 
   // generate the radio channel list (colored clickable boxes) and append to the page
   var getChannelStrip = function (forAttribute) {
@@ -188,27 +191,49 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
   var displayBroadcastChannel = function (channelName) {
     var rdata = getChannelByChannelName(channelName);
     if(!rdata) {
-        rdata = getChannelByChannelName(defaultChannelName);
+        rdata = getChannelByChannelName(emptyChannel);
     }
     $('.inspector .broadcast-channel')
         .text(rdata.title)
         .css({'color': rdata.hex, 'border-color': rdata.hex});
   };
 
-  var displayListenChannels = function (listeners) {
+  var getPotentialListeners = function(element) {
+    return element.subscriptionListeners.map(function(listener) {
+      var subscription;
+      element.subscriptions.forEach(function(s) {
+        if(s.listener === listener) {
+          subscription = s;
+        }
+      });
+      if(!subscription) {
+        subscription = {
+          channel: emptyChannel,
+          listener: listener
+        };
+      }
+      return subscription;
+    });
+  };
+
+  var displayListenChannels = function (potentialListeners) {
     var lc = $('.inspector .listen-channel'),
+        attrBar,
         attribute;
     lc.html("");
-    listeners.forEach(function(pair) {
-      var rdata = getChannelByChannelName(pair.channel ? pair.channel : defaultChannelName);
+
+    potentialListeners.forEach(function(pair) {
+      var rdata = getChannelByChannelName(pair.channel);
+      var attrBar = $('<div class="listener' + (pair.channel === emptyChannel ? ' custom':'') + '"></div>');
       // listening function name
-      lc.append('<div class="">' + pair.listener + '</div>');
+      attrBar.append('<span class="channel-listener">' + pair.listener + '</span>');
       // color strip
-      attribute = $('<span></span>')
+      attribute = $('<span class="channel-label"></span>')
         .text(rdata.title)
         .css({'color': rdata.hex, 'border-color': rdata.hex});
-      lc.append(attribute);
-      lc.append(getChannelStrip(pair.listener));
+      attrBar.append(attribute);
+      attrBar.append(getChannelStrip(pair.listener));
+      lc.append(attrBar);
     });
   };
 
@@ -247,28 +272,9 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     comp.addClass("selected");
 
     //Show connectable listeners
-    var getCurrentListeners = function(element) {
-      return element.subscriptionListeners.map(function(listener) {
-        var subscription;
-        element.subscriptions.forEach(function(s) {
-          if(s.listener === listener) {
-            subscription = s;
-          }
-        });
-        if(!subscription) {
-          subscription = {
-            channel: false,
-            listener: listener
-          };
-        }
-        return subscription;
-      });
-    };
-    var currentListeners = getCurrentListeners(element);
-    displayListenChannels(currentListeners);
+    displayListenChannels(getPotentialListeners(element));
 
-    //Show broadcast
-    console.log(element.broadcastChannel);
+    //Show broadcast channel
     var currentBroadcast = element.broadcastChannel;
     displayBroadcastChannel(currentBroadcast);
 
@@ -283,9 +289,10 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
           name: comp.attr('name'),
           title: comp.attr('title')
       };
+
       // change broadcast "color"
       if (comp.parents().hasClass('broadcast-options')) {
-        element.setBroadcastChannel(channel.name);
+       element.setBroadcastChannel(channel.name);
         displayBroadcastChannel(channel.name);
       }
 
@@ -294,7 +301,7 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
         var attribute = comp.parent().attr("id").replace("strip-",'');
         if(attribute) {
           element.setSubscription(channel.name, attribute);
-          displayListenChannels(getCurrentListeners(element));
+          displayListenChannels(getPotentialListeners(element));
         }
       }
     };
