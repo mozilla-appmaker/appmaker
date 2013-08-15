@@ -1,5 +1,9 @@
 define(function() {
 
+  var getChannel = function(name) {
+    return "flathead:" + name;
+  }
+
   var Ceci = function (element, def) {
 
     Object.keys(def).filter(function (item) {
@@ -32,7 +36,7 @@ define(function() {
       if(element.broadcastChannel === Ceci._emptyChannel) return;
       var e = new CustomEvent(element.broadcastChannel, {bubbles: true, detail: data});
       element.dispatchEvent(e);
-      console.log(element.id + " -> " + element.broadcastChannel);
+      // console.log(element.id + " -> " + element.broadcastChannel);
     };
 
     element.init = function() {
@@ -118,17 +122,9 @@ define(function() {
   function setupSubscriptionLogic(element, original) {
     // get <listen> rules from the original declaration
     element.subscriptions = getSubscriptions(element, original);
-    var generateListener = function(element, channel, listener) {
-      return function(e) {
-        if(e.target !== element) {
-          console.log(element, channel, listener);
-          element[listener](e.detail, channel);
-        }
-      }
-    }
     // set properties on actual on-page element
     element.setSubscription = function(channel, listener) {
-      var append = true, fn;
+      var append = true;
       element.subscriptions.forEach(function(s) {
         if(s.listener === listener) {
           // remove the old event listening
@@ -152,10 +148,6 @@ define(function() {
         }
       });
       if(append) {
-        fn = generateListener(element, channel, listener);
-        element[listener].listeningFunction = fn;
-        console.log("adding "+channel+"/"+listener+" pair");
-        document.addEventListener(channel, fn);
         element.subscriptions.push({
           listener: listener,
           channel: channel
@@ -200,6 +192,23 @@ define(function() {
     // channel logic
     setupBroadcastLogic(element, original);
     setupSubscriptionLogic(element, original);
+
+    element.subscriptions.forEach(function (subscription) {
+      console.log(
+        "Adding event listener for",
+        element.id + '.' + subscription.listener + '(<data>)',
+        "on",
+        subscription.channel
+      );
+      document.addEventListener(getChannel(subscription.channel), function(e) {
+        if(e.target !== element) {
+          // console.log(element.id + " <- " + subscription.channel);
+          element[subscription.listener](e.detail, subscription.channel);
+        }
+        return true;
+      })
+    });
+
     element.init();
   };
 

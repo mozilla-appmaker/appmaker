@@ -317,6 +317,12 @@ button.btn-done {
 	padding: 40px;
 }
 
+.library-loading {
+	min-height: 400px;
+	background: url(../images/loading-throbber.gif) center no-repeat;
+	background-size: auto 75px;
+}
+
 .component-header {
 	margin: 40px 0px 0px 40px;
 	width: 160px;
@@ -390,6 +396,7 @@ button.btn-done {
 	float: left;
 	width: 310px;
 	margin-left: 40px;
+	margin-bottom: 20px;
 }
 
 .phone-canvas button:focus {
@@ -416,10 +423,44 @@ button.btn-done {
 	background-repeat: no-repeat;
 }
 
+.dragging .fixed-top, .dragging .fixed-bottom {
+	min-height: 20px;
+
+}
+
+.dragging .fixed-top {
+	background: url(../images/stick-to-top.png) no-repeat white center;
+	background-size: auto 12px;
+}
+
+.dragging .fixed-bottom {
+	background: url(../images/stick-to-bottom.png) no-repeat white center;
+	background-size: auto 12px;
+}
+
+.fixed-top,.fixed-bottom {
+	transition: linear .2s min-height;
+	-moz-transition: linear .2s min-height;
+	min-height: 5px;
+	background: white;
+}
+
+.fixed-top {
+	border-bottom: dashed 2px #DDD;
+	padding-bottom: 4px;
+}
+
+.fixed-bottom {
+	border-top: dashed 2px #DDD;
+	padding-top: 4px;
+
+}
+
 .phone-canvas {
-	height: 400px;
+	min-height: 400px;
 	background-color: #FFF;
 	width: 100%;
+	padding: 4px 0;
 }
 
 .phone-bottom {
@@ -498,6 +539,8 @@ button.btn-done {
 	display: none;
 }
 
+.fixed-top *,
+.fixed-bottom *,
 .phone-canvas * {
 	display: block; /* so that the styling we do to component takes the space of its contents */
 	position: relative; /* so that box-shadow is always visible on selection */

@@ -24,15 +24,25 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
   }
 
   Ceci.load(function(components) {
+  
+    var componentCount = Object.keys(components).length;
+    var addedCount = 0;
+
     Object.keys(components).forEach(function (tag) {
       var thumb = $('<div class="clearfix draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('app-', '') + '</div></div>');
       $('.library-list').append(thumb);
       thumb.draggable({
-        appendTo: ".phone-canvas",
+        connectToSortable: ".drophere",
         helper: "clone",
         addClass: "clone"
       })
+
+      addedCount++;
+      if(addedCount == componentCount){
+        $('.library-list').removeClass("library-loading");
+      }
     });
+
   });
 
   function Channel(name, title, hex) {
@@ -97,20 +107,25 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
       selection = [];
       $(".selected").removeClass("selected");
       $(".inspector").addClass('hidden');
-      disableReorder();
+      // disableReorder();
   }
 
   // jQuery-UI property for reordering items in the designer
   var sortable;
   var enableReorder = function() {
-    $(".phone-canvas").disableSelection();
-    sortable = $(".phone-canvas").sortable({
-      placeholder: "ui-state-highlight"
+    $(".phone-canvas,.fixed-top,.fixed-bottom").disableSelection().sortable({
+      connectWith: ".drophere",
+      placeholder: "ui-state-highlight",
+      start : function(){ $(".phone-container").addClass("dragging")},
+      stop : function(){ $(".phone-container").removeClass("dragging")}
     });
+    return $(".phone-canvas,.fixed-top,.fixed-bottom").sortable("enable");
   }
+
   var disableReorder = function() {
     sortable = false;
-    return $(".phone-canvas").sortable("disable");
+    console.log("disable");
+    return $(".phone-canvas,.fixed-top,.fixed-bottom").sortable("disable");
   }
 
   // indicates the design vs. play mode for the app we're building
@@ -325,15 +340,21 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     scroll.scrollTop = scroll.scrollHeight;
   });
 
-  // drag and drop behavior
-  $('.phone-canvas').droppable({
+  $('.drophere').sortable({
     accept: '.draggable',
-    drop: function (event, ui) {
+    receive: function (event, ui) {
+
+    if(ui.helper){
+    
       var helper = $(ui.helper);
+    
       var componentname = helper.attr('value');
       var componentId = genId(helper.attr('name'));
+
       var component = $('<' + componentname + '></' + componentname + '>');
-      component.attr('id', componentId)
+
+      component.attr('id', componentId);
+
       component.on('mousedown', function(evt) {
         if (mode == 'play') {
           $(evt.target).addClass('active'); // to replace :active which is otherwise impossible to intercept
@@ -341,11 +362,13 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
           selectComponent($(evt.currentTarget));
         }
       });
+    
       component.on('mouseleave', function(evt) {
         if (mode == 'play') {
           $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
         }
       });
+
       component.on('mouseup', function(evt) {
         if (mode == 'play') {
           $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
@@ -355,14 +378,18 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
           event.preventDefault();
         }
       });
-      $(this).append(component);
 
-      // convert from webcomponent markup to "real" html markup,
-      // with all the functions and properties bound, and channel
-      // listening set up.
+      var item = $(".drophere").find(".draggable");
+      item.after(component);
+      item.remove();
+
       Ceci.convertElement(component[0]);
 
       selectComponent(component);
+
+      $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
+      }
+
     }
   });
 
