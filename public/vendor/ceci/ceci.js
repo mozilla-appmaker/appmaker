@@ -15,7 +15,11 @@ define(function() {
       }
     });
 
-    element.defaultListener = def.defaultListener;
+    var defaultListener = def.defaultListener;
+    if (!defaultListener) {
+      defaultListener = Object.keys(def.listeners)[0];
+    }
+    element.defaultListener = defaultListener;
 
     element.subscriptionListeners = [];
 
@@ -33,8 +37,7 @@ define(function() {
     });
 
     element.emit = function (data) {
-      if(element.broadcastChannel === Ceci._emptyChannel) return;
-      var e = new CustomEvent(element.broadcastChannel, {bubbles: true, detail: data});
+      var e = new CustomEvent(getChannel(element.broadcastChannel), {bubbles: true, detail: data});
       element.dispatchEvent(e);
       // console.log(element.id + " -> " + element.broadcastChannel);
     };
@@ -64,13 +67,10 @@ define(function() {
     Ceci._plugins[eventName].push(plugin);
   }
 
-  Ceci._defaultBroadcastChannel = "blue";
-  Ceci._defaultListeningChannel = "blue";
-  Ceci._emptyChannel = "false";
+  Ceci.defaultChannel = "blue";
 
   Ceci._components = {};
 
-  // this function is only called once, when an element is instantiated.
   function getBroadcastChannel(element) {
     var broadcast = element.getElementsByTagName('broadcast')[0];
     if (broadcast){
@@ -79,21 +79,17 @@ define(function() {
         return channel;
       }
     }
-    return Ceci._defaultBroadcastChannel;
+    return Ceci.defaultChannel;
   }
 
-  // this function is only called once, when an element is instantiated.
   function getSubscriptions(element, original) {
     var subscriptions = original.getElementsByTagName('listen');
     subscriptions = Array.prototype.slice.call(subscriptions);
 
     if(subscriptions.length === 0) {
-      if(!element.defaultListener) {
-        return [];
-      }
       return [{
         listener: element.defaultListener,
-        channel: Ceci._defaultListeningChannel
+        channel: Ceci.defaultChannel
       }];
     }
 
@@ -103,7 +99,7 @@ define(function() {
 
       return {
         listener: listener,
-        channel: channel
+        channel: (channel ? channel : Ceci.defaultChannel)
       };
     });
 
@@ -116,7 +112,7 @@ define(function() {
     // set property on actual on-page element
     element.setBroadcastChannel = function(channel) {
       element.broadcastChannel = channel;
-    };
+    }
   }
 
   function setupSubscriptionLogic(element, original) {
@@ -127,23 +123,7 @@ define(function() {
       var append = true;
       element.subscriptions.forEach(function(s) {
         if(s.listener === listener) {
-          // remove the old event listening
-          fn = element[listener].listeningFunction;
-          if(fn) {
-            console.log("removing "+s.channel+"/"+listener+" pair");
-            document.removeEventListener(s.channel, fn);
-          }
-          // update the channel
           s.channel = channel;
-          // bind the new event listening
-          if(channel !== Ceci._emptyChannel) {
-            fn = generateListener(element, s.channel, s.listener);
-            console.log("adding "+s.channel+"/"+listener+" pair");
-            document.addEventListener(s.channel, fn);
-          } else {
-            fn = false;
-          }
-          element[listener].listeningFunction = fn;
           append = false;
         }
       });
@@ -155,25 +135,10 @@ define(function() {
       }
     };
     element.removeSubscription = function(channel, listener) {
-      var filter = function(s) {
+      e.subscriptions = e.subscriptions.filter(function(s) {
         return !(s.channel === channel && s.listener === listener);
-      };
-      // single arg: remove listener, regardless of its channel
-      if(channel && !listener) {
-        listener = channel;
-        filter = function(s) {
-          return (s.listener !== listener);
-        };
-      }
-      e.subscriptions = e.subscriptions.filter(filter);
+      })
     };
-
-    element.subscriptions.forEach(function (s) {
-      var fn = generateListener(element, s.channel, s.listener);
-      element[s.listener].listeningFunction = fn;
-      document.addEventListener(s.channel, fn);
-    });
-
   }
 
   Ceci.convertElement = function (element) {
