@@ -300,6 +300,12 @@ button.btn-done {
 	padding: 40px;
 }
 
+.library-loading {
+	min-height: 400px;
+	background: url(../images/loading-throbber.gif) center no-repeat;
+	background-size: auto 75px;
+}
+
 .component-header {
 	margin: 40px 0px 0px 40px;
 	width: 160px;

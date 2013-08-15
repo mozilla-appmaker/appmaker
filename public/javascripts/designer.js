@@ -23,16 +23,27 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
   }
 
   Ceci.load(function(components) {
-    Object.keys(components).forEach(function (tag) {
+  
+	  var componentCount = Object.keys(components).length;
+		var addedCount = 0;
+		$(".library-list").addClass("library-loading");
+
+		Object.keys(components).forEach(function (tag) {
       var thumb = $('<div class="clearfix draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('app-', '') + '</div></div>');
       $('.library-list').append(thumb);
-      thumb.draggable({
+			thumb.draggable({
         connectToSortable: ".drophere",
         helper: "clone",
         addClass: "clone"
       })
-    });
-  });
+
+			addedCount++;
+			if(addedCount == componentCount){
+				$('.library-list').removeClass("library-loading");
+			}
+		});
+	
+	});
 
   function Channel(name, title, hex) {
     this.name = name;
