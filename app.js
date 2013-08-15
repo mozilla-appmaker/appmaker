@@ -8,13 +8,12 @@
 var 
 express = require('express'),
 routes = require('./routes'),
-editor = require('./routes/editor'),
 http = require('http'),
 engine = require('ejs-locals'),
 path = require('path');
 
 // .env files aren't great at empty values.
-process.env.ASSET_HOST = typeof process.env.ASSET_HOST === 'undefined' ? '' : process.env.ASSET_HOST
+process.env.ASSET_HOST = typeof process.env.ASSET_HOST === 'undefined' ? '' : process.env.ASSET_HOST;
 
 var app = express();
 
@@ -39,8 +38,11 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
-app.get('/edit', editor.index);
+app.get('/edit', routes.editor.index);
 app.get('/designer', routes.designer);
+app.post('/publish', routes.store.publish);
+
+routes.store._init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET, __dirname + '/views', process.env.SHARE_URL_PREFIX);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

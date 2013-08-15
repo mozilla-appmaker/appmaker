@@ -210,6 +210,23 @@ button.publish {
 	height: 40px;
 	width: 120px;
 	font-size: 16px;
+	cursor: pointer;
+}
+
+.publish-url {
+	display: block;
+	position: absolute;
+	text-align: right;
+	top: -40px;
+	right: 160px;
+	height: 40px;
+	width: 500px;
+	line-height: 40px;
+	font-size: 15px;
+	color: #ccc;
+	padding-right: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 button.btn-img {
