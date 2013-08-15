@@ -24,26 +24,25 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
 
   Ceci.load(function(components) {
   
-	  var componentCount = Object.keys(components).length;
-		var addedCount = 0;
-		// $(".library-list").addClass("library-loading");
+    var componentCount = Object.keys(components).length;
+    var addedCount = 0;
 
-		Object.keys(components).forEach(function (tag) {
+    Object.keys(components).forEach(function (tag) {
       var thumb = $('<div class="clearfix draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('app-', '') + '</div></div>');
       $('.library-list').append(thumb);
-			thumb.draggable({
+      thumb.draggable({
         connectToSortable: ".drophere",
         helper: "clone",
         addClass: "clone"
       })
 
-			addedCount++;
-			if(addedCount == componentCount){
-				$('.library-list').removeClass("library-loading");
-			}
-		});
-	
-	});
+      addedCount++;
+      if(addedCount == componentCount){
+        $('.library-list').removeClass("library-loading");
+      }
+    });
+
+  });
 
   function Channel(name, title, hex) {
     this.name = name;
@@ -67,7 +66,6 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     }
   }
 
-
   var clearSelection = function() {
       selection = [];
       $(".selected").removeClass("selected");
@@ -79,12 +77,11 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
   var enableReorder = function() {
 
     $(".phone-canvas,.fixed-top,.fixed-bottom").disableSelection().sortable({
-			connectWith: ".drophere",
-			placeholder: "ui-state-highlight",
-			start : function(){	$(".phone-container").addClass("dragging")},
-			stop : function(){	$(".phone-container").removeClass("dragging")}
-		});
-
+      connectWith: ".drophere",
+      placeholder: "ui-state-highlight",
+      start : function(){ $(".phone-container").addClass("dragging")},
+      stop : function(){ $(".phone-container").removeClass("dragging")}
+    });
   }
 
   var disableReorder = function() {
@@ -320,49 +317,51 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     accept: '.draggable',
     receive: function (event, ui) {
 
-			if(ui.helper){
+    if(ui.helper){
 
-				var componentname = $(ui.helper).attr('value');
-	      var componentId = genId($(ui.helper).attr('name'));
-	      var component = $('<' + componentname + '></' + componentname + '>');
+      var componentname = $(ui.helper).attr('value');
+      var componentId = genId($(ui.helper).attr('name'));
+      var component = $('<' + componentname + '></' + componentname + '>');
 
-	      component.attr('id', componentId)
+      component.attr('id', componentId);
 
-	      component.on('mousedown', function(evt) {
-	        if (mode == 'play') {
-	          $(evt.target).addClass('active'); // to replace :active which is otherwise impossible to intercept
-	        } else {
-	          selectComponent($(evt.currentTarget));
-	        }
-	      });
-	      component.on('mouseleave', function(evt) {
-	        if (mode == 'play') {
-	          $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
-	        }
-	      });
-	      component.on('mouseup', function(evt) {
-	        if (mode == 'play') {
-	          $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
-	        }
-	        if (mode == 'build') {
-	          event.stopPropagation();
-	          event.preventDefault();
-	        }
-	      });
-      
-				var item = $(".drophere").find(".draggable");
-				item.after(component);
-				item.remove();
+      component.on('mousedown', function(evt) {
+        if (mode == 'play') {
+          $(evt.target).addClass('active'); // to replace :active which is otherwise impossible to intercept
+        } else {
+          selectComponent($(evt.currentTarget));
+        }
+      });
+    
+      component.on('mouseleave', function(evt) {
+        if (mode == 'play') {
+          $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
+        }
+      });
 
-	      Ceci.convertElement(component[0]);
+      component.on('mouseup', function(evt) {
+        if (mode == 'play') {
+          $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
+        }
+        if (mode == 'build') {
+          event.stopPropagation();
+          event.preventDefault();
+        }
+      });
 
-	      if (mode == "build") {
-	        disableComponents(component.find());
-	      }
-	      selectComponent(component);
-	      $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
-			}
-		
+      var item = $(".drophere").find(".draggable");
+      item.after(component);
+      item.remove();
+
+      Ceci.convertElement(component[0]);
+
+      if (mode == "build") {
+        disableComponents(component.find());
+      }
+      selectComponent(component);
+        $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
+      }
+
     }
   });
 
