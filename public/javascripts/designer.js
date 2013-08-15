@@ -1,13 +1,14 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
- 
+
 define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ceci) {
   // TODO: Fix this, we're essentially working around require.js.
-  // This is gross and shouldn't happen, it's 
+  // This is gross and shouldn't happen, it's
 
   var selection = [];
-  var defaultChannel = "#358CCE"; /* matches what's in style.css */
+  var defaultChannel = "#358CCE"; // matches what's in style.css
+  var emptyChannel = "false"; // channel names have to be strings
   var tagids = {};
   var genId = function(tag) {
     // generate a unique id that increments per tag ('moz-button-1', 'moz-button-2', etc.)
@@ -45,52 +46,92 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
   });
 
   function Channel(name, title, hex) {
-    this.name = name;
+    // make sure the name is a string
+    this.name = ""+name;
     this.title = title;
     this.hex = hex;
   }
 
-    var radio = new Array()
-    radio[0] = new Channel('blue', 'Blue Moon', '#358CCE')
-    radio[1] = new Channel('red', 'Red Baloon', '#e81e1e')
-    radio[2] = new Channel('pink', 'Pink Heart', '#e3197b')
-    radio[3] = new Channel('purple', 'Purple Horseshoe', '#9f27cf')
-    radio[4] = new Channel('green', 'Green Clover', '#71b806')
-    radio[5] = new Channel('yellow', 'Yellow Pot of Gold', '#e8d71e')
-    radio[6] = new Channel('orange', 'Orange Star', '#ff7b00')
+  var radio = [
+        new Channel('blue', 'Blue Moon', '#358CCE'),
+        new Channel('red', 'Red Baloon', '#e81e1e'),
+        new Channel('pink', 'Pink Heart', '#e3197b'),
+        new Channel('purple', 'Purple Horseshoe', '#9f27cf'),
+        new Channel('green', 'Green Clover', '#71b806'),
+        new Channel('yellow', 'Yellow Pot of Gold', '#e8d71e'),
+        new Channel('orange', 'Orange Star', '#ff7b00'),
+        new Channel(emptyChannel, 'Disabled', '#444')
+      ];
 
-  var listChannels = function () {
-    var i = 0;
+
+  // generate the radio channel list (colored clickable boxes) and append to the page
+  var getChannelStrip = function (forAttribute) {
+    var rdata,
+        i = 0,
+        strip = $('<div class="colorstrip" id="strip' + (forAttribute? '-'+forAttribute : '') + '"></div>'),
+        box;
     for (var i; i < radio.length; i++) {
-    $('.broadcast-options, .listen-options').append('<div class="color" value="'+ radio[i].hex +'" name="'+ radio[i].name +'" title="'+ radio[i].title +'" style="background-color: '+ radio[i].hex +'"></div>')
+      rdata = radio[i];
+      box = $('<div class="color" value="'+ rdata.hex +'" name="'+ rdata.name +'" title="'+ rdata.title +'" style="background-color: '+ rdata.hex +'"></div>');
+      strip.append(box);
     }
+    return strip;
   }
 
+  var listChannels = function () {
+    var strip = getChannelStrip();
+    $('.broadcast-options').append(strip);
+  }
+
+  // get a Channel object given a channel name
+  var getChannelByChannelName = function(channelName) {
+    var i,
+       len = radio.length,
+       rdata;
+    for (i = 0; i<len; i++) {
+      rdata = radio[i];
+      if(rdata.name === channelName) {
+        return rdata;
+      }
+    }
+    return false;
+  }
+
+  // empty the list of currently selected elements on the page
   var clearSelection = function() {
+      var element;
+      selection.forEach(function(id) {
+        element = $("#"+id);
+        $(document).off("click", ".color", element.onSelectFunction);
+      });
       selection = [];
       $(".selected").removeClass("selected");
       $(".inspector").addClass('hidden');
-      disableReorder();
+      // disableReorder();
   }
 
+  // jQuery-UI property for reordering items in the designer
   var sortable;
   var enableReorder = function() {
-
     $(".phone-canvas,.fixed-top,.fixed-bottom").disableSelection().sortable({
       connectWith: ".drophere",
       placeholder: "ui-state-highlight",
       start : function(){ $(".phone-container").addClass("dragging")},
       stop : function(){ $(".phone-container").removeClass("dragging")}
     });
+    return $(".phone-canvas,.fixed-top,.fixed-bottom").sortable("enable");
   }
 
   var disableReorder = function() {
-    return; // XXX
-    $(".phone-canvas").sortable("disable");
+    sortable = false;
+    console.log("disable");
+    return $(".phone-canvas,.fixed-top,.fixed-bottom").sortable("disable");
   }
 
+  // indicates the design vs. play mode for the app we're building
   var mode;
 
+  // FIXME: 'modes' might become obsolete
   var buildMode = function() {
     $(".play").removeClass("on");
     $(".build").addClass("on");
@@ -99,25 +140,9 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     $(".tray").css('visibility', 'visible');
     $(".log").hide();
     $(".cards").show();
-    disableComponents($(".phone-canvas").find("*"));
   }
 
-  var disableComponents = function(elts) {
-    $.each(elts, function(i,elt) {
-      elt.onclick_ = elt.onclick;
-    });
-    elts.removeAttr('onclick');
-  }
-
-  var enableComponents = function(elts) {
-    $.each(elts, function(i,elt) {
-      if (elt.onclick_) {
-        elt.onclick = elt.onclick_;
-      }
-    });
-    elts.removeAttr('onclick_');
-  }
-
+  // FIXME: 'modes' might become obsolete
   var playMode = function() {
     $(".play").addClass("on");
     $(".build").removeClass("on");
@@ -127,10 +152,9 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     mode = 'play';
     clearSelection();
     disableReorder();
-    enableComponents($(".phone-canvas").find("*"));
   }
 
-  listChannels(); 
+  listChannels();
   enableReorder();
   disableReorder();
   clearSelection();
@@ -145,10 +169,10 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
   });
 
   $(document).on('click', '.container', function (evt) {
-    if ($(evt.target).hasClass('container'))
+    if ($(evt.target).hasClass('container')) {
       clearSelection();
+    }
   });
-
 
   $(document).on('keydown', function(event) {
     if (event.which == 27) { // escape
@@ -159,150 +183,153 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     } else if (event.which == 8) { // delete
       // delete removes the currently selected components and resets the selection
       if (selection) {
-        // XXX currently only deals with one-item selection.
+        // TODO: add in support for multiple element selections
         var selectedComponent = $("#" + selection[0]);
-        // XXX this doesn't actually remove it completely? e.g. metronome keeps on ticking.
+        // FIXME: this needs to be built into Ceci so that elements can clean up after themselves
+        if(selectedComponent.unlisten) {
+            // clean up all outstanding event listeners this element has
+            selectedComponent.unlisten();
+        }
+        // remove element from the page
         selectedComponent.remove();
         clearSelection();
       }
     } else if (event.which == 9) { // tab
-      if (mode == "play") { buildMode(); } 
+      // mode toggling
+      if (mode == "play") { buildMode(); }
       else { playMode(); }
+      // also prevent the event from being interpreted by anything else
       event.preventDefault();
     }
   });
 
   var displayBroadcastChannel = function (channelName) {
-    switch (channelName) {
-    case 'red':
-        $('.inspector .broadcast-channel')
-        .text(radio[1].title)
-        .css({'color': radio[1].hex, 'border-color': radio[1].hex})
-        break;
-    case 'pink':
-        $('.inspector .broadcast-channel')
-        .text(radio[2].title)
-        .css({'color': radio[2].hex, 'border-color': radio[2].hex})
-        break;
-    case 'purple':
-        $('.inspector .broadcast-channel')
-        .text(radio[3].title)
-        .css({'color': radio[3].hex, 'border-color': radio[3].hex})
-        break;
-    case 'green':
-        $('.inspector .broadcast-channel')
-        .text(radio[4].title)
-        .css({'color': radio[4].hex, 'border-color': radio[4].hex})
-        break;
-    case 'yellow':
-        $('.inspector .broadcast-channel')
-        .text(radio[5].title)
-        .css({'color': radio[5].hex, 'border-color': radio[5].hex})
-        break;
-    case 'orange':
-        $('.inspector .broadcast-channel').text(radio[6].title)
-        .css({'color': radio[6].hex, 'border-color': radio[6].hex})
-        break;
-    default:
-       $('.inspector .broadcast-channel')
-       .text(radio[0].title)
-       .css({'color': radio[0].hex, 'border-color': radio[0].hex})
+    var rdata = getChannelByChannelName(channelName);
+    if(!rdata) {
+        rdata = getChannelByChannelName(emptyChannel);
     }
-  }
+    $('.inspector .broadcast-channel')
+        .text(rdata.title)
+        .css({'color': rdata.hex, 'border-color': rdata.hex});
+  };
 
-  var displayListenChannel = function (channelName) {
-    switch (channelName) {
-    case 'red':
-        $('.inspector .listen-channel').text(radio[1].title)
-        .css({'color': radio[1].hex, 'border-color': radio[1].hex})
-        break;
-    case 'pink':
-        $('.inspector .listen-channel').text(radio[2].title)
-        .css({'color': radio[2].hex, 'border-color': radio[2].hex})
-        break;
-    case 'purple':
-        $('.inspector .listen-channel').text(radio[3].title)
-        .css({'color': radio[3].hex, 'border-color': radio[3].hex})
-        break;
-    case 'green':
-        $('.inspector .listen-channel').text(radio[4].title)
-        .css({'color': radio[4].hex, 'border-color': radio[4].hex})
-        break;
-    case 'yellow':
-        $('.inspector .listen-channel').text(radio[5].title)
-        .css({'color': radio[5].hex, 'border-color': radio[5].hex})
-        break;
-    case 'orange':
-        $('.inspector .listen-channel')
-        .text(radio[6].title)
-        .css({'color': radio[6].hex, 'border-color': radio[6].hex})
-        break;
-    default:
-       $('.inspector .listen-channel')
-       .text(radio[0].title)
-       .css({'color': radio[0].hex, 'border-color': radio[0].hex})
+  var getPotentialListeners = function(element) {
+    return element.subscriptionListeners.map(function(listener) {
+      var subscription;
+      element.subscriptions.forEach(function(s) {
+        if(s.listener === listener) {
+          subscription = s;
+        }
+      });
+      if(!subscription) {
+        subscription = {
+          channel: emptyChannel,
+          listener: listener
+        };
+      }
+      return subscription;
+    });
+  };
+
+  var displayListenChannels = function (potentialListeners) {
+    var lc = $('.inspector .listen-channel'),
+        attrBar,
+        attribute;
+    lc.html("");
+
+    potentialListeners.forEach(function(pair) {
+      var rdata = getChannelByChannelName(pair.channel);
+      var attrBar = $('<div class="listener' + (pair.channel === emptyChannel ? ' custom':'') + '"></div>');
+      // listening function name
+      attrBar.append('<span class="channel-listener">' + pair.listener + '</span>');
+      // color strip
+      attribute = $('<span class="channel-label"></span>')
+        .text(rdata.title)
+        .css({'color': rdata.hex, 'border-color': rdata.hex});
+      attrBar.append(attribute);
+      attrBar.append(getChannelStrip(pair.listener));
+      lc.append(attrBar);
+    });
+  };
+
+  var getAttributeUIElement = function(element, attributeName, definition) {
+    switch(definition.type) {
+      case "text": return (function() {
+                      var e = $("<label>"+attributeName+"<div></label><input type='text' value='" + element.getAttribute(attributeName) + "'></input></div>");
+                      e.on("change", function(evt) {
+                        element.setAttribute(attributeName, evt.target.value);
+                      });
+                      return e[0];
+                    });
     }
-  }
+    return $("<span>"+definition.type+" not implemented yet</span>");
+  };
 
-
+  var displayAttributes = function(element) {
+    $('.inspector .editables').html("");
+    var attributes = element.getEditableAttributes(),
+        definition,
+        attributeList = $("<div class='editable-attributes'></div>");
+    attributes.forEach(function(attribute) {
+      definition = element.getAttributeDefinition(attribute);
+      var uiElement = getAttributeUIElement(element, attribute, definition);
+      attributeList.append(uiElement);
+    });
+    $('.inspector .editables').append(attributeList);
+  };
 
   var selectComponent = function(comp) {
     clearSelection();
     moveToFront(comp);
-    var compId = comp.id
+    var element = comp[0];
+    var compId = element.id
     selection = [compId];
     comp.addClass("selected");
 
-    //Set current component channel
-    var currentListen = $('.selected')[0].subscriptions[0].channel
-    var currentBroadcast = $('.selected')[0].broadcastChannel
+    //Show connectable listeners
+    displayListenChannels(getPotentialListeners(element));
 
-    console.log($('.selected')[0].subscriptions[0].channel)
+    //Show broadcast channel
+    var currentBroadcast = element.broadcastChannel;
+    displayBroadcastChannel(currentBroadcast);
 
-    displayListenChannel(currentListen)
-    displayBroadcastChannel(currentBroadcast)
+    //Show editable attributes
+    displayAttributes(element);
 
-    //Change component channel
-    $(document).on('click', '.color', function () {
-      var channelColor = $(this).attr('value');
-      var name = $(this).attr('name');
-      var title = $(this).attr('title');
-      if ($(this).parent().hasClass('broadcast-options')) {
-        $('.selected')[0].broadcastChannel = name
-        displayBroadcastChannel(name)
-      }else {
-        $('.selected')[0].subscriptions[0].channel = name
-        displayListenChannel(name)
+    //Changes component channel
+    var onSelectFunction = function () {
+      var comp = $(this);
+      var channel = {
+          hex: comp.attr('value'),
+          name: comp.attr('name'),
+          title: comp.attr('title')
+      };
+
+      // change broadcast "color"
+      if (comp.parents().hasClass('broadcast-options')) {
+       element.setBroadcastChannel(channel.name);
+        displayBroadcastChannel(channel.name);
       }
-    });
 
-    // show its channels in the inspector
-    var componentname = comp[0].tagName.toLowerCase();
-    var broadcasts = $('template#' + componentname).attr('broadcasts') !== undefined
-    var listens = $('template#' + componentname).attr('ondblclick') !== undefined
+      // change listening "color"
+      else {
+        var attribute = comp.parent().attr("id").replace("strip-",'');
+        if(attribute) {
+          element.setSubscription(channel.name, attribute);
+          displayListenChannels(getPotentialListeners(element));
+        }
+      }
+    };
+
+    // listen for color clicks
+    $(document).on('click', '.color', onSelectFunction);
+
+    // give the element the function we just added, so we
+    // can unbind it when the element gets unselected.
+    element.onSelectFunction = onSelectFunction;
+
+    var componentname = element.tagName.toLowerCase();
     $(".inspector .name").text(componentname);
-    if (broadcasts) {
-      var broadcastChannel = comp.attr('broadcast-to')
-      if (!broadcastChannel) {
-        broadcastChannel = defaultChannel;
-        comp.attr('broadcast-to', broadcastChannel)
-      }
-      $("#outputBlock").show();
-      $("#outputChannel").children().css({'color': broadcastChannel})
-    } else {
-      $("#outputBlock").hide();
-    }
-    if (listens) {
-      var listenChannel = comp.attr('listen-to')
-      if (!listenChannel) {
-        listenChannel = defaultChannel;
-        comp.attr('listen-to', listenChannel)
-      }
-      $("#inputBlock").show();
-      $("#inputChannel").children().css({'color': listenChannel})
-    } else {
-      $("#inputBlock").hide();
-    }
     $(".inspector").removeClass('hidden');
   }
 
@@ -318,9 +345,12 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     receive: function (event, ui) {
 
     if(ui.helper){
+    
+      var helper = $(ui.helper);
+    
+      var componentname = helper.attr('value');
+      var componentId = genId(helper.attr('name'));
 
-      var componentname = $(ui.helper).attr('value');
-      var componentId = genId($(ui.helper).attr('name'));
       var component = $('<' + componentname + '></' + componentname + '>');
 
       component.attr('id', componentId);
@@ -355,11 +385,9 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
 
       Ceci.convertElement(component[0]);
 
-      if (mode == "build") {
-        disableComponents(component.find());
-      }
       selectComponent(component);
-        $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
+
+      $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
       }
 
     }
