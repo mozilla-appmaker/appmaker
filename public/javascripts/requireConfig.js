@@ -8,13 +8,18 @@ requirejs.config({
       "jquery": "jquery/jquery.min",
       "ceci": "ceci/ceci",
       "ceci-ui": "ceci/ceci-ui",
-      "jquery-ui": "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min",
-      "angular": "angular/angular.min"
+      "jquery-ui": "jquery-ui/ui/minified/jquery-ui.min",
+      "towtruck": "https://towtruck.mozillalabs.com/towtruck",
+      "towtruckSupport": "/javascripts/towtruckSupport",
+      "angular": "angular/angular.min",
     },
     shim: {
       "jquery-ui": {
         exports: "$",
         deps: ['jquery']
+      },
+      "towtruckSupport": {
+        deps: ['towtruck']
       }
     } 
 });
