@@ -26,7 +26,8 @@ COMPONENTS_BASE_URL=An appmaker-components repo which Ceci will query. Likely "/
 S3_BUCKET=S3 bucket name. e.g. "my.coolappmaker.com"
 S3_KEY=An access key for the S3 bucket listed above.
 S3_SECRET=The secret corresponding to the specified S3 access key.
-SHARE_URL_PREFIX=String to prepend to filenames that are saved on S3. Try use the URL that matches the protocol from which assets are hosted to avoid mixed content blockage.
+S3_OBJECT_PREFIX=String to prepend S3 objects. Useful for storing objects in folders. E.g. "level1/level2" => <bucket>/level1/level2/<filename>.
+PUBLISH_URL_PREFIX=String to prepend to filenames that are saved on S3. Try use the URL that matches the protocol from which assets are hosted to avoid mixed content blockage.
 ```
 
 ### Start the Server

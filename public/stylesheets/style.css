@@ -227,6 +227,7 @@ button.publish {
 	padding-right: 10px;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 button.btn-img {

@@ -42,7 +42,8 @@ app.get('/edit', routes.editor.index);
 app.get('/designer', routes.designer);
 app.post('/publish', routes.store.publish);
 
-routes.store._init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET, __dirname + '/views', process.env.SHARE_URL_PREFIX);
+routes.store._init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET,
+  process.env.S3_OBJECT_PREFIX, __dirname + '/views', process.env.PUBLISH_URL_PREFIX);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
