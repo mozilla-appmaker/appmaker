@@ -10,6 +10,7 @@ var fs = require('fs');
 var __knoxClient;
 var __compiledPublishEJSTemplate;
 var __urlPrefix;
+var _s3ObjectPrefix;
 
 function sendKnoxHTMLRequest (filename, data, callback) {
   var knoxReq = __knoxClient.put(filename, {
@@ -22,7 +23,9 @@ function sendKnoxHTMLRequest (filename, data, callback) {
   knoxReq.end(data);
 }
 
-exports._init = function (key, secret, bucket, viewsPath, urlPrefix) {
+exports._init = function (key, secret, bucket, objectPrefix, viewsPath, urlPrefix) {
+  _s3ObjectPrefix = objectPrefix || '';
+
   __knoxClient = knox.createClient({
     key: key,
     secret: secret,
@@ -44,9 +47,9 @@ exports.publish = function(req, res) {
     content: inputData.html
   });
 
-  sendKnoxHTMLRequest(filename, outputStr, function (knoxRes) {
+  sendKnoxHTMLRequest(_s3ObjectPrefix + '/' + filename, outputStr, function (knoxRes) {
     if (200 == knoxRes.statusCode) {
-      res.json({error: null, filename: __urlPrefix + '/' + filename}, 200);
+      res.json({error: null, filename: __urlPrefix + '/' + _s3ObjectPrefix + '/' + filename}, 200);
     }
     else {
       res.send('Couldn\'t save to S3', 500);
