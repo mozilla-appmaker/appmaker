@@ -697,6 +697,22 @@ button.btn-done {
 	margin-bottom: 30px;
 }
 
+.handle {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	z-index: 110;
+	height: 22px;
+	width: 22px;
+	border-radius: 3px;
+	background-color: #F8F8F8;
+	background-image: url(../images/move.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	border: 1px solid #CCC;
+	cursor: move;
+}
+
 /*----------COMPONENTS----------*/
 
 button.moz-button::-moz-focus-inner,

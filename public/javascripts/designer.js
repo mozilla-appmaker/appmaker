@@ -180,7 +180,8 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
       $('.color-modal').removeClass('flex');
       // and clears the selection non-destructively
       clearSelection();
-    } else if (event.which == 8) { // delete
+    } /* This code has a bug where delete reverts page history
+      else if (event.which == 8) { // delete
       // delete removes the currently selected components and resets the selection
       if (selection) {
         // TODO: add in support for multiple element selections
@@ -194,7 +195,7 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
         selectedComponent.remove();
         clearSelection();
       }
-    } else if (event.which == 9) { // tab
+    }*/ else if (event.which == 9) { // tab
       // mode toggling
       if (mode == "play") { buildMode(); }
       else { playMode(); }
@@ -386,6 +387,23 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
       Ceci.convertElement(component[0]);
 
       selectComponent(component);
+
+      component.children().each(function () {
+        var child = $(this);
+        var parent = $(this).parent()
+        if (child.is("input[type=text]") || child.is("textarea") || child.is("button") || child.is("input[type=button]")) {
+          parent.on('mouseenter', function () {
+            $(this).append('<div class="handle"></div>')
+          })      
+          .on('mouseleave', function () {
+          $('.handle').remove()
+          })
+        }
+      })
+
+      component.draggable({
+        handle: 'handle'
+      })
 
       $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
       }
