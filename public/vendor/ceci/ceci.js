@@ -112,6 +112,9 @@ define(function() {
     // set property on actual on-page element
     element.setBroadcastChannel = function(channel) {
       element.broadcastChannel = channel;
+      if(element.onBroadcastChannelChanged) {
+        element.onBroadcastChannelChanged(channel);
+      }
     };
   }
 
@@ -120,8 +123,8 @@ define(function() {
     element.subscriptions = getSubscriptions(element, original);
     var generateListener = function(element, channel, listener) {
       return function(e) {
-        if(e.target !== element) {
-          console.log(element, channel, listener);
+        if(e.target.id !== element.id) {
+          console.log(element.id + " <- " + channel + "/" + listener);
           element[listener](e.detail, channel);
         }
       }
@@ -146,6 +149,9 @@ define(function() {
             document.addEventListener(s.channel, fn);
           } else {
             fn = false;
+          }
+          if(element.onSubscriptionChannelChanged) {
+            element.onSubscriptionChannelChanged(channel, listener);
           }
           element[listener].listeningFunction = fn;
           append = false;
