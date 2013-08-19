@@ -498,6 +498,16 @@ button.btn-done {
 	color: #999;
 }
 
+.console input[type="text"] {
+	width: 100%;
+	height: 25px;
+	border: none;
+	background-color: #222;
+	padding: 0px;
+	color: #FFF;
+	text-indent: 10px;
+}
+
 .log .inner {
 	padding-bottom: 1em;
 }
@@ -520,7 +530,7 @@ button.btn-done {
 }
 
 .inner {
-	padding: 24px;
+	padding: 40px;
 }
 
 .modal-wrapper {
