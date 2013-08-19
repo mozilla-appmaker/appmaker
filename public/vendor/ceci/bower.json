@@ -1,7 +1,0 @@
-{
-  "name": "ceci",
-  "version": "0.0.19",
-  "main": "./ceci.js",
-  "dependencies": {
-  }
-}
