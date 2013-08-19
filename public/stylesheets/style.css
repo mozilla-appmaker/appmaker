@@ -498,6 +498,16 @@ button.btn-done {
 	color: #999;
 }
 
+.console input[type="text"] {
+	width: 100%;
+	height: 25px;
+	border: none;
+	background-color: #222;
+	padding: 0px;
+	color: #FFF;
+	text-indent: 10px;
+}
+
 .log .inner {
 	padding-bottom: 1em;
 }
@@ -520,7 +530,7 @@ button.btn-done {
 }
 
 .inner {
-	padding: 24px;
+	padding: 40px;
 }
 
 .modal-wrapper {
@@ -713,66 +723,17 @@ button.btn-done {
 	cursor: move;
 }
 
-/*----------COMPONENTS----------*/
-
-button.moz-button::-moz-focus-inner,
-a[role="button"]::-moz-focus-inner,
-button::-moz-focus-inner {
-  border: none;
-  outline: none;
+.broadcast-section {
+	display: none;
 }
 
-button.moz-button {
-	background-color: #358CCE;
-	-webkit-appearance: none;
-	border: none;
-	width: 100%;
-	height: 40px;
-	color: #FFF;
-	font-weight: 400;
-	font-size: 16px;
+.listen-section {
+	display: none;
 }
 
-.moz-picture-frame {
-	height: 200px;
-	width: 100%;
-	background-color: #111;
-	border: none;
-	display: block;
+.editables-section {
+	display: none;
 }
-
-.moz-picture-frame img {
-	border: none;
-	outline: none;
-	display: block;
-}
-
-.moz-shutter-button div {
-	background-image: url(../images/camera.png);
-	height: 40px;
-	width: 110px;
-	text-align: center;
-	background-repeat: no-repeat;
-	background-position: center;
-	margin: 0 auto;
-}
-
-.moz-button button{
-	width: 96%;
-	height: 40px;
-	background: #555;
-	border: none;
-	color: #FFF;
-	font-size: 16px;
-	margin: 0 auto;
-	display: block;
-	font-family: 'Source Sans Pro', arial;
-	border-radius: 3px;
-}
-
-.ui-state-highlight { height: 1.5em; line-height: 1.2em;
-background: red;}
-
 
 .moz-input-form input[type="text"] {
 	-moz-box-sizing: border-box;
@@ -799,7 +760,7 @@ background: red;}
 	margin: 0px;
 }
 
-/*Channel Visualization*/
+/*Channel Visualisation*/
 
 .channel-visualisation {
   width: 100%;
@@ -839,12 +800,6 @@ background: red;}
   top: 2%;
   width: 2px;
   opacity: .65;
-}
-
-.channel-visualisation [channel-count=2] .channel {
-  clear: both;
-  margin-bottom: 5%;
-  height: 42%;
 }
 
 .channel-visualisation .channel[color=blue]{
