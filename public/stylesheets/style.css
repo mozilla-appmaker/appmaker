@@ -837,7 +837,7 @@ background: red;}
 .channel-visualisation .channel {
   height: 96%;
   top: 2%;
-  width: 3px;
+  width: 2px;
   opacity: .65;
 }
 
@@ -846,8 +846,6 @@ background: red;}
   margin-bottom: 5%;
   height: 42%;
 }
-
-
 
 .channel-visualisation .channel[color=blue]{
   background: #358CCE;
