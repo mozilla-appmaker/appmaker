@@ -268,6 +268,11 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
 
   var displayAttributes = function(element) {
     $('.inspector .editables').html("");
+    if (element.getEditableAttributes().length > 0) {
+      $('.editables-section').show();
+    } else {
+      $('.editables-section').hide();
+    }
     var attributes = element.getEditableAttributes(),
         definition,
         attributeList = $("<div class='editable-attributes'></div>");
@@ -288,7 +293,19 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     comp.addClass("selected");
 
     //Show connectable listeners
+    if(getPotentialListeners(element).length > 0) {
+      $('.listen-section').show();
+    } else {
+      $('.listen-section').hide();
+    }
     displayListenChannels(getPotentialListeners(element));
+
+    //temp code to show broadcasts
+    if(element.broadcastChannel.length > 0) {
+      $('.broadcast-section').show()
+    } else {
+      $('.broadcast-section').hide()
+    }
 
     //Show broadcast channel
     var currentBroadcast = element.broadcastChannel;
