@@ -60,7 +60,7 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
         new Channel('green', 'Green Clover', '#71b806'),
         new Channel('yellow', 'Yellow Pot of Gold', '#e8d71e'),
         new Channel('orange', 'Orange Star', '#ff7b00'),
-        new Channel(emptyChannel, 'Disabled', '#444')
+        //new Channel(emptyChannel, 'Disabled', '#444')
       ];
 
 
