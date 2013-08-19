@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="component" type="text/ceci" href="//appmaker-components.herokuapp.com/package/all">
+  </head>
+  <body>
+    <app-counter id="counter">
+    </app-counter>
+
+    <app-input id="input">
+      <broadcast on="blue">
+    </app-input>
+
+    <app-label id="label">
+      <listen on="blue" then="setValue">
+    </app-label>
+
+
+    <app-counter id="counter-global">
+      <listen on="blue" for="increase">
+      <listen on="green" for="increase">
+    </app-counter>
+
+
+    <app-counter id="counter-green">
+      <listen on="green" for="increase">
+    </app-counter>
+
+
+    <app-metronome>
+      <broadcast on="green">
+    </app-metronome>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.8/require.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        require(["ceci", "ceci-ui"], function(Ceci) {
+          Ceci.load();
+        });
+      });
+    </script>
+  </body>
+</html>
