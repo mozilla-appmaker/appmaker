@@ -769,12 +769,6 @@ button.btn-done {
 /*Channel Visualisation*/
 
 .channel-visualisation {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  display: block; 
 }
 
 .broadcast-channels,
@@ -801,7 +795,8 @@ button.btn-done {
   float: left;
 }
 
-.channel-visualisation .channel {
+.broadcast-channels .channel,
+.subscription-channels .channel {
   height: 96%;
   top: 2%;
   width: 2px;
