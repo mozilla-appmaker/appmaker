@@ -405,18 +405,14 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
 
       selectComponent(component);
 
-      component.children().each(function () {
-        var child = $(this);
-        var parent = $(this).parent()
-        if (child.is("input[type=text]") || child.is("textarea") || child.is("button") || child.is("input[type=button]")) {
-          parent.on('mouseenter', function () {
-            $(this).append('<div class="handle"></div>')
-          })      
-          .on('mouseleave', function () {
+      if(component.find("input[type=text],textarea,button").length > 0){
+        component.on('mouseenter', function () {
+          component.append('<div class="handle"></div>')
+        })      
+        .on('mouseleave', function () {
           $('.handle').remove()
-          })
-        }
-      })
+        })
+      }
 
       component.draggable({
         handle: 'handle'
