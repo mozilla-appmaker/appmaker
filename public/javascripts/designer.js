@@ -301,7 +301,7 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     displayListenChannels(getPotentialListeners(element));
 
     //temp code to show broadcasts
-    if(element.broadcastChannel.length > 0) {
+    if(element.broadcastChannel !== Ceci._emptyChannel) {
       $('.broadcast-section').show()
     } else {
       $('.broadcast-section').hide()
