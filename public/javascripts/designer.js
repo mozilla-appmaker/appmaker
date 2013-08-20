@@ -195,13 +195,18 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
         selectedComponent.remove();
         clearSelection();
       }
-    }*/ else if (event.which == 9) { // tab
+    }*/
+    
+      // Removing build/play mode toggle on "Tab" since we're only going with one mode
+
+      // else if (event.which == 9) { // tab
       // mode toggling
-      if (mode == "play") { buildMode(); }
-      else { playMode(); }
+      // if (mode == "play") { buildMode(); }
+      // else { playMode(); }
       // also prevent the event from being interpreted by anything else
-      event.preventDefault();
-    }
+      // event.preventDefault();
+
+    // }
   });
 
   var displayBroadcastChannel = function (channelName) {
@@ -262,6 +267,15 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
                       });
                       return e[0];
                     });
+      case "number": return (function() {
+                      var e = $("<label>"+definition.title+"<div></label><input type='number' min='"+definition.min+"' max='"+definition.max+"' value='"+element.getAttribute(attributeName)+"' /></div>");
+                      e.on("change", function(evt) {
+                        element.setAttribute(attributeName, evt.target.value);
+                      });
+                      return e[0];
+                    });
+       
+   
     }
     return $("<span>"+definition.type+" not implemented yet</span>");
   };
