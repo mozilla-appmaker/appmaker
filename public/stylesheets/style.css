@@ -735,4 +735,96 @@ button.btn-done {
 	display: none;
 }
 
+.moz-input-form input[type="text"] {
+	-moz-box-sizing: border-box;
+	display: inline-block;
+	width: 69%; /* XXX not sure why 70 + 30 > 100 */
+	border: none;
+	height: 3.8rem;
+	font-size: 16px;
+	box-shadow: none;
+	padding: 0px;
+	margin: 0px;
+	outline: none;
+}
 
+.moz-input-form button {
+	width: 30%;
+	height: 3.8rem;
+	background: #555;
+	border: none;
+	color: #FFF;
+	font-size: 16px;
+	padding: 0px;
+	display: inline-block;
+	margin: 0px;
+}
+
+/*Channel Visualisation*/
+
+.channel-visualisation {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: block; 
+}
+
+.broadcast-channels,
+.subscription-channels {
+  position: absolute;
+  top: 0px;
+  height: 100%;
+  width: 20px;
+}
+
+.broadcast-channels {
+  right: -24px;
+}
+.subscription-channels {
+  left: -24px;
+}
+
+.subscription-channels .channel {
+  float: right;
+  margin-left: 2px;
+}
+
+.broadcast-channels .channel {
+  float: left;
+}
+
+.channel-visualisation .channel {
+  height: 96%;
+  top: 2%;
+  width: 2px;
+  opacity: .65;
+}
+
+.channel-visualisation .channel[color=blue]{
+  background: #358CCE;
+}
+
+.channel-visualisation .channel[color=blue]{
+  background: #358CCE;
+}
+.channel-visualisation .channel[color=red]{
+  background: #e81e1e;
+}
+.channel-visualisation .channel[color=pink]{
+  background: #e3197b;
+}
+.channel-visualisation .channel[color=purple]{
+  background: #9f27cf;
+}
+.channel-visualisation .channel[color=green]{
+  background: #71b806;
+}
+.channel-visualisation .channel[color=yellow]{
+  background: #e8d71e;
+  opacity: 1;
+}
+.channel-visualisation .channel[color=orange]{
+  background: #ff7b00;
+}
