@@ -360,6 +360,12 @@ button.btn-done {
 	cursor: move;
 }
 
+.ui-state-highlight { 
+  height: 1.5em; line-height: 1.2em;
+  background: red;
+  display: block;
+}
+
 .thumb {
 	height: 40px;
 	width: 180px;
@@ -550,9 +556,9 @@ button.btn-done {
 	display: none;
 }
 
-.fixed-top *,
-.fixed-bottom *,
-.phone-canvas * {
+.fixed-top .ui-draggable,
+.fixed-bottom .ui-draggable,
+.phone-canvas .ui-draggable {
 	display: block; /* so that the styling we do to component takes the space of its contents */
 	position: relative; /* so that box-shadow is always visible on selection */
 	-webkit-user-select: none;
