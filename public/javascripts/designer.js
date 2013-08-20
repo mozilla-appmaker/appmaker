@@ -292,6 +292,12 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     selection = [compId];
     comp.addClass("selected");
 
+    $('.description').text('')
+    if ('description' in element) {
+      var description = element.description.innerHTML
+      $('.description').text(description)
+    }
+
     //Show connectable listeners
     if(getPotentialListeners(element).length > 0) {
       $('.listen-section').show();
