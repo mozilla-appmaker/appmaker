@@ -15,5 +15,5 @@ exports.designer = function(req, res){
   res.render('designer');
 };
 
-exports.store = require('./store');
+exports.publish = require('./publish');
 exports.editor = require('./editor');

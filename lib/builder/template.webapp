@@ -1,0 +1,13 @@
+{
+  "name": "My App",
+  "description": "My App",
+  "launch_path": "/index.html",
+  "developer": {
+    "name": "App Maker",
+    "url": "https://webmaker.org/"
+  },
+  "icons": {
+    "60": "/style/icons/icon-60.png",
+    "79": "/style/icons/icon-79.png"
+  }
+}
