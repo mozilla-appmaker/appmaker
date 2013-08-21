@@ -239,16 +239,36 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
   };
 
   var getAttributeUIElement = function(element, attributeName, definition) {
+    var value = element.getAttribute(attributeName);
+    value = value !== null ? value : '';
+
     switch(definition.type) {
       case "text": return (function() {
-                      var e = $("<label>"+attributeName+"<div></label><input type='text' value='" + element.getAttribute(attributeName) + "'></input></div>");
+                      // TODO: This would be a fine place for angular
+                      var e = $("<div><label>" +
+                        definition.title +
+                        "</label><input type=\"text\" value=\"" +
+                        value +
+                        "\"></input></div>"
+                      );
+
                       e.on("change", function(evt) {
                         element.setAttribute(attributeName, evt.target.value);
                       });
                       return e[0];
                     });
       case "number": return (function() {
-                      var e = $("<label>"+definition.title+"<div></label><input type='number' min='"+definition.min+"' max='"+definition.max+"' value='"+element.getAttribute(attributeName)+"' /></div>");
+                      // TODO: This would be a fine place for angular
+                      var e = $(
+                        "<div><label>" +
+                        definition.title +
+                        "</label><input type=\"number\" min=\"" +
+                        definition.min +
+                        "\" max=\"" +
+                        definition.max +
+                        "\" value=\"" +
+                        value + "\" /></div>"
+                      );
                       e.on("change", function(evt) {
                         element.setAttribute(attributeName, evt.target.value);
                       });
