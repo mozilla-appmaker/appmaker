@@ -8,6 +8,10 @@ Running the Server
 
 Execute `npm install` in the application directory:
 
+Get the submodules:
+
+git submodule update --init --recursive
+
 ### Running in Development mode
 
 #### Configuration for Node
