@@ -810,6 +810,18 @@ button.btn-done {
 	background-image: none;
 }
 
+.blue {
+	background-image: url(../images/bluemoon.png);
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.pink {
+	background-image: url(../images/pinkheart.png);
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
 /*Channel Visualisation*/
 
 .channel-visualisation {
