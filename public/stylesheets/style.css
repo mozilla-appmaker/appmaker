@@ -267,15 +267,16 @@ button.btn-img {
 }
 
 button.btn-add {
-	height: 20px;
-	width: 20px;
-	border-radius: 2px;
+	height: 40px;
+	width: 100%;
+	border-radius: 3px;
 	background-color: #ff7b00;
 	border: none;
-	float: right;
-	background-image: url(../images/add.png);
 	background-position: center;
 	background-repeat: no-repeat;
+	margin-bottom: 10px;
+	color: #FFF;
+	font-size: 12px;
 }
 
 button.btn-done {
