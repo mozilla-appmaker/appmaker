@@ -181,11 +181,11 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     }
     // delete removes all selected items.
     else if (event.which === 46) {
+      var elements = selection.slice();
       clearSelection();
-      selection.forEach(function(element) {
+      elements.forEach(function(element) {
         element.removeSafely();
       });
-      selection = [];
     }
   });
 
