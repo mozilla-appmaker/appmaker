@@ -147,6 +147,18 @@ button.btn-critical:active {
 	background-color: #2a70a6;
 }
 
+button.btn-secondary{
+	background-color: #555;
+}
+
+button.btn-secondary:hover {
+	background-color: #5a5a5a;
+}
+
+button.btn-secondary:active {
+	background-color: #4a4a4a;
+}
+
 button.btn-toggle {
 	background-color: #555;
 	display: block;
@@ -205,7 +217,18 @@ button.btn-start {
 button.publish {
 	position: absolute;
 	top: -40px;
-	right: 40px;
+	right: 0px;
+	display: block;
+	height: 40px;
+	width: 120px;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+button.new {
+	position: absolute;
+	top: -40px;
+	right: 130px;
 	display: block;
 	height: 40px;
 	width: 120px;
