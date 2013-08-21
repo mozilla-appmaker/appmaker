@@ -789,6 +789,27 @@ button.btn-done {
 	margin: 0px;
 }
 
+.note {
+	position: absolute;
+	top: -50px;
+	left: 0px;
+	height: 30px;
+	line-height: 30px;
+	width: 100px;
+	font-weight: 400;
+	color: #888;
+	font-size: 16px;
+	background-image: url(../images/checked.png);
+	background-repeat: no-repeat;
+	background-position: 80px center;
+	width: 100px;
+}
+
+.saving {
+	color: #fff;
+	background-image: none;
+}
+
 /*Channel Visualisation*/
 
 .channel-visualisation {
