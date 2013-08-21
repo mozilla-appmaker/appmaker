@@ -780,38 +780,43 @@ button.btn-done {
 }
 
 .broadcast-channels {
-  right: -24px;
+  right: -25px;
 }
 .subscription-channels {
-  left: -24px;
+  left: -25px;
+
 }
 
 .subscription-channels .channel {
   float: right;
   margin-left: 2px;
+  -webkit-border-radius: 0 5px 5px 0;
+  border-radius: 0 5px 5px 0;
 }
 
 .broadcast-channels .channel {
   float: left;
+  -webkit-border-radius: 0 5px 5px 0;
+  border-radius: 0 5px 5px 0;
 }
 
 .broadcast-channels .channel,
 .subscription-channels .channel {
-  height: 96%;
-  top: 2%;
-  width: 2px;
+  position: relative;
+  height: 94%;
+  top: 3%;
+  width: 3px;
   opacity: .65;
+
 }
 
 .channel-visualisation .channel[color=blue]{
   background: #358CCE;
 }
 
-.channel-visualisation .channel[color=blue]{
-  background: #358CCE;
-}
 .channel-visualisation .channel[color=red]{
   background: #e81e1e;
+
 }
 .channel-visualisation .channel[color=pink]{
   background: #e3197b;
