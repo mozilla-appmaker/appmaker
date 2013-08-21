@@ -148,6 +148,18 @@ button.btn-critical:active {
 	background-color: #2a70a6;
 }
 
+button.btn-secondary{
+	background-color: #555;
+}
+
+button.btn-secondary:hover {
+	background-color: #5a5a5a;
+}
+
+button.btn-secondary:active {
+	background-color: #4a4a4a;
+}
+
 button.btn-toggle {
 	background-color: #555;
 	display: block;
@@ -206,7 +218,18 @@ button.btn-start {
 button.publish {
 	position: absolute;
 	top: -40px;
-	right: 40px;
+	right: 0px;
+	display: block;
+	height: 40px;
+	width: 120px;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+button.new {
+	position: absolute;
+	top: -40px;
+	right: 130px;
 	display: block;
 	height: 40px;
 	width: 120px;
@@ -797,6 +820,39 @@ button.btn-done {
 	padding: 0px;
 	display: inline-block;
 	margin: 0px;
+}
+
+.note {
+	position: absolute;
+	top: -50px;
+	left: 0px;
+	height: 30px;
+	line-height: 30px;
+	width: 100px;
+	font-weight: 400;
+	color: #888;
+	font-size: 16px;
+	background-image: url(../images/checked.png);
+	background-repeat: no-repeat;
+	background-position: 80px center;
+	width: 100px;
+}
+
+.saving {
+	color: #fff;
+	background-image: none;
+}
+
+.blue {
+	background-image: url(../images/bluemoon.png);
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.pink {
+	background-image: url(../images/pinkheart.png);
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
 /*Channel Visualisation*/

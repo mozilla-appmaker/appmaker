@@ -24,7 +24,7 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
   }
 
   Ceci.load(function(components) {
-  
+
     var componentCount = Object.keys(components).length;
     var addedCount = 0;
 
@@ -77,7 +77,7 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
         box;
     for (var i; i < radio.length; i++) {
       rdata = radio[i];
-      box = $('<div class="color" value="'+ rdata.hex +'" name="'+ rdata.name +'" title="'+ rdata.title +'" style="background-color: '+ rdata.hex +'"></div>');
+      box = $('<div class="color '+ rdata.name +'" value="'+ rdata.hex +'" name="'+ rdata.name +'" title="'+ rdata.title +'" style="background-color: '+ rdata.hex +'"></div>');
       strip.append(box);
     }
     return strip;
@@ -104,15 +104,12 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
 
   // empty the list of currently selected elements on the page
   var clearSelection = function() {
-      var element;
-      selection.forEach(function(id) {
-        element = $("#"+id);
-        $(document).off("click", ".color", element.onSelectFunction);
-      });
-      selection = [];
-      $(".selected").removeClass("selected");
-      $(".inspector").addClass('hidden');
-      // disableReorder();
+    selection.forEach(function(element) {
+      $(document).off("click", ".color", element.onSelectFunction);
+    });
+    selection = [];
+    $(".selected").removeClass("selected");
+    $(".inspector").addClass('hidden');
   }
 
   // jQuery-UI property for reordering items in the designer
@@ -179,39 +176,22 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     }
   });
 
+  // document-level key handling
   $(document).on('keydown', function(event) {
-    if (event.which == 27) { // escape
-      // escape hides all modal dialogs
+    // escape hides all modal dialogs
+    if (event.which === 27) {
       $('.color-modal').removeClass('flex');
       // and clears the selection non-destructively
       clearSelection();
-    } /* This code has a bug where delete reverts page history
-      else if (event.which == 8) { // delete
-      // delete removes the currently selected components and resets the selection
-      if (selection) {
-        // TODO: add in support for multiple element selections
-        var selectedComponent = $("#" + selection[0]);
-        // FIXME: this needs to be built into Ceci so that elements can clean up after themselves
-        if(selectedComponent.unlisten) {
-            // clean up all outstanding event listeners this element has
-            selectedComponent.unlisten();
-        }
-        // remove element from the page
-        selectedComponent.remove();
-        clearSelection();
-      }
-    }*/
-    
-      // Removing build/play mode toggle on "Tab" since we're only going with one mode
-
-      // else if (event.which == 9) { // tab
-      // mode toggling
-      // if (mode == "play") { buildMode(); }
-      // else { playMode(); }
-      // also prevent the event from being interpreted by anything else
-      // event.preventDefault();
-
-    // }
+    }
+    // delete removes all selected items.
+    else if (event.which === 46) {
+      var elements = selection.slice();
+      clearSelection();
+      elements.forEach(function(element) {
+        element.removeSafely();
+      });
+    }
   });
 
   var displayBroadcastChannel = function (channelName) {
@@ -264,23 +244,43 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
   };
 
   var getAttributeUIElement = function(element, attributeName, definition) {
+    var value = element.getAttribute(attributeName);
+    value = value !== null ? value : '';
+
     switch(definition.type) {
       case "text": return (function() {
-                      var e = $("<label>"+attributeName+"<div></label><input type='text' value='" + element.getAttribute(attributeName) + "'></input></div>");
+                      // TODO: This would be a fine place for angular
+                      var e = $("<div><label>" +
+                        definition.title +
+                        "</label><input type=\"text\" value=\"" +
+                        value +
+                        "\"></input></div>"
+                      );
+
                       e.on("change", function(evt) {
                         element.setAttribute(attributeName, evt.target.value);
                       });
                       return e[0];
                     });
       case "number": return (function() {
-                      var e = $("<label>"+definition.title+"<div></label><input type='number' min='"+definition.min+"' max='"+definition.max+"' value='"+element.getAttribute(attributeName)+"' /></div>");
+                      // TODO: This would be a fine place for angular
+                      var e = $(
+                        "<div><label>" +
+                        definition.title +
+                        "</label><input type=\"number\" min=\"" +
+                        definition.min +
+                        "\" max=\"" +
+                        definition.max +
+                        "\" value=\"" +
+                        value + "\" /></div>"
+                      );
                       e.on("change", function(evt) {
                         element.setAttribute(attributeName, evt.target.value);
                       });
                       return e[0];
                     });
-       
-   
+
+
     }
     return $("<span>"+definition.type+" not implemented yet</span>");
   };
@@ -305,11 +305,17 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
 
   var selectComponent = function(comp) {
     clearSelection();
-    moveToFront(comp);
     var element = comp[0];
     var compId = element.id
-    selection = [compId];
+    selection.push(element);
     comp.addClass("selected");
+    moveToFront(comp);
+
+    $('.description').text('')
+    if ('description' in element) {
+      var description = element.description.innerHTML
+      $('.description').text(description)
+    }
 
     //Show connectable listeners
     if(getPotentialListeners(element).length > 0) {
@@ -320,7 +326,7 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     displayListenChannels(getPotentialListeners(element));
 
     //temp code to show broadcasts
-    if(element.broadcastChannel.length > 0) {
+    if(element.broadcastChannel !== Ceci._emptyChannel) {
       $('.broadcast-section').show()
     } else {
       $('.broadcast-section').hide()
@@ -382,9 +388,9 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     receive: function (event, ui) {
 
     if(ui.helper){
-    
+
       var helper = $(ui.helper);
-    
+
       var componentname = helper.attr('value');
       var componentId = genId(helper.attr('name'));
 
@@ -399,7 +405,7 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
           selectComponent($(evt.currentTarget));
         }
       });
-    
+
       component.on('mouseleave', function(evt) {
         if (mode == 'play') {
           $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
@@ -427,7 +433,7 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
       if(component.find("input[type=text],textarea,button").length > 0){
         component.on('mouseenter', function () {
           component.append('<div class="handle"></div>')
-        })      
+        })
         .on('mouseleave', function () {
           $('.handle').remove()
         })
