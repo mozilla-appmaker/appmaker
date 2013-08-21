@@ -15,9 +15,6 @@ npm-debug.log
 
 node_modules
 
-lib/builder/output
-lib/builder/appmaker-components
-
 .env
 
 .DS_Store
