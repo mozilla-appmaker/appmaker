@@ -10,8 +10,7 @@ express = require('express'),
 routes = require('./routes'),
 http = require('http'),
 engine = require('ejs-locals'),
-path = require('path'),
-store = require('./lib/store');
+path = require('path');
 
 // .env files aren't great at empty values.
 process.env.ASSET_HOST = typeof process.env.ASSET_HOST === 'undefined' ? '' : process.env.ASSET_HOST;
@@ -38,13 +37,13 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-var store = store.init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET);
-routes.publish.init(store, __dirname + '/views', process.env.PUBLISH_URL_PREFIX, process.env.S3_OBJECT_PREFIX);
-
 app.get('/', routes.index);
 app.get('/edit', routes.editor.index);
 app.get('/designer', routes.designer);
-app.post('/publish', routes.publish.publish);
+app.post('/publish', routes.store.publish);
+
+routes.store._init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET,
+  process.env.S3_OBJECT_PREFIX, __dirname + '/views', process.env.PUBLISH_URL_PREFIX);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

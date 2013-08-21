@@ -450,9 +450,8 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
       data: { html: htmlData },
       type: 'post',
       success: function (data) {
-        $('.publish-url').html(data.html);
-        $('.publish-url').attr('href', data.html);
-        console.log('From publisher: ', data);
+        $('.publish-url').html(data.filename);
+        $('.publish-url').attr('href', data.filename);
       },
       error: function (data) {
         console.error('Error while publishing content:');
