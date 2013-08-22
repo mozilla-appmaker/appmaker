@@ -9,7 +9,7 @@ body {
 	font-size: 14px;
 	color: #222;
 	background-color: #111;
-    overflow-y: auto;
+  overflow-y: scroll;
 }
 
 html {
