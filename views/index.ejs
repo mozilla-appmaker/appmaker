@@ -1,12 +1,32 @@
 <% layout('layout') -%>
 <section class="banner">
-	<div class="banner-inner">
-		<h1>
-			Build apps for the new Firefox Phone.
-		</h1>
-		<input type="text" class="app-name" placeholder="App Name"></input>
-		<button class="btn-std btn-lg btn-start btn-critical" onclick="window.location='/designer'">
-			Start
-		</button>
+	<div class="banner-inner clearfix">
+		<div class="droppable-column">
+			<div class="learn-droppable">
+				Night Sky
+			</div>
+			<div class="learn-droppable">
+				Fireworks
+			</div>
+		</div>
+		<div class="phone-column">
+			<div class="phone-container-learn">
+				<div class="phone-top"></div>
+				<div class="phone-learn-canvas"></div>
+				<div class="phone-bottom"></div>
+			</div>
+		</div>
+		<div class="timeline-column">
+			<div class="timeline">
+				<div class="time-item">
+					DROP COMPONENT ON PHONE
+				</div>
+			</div>
+		</div>
 	</div>
 </section>
+<section class="land">
+</section>
+	<button class="btn-std btn-lg btn-start btn-critical" onclick="window.location='/designer'">
+		Start
+	</button>
