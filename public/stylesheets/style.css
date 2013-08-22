@@ -126,7 +126,7 @@ h6 {
 
 /*----------BUTTONS----------*/
 
-button.btn-std {
+button {
 	font-family: 'Source Sans Pro', arial;
 	-webkit-appearance: none;
 	border: none;
@@ -159,17 +159,6 @@ button.btn-secondary:active {
 	background-color: #4a4a4a;
 }
 
-button.btn-toggle {
-	background-color: #555;
-	display: block;
-	border-radius: 3px;
-	height: 30px;
-	width: 130px;
-	font-weight: 400;
-	float: left;
-	font-size: 14px;
-}
-
 button.btn-toggle:nth-child(1) {
 	border-radius: 3px 0px 0px 3px;
 }
@@ -178,29 +167,36 @@ button.btn-toggle:nth-last-child(1) {
 	border-radius: 0px 3px 3px 0px;
 }
 
+.cats {
+	margin-bottom: 10px;
+}
+
 .toggle button.off:active {
 	background-color: #333;
 }
 .toggle button.on:active {
-	background-color: #4db228;
-}
-
-button.btn-std.on {
-	outline: none;
-	background-color: #55b12e;
-}
-
-button.btn-std {
-	font-family: 'Source Sans Pro', arial;
-	-webkit-appearance: none;
-	border: none;
-	color: #FFF;
-	font-weight: 400;
-	padding: 0px;
+	background-color: #555;
 }
 
 
 button.btn-std:off {
+}
+
+button.btn-toggle {
+	background-color: #f8f8f8;
+	display: block;
+	border-radius: 3px;
+	height: 25px;
+	width: 90px;
+	float: left;
+	color: #222;
+	font-size: 13px;
+}
+
+button.btn-toggle.on {
+	outline: none;
+	background-color: #555;
+	color: #FFF;
 }
 
 button.btn-lg {
@@ -276,7 +272,7 @@ button.btn-add {
 	background-repeat: no-repeat;
 	margin-bottom: 10px;
 	color: #FFF;
-	font-size: 12px;
+	font-size: 14px;
 }
 
 button.btn-done {
