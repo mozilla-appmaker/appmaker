@@ -206,7 +206,7 @@ button.btn-lg {
 }
 
 button.btn-start {
-	margin: 100px auto 40px auto;
+	margin: 50px auto 0px auto;
 	border-radius: 4px;
 	display: block;
 }
@@ -273,7 +273,7 @@ button.btn-add {
 	background-repeat: no-repeat;
 	margin-bottom: 10px;
 	color: #FFF;
-	font-size: 14px;
+	font-size: 13px;
 }
 
 button.btn-done {
@@ -294,6 +294,18 @@ button.btn-done {
  	margin: 0 auto;
  	max-width: 900px;
  	padding: 50px 50px;
+}
+
+input.app-name {
+	width: 70%;
+	margin: 0 auto;
+	height: 40px;
+	border-radius: 4px;
+	border: none;
+	margin-top: 100px;
+	display: block;
+	text-align: center;
+	font-size: 18px;
 }
 
 .info-box {
