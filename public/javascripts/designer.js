@@ -5,6 +5,7 @@
 define(["jquery", "angular", "ceci", "cards", "ceci-ui", "jquery-ui"], function($, ng, Ceci, Cards) {
 
   Cards.load();
+  console.log(Cards);
 
   var selection = [];
   var defaultChannel = "#358CCE"; // matches what's in style.css
@@ -438,7 +439,7 @@ define(["jquery", "angular", "ceci", "cards", "ceci-ui", "jquery-ui"], function(
         item.after(component);
         item.remove();
 
-        Ceci.convertElement(component[0], function(){
+        Ceci.convertElement(component[0], function() {
           selectComponent(component);
 
           if(component.find("input[type=text],textarea,button").length > 0){
