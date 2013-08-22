@@ -34,6 +34,11 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
       thumb.draggable({
         connectToSortable: ".drophere",
         helper: "clone",
+        appendTo: document.body,
+        start : function(event,ui){
+          var clone = ui.helper;
+          $(clone).find(".thumb").addClass("im-flying");
+        },
         addClass: "clone"
       })
 

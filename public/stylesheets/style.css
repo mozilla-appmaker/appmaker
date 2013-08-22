@@ -8,9 +8,10 @@ body {
 	font-family: 'Source Sans Pro', arial;
 	font-size: 14px;
 	color: #222;
-	height: 100%;
 	background-color: #111;
+  overflow-y: scroll;
 }
+
 html {
 	font-size: 62.5%;	/* so rem-based font sizes look right */
 }
@@ -329,21 +330,45 @@ input.app-name {
 	background-position: left center;
 }
 
+.scroll-checker {
+  width: 100%;
+}
+
 .container {
-	width: 1020px;
-	top: 70px;
+  width: 770px;
 	background-color: #ddd;
-	margin: 0px auto 40px auto;
+	margin: 65px auto 40px auto;
 	position: relative;
+  padding-left: 255px;
 }
 
 .tray {
-	float: left;
-	width: 180px;
-	background-color: #ccc;
-	min-height: 560px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+	width: 185px;
+	background-color: #ccc; 
 	padding: 40px;
 }
+
+.tray h5 {
+  margin-bottom: 15px;
+}
+
+.library-list {
+  position: absolute;
+  width: 180px;
+  top: 80px;
+  bottom: 30px;
+  padding-right: 5px;
+  overflow-y:auto;
+
+}
+
+.library-list .draggable:last-child .thumb {
+  margin-bottom: 0px;
+} 
 
 .library-loading {
 	min-height: 400px;
@@ -391,17 +416,25 @@ input.app-name {
   height: 1.5em; line-height: 1.2em;
   background: red;
   display: block;
+  padding: 0;
+  margin: 0;
 }
 
 .thumb {
-	height: 40px;
-	width: 180px;
+
+  width: 160px;
 	background-color: #eee;
 	margin-bottom: 5px;
 	border-radius: 3px;
 	line-height: 40px;
 	text-indent: 10px;
-	float: left;
+}
+
+.im-flying {
+  -webkit-transform: rotate(2deg);
+  -moz-transform: rotate(2deg);
+  box-shadow: 0px 3px 5px rgba(0,0,0,.3);
+  background: #EEE !important;
 }
 
 .thumb:hover {
@@ -430,7 +463,7 @@ input.app-name {
 	float: left;
 	width: 310px;
 	margin-left: 40px;
-	margin-bottom: 20px;
+	margin-bottom: 30px;
 }
 
 .phone-canvas button:focus {
