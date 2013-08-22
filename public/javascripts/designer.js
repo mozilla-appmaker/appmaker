@@ -274,7 +274,21 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
                       });
                       return e[0];
                     });
-
+      case "boolean": return (function() {
+                      // TODO: This would be a fine place for angular
+                      var e = $(
+                        "<div><label>" +
+                        definition.title +
+                        "</label><input type=\"checkbox\" " +
+                        (value == "true" ? " checked=\"true\" " : "") + "\" value=\"" +
+                        value + "\" /></div>"
+                      );
+                      e.on("change", function(evt) {
+                        evt.target.value = evt.target.value == "true" ? "false" : "true";
+                        element.setAttribute(attributeName, evt.target.value == "true" ? true : false);
+                      });
+                      return e[0];
+                    });
 
     }
     return $("<span>"+definition.type+" not implemented yet</span>");
