@@ -818,6 +818,7 @@ button.btn-done {
 	margin: 0px;
 }
 
+
 .note {
 	position: absolute;
 	top: -50px;
@@ -919,3 +920,4 @@ button.btn-done {
 .channel-visualisation .channel[color=orange]{
   background: #ff7b00;
 }
+
