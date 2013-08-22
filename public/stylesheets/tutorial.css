@@ -1,3 +1,20 @@
+body {
+  	background-color: #616680;
+}
+
+h1 {
+  text-align: left;
+  font-size: 60px;
+  margin-bottom: 40px;
+}
+
+.drag-arrow {
+  background: green;
+  opacity: .2;
+  position: absolute;
+  
+}
+
 .banner {
  	background-color: #3A3C48;
  	background-image: url(../images/stars.png);
@@ -11,10 +28,53 @@
   padding-top: 40px;
 }
 
+.droppable-column {
+	float: left;
+  padding-top: 50px;
+	width: 200px;
+  height: 100px;
+	margin-right: 40px;
+}
+
+.learn-droppable {
+	background-color: #EEE;
+	border-radius: 3px;
+	height: 50px;
+	width: 100%;
+	line-height: 50px;
+	margin-bottom: 10px;
+	text-indent: 10px;
+	font-size: 16px;
+}
+
+/*Phone*/
+
+.phone-column {
+ 	width: 400px;
+ 	height: 420px;
+  float: left;
+  margin-right: 20px;
+  padding: 0;
+}
+
+.phone-container-learn {
+	width: 310px;
+	top: 100px;
+  margin: 0 auto;
+}
+
+.phone-learn-canvas {
+	height: 400px;
+	background-color: #FFF;
+  position: relative;
+}
+
+/*Timeline*/
+
 
 .timeline-column {
-	float: right ;
-	width: 350px;
+	float: left ;
+	width: 300px;
 	background-image: url(../images/timeline.png);
 	height: 400px;
 	background-repeat: no-repeat;
@@ -41,47 +101,14 @@
 }
 
 
-.phone-column {
- 	width: 400px;
- 	height: 420px;
- 	float: left;
-}
+/*Bottom*/
 
-.phone-container-learn {
-	width: 310px;
-	top: 100px;
-  margin: 0 auto;
-}
-
-.phone-learn-canvas {
-	height: 400px;
-	background-color: #FFF;
-  position: relative;
-}
-
-.droppable-column {
-	float: left;
-  padding-top: 50px;
-	width: 200px;
-  height: 100px;
-	margin-right: 40px;
-}
-
-.learn-droppable {
-	background-color: #EEE;
-	border-radius: 3px;
-	height: 50px;
-	width: 100%;
-	line-height: 50px;
-	margin-bottom: 10px;
-	text-indent: 10px;
-	font-size: 16px;
-}
 
 .land {
 	background-color: #616680;
-	height: 300px;
 	width: 100%;
+  height: 150px;
+  display: none;
 }
 
 .dragme-callout {
@@ -159,8 +186,19 @@
   -webkit-animation: fireworksOn infinite .1s linear;
 }
 
+button {
+  display: none;
+}
+
 @-webkit-keyframes fireworksOn {
   0% {background: rgba(0,0,0,.4);}
   50% {background: rgba(0,0,0,.1);}
   100% {background: rgba(0,0,0,.4);}
+}
+
+button {
+  margin: 100px auto 100px auto !important;
+  position: relative;
+  left: -80px;
+  opacity: 0;
 }

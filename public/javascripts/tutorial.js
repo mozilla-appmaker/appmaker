@@ -57,6 +57,7 @@ function changeStep(step){
 
   case 5: 
     skyC.addClass("fireworks-on");
+    $("button").css("opacity","1");
   break;
   
   }
