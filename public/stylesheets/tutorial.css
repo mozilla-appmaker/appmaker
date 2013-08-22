@@ -8,11 +8,6 @@ h1 {
   margin-bottom: 40px;
 }
 
-.drag-arrow {
-  background: green;
-  opacity: .2;
-  position: absolute;
-}
 
 .banner {
  	background-color: #3A3C48;
@@ -29,7 +24,7 @@ h1 {
 
 .droppable-column {
 	float: left;
-  padding-top: 50px;
+  padding-top: 150px;
 	width: 200px;
   height: 100px;
 	margin-right: 40px;
@@ -44,7 +39,21 @@ h1 {
 	margin-bottom: 10px;
 	text-indent: 10px;
 	font-size: 16px;
+  position:relative;
+  z-index: 10000;
 }
+
+.learn-droppable .drag-arrow {
+  background: green;
+  opacity: .2;
+  position: absolute;
+  width: 150px;
+  height: 20px;
+  right: -120px;
+  top: 15px;
+  display: none;
+}
+
 
 /*Phone*/
 

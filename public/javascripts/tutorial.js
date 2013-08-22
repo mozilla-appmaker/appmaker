@@ -18,11 +18,11 @@ function changeStep(step){
   
   switch(step)  {
     case 1:
-      skyD.css("cursor","move").addClass("dragme-callout");
+      skyD.css("cursor","move").addClass("dragme-callout").find(".drag-arrow").show();
       skyD.draggable({
         revert :  true,
         start : function(event,ui){
-          ui.helper.addClass("im-flying").css("z-index",1000).removeClass("dragme-callout");
+          ui.helper.addClass("im-flying").css("z-index",1000).removeClass("dragme-callout").find(".drag-arrow").remove();
         }
       });
       phone.droppable({
@@ -43,8 +43,13 @@ function changeStep(step){
     break;
 
     case 3:
-      fireD.css("cursor","move").addClass("dragme-callout");
-      fireD.draggable();
+      fireD.css("cursor","move").addClass("dragme-callout").find(".drag-arrow").show();
+      fireD.draggable({
+        revert :  true,
+        start : function(event,ui){
+          ui.helper.addClass("im-flying").css("z-index",1000).removeClass("dragme-callout").find(".drag-arrow").remove();
+        }
+      });
       phone.droppable({
         drop : function(event,ui){
           fireD.remove();
