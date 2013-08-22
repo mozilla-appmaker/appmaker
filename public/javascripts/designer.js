@@ -470,6 +470,7 @@ define(["jquery", "angular", "ceci", "cards", "ceci-ui", "jquery-ui"], function(
     $('.drophere', card).sortable(sortableOptions);
     $('.flathead-cards').append(card);
     card.showCard();
+    enableReorder();
     // create card thumbnail
     var newthumb = $('<div class="card" id="'+id+'">'+no+'</div>');
     newthumb.click(function() {
