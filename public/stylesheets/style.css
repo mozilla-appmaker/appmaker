@@ -206,7 +206,8 @@ button.btn-lg {
 }
 
 button.btn-start {
-	margin: 100px auto 0px auto;
+	margin: 100px auto 40px auto;
+	border-radius: 4px;
 	display: block;
 }
 
@@ -286,19 +287,13 @@ button.btn-done {
 /*----------LAYOUT----------*/
 
 .banner {
- 	background-color: #2E4F7A;
+ 	background-color: #222;
 }
 
 .banner-inner {
  	margin: 0 auto;
  	max-width: 900px;
- 	padding: 0px 50px;
-}
-
-.logo {
-	color: #FFF;
-	font-size: 28px;
-	padding: 40px 0px 100px 0px;
+ 	padding: 50px 50px;
 }
 
 .info-box {
