@@ -330,11 +330,17 @@ button.btn-done {
 	height: 38px;
 	width: 240px;
 	font-weight: 500;
-	color: #EEE;
+	color: #616680;
 	background-repeat: no-repeat;
 	background-position: left top;
 	line-height: 38px;
 	text-indent: 48px;
+	margin-bottom: 40px;
+}
+
+.select-time {
+	color: #EEE;
+	background-image: url(../images/timeline-select.png);
 }
 
 .phone-container-learn {
