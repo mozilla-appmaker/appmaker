@@ -1,28 +1,63 @@
 <% layout('layout') -%>
+<link rel='stylesheet' href='/stylesheets/tutorial.css' />
+
+<script type="text/javascript" charset="utf-8" src="/vendor/jquery/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="/vendor/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/javascripts/tutorial.js"></script>
+
 <section class="banner">
 	<div class="banner-inner clearfix">
-		<div class="droppable-column">
-			<div class="learn-droppable">
+
+    <h1>Welcome to Flathead</h1>
+
+		<div class="droppable-column components">
+			<div class="night-sky learn-droppable">
+
 				Night Sky
+        <div class="drag-arrow"></div>
 			</div>
-			<div class="learn-droppable">
+			<div class="fireworks learn-droppable">
 				Fireworks
+        <div class="drag-arrow"></div>
 			</div>
 		</div>
+
 		<div class="phone-column">
 			<div class="phone-container-learn">
 				<div class="phone-top"></div>
-				<div class="phone-learn-canvas"></div>
+				<div class="phone-learn-canvas">
+
+
+
+				  <div class="sky-component">
+				    <div class="channel-ui"></div>
+				  </div>
+
+				  <div class="fireworks-component">
+				    <div class="channel-ui"></div>
+				  </div>
+
+				</div>
 				<div class="phone-bottom"></div>
 			</div>
 		</div>
+
 		<div class="timeline-column">
 			<div class="timeline">
-				<div class="time-item select-time">
+				<div class="time-item">
 					DROP COMPONENT ON PHONE
 				</div>
 				<div class="time-item">
-					CLICK ON LISTEN CHANNEL
+					SET A LISTEN CHANNEL FOR THE SKY
+				</div>
+				<div class="time-item">
+					DRAG FIREWORKS TO PHONE
+				</div>
+				<div class="time-item">
+					SET FIREWORKS BROADCAST
+				</div>
+				<div class="time-item">
+					GO MAKE AN APP NOW
 				</div>
 			</div>
 		</div>
@@ -30,6 +65,7 @@
 </section>
 <section class="land">
 </section>
-	<button class="btn-std btn-lg btn-start btn-critical" onclick="window.location='/designer'">
-		Start
-	</button>
+
+<button class="btn-std btn-lg btn-start btn-critical" onclick="window.location='/designer'">
+  Start
+</button>
