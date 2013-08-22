@@ -275,6 +275,7 @@ button.btn-add {
 	margin-bottom: 10px;
 	color: #FFF;
 	font-size: 13px;
+	cursor: pointer;
 }
 
 button.btn-done {
@@ -348,7 +349,7 @@ input.app-name {
   top: 0px;
   bottom: 0px;
 	width: 185px;
-	background-color: #ccc; 
+	background-color: #ccc;
 	padding: 40px;
 }
 
@@ -368,7 +369,7 @@ input.app-name {
 
 .library-list .draggable:last-child .thumb {
   margin-bottom: 0px;
-} 
+}
 
 .library-loading {
 	min-height: 400px;
@@ -412,7 +413,7 @@ input.app-name {
 	cursor: move;
 }
 
-.ui-state-highlight { 
+.ui-state-highlight {
   height: 1.5em; line-height: 1.2em;
   background: red;
   display: block;
@@ -552,6 +553,14 @@ input.app-name {
 	height: 100px;
 	width: 100%;
 	background-color: #FFF;
+	color: #DDD;
+	font-size: 80px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.card + .card {
+	margin-top: 5px;
 }
 
 .console {
