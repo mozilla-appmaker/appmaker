@@ -126,7 +126,7 @@ h6 {
 
 /*----------BUTTONS----------*/
 
-button {
+button.btn-std {
 	font-family: 'Source Sans Pro', arial;
 	-webkit-appearance: none;
 	border: none;
