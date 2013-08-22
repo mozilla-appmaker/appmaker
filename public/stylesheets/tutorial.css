@@ -18,12 +18,11 @@ h1 {
 .banner-inner {
 	width: 1050px;
 	margin: 0 auto;
-  padding-top: 40px;
+  padding-top: 80px;
 }
 
 .droppable-column {
 	float: left;
-
 	width: 200px;
   height: 100px;
 	margin-right: 40px;
@@ -46,10 +45,10 @@ h1 {
 }
 
 .droppable-column .night-sky {
-  top: 120px;
+  top: 20px;
 }
 .droppable-column .fireworks {
-  top: 185px;
+  top: 85px;
 }
 
 
@@ -160,7 +159,7 @@ h1 {
 
 .sky-component .channel-ui {
   top: 47%;
-  left: -50px;
+  left: -45px;
   
 }
 
@@ -185,14 +184,89 @@ h1 {
   margin-top: 0px;
 }
 
+
+/*Channel UI*/
+
 .channel-ui {
   cursor: pointer;
+  position: absolute;
+}
+
+.channel-ui .channel-options {
+  position: absolute;
+  left: -54px;
+  top: -34px;
+  padding: 8px;
+  background: rgba(0,0,0,.2);
+  border-bottom: solid 2px rgba(0,0,0,.4);
+  border-radius: 4px;
+  cursor: normal;
+  -webkit-transition: all linear .1s;
+  -moz-transition: all linear .1s;
+  -webkit-transform: scale(.8) translateX(15px);
+  -moz-transform: scale(.8) translateX(15px);
+  opacity: 0;
+}
+
+.channel-ui.ui-open .channel-options {
+  opacity: 1;
+  -webkit-transform: scale(1) translateX(0px);
+  -moz-transform: scale(1) translateX(0px);
+}
+
+.channel-options .arrow {
+  position: absolute;
+  height: 1px;
+  right: -5px;
+  top: 44px;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  width: 1px;
+  border-top: solid 5px rgba(0,0,0,.2);
+  border-right: solid 5px rgba(0,0,0,.2);
+  border-bottom: solid 5px transparent;
+  border-left: solid 5px transparent;
+}
+
+.channel-ui .channel-options .channel {
+  opacity: .3;
+}
+
+.channel-ui .channel {
+  display: block;
+}
+
+.channel-ui .channel {
+  width: 22px;
+  height: 22px;
+  margin-bottom: 8px;
+  border-radius: 3px;
+}
+
+
+
+.channel-ui .active-channel {
+  opacity: 1;
   width: 30px;
   height: 30px;
-  background: #269BDB;
-  border-radius: 25px;
-  -webkit-animation: channelPulse infinite 1s linear;
-  position: absolute;
+  border-radius: 40px;
+}
+
+.channel-ui .channel-options .selected-channel {
+  opacity: 1;
+}
+
+
+.channel-ui .channel:hover {
+  opacity: 1;
+}
+
+.channel-ui .selected-channel {
+  opacity: 1;
+}
+
+.channel-ui .channel:last-child {
+  margin-bottom: 0px;
 }
 
 .fireworks-component .channel-ui {
@@ -224,3 +298,46 @@ button {
 .drop-hover {
   background: blue;
 }
+
+.ative-channel {
+    background-size: 40px;
+}
+
+.active-channel[channelColor=blue]{
+  background-color: rgba(52, 137, 201, .3);
+}
+
+.channel-options .channel {
+  background-size: 20px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.active-channel {
+  background-size: 23px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.active-channel[channelColor=red]{
+  background-color:  rgba(232,33,37,.3);
+}
+
+.active-channel[channelColor=green]{
+  background-color:  rgba(190,185,68,.3);
+}
+
+[channelColor=blue]{
+  background-image: url(../images/channel_icons/blue.png) ;
+
+}
+
+[channelColor=red]{
+  background-image: url(../images/channel_icons/red.png)  ;
+
+}
+
+[channelColor=green]{
+  background-image: url(../images/channel_icons/green.png)  ;
+}
+
