@@ -121,7 +121,6 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
 
   var disableReorder = function() {
     sortable = false;
-    console.log("disable");
     return $(".phone-canvas,.fixed-top,.fixed-bottom").sortable("disable");
   }
 
@@ -366,8 +365,8 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     // can unbind it when the element gets unselected.
     element.onSelectFunction = onSelectFunction;
 
-    var componentname = element.tagName.toLowerCase();
-    $(".inspector .name").text(componentname);
+    var componentName = element.tagName.toLowerCase();
+    $(".inspector .name").text(componentName);
     $(".inspector").removeClass('hidden');
   }
 
@@ -382,65 +381,65 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     accept: '.draggable',
     receive: function (event, ui) {
 
-    if(ui.helper){
+      if(ui.helper){
 
-      var helper = $(ui.helper);
+        var helper = $(ui.helper);
 
-      var componentname = helper.attr('value');
-      var componentId = genId(helper.attr('name'));
+        var componentName = helper.attr('value');
+        var componentId = genId(helper.attr('name'));
 
-      var component = $('<' + componentname + '></' + componentname + '>');
+        var component = $('<' + componentName + '></' + componentName + '>');
 
-      component.attr('id', componentId);
+        component.attr('id', componentId);
 
-      component.on('mousedown', function(evt) {
-        if (mode == 'play') {
-          $(evt.target).addClass('active'); // to replace :active which is otherwise impossible to intercept
-        } else {
-          selectComponent($(evt.currentTarget));
-        }
-      });
+        component.on('mousedown', function(evt) {
+          if (mode == 'play') {
+            $(evt.target).addClass('active'); // to replace :active which is otherwise impossible to intercept
+          }
+          else {
+            selectComponent($(evt.currentTarget));
+          }
+        });
 
-      component.on('mouseleave', function(evt) {
-        if (mode == 'play') {
-          $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
-        }
-      });
+        component.on('mouseleave', function(evt) {
+          if (mode == 'play') {
+            $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
+          }
+        });
 
-      component.on('mouseup', function(evt) {
-        if (mode == 'play') {
-          $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
-        }
-        if (mode == 'build') {
-          event.stopPropagation();
-          event.preventDefault();
-        }
-      });
+        component.on('mouseup', function(evt) {
+          if (mode == 'play') {
+            $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
+          }
+          if (mode == 'build') {
+            event.stopPropagation();
+            event.preventDefault();
+          }
+        });
 
-      var item = $(".drophere").find(".draggable");
-      item.after(component);
-      item.remove();
+        var item = $(".drophere").find(".draggable");
+        item.after(component);
+        item.remove();
 
-      Ceci.convertElement(component[0]);
+        Ceci.convertElement(component[0], function(){
+          selectComponent(component);
 
-      selectComponent(component);
+          if(component.find("input[type=text],textarea,button").length > 0){
+            component.on('mouseenter', function () {
+              component.append('<div class="handle"></div>')
+            })
+            .on('mouseleave', function () {
+              $('.handle').remove()
+            })
+          }
 
-      if(component.find("input[type=text],textarea,button").length > 0){
-        component.on('mouseenter', function () {
-          component.append('<div class="handle"></div>')
-        })
-        .on('mouseleave', function () {
-          $('.handle').remove()
-        })
+          component.draggable({
+            handle: 'handle'
+          })
+
+          $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
+        });
       }
-
-      component.draggable({
-        handle: 'handle'
-      })
-
-      $('.thumb[name='+componentId+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
-      }
-
     }
   });
 
