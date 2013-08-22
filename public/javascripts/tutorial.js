@@ -26,6 +26,7 @@ function changeStep(step){
         }
       });
       phone.droppable({
+        hoverClass: "drop-hover",
         drop: function(event,ui){
           skyD.remove();
           changeStep(2);
@@ -51,6 +52,7 @@ function changeStep(step){
         }
       });
       phone.droppable({
+
         drop : function(event,ui){
           fireD.remove();
           fireC.show().addClass("component-selected"); 

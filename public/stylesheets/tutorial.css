@@ -8,7 +8,6 @@ h1 {
   margin-bottom: 40px;
 }
 
-
 .banner {
  	background-color: #3A3C48;
  	background-image: url(../images/stars.png);
@@ -24,14 +23,17 @@ h1 {
 
 .droppable-column {
 	float: left;
-  padding-top: 150px;
+
 	width: 200px;
   height: 100px;
 	margin-right: 40px;
+  position: relative;
+  
 }
 
 .learn-droppable {
-	background-color: #EEE;
+	position: absolute;
+  background-color: #EEE;
 	border-radius: 3px;
 	height: 50px;
 	width: 100%;
@@ -39,9 +41,17 @@ h1 {
 	margin-bottom: 10px;
 	text-indent: 10px;
 	font-size: 16px;
-  position:relative;
+
   z-index: 10000;
 }
+
+.droppable-column .night-sky {
+  top: 120px;
+}
+.droppable-column .fireworks {
+  top: 185px;
+}
+
 
 .learn-droppable .drag-arrow {
   background: green;
@@ -209,4 +219,8 @@ button {
   position: relative;
   left: -80px;
   opacity: 0;
+}
+
+.drop-hover {
+  background: blue;
 }
