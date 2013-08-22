@@ -358,11 +358,8 @@ input.app-name {
 }
 
 .library-list {
-  position: absolute;
-  width: 180px;
-  top: 80px;
-  bottom: 30px;
-  padding-right: 5px;
+  width: 100%;
+  max-height: 440px;
   overflow-y:auto;
 
 }
