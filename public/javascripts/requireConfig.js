@@ -8,6 +8,7 @@ requirejs.config({
       "jquery": "jquery/jquery.min",
       "ceci": "ceci/ceci",
       "ceci-ui": "ceci/ceci-ui",
+      "cards": "ceci/cards",
       "jquery-ui": "jquery-ui/ui/minified/jquery-ui.min",
       "towtruck": "https://towtruck.mozillalabs.com/towtruck",
       "towtruckSupport": "/javascripts/towtruckSupport",
@@ -21,7 +22,7 @@ requirejs.config({
       "towtruckSupport": {
         deps: ['towtruck']
       }
-    } 
+    }
 });
 
 requirejs(["/javascripts/application.js"]);

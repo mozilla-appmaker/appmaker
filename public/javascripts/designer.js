@@ -2,9 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ceci) {
-  // TODO: Fix this, we're essentially working around require.js.
-  // This is gross and shouldn't happen, it's
+define(["jquery", "angular", "ceci", "cards", "ceci-ui", "jquery-ui"], function($, ng, Ceci, Cards) {
+
+  Cards.load();
+  console.log(Cards);
 
   var selection = [];
   var defaultChannel = "#358CCE"; // matches what's in style.css
@@ -389,25 +390,23 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
     $(".inspector").removeClass('hidden');
   }
 
-  //logs messages
+  // logs messages
   $(document).on('broadcast', function (event, message) {
     var log = $('.log .inner p').append('<div>' + message + '</div>');
     var scroll = $(".scroll")[0];
     scroll.scrollTop = scroll.scrollHeight;
   });
 
-  $('.drophere').sortable({
+  // this options object makes components drag/droppable when passed
+  // to the jQueryUI "sortable" function.
+  var sortableOptions = {
     accept: '.draggable',
     receive: function (event, ui) {
-
-      if(ui.helper){
-
+      if (ui.helper) {
         var helper = $(ui.helper);
-
-        var componentName = helper.attr('value');
+        var componentname = helper.attr('value');
         var componentId = genId(helper.attr('name'));
-
-        var component = $('<' + componentName + '></' + componentName + '>');
+        var component = $('<' + componentname + '></' + componentname + '>');
 
         component.attr('id', componentId);
 
@@ -440,7 +439,7 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
         item.after(component);
         item.remove();
 
-        Ceci.convertElement(component[0], function(){
+        Ceci.convertElement(component[0], function() {
           selectComponent(component);
 
           if(component.find("input[type=text],textarea,button").length > 0){
@@ -460,7 +459,29 @@ define(["jquery", "angular", "ceci", "ceci-ui", "jquery-ui"], function($, ng, Ce
         });
       }
     }
-  });
+  };
+  $('.drophere').sortable(sortableOptions);
+
+  var createCard = function() {
+    // create real card
+    var card = Cards.createCard(),
+        no = Cards._cards.length,
+        id = "flathead-card-thumb-" + no;
+    $('.drophere', card).sortable(sortableOptions);
+    $('.flathead-cards').append(card);
+    card.showCard();
+    // create card thumbnail
+    var newthumb = $('<div class="card" id="'+id+'">'+no+'</div>');
+    newthumb.click(function() {
+      card.showCard();
+    })
+    $(".cards").append(newthumb);
+  };
+
+  $(".cards .btn-add").click(createCard);
+
+  // create first card as a default card
+  createCard();
 
   $('.publish').click(function(){
     var htmlData = $('.phone-canvas')[0].outerHTML;
