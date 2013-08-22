@@ -19,5 +19,5 @@ module.exports = {
     res.render('testapp');
   },
 
-  store: require('./store')
-}
+  publish: require('./publish')
+};

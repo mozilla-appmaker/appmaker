@@ -10,7 +10,9 @@ express = require('express'),
 routes = require('./routes'),
 http = require('http'),
 engine = require('ejs-locals'),
-path = require('path');
+path = require('path'),
+store = require('./lib/store'),
+uuid = require('node-uuid');
 
 // .env files aren't great at empty values.
 process.env.ASSET_HOST = typeof process.env.ASSET_HOST === 'undefined' ? '' : process.env.ASSET_HOST;
@@ -40,11 +42,16 @@ app.configure('development', function(){
 app.get('/', routes.index);
 app.get('/designer', routes.designer);
 app.get('/testapp', routes.testapp);
-app.post('/publish', routes.store.publish);
-app.get('/store/uuid', routes.store.uuid);
 
-routes.store._init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET,
-  process.env.S3_OBJECT_PREFIX, __dirname + '/views', process.env.PUBLISH_URL_PREFIX);
+// Server-side gen of ID since we'll likely eventually use this for persistance
+app.get('/store/uuid', function (req, res) {
+  res.setHeader('Content-Type', 'text/plain');
+  res.send(uuid.v1());
+});
+
+routes.publish.init(store.init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET),
+  __dirname + '/views', process.env.PUBLISH_HOST, process.env.PUBLISH_HOST_PREFIX, process.env.S3_OBJECT_PREFIX);
+app.post('/publish', routes.publish.publish);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

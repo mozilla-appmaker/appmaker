@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>My Flathead App</title>
+  <script>
+    document.addEventListener('DOMContentLoaded', function (e) {
+      var installButton = document.querySelector('#install');
+
+      installButton.addEventListener('click', function (e) {
+        var installRequest = navigator.mozApps.install('<%- manifestUrl %>');
+
+        installRequest.onsuccess = function (data) {
+          console.log('hooray!', data, this.result);
+        };
+
+        installRequest.onerror = function (err) {
+          console.error(':(', this.error);
+        };
+      }, false);
+    }, false);
+  </script>
+</head>
+<body>
+  <h1>Install This App</h1>
+  <button id="install">Install</button>
+  <iframe width="600" height="400" src="<%- iframeSrc %>"></iframe>
+</body>
+</html>
