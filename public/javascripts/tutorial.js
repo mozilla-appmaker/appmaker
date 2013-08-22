@@ -19,7 +19,12 @@ function changeStep(step){
   switch(step)  {
     case 1:
       skyD.css("cursor","move").addClass("dragme-callout");
-      skyD.draggable();
+      skyD.draggable({
+        revert :  true,
+        start : function(event,ui){
+          ui.helper.addClass("im-flying").css("z-index",1000).removeClass("dragme-callout");
+        }
+      });
       phone.droppable({
         drop: function(event,ui){
           skyD.remove();
