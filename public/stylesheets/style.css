@@ -289,25 +289,86 @@ button.btn-done {
 /*----------LAYOUT----------*/
 
 .banner {
- 	background-color: #222;
+ 	background-color: #3A3C48;
+ 	background-image: url(../images/stars.png);
+ 	background-repeat: repeat-x;
+ 	background-position: center top;
 }
 
 .banner-inner {
- 	margin: 0 auto;
- 	max-width: 900px;
- 	padding: 50px 50px;
+	width: 1000px;
+	padding-top: 140px;
+	margin: 0 auto;
 }
 
-input.app-name {
-	width: 70%;
+.phone-column {
+ 	width: 310px;
+ 	height: 440px;
+ 	float: left;
+}
+
+.droppable-column {
+	float: left;
+	width: 260px;
+	margin-right: 40px;
+	padding-top: 40px;
+}
+
+.timeline-column {
+	float: left;
+	width: 380px;
+	background-image: url(../images/timeline.png);
+	height: 400px;
+	background-repeat: no-repeat;
+	background-position: 88px center;
+	position: relative;
+}
+
+.time-item {
 	margin: 0 auto;
-	height: 40px;
-	border-radius: 4px;
-	border: none;
-	margin-top: 100px;
-	display: block;
-	text-align: center;
-	font-size: 18px;
+	background-image: url(../images/timeline-point.png);
+	height: 38px;
+	width: 240px;
+	font-weight: 500;
+	color: #616680;
+	background-repeat: no-repeat;
+	background-position: left top;
+	line-height: 38px;
+	text-indent: 48px;
+	margin-bottom: 40px;
+}
+
+.select-time {
+	color: #EEE;
+	background-image: url(../images/timeline-select.png);
+}
+
+.phone-container-learn {
+	position: absolute;
+	width: 310px;
+	top: 100px;
+}
+
+.phone-learn-canvas {
+	height: 400px;
+	background-color: #FFF;
+}
+
+.learn-droppable {
+	background-color: #EEE;
+	border-radius: 3px;
+	height: 50px;
+	width: 100%;
+	line-height: 50px;
+	margin-bottom: 10px;
+	text-indent: 10px;
+	font-size: 16px;
+}
+
+.land {
+	background-color: #616680;
+	height: 300px;
+	width: 100%;
 }
 
 .info-box {
