@@ -391,11 +391,11 @@ button.btn-done {
 }
 
 .container {
-  width: 770px;
+  width: 760px;
 	background-color: #ddd;
 	margin: 65px auto 40px auto;
 	position: relative;
-  padding-left: 255px;
+  padding-left: 260px;
 }
 
 .tray {
@@ -403,9 +403,9 @@ button.btn-done {
   left: 0px;
   top: 0px;
   bottom: 0px;
-	width: 185px;
+	width: 200px;
 	background-color: #ccc;
-	padding: 40px;
+	padding: 40px 30px;
 }
 
 .tray h5 {
@@ -413,10 +413,11 @@ button.btn-done {
 }
 
 .library-list {
-  width: 100%;
-  max-height: 440px;
+  width: 210px;
   overflow-y:auto;
-
+  position: absolute;
+  top: 110px;
+  bottom: 35px;
 }
 
 .library-list .draggable:last-child .thumb {
@@ -473,9 +474,19 @@ button.btn-done {
   margin: 0;
 }
 
-.thumb {
+.ui-sortable-placeholder {
+  height: 1.5em; line-height: 1.2em;
+  background: #3999e3;
+  opacity: .5;
+  display: block;
+  padding: 0;
+  margin: 0;
 
-  width: 160px;
+  visibility: visible !important;
+}
+
+.thumb {
+  width: 180px;
 	background-color: #eee;
 	margin-bottom: 5px;
 	border-radius: 3px;
@@ -484,9 +495,7 @@ button.btn-done {
 }
 
 .im-flying {
-  -webkit-transform: rotate(2deg);
-  -moz-transform: rotate(2deg);
-  box-shadow: 0px 3px 5px rgba(0,0,0,.3);
+  box-shadow: 0px 3px 8px rgba(0,0,0,.3);
   background: #EEE !important;
 }
 
