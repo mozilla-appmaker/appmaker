@@ -6,6 +6,7 @@ var knox = require('knox');
 var shortid = require('shortid');
 var ejs = require('ejs-locals/node_modules/ejs');
 var fs = require('fs');
+var uuid = require('node-uuid');
 
 var __knoxClient;
 var __compiledPublishEJSTemplate;
@@ -55,4 +56,10 @@ exports.publish = function(req, res) {
       res.send('Couldn\'t save to S3', 500);
     }
   });
+};
+
+// Server-side gen of ID since we'll likely eventually use this for persistance
+exports.uuid = function (req, res) {
+  res.setHeader('Content-Type', 'text/plain');
+  res.send(uuid.v1());
 };
