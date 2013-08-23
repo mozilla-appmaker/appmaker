@@ -57,7 +57,7 @@ define(["jquery", "angular", "ceci", "cards", "ceci-ui", "jquery-ui"], function(
         new Channel('green', 'Green Clover', '#71b806'),
         new Channel('yellow', 'Yellow Pot of Gold', '#e8d71e'),
         new Channel('orange', 'Orange Star', '#ff7b00'),
-        //new Channel(emptyChannel, 'Disabled', '#444')
+        //new Channel(Ceci.emptyChannel, 'Disabled', '#444')
       ];
 
 
@@ -188,7 +188,7 @@ define(["jquery", "angular", "ceci", "cards", "ceci-ui", "jquery-ui"], function(
   var displayBroadcastChannel = function (channelName) {
     var rdata = getChannelByChannelName(channelName);
     if(!rdata) {
-        rdata = getChannelByChannelName(emptyChannel);
+        rdata = getChannelByChannelName(Ceci.emptyChannel);
     }
     $('.inspector .broadcast-channel')
         .text(rdata.title)
@@ -205,7 +205,7 @@ define(["jquery", "angular", "ceci", "cards", "ceci-ui", "jquery-ui"], function(
       });
       if(!subscription) {
         subscription = {
-          channel: emptyChannel,
+          channel: Ceci.emptyChannel,
           listener: listener
         };
       }
@@ -221,7 +221,7 @@ define(["jquery", "angular", "ceci", "cards", "ceci-ui", "jquery-ui"], function(
 
     potentialListeners.forEach(function(pair) {
       var rdata = getChannelByChannelName(pair.channel);
-      var attrBar = $('<div class="listener' + (pair.channel === emptyChannel ? ' custom':'') + '"></div>');
+      var attrBar = $('<div class="listener' + (pair.channel === Ceci.emptyChannel ? ' custom':'') + '"></div>');
       // listening function name
       attrBar.append('<span class="channel-listener">' + pair.listener + '</span>');
       // color strip
@@ -331,7 +331,7 @@ define(["jquery", "angular", "ceci", "cards", "ceci-ui", "jquery-ui"], function(
     displayListenChannels(getPotentialListeners(element));
 
     //temp code to show broadcasts
-    if(element.broadcastChannel !== Ceci._emptyChannel) {
+    if(element.broadcastChannel !== Ceci.emptyChannel) {
       $('.broadcast-section').show()
     } else {
       $('.broadcast-section').hide()
