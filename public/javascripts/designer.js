@@ -60,17 +60,17 @@ define(["jquery", "angular", "ceci", "cards", "ceci-ui", "jquery-ui"], function(
         //new Channel(Ceci.emptyChannel, 'Disabled', '#444')
       ];
 
-
   // generate the radio channel list (colored clickable boxes) and append to the page
+  // TODO: ng this up
   var getChannelStrip = function (forAttribute) {
-    var rdata,
-        i = 0,
-        strip = $('<div class="colorstrip" id="strip' + (forAttribute? '-'+forAttribute : '') + '"></div>'),
-        box;
-    for (var i; i < radio.length; i++) {
-      rdata = radio[i];
-      box = $('<div class="color '+ rdata.name +'" value="'+ rdata.hex +'" name="'+ rdata.name +'" title="'+ rdata.title +'" style="background-color: '+ rdata.hex +'"></div>');
-      strip.append(box);
+    var strip = $('<div class="colorstrip" id="strip' + (forAttribute ? '-' + forAttribute : '') + '"></div>');
+
+    for (for i in radio) {
+      var rdata = radio[i];
+
+      strip.append(
+        $('<div class="color '+ rdata.name +'" value="'+ rdata.hex +'" name="'+ rdata.name +'" title="'+ rdata.title +'" style="background-color: '+ rdata.hex +'"></div>');
+      );
     }
     return strip;
   }
