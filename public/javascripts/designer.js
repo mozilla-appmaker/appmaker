@@ -5,11 +5,8 @@
 define(["jquery", "angular", "ceci", "cards", "ceci-ui", "jquery-ui"], function($, ng, Ceci, Cards) {
 
   Cards.load();
-  console.log(Cards);
 
   var selection = [];
-  var defaultChannel = "#358CCE"; // matches what's in style.css
-  var emptyChannel = "false"; // channel names have to be strings
   var tagids = {};
   var genId = function(tag) {
     // generate a unique id that increments per tag ('moz-button-1', 'moz-button-2', etc.)
