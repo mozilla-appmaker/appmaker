@@ -18,14 +18,12 @@ define(
       container: $('#flathead-app')[0],
       onComponentAdded: function (component) {
         component = $(component);
-        if(component.find("input[type=text],textarea,button").length > 0){
-          component.on('mouseenter', function () {
-            component.append('<div class="handle"></div>')
-          })
-          .on('mouseleave', function () {
-            $('.handle').remove()
-          });
-        }
+
+        component.on('mouseenter', function () {
+          component.append('<div class="handle"></div>')
+        }).on('mouseleave', function () {
+          $('.handle').remove()
+        });
 
         component.on('mousedown', function(evt) {
           selectComponent($(evt.currentTarget));
