@@ -16,4 +16,3 @@ exports.designer = function(req, res){
 };
 
 exports.store = require('./store');
-exports.editor = require('./editor');
