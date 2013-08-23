@@ -23,9 +23,6 @@ define(["jquery", "angular", "ceci", "cards", "ceci-ui", "jquery-ui"], function(
 
   Ceci.load(function(components) {
 
-    var componentCount = Object.keys(components).length;
-    var addedCount = 0;
-
     Object.keys(components).forEach(function (tag) {
       var thumb = $('<div class="clearfix draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('app-', '') + '</div></div>');
       $('.library-list').append(thumb);
@@ -39,12 +36,9 @@ define(["jquery", "angular", "ceci", "cards", "ceci-ui", "jquery-ui"], function(
         },
         addClass: "clone"
       })
-
-      addedCount++;
-      if(addedCount == componentCount){
-        $('.library-list').removeClass("library-loading");
-      }
     });
+
+    $('.library-list').removeClass("library-loading");
 
   });
 
