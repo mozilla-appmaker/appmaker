@@ -38,9 +38,11 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
-app.get('/edit', routes.editor.index);
 app.get('/designer', routes.designer);
+
 app.post('/publish', routes.store.publish);
+
+app.get('/store/uuid', routes.store.uuid);
 
 routes.store._init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET,
   process.env.S3_OBJECT_PREFIX, __dirname + '/views', process.env.PUBLISH_URL_PREFIX);
