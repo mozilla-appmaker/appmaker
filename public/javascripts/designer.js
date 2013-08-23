@@ -28,24 +28,7 @@ define(
         }
 
         component.on('mousedown', function(evt) {
-          if (mode == 'play') {
-            $(evt.target).addClass('active'); // to replace :active which is otherwise impossible to intercept
-          }
-          else {
-            selectComponent($(evt.currentTarget));
-          }
-        });
-
-        component.on('mouseleave', function(evt) {
-          if (mode == 'play') {
-            $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
-          }
-        });
-
-        component.on('mouseup', function(evt) {
-          if (mode == 'play') {
-            $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
-          }
+          selectComponent($(evt.currentTarget));
         });
 
         selectComponent(component);
@@ -129,9 +112,8 @@ define(
     }
 
     // jQuery-UI property for reordering items in the designer
-    var sortable;
     function enableReorder() {
-      $(".phone-canvas,.fixed-top,.fixed-bottom").disableSelection().sortable({
+      return $(".phone-canvas,.fixed-top,.fixed-bottom").disableSelection().sortable({
         connectWith: ".drophere",
         placeholder: "ui-state-highlight",
         start : function(){ $(".phone-container").addClass("dragging")},
@@ -141,49 +123,12 @@ define(
     }
 
     var disableReorder = function() {
-      sortable = false;
       return $(".phone-canvas,.fixed-top,.fixed-bottom").sortable("disable");
     }
 
-    // indicates the design vs. play mode for the app we're building
-    var mode;
-
-    // FIXME: 'modes' might become obsolete
-    var buildMode = function() {
-      $(".play").removeClass("on");
-      $(".build").addClass("on");
-      mode = 'build';
-      enableReorder();
-      $(".tray").css('visibility', 'visible');
-      $(".log").hide();
-      $(".cards").show();
-    }
-
-    // FIXME: 'modes' might become obsolete
-    var playMode = function() {
-      $(".play").addClass("on");
-      $(".build").removeClass("on");
-      $(".tray").css('visibility', 'hidden');
-      $(".cards").hide();
-      $(".log").show();
-      mode = 'play';
-      clearSelection();
-      disableReorder();
-    }
-
     listChannels();
-    enableReorder();
-    disableReorder();
     clearSelection();
-    buildMode();
-
-    $(document).on('click', '.play', function() {
-      playMode();
-    });
-
-    $(document).on('click', '.build', function() {
-      buildMode();
-    });
+    enableReorder();
 
     $(document).on('click', '.container', function (evt) {
       if ($(evt.target).hasClass('container')) {
@@ -419,10 +364,10 @@ define(
       receive: function (event, ui) {
         if (ui.helper) {
           var helper = $(ui.helper);
-          
+
           app.addComponent(helper.attr('value'), function(component){
             component = $(component);
-            
+
             var dropTarget = $(".drophere").find(".draggable");
             dropTarget.replaceWith(component);
 
@@ -441,7 +386,7 @@ define(
     var createCard = function() {
       // create real card
       var card = Ceci.createCard();
-        
+
       $('.drophere', card).sortable(sortableOptions);
       $('#flathead-app').append(card);
       card.showCard();
