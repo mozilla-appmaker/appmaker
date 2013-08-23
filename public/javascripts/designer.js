@@ -50,26 +50,26 @@ define(["jquery", "angular", "ceci", "cards", "ceci-ui", "jquery-ui"], function(
   }
 
   var channels = [
-        new Channel('blue', 'Blue Moon', '#358CCE'),
-        new Channel('red', 'Red Baloon', '#e81e1e'),
-        new Channel('pink', 'Pink Heart', '#e3197b'),
-        new Channel('purple', 'Purple Horseshoe', '#9f27cf'),
-        new Channel('green', 'Green Clover', '#71b806'),
-        new Channel('yellow', 'Yellow Pot of Gold', '#e8d71e'),
-        new Channel('orange', 'Orange Star', '#ff7b00'),
-        //new Channel(Ceci.emptyChannel, 'Disabled', '#444')
-      ];
+    new Channel('blue', 'Blue Moon', '#358CCE'),
+    new Channel('red', 'Red Baloon', '#e81e1e'),
+    new Channel('pink', 'Pink Heart', '#e3197b'),
+    new Channel('purple', 'Purple Horseshoe', '#9f27cf'),
+    new Channel('green', 'Green Clover', '#71b806'),
+    new Channel('yellow', 'Yellow Pot of Gold', '#e8d71e'),
+    new Channel('orange', 'Orange Star', '#ff7b00'),
+    //new Channel(Ceci.emptyChannel, 'Disabled', '#444')
+  ];
 
   // generate the channels list (colored clickable boxes) and append to the page
   // TODO: ng this up
   var getChannelStrip = function (forAttribute) {
     var strip = $('<div class="colorstrip" id="strip' + (forAttribute ? '-' + forAttribute : '') + '"></div>');
 
-    for (for i in channels) {
+    for (i in channels) {
       var rdata = channels[i];
 
       strip.append(
-        $('<div class="color '+ rdata.name +'" value="'+ rdata.hex +'" name="'+ rdata.name +'" title="'+ rdata.title +'" style="background-color: '+ rdata.hex +'"></div>');
+        $('<div class="color '+ rdata.name +'" value="'+ rdata.hex +'" name="'+ rdata.name +'" title="'+ rdata.title +'" style="background-color: '+ rdata.hex +'"></div>')
       );
     }
     return strip;
