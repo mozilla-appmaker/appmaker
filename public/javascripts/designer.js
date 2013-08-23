@@ -5,6 +5,7 @@
 define(
   ["jquery", "ceci", "ceci-app", "jquery-ui"],
   function($, Ceci) {
+    "use strict";
 
     var selection = [];
 
@@ -92,7 +93,7 @@ define(
     function getChannelStrip(forAttribute) {
       var strip = $('<div class="colorstrip" id="strip' + (forAttribute ? '-' + forAttribute : '') + '"></div>');
 
-      for (i in channels) {
+      for (var i in channels) {
         var rdata = channels[i];
 
         strip.append(
