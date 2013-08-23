@@ -45,10 +45,6 @@ define(
           if (mode == 'play') {
             $(evt.target).removeClass('active'); // to replace :active which is otherwise impossible to intercept
           }
-          if (mode == 'build') {
-            event.stopPropagation();
-            event.preventDefault();
-          }
         });
 
         selectComponent(component);
