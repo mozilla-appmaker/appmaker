@@ -110,6 +110,8 @@ h5 {
 	margin: 0px 0px 20px 0px;
 	text-transform: uppercase;
 	font-weight: 600;
+	line-height: 16px;
+	padding: 0px;
 }
 
 h6 {
@@ -266,16 +268,20 @@ button.btn-img {
 
 button.btn-add {
 	height: 40px;
-	width: 100%;
+	width: 50px;
 	border-radius: 3px;
 	background-color: #ff7b00;
 	border: none;
 	background-position: center;
 	background-repeat: no-repeat;
-	margin-bottom: 10px;
+	margin-top: 15px;
+	margin-left: 20px;
 	color: #FFF;
 	font-size: 13px;
 	cursor: pointer;
+	background-image: url(../images/add-card.png);
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
 button.btn-done {
@@ -284,6 +290,21 @@ button.btn-done {
 	border-radius: 4px;
 	height: 40px;
 	margin-top: 10px;
+}
+
+button.log {
+	height: 16px;
+	width: 16px;
+	background: none;
+	border-radius: 3px;
+	background-image: url(../images/log.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	position: absolute;
+	top: 20px;
+	right: 110px;
+	-webkit-appearance: none;
+	border: none;
 }
 
 /*----------LAYOUT----------*/
@@ -313,11 +334,10 @@ button.btn-done {
 
 
 .container {
-  width: 760px;
-	background-color: #ddd;
+  	width: 1100px;
+ 	background-color: #ddd;
 	margin: 65px auto 40px auto;
 	position: relative;
-  padding-left: 260px;
 }
 
 .tray {
@@ -327,7 +347,7 @@ button.btn-done {
   bottom: 0px;
 	width: 200px;
 	background-color: #ccc;
-	padding: 40px 30px;
+	padding: 20px 30px;
 }
 
 .tray h5 {
@@ -338,7 +358,7 @@ button.btn-done {
   width: 210px;
   overflow-y:auto;
   position: absolute;
-  top: 110px;
+  top: 100px;
   bottom: 35px;
 }
 
@@ -350,6 +370,19 @@ button.btn-done {
 	min-height: 400px;
 	background: url(../images/loading-throbber.gif) center no-repeat;
 	background-size: auto 75px;
+}
+
+.listen-column {
+	float: left;
+	width: 220px;
+	height: 500px;
+	padding-left: 260px;
+}
+
+.broadcast-column {
+	float: left;
+	width: 220px;
+	height: 500px;
 }
 
 .component-header {
@@ -446,8 +479,8 @@ button.btn-done {
 .phone-container {
 	float: left;
 	width: 310px;
-	margin-left: 40px;
 	margin-bottom: 30px;
+	position: relative;
 }
 
 .phone-canvas button:focus {
@@ -467,7 +500,7 @@ button.btn-done {
 	background-color: #333;
 	height: 40px;
 	width: 100%;
-	margin-top: 40px;
+	margin-top: 20px;
 	border-radius: 6px 6px 0px 0px;
 	background-image: url(../images/mic.png);
 	background-position: center;
@@ -526,24 +559,26 @@ button.btn-done {
 
 .cards {
 	float: left;
-	width: 80px;
-	padding-top: 40px;
-	margin-left: 40px;
+	width: 50px;
+	padding-top: 20px;
 	position: relative;
+	margin-left: 20px;
 }
 
 .card {
-	height: 100px;
+	height: 50px;
 	width: 100%;
-	background-color: #FFF;
-	color: #DDD;
-	font-size: 80px;
+	font-size: 36px;
 	text-align: center;
+	line-height: 50px;
 	cursor: pointer;
+	color: #333;
+	background-image: url(../images/card.png);
+	background-repeat: no-repeat;
 }
 
 .card + .card {
-	margin-top: 5px;
+	margin-bottom: 5px;
 }
 
 .console {
@@ -552,7 +587,7 @@ button.btn-done {
 	top: 0px;
 	bottom: 0px;
 	right: 0px;
-	left: 770px;
+	left: 1010px;
 	color: #999;
 }
 
