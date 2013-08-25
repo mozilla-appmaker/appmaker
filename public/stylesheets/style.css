@@ -292,27 +292,38 @@ button.btn-done {
 	margin-top: 10px;
 }
 
-button.log-toggle {
-	height: 16px;
+button.small-btn {
 	width: 36px;
-	background: none;
+	height: 36px;
 	border-radius: 3px;
-		background-image: url(../images/log.png);
 	background-repeat: no-repeat;
 	background-position: center;
 	position: absolute;
-	top: 20px;
-	right: 96px;
-	-webkit-appearance: none;
-	border: none;
-	color: #666;
-		color: #222;
-	font-size: 13px;
 	background-color: #f8f8f8;
-	height: 36px;
+	-webkit-appearance: none;
+	color: #222;
+	font-size: 13px;
 	border: 1px solid #CCC;
 	box-sizing:border-box;
 	-moz-box-sizing:border-box; /* Firefox */
+}
+
+button.log-toggle {
+	background-image: url(../images/log.png);
+	top: 20px;
+	right: 96px;
+}
+
+button.delete-btn {
+	background-image: url(../images/trash.png);
+	top: 20px;
+	right: 137px;
+}
+
+button.customize-btn {
+	background-image: url(../images/customize.png);
+	top: 20px;
+	right: 178px;
 }
 
 /*----------LAYOUT----------*/
@@ -637,12 +648,12 @@ button.log-toggle {
 .log {
 	background-color: #FFF;
 	position: fixed;
-	bottom: 0px;
-	right: 0px;
-	width: 560px;
 	height: 260px;
 	border-top: 1px solid #AAA;
-	border-left: 1px solid #AAA;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	z-index: 99;
 }
 
 .log-bar {

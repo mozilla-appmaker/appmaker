@@ -136,6 +136,12 @@ define(
       selection = [];
       $(".selected").removeClass("selected");
       $(".inspector").addClass('hidden');
+      
+      //hide delete button
+      $('.delete-btn').hide()
+
+      //hide customize button
+      $('.customize-btn').hide()
     }
 
     // jQuery-UI property for reordering items in the designer
@@ -180,6 +186,14 @@ define(
         });
       }
     });
+
+    $('.delete-btn').click(function () {
+      var elements = selection.slice();
+        clearSelection();
+        elements.forEach(function(element) {
+          element.removeSafely();
+        });
+    })
 
     var displayBroadcastChannel = function (channelName) {
       var rdata = getChannelByChannelName(channelName);
@@ -322,23 +336,29 @@ define(
       comp.addClass("selected");
       moveToFront(comp);
 
-    //Show broadcast channel options on click of broadcast channel
-    $(document).on('click', '.broadcast-channels', function () {
-        var xPos = $(this).offset().left + 'px'
-        var yPos = $(this).offset().top + 25 + 'px'
-        $('.broadcast-section').css({top: yPos, left: xPos})
-        $('.broadcast-section').show();
-    })
+      //show delete button
+        $('.delete-btn').show()
 
-    //Show subscription channel options on click of subcription channel
-    $(document).on('click', '.subscription-channels', function () {
-        var xPos = $(this).offset().left + 'px'
-        var yPos = $(this).offset().top + 25 + 'px'
-        $('.listen-section').css({top: yPos, left: xPos})
-      //Show connectable listeners
-      $('.listen-section').show();
-      //displayListenChannels(getPotentialListeners(element));
-    })
+      //show customize button
+      $('.customize-btn').show()
+
+      //Show broadcast channel options on click of broadcast channel
+      $(document).on('click', '.broadcast-channels', function () {
+          var xPos = $(this).offset().left + 'px'
+          var yPos = $(this).offset().top + 25 + 'px'
+          $('.broadcast-section').css({top: yPos, left: xPos})
+          $('.broadcast-section').show();
+      })
+
+      //Show subscription channel options on click of subcription channel
+      $(document).on('click', '.subscription-channels', function () {
+          var xPos = $(this).offset().left + 'px'
+          var yPos = $(this).offset().top + 25 + 'px'
+          $('.listen-section').css({top: yPos, left: xPos})
+        //Show connectable listeners
+        $('.listen-section').show();
+        //displayListenChannels(getPotentialListeners(element));
+      })
 
       //May not be necessary now that we show description in tray.
       /*
