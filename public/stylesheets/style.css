@@ -360,7 +360,7 @@ button.log-toggle {
 
 .library-list {
   width: 220px;
-  overflow-y:auto;
+  overflow-y: hidden;
   position: absolute;
   top: 76px;
   bottom: 35px;
@@ -480,10 +480,12 @@ button.log-toggle {
 
 .component-description {
 	position: absolute;
-	height: 200px;
-	width: 400px;
+	padding: 10px;
+	max-width: 300px;
 	background-color: #FFF;
 	border: 1px solid #AAA;
+	z-index: 999;
+
 }
 
 .component-std {
@@ -827,7 +829,6 @@ button.log-toggle {
 
 .broadcast-options,
 .listen-options {
-	margin-bottom: 20px;
 }
 
 .label {
@@ -873,12 +874,11 @@ button.log-toggle {
 	cursor: move;
 }
 
-.broadcast-section {
-	display: none;
-}
-
-.listen-section {
-	display: none;
+.broadcast-section, .listen-section {
+	position: absolute;
+	background-color: #FFF;
+	padding: 5px;
+	border-radius: 2px;
 }
 
 .editables-section {
@@ -952,29 +952,33 @@ button.log-toggle {
 .subscription-channels {
   position: absolute;
   top: 0px;
-  height: 100%;
-  width: 20px;
+  height: 20px;
+  width: 210px;
+}
+
+.broadcast-channels .channel {
+	border-radius: 10px 0px 0px 10px;
+}
+
+.subscription-channels .channel {
+	border-radius: 0px 10px 10px 0px;
 }
 
 .broadcast-channels {
-  right: -25px;
+  right: -220px;
 }
 .subscription-channels {
-  left: -25px;
+  left: -220px;
 
 }
 
 .subscription-channels .channel {
   float: right;
   margin-left: 2px;
-  -webkit-border-radius: 0 5px 5px 0;
-  border-radius: 0 5px 5px 0;
 }
 
 .broadcast-channels .channel {
   float: left;
-  -webkit-border-radius: 0 5px 5px 0;
-  border-radius: 0 5px 5px 0;
 }
 
 .broadcast-channels .channel,
@@ -982,8 +986,8 @@ button.log-toggle {
   position: relative;
   height: 94%;
   top: 3%;
-  width: 3px;
-  opacity: .65;
+  width: 100%;
+  opacity: .4;
 
 }
 

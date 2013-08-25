@@ -94,7 +94,7 @@ define(
       new Channel('green', 'Green Clover', '#71b806'),
       new Channel('yellow', 'Yellow Pot of Gold', '#e8d71e'),
       new Channel('orange', 'Orange Star', '#ff7b00'),
-      //new Channel(Ceci.emptyChannel, 'Disabled', '#444')
+      new Channel(Ceci.emptyChannel, 'Disabled', '#444')
     ];
 
 
@@ -210,7 +210,7 @@ define(
     };
 
     var displayListenChannels = function (potentialListeners) {
-      var lc = $('.inspector .listen-channel'),
+      var lc = $('.listen-channel'),
           attrBar,
           attribute;
       lc.html("");
@@ -322,30 +322,37 @@ define(
       comp.addClass("selected");
       moveToFront(comp);
 
+    //Show broadcast channel options on click of broadcast channel
+    $(document).on('click', '.broadcast-channels', function () {
+        var xPos = $(this).offset().left + 'px'
+        var yPos = $(this).offset().top + 25 + 'px'
+        $('.broadcast-section').css({top: yPos, left: xPos})
+        $('.broadcast-section').show();
+    })
+
+    //Show subscription channel options on click of subcription channel
+    $(document).on('click', '.subscription-channels', function () {
+        var xPos = $(this).offset().left + 'px'
+        var yPos = $(this).offset().top + 25 + 'px'
+        $('.listen-section').css({top: yPos, left: xPos})
+      //Show connectable listeners
+      $('.listen-section').show();
+      //displayListenChannels(getPotentialListeners(element));
+    })
+
+      //May not be necessary now that we show description in tray.
+      /*
       $('.description').text('')
       if ('description' in element) {
         var description = element.description.innerHTML
         $('.description').text(description)
       }
-
-      //Show connectable listeners
-      if(getPotentialListeners(element).length > 0) {
-        $('.listen-section').show();
-      } else {
-        $('.listen-section').hide();
-      }
-      displayListenChannels(getPotentialListeners(element));
-
-      //temp code to show broadcasts
-      if(element.broadcastChannel !== Ceci.emptyChannel) {
-        $('.broadcast-section').show()
-      } else {
-        $('.broadcast-section').hide()
-      }
+      */
 
       //Show broadcast channel
-      var currentBroadcast = element.broadcastChannel;
-      displayBroadcastChannel(currentBroadcast);
+      //May not be necessary. We now show selected channels prominently in UI. 
+      /*var currentBroadcast = element.broadcastChannel;
+      displayBroadcastChannel(currentBroadcast);*/
 
       //Show editable attributes
       displayAttributes(element);
@@ -376,7 +383,10 @@ define(
       };
 
       // listen for color clicks
-      $(document).on('click', '.color', onSelectFunction);
+      $(document).on('click', '.color', onSelectFunction)
+      .on('click', '.color', function () {
+        $('.broadcast-section, .listen-section').hide()
+      })
 
       // give the element the function we just added, so we
       // can unbind it when the element gets unselected.
@@ -403,7 +413,7 @@ define(
     }
     
     $(document).on('mouseenter', '.info-btn', function () {
-      var yPos = $(this).offset().top + 'px'
+      var yPos = $(this).offset().top - 9 + 'px'
       var xPos = $(this).offset().left + 40 + 'px'
       var component = $(this).parents('.draggable').attr('value');
       var compDescription = $(this).parents('.draggable').attr('description');
