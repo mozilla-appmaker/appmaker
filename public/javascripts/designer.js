@@ -42,6 +42,7 @@ define(
             start : function(event,ui){
               var clone = ui.helper;
               $(clone).find(".thumb").addClass("im-flying");
+              clone.find('.info-btn').remove()
             },
             addClass: "clone"
           })
@@ -401,12 +402,14 @@ define(
       $(document.body).append(componentDescription)
     }
     
-    $(document).on('click', '.info-btn', function () {
+    $(document).on('mouseenter', '.info-btn', function () {
       var yPos = $(this).offset().top + 'px'
       var xPos = $(this).offset().left + 40 + 'px'
       var component = $(this).parents('.draggable').attr('value');
       var compDescription = $(this).parents('.draggable').attr('description');
       showComponentDescription(xPos, yPos, component, compDescription);
+    }).on('mouseleave', '.info-btn', function () {
+      $('.component-description').remove()
     })
 
 
@@ -429,7 +432,6 @@ define(
               handle: 'handle'
             })
 
-            $('.thumb[name='+component.id+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
           });
         }
       }

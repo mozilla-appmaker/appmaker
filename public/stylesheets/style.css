@@ -342,7 +342,7 @@ button.log-toggle {
 
 
 .container {
-  	width: 1086px;
+  	width: 1046px;
  	background-color: #ddd;
 	margin: 65px auto 40px auto;
 	position: relative;
@@ -353,13 +353,13 @@ button.log-toggle {
   left: 0px;
   top: 0px;
   bottom: 0px;
-	width: 200px;
-	background-color: #ccc;
-	padding: 20px 30px;
+  width: 200px;
+  background-color: #ccc;
+  padding: 20px 0px 20px 20px;
 }
 
 .library-list {
-  width: 210px;
+  width: 220px;
   overflow-y:auto;
   position: absolute;
   top: 76px;
@@ -380,7 +380,7 @@ button.log-toggle {
 	float: left;
 	width: 220px;
 	height: 500px;
-	padding-left: 260px;
+	padding-left: 220px;
 }
 
 .broadcast-column {
@@ -428,7 +428,7 @@ button.log-toggle {
 
 .info-btn {
 	position: absolute;
-	right: 22px;
+	right: 49px;
 	top: 9px;
 	height: 22px;
 	width: 22px;
@@ -461,10 +461,10 @@ button.log-toggle {
 }
 
 .thumb {
-  width: 180px;
-	background-color: #eee;
-	margin-bottom: 5px;
-	border-radius: 3px;
+	width: 180px;
+  	background-color: #eee;
+  	margin-bottom: 5px;
+  	border-radius: 3px;
 	line-height: 40px;
 	text-indent: 10px;
 }
@@ -615,7 +615,7 @@ button.log-toggle {
 	top: 0px;
 	bottom: 0px;
 	right: 0px;
-	left: 1010px;
+	left: 970px;
 	color: #999;
 }
 
@@ -637,8 +637,8 @@ button.log-toggle {
 	position: fixed;
 	bottom: 0px;
 	right: 0px;
-	width: 500px;
-	height: 400px;
+	width: 560px;
+	height: 260px;
 	border-top: 1px solid #AAA;
 	border-left: 1px solid #AAA;
 }
