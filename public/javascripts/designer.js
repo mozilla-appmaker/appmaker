@@ -140,8 +140,10 @@ define(
       //hide delete button
       $('.delete-btn').hide()
 
-      //hide customize button
-      $('.customize-btn').hide()
+      //hide customize button and section
+      $('.customize-btn').hide().removeClass('selected-button')
+      $('.editables-section').hide()
+
     }
 
     // jQuery-UI property for reordering items in the designer
@@ -301,11 +303,11 @@ define(
     };
 
     var displayAttributes = function(element) {
-      $('.inspector .editables').html("");
+      $('.editables-section .editables').html("");
       if (element.getEditableAttributes().length > 0) {
-        $('.editables-section').show();
+        $('.customize-btn').show();
       } else {
-        $('.editables-section').hide();
+        $('.customize-btn').hide();
       }
       var attributes = element.getEditableAttributes();
       var attributeList = $("<div class='editable-attributes'></div>");
@@ -315,17 +317,30 @@ define(
         var uiElement = getAttributeUIElement(element, attribute, definition);
         attributeList.append(uiElement);
       });
-      $('.inspector .editables').append(attributeList);
+      $('.editables-section .editables').append(attributeList);
     };
+
+    //Toggle customize
+    $('.customize-btn').click(function () {
+      if ($(this).hasClass('selected-button')) {
+        $('.editables-section').hide()
+        $(this).removeClass('selected-button')
+      } else {
+        $('.editables-section').show()
+        $(this).addClass('selected-button')
+      }
+      
+    })
 
     //Toggle the log
     $('.log-toggle').click(function () {
-      $('.log').toggle()
-    })
-
-    //Close the log
-    $('.close').click(function () {
-      $('.log').hide()
+      if ($(this).hasClass('selected-button')) {
+        $('.log').hide()
+        $(this).removeClass('selected-button')
+      } else {
+        $('.log').show()
+        $(this).addClass('selected-button')
+      }
     })
 
     var selectComponent = function(comp) {
@@ -336,11 +351,7 @@ define(
       comp.addClass("selected");
       moveToFront(comp);
 
-      //show delete button
         $('.delete-btn').show()
-
-      //show customize button
-      $('.customize-btn').show()
 
       //Show broadcast channel options on click of broadcast channel
       $(document).on('click', '.broadcast-channels', function () {
@@ -413,7 +424,7 @@ define(
       element.onSelectFunction = onSelectFunction;
 
       var componentName = element.tagName.toLowerCase();
-      $(".inspector .name").text(componentName);
+      $(".editables-section .name").text(componentName);
       $(".inspector").removeClass('hidden');
     }
 
