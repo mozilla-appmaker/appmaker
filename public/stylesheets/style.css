@@ -189,7 +189,7 @@ button.btn-toggle {
 	background-color: #f8f8f8;
 	display: block;
 	border-radius: 3px;
-	height: 25px;
+	height: 36px;
 	width: 90px;
 	float: left;
 	color: #222;
@@ -220,7 +220,7 @@ button.publish {
 	right: 0px;
 	display: block;
 	height: 40px;
-	width: 120px;
+	width: 110px;
 	font-size: 16px;
 	cursor: pointer;
 }
@@ -228,10 +228,10 @@ button.publish {
 button.new {
 	position: absolute;
 	top: -40px;
-	right: 130px;
+	right: 115px;
 	display: block;
 	height: 40px;
-	width: 120px;
+	width: 110px;
 	font-size: 16px;
 	cursor: pointer;
 }
@@ -267,15 +267,15 @@ button.btn-img {
 }
 
 button.btn-add {
-	height: 40px;
-	width: 50px;
+	height: 36px;
+	width: 36px;
 	border-radius: 3px;
 	background-color: #ff7b00;
 	border: none;
+	padding: 0px;
 	background-position: center;
 	background-repeat: no-repeat;
-	margin-top: 15px;
-	margin-left: 20px;
+	margin-bottom: 20px;
 	color: #FFF;
 	font-size: 13px;
 	cursor: pointer;
@@ -292,19 +292,27 @@ button.btn-done {
 	margin-top: 10px;
 }
 
-button.log {
+button.log-toggle {
 	height: 16px;
-	width: 16px;
+	width: 36px;
 	background: none;
 	border-radius: 3px;
-	background-image: url(../images/log.png);
+		background-image: url(../images/log.png);
 	background-repeat: no-repeat;
 	background-position: center;
 	position: absolute;
 	top: 20px;
-	right: 110px;
+	right: 96px;
 	-webkit-appearance: none;
 	border: none;
+	color: #666;
+		color: #222;
+	font-size: 13px;
+	background-color: #f8f8f8;
+	height: 36px;
+	border: 1px solid #CCC;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box; /* Firefox */
 }
 
 /*----------LAYOUT----------*/
@@ -334,7 +342,7 @@ button.log {
 
 
 .container {
-  	width: 1100px;
+  	width: 1086px;
  	background-color: #ddd;
 	margin: 65px auto 40px auto;
 	position: relative;
@@ -350,15 +358,11 @@ button.log {
 	padding: 20px 30px;
 }
 
-.tray h5 {
-  margin-bottom: 15px;
-}
-
 .library-list {
   width: 210px;
   overflow-y:auto;
   position: absolute;
-  top: 100px;
+  top: 76px;
   bottom: 35px;
 }
 
@@ -419,6 +423,22 @@ button.log {
 
 .draggable {
 	cursor: move;
+	position: relative;
+}
+
+.info-btn {
+	position: absolute;
+	right: 22px;
+	top: 9px;
+	height: 22px;
+	width: 22px;
+	border-radius: 3px;
+	border: 1px solid #CCC;
+	background-color: #F8F8F8;
+	background-image: url(../images/info2.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	cursor: pointer;
 }
 
 .ui-state-highlight {
@@ -454,8 +474,16 @@ button.log {
   background: #EEE !important;
 }
 
-.thumb:hover {
+.draggable:hover .thumb{
+	background: #FFF;
+}
+
+.component-description {
+	position: absolute;
+	height: 200px;
+	width: 400px;
 	background-color: #FFF;
+	border: 1px solid #AAA;
 }
 
 .component-std {
@@ -479,7 +507,7 @@ button.log {
 .phone-container {
 	float: left;
 	width: 310px;
-	margin-bottom: 30px;
+	margin-bottom: 20px;
 	position: relative;
 }
 
@@ -498,7 +526,7 @@ button.log {
 
 .phone-top {
 	background-color: #333;
-	height: 40px;
+	height: 36px;
 	width: 100%;
 	margin-top: 20px;
 	border-radius: 6px 6px 0px 0px;
@@ -549,7 +577,7 @@ button.log {
 
 .phone-bottom {
 	background-color: #333;
-	height: 40px;
+	height: 50px;
 	width: 100%;
 	border-radius: 0px 0px 6px 6px;
 	background-image: url(../images/circle.png);
@@ -559,25 +587,25 @@ button.log {
 
 .cards {
 	float: left;
-	width: 50px;
+	width: 36px;
 	padding-top: 20px;
 	position: relative;
 	margin-left: 20px;
 }
 
 .card {
-	height: 50px;
+	height: 46px;
 	width: 100%;
-	font-size: 36px;
+	font-size: 30px;
 	text-align: center;
-	line-height: 50px;
+	line-height: 46px;
 	cursor: pointer;
-	color: #333;
+	color: #888;
 	background-image: url(../images/card.png);
 	background-repeat: no-repeat;
 }
 
-.card + .card {
+.card {
 	margin-bottom: 5px;
 }
 
@@ -605,8 +633,27 @@ button.log {
 	padding-bottom: 1em;
 }
 .log {
-	width: 100%;
-	background-color: #333;
+	background-color: #FFF;
+	position: fixed;
+	bottom: 0px;
+	right: 0px;
+	width: 500px;
+	height: 400px;
+	border-top: 1px solid #AAA;
+	border-left: 1px solid #AAA;
+}
+
+.log-bar {
+	background-color: #EEE;
+}
+
+.log-header {
+	float: left;
+	line-height: 30px;
+	margin-left: 20px;
+	font-size: 16px;
+	text-transform: uppercase;
+	font-weight: 600;
 }
 
 .scroll {
@@ -623,7 +670,7 @@ button.log {
 }
 
 .inner {
-	padding: 40px;
+	padding: 20px;
 }
 
 .modal-wrapper {
@@ -680,6 +727,16 @@ button.log {
    max-width: 585px;
    background-color: #DDD;
    position: relative;
+}
+
+.close {
+	height: 30px;
+	width: 30px;
+	background-image: url(../images/close.png);
+   background-position: center;
+   background-repeat: no-repeat;
+   background-color: #e81e1e;
+   float: right;
 }
 
 .close-modal {

@@ -32,8 +32,8 @@ define(
         selectComponent(component);
       },
       onload: function (components) {
-        Object.keys(components).forEach(function (tag) {
-          var thumb = $('<div class="clearfix draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('app-', '') + '</div></div>');
+        $.each(components, function(index, value) {
+          var thumb = $('<div class="clearfix draggable" name="' + index + '" value="' + index + '"><div class="thumb" value="' + index + '">' + index.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
           $('.library-list').append(thumb);
           thumb.draggable({
             connectToSortable: ".drophere",
@@ -45,10 +45,38 @@ define(
             },
             addClass: "clone"
           })
+          if (value.description) {
+            var componentDescription = value.description.innerHTML
+            thumb.attr('description', componentDescription)
+          } else {
+            thumb.attr('description', 'No description')
+          }
         });
+
+        //Ben is not familiar with this syntax. He will learn but for now wanted to add in descriptions
+        /*Object.keys(components).forEach(function (tag) {
+          var thumb = $('<div class="clearfix draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
+          $('.library-list').append(thumb);
+          thumb.draggable({
+            connectToSortable: ".drophere",
+            helper: "clone",
+            appendTo: document.body,
+            start : function(event,ui){
+              var clone = ui.helper;
+              $(clone).find(".thumb").addClass("im-flying");
+            },
+            addClass: "clone"
+          })
+        });*/
         $('.library-list').removeClass("library-loading");
       }
     });
+
+    $(document).on('mouseenter', '.draggable', function () {
+      $(this).children('.info-btn').show()
+    }).on('mouseleave', '.draggable', function () {
+      $(this).children('.info-btn').hide()
+    })
 
     function Channel(name, title, hex) {
       // make sure the name is a string
@@ -275,6 +303,16 @@ define(
       $('.inspector .editables').append(attributeList);
     };
 
+    //Toggle the log
+    $('.log-toggle').click(function () {
+      $('.log').toggle()
+    })
+
+    //Close the log
+    $('.close').click(function () {
+      $('.log').hide()
+    })
+
     var selectComponent = function(comp) {
       clearSelection();
       var element = comp[0];
@@ -355,6 +393,24 @@ define(
       scroll.scrollTop = scroll.scrollHeight;
     });
 
+    //shows component description
+    var showComponentDescription = function (xPos, yPos, component, compDescription) {
+      var componentDescription = $('<div class="component-description"></div>')
+      componentDescription.css({top: yPos, left: xPos})
+      componentDescription.text(compDescription)
+      $(document.body).append(componentDescription)
+    }
+    
+    $(document).on('click', '.info-btn', function () {
+      var yPos = $(this).offset().top + 'px'
+      var xPos = $(this).offset().left + 40 + 'px'
+      var component = $(this).parents('.draggable').attr('value');
+      var compDescription = $(this).parents('.draggable').attr('description');
+      showComponentDescription(xPos, yPos, component, compDescription);
+    })
+
+
+
     // this options object makes components drag/droppable when passed
     // to the jQueryUI "sortable" function.
     var sortableOptions = {
@@ -384,7 +440,6 @@ define(
     var createCard = function() {
       // create real card
       var card = Ceci.createCard();
-
       $('.drophere', card).sortable(sortableOptions);
       $('#flathead-app').append(card);
       card.showCard();
@@ -398,7 +453,7 @@ define(
       $(".cards").append(newthumb);
     };
 
-    $(".cards .btn-add").click(createCard);
+    $(".btn-add").click(createCard);
 
     // create first card as a default card
     createCard();
