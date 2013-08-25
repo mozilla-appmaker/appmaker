@@ -4,60 +4,62 @@
 </script>
 
 <div class="container clearfix">
+
+	<section class="editables-section hidden">
+		<div class="editables"></div>
+	</section>
+
 	<a target="_blank" class="publish-url"></a>
 	<button class="btn-std btn-md publish btn-critical">Publish</button>
 	<button class="btn-std btn-md new btn-secondary">New App</button>
-
-	<div class="note">
+	<button class="small-btn log-toggle"></button>
+	<button class="small-btn delete-btn hidden"></button>
+	<button class="small-btn customize-btn hidden"></button>
+	<div class="note hidden">
 		App Saved
 	</div>
 
 	<div class="tray">
-		<h5>Components</h5>
+		<!--<h5>Components</h5>-->
 		<div class="clearfix cats">
-			<button class="btn-std btn-toggle on">Awesome</button>
-			<button class="btn-std btn-toggle">Meh</button>
+			<button class="btn-std btn-toggle on">Favorite</button>
+			<button class="btn-std btn-toggle">All</button>
 		</div>
 		<div class="library-list library-loading clearfix">
 
 		</div>
+	</div>
+	<div class="listen-column">
 	</div>
 	<div class="phone-container">
 		<div class="phone-top"></div>
 		<div id="flathead-app"></div>
 		<div class="phone-bottom"></div>
 	</div>
-	<div class="cards">
-		<div class="clearfix">
-			<button class="btn-add">Add Card</button>
-		</div>
+	<div class="broadcast-column">
 	</div>
 	<div class="console">
-		<div class="log hidden">
-			<div class="inner">
-				<h5>Log</h5>
-				<p class="scroll"></p>
-			</div>
+		<div class="cards">
+			<!--<h5>Cards</h5>-->
+			<button class="btn-add"></button>
 		</div>
 		<div class="inspector hidden">
 			<div class="inner">
-				<h4 class="name"></h4>
-				<div class="description">This is where the app description should be.</div>
-				<section class="broadcast-section">
-					<div class="label">BROADCASTS</div>
-					<div class="broadcast-channel channel-label"></div>
-					<div class="broadcast-options clearfix"></div>
-				</section>
-				<section class="listen-section">
-					<div class="label">LISTENS</div>
-					<div class="listen-channel"></div>
-					<div class="listen-options clearfix"></div>
-				</section>
-				<section class="editables-section">
-					<div class="label">ATTRIBUTES</div>
-					<div class="editables"></div>
-				</section>
+				<!--<div class="description">This is where the app description should be.</div>-->
 			</div>
 		</div>
+	</div>
+</div>
+<div class="broadcast-section hidden">
+	<div class="broadcast-options clearfix"></div>
+</div>
+
+<section class="listen-section hidden">
+	<div class="listen-options clearfix"></div>
+</section>
+
+<div class="log hidden">
+	<div class="inner">
+		<p class="scroll"></p>
 	</div>
 </div>

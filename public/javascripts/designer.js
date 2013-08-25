@@ -32,8 +32,31 @@ define(
         selectComponent(component);
       },
       onload: function (components) {
-        Object.keys(components).forEach(function (tag) {
-          var thumb = $('<div class="clearfix draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('app-', '') + '</div></div>');
+        $.each(components, function(index, value) {
+          var thumb = $('<div class="clearfix draggable" name="' + index + '" value="' + index + '"><div class="thumb" value="' + index + '">' + index.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
+          $('.library-list').append(thumb);
+          thumb.draggable({
+            connectToSortable: ".drophere",
+            helper: "clone",
+            appendTo: document.body,
+            start : function(event,ui){
+              var clone = ui.helper;
+              $(clone).find(".thumb").addClass("im-flying");
+              clone.find('.info-btn').remove()
+            },
+            addClass: "clone"
+          })
+          if (value.description) {
+            var componentDescription = value.description.innerHTML
+            thumb.attr('description', componentDescription)
+          } else {
+            thumb.attr('description', 'No description')
+          }
+        });
+
+        //Ben is not familiar with this syntax. He will learn but for now wanted to add in descriptions
+        /*Object.keys(components).forEach(function (tag) {
+          var thumb = $('<div class="clearfix draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
           $('.library-list').append(thumb);
           thumb.draggable({
             connectToSortable: ".drophere",
@@ -45,10 +68,16 @@ define(
             },
             addClass: "clone"
           })
-        });
+        });*/
         $('.library-list').removeClass("library-loading");
       }
     });
+
+    $(document).on('mouseenter', '.draggable', function () {
+      $(this).children('.info-btn').show()
+    }).on('mouseleave', '.draggable', function () {
+      $(this).children('.info-btn').hide()
+    })
 
     function Channel(name, title, hex) {
       // make sure the name is a string
@@ -65,7 +94,7 @@ define(
       new Channel('green', 'Green Clover', '#71b806'),
       new Channel('yellow', 'Yellow Pot of Gold', '#e8d71e'),
       new Channel('orange', 'Orange Star', '#ff7b00'),
-      //new Channel(Ceci.emptyChannel, 'Disabled', '#444')
+      new Channel(Ceci.emptyChannel, 'Disabled', '#444')
     ];
 
 
@@ -107,6 +136,14 @@ define(
       selection = [];
       $(".selected").removeClass("selected");
       $(".inspector").addClass('hidden');
+      
+      //hide delete button
+      $('.delete-btn').hide()
+
+      //hide customize button and section
+      $('.customize-btn').hide().removeClass('selected-button')
+      $('.editables-section').hide()
+
     }
 
     // jQuery-UI property for reordering items in the designer
@@ -152,6 +189,14 @@ define(
       }
     });
 
+    $('.delete-btn').click(function () {
+      var elements = selection.slice();
+        clearSelection();
+        elements.forEach(function(element) {
+          element.removeSafely();
+        });
+    })
+
     var displayBroadcastChannel = function (channelName) {
       var rdata = getChannelByChannelName(channelName);
       if(!rdata) {
@@ -181,7 +226,7 @@ define(
     };
 
     var displayListenChannels = function (potentialListeners) {
-      var lc = $('.inspector .listen-channel'),
+      var lc = $('.listen-channel'),
           attrBar,
           attribute;
       lc.html("");
@@ -258,11 +303,11 @@ define(
     };
 
     var displayAttributes = function(element) {
-      $('.inspector .editables').html("");
+      $('.editables-section .editables').html("");
       if (element.getEditableAttributes().length > 0) {
-        $('.editables-section').show();
+        $('.customize-btn').show();
       } else {
-        $('.editables-section').hide();
+        $('.customize-btn').hide();
       }
       var attributes = element.getEditableAttributes();
       var attributeList = $("<div class='editable-attributes'></div>");
@@ -272,8 +317,31 @@ define(
         var uiElement = getAttributeUIElement(element, attribute, definition);
         attributeList.append(uiElement);
       });
-      $('.inspector .editables').append(attributeList);
+      $('.editables-section .editables').append(attributeList);
     };
+
+    //Toggle customize
+    $('.customize-btn').click(function () {
+      if ($(this).hasClass('selected-button')) {
+        $('.editables-section').hide()
+        $(this).removeClass('selected-button')
+      } else {
+        $('.editables-section').show()
+        $(this).addClass('selected-button')
+      }
+      
+    })
+
+    //Toggle the log
+    $('.log-toggle').click(function () {
+      if ($(this).hasClass('selected-button')) {
+        $('.log').hide()
+        $(this).removeClass('selected-button')
+      } else {
+        $('.log').show()
+        $(this).addClass('selected-button')
+      }
+    })
 
     var selectComponent = function(comp) {
       clearSelection();
@@ -283,30 +351,39 @@ define(
       comp.addClass("selected");
       moveToFront(comp);
 
+        $('.delete-btn').show()
+
+      //Show broadcast channel options on click of broadcast channel
+      $(document).on('click', '.broadcast-channels', function () {
+          var xPos = $(this).offset().left + 'px'
+          var yPos = $(this).offset().top + 25 + 'px'
+          $('.broadcast-section').css({top: yPos, left: xPos})
+          $('.broadcast-section').show();
+      })
+
+      //Show subscription channel options on click of subcription channel
+      $(document).on('click', '.subscription-channels', function () {
+          var xPos = $(this).offset().left + 'px'
+          var yPos = $(this).offset().top + 25 + 'px'
+          $('.listen-section').css({top: yPos, left: xPos})
+        //Show connectable listeners
+        $('.listen-section').show();
+        //displayListenChannels(getPotentialListeners(element));
+      })
+
+      //May not be necessary now that we show description in tray.
+      /*
       $('.description').text('')
       if ('description' in element) {
         var description = element.description.innerHTML
         $('.description').text(description)
       }
-
-      //Show connectable listeners
-      if(getPotentialListeners(element).length > 0) {
-        $('.listen-section').show();
-      } else {
-        $('.listen-section').hide();
-      }
-      displayListenChannels(getPotentialListeners(element));
-
-      //temp code to show broadcasts
-      if(element.broadcastChannel !== Ceci.emptyChannel) {
-        $('.broadcast-section').show()
-      } else {
-        $('.broadcast-section').hide()
-      }
+      */
 
       //Show broadcast channel
-      var currentBroadcast = element.broadcastChannel;
-      displayBroadcastChannel(currentBroadcast);
+      //May not be necessary. We now show selected channels prominently in UI. 
+      /*var currentBroadcast = element.broadcastChannel;
+      displayBroadcastChannel(currentBroadcast);*/
 
       //Show editable attributes
       displayAttributes(element);
@@ -337,14 +414,17 @@ define(
       };
 
       // listen for color clicks
-      $(document).on('click', '.color', onSelectFunction);
+      $(document).on('click', '.color', onSelectFunction)
+      .on('click', '.color', function () {
+        $('.broadcast-section, .listen-section').hide()
+      })
 
       // give the element the function we just added, so we
       // can unbind it when the element gets unselected.
       element.onSelectFunction = onSelectFunction;
 
       var componentName = element.tagName.toLowerCase();
-      $(".inspector .name").text(componentName);
+      $(".editables-section .name").text(componentName);
       $(".inspector").removeClass('hidden');
     }
 
@@ -354,6 +434,26 @@ define(
       var scroll = $(".scroll")[0];
       scroll.scrollTop = scroll.scrollHeight;
     });
+
+    //shows component description
+    var showComponentDescription = function (xPos, yPos, component, compDescription) {
+      var componentDescription = $('<div class="component-description"></div>')
+      componentDescription.css({top: yPos, left: xPos})
+      componentDescription.text(compDescription)
+      $(document.body).append(componentDescription)
+    }
+    
+    $(document).on('mouseenter', '.info-btn', function () {
+      var yPos = $(this).offset().top - 9 + 'px'
+      var xPos = $(this).offset().left + 40 + 'px'
+      var component = $(this).parents('.draggable').attr('value');
+      var compDescription = $(this).parents('.draggable').attr('description');
+      showComponentDescription(xPos, yPos, component, compDescription);
+    }).on('mouseleave', '.info-btn', function () {
+      $('.component-description').remove()
+    })
+
+
 
     // this options object makes components drag/droppable when passed
     // to the jQueryUI "sortable" function.
@@ -373,7 +473,6 @@ define(
               handle: 'handle'
             })
 
-            $('.thumb[name='+component.id+']').not(ui.helper).draggable( "disable" ).removeClass('draggable');
           });
         }
       }
@@ -384,7 +483,6 @@ define(
     var createCard = function() {
       // create real card
       var card = Ceci.createCard();
-
       $('.drophere', card).sortable(sortableOptions);
       $('#flathead-app').append(card);
       card.showCard();
@@ -398,7 +496,7 @@ define(
       $(".cards").append(newthumb);
     };
 
-    $(".cards .btn-add").click(createCard);
+    $(".btn-add").click(createCard);
 
     // create first card as a default card
     createCard();
