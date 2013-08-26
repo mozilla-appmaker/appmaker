@@ -20,9 +20,9 @@ define(
         component = $(component);
 
         component.on('mouseenter', function () {
-          component.append('<div class="handle"></div>')
+          component.append('<div class="handle"></div>');
         }).on('mouseleave', function () {
-          $('.handle').remove()
+          $('.handle').remove();
         });
 
         component.on('mousedown', function(evt) {
@@ -42,15 +42,15 @@ define(
             start : function(event,ui){
               var clone = ui.helper;
               $(clone).find(".thumb").addClass("im-flying");
-              clone.find('.info-btn').remove()
+              clone.find('.info-btn').remove();
             },
             addClass: "clone"
-          })
+          });
           if (value.description) {
-            var componentDescription = value.description.innerHTML
-            thumb.attr('description', componentDescription)
+            var componentDescription = value.description.innerHTML;
+            thumb.attr('description', componentDescription);
           } else {
-            thumb.attr('description', 'No description')
+            thumb.attr('description', 'No description');
           }
         });
 
@@ -74,10 +74,10 @@ define(
     });
 
     $(document).on('mouseenter', '.draggable', function () {
-      $(this).children('.info-btn').show()
+      $(this).children('.info-btn').show();
     }).on('mouseleave', '.draggable', function () {
-      $(this).children('.info-btn').hide()
-    })
+      $(this).children('.info-btn').hide();
+    });
 
     function Channel(name, title, hex) {
       // make sure the name is a string
@@ -116,7 +116,7 @@ define(
     var listChannels = function () {
       var strip = getChannelStrip();
       $('.broadcast-options').append(strip);
-    }
+    };
 
     // get a Channel object given a channel name
     function getChannelByChannelName(channelName) {
@@ -136,30 +136,30 @@ define(
       selection = [];
       $(".selected").removeClass("selected");
       $(".inspector").addClass('hidden');
-      
+
       //hide delete button
-      $('.delete-btn').hide()
+      $('.delete-btn').hide();
 
       //hide customize button and section
-      $('.customize-btn').hide().removeClass('selected-button')
-      $('.editables-section').hide()
-
-    }
+      $('.customize-btn').hide().removeClass('selected-button');
+      $('.editables-section').hide();
+    };
 
     // jQuery-UI property for reordering items in the designer
     function enableReorder() {
-      return $(".phone-canvas,.fixed-top,.fixed-bottom").disableSelection().sortable({
+      $(".phone-canvas,.fixed-top,.fixed-bottom").disableSelection().sortable({
         connectWith: ".drophere",
         placeholder: "ui-state-highlight",
-        start : function(){ $(".phone-container").addClass("dragging")},
-        stop : function(){ $(".phone-container").removeClass("dragging")}
+        start : function() { $(".phone-container").addClass("dragging"); },
+        stop : function() { $(".phone-container").removeClass("dragging"); }
       });
-      return $(".phone-canvas,.fixed-top,.fixed-bottom").sortable("enable");
+      // FIXME: do we need this line if we already explicitly set all the sortable props?
+      $(".phone-canvas,.fixed-top,.fixed-bottom").sortable("enable");
     }
 
     var disableReorder = function() {
-      return $(".phone-canvas,.fixed-top,.fixed-bottom").sortable("disable");
-    }
+      $(".phone-canvas,.fixed-top,.fixed-bottom").sortable("disable");
+    };
 
     listChannels();
     clearSelection();
@@ -195,7 +195,7 @@ define(
         elements.forEach(function(element) {
           element.removeSafely();
         });
-    })
+    });
 
     var displayBroadcastChannel = function (channelName) {
       var rdata = getChannelByChannelName(channelName);
@@ -323,53 +323,52 @@ define(
     //Toggle customize
     $('.customize-btn').click(function () {
       if ($(this).hasClass('selected-button')) {
-        $('.editables-section').hide()
-        $(this).removeClass('selected-button')
+        $('.editables-section').hide();
+        $(this).removeClass('selected-button');
       } else {
-        $('.editables-section').show()
-        $(this).addClass('selected-button')
+        $('.editables-section').show();
+        $(this).addClass('selected-button');
       }
-      
-    })
+    });
 
     //Toggle the log
     $('.log-toggle').click(function () {
       if ($(this).hasClass('selected-button')) {
-        $('.log').hide()
-        $(this).removeClass('selected-button')
+        $('.log').hide();
+        $(this).removeClass('selected-button');
       } else {
-        $('.log').show()
-        $(this).addClass('selected-button')
+        $('.log').show();
+        $(this).addClass('selected-button');
       }
-    })
+    });
 
     var selectComponent = function(comp) {
       clearSelection();
       var element = comp[0];
-      var compId = element.id
+      var compId = element.id;
       selection.push(element);
       comp.addClass("selected");
       moveToFront(comp);
 
-        $('.delete-btn').show()
+      $('.delete-btn').show();
 
       //Show broadcast channel options on click of broadcast channel
       $(document).on('click', '.broadcast-channels', function () {
-          var xPos = $(this).offset().left + 'px'
-          var yPos = $(this).offset().top + 25 + 'px'
-          $('.broadcast-section').css({top: yPos, left: xPos})
+          var xPos = $(this).offset().left + 'px';
+          var yPos = $(this).offset().top + 25 + 'px';
+          $('.broadcast-section').css({top: yPos, left: xPos});
           $('.broadcast-section').show();
-      })
+      });
 
       //Show subscription channel options on click of subcription channel
       $(document).on('click', '.subscription-channels', function () {
-          var xPos = $(this).offset().left + 'px'
-          var yPos = $(this).offset().top + 25 + 'px'
-          $('.listen-section').css({top: yPos, left: xPos})
+          var xPos = $(this).offset().left + 'px';
+          var yPos = $(this).offset().top + 25 + 'px';
+          $('.listen-section').css({top: yPos, left: xPos});
         //Show connectable listeners
         $('.listen-section').show();
         //displayListenChannels(getPotentialListeners(element));
-      })
+      });
 
       //May not be necessary now that we show description in tray.
       /*
@@ -381,7 +380,7 @@ define(
       */
 
       //Show broadcast channel
-      //May not be necessary. We now show selected channels prominently in UI. 
+      //May not be necessary. We now show selected channels prominently in UI.
       /*var currentBroadcast = element.broadcastChannel;
       displayBroadcastChannel(currentBroadcast);*/
 
@@ -416,8 +415,8 @@ define(
       // listen for color clicks
       $(document).on('click', '.color', onSelectFunction)
       .on('click', '.color', function () {
-        $('.broadcast-section, .listen-section').hide()
-      })
+        $('.broadcast-section, .listen-section').hide();
+      });
 
       // give the element the function we just added, so we
       // can unbind it when the element gets unselected.
@@ -426,7 +425,7 @@ define(
       var componentName = element.tagName.toLowerCase();
       $(".editables-section .name").text(componentName);
       $(".inspector").removeClass('hidden');
-    }
+    };
 
     // logs messages
     $(document).on('broadcast', function (event, message) {
@@ -437,23 +436,21 @@ define(
 
     //shows component description
     var showComponentDescription = function (xPos, yPos, component, compDescription) {
-      var componentDescription = $('<div class="component-description"></div>')
-      componentDescription.css({top: yPos, left: xPos})
-      componentDescription.text(compDescription)
-      $(document.body).append(componentDescription)
-    }
-    
+      var componentDescription = $('<div class="component-description"></div>');
+      componentDescription.css({top: yPos, left: xPos});
+      componentDescription.text(compDescription);
+      $(document.body).append(componentDescription);
+    };
+
     $(document).on('mouseenter', '.info-btn', function () {
-      var yPos = $(this).offset().top - 9 + 'px'
-      var xPos = $(this).offset().left + 40 + 'px'
+      var yPos = $(this).offset().top - 9 + 'px';
+      var xPos = $(this).offset().left + 40 + 'px';
       var component = $(this).parents('.draggable').attr('value');
       var compDescription = $(this).parents('.draggable').attr('description');
       showComponentDescription(xPos, yPos, component, compDescription);
     }).on('mouseleave', '.info-btn', function () {
-      $('.component-description').remove()
-    })
-
-
+      $('.component-description').remove();
+    });
 
     // this options object makes components drag/droppable when passed
     // to the jQueryUI "sortable" function.
@@ -471,8 +468,7 @@ define(
 
             component.draggable({
               handle: 'handle'
-            })
-
+            });
           });
         }
       }

@@ -371,7 +371,7 @@ button.customize-btn {
 
 .library-list {
   width: 220px;
-  overflow-y: hidden;
+  overflow-y: auto;
   position: absolute;
   top: 76px;
   bottom: 35px;
