@@ -29,6 +29,10 @@ module.exports = function( grunt ) {
       },
     },
     jshint: {
+      options: {
+        "-W054": true,  // The Function constructor is a form of eval
+        "-W069": true   // thing["property"] is better written in dot notation
+      },
       files: [
         "Gruntfile.js",
         "app.js",
