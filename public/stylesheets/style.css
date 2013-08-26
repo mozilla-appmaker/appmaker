@@ -644,17 +644,17 @@ button.customize-btn {
 }
 
 .log .inner {
-	padding-bottom: 1em;
+  padding-bottom: 1em;
 }
 .log {
-	background-color: #FFF;
-	position: fixed;
-	height: 260px;
-	border-top: 1px solid #AAA;
-	right: 0px;
-	bottom: 0px;
-	left: 0px;
-	z-index: 99;
+  background-color: #FFF;
+  position: fixed;
+  height: 260px;
+  border-top: 1px solid #AAA;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  z-index: 99;
 }
 
 .log-bar {
@@ -953,13 +953,13 @@ button.customize-btn {
 }
 
 .blue {
-	background-image: url(../images/bluemoon.png);
+/*  background-image: url(../images/bluemoon.png);*/
 	background-position: center;
 	background-repeat: no-repeat;
 }
 
 .pink {
-	background-image: url(../images/pinkheart.png);
+/*  background-image: url(../images/pinkheart.png);*/
 	background-position: center;
 	background-repeat: no-repeat;
 }
@@ -979,13 +979,13 @@ button.customize-btn.selected-button {
 /*Channel Visualisation*/
 
 .channel-visualisation {
+  height: 100%;
 }
 
 .broadcast-channels,
 .subscription-channels {
   position: absolute;
   top: 0px;
-  height: 20px;
   width: 210px;
 }
 
@@ -997,12 +997,16 @@ button.customize-btn.selected-button {
 	border-radius: 0px 10px 10px 0px;
 }
 
+.channel-visualisation .channel:only-child {
+  margin: -10px 0 0 0 ;
+  top: 50%;
+}
+
 .broadcast-channels {
   right: -220px;
 }
 .subscription-channels {
   left: -220px;
-
 }
 
 .subscription-channels .channel {
@@ -1017,35 +1021,167 @@ button.customize-btn.selected-button {
 .broadcast-channels .channel,
 .subscription-channels .channel {
   position: relative;
-  height: 94%;
-  top: 3%;
   width: 100%;
-  opacity: .4;
-
+  height: 20px;
 }
 
-.channel-visualisation .channel[color=blue]{
-  background: #358CCE;
+.indicator {
+  height: 20px;
+  width: 4px;
+  position: absolute;
+  top: 0px;
+  background: black;
+  left: 100px;
+  height: 20px;
+  width: 20px;
+  border-radius: 20px;
+  left: 0px;
+  opacity: 0;
 }
 
-.channel-visualisation .channel[color=red]{
-  background: #e81e1e;
 
-}
-.channel-visualisation .channel[color=pink]{
-  background: #e3197b;
-}
-.channel-visualisation .channel[color=purple]{
-  background: #9f27cf;
-}
-.channel-visualisation .channel[color=green]{
-  background: #71b806;
-}
-.channel-visualisation .channel[color=yellow]{
-  background: #e8d71e;
-  opacity: 1;
-}
-.channel-visualisation .channel[color=orange]{
-  background: #ff7b00;
+/*log stuff */
+
+ .logpopup {
+  position: absolute;
+  background: white;
+  padding: 8px 12px;
+  font-size: 12px;
+  z-index: 99999;
+  top: -26px;
 }
 
+.broadcast-channels .logpopup {
+  left: 11px;
+  border-radius: 8px 8px 8px 0px;
+  z-index: 99999;
+  -webkit-transform-origin: bottom left;
+  -moz-transform-origin: bottom left;
+}
+
+.subscription-channels .logpopup {
+  border-radius: 8px 8px 0px 8px;
+  right: 11px;
+  border: solid 2px #888;
+  color: #666;
+  -webkit-transform-origin: bottom right;
+  -moz-transform-origin: bottom right;
+}
+
+/* Dot inside the channel line*/
+
+.channel-visualisation .color {
+	border-radius: 25px;
+	width: 20px;
+  position: absolute;
+	height: 20px;
+  z-index: 10;
+  padding: 0px;
+  margin:0;
+}
+
+.broadcast-channels .color {
+  left: 0px;
+}
+
+.subscription-channels .color {
+  right: 0px;
+}
+
+.channel-visualisation .channel[color=blue] {
+  background:	rgba(53,140,206,.2);
+}
+
+.channel-visualisation .channel[color=blue] .color, 
+.channel-visualisation .channel[color=blue] .indicator {
+  background:	rgba(53,140,206,1);
+}
+
+.channel-visualisation .channel[color=blue] .logpopup {
+  border: solid 2px rgba(53,140,206,1);
+  color: rgba(53,140,206,1);
+}
+
+.channel-visualisation .channel[color=red] {
+  background:	rgba(232,30,20,.2);
+}
+
+.channel-visualisation .channel[color=red] .color, 
+.channel-visualisation .channel[color=red] .indicator {
+  background:	rgba(232,30,20,1);
+}
+
+.channel-visualisation .channel[color=red] .logpopup {
+  border: solid 2px rgba(232,30,20,1);
+  color:	rgba(232,30,20,1);
+}
+
+.channel-visualisation .channel[color=pink] {
+  background:	rgba(227,25,123,.2);
+}
+
+.channel-visualisation .channel[color=pink] .color, 
+.channel-visualisation .channel[color=pink] .indicator {
+  background:	rgba(227,25,123,1);
+}
+
+.channel-visualisation .channel[color=pink] .logpopup {
+  border: solid 2px rgba(227,25,123,1);
+  color:	rgba(227,25,123,1);
+}
+
+.channel-visualisation .channel[color=purple] {
+  background:	rgba(159,39,207,.2);
+}
+
+.channel-visualisation .channel[color=purple] .color, 
+.channel-visualisation .channel[color=purple] .indicator {
+  background:	rgba(159,39,207,1);
+}
+
+.channel-visualisation .channel[color=purple] .logpopup {
+  border: solid 2px rgba(159,39,207,1);
+  color:	rgba(159,39,207,1);
+}
+
+.channel-visualisation .channel[color=green] {
+  background:	rgba(113,184,6,.2);
+}
+
+.channel-visualisation .channel[color=green] .color, 
+.channel-visualisation .channel[color=green] .indicator {
+  background:	rgba(113,184,6,1);
+}
+
+.channel-visualisation .channel[color=green] .logpopup {
+  border: solid 2px rgba(113,184,6,1);
+  color:	rgba(113,184,6,1);
+}
+
+.channel-visualisation .channel[color=orange] {
+  background:	rgba(255,123,0,.2);
+}
+
+.channel-visualisation .channel[color=orange] .color, 
+.channel-visualisation .channel[color=orange] .indicator {
+  background:	rgba(255,123,0,1);
+}
+
+.channel-visualisation .channel[color=orange] .logpopup {
+  border: solid 2px rgba(255,123,0,1);
+  color:	rgba(255,123,0,1);
+}
+
+.channel-visualisation .channel[color=yellow] {
+  background:	rgba(229,210,0,.2);
+}
+
+.channel-visualisation .channel[color=yellow] .color, 
+.channel-visualisation .channel[color=yellow] .indicator {
+  background:	rgba(229,210,0,1);
+}
+
+.channel-visualisation .channel[color=yellow] .logpopup {
+  border: solid 2px rgba(229,210,0,1);
+  color:	rgba(229,210,0,1);
+}
