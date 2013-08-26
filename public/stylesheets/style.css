@@ -110,6 +110,8 @@ h5 {
 	margin: 0px 0px 20px 0px;
 	text-transform: uppercase;
 	font-weight: 600;
+	line-height: 16px;
+	padding: 0px;
 }
 
 h6 {
@@ -187,7 +189,7 @@ button.btn-toggle {
 	background-color: #f8f8f8;
 	display: block;
 	border-radius: 3px;
-	height: 25px;
+	height: 36px;
 	width: 90px;
 	float: left;
 	color: #222;
@@ -218,7 +220,7 @@ button.publish {
 	right: 0px;
 	display: block;
 	height: 40px;
-	width: 120px;
+	width: 110px;
 	font-size: 16px;
 	cursor: pointer;
 }
@@ -226,10 +228,10 @@ button.publish {
 button.new {
 	position: absolute;
 	top: -40px;
-	right: 130px;
+	right: 115px;
 	display: block;
 	height: 40px;
-	width: 120px;
+	width: 110px;
 	font-size: 16px;
 	cursor: pointer;
 }
@@ -265,17 +267,21 @@ button.btn-img {
 }
 
 button.btn-add {
-	height: 40px;
-	width: 100%;
+	height: 36px;
+	width: 36px;
 	border-radius: 3px;
 	background-color: #ff7b00;
 	border: none;
+	padding: 0px;
 	background-position: center;
 	background-repeat: no-repeat;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 	color: #FFF;
 	font-size: 13px;
 	cursor: pointer;
+	background-image: url(../images/add-card.png);
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
 button.btn-done {
@@ -284,6 +290,40 @@ button.btn-done {
 	border-radius: 4px;
 	height: 40px;
 	margin-top: 10px;
+}
+
+button.small-btn {
+	width: 36px;
+	height: 36px;
+	border-radius: 3px;
+	background-repeat: no-repeat;
+	background-position: center;
+	position: absolute;
+	background-color: #f8f8f8;
+	-webkit-appearance: none;
+	color: #222;
+	font-size: 13px;
+	border: 1px solid #CCC;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box; /* Firefox */
+}
+
+button.log-toggle {
+	background-image: url(../images/log.png);
+	top: 20px;
+	right: 96px;
+}
+
+button.delete-btn {
+	background-image: url(../images/trash.png);
+	top: 20px;
+	right: 137px;
+}
+
+button.customize-btn {
+	background-image: url(../images/customize.png);
+	top: 20px;
+	right: 178px;
 }
 
 /*----------LAYOUT----------*/
@@ -313,11 +353,10 @@ button.btn-done {
 
 
 .container {
-  width: 760px;
-	background-color: #ddd;
+  	width: 1046px;
+ 	background-color: #ddd;
 	margin: 65px auto 40px auto;
 	position: relative;
-  padding-left: 260px;
 }
 
 .tray {
@@ -325,20 +364,16 @@ button.btn-done {
   left: 0px;
   top: 0px;
   bottom: 0px;
-	width: 200px;
-	background-color: #ccc;
-	padding: 40px 30px;
-}
-
-.tray h5 {
-  margin-bottom: 15px;
+  width: 200px;
+  background-color: #ccc;
+  padding: 20px 0px 20px 20px;
 }
 
 .library-list {
-  width: 210px;
-  overflow-y:auto;
+  width: 220px;
+  overflow-y: hidden;
   position: absolute;
-  top: 110px;
+  top: 76px;
   bottom: 35px;
 }
 
@@ -350,6 +385,19 @@ button.btn-done {
 	min-height: 400px;
 	background: url(../images/loading-throbber.gif) center no-repeat;
 	background-size: auto 75px;
+}
+
+.listen-column {
+	float: left;
+	width: 220px;
+	height: 500px;
+	padding-left: 220px;
+}
+
+.broadcast-column {
+	float: left;
+	width: 220px;
+	height: 500px;
 }
 
 .component-header {
@@ -386,6 +434,22 @@ button.btn-done {
 
 .draggable {
 	cursor: move;
+	position: relative;
+}
+
+.info-btn {
+	position: absolute;
+	right: 49px;
+	top: 9px;
+	height: 22px;
+	width: 22px;
+	border-radius: 3px;
+	border: 1px solid #CCC;
+	background-color: #F8F8F8;
+	background-image: url(../images/info2.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	cursor: pointer;
 }
 
 .ui-state-highlight {
@@ -408,10 +472,10 @@ button.btn-done {
 }
 
 .thumb {
-  width: 180px;
-	background-color: #eee;
-	margin-bottom: 5px;
-	border-radius: 3px;
+	width: 180px;
+  	background-color: #eee;
+  	margin-bottom: 5px;
+  	border-radius: 3px;
 	line-height: 40px;
 	text-indent: 10px;
 }
@@ -421,8 +485,19 @@ button.btn-done {
   background: #EEE !important;
 }
 
-.thumb:hover {
+.draggable:hover .thumb{
+	background: #FFF;
+}
+
+.component-description {
+	position: absolute;
+	padding: 10px;
+	max-width: 300px;
 	background-color: #FFF;
+	border: 1px solid #AAA;
+	z-index: 999;
+	border-radius: 3px;
+
 }
 
 .component-std {
@@ -446,8 +521,8 @@ button.btn-done {
 .phone-container {
 	float: left;
 	width: 310px;
-	margin-left: 40px;
-	margin-bottom: 30px;
+	margin-bottom: 20px;
+	position: relative;
 }
 
 .phone-canvas button:focus {
@@ -465,9 +540,9 @@ button.btn-done {
 
 .phone-top {
 	background-color: #333;
-	height: 40px;
+	height: 36px;
 	width: 100%;
-	margin-top: 40px;
+	margin-top: 20px;
 	border-radius: 6px 6px 0px 0px;
 	background-image: url(../images/mic.png);
 	background-position: center;
@@ -516,7 +591,7 @@ button.btn-done {
 
 .phone-bottom {
 	background-color: #333;
-	height: 40px;
+	height: 50px;
 	width: 100%;
 	border-radius: 0px 0px 6px 6px;
 	background-image: url(../images/circle.png);
@@ -526,24 +601,26 @@ button.btn-done {
 
 .cards {
 	float: left;
-	width: 80px;
-	padding-top: 40px;
-	margin-left: 40px;
+	width: 36px;
+	padding-top: 20px;
 	position: relative;
+	margin-left: 20px;
 }
 
 .card {
-	height: 100px;
+	height: 46px;
 	width: 100%;
-	background-color: #FFF;
-	color: #DDD;
-	font-size: 80px;
+	font-size: 30px;
 	text-align: center;
+	line-height: 46px;
 	cursor: pointer;
+	color: #888;
+	background-image: url(../images/card.png);
+	background-repeat: no-repeat;
 }
 
-.card + .card {
-	margin-top: 5px;
+.card {
+	margin-bottom: 5px;
 }
 
 .console {
@@ -552,26 +629,45 @@ button.btn-done {
 	top: 0px;
 	bottom: 0px;
 	right: 0px;
-	left: 770px;
+	left: 970px;
 	color: #999;
 }
 
-.console input[type="text"] {
+.editables-section input[type="text"] {
 	width: 100%;
 	height: 25px;
 	border: none;
-	background-color: #222;
+	background-color: #FFF;
 	padding: 0px;
-	color: #FFF;
 	text-indent: 10px;
+	border: 1px solid #CCC;
 }
 
 .log .inner {
 	padding-bottom: 1em;
 }
 .log {
-	width: 100%;
-	background-color: #333;
+	background-color: #FFF;
+	position: fixed;
+	height: 260px;
+	border-top: 1px solid #AAA;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	z-index: 99;
+}
+
+.log-bar {
+	background-color: #EEE;
+}
+
+.log-header {
+	float: left;
+	line-height: 30px;
+	margin-left: 20px;
+	font-size: 16px;
+	text-transform: uppercase;
+	font-weight: 600;
 }
 
 .scroll {
@@ -588,7 +684,7 @@ button.btn-done {
 }
 
 .inner {
-	padding: 40px;
+	padding: 20px;
 }
 
 .modal-wrapper {
@@ -645,6 +741,16 @@ button.btn-done {
    max-width: 585px;
    background-color: #DDD;
    position: relative;
+}
+
+.close {
+	height: 30px;
+	width: 30px;
+	background-image: url(../images/close.png);
+   background-position: center;
+   background-repeat: no-repeat;
+   background-color: #e81e1e;
+   float: right;
 }
 
 .close-modal {
@@ -735,7 +841,6 @@ button.btn-done {
 
 .broadcast-options,
 .listen-options {
-	margin-bottom: 20px;
 }
 
 .label {
@@ -781,16 +886,23 @@ button.btn-done {
 	cursor: move;
 }
 
-.broadcast-section {
-	display: none;
-}
-
-.listen-section {
-	display: none;
+.broadcast-section, .listen-section {
+	position: absolute;
+	background-color: #FFF;
+	padding: 5px;
+	border-radius: 2px;
 }
 
 .editables-section {
-	display: none;
+	background-color: #F8F8F8;
+	padding: 20px;
+	position: absolute;
+	right: 20px;
+	top: 60px;
+	z-index: 999;
+	width: 210px;
+	border: 1px solid #AAA;
+	border-radius: 3px;
 }
 
 .moz-input-form input[type="text"] {
@@ -852,6 +964,18 @@ button.btn-done {
 	background-repeat: no-repeat;
 }
 
+button.selected-button {
+	background-color: #555;
+}
+
+button.log-toggle.selected-button {
+	background-image: url(../images/log-selected.png);
+}
+
+button.customize-btn.selected-button {
+	background-image: url(../images/customize-selected.png);
+}
+
 /*Channel Visualisation*/
 
 .channel-visualisation {
@@ -861,29 +985,33 @@ button.btn-done {
 .subscription-channels {
   position: absolute;
   top: 0px;
-  height: 100%;
-  width: 20px;
+  height: 20px;
+  width: 210px;
+}
+
+.broadcast-channels .channel {
+	border-radius: 10px 0px 0px 10px;
+}
+
+.subscription-channels .channel {
+	border-radius: 0px 10px 10px 0px;
 }
 
 .broadcast-channels {
-  right: -25px;
+  right: -220px;
 }
 .subscription-channels {
-  left: -25px;
+  left: -220px;
 
 }
 
 .subscription-channels .channel {
   float: right;
   margin-left: 2px;
-  -webkit-border-radius: 0 5px 5px 0;
-  border-radius: 0 5px 5px 0;
 }
 
 .broadcast-channels .channel {
   float: left;
-  -webkit-border-radius: 0 5px 5px 0;
-  border-radius: 0 5px 5px 0;
 }
 
 .broadcast-channels .channel,
@@ -891,8 +1019,8 @@ button.btn-done {
   position: relative;
   height: 94%;
   top: 3%;
-  width: 3px;
-  opacity: .65;
+  width: 100%;
+  opacity: .4;
 
 }
 
