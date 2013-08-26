@@ -514,11 +514,11 @@ define(
 
     //Publish modal
     $('.publish').click(function () {
-      $('.modal-wrapper').addClass('flex')
+      $('.modal-wrapper').addClass('flex');
     })
 
     $('.return-btn').click(function () {
-      $('.modal-wrapper').removeClass('flex')
+      $('.modal-wrapper').removeClass('flex');
     })
 
   }
