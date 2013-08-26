@@ -18,7 +18,12 @@
     "shortid": "~2.0.0"
   },
   "engines": {
-    "node": "0.10.x",
-    "npm": "1.2.x"
+    "node": ">0.8.x",
+    "npm": ">1.2.x"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.6.3",
+    "grunt-contrib-csslint": "~0.1.2"
   }
 }
