@@ -32,6 +32,9 @@ define(
         selectComponent(component);
       },
       onload: function (components) {
+        // create first card as a default card
+        createCard();
+
         $.each(components, function(index, value) {
           var thumb = $('<div class="clearfix draggable" name="' + index + '" value="' + index + '"><div class="thumb" value="' + index + '">' + index.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
           $('.library-list').append(thumb);
@@ -477,7 +480,6 @@ define(
     $('.drophere').sortable(sortableOptions);
 
     var createCard = function() {
-      // create real card
       var card = Ceci.createCard();
       $('.drophere', card).sortable(sortableOptions);
       $('#flathead-app').append(card);
@@ -493,9 +495,6 @@ define(
     };
 
     $(".btn-add").click(createCard);
-
-    // create first card as a default card
-    createCard();
 
     $('.publish').click(function(){
       var htmlData = $('.phone-canvas')[0].outerHTML;
