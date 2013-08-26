@@ -74,7 +74,7 @@ function changeStep(step){
 }
 
 function timeline(step){
-  var timelineElement =   $(".timeline")
+  var timelineElement =   $(".timeline");
   timelineElement.find(".time-item").removeClass("current-time");
   timelineElement.find(".time-item:nth-child("+step+")").addClass("current-time");
 }
