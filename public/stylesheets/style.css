@@ -501,11 +501,20 @@ button.customize-btn {
 	position: absolute;
 	padding: 10px;
 	max-width: 300px;
-	background-color: #FFF;
-	border: 1px solid #AAA;
-	z-index: 999;
+	background-color: rgba(0,0,0,.8);
 	border-radius: 3px;
+	z-index: 999;
+	color: #FFF;
+}
 
+.channel-tip {
+	position: absolute;
+	padding: 10px;
+	max-width: 300px;
+	background-color: rgba(0,0,0,.8);
+	border-radius: 3px;
+	z-index: 999;
+	color: #FFF
 }
 
 .component-std {
@@ -1255,3 +1264,4 @@ button.customize-btn.selected-button {
 .channel-visualisation .channel[color=false]{
   background: rgba(102, 102, 102, .2)
 }
+

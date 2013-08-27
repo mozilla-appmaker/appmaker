@@ -491,6 +491,19 @@ define(
       $('.modal-wrapper').removeClass('flex');
     });
 
+    //Show tooltips for channels
+    $(document).on('mouseenter', '.channel', function (e) {
+      var yPos = e.pageY - 50;
+      var xPos = e.pageX;
+      var tooltip = $('<div class="channel-tip"></div>');
+      var tip = $(this).attr('title')
+      tooltip.css({top: yPos, left: xPos});
+      tooltip.text(tip);
+      $(document.body).append(tooltip);
+    }).on('mouseleave', '.channel', function () {
+      $('.channel-tip').remove();
+    });
+
     // AMD module return
     return {
       Ceci: Ceci,
