@@ -1138,7 +1138,7 @@ button.customize-btn.selected-button {
   background:	rgba(53,140,206,.2);
 }
 
-.channel-visualisation .channel[color=blue] .color, 
+.channel-visualisation .channel[color=blue] .color,
 .channel-visualisation .channel[color=blue] .indicator {
   background:	rgba(53,140,206,1);
 }
@@ -1152,7 +1152,7 @@ button.customize-btn.selected-button {
   background:	rgba(232,30,20,.2);
 }
 
-.channel-visualisation .channel[color=red] .color, 
+.channel-visualisation .channel[color=red] .color,
 .channel-visualisation .channel[color=red] .indicator {
   background:	rgba(232,30,20,1);
 }
@@ -1166,7 +1166,7 @@ button.customize-btn.selected-button {
   background:	rgba(227,25,123,.2);
 }
 
-.channel-visualisation .channel[color=pink] .color, 
+.channel-visualisation .channel[color=pink] .color,
 .channel-visualisation .channel[color=pink] .indicator {
   background:	rgba(227,25,123,1);
 }
@@ -1180,7 +1180,7 @@ button.customize-btn.selected-button {
   background:	rgba(159,39,207,.2);
 }
 
-.channel-visualisation .channel[color=purple] .color, 
+.channel-visualisation .channel[color=purple] .color,
 .channel-visualisation .channel[color=purple] .indicator {
   background:	rgba(159,39,207,1);
 }
@@ -1194,7 +1194,7 @@ button.customize-btn.selected-button {
   background:	rgba(113,184,6,.2);
 }
 
-.channel-visualisation .channel[color=green] .color, 
+.channel-visualisation .channel[color=green] .color,
 .channel-visualisation .channel[color=green] .indicator {
   background:	rgba(113,184,6,1);
 }
@@ -1208,7 +1208,7 @@ button.customize-btn.selected-button {
   background:	rgba(255,123,0,.2);
 }
 
-.channel-visualisation .channel[color=orange] .color, 
+.channel-visualisation .channel[color=orange] .color,
 .channel-visualisation .channel[color=orange] .indicator {
   background:	rgba(255,123,0,1);
 }
@@ -1222,7 +1222,7 @@ button.customize-btn.selected-button {
   background:	rgba(229,210,0,.2);
 }
 
-.channel-visualisation .channel[color=yellow] .color, 
+.channel-visualisation .channel[color=yellow] .color,
 .channel-visualisation .channel[color=yellow] .indicator {
   background:	rgba(229,210,0,1);
 }
@@ -1236,7 +1236,7 @@ button.customize-btn.selected-button {
   background:	rgba(0,0,0,.2);
 }
 
-.channel-visualisation .channel[color=false] .color, 
+.channel-visualisation .channel[color=false] .color,
 .channel-visualisation .channel[color=false] .indicator {
   display: none;
 /*  background:  rgba(0,0,0,.3);*/
@@ -1246,4 +1246,9 @@ button.customize-btn.selected-button {
   border: solid 2px rgba(53,140,206,1);
   color: rgba(53,140,206,1);
   display: none;
+}
+.channel-visualisation .channel[color=false]{
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.4);
+  border-left: none;
 }

@@ -133,11 +133,11 @@ define(
 
     // empty the list of currently selected elements on the page
     var clearSelection = function() {
-      
+
       selection.forEach(function(element) {
         $(document).off("click", ".colorChoice", element.onSelectFunction);
       });
-      
+
       selection = [];
       $(".selected").removeClass("selected");
       $(".inspector").addClass('hidden');
@@ -230,10 +230,10 @@ define(
       });
     };
 
-    var displayListenChannels = function (forListener) {
+    var displayListenChannel = function (attribute) {
       var lo = $(".listen-options");
       lo.html("");
-      var strip = getChannelStrip(forListener);
+      var strip = getChannelStrip(attribute);
       lo.append(strip);
     };
 
@@ -334,13 +334,13 @@ define(
     });
 
     var selectComponent = function(comp) {
-      
+
       clearSelection();
 
       if(comp.find(".channel-chooser").length === 0){
         $(".channel-chooser").appendTo("body").hide();
       }
-      
+
       var element = comp[0];
       var compId = element.id;
       selection.push(element);
@@ -365,34 +365,17 @@ define(
         var t = $(this).position();
         $(this).parent().append(lChannels);
         lChannels.css("top",t.top + 27).show();
-        
+
         // find listener this is for:
-        // FIXME: this is a bit of a hack and we need to add some attribute that we can fetch the listener from, instead of stringreplacing the class
-
-        var _cls = evt.target.getAttribute("class");
-        var forListener = _cls.replace("channel",'').trim();
-        displayListenChannels(forListener);
+        var attribute = evt.target.getAttribute("title");
+        displayListenChannel(attribute);
       });
-      
-      //May not be necessary now that we show description in tray.
-      /*
-      $('.description').text('')
-      if ('description' in element) {
-        var description = element.description.innerHTML
-        $('.description').text(description)
-      }
-      */
-
-      //Show broadcast channel
-      //May not be necessary. We now show selected channels prominently in UI.
-      /*var currentBroadcast = element.broadcastChannel;
-      displayBroadcastChannel(currentBroadcast);*/
 
       //Show editable attributes
       displayAttributes(element);
 
       //Changes component channel
-      var onSelectFunction = function () {
+      var onColorSelectFunction = function () {
         var comp = $(this);
 
         var channel = {
@@ -412,7 +395,7 @@ define(
           var attribute = comp.parent().attr("id").replace("strip-",'');
           if(attribute) {
             element.setSubscription(channel.name, attribute);
-            //displayListenChannels(getPotentialListeners(element));
+            displayListenChannel(attribute);
           }
         }
       };
@@ -425,7 +408,7 @@ define(
 
       // give the element the function we just added, so we
       // can unbind it when the element gets unselected.
-      element.onSelectFunction = onSelectFunction;
+      element.onColorSelectFunction = onColorSelectFunction;
 
       var componentName = element.tagName.toLowerCase();
       $(".editables-section .name").text(componentName);
