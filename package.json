@@ -24,7 +24,11 @@
   },
   "devDependencies": {
     "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.9",
     "grunt-contrib-jshint": "~0.6.3",
     "grunt-contrib-csslint": "~0.1.2"
+  },
+  "scripts": {
+    "test": "grunt"
   }
 }

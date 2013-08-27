@@ -92,6 +92,14 @@ h1 {
 	padding: 0;
 }
 
+h2 {
+	margin: 0px;
+	font-weight: 600;
+	font-size: 32px;
+	margin-bottom: 40px;
+	line-height: 32px;
+}
+
 h3 {
 	font-weight: 400;
 	margin: 0px;
@@ -739,8 +747,20 @@ button.customize-btn {
 
 .modal {
    max-width: 585px;
-   background-color: #DDD;
+   background-color: #EEE;
    position: relative;
+}
+
+.modal-inner {
+	padding: 40px;
+}
+
+button.return-btn {
+	height: 40px;
+	width: 100%;
+	margin-top: 40px;
+	font-size: 16px;
+	background-color: #358CCE;
 }
 
 .close {
@@ -891,6 +911,7 @@ button.customize-btn {
 	background-color: #FFF;
 	padding: 5px;
 	border-radius: 2px;
+	z-index: 110;
 }
 
 .editables-section {
@@ -979,7 +1000,7 @@ button.customize-btn.selected-button {
 /*Channel Visualisation*/
 
 .channel-visualisation {
-  height: 100%;
+	z-index: 2;
 }
 
 .broadcast-channels,
