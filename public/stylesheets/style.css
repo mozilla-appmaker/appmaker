@@ -1253,7 +1253,5 @@ button.customize-btn.selected-button {
   display: none;
 }
 .channel-visualisation .channel[color=false]{
-  background: transparent;
-  border: 1px solid rgba(0,0,0,0.4);
-  border-left: none;
+  background: rgba(102, 102, 102, .2)
 }
