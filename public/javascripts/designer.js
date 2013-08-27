@@ -337,7 +337,7 @@ define(
       
       clearSelection();
 
-      if(comp.find(".channel-chooser").length == 0){
+      if(comp.find(".channel-chooser").length === 0){
         $(".channel-chooser").appendTo("body").hide();
       }
       
