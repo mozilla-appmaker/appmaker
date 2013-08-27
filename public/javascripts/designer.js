@@ -469,8 +469,11 @@ define(
         data: { html: htmlData },
         type: 'post',
         success: function (data) {
-          $('.publish-url').html(data.filename);
-          $('.publish-url').attr('href', data.filename);
+          $('.publish-url').html(data.install);
+          $('.publish-url').attr('href', data.install);
+          $('.modal-publish-link').html(data.install);
+          $('.modal-publish-link').attr('href', data.install);
+          console.log('From publisher: ', data);
         },
         error: function (data) {
           console.error('Error while publishing content:');

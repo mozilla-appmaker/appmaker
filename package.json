@@ -15,7 +15,7 @@
     "express": "~3.3.4",
     "ejs-locals": "~1.0.2",
     "knox": "~0.8.6",
-    "shortid": "~2.0.0",
+    "moniker": "~0.1.2",
     "node-uuid": "~1.4.1"
   },
   "engines": {
