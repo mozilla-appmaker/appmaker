@@ -453,6 +453,7 @@ define(
     // to the jQueryUI "sortable" function.
     var sortableOptions = {
       accept: '.draggable',
+      distance : 10,
       receive: function (event, ui) {
         if (ui.helper) {
           var helper = $(ui.helper);
