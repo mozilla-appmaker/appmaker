@@ -228,25 +228,11 @@ define(
       });
     };
 
-    var displayListenChannels = function (potentialListeners) {
-      var lc = $('.listen-channel'),
-          attrBar,
-          attribute;
-      lc.html("");
-
-      potentialListeners.forEach(function(pair) {
-        var rdata = getChannelByChannelName(pair.channel);
-        var attrBar = $('<div class="listener' + (pair.channel === Ceci.emptyChannel ? ' custom':'') + '"></div>');
-        // listening function name
-        attrBar.append('<span class="channel-listener">' + pair.listener + '</span>');
-        // color strip
-        attribute = $('<span class="channel-label"></span>')
-          .text(rdata.title)
-          .css({'color': rdata.hex, 'border-color': rdata.hex});
-        attrBar.append(attribute);
-        attrBar.append(getChannelStrip(pair.listener));
-        lc.append(attrBar);
-      });
+    var displayListenChannels = function (forListener) {
+      var lo = $(".listen-options");
+      lo.html("");
+      var strip = getChannelStrip(forListener);
+      lo.append(strip);
     };
 
     var getAttributeUIElement = function(element, attributeName, definition) {
@@ -364,13 +350,18 @@ define(
       });
 
       //Show subscription channel options on click of subcription channel
-      $(document).on('click', '.subscription-channels', function () {
+      $(document).on('click', '.subscription-channels', function (evt) {
           var xPos = $(this).offset().left + 'px';
           var yPos = $(this).offset().top + 25 + 'px';
           $('.listen-section').css({top: yPos, left: xPos});
         //Show connectable listeners
         $('.listen-section').show();
-        //displayListenChannels(getPotentialListeners(element));
+
+        // find listener this is for:
+        // FIXME: this is a bit of a hack and we need to add some attribute that we can fetch the listener from, instead of stringreplacing the class
+        var _cls = evt.target.getAttribute("class");
+        var forListener = _cls.replace("channel",'').trim();
+        displayListenChannels(forListener);
       });
 
       //May not be necessary now that we show description in tray.
@@ -410,7 +401,7 @@ define(
           var attribute = comp.parent().attr("id").replace("strip-",'');
           if(attribute) {
             element.setSubscription(channel.name, attribute);
-            displayListenChannels(getPotentialListeners(element));
+            //displayListenChannels(getPotentialListeners(element));
           }
         }
       };
