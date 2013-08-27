@@ -844,11 +844,25 @@ button.return-btn {
 
 .channel-chooser {
   position: absolute;
-
 	background-color: #FFF;
 	padding: 5px;
 	border-radius: 2px;
 	z-index: 110;
+  box-shadow: 0px 2px 2px rgba(0,0,0,.1);
+}
+
+.channel-chooser .arrow {
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 10px solid white;
+  position: absolute;
+  left: 50%;
+  margin-left: -10px;
+  top: -10px;
+}
+
+.channel-chooser.listen-section {
+  right: 0px;
 }
 
 .colorChoice {

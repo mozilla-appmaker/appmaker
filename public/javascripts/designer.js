@@ -133,9 +133,11 @@ define(
 
     // empty the list of currently selected elements on the page
     var clearSelection = function() {
+      
       selection.forEach(function(element) {
         $(document).off("click", ".colorChoice", element.onSelectFunction);
       });
+      
       selection = [];
       $(".selected").removeClass("selected");
       $(".inspector").addClass('hidden');
@@ -332,7 +334,13 @@ define(
     });
 
     var selectComponent = function(comp) {
+      
       clearSelection();
+
+      if(comp.find(".channel-chooser").length == 0){
+        $(".channel-chooser").appendTo("body").hide();
+      }
+      
       var element = comp[0];
       var compId = element.id;
       selection.push(element);
@@ -346,17 +354,17 @@ define(
         var bChannels = $(".broadcast-section");
         var t = $(this).position();
         $(this).parent().append(bChannels);
-        bChannels.css("top",t.top + 30);
+        bChannels.css("top",t.top + 27);
         bChannels.show();
       });
 
       //Show subscription channel options on click of subcription channel
       $(document).on('click', '.subscription-channels .channel', function (evt) {
-        
+
         var lChannels = $(".listen-section");
         var t = $(this).position();
         $(this).parent().append(lChannels);
-        lChannels.css("top",t.top + 30).show();
+        lChannels.css("top",t.top + 27).show();
         
         // find listener this is for:
         // FIXME: this is a bit of a hack and we need to add some attribute that we can fetch the listener from, instead of stringreplacing the class
@@ -365,7 +373,7 @@ define(
         var forListener = _cls.replace("channel",'').trim();
         displayListenChannels(forListener);
       });
-
+      
       //May not be necessary now that we show description in tray.
       /*
       $('.description').text('')
@@ -412,7 +420,7 @@ define(
       // listen for color clicks
       $(document).on('click', '.colorChoice', onSelectFunction)
       .on('click', '.colorChoice', function (event) {
-        $('.broadcast-section, .listen-section').hide();
+        $('.broadcast-section, .listen-section').hide().appendTo("body");
       });
 
       // give the element the function we just added, so we
