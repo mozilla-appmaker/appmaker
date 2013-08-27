@@ -1,13 +1,19 @@
 <% layout('layout') -%>
 
-<div style="background: #DDD">
+<div class="ceci-card" style="background: white">
   <app-button>
     <broadcast on="blue">
   </app-button>
 
   <app-counter>
     <listen on="blue" for="increase">
+    <broadcast on="red">
   </app-counter>
+
+  <app-counter>
+    <listen on="red" for="increase">
+  </app-counter>
+
 </div>
 
 <script>
