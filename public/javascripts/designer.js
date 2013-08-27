@@ -57,21 +57,6 @@ define(
           }
         });
 
-        //Ben is not familiar with this syntax. He will learn but for now wanted to add in descriptions
-        /*Object.keys(components).forEach(function (tag) {
-          var thumb = $('<div class="clearfix draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
-          $('.library-list').append(thumb);
-          thumb.draggable({
-            connectToSortable: ".drophere",
-            helper: "clone",
-            appendTo: document.body,
-            start : function(event,ui){
-              var clone = ui.helper;
-              $(clone).find(".thumb").addClass("im-flying");
-            },
-            addClass: "clone"
-          })
-        });*/
         $('.library-list').removeClass("library-loading");
       }
     });
@@ -104,7 +89,7 @@ define(
     //TODO: Angular this up
     // generate the channels list (colored clickable boxes) and append to the page
     function getChannelStrip(forAttribute) {
-      var strip = $('<div class="colorstrip" id="strip' + (forAttribute ? '-' + forAttribute : '') + '"></div>');
+      var strip = $('<div class="colorstrip" id="strip-' + forAttribute + '"></div>');
 
       for (var i in channels) {
         var rdata = channels[i];
@@ -115,11 +100,6 @@ define(
       }
       return strip;
     }
-
-    var listChannels = function () {
-      var strip = getChannelStrip();
-      $('.broadcast-options').append(strip);
-    };
 
     // get a Channel object given a channel name
     function getChannelByChannelName(channelName) {
@@ -133,11 +113,11 @@ define(
 
     // empty the list of currently selected elements on the page
     var clearSelection = function() {
-      
+
       selection.forEach(function(element) {
-        $(document).off("click", ".colorChoice", element.onSelectFunction);
+        $(document).off("click", ".colorChoice", element.onColorSelectFunction);
       });
-      
+
       selection = [];
       $(".selected").removeClass("selected");
       $(".inspector").addClass('hidden');
@@ -166,7 +146,6 @@ define(
       $(".phone-canvas,.fixed-top,.fixed-bottom").sortable("disable");
     };
 
-    listChannels();
     clearSelection();
     enableReorder();
 
@@ -202,14 +181,11 @@ define(
         });
     });
 
-    var displayBroadcastChannel = function (channelName) {
-      var rdata = getChannelByChannelName(channelName);
-      if(!rdata) {
-        rdata = getChannelByChannelName(Ceci.emptyChannel);
-      }
-      $('.inspector .broadcast-channel')
-          .text(rdata.title)
-          .css({'color': rdata.hex, 'border-color': rdata.hex});
+    var displayBroadcastChannel = function () {
+      var bo = $(".broadcast-options");
+      bo.html("");
+      var strip = getChannelStrip("broadcast");
+      bo.append(strip);
     };
 
     var getPotentialListeners = function(element) {
@@ -230,10 +206,10 @@ define(
       });
     };
 
-    var displayListenChannels = function (forListener) {
+    var displayListenChannel = function (attribute) {
       var lo = $(".listen-options");
       lo.html("");
-      var strip = getChannelStrip(forListener);
+      var strip = getChannelStrip(attribute);
       lo.append(strip);
     };
 
@@ -334,13 +310,13 @@ define(
     });
 
     var selectComponent = function(comp) {
-      
+
       clearSelection();
 
       if(comp.find(".channel-chooser").length === 0){
         $(".channel-chooser").appendTo("body").hide();
       }
-      
+
       var element = comp[0];
       var compId = element.id;
       selection.push(element);
@@ -356,6 +332,7 @@ define(
         $(this).parent().append(bChannels);
         bChannels.css("top",t.top + 27);
         bChannels.show();
+        displayBroadcastChannel();
       });
 
       //Show subscription channel options on click of subcription channel
@@ -365,34 +342,21 @@ define(
         var t = $(this).position();
         $(this).parent().append(lChannels);
         lChannels.css("top",t.top + 27).show();
-        
+
         // find listener this is for:
-        // FIXME: this is a bit of a hack and we need to add some attribute that we can fetch the listener from, instead of stringreplacing the class
-
-        var _cls = evt.target.getAttribute("class");
-        var forListener = _cls.replace("channel",'').trim();
-        displayListenChannels(forListener);
+        var target = evt.target;
+        if(target.classList.contains("dot")) {
+          target = target.parentNode;
+        }
+        var listener = target.getAttribute("title");
+        displayListenChannel(listener);
       });
-      
-      //May not be necessary now that we show description in tray.
-      /*
-      $('.description').text('')
-      if ('description' in element) {
-        var description = element.description.innerHTML
-        $('.description').text(description)
-      }
-      */
-
-      //Show broadcast channel
-      //May not be necessary. We now show selected channels prominently in UI.
-      /*var currentBroadcast = element.broadcastChannel;
-      displayBroadcastChannel(currentBroadcast);*/
 
       //Show editable attributes
       displayAttributes(element);
 
       //Changes component channel
-      var onSelectFunction = function () {
+      var onColorSelectFunction = function () {
         var comp = $(this);
 
         var channel = {
@@ -412,20 +376,20 @@ define(
           var attribute = comp.parent().attr("id").replace("strip-",'');
           if(attribute) {
             element.setSubscription(channel.name, attribute);
-            //displayListenChannels(getPotentialListeners(element));
+            displayListenChannel(attribute);
           }
         }
       };
 
       // listen for color clicks
-      $(document).on('click', '.colorChoice', onSelectFunction)
+      $(document).on('click', '.colorChoice', onColorSelectFunction)
       .on('click', '.colorChoice', function (event) {
         $('.broadcast-section, .listen-section').hide().appendTo("body");
       });
 
       // give the element the function we just added, so we
       // can unbind it when the element gets unselected.
-      element.onSelectFunction = onSelectFunction;
+      element.onColorSelectFunction = onColorSelectFunction;
 
       var componentName = element.tagName.toLowerCase();
       $(".editables-section .name").text(componentName);
