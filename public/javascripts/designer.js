@@ -186,7 +186,7 @@ define(
       bo.html("");
       var strip = getChannelStrip("broadcast");
       bo.append(strip);
-    }
+    };
 
     var getPotentialListeners = function(element) {
       return element.subscriptionListeners.map(function(listener) {
