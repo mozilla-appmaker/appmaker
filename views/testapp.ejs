@@ -15,6 +15,7 @@
         next = next || function(){};
         var thing = document.createElement("app-"+tag);
         thing.id = "app-"+tag+"-"+counts["app-"+tag]++;
+        thing.classList.add("ui-draggable");
         Ceci.convertElement(thing, function(result) {
           $(".ceci-card .phone-canvas").append(result);
           next();
