@@ -1095,6 +1095,11 @@ button.customize-btn.selected-button {
   font-size: 12px;
   z-index: 99999;
   top: -26px;
+  text-overflow: ellipsis;
+  max-width:155px;
+  overflow: hidden;
+  white-space: nowrap;
+  
 }
 
 .broadcast-channels .bubblepopup {
