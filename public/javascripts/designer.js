@@ -57,21 +57,6 @@ define(
           }
         });
 
-        //Ben is not familiar with this syntax. He will learn but for now wanted to add in descriptions
-        /*Object.keys(components).forEach(function (tag) {
-          var thumb = $('<div class="clearfix draggable" name="' + tag + '" value="' + tag + '"><div class="thumb" value="' + tag + '">' + tag.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
-          $('.library-list').append(thumb);
-          thumb.draggable({
-            connectToSortable: ".drophere",
-            helper: "clone",
-            appendTo: document.body,
-            start : function(event,ui){
-              var clone = ui.helper;
-              $(clone).find(".thumb").addClass("im-flying");
-            },
-            addClass: "clone"
-          })
-        });*/
         $('.library-list').removeClass("library-loading");
       }
     });
@@ -104,7 +89,7 @@ define(
     //TODO: Angular this up
     // generate the channels list (colored clickable boxes) and append to the page
     function getChannelStrip(forAttribute) {
-      var strip = $('<div class="colorstrip" id="strip' + (forAttribute ? '-' + forAttribute : '') + '"></div>');
+      var strip = $('<div class="colorstrip" id="strip-' + forAttribute + '"></div>');
 
       for (var i in channels) {
         var rdata = channels[i];
@@ -115,11 +100,6 @@ define(
       }
       return strip;
     }
-
-    var listChannels = function () {
-      var strip = getChannelStrip();
-      $('.broadcast-options').append(strip);
-    };
 
     // get a Channel object given a channel name
     function getChannelByChannelName(channelName) {
@@ -135,7 +115,7 @@ define(
     var clearSelection = function() {
 
       selection.forEach(function(element) {
-        $(document).off("click", ".colorChoice", element.onSelectFunction);
+        $(document).off("click", ".colorChoice", element.onColorSelectFunction);
       });
 
       selection = [];
@@ -166,7 +146,6 @@ define(
       $(".phone-canvas,.fixed-top,.fixed-bottom").sortable("disable");
     };
 
-    listChannels();
     clearSelection();
     enableReorder();
 
@@ -202,15 +181,12 @@ define(
         });
     });
 
-    var displayBroadcastChannel = function (channelName) {
-      var rdata = getChannelByChannelName(channelName);
-      if(!rdata) {
-        rdata = getChannelByChannelName(Ceci.emptyChannel);
-      }
-      $('.inspector .broadcast-channel')
-          .text(rdata.title)
-          .css({'color': rdata.hex, 'border-color': rdata.hex});
-    };
+    var displayBroadcastChannel = function () {
+      var bo = $(".broadcast-options");
+      bo.html("");
+      var strip = getChannelStrip("broadcast");
+      bo.append(strip);
+    }
 
     var getPotentialListeners = function(element) {
       return element.subscriptionListeners.map(function(listener) {
@@ -356,6 +332,7 @@ define(
         $(this).parent().append(bChannels);
         bChannels.css("top",t.top + 27);
         bChannels.show();
+        displayBroadcastChannel();
       });
 
       //Show subscription channel options on click of subcription channel
@@ -367,8 +344,12 @@ define(
         lChannels.css("top",t.top + 27).show();
 
         // find listener this is for:
-        var attribute = evt.target.getAttribute("title");
-        displayListenChannel(attribute);
+        var target = evt.target;
+        if(target.classList.contains("dot")) {
+          target = target.parentNode;
+        }
+        var listener = target.getAttribute("title");
+        displayListenChannel(listener);
       });
 
       //Show editable attributes
@@ -401,7 +382,7 @@ define(
       };
 
       // listen for color clicks
-      $(document).on('click', '.colorChoice', onSelectFunction)
+      $(document).on('click', '.colorChoice', onColorSelectFunction)
       .on('click', '.colorChoice', function (event) {
         $('.broadcast-section, .listen-section').hide().appendTo("body");
       });
