@@ -1,0 +1,90 @@
+.channel-visualisation .indicator-out {
+  -webkit-animation: indicatorOut 1s linear;
+  -moz-animation: indicatorOut 1s linear;
+}
+
+.channel-visualisation .indicator-in {
+  -webkit-animation: indicatorIn 1s linear;
+  -moz-animation: indicatorIn 1s linear;
+}
+
+@-webkit-keyframes indicatorOut {
+  0% { opacity: .4;}  
+  50% { 
+    left: 210px; 
+    opacity: 0;
+  }
+  100% { 
+    left: 210px; 
+    opacity: 0;
+  }
+}
+@-moz-keyframes indicatorOut {
+  0% { opacity: .4;}  
+  50% { 
+    left: 210px; 
+    opacity: 0;
+  }
+  100% { 
+    left: 210px; 
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes indicatorIn {
+  0% { opacity: 0;}  
+  50% { opacity: 0; left: 0px;}  
+  100% {
+    left: 200px;
+    opacity: .4;
+  }
+}
+@-moz-keyframes indicatorIn {
+  0% { opacity: 0;}  
+  50% { opacity: 0; left: 0px;}  
+  100% {
+    left: 200px;
+    opacity: .4;
+  }
+}
+
+.channel-visualisation .bubblepop {
+  -webkit-animation: bubblepop linear 1s;
+  -moz-animation: bubblepop linear 1s;
+}
+
+@-webkit-keyframes bubblepop {
+  0% { opacity: 0;}
+  2% { opacity: 1; -webkit-transform: scale(.5);}
+  4% { opacity: 1; -webkit-transform: scale(1.2);}  
+  14% { opacity: 1; -webkit-transform: scale(1);}  
+  95% { opacity: 1; -webkit-transform: translate(0px,0px);}  
+  100% { opacity: 0; -webkit-transform: translate(5px,-5px) scale(.6);}
+}
+@-moz-keyframes bubblepop {
+  0% { opacity: 0;}
+  2% { opacity: 1; -moz-transform: scale(.5);}
+  4% { opacity: 1; -moz-transform: scale(1.2);}  
+  14% { opacity: 1; -moz-transform: scale(1);}  
+  95% { opacity: 1; -moz-transform: translate(0px,0px);}  
+  100% { opacity: 0; -moz-transform: translate(5px,-5px) scale(.6);}
+}
+
+
+.channel-visualisation .pulse {
+  -webkit-animation: pulse .1s linear;
+  -webkit-transform-origin:center;
+  -moz-animation: pulse .1s linear;
+  -moz-transform-origin:center;
+}
+
+@-webkit-keyframes pulse {
+  0% { -webkit-transform: scale(1);}
+  50% { -webkit-transform: scale(1.2 );}
+  100% { -webkit-transform: scale(1);}
+}
+@-moz-keyframes pulse {
+  0% { -moz-transform: scale(1);}
+  50% { -moz-transform: scale(1.2 );}
+  100% { -moz-transform: scale(1);}
+}

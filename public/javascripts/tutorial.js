@@ -10,6 +10,20 @@ $(document).ready(function(){
 
   changeStep(1);
 
+  $(".channel-ui").on("click",".active-channel",function(e){
+    var parent = $(this).closest(".channel-ui");
+    parent.toggleClass("ui-open");
+  });
+
+  $(".channel-ui").on("click",".channel-options .channel",function(e){
+    var color = $(this).attr("channelColor");
+    var parent = $(this).closest(".channel-ui");
+    parent.find(".active-channel").attr("channelColor",color);
+    parent.find(".selected-channel").removeClass("selected-channel");
+    $(this).addClass("selected-channel");
+    $(parent).toggleClass("ui-open");
+  });
+
 });
 
 function changeStep(step){
@@ -26,6 +40,7 @@ function changeStep(step){
         }
       });
       phone.droppable({
+        hoverClass: "drop-hover",
         drop: function(event,ui){
           skyD.remove();
           changeStep(2);
@@ -35,8 +50,9 @@ function changeStep(step){
 
     case 2:
       skyC.show().addClass("component-selected");
-      skyC.find(".channel-ui").on("click",function(){
-        $(this).hide();
+      
+      skyC.find(".channel-ui .channel-options .channel").on("click",function(){
+
         skyC.removeClass("component-selected");
         changeStep(3);
       });
@@ -51,6 +67,7 @@ function changeStep(step){
         }
       });
       phone.droppable({
+
         drop : function(event,ui){
           fireD.remove();
           fireC.show().addClass("component-selected");

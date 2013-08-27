@@ -110,7 +110,7 @@ define(
         var rdata = channels[i];
 
         strip.append(
-          $('<div class="color '+ rdata.name +'" value="'+ rdata.hex +'" name="'+ rdata.name +'" title="'+ rdata.title +'" style="background-color: '+ rdata.hex +'"></div>')
+          $('<div class="colorChoice '+ rdata.name +'" value="'+ rdata.hex +'" name="'+ rdata.name +'" title="'+ rdata.title +'" style="background-color: '+ rdata.hex +'"></div>')
         );
       }
       return strip;
@@ -133,9 +133,11 @@ define(
 
     // empty the list of currently selected elements on the page
     var clearSelection = function() {
+      
       selection.forEach(function(element) {
-        $(document).off("click", ".color", element.onSelectFunction);
+        $(document).off("click", ".colorChoice", element.onSelectFunction);
       });
+      
       selection = [];
       $(".selected").removeClass("selected");
       $(".inspector").addClass('hidden');
@@ -332,7 +334,13 @@ define(
     });
 
     var selectComponent = function(comp) {
+      
       clearSelection();
+
+      if(comp.find(".channel-chooser").length === 0){
+        $(".channel-chooser").appendTo("body").hide();
+      }
+      
       var element = comp[0];
       var compId = element.id;
       selection.push(element);
@@ -342,28 +350,30 @@ define(
       $('.delete-btn').show();
 
       //Show broadcast channel options on click of broadcast channel
-      $(document).on('click', '.broadcast-channels', function () {
-          var xPos = $(this).offset().left + 'px';
-          var yPos = $(this).offset().top + 25 + 'px';
-          $('.broadcast-section').css({top: yPos, left: xPos});
-          $('.broadcast-section').show();
+      $(document).on('click', '.broadcast-channels .channel', function (event) {
+        var bChannels = $(".broadcast-section");
+        var t = $(this).position();
+        $(this).parent().append(bChannels);
+        bChannels.css("top",t.top + 27);
+        bChannels.show();
       });
 
       //Show subscription channel options on click of subcription channel
-      $(document).on('click', '.subscription-channels', function (evt) {
-          var xPos = $(this).offset().left + 'px';
-          var yPos = $(this).offset().top + 25 + 'px';
-          $('.listen-section').css({top: yPos, left: xPos});
-        //Show connectable listeners
-        $('.listen-section').show();
+      $(document).on('click', '.subscription-channels .channel', function (evt) {
 
+        var lChannels = $(".listen-section");
+        var t = $(this).position();
+        $(this).parent().append(lChannels);
+        lChannels.css("top",t.top + 27).show();
+        
         // find listener this is for:
         // FIXME: this is a bit of a hack and we need to add some attribute that we can fetch the listener from, instead of stringreplacing the class
+
         var _cls = evt.target.getAttribute("class");
         var forListener = _cls.replace("channel",'').trim();
         displayListenChannels(forListener);
       });
-
+      
       //May not be necessary now that we show description in tray.
       /*
       $('.description').text('')
@@ -384,6 +394,7 @@ define(
       //Changes component channel
       var onSelectFunction = function () {
         var comp = $(this);
+
         var channel = {
           hex: comp.attr('value'),
           name: comp.attr('name'),
@@ -407,9 +418,9 @@ define(
       };
 
       // listen for color clicks
-      $(document).on('click', '.color', onSelectFunction)
-      .on('click', '.color', function () {
-        $('.broadcast-section, .listen-section').hide();
+      $(document).on('click', '.colorChoice', onSelectFunction)
+      .on('click', '.colorChoice', function (event) {
+        $('.broadcast-section, .listen-section').hide().appendTo("body");
       });
 
       // give the element the function we just added, so we
@@ -450,6 +461,7 @@ define(
     // to the jQueryUI "sortable" function.
     var sortableOptions = {
       accept: '.draggable',
+      distance : 10,
       receive: function (event, ui) {
         if (ui.helper) {
           var helper = $(ui.helper);
