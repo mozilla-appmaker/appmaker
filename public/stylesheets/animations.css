@@ -48,12 +48,12 @@
   }
 }
 
-.channel-visualisation .logpop {
-  -webkit-animation: logpop linear 1s;
-  -moz-animation: logpop linear 1s;
+.channel-visualisation .bubblepop {
+  -webkit-animation: bubblepop linear 1s;
+  -moz-animation: bubblepop linear 1s;
 }
 
-@-webkit-keyframes logpop {
+@-webkit-keyframes bubblepop {
   0% { opacity: 0;}
   2% { opacity: 1; -webkit-transform: scale(.5);}
   4% { opacity: 1; -webkit-transform: scale(1.2);}  
@@ -61,7 +61,7 @@
   95% { opacity: 1; -webkit-transform: translate(0px,0px);}  
   100% { opacity: 0; -webkit-transform: translate(5px,-5px) scale(.6);}
 }
-@-moz-keyframes logpop {
+@-moz-keyframes bubblepop {
   0% { opacity: 0;}
   2% { opacity: 1; -moz-transform: scale(.5);}
   4% { opacity: 1; -moz-transform: scale(1.2);}  

@@ -1063,7 +1063,7 @@ button.customize-btn.selected-button {
 
 /*log stuff */
 
- .logpopup {
+ .bubblepopup {
   position: absolute;
   background: white;
   padding: 8px 12px;
@@ -1072,7 +1072,7 @@ button.customize-btn.selected-button {
   top: -26px;
 }
 
-.broadcast-channels .logpopup {
+.broadcast-channels .bubblepopup {
   left: 11px;
   border-radius: 8px 8px 8px 0px;
   z-index: 99999;
@@ -1080,7 +1080,7 @@ button.customize-btn.selected-button {
   -moz-transform-origin: bottom left;
 }
 
-.subscription-channels .logpopup {
+.subscription-channels .bubblepopup {
   border-radius: 8px 8px 0px 8px;
   right: 11px;
   border: solid 2px #888;
@@ -1118,7 +1118,7 @@ button.customize-btn.selected-button {
   background:	rgba(53,140,206,1);
 }
 
-.channel-visualisation .channel[color=blue] .logpopup {
+.channel-visualisation .channel[color=blue] .bubblepopup {
   border: solid 2px rgba(53,140,206,1);
   color: rgba(53,140,206,1);
 }
@@ -1132,7 +1132,7 @@ button.customize-btn.selected-button {
   background:	rgba(232,30,20,1);
 }
 
-.channel-visualisation .channel[color=red] .logpopup {
+.channel-visualisation .channel[color=red] .bubblepopup {
   border: solid 2px rgba(232,30,20,1);
   color:	rgba(232,30,20,1);
 }
@@ -1146,7 +1146,7 @@ button.customize-btn.selected-button {
   background:	rgba(227,25,123,1);
 }
 
-.channel-visualisation .channel[color=pink] .logpopup {
+.channel-visualisation .channel[color=pink] .bubblepopup {
   border: solid 2px rgba(227,25,123,1);
   color:	rgba(227,25,123,1);
 }
@@ -1160,7 +1160,7 @@ button.customize-btn.selected-button {
   background:	rgba(159,39,207,1);
 }
 
-.channel-visualisation .channel[color=purple] .logpopup {
+.channel-visualisation .channel[color=purple] .bubblepopup {
   border: solid 2px rgba(159,39,207,1);
   color:	rgba(159,39,207,1);
 }
@@ -1174,7 +1174,7 @@ button.customize-btn.selected-button {
   background:	rgba(113,184,6,1);
 }
 
-.channel-visualisation .channel[color=green] .logpopup {
+.channel-visualisation .channel[color=green] .bubblepopup {
   border: solid 2px rgba(113,184,6,1);
   color:	rgba(113,184,6,1);
 }
@@ -1188,7 +1188,7 @@ button.customize-btn.selected-button {
   background:	rgba(255,123,0,1);
 }
 
-.channel-visualisation .channel[color=orange] .logpopup {
+.channel-visualisation .channel[color=orange] .bubblepopup {
   border: solid 2px rgba(255,123,0,1);
   color:	rgba(255,123,0,1);
 }
@@ -1202,7 +1202,7 @@ button.customize-btn.selected-button {
   background:	rgba(229,210,0,1);
 }
 
-.channel-visualisation .channel[color=yellow] .logpopup {
+.channel-visualisation .channel[color=yellow] .bubblepopup {
   border: solid 2px rgba(229,210,0,1);
   color:	rgba(229,210,0,1);
 }
