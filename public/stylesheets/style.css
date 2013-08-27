@@ -911,6 +911,7 @@ button.return-btn {
 	background-color: #FFF;
 	padding: 5px;
 	border-radius: 2px;
+	z-index: 110;
 }
 
 .editables-section {
@@ -998,6 +999,7 @@ button.customize-btn.selected-button {
 /*Channel Visualisation*/
 
 .channel-visualisation {
+	z-index: 2;
 }
 
 .broadcast-channels,

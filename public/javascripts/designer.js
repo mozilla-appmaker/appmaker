@@ -246,6 +246,8 @@ define(
         attrBar.append(attribute);
         attrBar.append(getChannelStrip(pair.listener));
         lc.append(attrBar);
+
+        $('.listen-options').append(getChannelStrip(pair.listener));
       });
     };
 
@@ -370,7 +372,7 @@ define(
           $('.listen-section').css({top: yPos, left: xPos});
         //Show connectable listeners
         $('.listen-section').show();
-        //displayListenChannels(getPotentialListeners(element));
+        displayListenChannels(getPotentialListeners(element));
       });
 
       //May not be necessary now that we show description in tray.
@@ -410,7 +412,7 @@ define(
           var attribute = comp.parent().attr("id").replace("strip-",'');
           if(attribute) {
             element.setSubscription(channel.name, attribute);
-            displayListenChannels(getPotentialListeners(element));
+            //displayListenChannels(getPotentialListeners(element));
           }
         }
       };
