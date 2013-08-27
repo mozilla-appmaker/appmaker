@@ -6,13 +6,19 @@
 /*
  * GET home page.
  */
+module.exports = {
+  index: function(req, res) {
+    res.render('index.ejs');
+  },
 
-exports.index = function(req, res){
-  res.render('index.ejs');
-};
+  designer: function(req, res) {
+    res.render('designer');
+  },
 
-exports.designer = function(req, res){
-  res.render('designer');
-};
+  testapp: function(req, res) {
+    res.render('testapp');
+  },
 
-exports.store = require('./store');
+  store: require('./store')
+
+}

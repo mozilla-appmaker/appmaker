@@ -512,5 +512,10 @@ define(
       $('.modal-wrapper').removeClass('flex');
     });
 
+    // AMD module return
+    return {
+      Ceci: Ceci,
+      App: Ceci.App
+    };
   }
 );
