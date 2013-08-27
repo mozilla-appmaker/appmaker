@@ -840,7 +840,18 @@ button.return-btn {
 	width: 10px;
 }
 
-.color {
+/*Color UI Strip*/
+
+.channel-chooser {
+  position: absolute;
+
+	background-color: #FFF;
+	padding: 5px;
+	border-radius: 2px;
+	z-index: 110;
+}
+
+.colorChoice {
 	height: 20px;
 	width: 20px;
 	float: left;
@@ -848,7 +859,7 @@ button.return-btn {
 	border-radius: 2px;
 }
 
-.color:nth-last-child(1) {
+.colorChoice:nth-last-child(1) {
 	margin-right: 0px;
 }
 
@@ -906,13 +917,6 @@ button.return-btn {
 	cursor: move;
 }
 
-.broadcast-section, .listen-section {
-	position: absolute;
-	background-color: #FFF;
-	padding: 5px;
-	border-radius: 2px;
-	z-index: 110;
-}
 
 .editables-section {
 	background-color: #F8F8F8;
@@ -1001,12 +1005,16 @@ button.customize-btn.selected-button {
 
 .channel-visualisation {
 	z-index: 2;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .broadcast-channels,
 .subscription-channels {
-  position: absolute;
-  top: 0px;
   width: 210px;
 }
 
@@ -1018,9 +1026,12 @@ button.customize-btn.selected-button {
 	border-radius: 0px 10px 10px 0px;
 }
 
-.channel-visualisation .channel:only-child {
-  margin: -10px 0 0 0 ;
-  top: 50%;
+.channel-visualisation .channel {
+  margin: 2px 0;
+}
+
+.channel-visualisation {
+  margin-bottom: 0px;
 }
 
 .broadcast-channels {
@@ -1205,4 +1216,20 @@ button.customize-btn.selected-button {
 .channel-visualisation .channel[color=yellow] .bubblepopup {
   border: solid 2px rgba(229,210,0,1);
   color:	rgba(229,210,0,1);
+}
+
+.channel-visualisation .channel[color=false] {
+  background:	rgba(0,0,0,.2);
+}
+
+.channel-visualisation .channel[color=false] .color, 
+.channel-visualisation .channel[color=false] .indicator {
+  display: none;
+/*  background:  rgba(0,0,0,.3);*/
+}
+
+.channel-visualisation .channel[color=false] .bubblepopup {
+  border: solid 2px rgba(53,140,206,1);
+  color: rgba(53,140,206,1);
+  display: none;
 }
