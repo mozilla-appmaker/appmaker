@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-var 
+var
 express = require('express'),
 routes = require('./routes'),
 http = require('http'),
@@ -39,9 +39,8 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/designer', routes.designer);
-
+app.get('/testapp', routes.testapp);
 app.post('/publish', routes.store.publish);
-
 app.get('/store/uuid', routes.store.uuid);
 
 routes.store._init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET,
