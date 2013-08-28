@@ -483,7 +483,6 @@ define(
         });
       });
 
-      var htmlData = $('.phone-canvas')[0].outerHTML;
       $.ajax('/publish', {
         data: { manifest: manifest },
         type: 'post',
