@@ -69,9 +69,14 @@ exports.publish = function(req, res) {
   };
 
   var outputFiles = [
-    {filename: __publisher.objectPrefix + '/' + folderName + '/' + manifestFilename, data: JSON.stringify(manifestJSON), contentType: 'text/json'},
-    {filename: __publisher.objectPrefix + '/' + folderName + '/' + appHTMLFilename, data: appStr},
-    {filename: __publisher.objectPrefix + '/' + folderName + '/' + installHTMLFilename, data: installStr}
+    {filename: __publisher.objectPrefix + '/' + folderName + '/' + manifestFilename,
+      data: JSON.stringify(manifestJSON),
+      // According to https://developer.mozilla.org/en-US/docs/Web/Apps/Manifest#Serving_manifests
+      contentType: 'application/x-web-app-manifest+json'},
+    {filename: __publisher.objectPrefix + '/' + folderName + '/' + appHTMLFilename,
+      data: appStr},
+    {filename: __publisher.objectPrefix + '/' + folderName + '/' + installHTMLFilename,
+      data: installStr}
   ];
 
   var filesDone = 0;
