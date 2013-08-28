@@ -21,22 +21,48 @@
   </head>
   <body>
     <div id="flathead-app">
-      <% for (var i = 0, card; card = cards[i], i < cards.length; ++i) { %>
-        <div class="ceci-card" id="ceci-card-<%= i+1 %>">
-          <div class="phone-canvas">
-            <% for (var j = 0, element; element = card.elements[j], j < card.elements.length; ++j) { %>
-              <<%= element.tagname %> id="<%= element.id %>">
-                <% if (element.broadcast !== 'false') { %>
-                  <broadcast on="<%= element.broadcast %>"></broadcast>
-                <% } %>
-                <% for (var k = 0, listen; listen = element.listen[k], k < element.listen.length; ++k) { %>
-                  <listen on="<%= listen.channel %>" for="<%= listen.listener %>"></listen>
-                <% } %>
-              </<%= element.tagname %>>
-            <% } %>
-          </div>
+<%
+  if (!!cards) {
+    cards.forEach( function(card, cardIndex) {
+-%>
+      <div class="ceci-card" id="ceci-card-<%= cardIndex + 1 %>">
+        <div class="phone-canvas">
+<%
+      if (!!card.elements) {
+        card.elements.forEach( function(element, elementIndex) {
+          var attributeStr = '';
+          if (!!element.attributes) {
+            element.attributes.forEach(function (attr) {
+                attributeStr += ' ' + attr.name + '="' + attr.value + '"';
+            });
+          }
+-%>
+          <<%- element.tagname %> id="<%- element.id %>"<%- attributeStr %>>
+<%
+          if (element.broadcast !== 'false') {
+-%>
+            <broadcast on="<%= element.broadcast %>"></broadcast>
+<%
+          }
+          if (!!element.listen) {
+            element.listen.forEach( function(listen) {
+-%>
+            <listen on="<%= listen.channel %>" for="<%= listen.listener %>"></listen>
+<%
+            });
+          }
+-%>
+          </<%= element.tagname %>>
+<%
+        });
+      }
+-%>
         </div>
-      <% } %>
+      </div>
+<%
+    });
+  }
+-%>
     </div>
   </body>
 </html>
