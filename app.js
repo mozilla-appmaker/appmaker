@@ -41,6 +41,7 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/designer', routes.designer);
+app.get('/testappdesigner', routes.testappdesigner);
 app.get('/testapp', routes.testapp);
 
 // Server-side gen of ID since we'll likely eventually use this for persistance

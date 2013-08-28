@@ -15,6 +15,10 @@ module.exports = {
     res.render('designer');
   },
 
+  testappdesigner: function(req, res) {
+    res.render('testappdesigner');
+  },
+
   testapp: function(req, res) {
     res.render('testapp');
   },
