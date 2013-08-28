@@ -224,24 +224,35 @@ button.btn-start {
 
 button.publish {
 	position: absolute;
-	top: -40px;
+	top: -36px;
 	right: 0px;
 	display: block;
-	height: 40px;
+	height: 36px;
 	width: 110px;
 	font-size: 16px;
 	cursor: pointer;
+	border-radius: 3px 3px 0px 0px;
 }
 
 button.new {
 	position: absolute;
-	top: -40px;
+	top: -36px;
 	right: 115px;
 	display: block;
-	height: 40px;
+	height: 36px;
 	width: 110px;
 	font-size: 16px;
 	cursor: pointer;
+	background-color: #ff7b00;
+	border-radius: 3px 3px 0px 0px;
+}
+
+button.new:hover {
+	background-color: #fc8c24;
+}
+
+button.new:active {
+	background-color: #e67103;
 }
 
 .publish-url {
@@ -277,19 +288,19 @@ button.btn-img {
 button.btn-add {
 	height: 36px;
 	width: 36px;
-	border-radius: 3px;
-	background-color: #ff7b00;
+	border-radius: 3px 3px 0px 0px;
+	background-color: #333;
 	border: none;
 	padding: 0px;
 	background-position: center;
 	background-repeat: no-repeat;
-	margin-bottom: 20px;
 	color: #FFF;
 	font-size: 13px;
 	cursor: pointer;
 	background-image: url(../images/add-card.png);
 	background-position: center;
 	background-repeat: no-repeat;
+	float: left;
 }
 
 button.btn-done {
@@ -319,19 +330,19 @@ button.small-btn {
 button.log-toggle {
 	background-image: url(../images/log.png);
 	top: 20px;
-	right: 96px;
+	right: 20px;
 }
 
 button.delete-btn {
 	background-image: url(../images/trash.png);
 	top: 20px;
-	right: 137px;
+	right: 61px;
 }
 
 button.customize-btn {
 	background-image: url(../images/customize.png);
 	top: 20px;
-	right: 178px;
+	right: 102px;
 }
 
 /*----------LAYOUT----------*/
@@ -361,9 +372,9 @@ button.customize-btn {
 
 
 .container {
-  	width: 1046px;
+  	width: 970px;
  	background-color: #ddd;
-	margin: 65px auto 40px auto;
+	margin: 0px auto 40px auto;
 	position: relative;
 }
 
@@ -616,28 +627,27 @@ button.customize-btn {
 	background-repeat: no-repeat;
 }
 
+.tabs {
+	margin: 40px auto 0px auto;
+	width: 970px;
+}
+
 .cards {
 	float: left;
-	width: 36px;
-	padding-top: 20px;
-	position: relative;
-	margin-left: 20px;
 }
 
 .card {
-	height: 46px;
-	width: 100%;
-	font-size: 30px;
+	height: 36px;
+	width: 100px;
+	font-size: 14px;
 	text-align: center;
-	line-height: 46px;
+	line-height: 36px;
 	cursor: pointer;
+	background-color: #333;
+	float: left;
 	color: #888;
-	background-image: url(../images/card.png);
-	background-repeat: no-repeat;
-}
-
-.card {
-	margin-bottom: 5px;
+	margin-right: 5px;
+	border-radius: 3px 3px 0px 0px;
 }
 
 .console {
@@ -1066,7 +1076,6 @@ button.customize-btn.selected-button {
 
 .subscription-channels .channel {
   float: right;
-  margin-left: 2px;
 }
 
 .broadcast-channels .channel {
