@@ -20,6 +20,23 @@
     </script>
   </head>
   <body>
-    <%- content %>
+    <div id="flathead-app">
+      <% for (var i = 0, card; card = cards[i], i < cards.length; ++i) { %>
+        <div class="ceci-card" id="ceci-card-<%= i+1 %>">
+          <div class="phone-canvas">
+            <% for (var j = 0, element; element = card.elements[j], j < card.elements.length; ++j) { %>
+              <<%= element.tagname %> id="<%= element.id %>">
+                <% if (element.broadcast !== 'false') { %>
+                  <broadcast on="<%= element.broadcast %>"></broadcast>
+                <% } %>
+                <% for (var k = 0, listen; listen = element.listen[k], k < element.listen.length; ++k) { %>
+                  <listen on="<%= listen.channel %>" for="<%= listen.listener %>"></listen>
+                <% } %>
+              </<%= element.tagname %>>
+            <% } %>
+          </div>
+        </div>
+      <% } %>
+    </div>
   </body>
 </html>

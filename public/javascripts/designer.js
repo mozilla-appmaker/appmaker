@@ -464,9 +464,28 @@ define(
     $(".btn-add").click(createCard);
 
     $('.publish').click(function(){
+      var manifest = {
+        cards: []
+      };
+
+      var cards = $('#flathead-app .ceci-card');
+
+      cards.each(function (index, card) {
+        var cardManifest = {
+          elements: []
+        };
+        manifest.cards.push(cardManifest);
+        var phoneCanvas = card.querySelector('.phone-canvas');
+        Array.prototype.forEach.call(phoneCanvas.children, function (child) {
+          if (child.localName.indexOf('app-') > -1 && typeof child.describe === 'function') {
+            cardManifest.elements.push(child.describe());
+          }
+        });
+      });
+
       var htmlData = $('.phone-canvas')[0].outerHTML;
       $.ajax('/publish', {
-        data: { html: htmlData },
+        data: { manifest: manifest },
         type: 'post',
         success: function (data) {
           $('.publish-url').html(data.install);
