@@ -1,23 +1,35 @@
 <% layout('layout') -%>
 
-<div class="ceci-card" style="background: white">
+<div class="ceci-card">
   <app-button>
-    <broadcast on="blue">
+    <broadcast on="blue"></broadcast>
   </app-button>
-
   <app-counter>
-    <listen on="blue" for="increase">
-    <broadcast on="red">
+    <listen on="blue" for="increase"></listen>
+    <broadcast on="red"></broadcast>
   </app-counter>
-
   <app-counter>
-    <listen on="red" for="increase">
+    <listen on="red" for="increase"></listen>
   </app-counter>
-
 </div>
 
 <script>
-  requirejs(["jquery", "ceci"], function($, Ceci) {
-    Ceci.load();
+  requirejs(["jquery", "ceci", "ceci-cards"], function($, Ceci) {
+    var _ = document.createElement("div");
+    _.appendChild(document.querySelector("div.ceci-card").cloneNode(true));
+    var original = _.innerHTML;
+    delete _;
+
+    Ceci.load(function() {
+      var json = document.querySelector("div.ceci-card").describe();
+      var reconstituted = Ceci.rehydrate(json);
+
+      // wipe the page! and then rebuild from the reconstituted HTML
+      document.body.innerHTML = "";
+      document.body.appendChild(reconstituted);
+      Ceci.load(function() {
+        document.querySelector("div.ceci-card").showCard();
+      });
+    });
   })
 </script>
