@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600' rel='stylesheet' type='text/css'>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel='stylesheet' href='/stylesheets/install.css' />
   <title>My Flathead App</title>
   <script>
     document.addEventListener('DOMContentLoaded', function (e) {
@@ -22,8 +24,11 @@
   </script>
 </head>
 <body>
-  <h1>Install This App</h1>
-  <button id="install">Install</button>
-  <iframe width="600" height="400" src="<%- iframeSrc %>"></iframe>
+  <div class="install-container">
+    <button id="install">Install App</button>
+    <div>
+      <iframe width="100%" height="400" src="<%- iframeSrc %>"></iframe>
+    </div>
+  </div>
 </body>
 </html>

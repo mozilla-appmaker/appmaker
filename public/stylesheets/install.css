@@ -1,0 +1,29 @@
+body {
+   background-color: #222;
+}
+
+.install-container {
+   max-width: 800px;
+   margin: 0 auto;
+}
+
+button#install {
+   font-family: 'Source Sans Pro', arial;
+   width: 100%;
+   -webkit-appearance: none;
+   border: none;
+   height: 80px;
+   border-radius: 3px;
+   font-size: 24px;
+   background-color: #358CCE;
+   color: #FFF;
+   margin: 40px 0px;
+}
+
+button#install:hover {
+	background-color: #3999e3;
+}
+
+button#install:active {
+	background-color: #2a70a6;
+}
