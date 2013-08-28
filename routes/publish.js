@@ -42,9 +42,10 @@ exports.publish = function(req, res) {
   var remoteManifestUrl = __publisher.publishHostPrefix + folderName + '.' + __publisher.publishHost + '/' + manifestFilename;
 
   var inputData = req.body;
+  var manifest = inputData.manifest;
 
   var appStr = __publisher.templates.publish({
-    content: inputData.html
+    cards: manifest.cards
   });
 
   var installStr = __publisher.templates.install({
