@@ -2,52 +2,34 @@ body {
   	background-color: #222;
 }
 
-h1 {
-  text-align: left;
-  font-size: 60px;
-  margin-bottom: 40px;
-}
-
-
 .top-line {
   height: 3px;
-  background-color: #358CCE;
+  background-color: #444;
   width: 100%;
 
 }
 
 .index-container {
-  width: 860px;
+  width: 900px;
   margin: 0 auto;
 }
 
 .sub-header {
+  font-size: 72px;
+  margin: 80px 0px 100px 0px;
   text-align: center;
-  font-size: 42px;
-  margin-bottom: 80px;
   color: #FFF;
-  font-weight: 300;
+  font-weight: 200;
 }
 
-.banner {
-	margin: 40px 0px;
-  background-color: #358CCE;
-}
-
-.banner-inner {
-  padding: 80px;
+.team {
+  margin-top: 80px;
+  color: #888;
 }
 
 .mozilla{
-  float: right;
-}
-
-.logo {
-  color: #FFF;
-  font-size: 42px;
-  font-family: 'Norican', cursive;
-  width: 860px;
-  margin: 0px auto 0px auto;
+  margin: 0 auto;
+  width: 190px;
 }
 
 input.app-name {
@@ -74,9 +56,17 @@ input.app-name {
 button.btn-start-app {
   height: 60px;
   width: 260px;
-  margin: 20px auto 0px auto;
+  margin: 0px auto 0px auto;
   display: block;
   border-radius: 3px;
-  background: #222;
+  background: #358CCE;
   font-size: 22px;
+}
+
+button.btn-start-app:hover {
+  background-color: #3999e3;
+}
+
+button.btn-start-app:active {
+  background-color: #2a70a6;
 }
