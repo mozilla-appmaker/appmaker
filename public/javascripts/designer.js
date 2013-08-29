@@ -58,6 +58,61 @@ define(
         });
 
         $('.library-list').removeClass("library-loading");
+
+
+        if (window.location.search.length > 0) {
+          var match = window.location.search.match(/[?&]template=(\w+)/);
+          if (match[1]) {
+            $.getJSON('/templates/' + match[1] + '.json', function (data) {
+              if (data && data.cards) {
+                data.cards.forEach(function (card, cardIndex) {
+                  var cardElement = document.querySelector('.ceci-card');
+                  if (cardIndex > 0) {
+                    cardElement = createCard();
+                  }
+
+                  function placeElementsInContainer (elements, container) {
+                    elements.forEach(function (desc) {
+                      var componentElement = document.createElement(desc.tagname);
+                      componentElement.setAttribute('id', desc.id);
+
+                      desc.attributes.forEach(function (attr) {
+                        componentElement.setAttribute(attr.name, attr.value);
+                      });
+
+                      if (desc.broadcast !== 'false') {
+                        var broadcastElement = document.createElement('broadcast');
+                        broadcastElement.setAttribute('on', desc.broadcast);
+                        componentElement.appendChild(broadcastElement);
+                      }
+
+                      desc.listen.forEach(function (listen) {
+                        var listenElement = document.createElement('listen');
+                        listenElement.setAttribute('on', listen.channel);
+                        listenElement.setAttribute('for', listen.listener);
+                        componentElement.appendChild(listenElement);
+                      });
+
+                      container.appendChild(componentElement);
+
+                      $(componentElement).draggable({
+                        handle: 'handle'
+                      });
+
+                      Ceci.convertElement(componentElement, function(){
+                        app.componentAddedCallback(componentElement);
+                      });
+                    });
+                  }
+
+                  placeElementsInContainer(card.top, cardElement.querySelector('.fixed-top'));
+                  placeElementsInContainer(card.canvas, cardElement.querySelector('.phone-canvas'));
+                  placeElementsInContainer(card.bottom, cardElement.querySelector('.fixed-bottom'));
+                });
+              }
+            });
+          }
+        }
       }
     });
 
@@ -459,29 +514,43 @@ define(
         card.showCard();
       });
       $(".cards").append(newthumb);
+      return card;
     };
 
     $(".btn-add").click(createCard);
 
-    $('.publish').click(function(){
+    // Tack this onto `window` so it's accessible from the console for now.
+    // Can (should) be removed later if debugging isn't necessary.
+    window.generateProjectManifest = function () {
       var manifest = {
         cards: []
       };
 
       var cards = $('#flathead-app .ceci-card');
 
-      cards.each(function (index, card) {
-        var cardManifest = {
-          elements: []
-        };
-        manifest.cards.push(cardManifest);
-        var phoneCanvas = card.querySelector('.phone-canvas');
-        Array.prototype.forEach.call(phoneCanvas.children, function (child) {
+      function collectComponentsFromContainer (container) {
+        var elements = [];
+        Array.prototype.forEach.call(container.children, function (child) {
           if (child.localName.indexOf('app-') > -1 && typeof child.describe === 'function') {
-            cardManifest.elements.push(child.describe());
+            elements.push(child.describe());
           }
         });
+        return elements;
+      }
+
+      cards.each(function (index, card) {
+        manifest.cards.push({
+          top: collectComponentsFromContainer(card.querySelector('.fixed-top')),
+          canvas: collectComponentsFromContainer(card.querySelector('.phone-canvas')),
+          bottom: collectComponentsFromContainer(card.querySelector('.fixed-bottom'))
+        });
       });
+
+      return manifest;
+    };
+
+    $('.publish').click(function(){
+      var manifest = window.generateProjectManifest();
 
       $.ajax('/publish', {
         data: { manifest: manifest },
