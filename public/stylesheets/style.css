@@ -715,12 +715,13 @@ button.customize-btn {
 }
 
 .modal-wrapper {
-   position: absolute;
+   position: fixed;
    top: 0px;
    bottom: 0px;
    left: 0px;
    right: 0px;
    background: rgba(0,0,0,.5);
+   z-index: 9999;
 }
 
 .color-modal {
