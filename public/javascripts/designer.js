@@ -456,22 +456,6 @@ define(
         displayBroadcastChannel();
       });
 
-      //Show subscription channel options on click of subcription channel
-      // $(document).on('click', '.subscription-channels .channel', function (evt) {
-      //   var lChannels = $(".listen-section");
-      //   var t = $(this).position();
-      //   $(this).parent().append(lChannels);
-      //   lChannels.css("top",t.top + 27).show();
-      // 
-      //   // find listener this is for:
-      //   var target = evt.target;
-      //   if(target.classList.contains("dot")) {
-      //     target = target.parentNode;
-      //   }
-      //   var listener = target.getAttribute("title");
-      //   displayListenChannel(listener);
-      // });
-
       //Show editable attributes
       displayAttributes(element);
 
@@ -502,12 +486,6 @@ define(
         
         }
       };
-
-      // listen for color clicks
-      // $(document).on('click', '.colorChoice', onColorSelectFunction)
-      // .on('click', '.colorChoice', function (event) {
-      //   $('.broadcast-section, .listen-section').hide().appendTo("body");
-      // });
 
       // listen for color UI clicks
       $(document).on('click', '.color-ui .color', onColorSelectFunction);

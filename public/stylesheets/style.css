@@ -1052,6 +1052,7 @@ button.customize-btn.selected-button {
 .broadcast-channels {
   width: 209px;
   -webkit-transition: all linear .1s;
+  -moz-transition: all linear .1s;
 }
 
 .selected .subscription-channels {
@@ -1097,6 +1098,9 @@ button.customize-btn.selected-button {
   border: 1px solid #CCC;
   -webkit-transform: scale(0);
   -webkit-transition: linear all .1s;
+  -moz-transform: scale(0);
+  -moz-transition: linear all .1s;
+
 }
 
 .channel-menu-template {
@@ -1120,6 +1124,7 @@ button.customize-btn.selected-button {
   height: 20px;
   width: 20px;
   -webkit-transform: scale(1);
+  -moz-transform: scale(1);
 } 
 
 .channel-visualisation .channel-menu-toggle.open-toggle {
