@@ -1045,11 +1045,27 @@ button.customize-btn.selected-button {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: 0px;
 }
 
-.broadcast-channels,
-.subscription-channels {
-  width: 210px;
+.subscription-channels,
+.broadcast-channels {
+  width: 209px;
+  -webkit-transition: all linear .1s;
+  -moz-transition: all linear .1s;
+}
+
+.selected .subscription-channels {
+  padding-right: 29px;
+}
+
+.selected .broadcast-channels {
+  padding-left: 29px;
+}
+
+.selected .broadcast-channels,
+.selected .subscription-channels {
+  width: 180px;
 }
 
 .broadcast-channels .channel {
@@ -1064,9 +1080,175 @@ button.customize-btn.selected-button {
   margin: 2px 0;
 }
 
-.channel-visualisation {
-  margin-bottom: 0px;
+/*Channel Subscription Menu*/
+
+
+
+.channel-visualisation .channel-menu-toggle
+ {
+  position: absolute;
+  top: 50%;
+  cursor: pointer;
+  margin-top: -10px;
+  background: #f8f8f8;
+  color: #222;
+  height: 20px;
+  width: 20px;
+  font-size: 13px;
+  border: 1px solid #CCC;
+  -webkit-transform: scale(0);
+  -webkit-transition: linear all .1s;
+  -moz-transform: scale(0);
+  -moz-transition: linear all .1s;
+
 }
+
+.channel-menu-template {
+  display: none;
+}
+
+.subscription-channels .channel-menu-toggle {
+  right: 0px;
+}
+ .broadcast-channels .channel-menu-toggle  {
+  left: 0px;
+}
+  
+
+.channel-visualisation .channel-menu-toggle:only-child {
+  display: none;
+}
+
+.selected .channel-menu-toggle {
+  display: block;
+  height: 20px;
+  width: 20px;
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+} 
+
+.channel-visualisation .channel-menu-toggle.open-toggle {
+  background: #555;
+}
+
+.channel-visualisation .channel-menu {
+  padding: 5px;
+  background: white;
+  position: absolute;
+  top: 50%;
+  border-radius: 3px;
+  box-shadow: 0px 4px 4px rgba(0,0,0,.2);
+}
+
+.channel-visualisation .subscription-menu {
+    right: 27px;
+}
+
+.channel-visualisation .broadcast-menu {
+    left: 27px;
+}
+
+.channel-visualisation .channel-menu .arrow {
+  position: absolute;
+  top: 50%;
+  margin-top: -10px;
+}
+
+
+.channel-visualisation .subscription-menu .arrow {
+  right: -10px;
+  border-bottom: 10px solid transparent;
+  border-top: 10px solid transparent;
+  border-left: 10px solid white;
+
+}
+.channel-visualisation .broadcast-menu .arrow {
+  border-bottom: 10px solid transparent;
+  border-top: 10px solid transparent;
+  border-right: 10px solid white;
+  left: -10px;
+}
+
+
+.channel-menu label .chosen-color {
+  display: block;
+  height: 16px;
+  width: 16px;
+
+  position: absolute;
+  top: 5px;
+  border-radius: 2px;
+}
+
+.subscription-menu .chosen-color {
+  right: 5px;
+}
+.broadcast-menu .chosen-color {
+  left: 5px;
+}
+
+
+
+
+.channel-menu .subscription-option.disabled-subscription label {
+  color: #999;
+}
+
+.channel-menu .subscription-option {
+  border-radius: 4px;
+  position: relative;
+}
+
+.channel-menu .subscription-option label:hover {
+  background: #EEE;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.channel-menu .channel-option label {
+  color: #555;
+  display: block;
+  text-align: right;
+  font-size: 1.3rem;
+}
+
+.subscription-menu label {
+  padding: 4px 28px 4px 6px;
+}
+
+.broadcast-menu label {
+  padding: 4px 6px  4px 28px;
+}
+
+
+.channel-menu .subscription-template  {
+  display: none;
+}
+
+.channel-menu .color-ui {
+  background: #EEE;
+  border-radius:3px;
+  display: none;
+  text-align: right;
+  padding: 3px 5px 2px 5px;
+}
+
+.channel-menu .color-ui .color {
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  margin-right: 0px;
+  position: relative;
+  top: 2px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.channel-menu .color-ui .color.ui-chosen-color,
+.channel-menu .color-ui .color:hover {
+  opacity: .6;
+}
+
 
 .broadcast-channels {
   right: -220px;
@@ -1075,19 +1257,12 @@ button.customize-btn.selected-button {
   left: -220px;
 }
 
-.subscription-channels .channel {
-  float: right;
-}
-
-.broadcast-channels .channel {
-  float: left;
-}
 
 .broadcast-channels .channel,
 .subscription-channels .channel {
   position: relative;
   width: 100%;
-  height: 20px;
+  height: 6px;
 }
 
 .indicator {
@@ -1095,10 +1270,9 @@ button.customize-btn.selected-button {
   width: 4px;
   position: absolute;
   top: 0px;
-  background: black;
   left: 100px;
-  height: 20px;
-  width: 20px;
+  height: 6px;
+  width: 6px;
   border-radius: 20px;
   left: 0px;
   opacity: 0;
@@ -1112,8 +1286,9 @@ button.customize-btn.selected-button {
   background: white;
   padding: 8px 12px;
   font-size: 12px;
-  z-index: 99999;
-  top: -26px;
+
+  top: -32px;
+  
   text-overflow: ellipsis;
   max-width:155px;
   overflow: hidden;
@@ -1122,9 +1297,9 @@ button.customize-btn.selected-button {
 }
 
 .broadcast-channels .bubblepopup {
-  left: 11px;
+  left: 3px;
   border-radius: 8px 8px 8px 0px;
-  z-index: 99999;
+
   -webkit-transform-origin: bottom left;
   -moz-transform-origin: bottom left;
 }
@@ -1142,10 +1317,9 @@ button.customize-btn.selected-button {
 
 .channel-visualisation .color {
 	border-radius: 25px;
-	width: 20px;
   position: absolute;
-	height: 20px;
-  z-index: 10;
+	height: 6px;
+	width: 6px;
   padding: 0px;
   margin:0;
 }
@@ -1157,6 +1331,45 @@ button.customize-btn.selected-button {
 .subscription-channels .color {
   right: 0px;
 }
+
+[color=disabled] {
+  background:	rgba(0,0,0,1);
+}
+
+[color=blue] {
+  background:	rgba(53,140,206,1);
+}
+
+[color=false] {
+  background:	rgba(0,0,0,.5);
+}
+
+[color=green] {
+  background:	rgba(113,184,6,1);
+}
+
+[color=yellow] {
+  background:	rgba(229,210,0,1);
+}
+
+[color=orange] {
+  background:	rgba(255,123,0,1);
+}
+
+[color=purple] {
+  background:	rgba(159,39,207,1);
+}
+
+[color=red] {
+  background:	rgba(232,30,20,1);
+}
+
+[color=pink] {
+  background:	rgba(227,25,123,1);
+}
+
+
+
 
 .channel-visualisation .channel[color=blue] {
   background:	rgba(53,140,206,.2);
@@ -1258,6 +1471,7 @@ button.customize-btn.selected-button {
 
 .channel-visualisation .channel[color=false] {
   background:	rgba(0,0,0,.2);
+  display: none;
 }
 
 .channel-visualisation .channel[color=false] .color,
@@ -1274,4 +1488,27 @@ button.customize-btn.selected-button {
 .channel-visualisation .channel[color=false]{
   background: rgba(102, 102, 102, .2)
 }
+
+
+
+.channel-visualisation .channel[color=disabled] {
+  background:	rgba(0,0,0,.2);
+  display: none;
+}
+
+.channel-visualisation .channel[color=disabled] .color,
+.channel-visualisation .channel[color=disabled] .indicator {
+  display: none;
+/*  background:  rgba(0,0,0,.3);*/
+}
+
+.channel-visualisation .channel[color=disabled] .bubblepopup {
+  border: solid 2px rgba(53,140,206,1);
+  color: rgba(53,140,206,1);
+  display: none;
+}
+.channel-visualisation .channel[color=disabled]{
+  background: rgba(102, 102, 102, .2)
+}
+
 
