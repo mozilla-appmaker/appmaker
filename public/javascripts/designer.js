@@ -4,7 +4,7 @@
 
 define(
   ["jquery", "ceci", "ceci-app", "jquery-ui"],
-  function($, Ceci) {
+  function($, Ceci, App) {
     "use strict";
 
     var selection = [];
@@ -464,25 +464,7 @@ define(
     $(".btn-add").click(createCard);
 
     $('.publish').click(function(){
-      var manifest = {
-        cards: []
-      };
-
-      var cards = $('#flathead-app .ceci-card');
-
-      cards.each(function (index, card) {
-        var cardManifest = {
-          elements: []
-        };
-        manifest.cards.push(cardManifest);
-        var phoneCanvas = card.querySelector('.phone-canvas');
-        Array.prototype.forEach.call(phoneCanvas.children, function (child) {
-          if (child.localName.indexOf('app-') > -1 && typeof child.describe === 'function') {
-            cardManifest.elements.push(child.describe());
-          }
-        });
-      });
-
+      var manifest = App.createManifest();
       $.ajax('/publish', {
         data: { manifest: manifest },
         type: 'post',
