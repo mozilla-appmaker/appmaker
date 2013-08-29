@@ -170,9 +170,11 @@ define(
     var clearSelection = function() {
 
       selection.forEach(function(element) {
-        $(document).off("click", ".colorChoice", element.onColorSelectFunction);
+        $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
       });
+      
 
+      
       selection = [];
       $(".selected").removeClass("selected");
       $(".inspector").addClass('hidden');
@@ -364,6 +366,84 @@ define(
       }
     });
 
+
+    //Subscription Popup Menu 
+    
+    //Generate or remove the menu
+    $(document).on('click','.channel-menu-toggle',function(){
+
+
+
+      $(this).toggleClass("open-toggle");
+
+      if($(this).parent()[0].tagName == "LISTEN"){
+        var type = "subscription";
+      } else {
+        var type = "broadcast";
+      }
+
+
+      if($(this).closest(".channel-visualisation").find(".channel-menu").length === 0) {
+        
+        var menu = $(".channel-menu-template").clone();
+        menu.removeClass("channel-menu-template");
+        menu.addClass(type + "-menu");
+
+        $(this).parent().append(menu);
+        
+        var channels = $(this).parent().find(".channel");
+
+        //Build out the Subscription Channels
+        channels.each(function(key, channel){
+          var subItem = menu.find(".channel-template").clone();
+          subItem.removeClass("channel-template");
+          var title = $(channel).attr("title");
+          var color = $(channel).attr("color");
+          subItem.attr("title",title);
+          subItem.find(".chosen-color").attr("color",color);
+          subItem.find(".color[color="+color+"]").addClass("ui-chosen-color");
+          subItem.find(".channel-name").text(title.replace("_"," "));
+          menu.append(subItem);
+        });
+      
+        menu.find(".channel-template").remove();
+      
+        menu.css("margin-top",-1 * menu.outerHeight()/2 -1);
+      } else {
+        $(this).parent().find(".channel-menu").remove();
+      }
+    });
+    
+    
+    //Subscription Menu Label Click
+    $(document).on("click",".channel-menu label", function(){
+      var menu = $(this).closest(".chanel-menu");
+      var color = $(this).find(".chosen-color").attr("color");
+      var colorList = $(this).closest(".channel-option").find(".color-ui"); 
+      menu.find("label").show();
+      menu.find(".color-ui").hide();
+      $(this).hide();    
+      colorList.find(".color").removeClass("ui-chosen-color");
+      colorList.find(".color[color="+color+"]").addClass("ui-chosen-color");
+      colorList.show();
+    });
+    
+    //Subscription Menu Color Click
+    $(document).on("click",".channel-option .color",function(){
+      var thisChannel = $(this).closest(".channel-option");
+      var color = $(this).attr("color");
+      $(this).closest(".channel-option").removeClass("disabled-subscription");
+     
+      if(color == "false"){
+        $(this).closest(".channel-option").addClass("disabled-subscription");
+      }
+      var title = thisChannel.attr("title");
+      thisChannel.find(".chosen-color").attr("color",color);
+      thisChannel.find("label").show();
+      $(this).parent().hide();
+
+    });
+
     var selectComponent = function(comp) {
 
       clearSelection();
@@ -379,6 +459,7 @@ define(
       moveToFront(comp);
 
       $('.delete-btn').show();
+   
 
       //Show broadcast channel options on click of broadcast channel
       $(document).on('click', '.broadcast-channels .channel', function (event) {
@@ -391,57 +472,63 @@ define(
       });
 
       //Show subscription channel options on click of subcription channel
-      $(document).on('click', '.subscription-channels .channel', function (evt) {
-
-        var lChannels = $(".listen-section");
-        var t = $(this).position();
-        $(this).parent().append(lChannels);
-        lChannels.css("top",t.top + 27).show();
-
-        // find listener this is for:
-        var target = evt.target;
-        if(target.classList.contains("dot")) {
-          target = target.parentNode;
-        }
-        var listener = target.getAttribute("title");
-        displayListenChannel(listener);
-      });
+      // $(document).on('click', '.subscription-channels .channel', function (evt) {
+      //   var lChannels = $(".listen-section");
+      //   var t = $(this).position();
+      //   $(this).parent().append(lChannels);
+      //   lChannels.css("top",t.top + 27).show();
+      // 
+      //   // find listener this is for:
+      //   var target = evt.target;
+      //   if(target.classList.contains("dot")) {
+      //     target = target.parentNode;
+      //   }
+      //   var listener = target.getAttribute("title");
+      //   displayListenChannel(listener);
+      // });
 
       //Show editable attributes
       displayAttributes(element);
 
       //Changes component channel
       var onColorSelectFunction = function () {
-        var comp = $(this);
 
+        var comp = $(this);
+        
         var channel = {
           hex: comp.attr('value'),
           name: comp.attr('name'),
           title: comp.attr('title')
         };
 
+
         // change broadcast "color"
-        if (comp.parents().hasClass('broadcast-options')) {
+        if (comp.parents().hasClass('broadcast-menu')) {
           element.setBroadcastChannel(channel.name);
           displayBroadcastChannel(channel.name);
         }
 
         // change listening "color"
         else {
-          var attribute = comp.parent().attr("id").replace("strip-",'');
+          var attribute = comp.closest(".subscription-option").attr("title");
           if(attribute) {
             element.setSubscription(channel.name, attribute);
             displayListenChannel(attribute);
           }
+        
         }
       };
 
       // listen for color clicks
-      $(document).on('click', '.colorChoice', onColorSelectFunction)
-      .on('click', '.colorChoice', function (event) {
-        $('.broadcast-section, .listen-section').hide().appendTo("body");
-      });
+      // $(document).on('click', '.colorChoice', onColorSelectFunction)
+      // .on('click', '.colorChoice', function (event) {
+      //   $('.broadcast-section, .listen-section').hide().appendTo("body");
+      // });
 
+
+      // listen for color UI clicks
+      $(document).on('click', '.color-ui .color', onColorSelectFunction);
+    
       // give the element the function we just added, so we
       // can unbind it when the element gets unselected.
       element.onColorSelectFunction = onColorSelectFunction;
