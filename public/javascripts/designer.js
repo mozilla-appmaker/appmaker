@@ -368,16 +368,17 @@ define(
 
       $(this).toggleClass("open-toggle");
 
+      var channelType;
       if($(this).parent()[0].tagName == "LISTEN"){
-        var type = "subscription";
+        channelType = "subscription";
       } else {
-        var type = "broadcast";
+        channelType = "broadcast";
       }
 
       if($(this).closest(".channel-visualisation").find(".channel-menu").length === 0) {
         var menu = $(".channel-menu-template").clone();
         menu.removeClass("channel-menu-template");
-        menu.addClass(type + "-menu");
+        menu.addClass(channelType + "-menu");
 
         $(this).parent().append(menu);
         
