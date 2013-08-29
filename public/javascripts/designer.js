@@ -140,7 +140,6 @@ define(
       new Channel(Ceci.emptyChannel, 'Disabled', '#444')
     ];
 
-
     //TODO: Angular this up
     // generate the channels list (colored clickable boxes) and append to the page
     function getChannelStrip(forAttribute) {
@@ -172,8 +171,6 @@ define(
       selection.forEach(function(element) {
         $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
       });
-      
-
       
       selection = [];
       $(".selected").removeClass("selected");
@@ -366,13 +363,8 @@ define(
       }
     });
 
-
-    //Subscription Popup Menu 
-    
-    //Generate or remove the menu
+    //Generate or remove the channel menu
     $(document).on('click','.channel-menu-toggle',function(){
-
-
 
       $(this).toggleClass("open-toggle");
 
@@ -382,9 +374,7 @@ define(
         var type = "broadcast";
       }
 
-
       if($(this).closest(".channel-visualisation").find(".channel-menu").length === 0) {
-        
         var menu = $(".channel-menu-template").clone();
         menu.removeClass("channel-menu-template");
         menu.addClass(type + "-menu");
@@ -405,17 +395,14 @@ define(
           subItem.find(".channel-name").text(title.replace("_"," "));
           menu.append(subItem);
         });
-      
         menu.find(".channel-template").remove();
-      
         menu.css("margin-top",-1 * menu.outerHeight()/2 -1);
       } else {
         $(this).parent().find(".channel-menu").remove();
       }
     });
     
-    
-    //Subscription Menu Label Click
+    //Channel Menu Label Click
     $(document).on("click",".channel-menu label", function(){
       var menu = $(this).closest(".chanel-menu");
       var color = $(this).find(".chosen-color").attr("color");
@@ -441,7 +428,6 @@ define(
       thisChannel.find(".chosen-color").attr("color",color);
       thisChannel.find("label").show();
       $(this).parent().hide();
-
     });
 
     var selectComponent = function(comp) {
@@ -459,7 +445,6 @@ define(
       moveToFront(comp);
 
       $('.delete-btn').show();
-   
 
       //Show broadcast channel options on click of broadcast channel
       $(document).on('click', '.broadcast-channels .channel', function (event) {
@@ -501,7 +486,6 @@ define(
           title: comp.attr('title')
         };
 
-
         // change broadcast "color"
         if (comp.parents().hasClass('broadcast-menu')) {
           element.setBroadcastChannel(channel.name);
@@ -524,7 +508,6 @@ define(
       // .on('click', '.colorChoice', function (event) {
       //   $('.broadcast-section, .listen-section').hide().appendTo("body");
       // });
-
 
       // listen for color UI clicks
       $(document).on('click', '.color-ui .color', onColorSelectFunction);
