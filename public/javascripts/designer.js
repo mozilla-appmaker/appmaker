@@ -438,7 +438,6 @@ define(
       clearSelection();
 
       if(comp.find(".channel-menu").length === 0){
-        console.log("i dont ahve one");
         $(".channel-menu:not('.channel-menu-template')").remove();
       }
       
