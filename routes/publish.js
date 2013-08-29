@@ -23,11 +23,17 @@ exports.init = function (store, viewsPath, publishHost, publishHostPrefix, objec
   };
 
   fs.readFile(viewsPath + '/publish.ejs', 'utf8', function (err, publishHTMLData) {
-    __publisher.templates.publish = ejs.compile(publishHTMLData);
+    __publisher.templates.publish = ejs.compile(publishHTMLData, {
+      // for partial include access
+      filename: viewsPath + '/publish.ejs'
+    });
   });
 
   fs.readFile(viewsPath + '/install.ejs', 'utf8', function (err, installHTMLData) {
-    __publisher.templates.install = ejs.compile(installHTMLData);
+    __publisher.templates.install = ejs.compile(installHTMLData, {
+      // for partial include access
+      filename: viewsPath + '/publish.ejs'
+    });
   });
 };
 

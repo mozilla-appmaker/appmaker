@@ -1,0 +1,30 @@
+<%
+  if (!!elements) {
+    elements.forEach( function(element, elementIndex) {
+      var attributeStr = '';
+      if (!!element.attributes) {
+        element.attributes.forEach(function (attr) {
+            attributeStr += ' ' + attr.name + '="' + attr.value + '"';
+        });
+      }
+-%>
+          <<%- element.tagname %> id="<%- element.id %>"<%- attributeStr %>>
+<%
+      if (element.broadcast !== 'false') {
+-%>
+            <broadcast on="<%= element.broadcast %>"></broadcast>
+<%
+      }
+      if (!!element.listen) {
+        element.listen.forEach( function(listen) {
+-%>
+            <listen on="<%= listen.channel %>" for="<%= listen.listener %>"></listen>
+<%
+        });
+      }
+-%>
+          </<%= element.tagname %>>
+<%
+    });
+  }
+-%>
