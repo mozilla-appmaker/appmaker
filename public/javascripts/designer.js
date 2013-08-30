@@ -160,13 +160,7 @@ define(
 
     // empty the list of currently selected elements on the page
     var clearSelection = function() {
-
-      selection.forEach(function(element) {
-        $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
-      });
-      
       selection = [];
-      
       $(".editables-section").hide();
       $(".selected").removeClass("selected");
       $(".inspector").addClass('hidden');
@@ -401,6 +395,7 @@ define(
 
     //Subscription Menu Color Click
     $(document).on("click",".channel-option .color",function(){
+      
       var thisChannel = $(this).closest(".channel-option");
       var color = $(this).attr("color");
       $(this).closest(".channel-option").removeClass("disabled-subscription");
@@ -426,6 +421,12 @@ define(
         $(".channel-chooser").appendTo("body").hide();
       }
 
+      //Clear out the listener since we're adding it again later
+      //I'm not sure why we can't do this once somewhere
+      selection.forEach(function(element) {
+        $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
+      });
+
       if(comp[0] != selection[0]){
         clearSelection();
         selection.push(comp[0]);
@@ -441,10 +442,14 @@ define(
       
       moveToFront(comp);
 
+
+
       //Changes component channel
       var onColorSelectFunction = function () {
 
         var comp = $(this);
+
+        console.log(element);
 
         var channel = {
           hex: comp.attr('value'),
@@ -470,6 +475,7 @@ define(
       };
 
       // listen for color UI clicks
+
       $(document).on('click', '.color-ui .color', onColorSelectFunction);
 
       // give the element the function we just added, so we
@@ -480,6 +486,7 @@ define(
       $(".editables-section .name").text(componentName);
       $(".inspector").removeClass('hidden');
     };
+
 
     // logs messages
     $(document).on('broadcast', function (event, message) {
