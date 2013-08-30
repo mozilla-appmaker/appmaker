@@ -21,8 +21,6 @@ define(
 
         component.on('mouseenter', function () {
           component.append('<div class="handle"></div>');
-          component.append('<div class="handle handle-2"></div>');
-          component.append('<div class="handle handle-1"></div>');
         }).on('mouseleave', function () {
           $('.handle').remove();
         });
