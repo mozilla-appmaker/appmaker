@@ -428,7 +428,7 @@ define(
       var title = thisChannel.attr("title");
       thisChannel.find(".chosen-color").attr("color",color);
       thisChannel.find("label").show();
-      $(this).closest(".channel-visualisation").find(".channel-menu-toggle").removeClass("open-toggle")
+      $(this).closest(".channel-visualisation").find(".channel-menu-toggle").removeClass("open-toggle");
       $(this).closest(".channel-menu").remove();
       $(this).parent().hide();
     });
