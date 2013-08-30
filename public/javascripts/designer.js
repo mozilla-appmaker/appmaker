@@ -458,7 +458,6 @@ define(
 
       //Changes component channel
       var onColorSelectFunction = function () {
-
         var comp = $(this);
 
         var channel = {
@@ -469,7 +468,8 @@ define(
 
         // change broadcast "color"
         if (comp.parents().hasClass('broadcast-menu')) {
-          element.setBroadcastChannel(channel.name);
+          var sender = comp.parents(".channel-option")[0].innerText.trim();
+          element.setBroadcastChannel(channel.name, sender);
           displayBroadcastChannel(channel.name);
         }
 
