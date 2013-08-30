@@ -389,7 +389,7 @@ button.customize-btn {
 }
 
 .library-list {
-  width: 220px;
+  width: 215px;
   overflow-y: auto;
   position: absolute;
   top: 20px;
@@ -458,7 +458,7 @@ button.customize-btn {
 
 .info-btn {
 	position: absolute;
-	right: 49px;
+	right: 28px;
 	top: 9px;
 	height: 22px;
 	width: 22px;
@@ -473,10 +473,14 @@ button.customize-btn {
 
 .ui-state-highlight {
   height: 1.5em; line-height: 1.2em;
-  background: red;
+  background: rgba(53,140,206,.7);
   display: block;
   padding: 0;
   margin: 0;
+}
+
+.ui-sortable-helper .channel-visualisation {
+  display: none;
 }
 
 .ui-sortable-placeholder {
@@ -486,7 +490,6 @@ button.customize-btn {
   display: block;
   padding: 0;
   margin: 0;
-
   visibility: visible !important;
 }
 
@@ -510,12 +513,14 @@ button.customize-btn {
 
 .component-description {
 	position: absolute;
-	padding: 10px;
+	margin-top: 4px;
+  padding: 8px 10px;
 	max-width: 300px;
-	background-color: rgba(0,0,0,.8);
+	background-color: rgba(0,0,0,.7);
 	border-radius: 3px;
 	z-index: 999;
-	color: #FFF;
+  font-size: 1.3rem ;
+	color: #DDD;
 }
 
 .channel-tip {
@@ -937,12 +942,12 @@ button.return-btn {
 
 .handle {
 	position: absolute;
-	top: 5px;
-	right: 5px;
+	top: 3px;
+	right: 3px;
 	z-index: 110;
 	height: 22px;
 	width: 22px;
-	border-radius: 3px;
+	border-radius: 2px;
 	background-color: #F8F8F8;
 	background-image: url(../images/move.png);
 	background-position: center;
@@ -950,7 +955,6 @@ button.return-btn {
 	border: 1px solid #CCC;
 	cursor: move;
 }
-
 
 .editables-section {
 	background-color: #F8F8F8;
@@ -1086,12 +1090,15 @@ button.customize-btn.selected-button {
   position: absolute;
   top: 50%;
   cursor: pointer;
-  margin-top: -10px;
+  margin-top: -13px;
   background: #BBB;
+  background: center no-repeat url(../images/broadcast_icon.png);
+  background-size: contain;
   color: #222;
-  height: 20px;
   border-radius: 10px;
-  width: 20px;
+  height: 26px;
+
+  width: 26px;
   font-size: 13px;
   -webkit-transform: scale(0);
   -webkit-transition: linear all .1s;
@@ -1101,14 +1108,14 @@ button.customize-btn.selected-button {
 
 .selected .channel-menu-toggle {
   display: block;
-  height: 20px;
-  width: 20px;
   -webkit-transform: scale(1);
   -moz-transform: scale(1);
 } 
 
 .channel-visualisation .channel-menu-toggle:hover {
-  background: #999;
+  background: center no-repeat url(../images/broadcast_icon_hover.png);
+  background-size: contain;
+
 }
 
 .channel-menu-template {
@@ -1116,10 +1123,10 @@ button.customize-btn.selected-button {
 }
 
 .subscription-channels .channel-menu-toggle {
-  right: 0px;
+  right: -3px;
 }
  .broadcast-channels .channel-menu-toggle  {
-  left: 0px;
+  left: -3px;
 }
 
 .channel-visualisation .channel-menu-toggle:only-child {
@@ -1127,43 +1134,45 @@ button.customize-btn.selected-button {
 }
 
 .channel-visualisation .channel-menu {
-  padding: 4px;
+  padding: 4px 4px 5px 4px;
   background: white;
   position: absolute;
   top: 50%;
-  border-radius: 6px;
-  border: solid 2px #CCC;
+  border-radius: 5px;
+  border: solid 1px #BBB;
+  border-bottom: solid 2px #BBB;
+
 }
 
 .channel-visualisation .subscription-menu {
-    right: 34px;
+    right: 36px;
 }
 
 .channel-visualisation .broadcast-menu {
-    left: 34px;
+    left: 36px;
 }
 
 .channel-visualisation .channel-menu .arrow {
   position: absolute;
   top: 50%;
-  margin-top: -9px;
+  margin-top: -8px;
   height: 14px;
   width: 14px;
   background: white;
 }
 
 .channel-visualisation .subscription-menu .arrow {
-  right: -10px;
-  border-top: solid 2px #CCC;
-  border-right: solid 2px #CCC;
+  right: -8px;
+  border-top: solid 1px #BBB;
+  border-right: solid 1px #BBB;
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
 }
 
 .channel-visualisation .broadcast-menu .arrow {
-  left: -10px;
-  border-top: solid 2px #CCC;
-  border-left: solid 2px #CCC;
+  left: -8px;
+  border-top: solid 1px #BBB;
+  border-left: solid 1px #BBB;
   -webkit-transform: rotate(-45deg);
   -moz-transform: rotate(-45deg);
 }
@@ -1221,12 +1230,13 @@ button.customize-btn.selected-button {
 }
 
 .channel-menu .color-ui {
-  background: #EEE;
+/*  background: #EEE;*/
   border-radius:3px;
   display: none;
   text-align: right;
   padding: 3px 5px 2px 5px;
   cursor: default;
+  
 }
 
 .channel-menu .color-ui .color {
@@ -1238,12 +1248,12 @@ button.customize-btn.selected-button {
   top: 2px;
   border-radius: 2px;
   cursor: pointer;
-  opacity: .5;
+  opacity: 1;
 }
 
-.channel-menu .color-ui .color.ui-chosen-color,
+/*.channel-menu .color-ui .color.ui-chosen-color,*/
 .channel-menu .color-ui .color:hover {
-  opacity: 1;
+  opacity: .7;
 }
 
 

@@ -21,6 +21,8 @@ define(
 
         component.on('mouseenter', function () {
           component.append('<div class="handle"></div>');
+          component.append('<div class="handle handle-2"></div>');
+          component.append('<div class="handle handle-1"></div>');
         }).on('mouseleave', function () {
           $('.handle').remove();
         });
@@ -397,7 +399,7 @@ define(
           menu.append(subItem);
         });
         menu.find(".channel-template").remove();
-        menu.css("margin-top",-1 * menu.outerHeight()/2);
+        menu.css("margin-top",-1 * menu.outerHeight()/2 -1);
       } else {
         $(this).parent().find(".channel-menu").remove();
       }
@@ -535,6 +537,9 @@ define(
 
             var dropTarget = $(".drophere").find(".draggable");
             dropTarget.replaceWith(component);
+            
+            //Show channel menus by default - but why does it only work with a timeout?
+            setTimeout(function(){component.find(".channel-menu-toggle").trigger("click");},0); 
 
             component.draggable({
               handle: 'handle'
