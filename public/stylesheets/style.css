@@ -1204,7 +1204,7 @@ button.customize-btn.selected-button {
 }
 
 .channel-menu .subscription-option label:hover {
-  background: #EEE;
+  background: #F6F6F6;
   border-radius: 3px;
   cursor: pointer;
 }
@@ -1230,13 +1230,20 @@ button.customize-btn.selected-button {
 }
 
 .channel-menu .color-ui {
-/*  background: #EEE;*/
   border-radius:3px;
   display: none;
   text-align: right;
   padding: 3px 5px 2px 5px;
   cursor: default;
   
+}
+
+.channel-menu [color='false'] {
+	background-image: url(../images/disabled-channel-dash.png);
+  background-color: #DDD;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .channel-menu .color-ui .color {
