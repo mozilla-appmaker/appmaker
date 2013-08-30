@@ -393,7 +393,7 @@ button.customize-btn {
   overflow-y: auto;
   position: absolute;
   top: 20px;
-  bottom: 35px;
+  bottom: 25px;
 }
 
 .library-list .draggable:last-child .thumb {
