@@ -1082,25 +1082,33 @@ button.customize-btn.selected-button {
 
 /*Channel Subscription Menu*/
 
-
-
-.channel-visualisation .channel-menu-toggle
- {
+.channel-visualisation .channel-menu-toggle {
   position: absolute;
   top: 50%;
   cursor: pointer;
   margin-top: -10px;
-  background: #f8f8f8;
+  background: #BBB;
   color: #222;
   height: 20px;
+  border-radius: 10px;
   width: 20px;
   font-size: 13px;
-  border: 1px solid #CCC;
   -webkit-transform: scale(0);
   -webkit-transition: linear all .1s;
   -moz-transform: scale(0);
   -moz-transition: linear all .1s;
+}
 
+.selected .channel-menu-toggle {
+  display: block;
+  height: 20px;
+  width: 20px;
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+} 
+
+.channel-visualisation .channel-menu-toggle:hover {
+  background: #999;
 }
 
 .channel-menu-template {
@@ -1113,68 +1121,57 @@ button.customize-btn.selected-button {
  .broadcast-channels .channel-menu-toggle  {
   left: 0px;
 }
-  
 
 .channel-visualisation .channel-menu-toggle:only-child {
   display: none;
 }
 
-.selected .channel-menu-toggle {
-  display: block;
-  height: 20px;
-  width: 20px;
-  -webkit-transform: scale(1);
-  -moz-transform: scale(1);
-} 
-
-.channel-visualisation .channel-menu-toggle.open-toggle {
-  background: #555;
-}
-
 .channel-visualisation .channel-menu {
-  padding: 5px;
+  padding: 4px;
   background: white;
   position: absolute;
   top: 50%;
-  border-radius: 3px;
-  box-shadow: 0px 4px 4px rgba(0,0,0,.2);
+  border-radius: 6px;
+  border: solid 2px #CCC;
 }
 
 .channel-visualisation .subscription-menu {
-    right: 27px;
+    right: 34px;
 }
 
 .channel-visualisation .broadcast-menu {
-    left: 27px;
+    left: 34px;
 }
 
 .channel-visualisation .channel-menu .arrow {
   position: absolute;
   top: 50%;
-  margin-top: -10px;
+  margin-top: -9px;
+  height: 14px;
+  width: 14px;
+  background: white;
 }
-
 
 .channel-visualisation .subscription-menu .arrow {
   right: -10px;
-  border-bottom: 10px solid transparent;
-  border-top: 10px solid transparent;
-  border-left: 10px solid white;
-
+  border-top: solid 2px #CCC;
+  border-right: solid 2px #CCC;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
 }
+
 .channel-visualisation .broadcast-menu .arrow {
-  border-bottom: 10px solid transparent;
-  border-top: 10px solid transparent;
-  border-right: 10px solid white;
   left: -10px;
+  border-top: solid 2px #CCC;
+  border-left: solid 2px #CCC;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
 }
-
 
 .channel-menu label .chosen-color {
   display: block;
   height: 16px;
   width: 16px;
-
   position: absolute;
   top: 5px;
   border-radius: 2px;
@@ -1183,12 +1180,10 @@ button.customize-btn.selected-button {
 .subscription-menu .chosen-color {
   right: 5px;
 }
+
 .broadcast-menu .chosen-color {
   left: 5px;
 }
-
-
-
 
 .channel-menu .subscription-option.disabled-subscription label {
   color: #999;
@@ -1231,6 +1226,7 @@ button.customize-btn.selected-button {
   display: none;
   text-align: right;
   padding: 3px 5px 2px 5px;
+  cursor: default;
 }
 
 .channel-menu .color-ui .color {
@@ -1242,11 +1238,12 @@ button.customize-btn.selected-button {
   top: 2px;
   border-radius: 2px;
   cursor: pointer;
+  opacity: .5;
 }
 
 .channel-menu .color-ui .color.ui-chosen-color,
 .channel-menu .color-ui .color:hover {
-  opacity: .6;
+  opacity: 1;
 }
 
 
@@ -1299,15 +1296,13 @@ button.customize-btn.selected-button {
 .broadcast-channels .bubblepopup {
   left: 3px;
   border-radius: 8px 8px 8px 0px;
-
   -webkit-transform-origin: bottom left;
   -moz-transform-origin: bottom left;
 }
 
 .subscription-channels .bubblepopup {
+  right: 3px;
   border-radius: 8px 8px 0px 8px;
-  right: 11px;
-  border: solid 2px #888;
   color: #666;
   -webkit-transform-origin: bottom right;
   -moz-transform-origin: bottom right;
@@ -1489,8 +1484,6 @@ button.customize-btn.selected-button {
   background: rgba(102, 102, 102, .2)
 }
 
-
-
 .channel-visualisation .channel[color=disabled] {
   background:	rgba(0,0,0,.2);
   display: none;
@@ -1499,7 +1492,6 @@ button.customize-btn.selected-button {
 .channel-visualisation .channel[color=disabled] .color,
 .channel-visualisation .channel[color=disabled] .indicator {
   display: none;
-/*  background:  rgba(0,0,0,.3);*/
 }
 
 .channel-visualisation .channel[color=disabled] .bubblepopup {
@@ -1510,5 +1502,3 @@ button.customize-btn.selected-button {
 .channel-visualisation .channel[color=disabled]{
   background: rgba(102, 102, 102, .2)
 }
-
-

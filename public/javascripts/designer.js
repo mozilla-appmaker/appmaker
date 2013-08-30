@@ -397,7 +397,7 @@ define(
           menu.append(subItem);
         });
         menu.find(".channel-template").remove();
-        menu.css("margin-top",-1 * menu.outerHeight()/2 -1);
+        menu.css("margin-top",-1 * menu.outerHeight()/2);
       } else {
         $(this).parent().find(".channel-menu").remove();
       }
@@ -405,7 +405,7 @@ define(
     
     //Channel Menu Label Click
     $(document).on("click",".channel-menu label", function(){
-      var menu = $(this).closest(".chanel-menu");
+      var menu = $(this).closest(".channel-menu");
       var color = $(this).find(".chosen-color").attr("color");
       var colorList = $(this).closest(".channel-option").find(".color-ui"); 
       menu.find("label").show();
@@ -428,6 +428,8 @@ define(
       var title = thisChannel.attr("title");
       thisChannel.find(".chosen-color").attr("color",color);
       thisChannel.find("label").show();
+      $(this).closest(".channel-visualisation").find(".channel-menu-toggle").removeClass("open-toggle")
+      $(this).closest(".channel-menu").remove();
       $(this).parent().hide();
     });
 
@@ -435,6 +437,10 @@ define(
 
       clearSelection();
 
+      if(comp.find(".channel-menu").length === 0){
+        $(".channel-menu:not('.channel-menu-template')").remove();
+      }
+      
       if(comp.find(".channel-chooser").length === 0){
         $(".channel-chooser").appendTo("body").hide();
       }
@@ -446,16 +452,6 @@ define(
       moveToFront(comp);
 
       $('.delete-btn').show();
-
-      //Show broadcast channel options on click of broadcast channel
-      $(document).on('click', '.broadcast-channels .channel', function (event) {
-        var bChannels = $(".broadcast-section");
-        var t = $(this).position();
-        $(this).parent().append(bChannels);
-        bChannels.css("top",t.top + 27);
-        bChannels.show();
-        displayBroadcastChannel();
-      });
 
       //Show editable attributes
       displayAttributes(element);
@@ -627,18 +623,6 @@ define(
       $('.modal-wrapper').removeClass('flex');
     });
 
-    //Show tooltips for channels
-    $(document).on('mouseenter', '.channel', function (e) {
-      var yPos = e.pageY - 50;
-      var xPos = e.pageX;
-      var tooltip = $('<div class="channel-tip"></div>');
-      var tip = $(this).attr('title');
-      tooltip.css({top: yPos, left: xPos});
-      tooltip.text(tip);
-      $(document.body).append(tooltip);
-    }).on('mouseleave', '.channel', function () {
-      $('.channel-tip').remove();
-    });
 
     // AMD module return
     return {
