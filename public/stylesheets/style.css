@@ -473,7 +473,8 @@ button.customize-btn {
 
 .ui-state-highlight {
   height: 1.5em; line-height: 1.2em;
-  background: rgba(53,140,206,.7);
+  /* background: rgba(53,140,206,.7);*/
+  background: rgba(255,125,0,.8);
   display: block;
   padding: 0;
   margin: 0;
@@ -495,9 +496,9 @@ button.customize-btn {
 
 .thumb {
 	width: 180px;
-  	background-color: #eee;
-  	margin-bottom: 5px;
-  	border-radius: 3px;
+  background-color: #eee;
+  margin-bottom: 5px;
+  border-radius: 3px;
 	line-height: 40px;
 	text-indent: 10px;
 }
@@ -749,7 +750,7 @@ button.customize-btn {
 }
 
 .selected {
-	box-shadow: 0 0 0px 2px #ff7b00;
+	box-shadow: 0 0 0px 2px rgba(255,125,0,.8);
 }
 
 .flex {
