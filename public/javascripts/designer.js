@@ -171,7 +171,7 @@ define(
       selection.forEach(function(element) {
         $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
       });
-      
+
       selection = [];
       $(".selected").removeClass("selected");
       $(".inspector").addClass('hidden');
@@ -381,7 +381,7 @@ define(
         menu.addClass(channelType + "-menu");
 
         $(this).parent().append(menu);
-        
+
         var channels = $(this).parent().find(".channel");
 
         //Build out the Subscription Channels
@@ -402,26 +402,26 @@ define(
         $(this).parent().find(".channel-menu").remove();
       }
     });
-    
+
     //Channel Menu Label Click
     $(document).on("click",".channel-menu label", function(){
       var menu = $(this).closest(".channel-menu");
       var color = $(this).find(".chosen-color").attr("color");
-      var colorList = $(this).closest(".channel-option").find(".color-ui"); 
+      var colorList = $(this).closest(".channel-option").find(".color-ui");
       menu.find("label").show();
       menu.find(".color-ui").hide();
-      $(this).hide();    
+      $(this).hide();
       colorList.find(".color").removeClass("ui-chosen-color");
       colorList.find(".color[color="+color+"]").addClass("ui-chosen-color");
       colorList.show();
     });
-    
+
     //Subscription Menu Color Click
     $(document).on("click",".channel-option .color",function(){
       var thisChannel = $(this).closest(".channel-option");
       var color = $(this).attr("color");
       $(this).closest(".channel-option").removeClass("disabled-subscription");
-     
+
       if(color == "false"){
         $(this).closest(".channel-option").addClass("disabled-subscription");
       }
@@ -440,7 +440,7 @@ define(
       if(comp.find(".channel-menu").length === 0){
         $(".channel-menu:not('.channel-menu-template')").remove();
       }
-      
+
       if(comp.find(".channel-chooser").length === 0){
         $(".channel-chooser").appendTo("body").hide();
       }
@@ -460,7 +460,7 @@ define(
       var onColorSelectFunction = function () {
 
         var comp = $(this);
-        
+
         var channel = {
           hex: comp.attr('value'),
           name: comp.attr('name'),
@@ -480,13 +480,13 @@ define(
             element.setSubscription(channel.name, attribute);
             displayListenChannel(attribute);
           }
-        
+
         }
       };
 
       // listen for color UI clicks
       $(document).on('click', '.color-ui .color', onColorSelectFunction);
-    
+
       // give the element the function we just added, so we
       // can unbind it when the element gets unselected.
       element.onColorSelectFunction = onColorSelectFunction;
