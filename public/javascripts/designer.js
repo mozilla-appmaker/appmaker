@@ -533,16 +533,6 @@ define(
 
             var dropTarget = $(".drophere").find(".draggable");
             dropTarget.replaceWith(component);
-            
-            //Show channel menus by default - but why does it only work with a timeout?
-            // setTimeout(function(){
-            //   if(component.find("broadcast .channel").length >0 ){
-            //     component.find("broadcast .channel-menu-toggle").trigger("click");
-            //   }
-            //   if(component.find("listen .channel").length>0){
-            //     component.find("listen .channel-menu-toggle").trigger("click");
-            //   }
-            // },0);
 
             component.draggable({
               handle: 'handle'
