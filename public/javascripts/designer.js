@@ -4,7 +4,7 @@
 
 define(
   ["jquery", "ceci", "ceci-app", "jquery-ui"],
-  function($, Ceci) {
+  function($, Ceci, App) {
     "use strict";
 
     var selection = [];
@@ -306,11 +306,11 @@ define(
     };
 
     var displayAttributes = function(element) {
-      
+
       var attributeList = $(element).find(".editable-attributes");
 
       attributeList.html("");
-      
+
       var attributes = element.getEditableAttributes();
 
       attributes.forEach(function(attribute) {
@@ -318,7 +318,7 @@ define(
         var uiElement = getAttributeUIElement(element, attribute, definition);
         attributeList.append(uiElement);
       });
-      
+
       var editables = $(element).find(".editable-section");
       editables.append(attributeList);
     };
@@ -326,7 +326,7 @@ define(
     //Toggle customize
     $(document).on("mousedown",".customize-btn",function () {
       var section = $(this).parent().find('.editables-section').toggle();
-      section.css("top",-1 * section.outerHeight() -2);      
+      section.css("top",-1 * section.outerHeight() -2);
     });
 
     //Toggle the log
@@ -395,7 +395,7 @@ define(
 
     //Subscription Menu Color Click
     $(document).on("click",".channel-option .color",function(){
-      
+
       var thisChannel = $(this).closest(".channel-option");
       var color = $(this).attr("color");
       $(this).closest(".channel-option").removeClass("disabled-subscription");
@@ -416,7 +416,7 @@ define(
       if(comp.find(".channel-menu").length === 0){
         $(".channel-menu:not('.channel-menu-template')").remove();
       }
-      
+
       if(comp.find(".channel-chooser").length === 0){
         $(".channel-chooser").appendTo("body").hide();
       }
@@ -439,7 +439,7 @@ define(
       var compId = element.id;
 
       comp.addClass("selected");
-      
+
       moveToFront(comp);
 
 
@@ -524,7 +524,7 @@ define(
 
           app.addComponent(helper.attr('value'), function(component){
             component = $(component);
-            
+
             setTimeout(function(){
               component.append($('<div class="customize-btn"></div>'));
               component.append($('<div class="handle"></div>'));
@@ -562,38 +562,9 @@ define(
 
     $(".btn-add").click(createCard);
 
-    // Tack this onto `window` so it's accessible from the console for now.
-    // Can (should) be removed later if debugging isn't necessary.
-    window.generateProjectManifest = function () {
-      var manifest = {
-        cards: []
-      };
-
-      var cards = $('#flathead-app .ceci-card');
-
-      function collectComponentsFromContainer (container) {
-        var elements = [];
-        Array.prototype.forEach.call(container.children, function (child) {
-          if (child.localName.indexOf('app-') > -1 && typeof child.describe === 'function') {
-            elements.push(child.describe());
-          }
-        });
-        return elements;
-      }
-
-      cards.each(function (index, card) {
-        manifest.cards.push({
-          top: collectComponentsFromContainer(card.querySelector('.fixed-top')),
-          canvas: collectComponentsFromContainer(card.querySelector('.phone-canvas')),
-          bottom: collectComponentsFromContainer(card.querySelector('.fixed-bottom'))
-        });
-      });
-
-      return manifest;
-    };
 
     $('.publish').click(function(){
-      var manifest = window.generateProjectManifest();
+      var manifest = app.serialize();
 
       $.ajax('/publish', {
         data: { manifest: manifest },
