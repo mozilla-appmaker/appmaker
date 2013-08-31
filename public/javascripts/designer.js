@@ -198,20 +198,35 @@ define(
     });
 
     // document-level key handling
-    $(document).on('keydown', function(event) {
-      // escape hides all modal dialogs
-      if (event.which === 27) {
-        $('.color-modal').removeClass('flex');
-        // and clears the selection non-destructively
-        clearSelection();
-      }
-      // delete removes all selected items.
-      else if (event.which === 46) {
-        var elements = selection.slice();
-        clearSelection();
-        elements.forEach(function(element) {
-          element.removeSafely();
-        });
+    $(document).unbind('keydown').bind('keydown', function(event) {
+      var keys = {
+        esc: 27,
+        del: 46,
+        backspace: 8
+      };
+
+      switch (event.which) {
+        case (keys.esc):
+          // escape hides all modal dialogs
+          $('.color-modal').removeClass('flex');
+          // and clears the selection non-destructively
+          clearSelection();
+          break;
+
+        // delete removes all selected items.
+        case (keys.del):
+          var elements = selection.slice();
+          clearSelection();
+          elements.forEach(function(element) {
+            element.removeSafely();
+          });
+          break;
+
+        case (keys.backspace):
+          // Cancel "back" navigation
+          if (event.target.tagName.toLowerCase() === 'body'){
+            event.preventDefault();
+          }
       }
     });
 
