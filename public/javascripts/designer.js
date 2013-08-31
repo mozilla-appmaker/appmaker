@@ -168,7 +168,7 @@ define(
     var clearSelection = function() {
       selection = [];
       $(".editables-section").hide();
-      $(".selected").removeClass("selected");
+      $(".phone-container .selected").removeClass("selected");
       $(".inspector").addClass('hidden');
     };
 
