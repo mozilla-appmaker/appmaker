@@ -367,7 +367,7 @@ button.log-toggle {
   background-color: white;
   border: solid 1px #BBB;
   display: none;
-} 
+}
 
 .customize-btn:hover,
 .handle:hover
@@ -709,6 +709,12 @@ button.log-toggle {
 	border-radius: 3px 3px 0px 0px;
 }
 
+.card.selected {
+  background-color: #ddd;
+  box-shadow: 0;
+
+}
+
 .console {
 	background-color: #333;
 	position: absolute;
@@ -818,7 +824,7 @@ button.log-toggle {
 	user-select: none;
 }
 
-.selected {
+.phone-container .selected {
 	box-shadow: 0 0 0px 2px rgba(255,125,0,.8);
 }
 
@@ -842,7 +848,7 @@ button.log-toggle {
 
 .modal {
    max-width: 585px;
-   background-color: #EEE;
+   background-color: #eee;
    position: relative;
 }
 
@@ -855,7 +861,7 @@ button.return-btn {
 	width: 100%;
 	margin-top: 40px;
 	font-size: 16px;
-	background-color: #358CCE;
+	background-color: #358cce;
 }
 
 .close {
@@ -1151,7 +1157,7 @@ button.log-toggle.selected-button {
   display: block;
   -webkit-transform: scale(1);
   -moz-transform: scale(1);
-} 
+}
 
 .channel-visualisation .channel-menu-toggle:hover {
   background: center no-repeat url(../images/broadcast_icon_hover.png);
@@ -1275,7 +1281,7 @@ button.log-toggle.selected-button {
   text-align: right;
   padding: 3px 5px 2px 5px;
   cursor: default;
-  
+
 }
 
 .channel-menu [color='false'] {
@@ -1342,12 +1348,12 @@ button.log-toggle.selected-button {
   font-size: 12px;
 
   top: -32px;
-  
+
   text-overflow: ellipsis;
   max-width:155px;
   overflow: hidden;
   white-space: nowrap;
-  
+
 }
 
 .broadcast-channels .bubblepopup {
