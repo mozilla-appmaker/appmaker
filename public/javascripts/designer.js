@@ -35,27 +35,31 @@ define(
         // create first card as a default card
         createCard();
 
-        $.each(components, function(i, value) {
-          var thumb = $('<div class="clearfix draggable" name="' + i + '" value="' + i + '"><div class="thumb" value="' + i + '">' + i.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
+        Object.keys(components).sort().forEach(function (name) {
+          var component = components[name];
+
+          var thumb = $('<div class="clearfix draggable" name="' + name + '" value="' + name + '"><div class="thumb" value="' + name + '">' + name.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
           $('.library-list').append(thumb);
           thumb.draggable({
             connectToSortable: ".drophere",
             helper: "clone",
             appendTo: document.body,
-            start : function(event,ui){
+            start: function(event, ui){
               var clone = ui.helper;
               $(clone).find(".thumb").addClass("im-flying");
               clone.find('.info-btn').remove();
             },
             addClass: "clone"
           });
-          if (value.description) {
-            var componentDescription = value.description.innerHTML;
+          if (component.description) {
+            var componentDescription = component.description.innerHTML;
             thumb.attr('description', componentDescription);
           } else {
             thumb.attr('description', 'No description');
           }
         });
+
+
 
         $('.library-list').removeClass("library-loading");
 
