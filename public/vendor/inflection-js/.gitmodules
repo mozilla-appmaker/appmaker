@@ -1,0 +1,3 @@
+[submodule "inflection-js"]
+	path = inflection-js
+	url = git@github.com:simonwex/inflection-js.git
