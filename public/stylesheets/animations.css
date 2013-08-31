@@ -1,3 +1,22 @@
+.channel-visualisation .menu-in {
+  -webkit-animation: menupop linear .5s;  
+  -moz-animation: menupop linear .5s;  
+}
+@-webkit-keyframes menupop {
+  0% { opacity: 0;}
+  2% { opacity: 1; -webkit-transform: scale(.5);}
+  4% { opacity: 1; -webkit-transform: scale(1.1);}  
+  14% { opacity: 1; -webkit-transform: scale(1);}  
+  100% { opacity: 1; -webkit-transform: scale(1);}  
+}
+@-moz-keyframes menupop {
+  0% { opacity: 0;}
+  2% { opacity: 1; -moz-transform: scale(.5);}
+  4% { opacity: 1; -moz-transform: scale(1.1);}  
+  14% { opacity: 1; -moz-transform: scale(1);}  
+  100% { opacity: 1; -moz-transform: scale(1);}  
+}
+
 .channel-visualisation .indicator-out {
   -webkit-animation: indicatorOut 1s linear;
   -moz-animation: indicatorOut 1s linear;
@@ -9,7 +28,7 @@
 }
 
 @-webkit-keyframes indicatorOut {
-  0% { opacity: .4;}  
+  0% { opacity: .8;}  
   50% { 
     left: 210px; 
     opacity: 0;
@@ -20,7 +39,7 @@
   }
 }
 @-moz-keyframes indicatorOut {
-  0% { opacity: .4;}  
+  0% { opacity: .8;}  
   50% { 
     left: 210px; 
     opacity: 0;
@@ -36,7 +55,7 @@
   50% { opacity: 0; left: 0px;}  
   100% {
     left: 200px;
-    opacity: .4;
+    opacity: .6;
   }
 }
 @-moz-keyframes indicatorIn {
@@ -44,7 +63,7 @@
   50% { opacity: 0; left: 0px;}  
   100% {
     left: 200px;
-    opacity: .4;
+    opacity: .6;
   }
 }
 
@@ -80,11 +99,11 @@
 
 @-webkit-keyframes pulse {
   0% { -webkit-transform: scale(1);}
-  50% { -webkit-transform: scale(1.2 );}
+  50% { -webkit-transform: scale(1.8);}
   100% { -webkit-transform: scale(1);}
 }
 @-moz-keyframes pulse {
   0% { -moz-transform: scale(1);}
-  50% { -moz-transform: scale(1.2 );}
+  50% { -moz-transform: scale(1.8);}
   100% { -moz-transform: scale(1);}
 }
