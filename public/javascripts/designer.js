@@ -198,7 +198,7 @@ define(
     });
 
     // document-level key handling
-    $(document).on('keydown', function(event) {
+    $(document).unbind('keydown').bind('keydown', function(event) {
       var keys = {
         esc: 27,
         del: 46,
@@ -211,6 +211,7 @@ define(
           $('.color-modal').removeClass('flex');
           // and clears the selection non-destructively
           clearSelection();
+          break;
 
         // delete removes all selected items.
         case (keys.del):
@@ -219,6 +220,13 @@ define(
           elements.forEach(function(element) {
             element.removeSafely();
           });
+          break;
+
+        case (keys.backspace):
+          // Cancel "back" navigation
+          if (event.target.tagName.toLowerCase() === 'body'){
+            event.preventDefault();
+          }
       }
     });
 
