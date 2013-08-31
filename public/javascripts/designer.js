@@ -366,25 +366,31 @@ define(
     });
 
     //Generate or remove the channel menu
-    $(document).on('click','.channel-menu-toggle',function(){
+    // $(document).on('click','.channel-menu-toggle',function(){
+    $(document).on('mouseleave','.channel-visualisation',function(){
+      $(this).find(".channel-menu").remove();
+    });
 
-      $(this).toggleClass("open-toggle");
 
+    $(document).on('mouseover','.channel-visualisation',function(){
+
+      // $(this).toggleClass("open-toggle");
       var channelType;
-      if($(this).parent()[0].tagName == "LISTEN"){
+
+      if($(this)[0].tagName == "LISTEN"){
         channelType = "subscription";
       } else {
         channelType = "broadcast";
       }
 
-      if($(this).closest(".channel-visualisation").find(".channel-menu").length === 0) {
+      
+      //If there is no menu
+      if($(this).find(".channel-menu").length === 0 && $(this).find(".channel").length > 0) {
         var menu = $(".channel-menu-template").clone();
         menu.removeClass("channel-menu-template");
         menu.addClass(channelType + "-menu");
 
-        $(this).parent().append(menu);
-
-        var channels = $(this).parent().find(".channel");
+        var channels = $(this).find(".channel");
 
         //Build out the Subscription Channels
         channels.each(function(key, channel){
@@ -399,9 +405,9 @@ define(
           menu.append(subItem);
         });
         menu.find(".channel-template").remove();
+        $(this).append(menu);
+        menu.addClass("menu-in");
         menu.css("margin-top",-1 * menu.outerHeight()/2 -1);
-      } else {
-        $(this).parent().find(".channel-menu").remove();
       }
     });
 
@@ -431,8 +437,8 @@ define(
       var title = thisChannel.attr("title");
       thisChannel.find(".chosen-color").attr("color",color);
       thisChannel.find("label").show();
-      $(this).closest(".channel-visualisation").find(".channel-menu-toggle").removeClass("open-toggle");
-      $(this).closest(".channel-menu").remove();
+      // $(this).closest(".channel-visualisation").find(".channel-menu-toggle").removeClass("open-toggle");
+      // $(this).closest(".channel-menu").remove();
       $(this).parent().hide();
     });
 
