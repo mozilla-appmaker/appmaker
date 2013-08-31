@@ -333,21 +333,79 @@ button.log-toggle {
 	right: 20px;
 }
 
-button.delete-btn {
-	background-image: url(../images/trash.png);
-	top: 20px;
-	right: 61px;
+.selected:hover button.customize-btn,
+.selected:hover button.delete-btn {
+ display: block;
 }
 
-button.customize-btn {
-	background-image: url(../images/customize.png);
-	top: 20px;
-	right: 102px;
+.selected:hover .customize-btn,
+.selected:hover .handle {
+  display: block;
+}
+
+.ui-sortable-helper .channel-visualisation,
+.ui-sortable-helper .editables-section,
+.ui-sortable-helper .customize-btn {
+  display: none !important;
+}
+
+.customize-btn,
+.handle
+ {
+  background-size: 10px;
+	position: absolute;
+	z-index: 110;
+	height: 22px;
+	width: 22px;
+	background-position: center;
+  background-color: transparent;
+	background-repeat: no-repeat;
+  background-size: 12px;
+  cursor: pointer;
+  opacity: .6;
+  border-radius: 2px;
+  background-color: white;
+  border: solid 1px #BBB;
+  display: none;
+}
+
+.customize-btn:hover,
+.handle:hover
+ {
+  opacity: 1;
+}
+
+.handle {
+	top: 3px;
+	right: 3px;
+  cursor: move;
+	background-image: url(../images/move.png);
+}
+
+.customize-btn {
+  background-image: url(../images/customize.png);
+  left:3px;
+	top: 3px;
+}
+
+.delete-btn {
+  width: 22px;
+  height: 22px;
+  background-image: url(../images/trash.png);
+  background-size: 10px;
+  background-color: #f8f8f8;
+  background-repeat: no-repeat;
+  background-position: center;
+  bottom: 0px;
+  border-radius: 2px;
+  border: solid 1px #BBB;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }
 
 /*----------LAYOUT----------*/
-
-
 
 .info-box {
 	height: 500px;
@@ -389,11 +447,11 @@ button.customize-btn {
 }
 
 .library-list {
-  width: 220px;
+  width: 215px;
   overflow-y: auto;
   position: absolute;
   top: 20px;
-  bottom: 35px;
+  bottom: 25px;
 }
 
 .library-list .draggable:last-child .thumb {
@@ -458,7 +516,7 @@ button.customize-btn {
 
 .info-btn {
 	position: absolute;
-	right: 49px;
+	right: 28px;
 	top: 9px;
 	height: 22px;
 	width: 22px;
@@ -473,7 +531,7 @@ button.customize-btn {
 
 .ui-state-highlight {
   height: 1.5em; line-height: 1.2em;
-  background: red;
+  background: rgba(255,125,0,.8);
   display: block;
   padding: 0;
   margin: 0;
@@ -486,15 +544,14 @@ button.customize-btn {
   display: block;
   padding: 0;
   margin: 0;
-
   visibility: visible !important;
 }
 
 .thumb {
 	width: 180px;
-  	background-color: #eee;
-  	margin-bottom: 5px;
-  	border-radius: 3px;
+  background-color: #eee;
+  margin-bottom: 5px;
+  border-radius: 3px;
 	line-height: 40px;
 	text-indent: 10px;
 }
@@ -510,12 +567,14 @@ button.customize-btn {
 
 .component-description {
 	position: absolute;
-	padding: 10px;
+	margin-top: 4px;
+  padding: 8px 10px;
 	max-width: 300px;
-	background-color: rgba(0,0,0,.8);
+	background-color: rgba(0,0,0,.7);
 	border-radius: 3px;
 	z-index: 999;
-	color: #FFF;
+  font-size: 1.3rem ;
+	color: #DDD;
 }
 
 .channel-tip {
@@ -650,6 +709,12 @@ button.customize-btn {
 	border-radius: 3px 3px 0px 0px;
 }
 
+.card.selected {
+  background-color: #ddd;
+  box-shadow: 0;
+
+}
+
 .console {
 	background-color: #333;
 	position: absolute;
@@ -660,14 +725,30 @@ button.customize-btn {
 	color: #999;
 }
 
+.editables-section {
+  padding: 5px 40px 6px 10px;
+	position: absolute;
+	left: -2px;
+  width: 264px;
+	z-index: 999;
+  background: #BBB;
+  color: white;
+  background: rgba(255,125,0,1);
+  border-radius:  5px 5px 0px 0px;
+  background: #ff7d00;
+  display: none;
+  min-height: 23px;
+  text-align: left;
+}
+
+.editables-section label {
+  font-size: 13px;
+}
+
 .editables-section input[type="text"] {
-	width: 100%;
-	height: 25px;
-	border: none;
 	background-color: #FFF;
-	padding: 0px;
-	text-indent: 10px;
-	border: 1px solid #CCC;
+	padding: 4px 6px;
+  width: 246px;
 }
 
 .log .inner {
@@ -743,8 +824,8 @@ button.customize-btn {
 	user-select: none;
 }
 
-.selected {
-	box-shadow: 0 0 0px 2px #ff7b00;
+.phone-container .selected {
+	box-shadow: 0 0 0px 2px rgba(255,125,0,.8);
 }
 
 .flex {
@@ -767,7 +848,7 @@ button.customize-btn {
 
 .modal {
    max-width: 585px;
-   background-color: #EEE;
+   background-color: #eee;
    position: relative;
 }
 
@@ -780,7 +861,7 @@ button.return-btn {
 	width: 100%;
 	margin-top: 40px;
 	font-size: 16px;
-	background-color: #358CCE;
+	background-color: #358cce;
 }
 
 .close {
@@ -935,34 +1016,7 @@ button.return-btn {
 	margin-bottom: 30px;
 }
 
-.handle {
-	position: absolute;
-	top: 5px;
-	right: 5px;
-	z-index: 110;
-	height: 22px;
-	width: 22px;
-	border-radius: 3px;
-	background-color: #F8F8F8;
-	background-image: url(../images/move.png);
-	background-position: center;
-	background-repeat: no-repeat;
-	border: 1px solid #CCC;
-	cursor: move;
-}
 
-
-.editables-section {
-	background-color: #F8F8F8;
-	padding: 20px;
-	position: absolute;
-	right: 20px;
-	top: 60px;
-	z-index: 999;
-	width: 210px;
-	border: 1px solid #AAA;
-	border-radius: 3px;
-}
 
 .moz-input-form input[type="text"] {
 	-moz-box-sizing: border-box;
@@ -1031,9 +1085,6 @@ button.log-toggle.selected-button {
 	background-image: url(../images/log-selected.png);
 }
 
-button.customize-btn.selected-button {
-	background-image: url(../images/customize-selected.png);
-}
 
 /*Channel Visualisation*/
 
@@ -1086,12 +1137,15 @@ button.customize-btn.selected-button {
   position: absolute;
   top: 50%;
   cursor: pointer;
-  margin-top: -10px;
+  margin-top: -13px;
   background: #BBB;
+  background: center no-repeat url(../images/broadcast_icon.png);
+  background-size: contain;
   color: #222;
-  height: 20px;
   border-radius: 10px;
-  width: 20px;
+  height: 26px;
+
+  width: 26px;
   font-size: 13px;
   -webkit-transform: scale(0);
   -webkit-transition: linear all .1s;
@@ -1101,14 +1155,13 @@ button.customize-btn.selected-button {
 
 .selected .channel-menu-toggle {
   display: block;
-  height: 20px;
-  width: 20px;
   -webkit-transform: scale(1);
   -moz-transform: scale(1);
-} 
+}
 
 .channel-visualisation .channel-menu-toggle:hover {
-  background: #999;
+  background: center no-repeat url(../images/broadcast_icon_hover.png);
+  background-size: contain;
 }
 
 .channel-menu-template {
@@ -1116,10 +1169,10 @@ button.customize-btn.selected-button {
 }
 
 .subscription-channels .channel-menu-toggle {
-  right: 0px;
+  right: -3px;
 }
  .broadcast-channels .channel-menu-toggle  {
-  left: 0px;
+  left: -3px;
 }
 
 .channel-visualisation .channel-menu-toggle:only-child {
@@ -1127,43 +1180,45 @@ button.customize-btn.selected-button {
 }
 
 .channel-visualisation .channel-menu {
-  padding: 4px;
+  padding: 4px 4px 5px 4px;
   background: white;
   position: absolute;
   top: 50%;
-  border-radius: 6px;
-  border: solid 2px #CCC;
+  border-radius: 5px;
+  border: solid 1px #BBB;
+  border-bottom: solid 2px #BBB;
+
 }
 
 .channel-visualisation .subscription-menu {
-    right: 34px;
+    right: 36px;
 }
 
 .channel-visualisation .broadcast-menu {
-    left: 34px;
+    left: 36px;
 }
 
 .channel-visualisation .channel-menu .arrow {
   position: absolute;
   top: 50%;
-  margin-top: -9px;
+  margin-top: -8px;
   height: 14px;
   width: 14px;
   background: white;
 }
 
 .channel-visualisation .subscription-menu .arrow {
-  right: -10px;
-  border-top: solid 2px #CCC;
-  border-right: solid 2px #CCC;
+  right: -8px;
+  border-top: solid 1px #BBB;
+  border-right: solid 1px #BBB;
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
 }
 
 .channel-visualisation .broadcast-menu .arrow {
-  left: -10px;
-  border-top: solid 2px #CCC;
-  border-left: solid 2px #CCC;
+  left: -8px;
+  border-top: solid 1px #BBB;
+  border-left: solid 1px #BBB;
   -webkit-transform: rotate(-45deg);
   -moz-transform: rotate(-45deg);
 }
@@ -1195,7 +1250,7 @@ button.customize-btn.selected-button {
 }
 
 .channel-menu .subscription-option label:hover {
-  background: #EEE;
+  background: #F6F6F6;
   border-radius: 3px;
   cursor: pointer;
 }
@@ -1221,12 +1276,20 @@ button.customize-btn.selected-button {
 }
 
 .channel-menu .color-ui {
-  background: #EEE;
   border-radius:3px;
   display: none;
   text-align: right;
   padding: 3px 5px 2px 5px;
   cursor: default;
+
+}
+
+.channel-menu [color='false'] {
+	background-image: url(../images/disabled-channel-dash.png);
+  background-color: #DDD;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .channel-menu .color-ui .color {
@@ -1238,12 +1301,12 @@ button.customize-btn.selected-button {
   top: 2px;
   border-radius: 2px;
   cursor: pointer;
-  opacity: .5;
+  opacity: 1;
 }
 
-.channel-menu .color-ui .color.ui-chosen-color,
+/*.channel-menu .color-ui .color.ui-chosen-color,*/
 .channel-menu .color-ui .color:hover {
-  opacity: 1;
+  opacity: .7;
 }
 
 
@@ -1285,12 +1348,12 @@ button.customize-btn.selected-button {
   font-size: 12px;
 
   top: -32px;
-  
+
   text-overflow: ellipsis;
   max-width:155px;
   overflow: hidden;
   white-space: nowrap;
-  
+
 }
 
 .broadcast-channels .bubblepopup {
