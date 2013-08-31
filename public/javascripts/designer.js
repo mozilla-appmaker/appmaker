@@ -174,7 +174,7 @@ define(
 
     // jQuery-UI property for reordering items in the designer
     function enableReorder() {
-      $(".phone-canvas,.fixed-top,.fixed-bottom").disableSelection().sortable({
+      $(".phone-canvas,.fixed-top,.fixed-bottom").sortable({
         connectWith: ".drophere",
         placeholder: "ui-state-highlight",
         start : function() { $(".phone-container").addClass("dragging"); },
