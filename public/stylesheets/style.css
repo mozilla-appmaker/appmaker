@@ -1335,13 +1335,11 @@ button.log-toggle.selected-button {
 }
 
 .indicator {
-  height: 20px;
-  width: 4px;
   position: absolute;
-  top: 0px;
+  top: -2px;
   left: 100px;
-  height: 6px;
-  width: 6px;
+  height: 10px;
+  width: 10px;
   border-radius: 20px;
   left: 0px;
   opacity: 0;
