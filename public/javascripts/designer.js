@@ -3,8 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["jquery", "ceci", "ceci-app", "jquery-ui"],
-  function($, Ceci, App) {
+  ["jquery", "ceci", "ceci-app", "inflector", "jquery-ui"],
+  function($, Ceci, App, Inflector) {
     "use strict";
 
     var selection = [];
@@ -370,7 +370,7 @@ define(
           subItem.attr("title",title);
           subItem.find(".chosen-color").attr("color",color);
           subItem.find(".color[color="+color+"]").addClass("ui-chosen-color");
-          subItem.find(".channel-name").text(title.replace("_"," "));
+          subItem.find(".channel-name").text(Inflector.titleize(Inflector.underscore(title)));
           menu.append(subItem);
         });
         menu.find(".channel-template").remove();
