@@ -14,6 +14,12 @@ define(
       element.css('z-index', ++zIndex);
     }
 
+    Ceci.onCardChange(function (card) {
+      var thumbId = "card-thumb-" + card.id.match(/(\d+)$/)[0];
+      $(".card").removeClass('selected');
+      $("#" + thumbId).addClass('selected');
+    });
+
     var app = new Ceci.App({
       container: $('#flathead-app')[0],
       onComponentAdded: function (component) {
@@ -29,8 +35,8 @@ define(
         // create first card as a default card
         createCard();
 
-        $.each(components, function(index, value) {
-          var thumb = $('<div class="clearfix draggable" name="' + index + '" value="' + index + '"><div class="thumb" value="' + index + '">' + index.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
+        $.each(components, function(i, value) {
+          var thumb = $('<div class="clearfix draggable" name="' + i + '" value="' + i + '"><div class="thumb" value="' + i + '">' + i.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
           $('.library-list').append(thumb);
           thumb.draggable({
             connectToSortable: ".drophere",
@@ -548,15 +554,18 @@ define(
       var card = Ceci.createCard();
       $('.drophere', card).sortable(sortableOptions);
       $('#flathead-app').append(card);
-      card.showCard();
-      enableReorder();
 
       // create card thumbnail
-      var newthumb = $('<div class="card">' + ($(".card").length + 1) + '</div>');
+      var cardNumber = $(".card").length + 1;
+      var newthumb = $('<div class="card">' + cardNumber + '</div>');
+      newthumb.attr('id', "card-thumb-" + cardNumber);
       newthumb.click(function() {
         card.showCard();
       });
       $(".cards").append(newthumb);
+
+      card.showCard();
+
       return card;
     };
 
