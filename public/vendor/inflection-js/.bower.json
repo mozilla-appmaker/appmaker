@@ -1,0 +1,15 @@
+{
+  "name": "inflection-js",
+  "main": "./inflection.min.js",
+  "dependencies": {},
+  "homepage": "https://github.com/simonwex/inflection-js-bower",
+  "_release": "f7d7620f6f",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "f7d7620f6f16b5d71022fa871049d84f3a0a6366"
+  },
+  "_source": "git://github.com/simonwex/inflection-js-bower.git",
+  "_target": "*",
+  "_direct": true
+}

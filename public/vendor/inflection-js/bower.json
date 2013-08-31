@@ -1,0 +1,7 @@
+{
+  "name": "inflection-js",
+  "version": "0.0.1",
+  "main": "./inflection.min.js",
+  "dependencies": {
+  }
+}

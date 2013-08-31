@@ -3,8 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["jquery", "ceci", "ceci-app", "jquery-ui"],
-  function($, Ceci) {
+  ["jquery", "ceci", "ceci-app", "inflector", "jquery-ui"],
+  function($, Ceci, App, Inflector) {
     "use strict";
 
     var selection = [];
@@ -14,16 +14,16 @@ define(
       element.css('z-index', ++zIndex);
     }
 
+    Ceci.onCardChange(function (card) {
+      var thumbId = "card-thumb-" + card.id.match(/(\d+)$/)[0];
+      $(".card").removeClass('selected');
+      $("#" + thumbId).addClass('selected');
+    });
+
     var app = new Ceci.App({
       container: $('#flathead-app')[0],
       onComponentAdded: function (component) {
         component = $(component);
-
-        component.on('mouseenter', function () {
-          component.append('<div class="handle"></div>');
-        }).on('mouseleave', function () {
-          $('.handle').remove();
-        });
 
         component.on('mousedown', function(evt) {
           selectComponent($(evt.currentTarget));
@@ -35,8 +35,8 @@ define(
         // create first card as a default card
         createCard();
 
-        $.each(components, function(index, value) {
-          var thumb = $('<div class="clearfix draggable" name="' + index + '" value="' + index + '"><div class="thumb" value="' + index + '">' + index.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
+        $.each(components, function(i, value) {
+          var thumb = $('<div class="clearfix draggable" name="' + i + '" value="' + i + '"><div class="thumb" value="' + i + '">' + i.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
           $('.library-list').append(thumb);
           thumb.draggable({
             connectToSortable: ".drophere",
@@ -58,7 +58,6 @@ define(
         });
 
         $('.library-list').removeClass("library-loading");
-
 
         if (window.location.search.length > 0) {
           var match = window.location.search.match(/[?&]template=(\w+)/);
@@ -167,21 +166,10 @@ define(
 
     // empty the list of currently selected elements on the page
     var clearSelection = function() {
-
-      selection.forEach(function(element) {
-        $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
-      });
-
       selection = [];
+      $(".editables-section").hide();
       $(".selected").removeClass("selected");
       $(".inspector").addClass('hidden');
-
-      //hide delete button
-      $('.delete-btn').hide();
-
-      //hide customize button and section
-      $('.customize-btn').hide().removeClass('selected-button');
-      $('.editables-section').hide();
     };
 
     // jQuery-UI property for reordering items in the designer
@@ -205,7 +193,7 @@ define(
 
     $(document).on('click', '.container', function (evt) {
       if ($(evt.target).hasClass('container')) {
-        clearSelection();
+      clearSelection();
       }
     });
 
@@ -227,7 +215,7 @@ define(
       }
     });
 
-    $('.delete-btn').click(function () {
+    $(document).on("mousedown",'.delete-btn',function () {
       var elements = selection.slice();
         clearSelection();
         elements.forEach(function(element) {
@@ -324,32 +312,27 @@ define(
     };
 
     var displayAttributes = function(element) {
-      $('.editables-section .editables').html("");
-      if (element.getEditableAttributes().length > 0) {
-        $('.customize-btn').show();
-      } else {
-        $('.customize-btn').hide();
-      }
+
+      var attributeList = $(element).find(".editable-attributes");
+
+      attributeList.html("");
+
       var attributes = element.getEditableAttributes();
-      var attributeList = $("<div class='editable-attributes'></div>");
 
       attributes.forEach(function(attribute) {
         var definition = element.getAttributeDefinition(attribute);
         var uiElement = getAttributeUIElement(element, attribute, definition);
         attributeList.append(uiElement);
       });
-      $('.editables-section .editables').append(attributeList);
+
+      var editables = $(element).find(".editable-section");
+      editables.append(attributeList);
     };
 
     //Toggle customize
-    $('.customize-btn').click(function () {
-      if ($(this).hasClass('selected-button')) {
-        $('.editables-section').hide();
-        $(this).removeClass('selected-button');
-      } else {
-        $('.editables-section').show();
-        $(this).addClass('selected-button');
-      }
+    $(document).on("mousedown",".customize-btn",function () {
+      var section = $(this).parent().find('.editables-section').toggle();
+      section.css("top",-1 * section.outerHeight() -2);
     });
 
     //Toggle the log
@@ -393,11 +376,11 @@ define(
           subItem.attr("title",title);
           subItem.find(".chosen-color").attr("color",color);
           subItem.find(".color[color="+color+"]").addClass("ui-chosen-color");
-          subItem.find(".channel-name").text(title.replace("_"," "));
+          subItem.find(".channel-name").text(Inflector.titleize(Inflector.underscore(title)));
           menu.append(subItem);
         });
         menu.find(".channel-template").remove();
-        menu.css("margin-top",-1 * menu.outerHeight()/2);
+        menu.css("margin-top",-1 * menu.outerHeight()/2 -1);
       } else {
         $(this).parent().find(".channel-menu").remove();
       }
@@ -418,6 +401,7 @@ define(
 
     //Subscription Menu Color Click
     $(document).on("click",".channel-option .color",function(){
+
       var thisChannel = $(this).closest(".channel-option");
       var color = $(this).attr("color");
       $(this).closest(".channel-option").removeClass("disabled-subscription");
@@ -435,8 +419,6 @@ define(
 
     var selectComponent = function(comp) {
 
-      clearSelection();
-
       if(comp.find(".channel-menu").length === 0){
         $(".channel-menu:not('.channel-menu-template')").remove();
       }
@@ -445,21 +427,35 @@ define(
         $(".channel-chooser").appendTo("body").hide();
       }
 
+      //Clear out the listener since we're adding it again later
+      //I'm not sure why we can't do this once somewhere
+      selection.forEach(function(element) {
+        $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
+      });
+
+      if(comp[0] != selection[0]){
+        clearSelection();
+        selection.push(comp[0]);
+        setTimeout(function(){
+            displayAttributes(comp[0]);
+        },0);
+      }
+
       var element = comp[0];
       var compId = element.id;
-      selection.push(element);
+
       comp.addClass("selected");
+
       moveToFront(comp);
 
-      $('.delete-btn').show();
 
-      //Show editable attributes
-      displayAttributes(element);
 
       //Changes component channel
       var onColorSelectFunction = function () {
 
         var comp = $(this);
+
+        console.log(element);
 
         var channel = {
           hex: comp.attr('value'),
@@ -485,6 +481,7 @@ define(
       };
 
       // listen for color UI clicks
+
       $(document).on('click', '.color-ui .color', onColorSelectFunction);
 
       // give the element the function we just added, so we
@@ -495,6 +492,7 @@ define(
       $(".editables-section .name").text(componentName);
       $(".inspector").removeClass('hidden');
     };
+
 
     // logs messages
     $(document).on('broadcast', function (event, message) {
@@ -533,6 +531,12 @@ define(
           app.addComponent(helper.attr('value'), function(component){
             component = $(component);
 
+            setTimeout(function(){
+              component.append($('<div class="customize-btn"></div>'));
+              component.append($('<div class="handle"></div>'));
+              component.append($('<div class="editables-section"><div class="editable-attributes"></div><div class="delete-btn"></div></div>'));
+            },0);
+
             var dropTarget = $(".drophere").find(".draggable");
             dropTarget.replaceWith(component);
 
@@ -550,52 +554,26 @@ define(
       var card = Ceci.createCard();
       $('.drophere', card).sortable(sortableOptions);
       $('#flathead-app').append(card);
-      card.showCard();
-      enableReorder();
 
       // create card thumbnail
-      var newthumb = $('<div class="card">' + ($(".card").length + 1) + '</div>');
+      var cardNumber = $(".card").length + 1;
+      var newthumb = $('<div class="card">' + cardNumber + '</div>');
+      newthumb.attr('id', "card-thumb-" + cardNumber);
       newthumb.click(function() {
         card.showCard();
       });
       $(".cards").append(newthumb);
+
+      card.showCard();
+
       return card;
     };
 
     $(".btn-add").click(createCard);
 
-    // Tack this onto `window` so it's accessible from the console for now.
-    // Can (should) be removed later if debugging isn't necessary.
-    window.generateProjectManifest = function () {
-      var manifest = {
-        cards: []
-      };
-
-      var cards = $('#flathead-app .ceci-card');
-
-      function collectComponentsFromContainer (container) {
-        var elements = [];
-        Array.prototype.forEach.call(container.children, function (child) {
-          if (child.localName.indexOf('app-') > -1 && typeof child.describe === 'function') {
-            elements.push(child.describe());
-          }
-        });
-        return elements;
-      }
-
-      cards.each(function (index, card) {
-        manifest.cards.push({
-          top: collectComponentsFromContainer(card.querySelector('.fixed-top')),
-          canvas: collectComponentsFromContainer(card.querySelector('.phone-canvas')),
-          bottom: collectComponentsFromContainer(card.querySelector('.fixed-bottom'))
-        });
-      });
-
-      return manifest;
-    };
 
     $('.publish').click(function(){
-      var manifest = window.generateProjectManifest();
+      var manifest = app.serialize();
 
       $.ajax('/publish', {
         data: { manifest: manifest },
@@ -622,7 +600,6 @@ define(
     $('.return-btn').click(function () {
       $('.modal-wrapper').removeClass('flex');
     });
-
 
     // AMD module return
     return {

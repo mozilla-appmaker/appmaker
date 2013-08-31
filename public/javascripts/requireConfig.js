@@ -5,6 +5,7 @@
 requirejs.config({
     "baseUrl": "/vendor/",
     "paths": {
+      "inflector": "inflection-js/inflection.min",
       "jquery": "jquery/jquery.min",
       "ceci": "ceci/ceci",
       "ceci-ui": "ceci/ceci-ui",
@@ -13,7 +14,7 @@ requirejs.config({
       "jquery-ui": "jquery-ui/ui/minified/jquery-ui.min",
       "towtruck": "https://towtruck.mozillalabs.com/towtruck",
       "towtruckSupport": "/javascripts/towtruckSupport",
-      "angular": "angular/angular.min",
+      "angular": "angular/angular.min"
     },
     shim: {
       "jquery-ui": {
