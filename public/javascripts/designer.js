@@ -59,8 +59,6 @@ define(
           }
         });
 
-
-
         $('.library-list').removeClass("library-loading");
 
         if (window.location.search.length > 0) {
@@ -78,6 +76,7 @@ define(
                     elements.forEach(function (desc) {
                       var componentElement = document.createElement(desc.tagname);
                       componentElement.setAttribute('id', desc.id);
+
 
                       desc.attributes.forEach(function (attr) {
                         componentElement.setAttribute(attr.name, attr.value);
@@ -118,6 +117,7 @@ define(
         }
       }
     });
+    window._app = app;
 
     $(document).on('mouseenter', '.draggable', function () {
       $(this).children('.info-btn').show();
@@ -472,7 +472,6 @@ define(
       comp.addClass("selected");
 
       moveToFront(comp);
-
 
 
       //Changes component channel
