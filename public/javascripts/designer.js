@@ -532,7 +532,36 @@ define(
     });
 
     $('.publish').click(function(){
-      var manifest = app.serialize();
+
+
+
+      // XXXsecretrobotron: This code is here to patch a bug, since the wrong code for serialize() is in
+      // ceci-app.js. This should be moved there at some point.
+      var manifest = {
+        cards: []
+      };
+
+      var cards = $('#flathead-app .ceci-card');
+
+      function collectComponentsFromContainer (container) {
+        var elements = [];
+        Array.prototype.forEach.call(container.children, function (child) {
+          if (child.localName.indexOf('app-') > -1 && typeof child.describe === 'function') {
+            elements.push(child.describe());
+          }
+        });
+        return elements;
+      }
+
+      cards.each(function (index, card) {
+        manifest.cards.push({
+          top: collectComponentsFromContainer(card.querySelector('.fixed-top')),
+          canvas: collectComponentsFromContainer(card.querySelector('.phone-canvas')),
+          bottom: collectComponentsFromContainer(card.querySelector('.fixed-bottom'))
+        });
+      });
+      // XXXsecretrobotron
+
 
       $.ajax('/publish', {
         data: { manifest: manifest },
