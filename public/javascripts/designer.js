@@ -89,7 +89,6 @@ define(
           element.classList.add('drophere');
         });
 
-
         // create card thumbnail
         var cardNumber = $(".card").length + 1;
         var newthumb = $('<div class="card">' + cardNumber + '</div>');
@@ -102,6 +101,7 @@ define(
         card.show();
       }
     });
+
     $('#add-card').click(function(){
       app.addCard();
     });
@@ -460,7 +460,6 @@ define(
       comp.addClass("selected");
 
       moveToFront(comp);
-
 
 
       //Changes component channel
