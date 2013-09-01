@@ -9,6 +9,10 @@ define(
 
     var selection = [];
 
+    if (localStorage.draft){
+      $('#flathead-app').html(localStorage.draft);
+    }
+    var saveTimer = null;
 
     function convertHex(hex,opacity){
       hex = hex.replace('#','');
@@ -40,7 +44,6 @@ define(
       receive: function (event, ui) {
         if (ui.helper) {
           var helper = $(ui.helper);
-          console.log(helper.attr('value'));
           app.addComponent(helper.attr('value'));
         }
       }
@@ -96,6 +99,13 @@ define(
 
         $('.drophere').sortable(sortableOptions);
 
+        Ceci.registerCeciPlugin("onChange", function(){
+          if (saveTimer) {
+            clearTimeout(saveTimer);
+          }
+          saveTimer = setTimeout(saveApp, 500);
+        });
+
         $('.library-list').removeClass("library-loading");
       },
       onCardChange: function (card) {
@@ -120,6 +130,16 @@ define(
         card.show();
       }
     });
+
+    var saveApp = function(){
+      localStorage.draft = app.serialize();
+
+      var now = new Date();
+      now = now.getHours() + ':' + now.getMinutes() + ":" + now.getSeconds();
+
+      $('#time').text(now);
+      console.log('Draft saved:', now);
+    };
 
     $('#add-card').click(function(){
       app.addCard();
@@ -355,7 +375,8 @@ define(
         $('.log-wrapper').removeClass('expanded');
         $('.container').removeClass('log-expanded');
         $(this).removeClass('selected-button');
-      } else {
+      }
+      else {
         $('.log-wrapper').addClass('expanded');
         $('.container').addClass('log-expanded');
         $(this).addClass('selected-button');
@@ -369,8 +390,6 @@ define(
 
 
     $(document).on('mouseover','.channel-visualisation',function(){
-
-      // $(this).toggleClass("open-toggle");
       var channelType;
 
       if($(this)[0].tagName == "LISTEN"){
@@ -407,7 +426,7 @@ define(
     });
 
     //Channel Menu Label Click
-    $(document).on("click",".channel-menu label", function(){
+    $(document).on("click", ".channel-menu label", function(){
       var menu = $(this).closest(".channel-menu");
       var color = $(this).find(".chosen-color").attr("color");
       var colorList = $(this).closest(".channel-option").find(".color-ui");
@@ -420,7 +439,7 @@ define(
     });
 
     //Subscription Menu Color Click
-    $(document).on("click",".channel-option .color",function(){
+    $(document).on("click", ".channel-option .color", function(){
 
       var thisChannel = $(this).closest(".channel-option");
       var color = $(this).attr("color");
@@ -498,7 +517,7 @@ define(
         clearSelection();
         selection.push(comp[0]);
         setTimeout(function(){
-            displayAttributes(comp[0]);
+          displayAttributes(comp[0]);
         },0);
       }
 
@@ -514,8 +533,6 @@ define(
       var onColorSelectFunction = function () {
 
         var comp = $(this);
-
-        console.log(element);
 
         var channel = {
           hex: comp.attr('value'),
@@ -571,10 +588,12 @@ define(
       $('.component-description').remove();
     });
 
+
+
     $('.publish').click(function(){
 
       $.ajax('/publish', {
-        data: { manifest: app.serialize() },
+        data: { manifest: app.toJSON() },
         type: 'post',
         success: function (data) {
           $('.publish-url').html(data.install);
