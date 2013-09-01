@@ -522,10 +522,9 @@ define(
     });
 
     $('.publish').click(function(){
-      var manifest = app.serialize();
 
       $.ajax('/publish', {
-        data: { manifest: manifest },
+        data: { manifest: app.serialize() },
         type: 'post',
         success: function (data) {
           $('.publish-url').html(data.install);
