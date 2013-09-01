@@ -353,7 +353,6 @@ define(
     });
 
     //Generate or remove the channel menu
-    // $(document).on('click','.channel-menu-toggle',function(){
     $(document).on('mouseleave','.channel-visualisation',function(){
       $(this).find(".channel-menu").remove();
     });
@@ -370,7 +369,6 @@ define(
         channelType = "broadcast";
       }
 
-      
       //If there is no menu
       if($(this).find(".channel-menu").length === 0 && $(this).find(".channel").length > 0) {
         var menu = $(".channel-menu-template").clone();
