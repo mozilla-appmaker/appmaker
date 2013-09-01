@@ -9,7 +9,13 @@ body {
 	font-size: 14px;
 	color: #222;
 	background-color: #111;
-  overflow-y: scroll;
+	overflow-y: scroll;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: -moz-none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 html {
