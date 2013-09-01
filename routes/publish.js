@@ -59,30 +59,40 @@ exports.publish = function(req, res) {
     return str;
   }
 
+  // Do some cleansing!
+
+  // Make sure there are cards and that they're a sane array
   if (!!manifest.cards && Array.isArray(manifest.cards)) {
     manifest.cards.forEach(function (card) {
       function checkElements (elements) {
         var newElements = [];
         if (!!elements) {
           elements.forEach(function (element) {
+            // Make sure the element has a string tagname that starts with "app-".
             if (typeof element.tagname === 'string' && element.tagname.indexOf('app-') === 0) {
+              // Clean the properties of the tag
               element.tagname = cleanString(element.tagname, true);
               element.id = cleanString(element.id, true);
               element.broadcast = cleanString(element.broadcast, true);
+
               if (element.attributes) {
                 var newAttributes = [];
                 element.attributes.forEach(function (attr) {
-                  console.log(attr.name, attr.name.indexOf('on'));
+                  // Make sure each attribute doesn't start with "on" (e.g. onclick).
                   if (attr.name.indexOf('on') !== 0) {
+                    // Clean the name and value of each.
                     attr.name = cleanString(attr.name, true);
                     attr.value = cleanString(attr.value);
                     newAttributes.push(attr);
                   }
                 });
+
+                // Re-assign the attribtues for each element with a list of sanitized ones.
                 element.attributes = newAttributes;
               }
               if (element.listen) {
                 element.listen.forEach(function (listen) {
+                  // Clean the listener and channel of each listen element.
                   listen.listener = cleanString(listen.listener, true);
                   listen.channel = cleanString(listen.channel, true);
                 });
@@ -93,6 +103,8 @@ exports.publish = function(req, res) {
         }
         return newElements;
       }
+
+      // Check each section of each card, replacing the elements in each with sanitized ones.
       card.top = checkElements(card.top);
       card.canvas = checkElements(card.canvas);
       card.bottom = checkElements(card.bottom);
