@@ -3,8 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["jquery", "ceci", "ceci-app", "inflector", "jquery-ui"],
-  function($, Ceci, App, Inflector) {
+  ["jquery", "ceci-app", "ceci", "inflector", "ceci-ui", "jquery-ui"],
+  function($, App, Ceci, Inflector) {
     "use strict";
 
     var selection = [];
@@ -14,27 +14,43 @@ define(
       element.css('z-index', ++zIndex);
     }
 
-    Ceci.onCardChange(function (card) {
-      var thumbId = "card-thumb-" + card.id.match(/(\d+)$/)[0];
-      $(".card").removeClass('selected');
-      $("#" + thumbId).addClass('selected');
-    });
+    // these options object makes components drag/droppable when passed
+    // to the jQueryUI "sortable" function.
+    var sortableOptions = {
+      accept: '.draggable',
+      distance : 10,
+      receive: function (event, ui) {
+        if (ui.helper) {
+          var helper = $(ui.helper);
+          console.log(helper.attr('value'));
+          app.addComponent(helper.attr('value'));
+        }
+      }
+    };
 
     var app = new Ceci.App({
       container: $('#flathead-app')[0],
       onComponentAdded: function (component) {
         component = $(component);
 
+        var dropTarget = $(".drophere").find(".draggable");
+        dropTarget.replaceWith(component);
+
+        component.draggable({
+          handle: 'handle'
+        });
+
         component.on('mousedown', function(evt) {
           selectComponent($(evt.currentTarget));
         });
 
+        component.append($('<div class="customize-btn"></div>'));
+        component.append($('<div class="handle"></div>'));
+        component.append($('<div class="editables-section"><div class="editable-attributes"></div><div class="delete-btn"></div></div>'));
+
         selectComponent(component);
       },
       onload: function (components) {
-        // create first card as a default card
-        createCard();
-
         Object.keys(components).sort().forEach(function (name) {
           var component = components[name];
 
@@ -59,64 +75,35 @@ define(
           }
         });
 
-
+        $('.drophere').sortable(sortableOptions);
 
         $('.library-list').removeClass("library-loading");
+      },
+      onCardChange: function (card) {
+        var thumbId = "card-thumb-" + card.id.match(/(\d+)$/)[0];
+        $(".card").removeClass('selected');
+        $("#" + thumbId).addClass('selected');
+      },
+      onCardAdded: function (card) {
+        Array.prototype.forEach.call(card.children, function (element) {
+          element.classList.add('drophere');
+        });
 
-        if (window.location.search.length > 0) {
-          var match = window.location.search.match(/[?&]template=(\w+)/);
-          if (match[1]) {
-            $.getJSON('/templates/' + match[1] + '.json', function (data) {
-              if (data && data.cards) {
-                data.cards.forEach(function (card, cardIndex) {
-                  var cardElement = document.querySelector('.ceci-card');
-                  if (cardIndex > 0) {
-                    cardElement = createCard();
-                  }
 
-                  function placeElementsInContainer (elements, container) {
-                    elements.forEach(function (desc) {
-                      var componentElement = document.createElement(desc.tagname);
-                      componentElement.setAttribute('id', desc.id);
-
-                      desc.attributes.forEach(function (attr) {
-                        componentElement.setAttribute(attr.name, attr.value);
-                      });
-
-                      if (desc.broadcast !== 'false') {
-                        var broadcastElement = document.createElement('broadcast');
-                        broadcastElement.setAttribute('on', desc.broadcast);
-                        componentElement.appendChild(broadcastElement);
-                      }
-
-                      desc.listen.forEach(function (listen) {
-                        var listenElement = document.createElement('listen');
-                        listenElement.setAttribute('on', listen.channel);
-                        listenElement.setAttribute('for', listen.listener);
-                        componentElement.appendChild(listenElement);
-                      });
-
-                      container.appendChild(componentElement);
-
-                      $(componentElement).draggable({
-                        handle: 'handle'
-                      });
-
-                      Ceci.convertElement(componentElement, function(){
-                        app.componentAddedCallback(componentElement);
-                      });
-                    });
-                  }
-
-                  placeElementsInContainer(card.top, cardElement.querySelector('.fixed-top'));
-                  placeElementsInContainer(card.canvas, cardElement.querySelector('.phone-canvas'));
-                  placeElementsInContainer(card.bottom, cardElement.querySelector('.fixed-bottom'));
-                });
-              }
-            });
-          }
-        }
+        // create card thumbnail
+        var cardNumber = $(".card").length + 1;
+        var newthumb = $('<div class="card">' + cardNumber + '</div>');
+        newthumb.attr('id', "card-thumb-" + cardNumber);
+        newthumb.click(function() {
+          card.show();
+        });
+        $(".cards").append(newthumb);
+        $('.drophere').sortable(sortableOptions);
+        card.show();
       }
+    });
+    $('#add-card').click(function(){
+      app.addCard();
     });
 
     $(document).on('mouseenter', '.draggable', function () {
@@ -385,7 +372,6 @@ define(
         channelType = "broadcast";
       }
 
-      
       //If there is no menu
       if($(this).find(".channel-menu").length === 0 && $(this).find(".channel").length > 0) {
         var menu = $(".channel-menu-template").clone();
@@ -546,59 +532,6 @@ define(
       $('.component-description').remove();
     });
 
-    // this options object makes components drag/droppable when passed
-    // to the jQueryUI "sortable" function.
-    var sortableOptions = {
-      accept: '.draggable',
-      distance : 10,
-      receive: function (event, ui) {
-        if (ui.helper) {
-          var helper = $(ui.helper);
-
-          app.addComponent(helper.attr('value'), function(component){
-            component = $(component);
-
-            setTimeout(function(){
-              component.append($('<div class="customize-btn"></div>'));
-              component.append($('<div class="handle"></div>'));
-              component.append($('<div class="editables-section"><div class="editable-attributes"></div><div class="delete-btn"></div></div>'));
-            },0);
-
-            var dropTarget = $(".drophere").find(".draggable");
-            dropTarget.replaceWith(component);
-
-            component.draggable({
-              handle: 'handle'
-            });
-          });
-        }
-      }
-    };
-
-    $('.drophere').sortable(sortableOptions);
-
-    var createCard = function() {
-      var card = Ceci.createCard();
-      $('.drophere', card).sortable(sortableOptions);
-      $('#flathead-app').append(card);
-
-      // create card thumbnail
-      var cardNumber = $(".card").length + 1;
-      var newthumb = $('<div class="card">' + cardNumber + '</div>');
-      newthumb.attr('id', "card-thumb-" + cardNumber);
-      newthumb.click(function() {
-        card.showCard();
-      });
-      $(".cards").append(newthumb);
-
-      card.showCard();
-
-      return card;
-    };
-
-    $(".btn-add").click(createCard);
-
-
     $('.publish').click(function(){
       var manifest = app.serialize();
 
@@ -627,6 +560,60 @@ define(
     $('.return-btn').click(function () {
       $('.modal-wrapper').removeClass('flex');
     });
+
+    if (window.location.search.length > 0) {
+      var match = window.location.search.match(/[?&]template=(\w+)/);
+      if (match[1]) {
+        $.getJSON('/templates/' + match[1] + '.json', function (data) {
+          if (data && data.cards) {
+            data.cards.forEach(function (card, cardIndex) {
+              var cardElement = document.querySelector('.ceci-card');
+              if (cardIndex > 0) {
+                cardElement = createCard();
+              }
+
+              function placeElementsInContainer (elements, container) {
+                elements.forEach(function (desc) {
+                  var componentElement = document.createElement(desc.tagname);
+                  componentElement.setAttribute('id', desc.id);
+
+                  desc.attributes.forEach(function (attr) {
+                    componentElement.setAttribute(attr.name, attr.value);
+                  });
+
+                  if (desc.broadcast !== 'false') {
+                    var broadcastElement = document.createElement('broadcast');
+                    broadcastElement.setAttribute('on', desc.broadcast);
+                    componentElement.appendChild(broadcastElement);
+                  }
+
+                  desc.listen.forEach(function (listen) {
+                    var listenElement = document.createElement('listen');
+                    listenElement.setAttribute('on', listen.channel);
+                    listenElement.setAttribute('for', listen.listener);
+                    componentElement.appendChild(listenElement);
+                  });
+
+                  container.appendChild(componentElement);
+
+                  $(componentElement).draggable({
+                    handle: 'handle'
+                  });
+
+                  Ceci.convertElement(componentElement, function(){
+                    app.componentAddedCallback(componentElement);
+                  });
+                });
+              }
+
+              placeElementsInContainer(card.top, cardElement.querySelector('.fixed-top'));
+              placeElementsInContainer(card.canvas, cardElement.querySelector('.phone-canvas'));
+              placeElementsInContainer(card.bottom, cardElement.querySelector('.fixed-bottom'));
+            });
+          }
+        });
+      }
+    }
 
     // AMD module return
     return {
