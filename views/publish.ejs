@@ -15,6 +15,7 @@
 
         requireCtx(['vendor/ceci/ceci'], function (Ceci) {
           Ceci.load(function (components) {
+            Ceci.convertContainer(document.getElementById('flathead-app'));
           });
         });
       })();
