@@ -1291,6 +1291,10 @@ button.log-toggle.selected-button {
 
 }
 
+.channel-menu label:hover {
+	text-decoration: underline;
+}
+
 .channel-menu [color='false'] {
 	background-image: url(../images/disabled-channel-dash.png);
   background-color: #DDD;
