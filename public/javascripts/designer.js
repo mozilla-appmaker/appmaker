@@ -40,6 +40,7 @@ define(
         var dropTarget = $(".drophere").find(".draggable");
         dropTarget.replaceWith(component);
 
+        component.addClass("component");
         component.draggable({
           handle: 'handle'
         });
@@ -48,9 +49,9 @@ define(
           selectComponent($(evt.currentTarget));
         });
 
-        component.append($('<div class="customize-btn"></div>'));
+        component.append($('<div class="component-menu"><div class="customize-btn"></div><div class="delete-btn"></div></div>'));
         component.append($('<div class="handle"></div>'));
-        component.append($('<div class="editables-section"><div class="editable-attributes"></div><div class="delete-btn"></div></div>'));
+        component.append($('<div class="editables-section"><div class="editable-attributes"></div></div>'));
 
         selectComponent(component);
       },
@@ -330,7 +331,7 @@ define(
 
     //Toggle customize
     $(document).on("mousedown",".customize-btn",function () {
-      var section = $(this).parent().find('.editables-section').toggle();
+      var section = $(this).closest(".selected").find('.editables-section').toggle();
       section.css("top",-1 * section.outerHeight() -2);
     });
 
