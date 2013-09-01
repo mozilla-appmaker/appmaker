@@ -176,24 +176,11 @@ define(
       $(".inspector").addClass('hidden');
     };
 
-    // jQuery-UI property for reordering items in the designer
-    function enableReorder() {
-      $(".phone-canvas,.fixed-top,.fixed-bottom").sortable({
-        connectWith: ".drophere",
-        placeholder: "ui-state-highlight",
-        start : function() { $(".phone-container").addClass("dragging"); },
-        stop : function() { $(".phone-container").removeClass("dragging"); }
-      });
-      // FIXME: do we need this line if we already explicitly set all the sortable props?
-      $(".phone-canvas,.fixed-top,.fixed-bottom").sortable("enable");
-    }
-
     var disableReorder = function() {
       $(".phone-canvas,.fixed-top,.fixed-bottom").sortable("disable");
     };
 
     clearSelection();
-    enableReorder();
 
     $(document).on('click', '.container', function (evt) {
       if ($(evt.target).hasClass('container')) {
@@ -548,6 +535,10 @@ define(
     var sortableOptions = {
       accept: '.draggable',
       distance : 10,
+      connectWith: ".drophere",
+      placeholder: "ui-state-highlight",
+      start : function() { $(".phone-container").addClass("dragging"); },
+      stop : function() { $(".phone-container").removeClass("dragging"); },
       receive: function (event, ui) {
         if (ui.helper) {
           var helper = $(ui.helper);
