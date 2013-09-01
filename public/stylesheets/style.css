@@ -335,8 +335,6 @@ button.small-btn {
 
 button.log-toggle {
 	background-image: url(../images/log.png);
-	top: 2px;
-	right: 10px;
 }
 
 .selected:hover button.customize-btn,
@@ -464,11 +462,10 @@ button.log-toggle {
 	background-position: left center;
 }
 
-
 .container {
-  	width: 970px;
+  width: 970px;
  	background-color: #ddd;
-	margin: 0px auto 6px auto;
+	margin: 0px auto 20px auto;
 	position: relative;
 }
 
@@ -476,7 +473,7 @@ button.log-toggle {
   position: absolute;
   left: 0px;
   top: 0px;
-  bottom: 50px;
+  bottom: 0px;
   width: 200px;
   background-color: #ccc;
   padding: 20px 0px 20px 20px;
@@ -486,8 +483,8 @@ button.log-toggle {
   width: 215px;
   overflow-y: auto;
   position: absolute;
-  top: 6px;
-  bottom: 6px;
+  top: 20px;
+  bottom: 20px;
 }
 
 .library-list .draggable:last-child .thumb {
@@ -503,7 +500,7 @@ button.log-toggle {
 .listen-column {
 	float: left;
 	width: 220px;
-	height: 600px;
+  height: 500px;
 	padding-left: 220px;
 }
 
@@ -787,33 +784,81 @@ button.log-toggle {
   width: 246px;
 }
 
-.log {
-  background-color: #FFF;
-  height: 50px;
-  position: absolute;
-  border-top: 1px solid #AAA;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
-  z-index: 99999;
-  overflow-x: visible;
-  overflow-y: scroll;
+.log-expanded {
+  padding-bottom: 170px;
+  margin-bottom: 0;
 }
 
-.log.expanded {
-  height: 220px;
+.log-expanded .library-list {
+  bottom: 290px;
+}
+
+.phone-container {
+  margin-bottom: 130px;
+}
+
+/*Log Stuff*/
+
+.log-toggle {
+  top: 23px;
+  right: 37px;
+  opacity: .5;
+  display: none;
+}
+
+.log-wrapper:hover .log-toggle {
+  display: block;
+  cursor: pointer;
+}
+
+.expanded .log-toggle {
+  top: 0px;
+  right: 55px;
+}
+
+.log-wrapper {
+  width:660px;
+  padding: 10px 12px;
+  position: absolute;
+  bottom: 20px;
+  left: 260px;
+  border-radius: 5px;
+  background: rgba(0,0,0,.85);
+
+}
+
+.log-wrapper.expanded {
+  width: 100%;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 0px;
+}
+
+
+.expanded .log {  
+  background: transparent;
+  z-index: 99999;
+  width:970px;
+  margin: 0px auto 0 auto;
+  position: relative;
+  
+}
+
+.expanded .log .scroll {
+  height: 240px;
+  width: 690px;
+  margin-left: 250px;
 }
 
 .log .scroll {
+  padding: 0;
   margin: 0;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  height: 64px;
   overflow-y: auto;
-  padding: 1em;
-  margin-bottom: .5em;
 }
 
 .log .scroll li .payload {
@@ -824,22 +869,23 @@ button.log-toggle {
   background-color: transparent;
   padding-left: 4px;
   padding-right: 4px;
+  color: #999;
+  border-radius: 3px;
+  padding-bottom: 1px;
 }
 
 .log .scroll li {
   list-style: none;
   word-break:break-all;
+  margin: 2px 0;
 }
 
-.log .scroll li.wtf {
-  margin-bottom: 1px;
-  border-bottom: red 1px solid;
-  color: darkred;
-  background-color: rgba(200,10,10,.3);
+.log .scroll li.wtf .payload {
+  background-color: rgba(200,10,10,.7);
 }
 
 .log .scroll li .payload.new {
-  background-color: yellow;
+  background-color: #666;
   border-radius: 3px;
 }
 
@@ -847,16 +893,16 @@ button.log-toggle {
   display: inline-block;
   min-width: 4em;
   text-align: center;
-  padding-left: .7em;
-  padding-right: .7em;
+  padding: 2px 0px;
   border-radius: 3px;
-  margin-right: 1em;
+  margin-right: 5px;
   font-size: smaller;
+  color: rgba(255,255,255,.5);
 }
 
 .log .scroll li .speaker {
   text-decoration: underline;
-  color: darkblue;
+  color: white;
 }
 
 .log .scroll li .speaker:hover {
@@ -867,8 +913,10 @@ button.log-toggle {
   color: red;
 }
 
-.log .scroll li .message {
-}
+
+
+
+
 
 .hidden {
 	display: none;

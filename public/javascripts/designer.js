@@ -352,10 +352,12 @@ define(
     //Toggle the log
     $('.log-toggle').click(function () {
       if ($(this).hasClass('selected-button')) {
-        $('.log').removeClass('expanded');
+        $('.log-wrapper').removeClass('expanded');
+        $('.container').removeClass('log-expanded');
         $(this).removeClass('selected-button');
       } else {
-        $('.log').addClass('expanded');
+        $('.log-wrapper').addClass('expanded');
+        $('.container').addClass('log-expanded');
         $(this).addClass('selected-button');
       }
     });
