@@ -259,14 +259,14 @@ button.new:active {
 	display: block;
 	position: absolute;
 	text-align: right;
-	top: -40px;
-	right: 160px;
+	top: -75px;
+  right: 0px;
 	height: 40px;
 	width: 500px;
 	line-height: 40px;
 	font-size: 15px;
 	color: #ccc;
-	padding-right: 10px;
+
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -516,7 +516,7 @@ button.log-toggle {
 
 .info-btn {
 	position: absolute;
-	right: 28px;
+	left: 148px;
 	top: 9px;
 	height: 22px;
 	width: 22px;
@@ -1106,18 +1106,31 @@ button.log-toggle.selected-button {
   -moz-transition: all linear .1s;
 }
 
-.selected .subscription-channels {
-  padding-right: 29px;
-}
-
-.selected .broadcast-channels {
-  padding-left: 29px;
+.selected .subscription-channels,
+.subscription-channels:hover {
+    padding-right: 29px;
+    width: 180px;
 }
 
 .selected .broadcast-channels,
-.selected .subscription-channels {
-  width: 180px;
+.broadcast-channels:hover {
+    padding-left: 29px;
+    width: 180px;
 }
+
+.selected .channel-visualisation .channel-menu-toggle,
+.channel-visualisation:hover .channel-menu-toggle {
+  display: block;
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+}
+
+.channel-visualisation:hover .channel-menu 
+ {
+  display: block;
+}
+
+
 
 .broadcast-channels .channel {
 	border-radius: 10px 0px 0px 10px;
@@ -1136,7 +1149,7 @@ button.log-toggle.selected-button {
 .channel-visualisation .channel-menu-toggle {
   position: absolute;
   top: 50%;
-  cursor: pointer;
+/*  cursor: pointer;*/
   margin-top: -13px;
   background: #BBB;
   background: center no-repeat url(../images/broadcast_icon.png);
@@ -1153,14 +1166,9 @@ button.log-toggle.selected-button {
   -moz-transition: linear all .1s;
 }
 
-.selected .channel-menu-toggle {
-  display: block;
-  -webkit-transform: scale(1);
-  -moz-transform: scale(1);
-}
 
 .channel-visualisation .channel-menu-toggle:hover {
-  background: center no-repeat url(../images/broadcast_icon_hover.png);
+  /*  background: center no-repeat url(../images/broadcast_icon_hover.png);*/
   background-size: contain;
 }
 
@@ -1187,21 +1195,36 @@ button.log-toggle.selected-button {
   border-radius: 5px;
   border: solid 1px #BBB;
   border-bottom: solid 2px #BBB;
+}
 
+.channel-visualisation .channel-menu .hover-helper {
+  width: 40px;
+  height: 100%;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+}
+
+.broadcast-menu .hover-helper {
+  left: -40px;
+}
+
+.subscription-menu .hover-helper {
+  right: -40px;
 }
 
 .channel-visualisation .subscription-menu {
-    right: 36px;
+  right: 36px;
 }
 
 .channel-visualisation .broadcast-menu {
-    left: 36px;
+  left: 36px;
 }
 
 .channel-visualisation .channel-menu .arrow {
   position: absolute;
   top: 50%;
-  margin-top: -8px;
+  margin-top: -7px;
   height: 14px;
   width: 14px;
   background: white;
@@ -1284,6 +1307,10 @@ button.log-toggle.selected-button {
 
 }
 
+.channel-menu label:hover {
+	text-decoration: underline;
+}
+
 .channel-menu [color='false'] {
 	background-image: url(../images/disabled-channel-dash.png);
   background-color: #DDD;
@@ -1310,6 +1337,8 @@ button.log-toggle.selected-button {
 }
 
 
+
+
 .broadcast-channels {
   right: -220px;
 }
@@ -1326,13 +1355,11 @@ button.log-toggle.selected-button {
 }
 
 .indicator {
-  height: 20px;
-  width: 4px;
   position: absolute;
-  top: 0px;
+  top: -2px;
   left: 100px;
-  height: 6px;
-  width: 6px;
+  height: 10px;
+  width: 10px;
   border-radius: 20px;
   left: 0px;
   opacity: 0;

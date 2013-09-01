@@ -1,41 +1,51 @@
 <div class="tabs clearfix">
-	<div class="cards clearfix"></div>
-	<button class="btn-add"></button>
+  <div class="cards clearfix"></div>
+  <button id="add-card" class="btn-add"></button>
 </div>
 
 <div class="container clearfix">
 
-	<a target="_blank" class="publish-url"></a>
-	<button class="btn-std btn-md publish btn-critical">Publish</button>
-	<button class="btn-std btn-md new">New App</button>
-	<button class="small-btn log-toggle"></button>
+  <a target="_blank" class="publish-url"></a>
+  <button class="btn-std btn-md publish btn-critical">Publish</button>
+  <button class="btn-std btn-md new">New App</button>
+  <button class="small-btn log-toggle"></button>
 
-	<div class="customize-btn"></div>
-	<div class="note hidden">
-		App Saved
-	</div>
+  <div class="customize-btn"></div>
+  <div class="note hidden">
+    App Saved
+  </div>
 
-	<div class="tray">	
-		<div class="clearfix cats hidden">
-			<button class="btn-std btn-toggle on">Favorite</button>
-			<button class="btn-std btn-toggle">All</button>
-		</div>
-		<div class="library-list library-loading clearfix">
+  <div class="tray">
+    <div class="clearfix cats hidden">
+      <button class="btn-std btn-toggle on">Favorite</button>
+      <button class="btn-std btn-toggle">All</button>
+    </div>
+    <div class="library-list library-loading clearfix">
 
-		</div>
-	</div>
-	<div class="listen-column">
-	</div>
-	<div class="phone-container">
-		<div class="phone-top"></div>
-		<div id="flathead-app"></div>
-		<div class="phone-bottom"></div>
-	</div>
-	<div class="broadcast-column">
-	</div>
+    </div>
+  </div>
+  <div class="listen-column">
+  </div>
+  <div class="phone-container">
+    <div class="phone-top"></div>
+    <div id="flathead-app">
+      <div class="ceci-card">
+        <div class="fixed-top"></div>
+        <div class="phone-canvas">
+          <app-button buttonLabel="Click Me"></app-button>
+          <app-counter></app-counter>
+        </div>
+        <div class="fixed-bottom"></div>
+      </div>
+    </div>
+    <div class="phone-bottom"></div>
+  </div>
+  <div class="broadcast-column">
+  </div>
 </div>
 
 <div class="channel-menu channel-menu-template">
+  <div class="hover-helper"></div>
   <div class="channel-option subscription-option channel-template">
     <div class="color-ui">
       <div name="false"     color="false"   class="color"></div>
@@ -45,7 +55,7 @@
       <div name="pink"      color="pink"    class="color"></div>
       <div name="orange"    color="orange"  class="color"></div>
       <div name="yellow"    color="yellow"  class="color"></div>
-      <div name="purple" color="purple"   class="color"></div>
+      <div name="purple"    color="purple"  class="color"></div>
     </div>
     <label><span class="channel-name"></span><div color="blue" class="chosen-color"></div></label>
   </div>
@@ -53,21 +63,21 @@
 </div>
 
 <div class="log hidden">
-	<div class="inner">
-		<p class="scroll"></p>
-	</div>
+  <div class="inner">
+    <p class="scroll"></p>
+  </div>
 </div>
 
 <div class="modal-wrapper hidden">
-	<div class="modal">
-		<div class="modal-inner">
-			<h2>Success!</h2>
-			<div class="clearfix">
-				Your app has been published to <a class="modal-publish-link"></a>
-			</div>
-			<button class="btn-std return-btn">
-				Return to app
-			</button>
-		</div>
-	</div>
+  <div class="modal">
+    <div class="modal-inner">
+      <h2>Success!</h2>
+      <div class="clearfix">
+        Your app has been published to <a class="modal-publish-link"></a>
+      </div>
+      <button class="btn-std return-btn">
+        Return to app
+      </button>
+    </div>
+  </div>
 </div>

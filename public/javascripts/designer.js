@@ -3,8 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["jquery", "ceci", "ceci-app", "inflector", "jquery-ui"],
-  function($, Ceci, App, Inflector) {
+  ["jquery", "ceci-app", "ceci", "inflector", "ceci-ui", "jquery-ui"],
+  function($, App, Ceci, Inflector) {
     "use strict";
 
     var selection = [];
@@ -14,105 +14,100 @@ define(
       element.css('z-index', ++zIndex);
     }
 
-    Ceci.onCardChange(function (card) {
-      var thumbId = "card-thumb-" + card.id.match(/(\d+)$/)[0];
-      $(".card").removeClass('selected');
-      $("#" + thumbId).addClass('selected');
-    });
+    // these options object makes components drag/droppable when passed
+    // to the jQueryUI "sortable" function.
+    var sortableOptions = {
+      accept: '.draggable',
+      distance : 10,
+      connectWith: ".drophere",
+      placeholder: "ui-state-highlight",
+      start : function() { $(".phone-container").addClass("dragging"); },
+      stop : function() { $(".phone-container").removeClass("dragging"); },
+      receive: function (event, ui) {
+        if (ui.helper) {
+          var helper = $(ui.helper);
+          console.log(helper.attr('value'));
+          app.addComponent(helper.attr('value'));
+        }
+      }
+    };
 
     var app = new Ceci.App({
       container: $('#flathead-app')[0],
       onComponentAdded: function (component) {
         component = $(component);
 
+        var dropTarget = $(".drophere").find(".draggable");
+        dropTarget.replaceWith(component);
+
+        component.draggable({
+          handle: 'handle'
+        });
+
         component.on('mousedown', function(evt) {
           selectComponent($(evt.currentTarget));
         });
 
+        component.append($('<div class="customize-btn"></div>'));
+        component.append($('<div class="handle"></div>'));
+        component.append($('<div class="editables-section"><div class="editable-attributes"></div><div class="delete-btn"></div></div>'));
+
         selectComponent(component);
       },
       onload: function (components) {
-        // create first card as a default card
-        createCard();
+        Object.keys(components).sort().forEach(function (name) {
+          var component = components[name];
 
-        $.each(components, function(i, value) {
-          var thumb = $('<div class="clearfix draggable" name="' + i + '" value="' + i + '"><div class="thumb" value="' + i + '">' + i.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
+          var thumb = $('<div class="clearfix draggable" name="' + name + '" value="' + name + '"><div class="thumb" value="' + name + '">' + name.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
           $('.library-list').append(thumb);
           thumb.draggable({
             connectToSortable: ".drophere",
             helper: "clone",
             appendTo: document.body,
-            start : function(event,ui){
+            start: function(event, ui){
               var clone = ui.helper;
               $(clone).find(".thumb").addClass("im-flying");
               clone.find('.info-btn').remove();
             },
             addClass: "clone"
           });
-          if (value.description) {
-            var componentDescription = value.description.innerHTML;
+          if (component.description) {
+            var componentDescription = component.description.innerHTML;
             thumb.attr('description', componentDescription);
           } else {
             thumb.attr('description', 'No description');
           }
         });
 
+        $('.drophere').sortable(sortableOptions);
+
         $('.library-list').removeClass("library-loading");
+      },
+      onCardChange: function (card) {
+        var thumbId = "card-thumb-" + card.id.match(/(\d+)$/)[0];
+        $(".card").removeClass('selected');
+        $("#" + thumbId).addClass('selected');
+      },
+      onCardAdded: function (card) {
+        Array.prototype.forEach.call(card.children, function (element) {
+          element.classList.add('drophere');
+        });
 
-        if (window.location.search.length > 0) {
-          var match = window.location.search.match(/[?&]template=(\w+)/);
-          if (match[1]) {
-            $.getJSON('/templates/' + match[1] + '.json', function (data) {
-              if (data && data.cards) {
-                data.cards.forEach(function (card, cardIndex) {
-                  var cardElement = document.querySelector('.ceci-card');
-                  if (cardIndex > 0) {
-                    cardElement = createCard();
-                  }
-
-                  function placeElementsInContainer (elements, container) {
-                    elements.forEach(function (desc) {
-                      var componentElement = document.createElement(desc.tagname);
-                      componentElement.setAttribute('id', desc.id);
-
-                      desc.attributes.forEach(function (attr) {
-                        componentElement.setAttribute(attr.name, attr.value);
-                      });
-
-                      if (desc.broadcast !== 'false') {
-                        var broadcastElement = document.createElement('broadcast');
-                        broadcastElement.setAttribute('on', desc.broadcast);
-                        componentElement.appendChild(broadcastElement);
-                      }
-
-                      desc.listen.forEach(function (listen) {
-                        var listenElement = document.createElement('listen');
-                        listenElement.setAttribute('on', listen.channel);
-                        listenElement.setAttribute('for', listen.listener);
-                        componentElement.appendChild(listenElement);
-                      });
-
-                      container.appendChild(componentElement);
-
-                      $(componentElement).draggable({
-                        handle: 'handle'
-                      });
-
-                      Ceci.convertElement(componentElement, function(){
-                        app.componentAddedCallback(componentElement);
-                      });
-                    });
-                  }
-
-                  placeElementsInContainer(card.top, cardElement.querySelector('.fixed-top'));
-                  placeElementsInContainer(card.canvas, cardElement.querySelector('.phone-canvas'));
-                  placeElementsInContainer(card.bottom, cardElement.querySelector('.fixed-bottom'));
-                });
-              }
-            });
-          }
-        }
+        // create card thumbnail
+        var cardNumber = $(".card").length + 1;
+        var newthumb = $('<div class="card">' + cardNumber + '</div>');
+        newthumb.attr('id', "card-thumb-" + cardNumber);
+        newthumb.click(function() {
+          card.show();
+        });
+        $(".cards").append(newthumb);
+        $('.drophere').sortable(sortableOptions);
+        card.show();
       }
+    });
+
+    $('#add-card').click(function(){
+      app.addCard();
     });
 
     $(document).on('mouseenter', '.draggable', function () {
@@ -168,28 +163,15 @@ define(
     var clearSelection = function() {
       selection = [];
       $(".editables-section").hide();
-      $(".selected").removeClass("selected");
+      $(".phone-container .selected").removeClass("selected");
       $(".inspector").addClass('hidden');
     };
-
-    // jQuery-UI property for reordering items in the designer
-    function enableReorder() {
-      $(".phone-canvas,.fixed-top,.fixed-bottom").disableSelection().sortable({
-        connectWith: ".drophere",
-        placeholder: "ui-state-highlight",
-        start : function() { $(".phone-container").addClass("dragging"); },
-        stop : function() { $(".phone-container").removeClass("dragging"); }
-      });
-      // FIXME: do we need this line if we already explicitly set all the sortable props?
-      $(".phone-canvas,.fixed-top,.fixed-bottom").sortable("enable");
-    }
 
     var disableReorder = function() {
       $(".phone-canvas,.fixed-top,.fixed-bottom").sortable("disable");
     };
 
     clearSelection();
-    enableReorder();
 
     $(document).on('click', '.container', function (evt) {
       if ($(evt.target).hasClass('container')) {
@@ -198,20 +180,35 @@ define(
     });
 
     // document-level key handling
-    $(document).on('keydown', function(event) {
-      // escape hides all modal dialogs
-      if (event.which === 27) {
-        $('.color-modal').removeClass('flex');
-        // and clears the selection non-destructively
-        clearSelection();
-      }
-      // delete removes all selected items.
-      else if (event.which === 46) {
-        var elements = selection.slice();
-        clearSelection();
-        elements.forEach(function(element) {
-          element.removeSafely();
-        });
+    $(document).unbind('keydown').bind('keydown', function(event) {
+      var keys = {
+        esc: 27,
+        del: 46,
+        backspace: 8
+      };
+
+      switch (event.which) {
+        case (keys.esc):
+          // escape hides all modal dialogs
+          $('.color-modal').removeClass('flex');
+          // and clears the selection non-destructively
+          clearSelection();
+          break;
+
+        // delete removes all selected items.
+        case (keys.del):
+          var elements = selection.slice();
+          clearSelection();
+          elements.forEach(function(element) {
+            element.removeSafely();
+          });
+          break;
+
+        case (keys.backspace):
+          // Cancel "back" navigation
+          if (event.target.tagName.toLowerCase() === 'body'){
+            event.preventDefault();
+          }
       }
     });
 
@@ -259,11 +256,13 @@ define(
       var value = element.getAttribute(attributeName);
       value = value !== null ? value : '';
 
+      var title = Inflector.titleize(Inflector.underscore(attributeName));
+
       switch(definition.type) {
         case "text": return (function() {
                         // TODO: This would be a fine place for angular
                         var e = $("<div><label>" +
-                          definition.title +
+                          title +
                           "</label><input type=\"text\" value=\"" +
                           value +
                           "\"></input></div>"
@@ -278,7 +277,7 @@ define(
                         // TODO: This would be a fine place for angular
                         var e = $(
                           "<div><label>" +
-                          definition.title +
+                          title +
                           "</label><input type=\"number\" min=\"" +
                           definition.min +
                           "\" max=\"" +
@@ -295,7 +294,7 @@ define(
                         // TODO: This would be a fine place for angular
                         var e = $(
                           "<div><label>" +
-                          definition.title +
+                          title +
                           "</label><input type=\"checkbox\" " +
                           (value == "true" ? " checked=\"true\" " : "") + "\" value=\"" +
                           value + "\" /></div>"
@@ -347,25 +346,29 @@ define(
     });
 
     //Generate or remove the channel menu
-    $(document).on('click','.channel-menu-toggle',function(){
+    $(document).on('mouseleave','.channel-visualisation',function(){
+      $(this).find(".channel-menu").remove();
+    });
 
-      $(this).toggleClass("open-toggle");
 
+    $(document).on('mouseover','.channel-visualisation',function(){
+
+      // $(this).toggleClass("open-toggle");
       var channelType;
-      if($(this).parent()[0].tagName == "LISTEN"){
+
+      if($(this)[0].tagName == "LISTEN"){
         channelType = "subscription";
       } else {
         channelType = "broadcast";
       }
 
-      if($(this).closest(".channel-visualisation").find(".channel-menu").length === 0) {
+      //If there is no menu
+      if($(this).find(".channel-menu").length === 0 && $(this).find(".channel").length > 0) {
         var menu = $(".channel-menu-template").clone();
         menu.removeClass("channel-menu-template");
         menu.addClass(channelType + "-menu");
 
-        $(this).parent().append(menu);
-
-        var channels = $(this).parent().find(".channel");
+        var channels = $(this).find(".channel");
 
         //Build out the Subscription Channels
         channels.each(function(key, channel){
@@ -380,9 +383,9 @@ define(
           menu.append(subItem);
         });
         menu.find(".channel-template").remove();
+        $(this).append(menu);
+        menu.addClass("menu-in");
         menu.css("margin-top",-1 * menu.outerHeight()/2 -1);
-      } else {
-        $(this).parent().find(".channel-menu").remove();
       }
     });
 
@@ -412,8 +415,8 @@ define(
       var title = thisChannel.attr("title");
       thisChannel.find(".chosen-color").attr("color",color);
       thisChannel.find("label").show();
-      $(this).closest(".channel-visualisation").find(".channel-menu-toggle").removeClass("open-toggle");
-      $(this).closest(".channel-menu").remove();
+      // $(this).closest(".channel-visualisation").find(".channel-menu-toggle").removeClass("open-toggle");
+      // $(this).closest(".channel-menu").remove();
       $(this).parent().hide();
     });
 
@@ -447,7 +450,6 @@ define(
       comp.addClass("selected");
 
       moveToFront(comp);
-
 
 
       //Changes component channel
@@ -519,64 +521,10 @@ define(
       $('.component-description').remove();
     });
 
-    // this options object makes components drag/droppable when passed
-    // to the jQueryUI "sortable" function.
-    var sortableOptions = {
-      accept: '.draggable',
-      distance : 10,
-      receive: function (event, ui) {
-        if (ui.helper) {
-          var helper = $(ui.helper);
-
-          app.addComponent(helper.attr('value'), function(component){
-            component = $(component);
-
-            setTimeout(function(){
-              component.append($('<div class="customize-btn"></div>'));
-              component.append($('<div class="handle"></div>'));
-              component.append($('<div class="editables-section"><div class="editable-attributes"></div><div class="delete-btn"></div></div>'));
-            },0);
-
-            var dropTarget = $(".drophere").find(".draggable");
-            dropTarget.replaceWith(component);
-
-            component.draggable({
-              handle: 'handle'
-            });
-          });
-        }
-      }
-    };
-
-    $('.drophere').sortable(sortableOptions);
-
-    var createCard = function() {
-      var card = Ceci.createCard();
-      $('.drophere', card).sortable(sortableOptions);
-      $('#flathead-app').append(card);
-
-      // create card thumbnail
-      var cardNumber = $(".card").length + 1;
-      var newthumb = $('<div class="card">' + cardNumber + '</div>');
-      newthumb.attr('id', "card-thumb-" + cardNumber);
-      newthumb.click(function() {
-        card.showCard();
-      });
-      $(".cards").append(newthumb);
-
-      card.showCard();
-
-      return card;
-    };
-
-    $(".btn-add").click(createCard);
-
-
     $('.publish').click(function(){
-      var manifest = app.serialize();
 
       $.ajax('/publish', {
-        data: { manifest: manifest },
+        data: { manifest: app.serialize() },
         type: 'post',
         success: function (data) {
           $('.publish-url').html(data.install);
@@ -600,6 +548,60 @@ define(
     $('.return-btn').click(function () {
       $('.modal-wrapper').removeClass('flex');
     });
+
+    if (window.location.search.length > 0) {
+      var match = window.location.search.match(/[?&]template=(\w+)/);
+      if (match[1]) {
+        $.getJSON('/templates/' + match[1] + '.json', function (data) {
+          if (data && data.cards) {
+            data.cards.forEach(function (card, cardIndex) {
+              var cardElement = document.querySelector('.ceci-card');
+              if (cardIndex > 0) {
+                cardElement = createCard();
+              }
+
+              function placeElementsInContainer (elements, container) {
+                elements.forEach(function (desc) {
+                  var componentElement = document.createElement(desc.tagname);
+                  componentElement.setAttribute('id', desc.id);
+
+                  desc.attributes.forEach(function (attr) {
+                    componentElement.setAttribute(attr.name, attr.value);
+                  });
+
+                  if (desc.broadcast !== 'false') {
+                    var broadcastElement = document.createElement('broadcast');
+                    broadcastElement.setAttribute('on', desc.broadcast);
+                    componentElement.appendChild(broadcastElement);
+                  }
+
+                  desc.listen.forEach(function (listen) {
+                    var listenElement = document.createElement('listen');
+                    listenElement.setAttribute('on', listen.channel);
+                    listenElement.setAttribute('for', listen.listener);
+                    componentElement.appendChild(listenElement);
+                  });
+
+                  container.appendChild(componentElement);
+
+                  $(componentElement).draggable({
+                    handle: 'handle'
+                  });
+
+                  Ceci.convertElement(componentElement, function(){
+                    app.componentAddedCallback(componentElement);
+                  });
+                });
+              }
+
+              placeElementsInContainer(card.top, cardElement.querySelector('.fixed-top'));
+              placeElementsInContainer(card.canvas, cardElement.querySelector('.phone-canvas'));
+              placeElementsInContainer(card.bottom, cardElement.querySelector('.fixed-bottom'));
+            });
+          }
+        });
+      }
+    }
 
     // AMD module return
     return {
