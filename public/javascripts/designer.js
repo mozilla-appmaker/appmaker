@@ -278,11 +278,13 @@ define(
       var value = element.getAttribute(attributeName);
       value = value !== null ? value : '';
 
+      var title = Inflector.titleize(Inflector.underscore(attributeName));
+
       switch(definition.type) {
         case "text": return (function() {
                         // TODO: This would be a fine place for angular
                         var e = $("<div><label>" +
-                          definition.title +
+                          title +
                           "</label><input type=\"text\" value=\"" +
                           value +
                           "\"></input></div>"
@@ -297,7 +299,7 @@ define(
                         // TODO: This would be a fine place for angular
                         var e = $(
                           "<div><label>" +
-                          definition.title +
+                          title +
                           "</label><input type=\"number\" min=\"" +
                           definition.min +
                           "\" max=\"" +
@@ -314,7 +316,7 @@ define(
                         // TODO: This would be a fine place for angular
                         var e = $(
                           "<div><label>" +
-                          definition.title +
+                          title +
                           "</label><input type=\"checkbox\" " +
                           (value == "true" ? " checked=\"true\" " : "") + "\" value=\"" +
                           value + "\" /></div>"
