@@ -752,13 +752,13 @@ button.log-toggle {
 }
 
 .log {
-  background-color: #FFF
-  height: 50px
-  position: absolute
-  border-top: 1px solid #AAA
-  right: 0px
-  bottom: 0px
-  left: 0px
+  background-color: #FFF;
+  height: 50px;
+  position: absolute;
+  border-top: 1px solid #AAA;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
   z-index: 99999;
   overflow-x: visible;
   overflow-y: scroll;
