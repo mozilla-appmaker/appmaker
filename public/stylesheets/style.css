@@ -1174,21 +1174,22 @@ button.return-btn {
 	margin: 0px;
 }
 
-
 .note {
+  display: none;
 	position: absolute;
-	top: -50px;
-	left: 0px;
+	top: -72px;
+	left: -1px;
 	height: 30px;
 	line-height: 30px;
-	width: 100px;
+	width: 500px;
 	font-weight: 400;
 	color: #888;
-	font-size: 16px;
-	background-image: url(../images/checked.png);
+	font-size: 14px;
+  padding-left: 20px;
+  background-image: url(../images/checked.png);
+  background-size: 14px;
 	background-repeat: no-repeat;
-	background-position: 80px center;
-	width: 100px;
+	background-position: left;
 }
 
 .saving {

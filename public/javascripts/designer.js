@@ -137,7 +137,9 @@ define(
       var now = new Date();
       now = now.getHours() + ':' + now.getMinutes() + ":" + now.getSeconds();
 
+      $('.note').show();
       $('#time').text(now);
+
       console.log('Draft saved:', now);
     };
 
