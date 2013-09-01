@@ -259,14 +259,14 @@ button.new:active {
 	display: block;
 	position: absolute;
 	text-align: right;
-	top: -40px;
-	right: 160px;
+	top: -75px;
+  right: 0px;
 	height: 40px;
 	width: 500px;
 	line-height: 40px;
 	font-size: 15px;
 	color: #ccc;
-	padding-right: 10px;
+
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
