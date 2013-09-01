@@ -50,6 +50,58 @@ exports.publish = function(req, res) {
   var inputData = req.body;
   var manifest = inputData.manifest || {};
 
+  function cleanString (str, removeQuotes) {
+    str = str.replace(/>/g, '&gt;').replace(/</g, '&lt;');
+
+    if (removeQuotes) {
+      str = str.replace(/'/g, '').replace(/"/g, '')
+    }
+    return str;
+  }
+
+  if (!!manifest.cards && Array.isArray(manifest.cards)) {
+    manifest.cards.forEach(function (card) {
+      function checkElements (elements) {
+        var newElements = [];
+        if (!!elements) {
+          elements.forEach(function (element) {
+            if (typeof element.tagname === 'string' && element.tagname.indexOf('app-') === 0) {
+              element.tagname = cleanString(element.tagname, true);
+              element.id = cleanString(element.id, true);
+              element.broadcast = cleanString(element.broadcast, true);
+              if (element.attributes) {
+                var newAttributes = [];
+                element.attributes.forEach(function (attr) {
+                  console.log(attr.name, attr.name.indexOf('on'));
+                  if (attr.name.indexOf('on') !== 0) {
+                    attr.name = cleanString(attr.name, true);
+                    attr.value = cleanString(attr.value);
+                    newAttributes.push(attr);
+                  }
+                });
+                element.attributes = newAttributes;
+              }
+              if (element.listen) {
+                element.listen.forEach(function (listen) {
+                  listen.listener = cleanString(listen.listener, true);
+                  listen.channel = cleanString(listen.channel, true);
+                });
+              }
+              newElements.push(element);
+            }
+          });
+        }
+        return newElements;
+      }
+      card.top = checkElements(card.top);
+      card.canvas = checkElements(card.canvas);
+      card.bottom = checkElements(card.bottom);
+    });
+  }
+  else {
+    manifest.cards = [];
+  }
+
   var appStr = __publisher.templates.publish({
     cards: manifest.cards
   });
