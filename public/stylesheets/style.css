@@ -338,8 +338,8 @@ button.log-toggle {
  display: block;
 }
 
-.selected:hover .customize-btn,
-.selected:hover .handle {
+.component:hover .handle,
+.component:hover .component-menu {
   display: block;
 }
 
@@ -349,7 +349,6 @@ button.log-toggle {
   display: none !important;
 }
 
-.customize-btn,
 .handle
  {
   background-size: 10px;
@@ -369,7 +368,6 @@ button.log-toggle {
   display: none;
 }
 
-.customize-btn:hover,
 .handle:hover
  {
   opacity: 1;
@@ -384,25 +382,57 @@ button.log-toggle {
 
 .customize-btn {
   background-image: url(../images/customize.png);
-  left:3px;
-	top: 3px;
 }
 
-.delete-btn {
+
+.component-menu .delete-btn {
+  background-image: url(../images/trash.png);
+}
+
+.component-menu {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: none;
+  width: 30px;
+  opacity: .6;
+  height: 30px;
+  overflow: hidden;
+  -webkit-transition: linear all .1s;
+}
+
+.component-menu:hover {
+  width: 80px;
+  height: 100%;
+  opacity: 1;
+}
+
+.component-menu div {
+  position: absolute;
   width: 22px;
   height: 22px;
-  background-image: url(../images/trash.png);
+  top: 3px;
   background-size: 10px;
   background-color: #f8f8f8;
   background-repeat: no-repeat;
   background-position: center;
-  bottom: 0px;
   border-radius: 2px;
   border: solid 1px #BBB;
   cursor: pointer;
-  position: absolute;
-  top: 5px;
-  right: 5px;
+  float: left;
+  margin-right: 3px;
+}
+
+.component-menu .customize-btn {
+  left: 3px;
+}
+
+.component-menu .delete-btn {
+  left: 30px;
+}
+
+.component-menu .customize-btn {
+
 }
 
 /*----------LAYOUT----------*/
