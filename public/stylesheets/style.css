@@ -391,18 +391,19 @@ button.log-toggle {
 
 .component-menu {
   position: absolute;
-  top: 3px;
-  left: 3px;
+  top: 0px;
+  left: 0px;
   display: none;
-  width: 24px;
+  width: 30px;
   opacity: .6;
-  height: 24px;
+  height: 30px;
   overflow: hidden;
   -webkit-transition: linear all .1s;
 }
 
 .component-menu:hover {
-  width: 52px;
+  width: 80px;
+  height: 100%;
   opacity: 1;
 }
 
@@ -410,6 +411,7 @@ button.log-toggle {
   position: absolute;
   width: 22px;
   height: 22px;
+  top: 3px;
   background-size: 10px;
   background-color: #f8f8f8;
   background-repeat: no-repeat;
@@ -421,16 +423,16 @@ button.log-toggle {
   margin-right: 3px;
 }
 
-.component-menu .menu-open-btn {
-  left: 0px;
+.component-menu .customize-btn {
+  left: 3px;
 }
 
 .component-menu .delete-btn {
-  left: 27px;
+  left: 30px;
 }
 
 .component-menu .customize-btn {
-  left: 0px;
+
 }
 
 /*----------LAYOUT----------*/
