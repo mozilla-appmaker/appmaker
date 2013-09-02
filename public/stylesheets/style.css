@@ -1196,7 +1196,6 @@ button.return-btn {
 }
 
 .pink {
-/*  background-image: url(../images/pinkheart.png);*/
 	background-position: center;
 	background-repeat: no-repeat;
 }
@@ -1556,7 +1555,8 @@ button.log-toggle.selected-button {
 }
 
 [color=pink] {
-  background:	rgba(227,25,123,1);
+  background: #ff54a7;
+  background:  rgba(255,84,167,1);
 }
 
 .channel-visualisation .channel[color=blue] {
@@ -1588,17 +1588,17 @@ button.log-toggle.selected-button {
 }
 
 .channel-visualisation .channel[color=pink] {
-  background:	rgba(227,25,123,.2);
+  background:  rgba(255,84,167,.2);
 }
 
 .channel-visualisation .channel[color=pink] .color,
 .channel-visualisation .channel[color=pink] .indicator {
-  background:	rgba(227,25,123,1);
+  background: rgba(255,84,167,1);
 }
 
 .channel-visualisation .channel[color=pink] .bubblepopup {
-  border: solid 2px rgba(227,25,123,1);
-  color:	rgba(227,25,123,1);
+  border: solid 2px #ff54a7;
+  color:	#ff54a7;
 }
 
 .channel-visualisation .channel[color=purple] {
@@ -1644,17 +1644,18 @@ button.log-toggle.selected-button {
 }
 
 .channel-visualisation .channel[color=yellow] {
-  background:	rgba(229,210,0,.2);
+  background:	rgba(229,210,0,.4);
 }
 
 .channel-visualisation .channel[color=yellow] .color,
 .channel-visualisation .channel[color=yellow] .indicator {
   background:	rgba(229,210,0,1);
+  background: #e6b819;
 }
 
 .channel-visualisation .channel[color=yellow] .bubblepopup {
-  border: solid 2px rgba(229,210,0,1);
-  color:	rgba(229,210,0,1);
+  border: solid 2px #e6b819;;
+  color:	#e6b819;
 }
 
 .channel-visualisation .channel[color=false] {
