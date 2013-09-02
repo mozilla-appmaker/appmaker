@@ -591,6 +591,10 @@ define(
     });
 
 
+    $('.new').click(function(){
+      $('.card').remove();
+      app.clear();
+    });
 
     $('.publish').click(function(){
 
