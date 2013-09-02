@@ -9,6 +9,10 @@ define(
 
     var selection = [];
 
+    Ceci.registerCeciPlugin('onElementRemoved', function(element){
+      $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
+    });
+
     if (localStorage.draft){
       $('#flathead-app').html(localStorage.draft);
     }
@@ -247,7 +251,6 @@ define(
           clearSelection();
           elements.forEach(function(element) {
             element.removeSafely();
-            $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
           });
           break;
 
@@ -265,7 +268,6 @@ define(
         clearSelection();
         elements.forEach(function(element) {
           element.removeSafely();
-          $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
         });
       }
     });
