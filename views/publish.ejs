@@ -10,10 +10,16 @@
     <script>
       (function(){
         var requireCtx = require.config({
-          baseUrl: '<%= process.env.ASSET_HOST %>'
+          baseUrl: '<%= process.env.ASSET_HOST %>',
+          paths: {
+            'ceci': 'vendor/ceci/ceci',
+            'ceci-ui': 'vendor/ceci/ceci-ui',
+            'ceci-cards': 'vendor/ceci/ceci-cards',
+            'jquery': 'vendor/jquery/jquery.min'
+          }
         });
 
-        requireCtx(['vendor/ceci/ceci'], function (Ceci) {
+        requireCtx(['ceci', 'ceci-ui', 'ceci-cards'], function (Ceci) {
           Ceci.load(function (components) {
             Ceci.convertContainer(document.getElementById('flathead-app'));
           });
