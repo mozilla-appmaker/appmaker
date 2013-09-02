@@ -263,7 +263,7 @@ define(
         var elements = selection.slice();
         clearSelection();
         elements.forEach(function(element) {
-        element.removeSafely();
+          element.removeSafely();
           $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
         });
       }
