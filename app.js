@@ -50,9 +50,19 @@ app.get('/store/uuid', function (req, res) {
   res.send(uuid.v1());
 });
 
-routes.publish.init(store.init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET),
-  __dirname + '/views', process.env.PUBLISH_HOST, process.env.PUBLISH_HOST_PREFIX, process.env.S3_OBJECT_PREFIX);
-app.post('/publish', routes.publish.publish);
+function nopublish(req, res) {
+  res.json({error: {'message': 'No AWS credentials setup on server.'},
+  }, 503); // XXX right one?
+}
+
+if (process.env.S3_KEY === '') {
+  console.log("WARNING: no S3 credentials, so publishing won't work.");
+  app.post('/publish', nopublish);
+} else {
+  routes.publish.init(store.init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET),
+    __dirname + '/views', process.env.PUBLISH_HOST, process.env.PUBLISH_HOST_PREFIX, process.env.S3_OBJECT_PREFIX);
+  app.post('/publish', routes.publish.publish);
+}
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
