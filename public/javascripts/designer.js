@@ -37,6 +37,7 @@ define(
     var sortableOptions = {
       accept: '.draggable',
       distance : 10,
+      tolerance : "pointer",
       connectWith: ".drophere",
       placeholder: "ui-state-highlight",
       start : function() { $(".phone-container").addClass("dragging"); },
