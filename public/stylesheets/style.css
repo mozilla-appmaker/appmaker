@@ -643,6 +643,7 @@ button.log-toggle {
 	width: 310px;
 	margin-bottom: 20px;
 	position: relative;
+  z-index: 1;
 }
 
 .phone-canvas button:focus {
@@ -797,7 +798,7 @@ button.log-toggle {
   margin-bottom: 130px;
 }
 
-/*Log Stuff*/
+/*Log */
 
 .log-toggle {
   top: 23px;
@@ -811,7 +812,7 @@ button.log-toggle {
   cursor: pointer;
 }
 
-.expanded .log-toggle {
+.log-wrapper.expanded .log-toggle {
   top: 0px;
   right: 55px;
 }
@@ -823,8 +824,7 @@ button.log-toggle {
   bottom: 20px;
   left: 260px;
   border-radius: 5px;
-  background: rgba(0,0,0,.85);
-
+  background: rgba(0,0,0,.90);
 }
 
 .log-wrapper.expanded {
@@ -836,8 +836,8 @@ button.log-toggle {
   padding-top: 20px;
   padding-bottom: 20px;
   border-radius: 0px;
+  z-index: 2;
 }
-
 
 .expanded .log {  
   background: transparent;
@@ -845,7 +845,6 @@ button.log-toggle {
   width:970px;
   margin: 0px auto 0 auto;
   position: relative;
-  
 }
 
 .expanded .log .scroll {
@@ -913,11 +912,6 @@ button.log-toggle {
   color: red;
 }
 
-
-
-
-
-
 .hidden {
 	display: none;
 }
@@ -927,13 +921,13 @@ button.log-toggle {
 }
 
 .modal-wrapper {
-   position: fixed;
-   top: 0px;
-   bottom: 0px;
-   left: 0px;
-   right: 0px;
-   background: rgba(0,0,0,.5);
-   z-index: 9999;
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background: rgba(0,0,0,.5);
+  z-index: 9999;
 }
 
 .color-modal {
@@ -960,27 +954,27 @@ button.log-toggle {
 }
 
 .flex {
-   display: -webkit-box;   /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
-   display: -moz-box;      /* OLD: Firefox (buggy) */
-   display: -ms-flexbox;   /* MID: IE 10 */
-   display: -webkit-flex;  /* NEW, Chrome 21+ */
-   display: flex;          /* NEW: Opera 12.1, Firefox 22+ */
+  display: -webkit-box;   /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
+  display: -moz-box;      /* OLD: Firefox (buggy) */
+  display: -ms-flexbox;   /* MID: IE 10 */
+  display: -webkit-flex;  /* NEW, Chrome 21+ */
+  display: flex;          /* NEW: Opera 12.1, Firefox 22+ */
 
-   -webkit-box-align: center; -moz-box-align: center; /* OLD… */
-   -ms-flex-align: center;
-   -webkit-align-items: center;
-   align-items: center;
+  -webkit-box-align: center; -moz-box-align: center; /* OLD… */
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
 
-   -webkit-box-pack: center; -moz-box-pack: center;
-   -ms-flex-pack: center;
-   -webkit-justify-content: center;
-   justify-content: center;
+  -webkit-box-pack: center; -moz-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
 }
 
 .modal {
-   max-width: 585px;
-   background-color: #eee;
-   position: relative;
+  max-width: 585px;
+  background-color: #eee;
+  position: relative;
 }
 
 .modal-inner {
@@ -999,10 +993,10 @@ button.return-btn {
 	height: 30px;
 	width: 30px;
 	background-image: url(../images/close.png);
-   background-position: center;
-   background-repeat: no-repeat;
-   background-color: #e81e1e;
-   float: right;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #e81e1e;
+  float: right;
 }
 
 .close-modal {
@@ -1147,8 +1141,6 @@ button.return-btn {
 	margin-bottom: 30px;
 }
 
-
-
 .moz-input-form input[type="text"] {
 	-moz-box-sizing: border-box;
 	display: inline-block;
@@ -1217,7 +1209,6 @@ button.log-toggle.selected-button {
 	background-image: url(../images/log-selected.png);
 }
 
-
 /*Channel Visualisation*/
 
 .channel-visualisation {
@@ -1240,14 +1231,14 @@ button.log-toggle.selected-button {
 
 .selected .subscription-channels,
 .subscription-channels:hover {
-    padding-right: 29px;
-    width: 180px;
+  padding-right: 29px;
+  width: 180px;
 }
 
 .selected .broadcast-channels,
 .broadcast-channels:hover {
-    padding-left: 29px;
-    width: 180px;
+  padding-left: 29px;
+  width: 180px;
 }
 
 .selected .channel-visualisation .channel-menu-toggle,
@@ -1257,12 +1248,9 @@ button.log-toggle.selected-button {
   -moz-transform: scale(1);
 }
 
-.channel-visualisation:hover .channel-menu 
- {
+.channel-visualisation:hover .channel-menu {
   display: block;
 }
-
-
 
 .broadcast-channels .channel {
 	border-radius: 10px 0px 0px 10px;
@@ -1281,7 +1269,6 @@ button.log-toggle.selected-button {
 .channel-visualisation .channel-menu-toggle {
   position: absolute;
   top: 50%;
-/*  cursor: pointer;*/
   margin-top: -13px;
   background: #BBB;
   background: center no-repeat url(../images/broadcast_icon.png);
@@ -1289,7 +1276,6 @@ button.log-toggle.selected-button {
   color: #222;
   border-radius: 10px;
   height: 26px;
-
   width: 26px;
   font-size: 13px;
   -webkit-transform: scale(0);
@@ -1297,7 +1283,6 @@ button.log-toggle.selected-button {
   -moz-transform: scale(0);
   -moz-transition: linear all .1s;
 }
-
 
 .channel-visualisation .channel-menu-toggle:hover {
   /*  background: center no-repeat url(../images/broadcast_icon_hover.png);*/
@@ -1425,7 +1410,6 @@ button.log-toggle.selected-button {
   padding: 4px 6px  4px 28px;
 }
 
-
 .channel-menu .subscription-template  {
   display: none;
 }
@@ -1468,16 +1452,12 @@ button.log-toggle.selected-button {
   opacity: .7;
 }
 
-
-
-
 .broadcast-channels {
   right: -220px;
 }
 .subscription-channels {
   left: -220px;
 }
-
 
 .broadcast-channels .channel,
 .subscription-channels .channel {
@@ -1497,22 +1477,16 @@ button.log-toggle.selected-button {
   opacity: 0;
 }
 
-
-/*log stuff */
-
- .bubblepopup {
+.bubblepopup {
   position: absolute;
   background: white;
   padding: 8px 12px;
   font-size: 12px;
-
   top: -32px;
-
   text-overflow: ellipsis;
   max-width:155px;
   overflow: hidden;
   white-space: nowrap;
-
 }
 
 .broadcast-channels .bubblepopup {
@@ -1584,9 +1558,6 @@ button.log-toggle.selected-button {
 [color=pink] {
   background:	rgba(227,25,123,1);
 }
-
-
-
 
 .channel-visualisation .channel[color=blue] {
   background:	rgba(53,140,206,.2);
@@ -1694,7 +1665,6 @@ button.log-toggle.selected-button {
 .channel-visualisation .channel[color=false] .color,
 .channel-visualisation .channel[color=false] .indicator {
   display: none;
-/*  background:  rgba(0,0,0,.3);*/
 }
 
 .channel-visualisation .channel[color=false] .bubblepopup {
