@@ -259,12 +259,14 @@ define(
     });
 
     $(document).on("mousedown",'.delete-btn',function () {
-      var elements = selection.slice();
+      if(confirm("Delete this component?")){
+        var elements = selection.slice();
         clearSelection();
         elements.forEach(function(element) {
-          element.removeSafely();
+        element.removeSafely();
           $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
         });
+      }
     });
 
     var displayBroadcastChannel = function () {
