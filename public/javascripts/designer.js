@@ -39,6 +39,7 @@ define(
       distance : 10,
       connectWith: ".drophere",
       placeholder: "ui-state-highlight",
+      handle : ".handle",
       start : function() { $(".phone-container").addClass("dragging"); },
       stop : function() { $(".phone-container").removeClass("dragging"); },
       receive: function (event, ui) {
