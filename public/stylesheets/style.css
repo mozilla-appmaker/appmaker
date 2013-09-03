@@ -720,6 +720,19 @@ button.log-toggle {
 	background-repeat: no-repeat;
 }
 
+.phone-shadow {
+	background-color: #333;
+	height: 50px;
+  width: 340px;
+  border-radius: 25px;
+  position: absolute;
+  bottom: -24px;
+  left: -15px;
+  opacity: .15;
+  -webkit-transform: scaleY(.3);
+}
+
+
 .tabs {
 	margin: 40px auto 0px auto;
 	width: 970px;
