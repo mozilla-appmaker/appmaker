@@ -730,6 +730,7 @@ button.log-toggle {
   left: -15px;
   opacity: .15;
   -webkit-transform: scaleY(.3);
+  -moz-transform: scaleY(.3);
 }
 
 
