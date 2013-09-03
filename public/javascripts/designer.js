@@ -9,6 +9,10 @@ define(
 
     var selection = [];
 
+    Ceci.registerCeciPlugin('onElementRemoved', function(element){
+      $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
+    });
+
     if (localStorage.draft){
       $('#flathead-app').html(localStorage.draft);
     }
@@ -40,6 +44,7 @@ define(
       tolerance : "pointer",
       connectWith: ".drophere",
       placeholder: "ui-state-highlight",
+      handle : ".handle",
       start : function() { $(".phone-container").addClass("dragging"); },
       stop : function() { $(".phone-container").removeClass("dragging"); },
       receive: function (event, ui) {
@@ -246,7 +251,6 @@ define(
           clearSelection();
           elements.forEach(function(element) {
             element.removeSafely();
-            $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
           });
           break;
 
@@ -259,12 +263,13 @@ define(
     });
 
     $(document).on("mousedown",'.delete-btn',function () {
-      var elements = selection.slice();
+      if(confirm("Delete this component?")){
+        var elements = selection.slice();
         clearSelection();
         elements.forEach(function(element) {
           element.removeSafely();
-          $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
         });
+      }
     });
 
     var displayBroadcastChannel = function () {
