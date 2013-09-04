@@ -12,7 +12,12 @@ http = require('http'),
 engine = require('ejs-locals'),
 path = require('path'),
 store = require('./lib/store'),
-uuid = require('node-uuid');
+uuid = require('node-uuid'),
+connect_fonts = require('connect-fonts'),
+font_sourcesanspro = require('connect-fonts-sourcesanspro');
+
+// Cache fonts for 180 days.
+const MAX_FONT_AGE_MS = 1000 * 60 * 60 * 24 * 180;
 
 // .env files aren't great at empty values.
 process.env.ASSET_HOST = typeof process.env.ASSET_HOST === 'undefined' ? '' : process.env.ASSET_HOST;
@@ -32,6 +37,12 @@ app.configure(function(){
   app.use(express.cookieParser(process.env['COOKIE_SECRET']));
   app.use(express.session());
   app.use(app.router);
+  app.use(connect_fonts.setup({
+    fonts: [ font_sourcesanspro ],
+    allow_origin: process.env.ASSET_HOST,
+    ua: 'all',
+    maxage: MAX_FONT_AGE_MS
+  }));
   app.use(express.static(path.join(__dirname, 'public')));
 });
 

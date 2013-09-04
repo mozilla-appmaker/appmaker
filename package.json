@@ -16,7 +16,9 @@
     "ejs-locals": "~1.0.2",
     "knox": "~0.8.6",
     "moniker": "~0.1.2",
-    "node-uuid": "~1.4.1"
+    "node-uuid": "~1.4.1",
+    "connect-fonts": "~0.0.10",
+    "connect-fonts-sourcesanspro": "0.0.3"
   },
   "engines": {
     "node": ">0.8.x",

@@ -4,13 +4,13 @@
     <title><%= (typeof title === 'undefined') ? 'Welcome to Flathead' : title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/animations.css' />
-    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200, 300,400,600' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='/sourcesanspro-extralight,sourcesanspro-light,sourcesanspro-regular,sourcesanspro-semibold/fonts.css' />
 
     <link rel="component" type="text/ceci" href="<%= process.env.COMPONENTS_BASE_URL%>/package/all">
 
     <script src="<%= process.env.ASSET_HOST%>/vendor/requirejs/require.js"></script>
     <script src="<%= process.env.ASSET_HOST%>/javascripts/requireConfig.js"></script>
-    
+
   </head>
   <body>
     <%- body %>
