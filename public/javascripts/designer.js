@@ -134,7 +134,7 @@ define(
       } else {
         thumb.attr('description', 'No description');
       }
-    };
+    }
 
     app.sortComponents = function() {
       var components = Ceci._components;
@@ -147,14 +147,15 @@ define(
 
       var suggestions = [];
       var suggestors =  [];
+      var friends = [];
+      var component;
       var i,j;
       for (i=0; i < selection.length; i++) {
         suggestors.push(selection[i].localName);
       }
       for (i=0; i < suggestors.length; i++) {
-        var component = suggestors[i];
-        var friends = components[component].friends;
-        console.log(component, components[component]);
+        component = suggestors[i];
+        friends = components[component].friends;
         if (friends) {
           for (j=0; j<friends.length; j++) {
             suggestions.push(friends[j]);
@@ -163,8 +164,8 @@ define(
       }
       var card = Ceci.currentCard;
       for (i=0; i < card.elements.length; i++) {
-        var component = card.elements[i];
-        var friends = component.friends;
+        component = card.elements[i];
+        friends = component.friends;
         if (friends) {
           for (j=0; j<friends.length; j++) {
             suggestions.push(friends[j]);
@@ -179,12 +180,12 @@ define(
       for (i = 0; i < Math.min(10, suggestions.length); i++) {
         suggestion = suggestions[i];
         if (suggestion in alreadyMadeSuggestions) continue;
-        addThumb(components[suggestion], suggestion, fullList)
+        addThumb(components[suggestion], suggestion, fullList);
         alreadyMadeSuggestions[suggestion] = true;
       }
       fullList.append("<div class='heading'>All</div>");
       sortedComponentNames.forEach(function (name) {
-        addThumb(components[name], name, fullList)
+        addThumb(components[name], name, fullList);
       });
     };
 
