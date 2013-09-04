@@ -79,40 +79,17 @@ define(
         selectComponent(component);
       },
       onload: function (components) {
-        Object.keys(components).sort().forEach(function (name) {
-          var component = components[name];
-
-          var thumb = $('<div class="clearfix draggable" name="' + name + '" value="' + name + '"><div class="thumb" value="' + name + '">' + name.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
-          $('.library-list').append(thumb);
-          thumb.draggable({
-            connectToSortable: ".drophere",
-            helper: "clone",
-            appendTo: document.body,
-            start: function(event, ui){
-              var clone = ui.helper;
-              $(clone).find(".thumb").addClass("im-flying");
-              clone.find('.info-btn').remove();
-            },
-            addClass: "clone"
-          });
-          if (component.description) {
-            var componentDescription = component.description.innerHTML;
-            thumb.attr('description', componentDescription);
-          } else {
-            thumb.attr('description', 'No description');
-          }
-        });
-
-        $('.drophere').sortable(sortableOptions);
-
+        this.sortComponents();
         Ceci.registerCeciPlugin("onChange", function(){
           if (saveTimer) {
             clearTimeout(saveTimer);
           }
           saveTimer = setTimeout(saveApp, 500);
         });
+        document.addEventListener("onselectionchanged", app.sortComponents);
 
         $('.library-list').removeClass("library-loading");
+        $('.drophere').sortable(sortableOptions);
       },
       onCardChange: function (card) {
         var thumbId = "card-thumb-" + card.id.match(/(\d+)$/)[0];
@@ -136,6 +113,80 @@ define(
         card.show();
       }
     });
+
+    function addThumb(component, name, list) {
+      var thumb = $('<div class="clearfix draggable" name="' + name + '" value="' + name + '"><div class="thumb" value="' + name + '">' + name.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
+      list.append(thumb);
+      thumb.draggable({
+        connectToSortable: ".drophere",
+        helper: "clone",
+        appendTo: document.body,
+        start: function(event, ui){
+          var clone = ui.helper;
+          $(clone).find(".thumb").addClass("im-flying");
+          clone.find('.info-btn').remove();
+        },
+        addClass: "clone"
+      });
+      if (component.description) {
+        var componentDescription = component.description.innerHTML;
+        thumb.attr('description', componentDescription);
+      } else {
+        thumb.attr('description', 'No description');
+      }
+    };
+
+    app.sortComponents = function() {
+      var components = Ceci._components;
+      var sortedComponentNames = Object.keys(components);
+      sortedComponentNames.sort();
+      var fullList = $('.library-list');
+      fullList.html('');
+      fullList.append("<div class='heading'>Suggested</div>");
+      var suggestionCount = 0;
+
+      var suggestions = [];
+      var suggestors =  [];
+      var i,j;
+      for (i=0; i < selection.length; i++) {
+        suggestors.push(selection[i].localName);
+      }
+      for (i=0; i < suggestors.length; i++) {
+        var component = suggestors[i];
+        var friends = components[component].friends;
+        console.log(component, components[component]);
+        if (friends) {
+          for (j=0; j<friends.length; j++) {
+            suggestions.push(friends[j]);
+          }
+        }
+      }
+      var card = Ceci.currentCard;
+      for (i=0; i < card.elements.length; i++) {
+        var component = card.elements[i];
+        var friends = component.friends;
+        if (friends) {
+          for (j=0; j<friends.length; j++) {
+            suggestions.push(friends[j]);
+          }
+        }
+      }
+      /* these are what we suggest with a blank app */
+      suggestions.push('app-fireworks');
+      suggestions.push('app-button');
+      var alreadyMadeSuggestions = {};
+      var suggestion;
+      for (i = 0; i < Math.min(10, suggestions.length); i++) {
+        suggestion = suggestions[i];
+        if (suggestion in alreadyMadeSuggestions) continue;
+        addThumb(components[suggestion], suggestion, fullList)
+        alreadyMadeSuggestions[suggestion] = true;
+      }
+      fullList.append("<div class='heading'>All</div>");
+      sortedComponentNames.forEach(function (name) {
+        addThumb(components[name], name, fullList)
+      });
+    };
 
     var saveApp = function(){
       localStorage.draft = app.serialize();
@@ -215,6 +266,8 @@ define(
       $(".editables-section").hide();
       $(".phone-container .selected").removeClass("selected");
       $(".inspector").addClass('hidden');
+      var event = new Event('onselectionchanged');
+      document.dispatchEvent(event);
     };
 
     var disableReorder = function() {
@@ -533,6 +586,8 @@ define(
       if(comp[0] != selection[0]){
         clearSelection();
         selection.push(comp[0]);
+        var event = new Event('onselectionchanged');
+        document.dispatchEvent(event);
         setTimeout(function(){
           displayAttributes(comp[0]);
         },0);

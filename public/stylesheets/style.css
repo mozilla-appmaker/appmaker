@@ -487,6 +487,10 @@ button.log-toggle {
   bottom: 20px;
 }
 
+.library-list .heading {
+  text-transform: uppercase;
+}
+
 .library-list .draggable:last-child .thumb {
   margin-bottom: 0px;
 }
