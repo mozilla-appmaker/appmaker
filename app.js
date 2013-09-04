@@ -17,7 +17,7 @@ connect_fonts = require('connect-fonts'),
 font_sourcesanspro = require('connect-fonts-sourcesanspro');
 
 // Cache fonts for 180 days.
-const MAX_FONT_AGE_MS = 1000 * 60 * 60 * 24 * 180;
+var MAX_FONT_AGE_MS = 1000 * 60 * 60 * 24 * 180;
 
 // .env files aren't great at empty values.
 process.env.ASSET_HOST = typeof process.env.ASSET_HOST === 'undefined' ? '' : process.env.ASSET_HOST;
@@ -62,7 +62,7 @@ app.get('/store/uuid', function (req, res) {
 });
 
 function nopublish(req, res) {
-  res.json({error: {'message': 'No AWS credentials setup on server.'},
+  res.json({error: {'message': 'No AWS credentials setup on server.'}
   }, 503); // XXX right one?
 }
 
