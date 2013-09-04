@@ -664,6 +664,7 @@ define(
 
     $('.new').click(function(){
       $('.card').remove();
+      clearSelection();
       app.clear();
     });
 
