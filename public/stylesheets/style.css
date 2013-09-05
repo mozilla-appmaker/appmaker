@@ -1352,11 +1352,11 @@ listen.channel-visualisation  .channel-menu-toggle {
 }
 
 .channel-visualisation .subscription-menu {
-  right: 36px;
+  right: -3px;
 }
 
 .channel-visualisation .broadcast-menu {
-  left: 36px;
+  left: -3px;
 }
 
 .channel-visualisation .channel-menu .arrow {
@@ -1366,6 +1366,7 @@ listen.channel-visualisation  .channel-menu-toggle {
   height: 14px;
   width: 14px;
   background: white;
+  display: none;
 }
 
 .channel-visualisation .subscription-menu .arrow {
