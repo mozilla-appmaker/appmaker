@@ -472,6 +472,10 @@ define(
       // $(this).closest(".channel-menu").remove();
       $(this).parent().hide();
     });
+    function clearLog() {
+      document.querySelector('.log .scroll').innerHTML = '';
+      Ceci.log("New app, clean log.");
+    }
     document.addEventListener('log', function(event) {
       try {
         var scroll = $('.log .scroll');
@@ -609,6 +613,7 @@ define(
     $('.new').click(function(){
       $('.card').remove();
       app.clear();
+      clearLog();
     });
 
     $('.publish').click(function(){
