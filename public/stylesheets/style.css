@@ -8,7 +8,7 @@ body {
 	font-family: 'Source Sans Pro', arial;
 	font-size: 14px;
 	color: #222;
-	background-color: #111;
+	background-color: #e8ebed;
 	overflow-y: scroll;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
@@ -229,28 +229,24 @@ button.btn-start {
 }
 
 button.publish {
-	position: absolute;
-	top: -36px;
-	right: 0px;
-	display: block;
+	float: right;
 	height: 36px;
 	width: 110px;
 	font-size: 16px;
 	cursor: pointer;
-	border-radius: 3px 3px 0px 0px;
+	border-radius: 3px;
+	margin: 12px 12px 0px 0px;
 }
 
 button.new {
-	position: absolute;
-	top: -36px;
-	right: 115px;
-	display: block;
+	float: right;
 	height: 36px;
 	width: 110px;
 	font-size: 16px;
 	cursor: pointer;
 	background-color: #ff7b00;
-	border-radius: 3px 3px 0px 0px;
+	margin: 12px 12px 0px 0px;
+	border-radius: 3px;
 }
 
 button.new:hover {
@@ -293,13 +289,10 @@ button.btn-img {
 
 button.btn-add {
 	height: 36px;
-	width: 36px;
-	border-radius: 3px 3px 0px 0px;
-	background-color: #333;
+	width: 26px;
 	border: none;
 	padding: 0px;
-	background-position: center;
-	background-repeat: no-repeat;
+	background-color: #31353C;
 	color: #FFF;
 	font-size: 13px;
 	cursor: pointer;
@@ -307,6 +300,7 @@ button.btn-add {
 	background-position: center;
 	background-repeat: no-repeat;
 	float: left;
+	margin-top: 24px;
 }
 
 button.btn-done {
@@ -389,8 +383,13 @@ button.log-toggle {
 }
 
 
-.component-menu .delete-btn {
+.delete-btn {
   background-image: url(../images/trash.png);
+  height: 40px;
+  width: 40px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #DDD;
 }
 
 .component-menu {
@@ -431,15 +430,71 @@ button.log-toggle {
   left: 3px;
 }
 
-.component-menu .delete-btn {
-  left: 30px;
-}
-
 .component-menu .customize-btn {
 
 }
 
 /*----------LAYOUT----------*/
+
+.top-nav {
+	width: 100%;
+	height: 60px;
+	background-color: #31353C;
+}
+
+.logo {
+	background-image: url(../images/maker.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: #358CCE;
+	float: left;
+	height: 60px;
+	width: 220px;
+}
+
+.container {
+  	min-width: 560px;
+	margin: 0px 245px 0px 220px;
+}
+
+.inner-container {
+	width: 100%;
+	position: relative;
+}
+
+.tray {
+	position: absolute;
+	left: 0px;
+	top: 60px;
+	bottom: 0px;
+	width: 220px;
+	background-color: #31353C;
+}
+
+.listen-column {
+	float: left;
+	width: 220px;
+	height: 520px;
+	width: calc(50% - 155px);
+	margin-top: 60px;
+}
+
+.broadcast-column {
+	float: left;
+	width: calc(50% - 155px);
+	height: 520px;
+	margin-top: 60px;
+}
+
+.right-column {
+	position: absolute;
+	right: 0px;
+	top: 60px;
+	bottom: 0px;
+	width: 205px;
+	background-color: #c9cccf;
+	padding: 20px;
+}
 
 .info-box {
 	height: 500px;
@@ -462,33 +517,21 @@ button.log-toggle {
 	background-position: left center;
 }
 
-.container {
-  width: 970px;
- 	background-color: #ddd;
-	margin: 0px auto 20px auto;
-	position: relative;
-}
-
-.tray {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  bottom: 0px;
-  width: 200px;
-  background-color: #ccc;
-  padding: 20px 0px 20px 20px;
-}
-
 .library-list {
   width: 215px;
   overflow-y: auto;
   position: absolute;
-  top: 20px;
-  bottom: 20px;
+  top: 0px;
+  bottom: 0px;
 }
 
 .library-list .heading {
   text-transform: uppercase;
+  color: #5b6270;
+  text-align: center;
+  margin: 20px 0px 0px 0px;
+  border-bottom: 1px solid #212429;
+  padding-bottom: 20px;
 }
 
 .library-list .draggable:last-child .thumb {
@@ -499,19 +542,6 @@ button.log-toggle {
 	min-height: 400px;
 	background: url(../images/loading-throbber.gif) center no-repeat;
 	background-size: auto 75px;
-}
-
-.listen-column {
-	float: left;
-	width: 220px;
-  height: 500px;
-	padding-left: 220px;
-}
-
-.broadcast-column {
-	float: left;
-	width: 220px;
-	height: 500px;
 }
 
 .component-header {
@@ -544,11 +574,6 @@ button.log-toggle {
 	border-radius: 3px;
 	color: #EEE;
 	display: none;
-}
-
-.draggable {
-	cursor: move;
-	position: relative;
 }
 
 .info-btn {
@@ -585,21 +610,40 @@ button.log-toggle {
 }
 
 .thumb {
-	width: 180px;
-  background-color: #eee;
-  margin-bottom: 5px;
-  border-radius: 3px;
-	line-height: 40px;
-	text-indent: 10px;
+	text-align: center;
+	color: #c5cad4;
+	font-size: 13px;
+}
+
+.preview {
+	padding: 10px 0px;
+}
+
+.button-preview {
+	height: 45px;
+	background-color: #4DB227;
+	width: 110px;
+	border-radius: 3px;
+	color: #FFF;
+	line-height: 45px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.draggable {
+	height: 90px;
+	cursor: move;
+	position: relative;
+	border-bottom: 1px solid #212429;
+}
+
+.draggable:hover{
+	background-color: #434852;
 }
 
 .im-flying {
   box-shadow: 0px 3px 8px rgba(0,0,0,.3);
   background: #EEE !important;
-}
-
-.draggable:hover .thumb{
-	background: #FFF;
 }
 
 .component-description {
@@ -645,9 +689,9 @@ button.log-toggle {
 .phone-container {
 	float: left;
 	width: 310px;
-	margin-bottom: 20px;
+	margin-top: 60px;
 	position: relative;
-  z-index: 1;
+	z-index: 1;
 }
 
 .phone-canvas button:focus {
@@ -667,7 +711,6 @@ button.log-toggle {
 	background-color: #333;
 	height: 36px;
 	width: 100%;
-	margin-top: 20px;
 	border-radius: 6px 6px 0px 0px;
 	background-image: url(../images/mic.png);
 	background-position: center;
@@ -737,14 +780,9 @@ button.log-toggle {
   -moz-transform: scaleY(.3);
 }
 
-
-.tabs {
-	margin: 40px auto 0px auto;
-	width: 970px;
-}
-
 .cards {
 	float: left;
+	margin-left: 24px;
 }
 
 .card {
@@ -757,12 +795,12 @@ button.log-toggle {
 	background-color: #333;
 	float: left;
 	color: #888;
-	margin-right: 5px;
+	margin: 24px 5px 0px 0px;
 	border-radius: 3px 3px 0px 0px;
 }
 
 .card.selected {
-  background-color: #ddd;
+  background-color: #e8ebed;
   box-shadow: 0;
 
 }
@@ -812,10 +850,6 @@ button.log-toggle {
   bottom: 290px;
 }
 
-.phone-container {
-  margin-bottom: 130px;
-}
-
 /*Log */
 
 .log-toggle {
@@ -836,13 +870,14 @@ button.log-toggle {
 }
 
 .log-wrapper {
-  width:660px;
-  padding: 10px 12px;
+  width:205px;
+  padding: 20px;
   position: absolute;
-  bottom: 20px;
-  left: 260px;
-  border-radius: 5px;
-  background: rgba(0,0,0,.90);
+  bottom: 0px;
+  right: 0px;
+  background: #5b6270;
+  font-size: 13px;
+  color: #c9cccf;
 }
 
 .log-wrapper.expanded {
@@ -886,7 +921,6 @@ button.log-toggle {
   background-color: transparent;
   padding-left: 4px;
   padding-right: 4px;
-  color: #999;
   border-radius: 3px;
   padding-bottom: 1px;
 }
@@ -908,7 +942,7 @@ button.log-toggle {
 
 .log .scroll li .channel {
   display: inline-block;
-  min-width: 4em;
+  width: 20px;
   text-align: center;
   padding: 2px 0px;
   border-radius: 3px;
@@ -1270,11 +1304,11 @@ button.log-toggle.selected-button {
 }
 
 .broadcast-channels .channel {
-	border-radius: 10px 0px 0px 10px;
+	border-radius: 2px;
 }
 
 .subscription-channels .channel {
-	border-radius: 0px 10px 10px 0px;
+	border-radius: 2px;
 }
 
 .channel-visualisation .channel {
@@ -1480,7 +1514,7 @@ button.log-toggle.selected-button {
 .subscription-channels .channel {
   position: relative;
   width: 100%;
-  height: 6px;
+  height: 2px;
 }
 
 .indicator {
@@ -1526,8 +1560,6 @@ button.log-toggle.selected-button {
 .channel-visualisation .color {
 	border-radius: 25px;
   position: absolute;
-	height: 6px;
-	width: 6px;
   padding: 0px;
   margin:0;
 }
@@ -1578,7 +1610,7 @@ button.log-toggle.selected-button {
 }
 
 .channel-visualisation .channel[color=blue] {
-  background:	rgba(53,140,206,.2);
+  background:	rgba(53,140,206,1);
 }
 
 .channel-visualisation .channel[color=blue] .color,
