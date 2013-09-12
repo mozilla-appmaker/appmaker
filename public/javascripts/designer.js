@@ -430,7 +430,7 @@ define(
 
       var editables = $(".editable-section");
       editables.append(attributeList);
-      editables.show()
+      editables.show();
     };
 
     //Toggle customize
