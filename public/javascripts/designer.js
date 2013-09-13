@@ -113,15 +113,15 @@ define(
     });
 
     function addThumb(component, name, list) {
-      var thumb = $('<div class="clearfix draggable" name="' + name + '" value="' + name + '"><div class="preview"><div class="button-preview">Button</div></div><div class="thumb" value="' + name + '">' + name.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
+      var thumb = $('<div class="clearfix preview"><div class="preview-box"><div class="draggable" name="' + name + '" value="' + name + '"><div class="button-preview">Button</div></div></div><div class="thumb" value="' + name + '">' + name.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
       list.append(thumb);
-      thumb.draggable({
+      $('.draggable').draggable({
         connectToSortable: ".drophere",
         helper: "clone",
         appendTo: document.body,
         start: function(event, ui){
           var clone = ui.helper;
-          $(clone).find(".thumb").addClass("im-flying");
+          $(clone).find(".draggable div").addClass("im-flying");
           clone.find('.info-btn').remove();
         },
         addClass: "clone"
