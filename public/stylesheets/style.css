@@ -230,22 +230,22 @@ button.btn-start {
 
 button.publish {
 	float: right;
-	height: 36px;
-	width: 110px;
+	height: 30px;
+	width: 90px;
 	font-size: 16px;
 	cursor: pointer;
 	border-radius: 3px;
-	margin: 12px 12px 0px 0px;
+	margin: 10px 10px 0px 0px;
 }
 
 button.new {
 	float: right;
-	height: 36px;
-	width: 110px;
+	height: 30px;
+	width: 90px;
 	font-size: 16px;
 	cursor: pointer;
 	background-color: #ff7b00;
-	margin: 12px 12px 0px 0px;
+	margin: 10px 10px 0px 0px;
 	border-radius: 3px;
 }
 
@@ -288,7 +288,7 @@ button.btn-img {
 }
 
 button.btn-add {
-	height: 36px;
+	height: 30px;
 	width: 26px;
 	border: none;
 	padding: 0px;
@@ -300,7 +300,7 @@ button.btn-add {
 	background-position: center;
 	background-repeat: no-repeat;
 	float: left;
-	margin-top: 24px;
+	margin-top: 20px;
 }
 
 button.btn-done {
@@ -385,15 +385,14 @@ button.log-toggle {
 
 .delete-btn {
   background-image: url(../images/trash.png);
-  height: 36px;
-  width: 36px;
+  height: 26px;
+  width: 26px;
   background-repeat: no-repeat;
   background-position: center;
   background-color: #e8ebed;
   border-radius: 3px;
   line-height: 40px;
   text-indent: 40px;
-  border: 1px solid #aeb1b5;
   margin-bottom: 10px;
 }
 
@@ -443,7 +442,7 @@ button.log-toggle {
 
 .top-nav {
 	width: 100%;
-	height: 60px;
+	height: 50px;
 	background-color: #31353C;
 }
 
@@ -453,7 +452,7 @@ button.log-toggle {
 	background-position: center;
 	background-color: #358CCE;
 	float: left;
-	height: 60px;
+	height: 50px;
 	width: 220px;
 }
 
@@ -470,10 +469,17 @@ button.log-toggle {
 .tray {
 	position: absolute;
 	left: 0px;
-	top: 60px;
+	top: 50px;
 	bottom: 0px;
 	width: 220px;
 	background-color: #31353C;
+}
+
+.tray input {
+	height: 40px;
+	background-color:#212429;
+	border: none;
+	width: 220px;
 }
 
 .listen-column {
@@ -481,7 +487,7 @@ button.log-toggle {
 	width: 220px;
 	height: 520px;
 	width: calc(50% - 155px);
-	margin-top: 60px;
+	margin-top: 30px;
 	position: relative;
 }
 
@@ -491,24 +497,28 @@ button.log-toggle {
 	text-transform: uppercase;
 	text-align: center;
 	font-size: 18px;
-	line-height: 36px;
+	line-height: 30px;
 }
 
 .broadcast-column {
 	float: left;
 	width: calc(50% - 155px);
 	height: 520px;
-	margin-top: 60px;
+	margin-top: 30px;
 }
 
 .right-column {
 	position: absolute;
 	right: 0px;
-	top: 60px;
+	top: 50px;
 	bottom: 0px;
 	width: 205px;
 	background-color: #c9cccf;
 	padding: 20px;
+}
+
+.editable-section {
+	
 }
 
 .right-column input {
@@ -522,7 +532,8 @@ button.log-toggle {
 	font-size: 18px;
 	color: #31353C;
 	font-weight: 600;
-	margin-bottom: 5px;
+	line-height: 30px;
+	margin-top: 10px;
 }
 
 .description {
@@ -553,10 +564,10 @@ button.log-toggle {
 }
 
 .library-list {
-  width: 215px;
+  width: 220px;
   overflow-y: auto;
   position: absolute;
-  top: 0px;
+  top: 40px;
   bottom: 0px;
 }
 
@@ -564,10 +575,11 @@ button.log-toggle {
   text-transform: uppercase;
   color: #5b6270;
   text-align: center;
-  margin: 20px 0px 0px 0px;
   border-bottom: 1px solid #212429;
-  padding-bottom: 20px;
   font-weight: 600;
+  font-size: 15px;
+  height: 40px;
+  line-height: 40px;
 }
 
 .library-list .draggable:last-child .thumb {
@@ -647,7 +659,7 @@ button.log-toggle {
 
 .thumb {
 	text-align: center;
-	color: #c5cad4;
+	color: #aeb1b5;
 	font-size: 13px;
 }
 
@@ -656,12 +668,12 @@ button.log-toggle {
 }
 
 .button-preview {
-	height: 45px;
+	height: 30px;
 	background-color: #4DB227;
 	width: 110px;
 	border-radius: 3px;
 	color: #FFF;
-	line-height: 45px;
+	line-height: 30px;
 	text-align: center;
 	margin: 0 auto;
 }
@@ -725,7 +737,7 @@ button.log-toggle {
 .phone-container {
 	float: left;
 	width: 310px;
-	margin-top: 60px;
+	margin-top: 30px;
 	position: relative;
 	z-index: 1;
 }
@@ -745,7 +757,7 @@ button.log-toggle {
 
 .phone-top {
 	background-color: #333;
-	height: 36px;
+	height: 30px;
 	width: 100%;
 	border-radius: 6px 6px 0px 0px;
 	background-image: url(../images/mic.png);
@@ -818,20 +830,20 @@ button.log-toggle {
 
 .cards {
 	float: left;
-	margin-left: 24px;
+	margin-left: 20px;
 }
 
 .card {
-	height: 36px;
-	width: 100px;
+	height: 30px;
+	width: 90px;
 	font-size: 14px;
 	text-align: center;
-	line-height: 36px;
+	line-height: 30px;
 	cursor: pointer;
 	background-color: #333;
 	float: left;
 	color: #888;
-	margin: 24px 5px 0px 0px;
+	margin: 20px 5px 0px 0px;
 	border-radius: 3px 3px 0px 0px;
 }
 
