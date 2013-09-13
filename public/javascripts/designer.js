@@ -642,7 +642,7 @@ define(
       element.onColorSelectFunction = onColorSelectFunction;
 
       var componentName = element.tagName.toLowerCase();
-      var componentDesc = element.description.innerHTML
+      var componentDesc = element.description.innerHTML;
       $(".editable-section .name").text(componentName);
       $(".editable-section .description").text(componentDesc);
     };
