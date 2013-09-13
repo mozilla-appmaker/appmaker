@@ -642,8 +642,9 @@ define(
       element.onColorSelectFunction = onColorSelectFunction;
 
       var componentName = element.tagName.toLowerCase();
-      $(".editables-section .name").text(componentName);
-      $(".inspector").removeClass('hidden');
+      var componentDesc = element.description.innerHTML
+      $(".editable-section .name").text(componentName);
+      $(".editable-section .description").text(componentDesc);
     };
 
     //shows component description
