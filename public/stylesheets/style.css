@@ -1685,7 +1685,7 @@ button.log-toggle.selected-button {
 }
 
 .channel-visualisation .channel[color=red] {
-  background:	rgba(232,30,20,.2);
+  background:	rgba(232,30,20,1);
 }
 
 .channel-visualisation .channel[color=red] .color,
@@ -1699,7 +1699,7 @@ button.log-toggle.selected-button {
 }
 
 .channel-visualisation .channel[color=pink] {
-  background:  rgba(255,84,167,.2);
+  background:  rgba(255,84,167,1);
 }
 
 .channel-visualisation .channel[color=pink] .color,
@@ -1713,7 +1713,7 @@ button.log-toggle.selected-button {
 }
 
 .channel-visualisation .channel[color=purple] {
-  background:	rgba(159,39,207,.2);
+  background:	rgba(159,39,207,1);
 }
 
 .channel-visualisation .channel[color=purple] .color,
@@ -1727,7 +1727,7 @@ button.log-toggle.selected-button {
 }
 
 .channel-visualisation .channel[color=green] {
-  background:	rgba(113,184,6,.2);
+  background:	rgba(113,184,6,1);
 }
 
 .channel-visualisation .channel[color=green] .color,
@@ -1741,7 +1741,7 @@ button.log-toggle.selected-button {
 }
 
 .channel-visualisation .channel[color=orange] {
-  background:	rgba(255,123,0,.2);
+  background:	rgba(255,123,0,1);
 }
 
 .channel-visualisation .channel[color=orange] .color,
@@ -1755,7 +1755,7 @@ button.log-toggle.selected-button {
 }
 
 .channel-visualisation .channel[color=yellow] {
-  background:	rgba(229,210,0,.4);
+  background:	rgba(229,210,0,1);
 }
 
 .channel-visualisation .channel[color=yellow] .color,
@@ -1770,7 +1770,7 @@ button.log-toggle.selected-button {
 }
 
 .channel-visualisation .channel[color=false] {
-  background:	rgba(0,0,0,.2);
+  background:	rgba(0,0,0,1);
   display: none;
 }
 
@@ -1785,7 +1785,7 @@ button.log-toggle.selected-button {
   display: none;
 }
 .channel-visualisation .channel[color=false]{
-  background: rgba(102, 102, 102, .2)
+  background: rgba(102, 102, 102, 1)
 }
 
 .channel-visualisation .channel[color=disabled] {
@@ -1804,5 +1804,5 @@ button.log-toggle.selected-button {
   display: none;
 }
 .channel-visualisation .channel[color=disabled]{
-  background: rgba(102, 102, 102, .2)
+  background: rgba(102, 102, 102, 1)
 }
