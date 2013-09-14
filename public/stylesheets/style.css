@@ -231,22 +231,22 @@ button.btn-start {
 button.publish {
 	float: right;
 	height: 30px;
-	width: 90px;
+	width: 110px;
 	font-size: 16px;
 	cursor: pointer;
-	border-radius: 3px;
 	margin: 10px 10px 0px 0px;
+	border-radius: 2px;
 }
 
 button.new {
 	float: right;
 	height: 30px;
-	width: 90px;
+	width: 110px;
 	font-size: 16px;
 	cursor: pointer;
 	background-color: #ff7b00;
 	margin: 10px 10px 0px 0px;
-	border-radius: 3px;
+	border-radius: 2px;
 }
 
 button.new:hover {
@@ -384,16 +384,16 @@ button.log-toggle {
 
 
 .delete-btn {
-  background-image: url(../images/trash.png);
-  height: 26px;
-  width: 26px;
+  background-image: url(../images/delete.png);
+  height: 40px;
+  width: 40px;
+  border-radius: 30px;
   background-repeat: no-repeat;
   background-position: center;
-  background-color: #e8ebed;
-  border-radius: 3px;
   line-height: 40px;
   text-indent: 40px;
   margin-bottom: 10px;
+  border: 2px solid #aeb1b5;
 }
 
 .component-menu {
@@ -458,7 +458,7 @@ button.log-toggle {
 
 .container {
   	min-width: 560px;
-	margin: 0px 245px 0px 220px;
+	margin: 0px 240px 0px 220px;
 }
 
 .inner-container {
@@ -480,11 +480,16 @@ button.log-toggle {
 	background-color:#212429;
 	border: none;
 	width: 220px;
+	background-image: url(../images/search.png);
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	text-indent: 30px;
+	outline: none;
+	color: #aeb1b5;
 }
 
 .listen-column {
 	float: left;
-	width: 220px;
 	height: 520px;
 	width: calc(50% - 155px);
 	margin-top: 30px;
@@ -512,8 +517,8 @@ button.log-toggle {
 	right: 0px;
 	top: 50px;
 	bottom: 0px;
-	width: 205px;
-	background-color: #c9cccf;
+	width: 200px;
+	background-color: #474d57;
 	padding: 20px;
 }
 
@@ -523,14 +528,18 @@ button.log-toggle {
 
 .right-column input {
 	width: 100%;
-	height: 25px;
+	height: 40px;
 	padding: 0px;
 	text-indent: 5px;
+	background-color: #212429;
+	border: none;
+	border-radius: 1px;
+	color: #aeb1b5;
 }
 
 .name {
-	font-size: 18px;
-	color: #31353C;
+	font-size: 16px;
+	color: #e8ebed;
 	font-weight: 600;
 	line-height: 30px;
 	margin-top: 10px;
@@ -539,7 +548,7 @@ button.log-toggle {
 .description {
 	margin-bottom: 20px;
 	line-height: 150%;
-	color: #5b6270;
+	color: #aeb1b5;
 }
 
 .info-box {
@@ -834,6 +843,13 @@ button.log-toggle {
 	background-repeat: no-repeat;
 }
 
+.phone-border {
+		border-left: 1px solid #aeb1b5;
+	border-right: 1px solid #aeb1b5;
+		box-sizing:border-box;
+	-moz-box-sizing:border-box; /* Firefox */
+}
+
 .phone-shadow {
 	background-color: #333;
 	height: 50px;
@@ -937,12 +953,12 @@ button.log-toggle {
 }
 
 .log-wrapper {
-  width:205px;
+  width:200px;
   padding: 20px;
   position: absolute;
   bottom: 0px;
   right: 0px;
-  background: #5b6270;
+  background: #31353C;
   font-size: 13px;
   color: #c9cccf;
 }
