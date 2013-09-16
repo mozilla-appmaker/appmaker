@@ -688,12 +688,12 @@ button.log-toggle {
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
-  height: 68px;
+  height: 60px;
   width: 100%;
 }
 
 .preview {
-	height: 90px;
+	height: 84px;
 	position: relative;
 	border-bottom: 1px solid #212429;
 }
@@ -709,13 +709,19 @@ button.log-toggle {
 	margin: 0 auto;
 }
 
+.missing-image {
+	height: 40px;
+	width: 80px;
+	border-radius: 2px;
+	background-color: #3c414a;
+	line-height: 40px;
+	text-align: center;
+	font-size: 24px;
+}
+
 .draggable {
 	cursor: move;
 	z-index: 99;
-}
-
-.draggable:hover{
-	background-color: #434852;
 }
 
 .im-flying {
