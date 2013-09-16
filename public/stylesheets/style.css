@@ -1398,8 +1398,6 @@ button.log-toggle.selected-button {
   position: absolute;
   top: 50%;
   margin-top: -13px;
-  background: #BBB;
-  background: center no-repeat url(../images/broadcast_icon.png);
   background-size: contain;
   color: #222;
   border-radius: 10px;
@@ -1410,6 +1408,16 @@ button.log-toggle.selected-button {
   -webkit-transition: linear all .1s;
   -moz-transform: scale(0);
   -moz-transition: linear all .1s;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+broadcast.channel-visualisation  .channel-menu-toggle {
+  background-image: url(../images/broadcast_icon.png);
+}
+
+listen.channel-visualisation  .channel-menu-toggle {
+  background-image: url(../images/listen_icon.png);
 }
 
 .channel-visualisation .channel-menu-toggle:hover {
@@ -1459,11 +1467,11 @@ button.log-toggle.selected-button {
 }
 
 .channel-visualisation .subscription-menu {
-  right: 36px;
+  right: -3px;
 }
 
 .channel-visualisation .broadcast-menu {
-  left: 36px;
+  left: -3px;
 }
 
 .channel-visualisation .channel-menu .arrow {
@@ -1473,6 +1481,7 @@ button.log-toggle.selected-button {
   height: 14px;
   width: 14px;
   background: white;
+  display: none;
 }
 
 .channel-visualisation .subscription-menu .arrow {
