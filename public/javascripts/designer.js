@@ -114,11 +114,11 @@ define(
 
     function addThumb(component, name, list) {
       var previewContent;
-      var preview = component.thumbnail
+      var preview = component.thumbnail;
       if(preview == null){
-        previewContent = '<div class="missing-image">?</div>'
+        previewContent = '<div class="missing-image">?</div>';
       } else {
-        previewContent = preview.innerHTML
+        previewContent = preview.innerHTML;
       }
       var thumb = $('<div class="clearfix preview"><div class="preview-box"><div class="draggable" name="' + name + '" value="' + name + '">'+ previewContent +'</div></div><div class="thumb" value="' + name + '">' + name.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
       list.append(thumb);
