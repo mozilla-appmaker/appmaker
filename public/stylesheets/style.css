@@ -311,24 +311,15 @@ button.btn-done {
 	margin-top: 10px;
 }
 
-button.small-btn {
-	width: 36px;
-	height: 36px;
-	border-radius: 3px;
-	background-repeat: no-repeat;
-	background-position: center;
-	position: absolute;
-	background-color: #f8f8f8;
-	-webkit-appearance: none;
-	color: #222;
-	font-size: 13px;
-	border: 1px solid #CCC;
-	box-sizing:border-box;
-	-moz-box-sizing:border-box; /* Firefox */
-}
-
 button.log-toggle {
-	background-image: url(../images/log.png);
+	background: none;
+	background-image: url(../images/expand.png);
+	border: none;
+	height: 8px;
+	width: 30px;
+	position: absolute;
+	top: -15px;
+	left: 110px;
 }
 
 .selected:hover button.customize-btn,
@@ -459,6 +450,7 @@ button.log-toggle {
 .container {
   	min-width: 560px;
 	margin: 0px 240px 0px 220px;
+	overflow: hidden;
 }
 
 .inner-container {
@@ -941,26 +933,12 @@ button.log-toggle {
 
 /*Log */
 
-.log-toggle {
-  top: 23px;
-  right: 37px;
-  opacity: .5;
-  display: none;
-}
-
-.log-wrapper:hover .log-toggle {
-  display: block;
-  cursor: pointer;
-}
-
 .log-wrapper.expanded .log-toggle {
-  top: 0px;
-  right: 55px;
+  
 }
 
 .log-wrapper {
-  width:200px;
-  padding: 20px;
+  width:240px;
   position: absolute;
   bottom: 0px;
   right: 0px;
@@ -970,29 +948,10 @@ button.log-toggle {
 }
 
 .log-wrapper.expanded {
-  width: 100%;
-  position: fixed;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  border-radius: 0px;
-  z-index: 2;
-}
-
-.expanded .log {  
-  background: transparent;
-  z-index: 99999;
-  width:970px;
-  margin: 0px auto 0 auto;
-  position: relative;
 }
 
 .expanded .log .scroll {
-  height: 240px;
-  width: 690px;
-  margin-left: 250px;
+  height: 440px;
 }
 
 .log .scroll {
@@ -1000,7 +959,12 @@ button.log-toggle {
   margin: 0;
   height: 64px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
+
+span.channel {
+	height: 2px;
+} 
 
 .log .scroll li .payload {
   display: inline;
@@ -1018,6 +982,8 @@ button.log-toggle {
   list-style: none;
   word-break:break-all;
   margin: 2px 0;
+  border-bottom: 1px solid #212429;
+  padding: 10px;
 }
 
 .log .scroll li.wtf .payload {
@@ -1031,7 +997,7 @@ button.log-toggle {
 
 .log .scroll li .channel {
   display: inline-block;
-  width: 20px;
+  width: 10px;
   text-align: center;
   padding: 2px 0px;
   border-radius: 3px;
@@ -1335,12 +1301,8 @@ button.return-btn {
 	background-repeat: no-repeat;
 }
 
-button.selected-button {
-	background-color: #555;
-}
-
 button.log-toggle.selected-button {
-	background-image: url(../images/log-selected.png);
+	
 }
 
 /*Channel Visualisation*/
@@ -1358,21 +1320,9 @@ button.log-toggle.selected-button {
 
 .subscription-channels,
 .broadcast-channels {
-  width: 209px;
+  width: 600px;
   -webkit-transition: all linear .1s;
   -moz-transition: all linear .1s;
-}
-
-.selected .subscription-channels,
-.subscription-channels:hover {
-  padding-right: 29px;
-  width: 180px;
-}
-
-.selected .broadcast-channels,
-.broadcast-channels:hover {
-  padding-left: 29px;
-  width: 180px;
 }
 
 .selected .channel-visualisation .channel-menu-toggle,
@@ -1387,11 +1337,11 @@ button.log-toggle.selected-button {
 }
 
 .broadcast-channels .channel {
-	border-radius: 2px;
+	border-radius: 4px;
 }
 
 .subscription-channels .channel {
-	border-radius: 2px;
+	border-radius: 4px;
 }
 
 .channel-visualisation .channel {
@@ -1596,17 +1546,17 @@ listen.channel-visualisation  .channel-menu-toggle {
 }
 
 .broadcast-channels {
-  right: -220px;
+  right: -610px;
 }
 .subscription-channels {
-  left: -220px;
+  left: -610px;
 }
 
 .broadcast-channels .channel,
 .subscription-channels .channel {
   position: relative;
   width: 100%;
-  height: 16px;
+  height: 8px;
   color: #fff;
   font-size: 11px;
   line-height: 16px;
