@@ -113,7 +113,14 @@ define(
     });
 
     function addThumb(component, name, list) {
-      var thumb = $('<div class="clearfix preview"><div class="preview-box"><div class="draggable" name="' + name + '" value="' + name + '"><div class="button-preview">Button</div></div></div><div class="thumb" value="' + name + '">' + name.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
+      var previewContent;
+      var preview = component.thumbnail;
+      if(preview === null){
+        previewContent = '<div class="missing-image">?</div>';
+      } else {
+        previewContent = preview.innerHTML;
+      }
+      var thumb = $('<div class="clearfix preview"><div class="preview-box"><div class="draggable" name="' + name + '" value="' + name + '">'+ previewContent +'</div></div><div class="thumb" value="' + name + '">' + name.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
       list.append(thumb);
       $('.draggable').draggable({
         connectToSortable: ".drophere",
@@ -547,11 +554,11 @@ define(
         var channelthumb;
         if (event.detail.channel) {
           var channel = getChannelByChannelName(event.detail.channel);
-          channelthumb = $("<span class='channel'>" + channel.name + "</span>");
+          channelthumb = $("<span class='channel'></span>");
           channelthumb.css('backgroundColor', convertHex(channel.hex, 70));
         } else {
           channelthumb = $("<span class='channel'>&nbsp;</span>");
-          channelthumb.css('backgroundColor', "rgba(102, 102, 102, .2)");
+          channelthumb.css('backgroundColor', "#212429");
         }
         line.append(channelthumb);
         var payload = $("<div class='payload new'/>");
