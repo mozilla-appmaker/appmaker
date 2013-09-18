@@ -113,10 +113,12 @@ h3 {
 }
 
 h4 {
-	font-weight: 400;
-	color: #FFF;
-	font-size: 16px;
-	margin: 0px 0px 20px 0px;
+	font-weight: 600;
+	color: #5b6270;
+	font-size: 15px;
+	text-transform: uppercase;
+	line-height: 25px;
+	margin: 0px 0px 5px 0px;
 }
 
 h5 {
@@ -230,31 +232,31 @@ button.btn-start {
 
 button.publish {
 	float: right;
-	height: 30px;
-	width: 110px;
+	height: 26px;
+	width: 102px;
 	font-size: 16px;
 	cursor: pointer;
-	margin: 10px 10px 0px 0px;
+	margin: 12px 12px 0px 0px;
 	border-radius: 2px;
 }
 
 button.new {
 	float: right;
-	height: 30px;
-	width: 110px;
+	height: 26px;
+	width: 102px;
 	font-size: 16px;
 	cursor: pointer;
-	background-color: #ff7b00;
-	margin: 10px 10px 0px 0px;
+	background-color: #e81e1e;
+	margin: 12px 12px 0px 0px;
 	border-radius: 2px;
 }
 
 button.new:hover {
-	background-color: #fc8c24;
+	background-color: #fa2f2f;
 }
 
 button.new:active {
-	background-color: #e67103;
+	background-color: #c91818;
 }
 
 .publish-url {
@@ -383,7 +385,7 @@ button.log-toggle {
   background-position: center;
   line-height: 40px;
   text-indent: 40px;
-  margin-bottom: 10px;
+  margin: 10px auto;
   border: 2px solid #aeb1b5;
 }
 
@@ -464,12 +466,12 @@ button.log-toggle {
 	top: 50px;
 	bottom: 0px;
 	width: 220px;
-	background-color: #31353C;
+	background-color: #212429;
 }
 
 .tray input {
 	height: 40px;
-	background-color:#212429;
+	background-color:#181b1f;
 	border: none;
 	width: 220px;
 	background-image: url(../images/search.png);
@@ -509,38 +511,37 @@ button.log-toggle {
 	right: 0px;
 	top: 50px;
 	bottom: 0px;
-	width: 200px;
-	background-color: #474d57;
-	padding: 20px;
-}
-
-.editable-section {
-	
+	width: 240px;
+	background-color: #212429;
 }
 
 .right-column input {
 	width: 100%;
-	height: 40px;
+	height: 30px;
 	padding: 0px;
-	text-indent: 5px;
-	background-color: #212429;
+	text-indent: 10px;
+	background-color: #181b1f;
 	border: none;
 	border-radius: 1px;
-	color: #aeb1b5;
+	color: #fff;
+	margin-bottom: 20px;
+	outline: none;
+}
+
+.right-column label {
+	color: #5b6270;
+	margin-bottom: 5px;
+	display: block;
 }
 
 .name {
-	font-size: 16px;
-	color: #e8ebed;
-	font-weight: 600;
+	font-size: 18px;
+	color: #fff;
+	font-weight: 400;
 	line-height: 30px;
-	margin-top: 10px;
-}
-
-.description {
-	margin-bottom: 20px;
-	line-height: 150%;
-	color: #aeb1b5;
+	margin-top: 30px;
+	margin-bottom: 10px;
+	text-align: center;
 }
 
 .info-box {
@@ -687,7 +688,7 @@ button.log-toggle {
 .preview {
 	height: 84px;
 	position: relative;
-	border-bottom: 1px solid #212429;
+	border-bottom: 1px solid #31353C;
 }
 
 .button-preview {
@@ -709,6 +710,7 @@ button.log-toggle {
 	line-height: 40px;
 	text-align: center;
 	font-size: 24px;
+	color: #212429;
 }
 
 .draggable {
@@ -942,9 +944,10 @@ button.log-toggle {
   position: absolute;
   bottom: 0px;
   right: 0px;
-  background: #31353C;
+  background-color: #212429;
   font-size: 13px;
   color: #c9cccf;
+  border-top: 2px solid #181b1f;
 }
 
 .log-wrapper.expanded {
@@ -1789,6 +1792,62 @@ listen.channel-visualisation  .channel-menu-toggle {
 }
 .channel-visualisation .channel[color=disabled]{
   background: rgba(102, 102, 102, 1)
+}
+
+.section {
+	border-bottom: 1px solid #31353C;
+	padding: 20px;
+}
+
+.log-header {
+	padding: 10px 20px 0px 20px;
+}
+
+.mail {
+	line-height: 25px;
+	color: #212429;
+	height: 25px;
+	border-radius: 15px;
+	text-align: center;
+	display: inline-block;
+	padding: 0px 15px;
+	font-size: 13px;
+	margin-bottom: 10px;
+	font-weight: 600;
+	float: left;
+	margin-right: 10px;
+}
+
+.false {
+	background-color: #31353C;
+}
+
+.blue {
+	background-color: #358CCE;
+}
+
+.green {
+	background-color: #71b806;
+}
+
+.red {
+	background-color: #e81e1e;
+}
+
+.orange {
+	background-color: #ff7b00;
+}
+
+.pink {
+	background-color: #e3197b;
+}
+
+.yellow {
+	background-color: #e8d71e;
+}
+
+.purple {
+	background-color: #9f27cf;
 }
 
 
