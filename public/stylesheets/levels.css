@@ -48,6 +48,8 @@
 
 /*Level Status*/
 
+
+
 .game-status .level-number {
   font-weight: bold;
 }
@@ -82,7 +84,8 @@
   margin: 0 auto 0 auto;
 }
 
-.game-status.big .wrapper {
+.game-status .level-intro.wrapper,
+.game-status .level-finished.wrapper {
   background: white;
   margin: 100px auto 0 auto;
   width :400px;
@@ -100,7 +103,6 @@
 .game-status .hint-step  {
   display: none;
 }
-
 
 .game-status.big a.start,
 .game-status .next-level {
