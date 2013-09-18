@@ -553,11 +553,11 @@ define(
         var channelthumb;
         if (event.detail.channel) {
           var channel = getChannelByChannelName(event.detail.channel);
-          channelthumb = $("<span class='channel'>" + channel.name + "</span>");
+          channelthumb = $("<span class='channel'></span>");
           channelthumb.css('backgroundColor', convertHex(channel.hex, 70));
         } else {
           channelthumb = $("<span class='channel'>&nbsp;</span>");
-          channelthumb.css('backgroundColor', "rgba(102, 102, 102, .2)");
+          channelthumb.css('backgroundColor', "#212429");
         }
         line.append(channelthumb);
         var payload = $("<div class='payload new'/>");
