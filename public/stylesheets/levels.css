@@ -109,10 +109,22 @@
   color: white;
   font-size: 20px;
   display: inline-block;
-  background: green;
+  background: #4DB227;
   padding: 10px 55px;
   margin-top: 45px;
 }
+
+.game-status.big a.start:active,
+.game-status .next-level:active {
+  background: #3d911f;
+}
+
+.game-status.big a.start:hover,
+.game-status .next-level:hover {
+  background: #55bf2e;
+}
+
+
 
 .game-status.big .optout {
   display: block;

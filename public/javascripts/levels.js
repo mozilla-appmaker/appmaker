@@ -24,12 +24,19 @@ define(
         "description" : "Cat.Random()", 
         "steps" : [
           {
+            "description" : "Drag and drop a button onto the phone.",
+            "component" : "app-button",
+            "goal"    : "place",
+            "completed" : false
+          },
+          {
             "description" : "Place a randomcat component on the phone",
             "component" : "app-randomcat",
             "goal"    : "place",
             "completed" : false,
             "levelgoal" : true
-          }]
+          }
+          ]
         }, 
         {
         "description" : "Butt Out!", 
@@ -104,7 +111,7 @@ define(
             <div class='step-list'></div>\
             <a class='start' href='#'>START</a>\
             <a class='optout' href='#'>I don't want to play :(</a>\
-            <a class='show-hints' href='#'>I'm Stuck!</a>\
+            \
           </div>\
           <div class='wrapper level-status'>\
             <a class='optout' href='#'>I don't want to play :(</a>\
@@ -204,7 +211,7 @@ define(
         } else {
           this.gameStatus.find(".show-hints").hide();
         }
-        
+
       },
       checkLevelFinish : function(){
         var t = this;
