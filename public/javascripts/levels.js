@@ -87,7 +87,7 @@ define(
       init : function(){
         console.log(localStorage.wantGame);
         if(localStorage.wantGame == "yep"){
-          this.startGame();  
+          // this.startGame();  
         }
       },
       startGame : function(){
@@ -98,9 +98,18 @@ define(
             <a class='next-level' href='#'>Next Level</a>\
           </div>\
           <div class='wrapper level-intro'>\
-            <h1 class='level-status'></h1>\
+            <h1 class='level-number'></h1>\
+            <h1 class='level-name'></h1>\
+            <h2 class='objective'>Your Assignment</h2>\
             <div class='step-list'></div>\
             <a class='start' href='#'>START</a>\
+            <a class='optout' href='#'>I don't want to play :(</a>\
+            <a class='show-hints' href='#'>I'm Stuck!</a>\
+          </div>\
+          <div class='wrapper level-status'>\
+            <h1 class='level-number'></h1>\
+            <h1 class='level-name'></h1>\
+            <h2 class='objective'>Your Assignment</h2>\
             <a class='optout' href='#'>I don't want to play :(</a>\
             <a class='show-hints' href='#'>I'm Stuck!</a>\
           </div>\
@@ -108,7 +117,11 @@ define(
 
         this.gameStatus = $(".game-status");
         this.levelStatus = $(".level-status");
+        this.levelName = $(".level-name");
+        this.levelNumber = $(".level-number");
+        this.levelIntro = $(".level-intro");
         this.stepList = $(".step-list");
+        this.levelFinished = $(".level-finished");
 
         this.phoneCanvas = $(".phone-canvas");
         var t = this;
@@ -117,8 +130,11 @@ define(
 
         this.gameStatus.find(".start").on("click",function(){
           t.gameStatus.removeClass("big");
+          t.levelIntro.hide();
+          t.levelStatus.show();
           return false;
         });
+
         this.gameStatus.find(".show-hints").on("click",function(){
           $(this).hide();
           t.gameStatus.find(".hint-step").show();
@@ -141,23 +157,20 @@ define(
         localStorage.wantGame = "nah";
         this.gameStatus.remove();
       },
-      changeStatus : function(type,status){
-        if(type == "level"){
-          this.levelStatus.html(status);          
-        }
-      },
+
       loadLevel : function(levelNumber){
 
         this.phoneCanvas.find("*").remove();
         this.currentLevel = levelNumber;
         this.gameStatus.addClass("big");
-        this.gameStatus.find(".level-finished").hide();
-        this.gameStatus.find(".level-intro").show();
+        this.levelFinished.hide();
+        this.levelIntro.show();
 
         var level = this.levels[levelNumber-1]; 
         var description = level["description"];
         var steps = level["steps"];
-        this.changeStatus("level","Level " + this.currentLevel + " - " + description);
+        this.levelNumber.text("Level " + this.currentLevel);
+        this.levelName.text(description);
 
         //Loads all the Steps and listners
         this.stepList.html("");

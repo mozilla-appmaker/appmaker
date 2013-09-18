@@ -6,7 +6,11 @@
   border-top: solid 2px rgba(0,0,0,.4);
 }
 
-.game-status .level-finished {
+
+
+.game-status .level-finished,
+.game-status .level-intro,
+.game-status .level-status {
   display: none;
 }
 
@@ -18,9 +22,33 @@
   height: auto;
 }
 
-.game-status h1 {
+/* Level Intro */
+/* Comes up before each level */
+
+.game-status .level-intro h1.level-number {
+  margin-bottom: 0px;
+}
+
+.game-status .level-intro h1.level-name {
   font-weight: bold;
-  text-align: left;
+}
+.game-status .level-intro h2 {
+  margin-bottom: 5px;
+  font-size: 1.8rem;
+}
+
+.game-status .level-intro .goal-step {
+  padding: 10px;
+  background: #EEE;
+  display: block;
+  font-size: 1.8rem;
+  border: solid 1px #DDD;
+}
+
+/*Level Status*/
+
+.game-status .level-status h1 {
+  float: left;
 }
 
 .game-status * {
@@ -72,12 +100,6 @@
   display: none;
 }
 
-.game-status.big .step-list .goal-step {
-  padding: 10px;
-  background: #DDD;
-  display: block;
-  font-size: 18px;
-}
 
 .game-status.big a.start,
 .game-status .next-level {
