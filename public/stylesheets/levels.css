@@ -27,6 +27,7 @@
 
 .game-status .level-intro h1.level-number {
   margin-bottom: 0px;
+  font-weight: normal;
 }
 
 .game-status .level-intro h1.level-name {
@@ -47,8 +48,8 @@
 
 /*Level Status*/
 
-.game-status .level-status h1 {
-  float: left;
+.game-status .level-number {
+  font-weight: bold;
 }
 
 .game-status * {

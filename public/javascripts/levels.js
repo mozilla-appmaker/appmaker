@@ -87,7 +87,7 @@ define(
       init : function(){
         console.log(localStorage.wantGame);
         if(localStorage.wantGame == "yep"){
-          // this.startGame();  
+          this.startGame();  
         }
       },
       startGame : function(){
@@ -107,10 +107,9 @@ define(
             <a class='show-hints' href='#'>I'm Stuck!</a>\
           </div>\
           <div class='wrapper level-status'>\
-            <h1 class='level-number'></h1>\
-            <h1 class='level-name'></h1>\
-            <h2 class='objective'>Your Assignment</h2>\
             <a class='optout' href='#'>I don't want to play :(</a>\
+            <div><span class='level-number'></span> - <span class='level-name'></span></div>\
+            <div class='step-list'></div>\
             <a class='show-hints' href='#'>I'm Stuck!</a>\
           </div>\
           </div>");
@@ -213,9 +212,10 @@ define(
         if(done){
           setTimeout(function(){
             t.gameStatus.addClass("big").show();          
-            t.gameStatus.find(".level-finished").show();
-            t.gameStatus.find(".level-intro").hide();
-            t.gameStatus.find(".level-finished h1").text("Congrats, you finished Level " + this.currentLevel + ", you monster!");
+            t.levelStatus.hide();
+            t.levelFinished.show();
+            t.levelIntro.hide();
+            t.gameStatus.find(".level-finished h1").text("Congrats, you finished Level " + t.currentLevel + ", you monster!");
           },1000);
         }
       },
