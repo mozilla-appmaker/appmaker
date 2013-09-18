@@ -92,8 +92,8 @@ define(
       },
       startGame : function(){
 
-        $("body").prepend("<div class='game-status'> \
-          <div class='wrapper level-finished'> \
+        $("body").prepend("<div class='game-status'>\
+          <div class='wrapper level-finished'>\
             <h1></h1>\
             <a class='next-level' href='#'>Next Level</a>\
           </div>\
@@ -244,13 +244,10 @@ define(
                 el[eventName] = originalEvent;
                 el[eventName](value);
               }
-
-            }
+            };
             clearInterval(checkerInterval);
           }
         },300);
-        
       }
-    }
-   }
-);
+    };
+});
