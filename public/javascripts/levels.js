@@ -92,7 +92,7 @@ define(
         },
       ],
       init : function(){
-        if(localStorage.wantGame == "yep"){
+        if (localStorage.gameModeEnabled) {
           this.startGame();  
         }
       },
@@ -137,7 +137,7 @@ define(
 
       },
       endGame : function() {
-        localStorage.wantGame = "nah";
+        localStorage.gameModeEnabled = false;
         this.gameStatus.remove();
       },
 
