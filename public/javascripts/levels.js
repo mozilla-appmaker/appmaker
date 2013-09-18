@@ -98,28 +98,6 @@ define(
       },
       startGame : function(){
 
-        $("body").prepend("<div class='game-status'>\
-          <div class='wrapper level-finished'>\
-            <h1></h1>\
-            <a class='next-level' href='#'>Next Level</a>\
-          </div>\
-          <div class='wrapper level-intro'>\
-            <h1 class='level-number'></h1>\
-            <h1 class='level-name'></h1>\
-            <h2 class='objective'>Your Assignment</h2>\
-            <div class='step-list'></div>\
-            <a class='start' href='#'>START</a>\
-            <a class='optout' href='#'>I don't want to play :(</a>\
-            \
-          </div>\
-          <div class='wrapper level-status'>\
-            <a class='optout' href='#'>I don't want to play :(</a>\
-            <div><span class='level-number'></span> - <span class='level-name'></span></div>\
-            <div class='step-list'></div>\
-            <a class='show-hints' href='#'>I'm Stuck!</a>\
-          </div>\
-          </div>");
-
         this.gameStatus = $(".game-status");
         this.levelStatus = $(".level-status");
         this.levelName = $(".level-name");
