@@ -1,0 +1,101 @@
+.game-status {
+  z-index: 100000;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  border-top: solid 2px rgba(0,0,0,.4);
+}
+
+.game-status .level-finished {
+  display: none;
+}
+
+.game-status .wrapper {
+  padding: 10px;
+  background: white;
+  opacity: .9;
+  width: auto;
+  height: auto;
+}
+
+.game-status h1 {
+  font-weight: bold;
+  text-align: left;
+}
+
+.game-status * {
+  color: #333;
+  font-size: 15px;
+}
+
+.game-status a.start {
+  display: none;
+}
+
+.game-status .show-hints {
+  color: #1a68c2;
+  margin-top: 10px;
+}
+
+.game-status.big .show-hints {
+  display: none;
+
+}
+
+.game-status.big {
+  height: 100%;
+  width: 100%;
+  background: rgba(0,0,0,.8);
+  position : absolute;
+  text-align: center;
+  left: auto;
+  top: 0px;
+  margin: 0 auto 0 auto;
+}
+
+.game-status.big .wrapper {
+  background: white;
+  margin: 100px auto 0 auto;
+  width :400px;
+  padding: 50px 50px 50px 50px;
+  opacity: 1;
+}
+
+.game-status.big h1 {
+  font-size: 35px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.game-status .hint-step  {
+  display: none;
+}
+
+.game-status.big .step-list .goal-step {
+  padding: 10px;
+  background: #DDD;
+  display: block;
+  font-size: 18px;
+}
+
+.game-status.big a.start,
+.game-status .next-level {
+  color: white;
+  font-size: 20px;
+  display: inline-block;
+  background: green;
+  padding: 10px 55px;
+  margin-top: 45px;
+}
+
+.game-status.big .optout {
+  display: block;
+  margin-top: 20px;
+  float: none;
+}
+
+.game-status .optout {
+  color: #2969b2;  
+  float: right;
+}
