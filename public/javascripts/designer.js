@@ -652,7 +652,7 @@ define(
       $(".editable-section .name").text(componentName);
 
       //add mailbox info to right column
-      $('.mailboxes').html('')
+      $('.mailboxes').html('');
 
       for (var i=0; i < element.subscriptions.length; i++) {
         var channelProperty = element.subscriptions[i].listener;
@@ -662,7 +662,7 @@ define(
       }
 
       //add outgoing mail info to right column
-      $('.outgoing-mail').html('')
+      $('.outgoing-mail').html('');
       var mailColor = element.broadcastChannel;
       var outgoingMail = $('<div class="mail">Mail</div>').addClass(mailColor);
       $('.outgoing-mail').append(outgoingMail);
