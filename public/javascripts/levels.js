@@ -92,7 +92,6 @@ define(
         },
       ],
       init : function(){
-        console.log(localStorage.wantGame);
         if(localStorage.wantGame == "yep"){
           this.startGame();  
         }
