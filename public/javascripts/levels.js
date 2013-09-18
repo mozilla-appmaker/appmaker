@@ -18,10 +18,15 @@ define(
       stepStatus : "",
       gameStatus : "",
       phoneCanvas : "",
+      bubbleTimeout : "",
 
       levels : [
         {
         "description" : "Cat.Random()", 
+        "hints" : [
+        "Components live in the tray on left hand side!",
+        "You can drag and drop components!"
+        ],
         "steps" : [
           {
             "description" : "Drag and drop a button onto the phone.",
@@ -30,7 +35,7 @@ define(
             "completed" : false
           },
           {
-            "description" : "Place a randomcat component on the phone",
+            "description" : "Put a randomcat component on the phone.",
             "component" : "app-randomcat",
             "goal"    : "place",
             "completed" : false,
@@ -99,12 +104,13 @@ define(
       startGame : function(){
 
         this.gameStatus = $(".game-status");
-        this.levelStatus = $(".level-status");
-        this.levelName = $(".level-name");
-        this.levelNumber = $(".level-number");
-        this.levelIntro = $(".level-intro");
-        this.stepList = $(".step-list");
-        this.levelFinished = $(".level-finished");
+        this.levelStatus = $(".game-status .level-status");
+        this.levelName = $(".game-status .level-name");
+        this.levelNumber = $(".game-status .level-number");
+        this.levelIntro = $(".game-status .level-intro");
+        this.stepList = $(".game-status .step-list");
+        this.levelFinished = $(".game-status .level-finished");
+        this.hintBubble = $(".game-status .hint");
 
         this.phoneCanvas = $(".phone-canvas");
         var t = this;
@@ -119,8 +125,7 @@ define(
         });
 
         this.gameStatus.find(".show-hints").on("click",function(){
-          $(this).hide();
-          t.gameStatus.find(".hint-step").show();
+          t.showHint();
           return false;
         });
 
@@ -190,12 +195,25 @@ define(
         }
 
       },
+      showHint : function(){
+        var hints = this.levels[this.currentLevel-1]["hints"] || false;
+        var t = this;
+        window.clearTimeout(this.bubbleTimeout);
+        delete this.bubbleTimeout;
+        if(hints){
+          var randomHint = Math.floor(Math.random(1)*hints.length);
+          this.hintBubble.show().addClass("show-hint").find(".hint-text").text(hints[randomHint]);
+          this.bubbleTimeout = setTimeout(function(){
+            t.hintBubble.fadeOut();
+          },2000)
+        }
+      },
       checkLevelFinish : function(){
         var t = this;
         var done = this.levels[this.currentLevel-1]["steps"][this.levelGoalStep]["completed"];
         if(done){
           setTimeout(function(){
-            t.gameStatus.addClass("big").show();          
+            t.gameStatus.addClass("big").show();
             t.levelStatus.hide();
             t.levelFinished.show();
             t.levelIntro.hide();
