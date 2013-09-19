@@ -118,7 +118,7 @@ define(
         var t = this;
 
         if(localStorage.levelCompleted){
-          this.loadLevel(parseInt(localStorage.levelCompleted )+ 1);
+          this.loadLevel(parseInt(localStorage.levelCompleted,10) + 1);
         } else { 
           this.loadLevel(1);
         }
