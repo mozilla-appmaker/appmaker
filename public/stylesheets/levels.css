@@ -274,14 +274,13 @@
   height: 10px;
   position: relative;
   border-bottom: solid 1px #1d668b;
-
 }
 
 .game-status .level-indicator .current-level {
   height: 40px;
   width: 40px;
   position: absolute;
-  top: -45px;
+  top: -48px;
   background: no-repeat center url(../images/mailman-head.png);
   background-size: 40px;
   -webkit-animation-name: bobhead;
