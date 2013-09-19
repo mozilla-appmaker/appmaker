@@ -20,15 +20,31 @@ define(
       gameStatus : "",
       phoneCanvas : "",
       bubbleTimeout : "",
+      lastHint : 0,
 
       levels : [
+      //Level 1
+        {
+        "description" : "Button-down", 
+        "rank" : "Assistant to the Junior Paperboy", 
+        "hints" : [
+          "Components live in the tray on left hand side!",
+          "You can drag and drop components to the phone."
+          ],
+        "steps" : [
+          {
+            "description" : "Add a button to your app.",
+            "component" : "app-button",
+            "goal"    : "place",
+            // "eventName"   : "broadcast",
+            // "eventValue" : "Click",
+            "completed" : false,
+            "levelgoal" : true
+          }]
+        },
         {
         "description" : "Cat.Random()",
         "rank" : "Assistant to the Junior Paperboy", 
-        "hints" : [
-        "Components live in the tray on left hand side!",
-        "You can drag and drop components!"
-        ],
         "steps" : [
           {
             "description" : "Drag and drop a button onto the phone.",
@@ -37,7 +53,7 @@ define(
             "completed" : false
           },
           {
-            "description" : "Put a randomcat component on the phone.",
+            "description" : "Add a randomcat component to your app.",
             "component" : "app-randomcat",
             "goal"    : "place",
             "completed" : false,
@@ -45,21 +61,7 @@ define(
           }
           ]
         }, 
-        //Levle 2
-        {
-        "description" : "Button-down", 
-        "rank" : "Junior Paperboy", 
-        "steps" : [
-          {
-            "description" : "Click a button",
-            "component" : "app-button",
-            "goal"    : "event",
-            "eventName"   : "broadcast",
-            "eventValue" : "Click",
-            "completed" : false,
-            "levelgoal" : true
-          }]
-        },
+
 
         {
         "description" : "That food sucked!", 
@@ -162,7 +164,6 @@ define(
 
         this.phoneCanvas.find("*").remove();
         this.currentLevelNumber = levelNumber;
-        console.log("Loaded level " + this.currentLevelNumber);
         this.gameStatus.addClass("big");
         this.levelFinished.hide();
         this.levelIntro.show();
@@ -212,11 +213,21 @@ define(
         window.clearTimeout(this.bubbleTimeout);
         delete this.bubbleTimeout;
         if(hints){
+          
           var randomHint = Math.floor(Math.random(1)*hints.length);
+          
+          while (randomHint == this.lastHint){
+            randomHint = Math.floor(Math.random(1)*hints.length);
+          }
+          
+          this.lastHint = randomHint;
           this.hintBubble.show().addClass("show-hint").find(".hint-text").text(hints[randomHint]);
           this.bubbleTimeout = setTimeout(function(){
             t.hintBubble.fadeOut();
           },2000);
+        
+        
+        
         }
       },
       checkLevelFinish : function(){

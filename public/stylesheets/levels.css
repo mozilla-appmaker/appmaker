@@ -237,11 +237,14 @@
 .game-status .level-finished p {
   font-size: 1.8rem;
   font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .game-status .level-finished .player-rank {
-  padding: 1rem;
+  padding: 1rem 2rem;
   font-size: 1.8rem;
+  display: inline-block;
   background: #EEE;
   border: solid 1px #DDD;
+
 }
