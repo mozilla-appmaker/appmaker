@@ -103,7 +103,7 @@ define(
         },
       ],
       init : function(){
-        if (localStorage.gameModeEnabled) {
+        if (localStorage.gameModeEnabled != "no") {
           this.startGame();
         }
       },
@@ -158,7 +158,7 @@ define(
 
       },
       endGame : function() {
-        localStorage.gameModeEnabled = false;
+        localStorage.gameModeEnabled = "no";
         this.gameStatus.remove();
       },
       loadLevel : function(levelNumber){
