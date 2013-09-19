@@ -108,8 +108,12 @@
 
 <div class="game-status">
   <div class="wrapper level-finished">
-    <h1></h1>
-    <a class="next-level" href="#">Next Level</a>
+    <h1>Congratulations!</h1>
+    <h2>You completed Level <span class="level-number"></span></h2>
+    <p>You've achieved the rank of</p>
+    <div class="player-rank"></div>
+    <a class="next-level" href="#">Continue</a>
+    <div class="mailman-head"></div>
   </div>
   <div class="wrapper level-intro">
     <h1 class="level-number"></h1>
@@ -117,7 +121,9 @@
     <h2 class="objective">Your Assignment</h2>
     <div class="step-list"></div>
     <a class="start" href="#">START</a>
-    <a class="optout" href="#">I don't want to play :(</a>
+    <div class="sub-links">
+    <a class="optout" href="#">I don't want to play :(</a> - <a class="restart" href="#">Start Over</a>
+    </div>
     <div class="mailman-head"></div>
   </div>
   <div class="wrapper level-status">
@@ -128,7 +134,7 @@
     <div class="hint">
       <strong>Hint:</strong> <span class="hint-text">What you gotta do, is what you gotta do!</span>
       <div class="arrow"></div>
-      <!-- <a href="#" class="dismiss-hint">Thanks!</a> -->
     </div>
+    
   </div>
 </div>
