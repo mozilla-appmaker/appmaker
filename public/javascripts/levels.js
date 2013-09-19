@@ -117,7 +117,7 @@ define(
         this.levelFinished = $(".game-status .level-finished");
         this.hintBubble = $(".game-status .hint");
         this.phoneCanvas = $(".phone-canvas");
-        this.gameFinished = $(".game-finished")
+        this.gameFinished = $(".game-finished");
         this.levelIndicator = $(".game-status .level-indicator");
 
         var t = this;
