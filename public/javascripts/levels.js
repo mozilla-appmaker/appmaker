@@ -10,18 +10,41 @@ define(
 
     var appMaster = {
 
-      currentLevel : 0,
-      levelGoalStep : 0, //This is the goal step of the level
+      currentLevelNumber : 0,   //Placeholder for the level number
+      currentLevel : {},        //Placeholder for level object
+      levelGoalStep : 0,        //This is the goal step of the level
 
       //Various element placeholders
       levelStatus : "",
       stepStatus : "",
       gameStatus : "",
       phoneCanvas : "",
+      bubbleTimeout : "",
+      lastHint : 0,
 
       levels : [
+      //Level 1
         {
-        "description" : "Cat.Random()", 
+        "description" : "Button-down", 
+        "rank" : "Assistant to the Junior Paperboy", 
+        "hints" : [
+          "Components live in the tray on left hand side!",
+          "You can drag and drop components to the phone."
+          ],
+        "steps" : [
+          {
+            "description" : "Add a button to your app.",
+            "component" : "app-button",
+            "goal"    : "place",
+            // "eventName"   : "broadcast",
+            // "eventValue" : "Click",
+            "completed" : false,
+            "levelgoal" : true
+          }]
+        },
+        {
+        "description" : "Cat.Random()",
+        "rank" : "Assistant to the Junior Paperboy", 
         "steps" : [
           {
             "description" : "Drag and drop a button onto the phone.",
@@ -30,7 +53,7 @@ define(
             "completed" : false
           },
           {
-            "description" : "Place a randomcat component on the phone",
+            "description" : "Add a randomcat component to your app.",
             "component" : "app-randomcat",
             "goal"    : "place",
             "completed" : false,
@@ -38,19 +61,7 @@ define(
           }
           ]
         }, 
-        {
-        "description" : "Butt Out!", 
-        "steps" : [
-          {
-            "description" : "Click a button",
-            "component" : "app-button",
-            "goal"    : "event",
-            "eventName"   : "broadcast",
-            "eventValue" : "Click",
-            "completed" : false,
-            "levelgoal" : true
-          }]
-        },
+
 
         {
         "description" : "That food sucked!", 
@@ -93,23 +104,27 @@ define(
       ],
       init : function(){
         if (localStorage.gameModeEnabled) {
-          this.startGame();  
+          this.startGame();
         }
       },
       startGame : function(){
 
         this.gameStatus = $(".game-status");
-        this.levelStatus = $(".level-status");
-        this.levelName = $(".level-name");
-        this.levelNumber = $(".level-number");
-        this.levelIntro = $(".level-intro");
-        this.stepList = $(".step-list");
-        this.levelFinished = $(".level-finished");
-
+        this.levelStatus = $(".game-status .level-status");
+        this.levelIntro = $(".game-status .level-intro");
+        this.stepList = $(".game-status .step-list");
+        this.levelFinished = $(".game-status .level-finished");
+        this.hintBubble = $(".game-status .hint");
         this.phoneCanvas = $(".phone-canvas");
+        this.levelIndicator = $(".game-status .level-indicator");
+
         var t = this;
 
-        this.loadLevel(1);
+        if(localStorage.levelCompleted){
+          this.loadLevel(parseInt(localStorage.levelCompleted,10) + 1);
+        } else { 
+          this.loadLevel(1);
+        }
 
         this.gameStatus.find(".start").on("click",function(){
           t.gameStatus.removeClass("big");
@@ -119,14 +134,13 @@ define(
         });
 
         this.gameStatus.find(".show-hints").on("click",function(){
-          $(this).hide();
-          t.gameStatus.find(".hint-step").show();
+          t.showHint();
           return false;
         });
 
         this.gameStatus.find(".next-level").on("click",function(){
-          t.currentLevel++;
-          t.loadLevel(t.currentLevel);
+          t.currentLevelNumber++;
+          t.loadLevel(t.currentLevelNumber);
           return false;
         });
 
@@ -135,39 +149,71 @@ define(
           return false;
         });
 
+        this.gameStatus.find(".restart").on("click",function(){
+          t.currentLevelNumber = 0;
+          localStorage.levelCompleted = "";
+          t.loadLevel(1);
+          return false;
+        });
+
       },
       endGame : function() {
         localStorage.gameModeEnabled = false;
         this.gameStatus.remove();
       },
-
       loadLevel : function(levelNumber){
 
         this.phoneCanvas.find("*").remove();
-        this.currentLevel = levelNumber;
+        this.currentLevelNumber = levelNumber;
         this.gameStatus.addClass("big");
         this.levelFinished.hide();
         this.levelIntro.show();
 
-        var level = this.levels[levelNumber-1]; 
-        var description = level["description"];
-        var steps = level["steps"];
-        this.levelNumber.text("Level " + this.currentLevel);
-        this.levelName.text(description);
+        this.currentLevel = this.levels[this.currentLevelNumber-1]; 
+
+        //Builds out the level indicator
+        this.levelIndicator.find(".level-circle").remove();
+
+        var levelCount = this.levels.length;
+        var maxLeft = this.levelIndicator.width();
+        var increment = maxLeft / levelCount;
+
+        for(var i = 0; i <= levelCount; i++){
+          var levelCircle = document.createElement("div");
+          $(levelCircle).addClass("level-circle");
+          if(i < this.currentLevelNumber){
+            $(levelCircle).addClass("got-here");
+          }
+
+          $(levelCircle).css("left", i * Math.floor(increment) - 10 +"px");
+          this.levelIndicator.append(levelCircle);
+        }
+
+        this.levelIndicator.find(".level-progress").width((this.currentLevelNumber -1) * increment);
+        this.levelIndicator.find(".current-level").css("left", (this.currentLevelNumber -1) * increment - 18);
+
+        var description = this.currentLevel["description"];
+        var steps = this.currentLevel["steps"];
+
+        this.levelIntro.find(".level-number").text("Level " + this.currentLevelNumber);
+        this.levelIntro.find(".level-name").html("&quot;" + description + "&quot;");
+
+        this.levelStatus.find(".level-number").text("Level " + this.currentLevelNumber);
+        this.levelStatus.find(".level-name").text(description);
 
         //Loads all the Steps and listners
         this.stepList.html("");
-        
-        for(var i = 0;  i < steps.length; i++){
-          var step = steps[i];
+
+        for(var j = 0;  j < steps.length; j++){
+          var step = steps[j];
 
           var stepEl = document.createElement("div");
 
           $(stepEl).text(step["description"]);
-          $(stepEl).attr("level",i);
+          $(stepEl).attr("level",j);
 
           if(step["levelgoal"]){
-            this.levelGoalStep = i;
+            this.levelGoalStep = j;
             $(stepEl).addClass("goal-step");
           } else {
             $(stepEl).addClass("hint-step");
@@ -176,35 +222,47 @@ define(
           this.stepList.append(stepEl);
 
           if(step["goal"] == "place"){
-            this.addPlaceChecker(step["component"],i);
+            this.addPlaceChecker(step["component"],j);
           }
           if(step["goal"] == "event"){
-            this.addEventChecker(step["component"],step["eventName"],step["eventValue"],i);
+            this.addEventChecker(step["component"],step["eventName"],step["eventValue"],j);
           }
         }
-
-        if (steps.length > 1) {
-          this.gameStatus.find(".show-hints").show();
-        } else {
-          this.gameStatus.find(".show-hints").hide();
+      },
+      showHint : function(){
+        var hints = this.levels[this.currentLevelNumber-1]["hints"] || false;
+        var t = this;
+        window.clearTimeout(this.bubbleTimeout);
+        delete this.bubbleTimeout;
+        if(hints){
+          var randomHint = Math.floor(Math.random(1)*hints.length);
+          while (randomHint == this.lastHint){
+            randomHint = Math.floor(Math.random(1)*hints.length);
+          }
+          this.lastHint = randomHint;
+          this.hintBubble.show().addClass("show-hint").find(".hint-text").text(hints[randomHint]);
+          this.bubbleTimeout = setTimeout(function(){
+            t.hintBubble.fadeOut();
+          },2000);
         }
-
       },
       checkLevelFinish : function(){
         var t = this;
-        var done = this.levels[this.currentLevel-1]["steps"][this.levelGoalStep]["completed"];
+        var done = this.levels[this.currentLevelNumber-1]["steps"][this.levelGoalStep]["completed"];
         if(done){
           setTimeout(function(){
-            t.gameStatus.addClass("big").show();          
+            t.gameStatus.addClass("big").show();
             t.levelStatus.hide();
             t.levelFinished.show();
             t.levelIntro.hide();
-            t.gameStatus.find(".level-finished h1").text("Congrats, you finished Level " + t.currentLevel + ", you monster!");
+            t.levelFinished.find(".level-number").text(t.currentLevelNumber);
+            t.levelFinished.find(".player-rank").text(t.currentLevel["rank"]);
+            localStorage.levelCompleted = t.currentLevelNumber;
           },1000);
         }
       },
       finishStep : function(step){
-        this.levels[this.currentLevel-1]["steps"][step]["completed"] = true;
+        this.levels[this.currentLevelNumber-1]["steps"][step]["completed"] = true;
         var stepItem = this.stepList.find("div[level="+step+"]");
         stepItem.css("text-decoration","line-through");
         this.checkLevelFinish();

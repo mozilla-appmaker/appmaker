@@ -6,32 +6,50 @@
   border-top: solid 2px rgba(0,0,0,.4);
 }
 
-
-
 .game-status .level-finished,
 .game-status .level-intro,
 .game-status .level-status {
   display: none;
 }
 
-.game-status .wrapper {
+.game-status .level-status.wrapper {
   padding: 10px;
-  background: white;
-  opacity: .9;
   width: auto;
   height: auto;
+  position: relative;
+  background: rgba(255,255,255,.95);
+  padding-left: 65px;
+  
 }
 
 /* Level Intro */
 /* Comes up before each level */
 
+.game-status .level-intro .mailman-head,
+.game-status .level-finished .mailman-head {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  height: 120px;
+  width: 120px;
+  background: white;
+  background: url(../images/mailman-head.png);
+  background-size: 120px;
+  -webkit-transform: rotate(-5deg);
+  display: none;
+}
+
 .game-status .level-intro h1.level-number {
   margin-bottom: 0px;
   font-weight: normal;
+  font-weight: bold;
+
 }
 
 .game-status .level-intro h1.level-name {
-  font-weight: bold;
+  font-weight: normal;
+  margin-bottom: 30px;
+  font-size: 20px;
 }
 .game-status .level-intro h2 {
   margin-bottom: 5px;
@@ -39,19 +57,75 @@
 }
 
 .game-status .level-intro .goal-step {
-  padding: 10px;
+  padding: 10px 20px;
   background: #EEE;
-  display: block;
+  display: inline-block;
   font-size: 1.8rem;
   border: solid 1px #DDD;
 }
 
 /*Level Status*/
 
+.game-status .level-status {
+  padding-left: 60px;
+}
 
-
-.game-status .level-number {
+.game-status .level-status .level-number {
   font-weight: bold;
+}
+
+.game-status .level-status .show-hints {
+  background: no-repeat url(../images/mailman-head-question.png?1);
+  background-size: 50px;
+  background-position: center left;
+  height: 55px;
+  width: 60px;
+  position: absolute;
+  left: 5px;
+  top: 0px;
+  margin-top: 0px;
+}
+
+.game-status .level-status .hint {
+  display: none;
+  position: absolute;
+  bottom: 100px;
+  left: 20px;
+  background: white;
+  padding: 15px;
+  box-shadow: 0 3px 5px rgba(0,0,0,.3);
+  -webkit-border-radius: 5px;
+}
+
+.game-status .level-status .show-hint {
+  -webkit-animation-name: show-hint;
+  -webkit-transform-origin: bottom left;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-duration: .2s;
+}
+
+@-webkit-keyframes show-hint {
+	0% {-webkit-transform: scale(0) ; }
+  90% {-webkit-transform: scale(1.1);}
+	100% {-webkit-transform: rotate(0deg); }
+}
+
+
+.game-status .level-status .hint .arrow {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  width: 0; 
+  height: 0; 
+  bottom: -18px;
+  border-left: 1px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 20px solid white;
+}
+
+.game-status .level-status .hint p {
+  padding: 0;
+  margin: 0;
 }
 
 .game-status * {
@@ -86,11 +160,13 @@
 
 .game-status .level-intro.wrapper,
 .game-status .level-finished.wrapper {
-  background: white;
   margin: 100px auto 0 auto;
-  width :400px;
+  width : 500px;
   padding: 50px 50px 50px 50px;
   opacity: 1;
+  background: top repeat-x url(../images/mail-stripe.png) white;
+  background-size: 60px;
+  position: relative;
 }
 
 .game-status.big h1 {
@@ -104,19 +180,17 @@
   display: none;
 }
 
-.game-status.big a.start,
+.game-status.big .start,
 .game-status .next-level {
   color: white;
   font-size: 20px;
   display: inline-block;
   background: #4DB227;
+  border-bottom: solid 2px #3b901b;
+  -webkit-border-radius: 5px;
+  text-shadow: 0px -1px 0px #3b901b;
   padding: 10px 55px;
   margin-top: 45px;
-}
-
-.game-status.big a.start:active,
-.game-status .next-level:active {
-  background: #3d911f;
 }
 
 .game-status.big a.start:hover,
@@ -124,15 +198,117 @@
   background: #55bf2e;
 }
 
+.game-status.big a.start:active,
+.game-status .next-level:active {
+  background: #3b901b;
+}
 
-
-.game-status.big .optout {
+.game-status.big .sub-links {
   display: block;
   margin-top: 20px;
   float: none;
+  color: #999;
 }
 
-.game-status .optout {
-  color: #2969b2;  
+.game-status.big .sub-links a {
+  color: #2969b2;
+  padding: 0 10px;
+}
+
+.game-status.big .sub-links a:hover {
+  text-decoration: underline;
+}
+
+.game-status .level-status .optout {
   float: right;
+  color: #2969b2;
+}
+
+/* Level Finished Popup */
+
+.game-status .level-finished h1 {
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.game-status .level-finished h2,
+.game-status .level-finished h2 span {
+  font-size: 3.5rem;
+  font-weight: normal;
+}
+
+.game-status .level-finished p {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.game-status .level-finished .player-rank {
+  padding: 1rem 2rem;
+  font-size: 1.8rem;
+  display: inline-block;
+  background: #EEE;
+  border: solid 1px #DDD;
+}
+
+/*Level Indicator*/
+
+.game-status .level-indicator {
+  background: #DDD;
+  height: 10px;
+  position: relative;
+  margin: 60px 0 30px 0;
+}
+
+.game-status .level-progress {
+  background: #333;
+  height: 10px;
+  position: relative;
+  margin: 20px 0;
+  width: 50%;
+}
+
+.game-status .level-progress {
+  background: #4096c2;
+  height: 10px;
+  position: relative;
+  border-bottom: solid 1px #1d668b;
+}
+
+.game-status .level-indicator .current-level {
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  top: -48px;
+  background: no-repeat center url(../images/mailman-head.png);
+  background-size: 40px;
+  -webkit-animation-name: bobhead;
+  -webkit-transform-origin: center;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-duration: 1s;
+}
+
+@-webkit-keyframes bobhead {
+	0% {-webkit-transform: translateY(0px) ; }
+  50% {-webkit-transform: translateY(-3px);}
+	100% {-webkit-transform: translateY(0px); }
+}
+
+.game-status .level-indicator .level-circle {
+  background: #DDD;
+  height: 24px;
+  width: 24px;
+  position: absolute;
+  top: -7px;
+  left: -10px;
+  border-radius: 12px;
+  -webkit-transform: scaleY(.7);
+}
+
+.game-status .level-indicator .level-circle.got-here {
+  top: -8px;
+  background:  #4096c2;
+  border-bottom: solid 2px #1d668b;
 }
