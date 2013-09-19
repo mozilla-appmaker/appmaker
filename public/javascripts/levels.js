@@ -204,16 +204,16 @@ define(
         //Loads all the Steps and listners
         this.stepList.html("");
 
-        for(var i = 0;  i < steps.length; i++){
-          var step = steps[i];
+        for(var j = 0;  j < steps.length; j++){
+          var step = steps[j];
 
           var stepEl = document.createElement("div");
 
           $(stepEl).text(step["description"]);
-          $(stepEl).attr("level",i);
+          $(stepEl).attr("level",j);
 
           if(step["levelgoal"]){
-            this.levelGoalStep = i;
+            this.levelGoalStep = j;
             $(stepEl).addClass("goal-step");
           } else {
             $(stepEl).addClass("hint-step");
@@ -222,10 +222,10 @@ define(
           this.stepList.append(stepEl);
 
           if(step["goal"] == "place"){
-            this.addPlaceChecker(step["component"],i);
+            this.addPlaceChecker(step["component"],j);
           }
           if(step["goal"] == "event"){
-            this.addEventChecker(step["component"],step["eventName"],step["eventValue"],i);
+            this.addEventChecker(step["component"],step["eventName"],step["eventValue"],j);
           }
         }
       },
