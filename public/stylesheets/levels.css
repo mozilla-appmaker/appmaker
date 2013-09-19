@@ -65,6 +65,7 @@
 
 .game-status p {
   margin: 40px 0 0 0;
+  font-size: 1.8rem;
 }
 .game-status .level-intro .goal-step {
   padding: 10px 20px;
