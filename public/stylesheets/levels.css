@@ -8,7 +8,8 @@
 
 .game-status .level-finished,
 .game-status .level-intro,
-.game-status .level-status {
+.game-status .level-status,
+.game-status .game-finished {
   display: none;
 }
 
@@ -39,23 +40,33 @@
   display: none;
 }
 
-.game-status .level-intro h1.level-number {
-  margin-bottom: 0px;
+.game-status h1,
+.game-status h1 span {
   font-weight: normal;
   font-weight: bold;
-
+  font-size: 35px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
 }
-
-.game-status .level-intro h1.level-name {
-  font-weight: normal;
-  margin-bottom: 30px;
-  font-size: 20px;
-}
-.game-status .level-intro h2 {
+.game-status h2,
+.game-status h2 span {
   margin-bottom: 5px;
+  font-size: 3rem;
+  font-weight: normal;
+}
+
+.game-status h3,
+.game-status h3 span {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: .5rem;
+}
+
+.game-status p {
+  margin: 40px 0 0 0;
   font-size: 1.8rem;
 }
-
 .game-status .level-intro .goal-step {
   padding: 10px 20px;
   background: #EEE;
@@ -159,7 +170,8 @@
 }
 
 .game-status .level-intro.wrapper,
-.game-status .level-finished.wrapper {
+.game-status .level-finished.wrapper,
+.game-status .game-finished {
   margin: 100px auto 0 auto;
   width : 500px;
   padding: 50px 50px 50px 50px;
@@ -169,19 +181,13 @@
   position: relative;
 }
 
-.game-status.big h1 {
-  font-size: 35px;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center;
-}
 
 .game-status .hint-step  {
   display: none;
 }
 
-.game-status.big .start,
-.game-status .next-level {
+.game-status.big .green-button
+ {
   color: white;
   font-size: 20px;
   display: inline-block;
@@ -226,17 +232,6 @@
 
 /* Level Finished Popup */
 
-.game-status .level-finished h1 {
-  font-size: 3.5rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.game-status .level-finished h2,
-.game-status .level-finished h2 span {
-  font-size: 3.5rem;
-  font-weight: normal;
-}
 
 .game-status .level-finished p {
   font-size: 1.8rem;

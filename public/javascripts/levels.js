@@ -42,6 +42,7 @@ define(
             "levelgoal" : true
           }]
         },
+        // level 2
         {
         "description" : "Cat.Random()",
         "rank" : "Assistant to the Junior Paperboy", 
@@ -61,8 +62,7 @@ define(
           }
           ]
         }, 
-
-
+        // Level 3
         {
         "description" : "That food sucked!", 
         "steps" : [
@@ -76,6 +76,7 @@ define(
             "levelgoal" : true
           }]
         },
+        //Level 4
         {
         "description" : "Humble Beginnings", 
         "steps" : [
@@ -116,12 +117,16 @@ define(
         this.levelFinished = $(".game-status .level-finished");
         this.hintBubble = $(".game-status .hint");
         this.phoneCanvas = $(".phone-canvas");
+        this.gameFinished = $(".game-finished");
         this.levelIndicator = $(".game-status .level-indicator");
 
         var t = this;
 
         if(localStorage.levelCompleted){
-          this.loadLevel(parseInt(localStorage.levelCompleted,10) + 1);
+          this.currentLevelNumber = localStorage.levelCompleted;
+          if(localStorage.levelCompleted < this.levels.length){
+            this.loadLevel(parseInt(localStorage.levelCompleted,10) + 1);  
+          }
         } else { 
           this.loadLevel(1);
         }
@@ -149,6 +154,11 @@ define(
           return false;
         });
 
+        this.gameStatus.find(".endgame").on("click",function(){
+          t.endGame();
+          return false;
+        });
+
         this.gameStatus.find(".restart").on("click",function(){
           t.currentLevelNumber = 0;
           localStorage.levelCompleted = "";
@@ -159,11 +169,14 @@ define(
       },
       endGame : function() {
         localStorage.gameModeEnabled = "no";
+        localStorage.levelCompleted = 0;
         this.gameStatus.remove();
       },
       loadLevel : function(levelNumber){
 
         this.phoneCanvas.find("*").remove();
+        $(".editable-section").hide();
+
         this.currentLevelNumber = levelNumber;
         this.gameStatus.addClass("big");
         this.levelFinished.hide();
@@ -176,9 +189,10 @@ define(
 
         var levelCount = this.levels.length;
         var maxLeft = this.levelIndicator.width();
-        var increment = maxLeft / levelCount;
+        var increment = maxLeft / (levelCount-1);
 
-        for(var i = 0; i <= levelCount; i++){
+        for(var i = 0; i < levelCount; i++){
+
           var levelCircle = document.createElement("div");
           $(levelCircle).addClass("level-circle");
           if(i < this.currentLevelNumber){
@@ -253,10 +267,16 @@ define(
           setTimeout(function(){
             t.gameStatus.addClass("big").show();
             t.levelStatus.hide();
-            t.levelFinished.show();
-            t.levelIntro.hide();
-            t.levelFinished.find(".level-number").text(t.currentLevelNumber);
-            t.levelFinished.find(".player-rank").text(t.currentLevel["rank"]);
+
+            if(t.currentLevelNumber == t.levels.length) {
+              t.gameFinished.show();
+            } else {
+              t.levelFinished.show();
+              t.levelIntro.hide();
+              t.levelFinished.find(".level-number").text(t.currentLevelNumber);
+              t.levelFinished.find(".player-rank").text(t.currentLevel["rank"]);
+            }
+
             localStorage.levelCompleted = t.currentLevelNumber;
           },1000);
         }
