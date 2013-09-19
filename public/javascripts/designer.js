@@ -437,7 +437,6 @@ define(
       });
 
       var editables = $(".editable-section");
-      editables.append(attributeList);
       editables.show();
     };
 
@@ -558,7 +557,7 @@ define(
           channelthumb.css('backgroundColor', convertHex(channel.hex, 70));
         } else {
           channelthumb = $("<span class='channel'>&nbsp;</span>");
-          channelthumb.css('backgroundColor', "#212429");
+          channelthumb.css('backgroundColor', "#31353C");
         }
         line.append(channelthumb);
         var payload = $("<div class='payload new'/>");
@@ -650,9 +649,23 @@ define(
       element.onColorSelectFunction = onColorSelectFunction;
 
       var componentName = element.tagName.toLowerCase();
-      var componentDesc = element.description.innerHTML;
       $(".editable-section .name").text(componentName);
-      $(".editable-section .description").text(componentDesc);
+
+      //add mailbox info to right column
+      $('.mailboxes').html('');
+
+      for (var i=0; i < element.subscriptions.length; i++) {
+        var channelProperty = element.subscriptions[i].listener;
+        var mailboxColor = element.subscriptions[i].channel;
+        var mailbox = $('<div class="mail"></div>').html(channelProperty).addClass(mailboxColor);
+        $('.mailboxes').append(mailbox);
+      }
+
+      //add outgoing mail info to right column
+      $('.outgoing-mail').html('');
+      var mailColor = element.broadcastChannel;
+      var outgoingMail = $('<div class="mail">Mail</div>').addClass(mailColor);
+      $('.outgoing-mail').append(outgoingMail);
     };
 
     //shows component description
