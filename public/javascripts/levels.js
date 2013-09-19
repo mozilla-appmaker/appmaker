@@ -104,7 +104,7 @@ define(
       ],
       init : function(){
         if (localStorage.gameModeEnabled) {
-          this.startGame();  
+          this.startGame();
         }
       },
       startGame : function(){
@@ -116,6 +116,7 @@ define(
         this.levelFinished = $(".game-status .level-finished");
         this.hintBubble = $(".game-status .hint");
         this.phoneCanvas = $(".phone-canvas");
+        this.levelIndicator = $(".game-status .level-indicator");
 
         var t = this;
 
@@ -170,18 +171,39 @@ define(
 
         this.currentLevel = this.levels[this.currentLevelNumber-1]; 
 
+        //Builds out the level indicator
+        this.levelIndicator.find(".level-circle").remove();
+
+        var levelCount = this.levels.length;
+        var maxLeft = this.levelIndicator.width();
+        var increment = maxLeft / levelCount;
+
+        for(var i = 0; i <= levelCount; i++){
+          var levelCircle = document.createElement("div");
+          $(levelCircle).addClass("level-circle");
+          if(i < this.currentLevelNumber){
+            $(levelCircle).addClass("got-here");
+          }
+
+          $(levelCircle).css("left", i * Math.floor(increment) - 10 +"px");
+          this.levelIndicator.append(levelCircle);
+        }
+
+        this.levelIndicator.find(".level-progress").width((this.currentLevelNumber -1) * increment);
+        this.levelIndicator.find(".current-level").css("left", (this.currentLevelNumber -1) * increment - 18);
+
         var description = this.currentLevel["description"];
         var steps = this.currentLevel["steps"];
 
         this.levelIntro.find(".level-number").text("Level " + this.currentLevelNumber);
-        this.levelIntro.find(".level-name").text(description);
+        this.levelIntro.find(".level-name").html("&quot;" + description + "&quot;");
 
         this.levelStatus.find(".level-number").text("Level " + this.currentLevelNumber);
         this.levelStatus.find(".level-name").text(description);
 
         //Loads all the Steps and listners
         this.stepList.html("");
-        
+
         for(var i = 0;  i < steps.length; i++){
           var step = steps[i];
 
@@ -213,21 +235,15 @@ define(
         window.clearTimeout(this.bubbleTimeout);
         delete this.bubbleTimeout;
         if(hints){
-          
           var randomHint = Math.floor(Math.random(1)*hints.length);
-          
           while (randomHint == this.lastHint){
             randomHint = Math.floor(Math.random(1)*hints.length);
           }
-          
           this.lastHint = randomHint;
           this.hintBubble.show().addClass("show-hint").find(".hint-text").text(hints[randomHint]);
           this.bubbleTimeout = setTimeout(function(){
             t.hintBubble.fadeOut();
           },2000);
-        
-        
-        
         }
       },
       checkLevelFinish : function(){
