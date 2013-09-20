@@ -120,7 +120,7 @@ define(
       } else {
         previewContent = preview.innerHTML;
       }
-      var thumb = $('<div class="clearfix preview"><div class="preview-box"><div class="draggable" name="' + name + '" value="' + name + '">'+ previewContent +'</div></div><div class="thumb" value="' + name + '">' + name.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
+      var thumb = $('<div class="preview"><div class="draggable" name="' + name + '" value="' + name + '">'+ previewContent +'</div><div class="thumb" value="' + name + '">' + name.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
       list.append(thumb);
       $('.draggable').draggable({
         connectToSortable: ".drophere",
@@ -148,7 +148,7 @@ define(
       sortedComponentNames.sort();
       var fullList = $('.library-list');
       fullList.html('');
-      fullList.append("<div class='suggested-components heading'>Suggested</div>");
+      fullList.append('<h4 class="suggested-components heading">Suggested</h4>');
       var suggestionCount = 0;
 
       var suggestions = [];
@@ -189,7 +189,7 @@ define(
         addThumb(components[suggestion], suggestion, fullList);
         alreadyMadeSuggestions[suggestion] = true;
       }
-      fullList.append("<div class='heading'>All</div>");
+      fullList.append('<div class="lb"></div>');
       sortedComponentNames.forEach(function (name) {
         addThumb(components[name], name, fullList);
       });
