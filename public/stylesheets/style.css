@@ -1586,10 +1586,9 @@ listen.channel-visualisation  .channel-menu-toggle {
 
 .indicator {
   position: absolute;
-  top: -2px;
-  left: 100px;
-  height: 10px;
-  width: 10px;
+  top: 0px;
+  height: 8px;
+  width: 8px;
   border-radius: 20px;
   left: 0px;
   opacity: 0;
@@ -1629,6 +1628,8 @@ listen.channel-visualisation  .channel-menu-toggle {
   position: absolute;
   padding: 0px;
   margin:0;
+  height: 8px;
+  width: 8px;
 }
 
 .broadcast-channels .color {
@@ -1636,7 +1637,7 @@ listen.channel-visualisation  .channel-menu-toggle {
 }
 
 .subscription-channels .color {
-  right: 0px;
+  display: none;
 }
 
 [color=disabled] {
