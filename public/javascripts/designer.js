@@ -148,7 +148,7 @@ define(
       sortedComponentNames.sort();
       var fullList = $('.library-list');
       fullList.html('');
-      fullList.append('<h4 class="suggested-components heading">Suggested</h4>');
+      fullList.append('<div class="suggested-components heading">Suggested</div>');
       var suggestionCount = 0;
 
       var suggestions = [];
@@ -652,6 +652,7 @@ define(
       $(".editable-section .name").text(componentName);
 
       //add mailbox info to right column
+      /*
       $('.mailboxes').html('');
 
       for (var i=0; i < element.subscriptions.length; i++) {
@@ -665,7 +666,7 @@ define(
       $('.outgoing-mail').html('');
       var mailColor = element.broadcastChannel;
       var outgoingMail = $('<div class="mail">Mail</div>').addClass(mailColor);
-      $('.outgoing-mail').append(outgoingMail);
+      $('.outgoing-mail').append(outgoingMail);*/
     };
 
     //shows component description
