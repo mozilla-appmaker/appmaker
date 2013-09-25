@@ -554,7 +554,7 @@ input[type="search"] {
 	display: block;
 }
 
-.name {
+.editable-section .name {
   font-size: 18px;
   color: #fff;
   font-weight: 400;
