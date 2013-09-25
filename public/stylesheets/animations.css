@@ -30,40 +30,40 @@
 @-webkit-keyframes indicatorOut {
   0% { opacity: .8;}  
   50% { 
-    left: 210px; 
+    left: 305px; 
     opacity: 0;
   }
   100% { 
-    left: 210px; 
+    left: 305px; 
     opacity: 0;
   }
 }
 @-moz-keyframes indicatorOut {
   0% { opacity: .8;}  
   50% { 
-    left: 210px; 
+    left: 305px; 
     opacity: 0;
   }
   100% { 
-    left: 210px; 
+    left: 305px; 
     opacity: 0;
   }
 }
 
 @-webkit-keyframes indicatorIn {
   0% { opacity: 0;}  
-  50% { opacity: 0; left: 0px;}  
+  50% { opacity: 0; left: 305px;}  
   100% {
-    left: 200px;
-    opacity: .6;
+    left: 602px;
+    opacity: .8;
   }
 }
 @-moz-keyframes indicatorIn {
   0% { opacity: 0;}  
-  50% { opacity: 0; left: 0px;}  
+  50% { opacity: 0; left: 305px;}  
   100% {
-    left: 200px;
-    opacity: .6;
+    left: 602px;
+    opacity: .8;
   }
 }
 
