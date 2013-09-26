@@ -936,6 +936,10 @@ input[type="search"] {
   text-align: left;
 }
 
+.editable-attributes div {
+  margin-bottom: 8px;
+}
+
 .editables-section label {
   font-size: 13px;
 }
