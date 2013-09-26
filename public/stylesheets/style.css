@@ -535,17 +535,21 @@ input[type="search"] {
   z-index: 99;
 }
 
-.right-column input {
-	width: 100%;
-	height: 30px;
-	padding: 0px;
-	text-indent: 10px;
-	background-color: #181b1f;
-	border: none;
-	border-radius: 1px;
-	color: #fff;
-	margin-bottom: 20px;
-	outline: none;
+.right-column input[type=text] {
+  width: 100%;
+  height: 30px;
+  padding: 0px;
+  text-indent: 10px;
+  background-color: #181b1f;
+  border: none;
+  border-radius: 1px;
+  color: #fff;
+  margin-bottom: 20px;
+  outline: none;
+}
+
+.right-column input[type=checkbox] {
+  margin-right: 4px;
 }
 
 .right-column label {

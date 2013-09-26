@@ -379,7 +379,6 @@ define(
                           value +
                           "\"></input></div>"
                         );
-
                         e.on("change", function(evt) {
                           element.setAttribute(attributeName, evt.target.value);
                         });
@@ -406,10 +405,9 @@ define(
                         // TODO: This would be a fine place for angular
                         var e = $(
                           "<div><label>" +
-                          title +
-                          "</label><input type=\"checkbox\" " +
+                          "<input type=\"checkbox\" " +
                           (value == "true" ? " checked=\"true\" " : "") + "\" value=\"" +
-                          value + "\" /></div>"
+                          value + "\" />" + title + " </div>"
                         );
                         e.on("change", function(evt) {
                           evt.target.value = evt.target.value == "true" ? "false" : "true";
