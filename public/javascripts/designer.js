@@ -372,9 +372,7 @@ define(
 
       switch(definition.type) {
       case "multiple": return (function() {
-                      // TODO: This would be a fine place for angular
                       var options = JSON.parse(value);
-                      // var options = value.split(",");
                       var e = $("<div>" +
                         "<label>"+title + "</label>" +
                         "<div class=\"option-list\"></div>" +
@@ -400,7 +398,6 @@ define(
 
                         element.setAttribute(attributeName, JSON.stringify(options));
                       });
-
                       return e[0];
                     });
         case "select": return (function() {
