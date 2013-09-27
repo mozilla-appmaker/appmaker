@@ -292,9 +292,8 @@ button.btn-img {
 }
 
 button.btn-add {
-	width: 102px;
+	padding: 0px 20px;
 	border: none;
-	padding: 0px;
 	background-color: #e81e1e;
 	color: #FFF;
 	font-size: 13px;
@@ -636,7 +635,7 @@ input[type="search"] {
   position: absolute;
   top: 90px;
   bottom: 0px;
-  left: 15px;
+  left: 20px;
 }
 
 .card {
