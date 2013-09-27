@@ -544,7 +544,6 @@ input[type="search"] {
   border: none;
   border-radius: 1px;
   color: #fff;
-  margin-bottom: 20px;
   outline: none;
 }
 
@@ -554,7 +553,7 @@ input[type="search"] {
 
 .right-column label {
 	color: #5b6270;
-	margin-bottom: 5px;
+	margin-bottom: 2px;
 	display: block;
 }
 
@@ -575,19 +574,19 @@ input[type="search"] {
 }
 
 .tip {
-	width: 1000px;
-	position: absolute;
-	margin: 0 auto;
-	height: 80px;
-	left: 330px;
-	top: -60px;
-	line-height: 80px;
-	color: #999;
-	font-size: 16px;
-	text-indent: 25px;
-	background-image: url(../images/alert-blue.png);
-	background-repeat: no-repeat;
-	background-position: left center;
+  width: 1000px;
+  position: absolute;
+  margin: 0 auto;
+  height: 80px;
+  left: 330px;
+  top: -60px;
+  line-height: 80px;
+  color: #999;
+  font-size: 16px;
+  text-indent: 25px;
+  background-image: url(../images/alert-blue.png);
+  background-repeat: no-repeat;
+  background-position: left center;
 }
 
 .library-list {
@@ -937,7 +936,7 @@ input[type="search"] {
 }
 
 .editable-attributes div {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .editables-section label {

@@ -372,7 +372,6 @@ define(
 
       switch(definition.type) {
         case "select": return (function() {
-            
                       var e = $("<div><label>" +
                         title +
                         "</label><select type=\"text\" value=\"" +
@@ -401,7 +400,7 @@ define(
                           value +
                           "\"></input></div>"
                         );
-                        e.on("change", function(evt) {
+                        e.on("keyup", function(evt) {
                           element.setAttribute(attributeName, evt.target.value);
                         });
                         return e[0];
