@@ -101,7 +101,7 @@ define(
 
         // create card thumbnail
         var cardNumber = $(".card").length + 1;
-        var newthumb = $('<div class="card">' + cardNumber + '</div>');
+        var newthumb = $('<div class="card">Card ' + cardNumber + '</div>');
         newthumb.attr('id', "card-thumb-" + cardNumber);
         newthumb.click(function() {
           card.show();
@@ -482,6 +482,33 @@ define(
     //Generate or remove the channel menu
     $(document).on('mouseleave','.channel-visualisation',function(){
       $(this).find(".channel-menu").remove();
+    });
+
+    $('ul.tabs').each(function(){
+      var $active, $content, $links = $(this).find('a');
+
+      // If the location.hash matches one of the links, use that as the active tab.
+      // If no match is found, use the first link as the initial active tab.
+      $active = $($links.filter('[href="'+location.hash+'"]')[0] || $links[0]);
+      $active.addClass('active-tab');
+      $content = $($active.attr('href'));
+
+      // Hide the remaining content
+      $links.not($active).each(function () {
+        $($(this).attr('href')).hide();
+      });
+
+      $(this).on('click', 'a', function(e){
+        // Make the old tab inactive.
+        $active.removeClass('active-tab');
+        $content.hide();
+        $active = $(this);
+        $content = $($(this).attr('href'));
+        $active.addClass('active-tab');
+        $content.show();
+
+        e.preventDefault();
+      });
     });
 
 
