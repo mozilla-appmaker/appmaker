@@ -371,6 +371,38 @@ define(
       var title = Inflector.titleize(Inflector.underscore(attributeName));
 
       switch(definition.type) {
+      case "multiple": return (function() {
+                      // TODO: This would be a fine place for angular
+                      var options = JSON.parse(value);
+                      // var options = value.split(",");
+                      var e = $("<div>" +
+                        "<label>"+title + "</label>" +
+                        "<div class=\"option-list\"></div>" +
+                        "</div>"
+                      );
+
+                      for (var key in options) {
+                        e.find(".option-list").append("<input type=\"text\" value=\"" +options[key]+"\" />");
+                      }
+
+                      var add = $("<a class=\"add\" href=\"#\">Add Another</a>")
+                      e.append(add);
+
+                      e.on("click",".add", function(){
+                        e.find(".option-list").append("<input type=\"text\" value=\"\" />");
+                      })
+
+                      e.on("keyup", function(evt) {
+                        var options = [];
+                        e.find("input").each(function(){
+                          options.push($(this).val());
+                        })
+
+                        element.setAttribute(attributeName, JSON.stringify(options));
+                      });
+
+                      return e[0];
+                    });
         case "select": return (function() {
                       var e = $("<div><label>" +
                         title +

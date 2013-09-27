@@ -996,6 +996,21 @@ input[type="search"] {
   margin-bottom: 10px;
 }
 
+.editable-attributes .option-list {
+  margin-bottom: 5px;
+}
+
+.editable-attributes .option-list input {
+  margin-bottom: 4px;
+}
+
+.editable-attributes .add {
+  color: white;
+  background: #3999e3;
+  font-size: 1.2rem;
+  padding: .2rem .4rem;
+}
+
 .editables-section label {
   font-size: 13px;
 }
