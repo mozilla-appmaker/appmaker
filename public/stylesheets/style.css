@@ -535,22 +535,25 @@ input[type="search"] {
   z-index: 99;
 }
 
-.right-column input {
-	width: 100%;
-	height: 30px;
-	padding: 0px;
-	text-indent: 10px;
-	background-color: #181b1f;
-	border: none;
-	border-radius: 1px;
-	color: #fff;
-	margin-bottom: 20px;
-	outline: none;
+.right-column input[type=text] {
+  width: 100%;
+  height: 30px;
+  padding: 0px;
+  text-indent: 10px;
+  background-color: #181b1f;
+  border: none;
+  border-radius: 1px;
+  color: #fff;
+  outline: none;
+}
+
+.right-column input[type=checkbox] {
+  margin-right: 4px;
 }
 
 .right-column label {
 	color: #5b6270;
-	margin-bottom: 5px;
+	margin-bottom: 2px;
 	display: block;
 }
 
@@ -571,19 +574,19 @@ input[type="search"] {
 }
 
 .tip {
-	width: 1000px;
-	position: absolute;
-	margin: 0 auto;
-	height: 80px;
-	left: 330px;
-	top: -60px;
-	line-height: 80px;
-	color: #999;
-	font-size: 16px;
-	text-indent: 25px;
-	background-image: url(../images/alert-blue.png);
-	background-repeat: no-repeat;
-	background-position: left center;
+  width: 1000px;
+  position: absolute;
+  margin: 0 auto;
+  height: 80px;
+  left: 330px;
+  top: -60px;
+  line-height: 80px;
+  color: #999;
+  font-size: 16px;
+  text-indent: 25px;
+  background-image: url(../images/alert-blue.png);
+  background-repeat: no-repeat;
+  background-position: left center;
 }
 
 .library-list {
@@ -930,6 +933,10 @@ input[type="search"] {
   display: none;
   min-height: 23px;
   text-align: left;
+}
+
+.editable-attributes div {
+  margin-bottom: 10px;
 }
 
 .editables-section label {

@@ -371,6 +371,27 @@ define(
       var title = Inflector.titleize(Inflector.underscore(attributeName));
 
       switch(definition.type) {
+        case "select": return (function() {
+                      var e = $("<div><label>" +
+                        title +
+                        "</label><select type=\"text\" value=\"" +
+                        value +
+                        "\"> "+
+                        "</select></div>"
+                      );
+                      $(definition.options).each(function(i,k){
+                        var option = document.createElement("option");                      
+                        $(option).attr("value",k);
+                        $(option).text(k);
+                        e.find("select").append(option);
+                      });
+                      e.find("select").val(value);
+                      e.on("change", function(evt) {
+                        element.setAttribute(attributeName, evt.target.value);
+                        console.log(evt.target.value);
+                      });
+                      return e[0];
+                    });
         case "text": return (function() {
                         // TODO: This would be a fine place for angular
                         var e = $("<div><label>" +
@@ -379,8 +400,7 @@ define(
                           value +
                           "\"></input></div>"
                         );
-
-                        e.on("change", function(evt) {
+                        e.on("keyup", function(evt) {
                           element.setAttribute(attributeName, evt.target.value);
                         });
                         return e[0];
@@ -406,10 +426,9 @@ define(
                         // TODO: This would be a fine place for angular
                         var e = $(
                           "<div><label>" +
-                          title +
-                          "</label><input type=\"checkbox\" " +
+                          "<input type=\"checkbox\" " +
                           (value == "true" ? " checked=\"true\" " : "") + "\" value=\"" +
-                          value + "\" /></div>"
+                          value + "\" />" + title + " </div>"
                         );
                         e.on("change", function(evt) {
                           evt.target.value = evt.target.value == "true" ? "false" : "true";
