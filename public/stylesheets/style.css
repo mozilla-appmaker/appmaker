@@ -782,7 +782,50 @@ input[type="search"] {
 	float: left;
 	width: 70px;
     margin: 0px 0px 5px 5px;
-    background-color: #2f343b;
+    perspective: 1000;
+    -webkit-perspective: 1000;
+}
+
+/* flip the pane when hovered */
+.preview:hover .flipper {
+	transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+}
+
+.preview, .front, .back, .draggable {
+	width: 70px;
+	height: 80px;
+}
+
+/* flip speed goes here */
+.flipper {
+	-webkit-transition: 0.6s;
+    transition: 0.6s;
+    -webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	position: relative;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+    -webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* front pane, placed above back */
+.front {
+	z-index: 2;
+	background-color: #2f343b;
+}
+
+/* back, initially hidden pane */
+.back {
+    -webkit-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+	cursor: move;
 }
 
 .missing-image {
@@ -796,25 +839,34 @@ input[type="search"] {
 	color: #212429;
 }
 
+.preview-icon {
+	z-index: 99;
+	display: -webkit-box;   /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
+	display: -moz-box;      /* OLD: Firefox (buggy) */
+	display: -ms-flexbox;   /* MID: IE 10 */
+	display: -webkit-flex;  /* NEW, Chrome 21+ */
+	display: flex;          /* NEW: Opera 12.1, Firefox 22+ */
+
+	-webkit-box-align: center; -moz-box-align: center; /* OLD… */
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+
+	-webkit-box-pack: center; -moz-box-pack: center;
+	-ms-flex-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	height: 50px;
+}
+
 .draggable {
 	cursor: move;
-	z-index: 99;
-		  display: -webkit-box;   /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
-  display: -moz-box;      /* OLD: Firefox (buggy) */
-  display: -ms-flexbox;   /* MID: IE 10 */
-  display: -webkit-flex;  /* NEW, Chrome 21+ */
-  display: flex;          /* NEW: Opera 12.1, Firefox 22+ */
-
-  -webkit-box-align: center; -moz-box-align: center; /* OLD… */
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-
-  -webkit-box-pack: center; -moz-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  height: 50px;
+	background: #358CCE;
+	z-index: 50;
+	text-align: center;
+	font-size: 11px;
+	line-height: 80px;
+	color: #FFF;
 }
 
 .im-flying {
