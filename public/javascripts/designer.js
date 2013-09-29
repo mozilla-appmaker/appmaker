@@ -115,7 +115,7 @@ define(
     function addThumb(component, name, list) {
       var previewContent;
       var preview = component.thumbnail;
-      if(preview === null){
+      if(! preview){
         previewContent = '<div class="missing-image">?</div>';
       } else {
         previewContent = preview.innerHTML;
