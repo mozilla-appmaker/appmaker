@@ -8,7 +8,6 @@ body {
 	font-family: 'Source Sans Pro', arial;
 	font-size: 14px;
 	color: #31353C;
-	background-color: #e8ebed;
 	overflow-y: scroll;
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
@@ -16,6 +15,10 @@ body {
 	-moz-user-select: -moz-none;
 	-ms-user-select: none;
 	user-select: none;
+}
+
+.phone-container body {
+	background-color: #e8ebed;
 }
 
 html {
@@ -966,19 +969,19 @@ input[type="search"] {
 	background-size: auto 12px;
 }
 
-.fixed-top,.fixed-bottom {
+.phone-container .fixed-top,.fixed-bottom {
 	transition: linear .2s min-height;
 	-moz-transition: linear .2s min-height;
 	min-height: 5px;
 	background: white;
 }
 
-.fixed-top {
+.phone-container .fixed-top {
 	border-bottom: dashed 2px #DDD;
 	padding-bottom: 4px;
 }
 
-.fixed-bottom {
+.phone-container .fixed-bottom {
 	border-top: dashed 2px #DDD;
 	padding-top: 4px;
 
@@ -988,6 +991,10 @@ input[type="search"] {
 	min-height: 400px;
 	background-color: #FFF;
 	width: 100%;
+	padding: 0;
+}
+
+.phone-container .phone-canvas {
 	padding: 4px 0;
 }
 
