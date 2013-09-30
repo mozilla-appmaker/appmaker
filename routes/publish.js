@@ -124,12 +124,12 @@ exports.publish = function(req, res) {
   });
 
   var manifestJSON = {
-    "name": 'My Flathead App - ' + folderName,
-    "description": 'My Flathead App - ' + folderName,
+    "name": 'My App - ' + folderName,
+    "description": 'My App - ' + folderName,
     "launch_path": '/index.html',
     "developer": {
       "name": "Flathead",
-      "url": "https://flathead.herokuapp.com/"
+      "url": "https://appmaker.mozillalabs.com/"
     },
     "icons": {
       "60": "/style/icons/icon-60.png",
