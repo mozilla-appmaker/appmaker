@@ -120,7 +120,7 @@ define(
       } else {
         previewContent = preview.innerHTML;
       }
-      var thumb = $('<div class="preview"><div class="draggable" name="' + name + '" value="' + name + '">'+ previewContent +'</div><div class="thumb" value="' + name + '">' + name.replace('app-', '') + '</div><div class="info-btn hidden"></div></div>');
+      var thumb = $('<div class="preview"><div class="flipper"><div class="front"><div class="preview-icon">'+ previewContent +'</div><div class="thumb" value="' + name + '">' + name.replace('app-', '') + '</div></div><div class="back"><div class="draggable" name="' + name + '" value="' + name + '">DRAG ME</div></div></div></div>');
       list.append(thumb);
       $('.draggable').draggable({
         connectToSortable: ".drophere",
@@ -128,8 +128,7 @@ define(
         appendTo: document.body,
         start: function(event, ui){
           var clone = ui.helper;
-          $(clone).find(".draggable div").addClass("im-flying");
-          clone.find('.info-btn').remove();
+          $(clone).removeClass("back");
         },
         addClass: "clone"
       });
