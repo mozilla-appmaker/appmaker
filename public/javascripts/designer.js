@@ -120,7 +120,7 @@ define(
       } else {
         previewContent = preview.innerHTML;
       }
-      var thumb = $('<div class="preview"><div class="flipper"><div class="front"><div class="preview-icon">'+ previewContent +'</div><div class="thumb" value="' + name + '">' + name.replace('app-', '') + '</div></div><div class="back"><div class="draggable" name="' + name + '" value="' + name + '">DRAG ME</div></div></div></div>');
+      var thumb = $('<div class="preview"><div class="flipper"><div class="front"><div class="preview-icon">'+ previewContent +'</div><div class="thumb" value="' + name + '">' + name.replace('app-', '') + '</div></div><div class="back"><div class="draggable" name="' + name + '" value="' + name + '"><div class="preview-icon">'+ previewContent +'</div><div class="thumb" value="' + name + '">' + name.replace('app-', '') + '</div><div class="component-instruction">Drag Me</div></div></div></div></div>');
       list.append(thumb);
       $('.draggable').draggable({
         connectToSortable: ".drophere",
