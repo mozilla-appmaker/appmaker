@@ -790,6 +790,13 @@ define(
       clearLog();
     });
 
+    var escapeHandler = function(e) {
+      if (e.keyCode == 27) {
+        $('.modal-wrapper').removeClass('flex');
+        document.removeEventListener('keypress', escapeHandler);
+      }
+    }
+
     $('.publish').click(function(){
 
       var html = '';
@@ -863,7 +870,7 @@ define(
           $('.modal-publish-link').html(data.install);
           $('.modal-publish-link').attr('href', data.install);
           $(".publishdialog .success").show();
-          console.log('From publisher: ', data);
+          document.addEventListener('keypress', escapeHandler);
         },
         error: function (data) {
           $(".publishdialog .spinner").hide();
@@ -877,6 +884,7 @@ define(
           console.error('Error while publishing content:');
           console.error(data);
           $(".publishdialog .failure").show();
+          document.addEventListener('keypress', escapeHandler);
         }
       });
     });
@@ -891,6 +899,7 @@ define(
 
     $('.return-btn').click(function () {
       $('.modal-wrapper').removeClass('flex');
+      document.removeEventListener('keypress', escapeHandler);
     });
 
     // AMD module return
