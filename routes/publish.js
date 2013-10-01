@@ -7,6 +7,7 @@ var moniker = require('moniker');
 var ejs = require('ejs-locals/node_modules/ejs');
 var fs = require('fs');
 var path = require('path');
+var verify = require('../lib/verify');
 
 var __publisher;
 
@@ -59,110 +60,60 @@ exports.publish = function(req, res) {
     return str;
   }
 
+  var requestHTML = inputData.html;
+
   // Do some cleansing!
-
-  // Make sure there are cards and that they're a sane array
-  if (!!manifest.cards && Array.isArray(manifest.cards)) {
-    manifest.cards.forEach(function (card) {
-      function checkElements (elements) {
-        var newElements = [];
-        if (!!elements) {
-          elements.forEach(function (element) {
-            // Make sure the element has a string tagname that starts with "app-".
-            if (typeof element.tagname === 'string' && element.tagname.indexOf('app-') === 0) {
-              // Clean the properties of the tag
-              element.tagname = cleanString(element.tagname, true);
-              element.id = cleanString(element.id, true);
-              element.broadcast = cleanString(element.broadcast, true);
-
-              if (element.attributes) {
-                var newAttributes = [];
-                element.attributes.forEach(function (attr) {
-                  // Make sure each attribute doesn't start with "on" (e.g. onclick).
-                  if (attr.name.indexOf('on') !== 0) {
-                    // Clean the name and value of each.
-                    attr.name = cleanString(attr.name, true);
-                    attr.value = cleanString(attr.value);
-                    newAttributes.push(attr);
-                  }
-                });
-
-                // Re-assign the attribtues for each element with a list of sanitized ones.
-                element.attributes = newAttributes;
-              }
-              if (element.listen) {
-                element.listen.forEach(function (listen) {
-                  // Clean the listener and channel of each listen element.
-                  listen.listener = cleanString(listen.listener, true);
-                  listen.channel = cleanString(listen.channel, true);
-                });
-              }
-              newElements.push(element);
-            }
-          });
-        }
-        return newElements;
-      }
-
-      // Check each section of each card, replacing the elements in each with sanitized ones.
-      card.top = checkElements(card.top);
-      card.canvas = checkElements(card.canvas);
-      card.bottom = checkElements(card.bottom);
+  verify.filter(requestHTML, function (filteredHTML) {
+    var appStr = __publisher.templates.publish({
+      appHTML: filteredHTML
     });
-  }
-  else {
-    manifest.cards = [];
-  }
 
-  var appStr = __publisher.templates.publish({
-    cards: manifest.cards
-  });
+    var installStr = __publisher.templates.install({
+      iframeSrc: remoteAppUrl,
+      manifestUrl: remoteManifestUrl
+    });
 
-  var installStr = __publisher.templates.install({
-    iframeSrc: remoteAppUrl,
-    manifestUrl: remoteManifestUrl
-  });
+    var manifestJSON = {
+      "name": 'My App - ' + folderName,
+      "description": 'My App - ' + folderName,
+      "launch_path": '/index.html',
+      "developer": {
+        "name": "Flathead",
+        "url": "https://appmaker.mozillalabs.com/"
+      },
+      "icons": {
+        "60": "/style/icons/icon-60.png",
+        "79": "/style/icons/icon-79.png"
+      },
+      "default_locale": "en"
+    };
 
-  var manifestJSON = {
-    "name": 'My App - ' + folderName,
-    "description": 'My App - ' + folderName,
-    "launch_path": '/index.html',
-    "developer": {
-      "name": "Flathead",
-      "url": "https://appmaker.mozillalabs.com/"
-    },
-    "icons": {
-      "60": "/style/icons/icon-60.png",
-      "79": "/style/icons/icon-79.png"
-    },
-    "default_locale": "en"
-  };
+    var outputFiles = [
+      {filename: __publisher.objectPrefix + '/' + folderName + '/' + manifestFilename,
+        data: JSON.stringify(manifestJSON),
+        // According to https://developer.mozilla.org/en-US/docs/Web/Apps/Manifest#Serving_manifests
+        contentType: 'application/x-web-app-manifest+json'},
+      {filename: __publisher.objectPrefix + '/' + folderName + '/' + appHTMLFilename,
+        data: appStr},
+      {filename: __publisher.objectPrefix + '/' + folderName + '/' + installHTMLFilename,
+        data: installStr}
+    ];
 
-  var outputFiles = [
-    {filename: __publisher.objectPrefix + '/' + folderName + '/' + manifestFilename,
-      data: JSON.stringify(manifestJSON),
-      // According to https://developer.mozilla.org/en-US/docs/Web/Apps/Manifest#Serving_manifests
-      contentType: 'application/x-web-app-manifest+json'},
-    {filename: __publisher.objectPrefix + '/' + folderName + '/' + appHTMLFilename,
-      data: appStr},
-    {filename: __publisher.objectPrefix + '/' + folderName + '/' + installHTMLFilename,
-      data: installStr}
-  ];
+    var filesDone = 0;
 
-  var filesDone = 0;
-
-  outputFiles.forEach(function (description) {
-    __publisher.store.write(description.filename, description.data, function (result) {
-      if (200 !== result.statusCode) {
-        console.error('Trouble writing ' + description.filename + ' to S3 (' + result.statusCode + ').');
-      }
-      if (++filesDone === outputFiles.length) {
-        res.json({error: null,
-          app: remoteAppUrl,
-          install: remoteInstallUrl,
-          manifest: remoteManifestUrl
-        }, 200);
-      }
-    }, description.contentType);
+    outputFiles.forEach(function (description) {
+      __publisher.store.write(description.filename, description.data, function (result) {
+        if (200 !== result.statusCode) {
+          console.error('Trouble writing ' + description.filename + ' to S3 (' + result.statusCode + ').');
+        }
+        if (++filesDone === outputFiles.length) {
+          res.json({error: null,
+            app: remoteAppUrl,
+            install: remoteInstallUrl,
+            manifest: remoteManifestUrl
+          }, 200);
+        }
+      }, description.contentType);
+    });
   });
 };

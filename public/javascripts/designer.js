@@ -9,13 +9,143 @@ define(
 
     var selection = [];
 
+    var app;
+
+    function init () {
+      app = new Ceci.App({
+        container: $('#flathead-app')[0],
+        onComponentAdded: function (component) {
+          component = $(component);
+
+          var dropTarget = $(".drophere").find(".draggable");
+          dropTarget.replaceWith(component);
+
+          component.addClass("component");
+          component.draggable({
+            handle: 'handle'
+          });
+
+          component.on('mousedown', function(evt) {
+            selectComponent($(evt.currentTarget));
+          });
+
+          component.append($('<div class="handle"></div>'));
+
+          selectComponent(component);
+        },
+        onload: function (components) {
+          this.sortComponents();
+          Ceci.registerCeciPlugin("onChange", function(){
+            if (saveTimer) {
+              clearTimeout(saveTimer);
+            }
+            saveTimer = setTimeout(saveApp, 500);
+          });
+          document.addEventListener("onselectionchanged", app.sortComponents);
+
+          $('.library-list').removeClass("library-loading");
+          $('.drophere').sortable(sortableOptions);
+        },
+        onCardChange: function (card) {
+          var thumbId = "card-thumb-" + card.id.match(/(\d+)$/)[0];
+          $(".card").removeClass('selected');
+          $("#" + thumbId).addClass('selected');
+        },
+        onCardAdded: function (card) {
+          Array.prototype.forEach.call(card.children, function (element) {
+            element.classList.add('drophere');
+          });
+
+          // create card thumbnail
+          var cardNumber = $(".card").length + 1;
+          var newthumb = $('<div class="card">Card ' + cardNumber + '</div>');
+          newthumb.attr('id', "card-thumb-" + cardNumber);
+          newthumb.click(function() {
+            card.show();
+          });
+          $(".cards").append(newthumb);
+          $('.drophere').sortable(sortableOptions);
+          card.show();
+        }
+      });
+
+      app.sortComponents = function() {
+        var components = Ceci._components;
+        var sortedComponentNames = Object.keys(components);
+        sortedComponentNames.sort();
+        var fullList = $('.library-list');
+        fullList.html('');
+        fullList.append('<div class="suggested-components heading">Suggested</div>');
+        var suggestionCount = 0;
+
+        var suggestions = [];
+        var suggestors =  [];
+        var friends = [];
+        var component;
+        var i,j;
+        for (i=0; i < selection.length; i++) {
+          suggestors.push(selection[i].localName);
+        }
+        for (i=0; i < suggestors.length; i++) {
+          component = suggestors[i];
+          friends = components[component].friends;
+          if (friends) {
+            for (j=0; j<friends.length; j++) {
+              suggestions.push(friends[j]);
+            }
+          }
+        }
+        var card = Ceci.currentCard;
+        for (i=0; i < card.elements.length; i++) {
+          component = card.elements[i];
+          friends = component.friends;
+          if (friends) {
+            for (j=0; j<friends.length; j++) {
+              suggestions.push(friends[j]);
+            }
+          }
+        }
+        /* these are what we suggest with a blank app */
+        // suggestions.push('app-fireworks');
+        // suggestions.push('app-button');
+        var alreadyMadeSuggestions = {};
+        var suggestion;
+        for (i = 0; i < Math.min(10, suggestions.length); i++) {
+          suggestion = suggestions[i];
+          if (suggestion in alreadyMadeSuggestions) continue;
+          addThumb(components[suggestion], suggestion, fullList);
+          alreadyMadeSuggestions[suggestion] = true;
+        }
+        fullList.append('<div class="lb"></div>');
+        sortedComponentNames.forEach(function (name) {
+          addThumb(components[name], name, fullList);
+        });
+      };
+    }
+
     Ceci.registerCeciPlugin('onElementRemoved', function(element){
       $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
     });
 
-    if (localStorage.draft){
-      $('#flathead-app').html(localStorage.draft);
+    if (window.location.search.length > 0) {
+      var match = window.location.search.match(/[?&]template=([\w-_\.]+)/);
+      if (match[1]) {
+        $.get('/templates/' + match[1] + '.html',
+          function (data) {
+            var tmpContainer = document.createElement('div');
+            tmpContainer.innerHTML = data;
+            $('#flathead-app').html(tmpContainer.querySelector('#flathead-app').innerHTML);
+            init();
+          }).fail(function () {
+            init();
+          });
+      }
     }
+    else if (localStorage.draft){
+      $('#flathead-app').html(localStorage.draft);
+      init();
+    }
+
     var saveTimer = null;
 
     function convertHex(hex,opacity){
@@ -55,63 +185,6 @@ define(
       }
     };
 
-    var app = new Ceci.App({
-      container: $('#flathead-app')[0],
-      onComponentAdded: function (component) {
-        component = $(component);
-
-        var dropTarget = $(".drophere").find(".draggable");
-        dropTarget.replaceWith(component);
-
-        component.addClass("component");
-        component.draggable({
-          handle: 'handle'
-        });
-
-        component.on('mousedown', function(evt) {
-          selectComponent($(evt.currentTarget));
-        });
-
-        component.append($('<div class="handle"></div>'));
-
-        selectComponent(component);
-      },
-      onload: function (components) {
-        this.sortComponents();
-        Ceci.registerCeciPlugin("onChange", function(){
-          if (saveTimer) {
-            clearTimeout(saveTimer);
-          }
-          saveTimer = setTimeout(saveApp, 500);
-        });
-        document.addEventListener("onselectionchanged", app.sortComponents);
-
-        $('.library-list').removeClass("library-loading");
-        $('.drophere').sortable(sortableOptions);
-      },
-      onCardChange: function (card) {
-        var thumbId = "card-thumb-" + card.id.match(/(\d+)$/)[0];
-        $(".card").removeClass('selected');
-        $("#" + thumbId).addClass('selected');
-      },
-      onCardAdded: function (card) {
-        Array.prototype.forEach.call(card.children, function (element) {
-          element.classList.add('drophere');
-        });
-
-        // create card thumbnail
-        var cardNumber = $(".card").length + 1;
-        var newthumb = $('<div class="card">Card ' + cardNumber + '</div>');
-        newthumb.attr('id', "card-thumb-" + cardNumber);
-        newthumb.click(function() {
-          card.show();
-        });
-        $(".cards").append(newthumb);
-        $('.drophere').sortable(sortableOptions);
-        card.show();
-      }
-    });
-
     function addThumb(component, name, list) {
       var previewContent;
       var preview = component.thumbnail;
@@ -140,59 +213,6 @@ define(
         thumb.attr('description', 'No description');
       }
     }
-
-    app.sortComponents = function() {
-      var components = Ceci._components;
-      var sortedComponentNames = Object.keys(components);
-      sortedComponentNames.sort();
-      var fullList = $('.library-list');
-      fullList.html('');
-      fullList.append('<div class="suggested-components heading">Suggested</div>');
-      var suggestionCount = 0;
-
-      var suggestions = [];
-      var suggestors =  [];
-      var friends = [];
-      var component;
-      var i,j;
-      for (i=0; i < selection.length; i++) {
-        suggestors.push(selection[i].localName);
-      }
-      for (i=0; i < suggestors.length; i++) {
-        component = suggestors[i];
-        friends = components[component].friends;
-        if (friends) {
-          for (j=0; j<friends.length; j++) {
-            suggestions.push(friends[j]);
-          }
-        }
-      }
-      var card = Ceci.currentCard;
-      for (i=0; i < card.elements.length; i++) {
-        component = card.elements[i];
-        friends = component.friends;
-        if (friends) {
-          for (j=0; j<friends.length; j++) {
-            suggestions.push(friends[j]);
-          }
-        }
-      }
-      /* these are what we suggest with a blank app */
-      // suggestions.push('app-fireworks');
-      // suggestions.push('app-button');
-      var alreadyMadeSuggestions = {};
-      var suggestion;
-      for (i = 0; i < Math.min(10, suggestions.length); i++) {
-        suggestion = suggestions[i];
-        if (suggestion in alreadyMadeSuggestions) continue;
-        addThumb(components[suggestion], suggestion, fullList);
-        alreadyMadeSuggestions[suggestion] = true;
-      }
-      fullList.append('<div class="lb"></div>');
-      sortedComponentNames.forEach(function (name) {
-        addThumb(components[name], name, fullList);
-      });
-    };
 
     var saveApp = function(){
       localStorage.draft = app.serialize();
@@ -770,8 +790,68 @@ define(
 
     $('.publish').click(function(){
 
+      var html = '';
+      var appTreeClone = document.querySelector('#flathead-app').cloneNode(true);
+      var cards = appTreeClone.querySelectorAll('.ceci-card');
+      var allElements = [];
+
+      // XXXsecretrobotron: This is an unfortunate workaround for the lack of consistent <broadcast>/<listen>
+      // support in ceci.
+      // TODO: Fix ceci to twiddle <broadcast> and <listen> elements instead of fabricating them here.
+
+      function collectComponentsFromContainer (container) {
+        var elements = [];
+        Array.prototype.forEach.call(container.children, function (child) {
+          if (child.localName.indexOf('app-') === 0) {
+            elements.push(child);
+          }
+        });
+        return elements;
+      }
+
+      if (cards.length > 0) {
+        Array.prototype.forEach.call(cards, function (card) {
+          allElements = allElements.concat(collectComponentsFromContainer(card.querySelector('.fixed-top')))
+            .concat(collectComponentsFromContainer(card.querySelector('.phone-canvas')))
+            .concat(collectComponentsFromContainer(card.querySelector('.fixed-bottom')));
+        });
+
+        allElements.forEach(function (element) {
+          var cloneElement = appTreeClone.querySelector('#' + element.id);
+          var broadcast, listen;
+          while (true) {
+            broadcast = cloneElement.querySelector('broadcast');
+            if (!broadcast) { break; }
+            cloneElement.removeChild(broadcast);
+          }
+          while (true) {
+            listen = cloneElement.querySelector('listen');
+            if (!listen) { break; }
+            cloneElement.removeChild(listen);
+          }
+
+          broadcast = document.createElement('broadcast');
+          cloneElement.appendChild(broadcast);
+          broadcast.innerHTML = '';
+          broadcast.setAttribute('on', element.broadcastChannel);
+
+          element.subscriptions.forEach(function (subscription) {
+            if (subscription.channel !== 'false') {
+              listen = document.createElement('listen');
+              listen.setAttribute('on', subscription.channel);
+              listen.setAttribute('for', subscription.listener);
+              cloneElement.appendChild(listen);
+            }
+          });
+        });
+    
+        html = appTreeClone.outerHTML;
+      }
+
       $.ajax('/publish', {
-        data: { manifest: app.toJSON() },
+        data: {
+          html: html
+        },
         type: 'post',
         success: function (data) {
           $(".publishdialog .failure").hide();
@@ -786,7 +866,12 @@ define(
         error: function (data) {
           $(".publishdialog .spinner").hide();
           $(".publishdialog .success").hide();
-          $(".failure .message").html(data.responseJSON.error.message);
+          if (data.responseJSON) {
+            $(".failure .message").html(data.responseJSON.error.message);
+          }
+          else {
+            $(".failure .message").html('Unexpected server error');
+          }
           console.error('Error while publishing content:');
           console.error(data);
           $(".publishdialog .failure").show();
@@ -805,60 +890,6 @@ define(
     $('.return-btn').click(function () {
       $('.modal-wrapper').removeClass('flex');
     });
-
-    if (window.location.search.length > 0) {
-      var match = window.location.search.match(/[?&]template=(\w+)/);
-      if (match[1]) {
-        $.getJSON('/templates/' + match[1] + '.json', function (data) {
-          if (data && data.cards) {
-            data.cards.forEach(function (card, cardIndex) {
-              var cardElement = document.querySelector('.ceci-card');
-              if (cardIndex > 0) {
-                cardElement = createCard();
-              }
-
-              function placeElementsInContainer (elements, container) {
-                elements.forEach(function (desc) {
-                  var componentElement = document.createElement(desc.tagname);
-                  componentElement.setAttribute('id', desc.id);
-
-                  desc.attributes.forEach(function (attr) {
-                    componentElement.setAttribute(attr.name, attr.value);
-                  });
-
-                  if (desc.broadcast !== 'false') {
-                    var broadcastElement = document.createElement('broadcast');
-                    broadcastElement.setAttribute('on', desc.broadcast);
-                    componentElement.appendChild(broadcastElement);
-                  }
-
-                  desc.listen.forEach(function (listen) {
-                    var listenElement = document.createElement('listen');
-                    listenElement.setAttribute('on', listen.channel);
-                    listenElement.setAttribute('for', listen.listener);
-                    componentElement.appendChild(listenElement);
-                  });
-
-                  container.appendChild(componentElement);
-
-                  $(componentElement).draggable({
-                    handle: 'handle'
-                  });
-
-                  Ceci.convertElement(componentElement, function(){
-                    app.componentAddedCallback(componentElement);
-                  });
-                });
-              }
-
-              placeElementsInContainer(card.top, cardElement.querySelector('.fixed-top'));
-              placeElementsInContainer(card.canvas, cardElement.querySelector('.phone-canvas'));
-              placeElementsInContainer(card.bottom, cardElement.querySelector('.fixed-bottom'));
-            });
-          }
-        });
-      }
-    }
 
     // AMD module return
     return {
