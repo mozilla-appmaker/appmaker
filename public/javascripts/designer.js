@@ -793,6 +793,7 @@ define(
       var html = '';
       var appTreeClone = document.querySelector('#flathead-app').cloneNode(true);
       var cards = appTreeClone.querySelectorAll('.ceci-card');
+      var allElements = [];
 
       // XXXsecretrobotron: This is an unfortunate workaround for the lack of consistent <broadcast>/<listen>
       // support in ceci.
@@ -806,10 +807,7 @@ define(
           }
         });
         return elements;
-      };
-
-      var cards = document.querySelectorAll('.ceci-card');
-      var allElements = [];
+      }
 
       if (cards.length > 0) {
         Array.prototype.forEach.call(cards, function (card) {
