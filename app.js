@@ -66,12 +66,18 @@ function nopublish(req, res) {
   }, 503); // XXX right one?
 }
 
-if (process.env.S3_KEY === '') {
+if (!process.env.S3_KEY || process.env.S3_KEY === '') {
   console.log("WARNING: no S3 credentials, so publishing won't work.");
   app.post('/publish', nopublish);
-} else {
-  routes.publish.init(store.init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET),
-    __dirname + '/views', process.env.PUBLISH_HOST, process.env.PUBLISH_HOST_PREFIX, process.env.S3_OBJECT_PREFIX);
+}
+else {
+  routes.publish.init(
+    store.init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET),
+    __dirname + '/views', process.env.PUBLISH_HOST,
+    process.env.PUBLISH_HOST_PREFIX,
+    process.env.S3_OBJECT_PREFIX
+  );
+
   app.post('/publish', routes.publish.publish);
 }
 
