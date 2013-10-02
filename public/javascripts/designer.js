@@ -145,7 +145,9 @@ define(
       $('#flathead-app').html(localStorage.draft);
       init();
     }
-
+    else {
+      init();
+    }
     var saveTimer = null;
 
     function convertHex(hex,opacity){
