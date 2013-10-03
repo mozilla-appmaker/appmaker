@@ -11,13 +11,16 @@ routes = require('./routes'),
 http = require('http'),
 engine = require('ejs-locals'),
 path = require('path'),
-store = require('./lib/store'),
+s3Store = require('./lib/s3-store'),
+localStore = require('./lib/local-store'),
 uuid = require('node-uuid'),
 connect_fonts = require('connect-fonts'),
 font_sourcesanspro = require('connect-fonts-sourcesanspro');
 
 // Cache fonts for 180 days.
 var MAX_FONT_AGE_MS = 1000 * 60 * 60 * 24 * 180;
+
+var LOCAL_STORE_BASE_PATH = __dirname + '/' + 'store';
 
 // .env files aren't great at empty values.
 process.env.ASSET_HOST = typeof process.env.ASSET_HOST === 'undefined' ? '' : process.env.ASSET_HOST;
@@ -61,25 +64,34 @@ app.get('/store/uuid', function (req, res) {
   res.send(uuid.v1());
 });
 
-function nopublish(req, res) {
-  res.json({error: {'message': 'No AWS credentials setup on server.'}
-  }, 503); // XXX right one?
-}
+var store;
+var useSubdomains = false;
 
-if (!process.env.S3_KEY || process.env.S3_KEY === '') {
-  console.log("WARNING: no S3 credentials, so publishing won't work.");
-  app.post('/publish', nopublish);
+if (process.env.STORE === 's3') {
+  if (!process.env.S3_KEY || process.env.S3_KEY === '') {
+    console.warn('No S3 credentials. Reverting to local store.');
+    store = localStore.init(LOCAL_STORE_BASE_PATH);
+    app.use('/store', express.static(path.join(__dirname, 'store')));
+  }
+  else {
+    store = s3Store.init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET);
+    useSubdomains = true;
+  }  
 }
 else {
-  routes.publish.init(
-    store.init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET),
-    __dirname + '/views', process.env.PUBLISH_HOST,
-    process.env.PUBLISH_HOST_PREFIX,
-    process.env.S3_OBJECT_PREFIX
-  );
-
-  app.post('/publish', routes.publish.publish);
+  store = localStore.init(LOCAL_STORE_BASE_PATH);
+  app.use('/store', express.static(path.join(__dirname, 'store')));
 }
+
+routes.publish.init(
+  store,
+  __dirname + '/views', process.env.PUBLISH_HOST,
+  process.env.PUBLISH_HOST_PREFIX,
+  process.env.S3_OBJECT_PREFIX,
+  useSubdomains
+);
+
+app.post('/publish', routes.publish.publish);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
