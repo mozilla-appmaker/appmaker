@@ -30,9 +30,38 @@
   <body>
     <%- appHTML %>
     <div>
-      <button id="remix-button">Remix</button>
+      <div id="remix-icon"></div>
+  <div id="panel">
+    <button id="close-panel"></button>
+    <div id="panel-content" class="hidden">
+      <div id="panel-inner">
+        <div id="remix-logo">
+          <img src ="<%= process.env.ASSET_HOST %>/images/chef-man.png">
+        </div>
+        <input type="email" id="panel-email" placeholder="Your Email">
+        <button id="remix-button">Remix</button>
+        <div id="remix-explanation">
+          This app was created with Mozilla Lab's Appmaker. We'll send you a link so you can remix it and make it your own.
+        </div>
+      </div>
+    </div>
+  </div>
       <script>
         (function(){
+          var open = document.getElementById("remix-icon");
+          var panel = document.getElementById("panel");
+          var content = document.getElementById("panel-content");
+          var close = document.getElementById("close-panel");
+          open.onclick = function(e){
+            panel.className = "expanded";
+            content.className = "";
+            open.className = "hidden";
+          }
+          close.onclick = function(e){
+            content.className = "hidden";
+            open.className = "";
+            panel.className = "";
+          }
           var remixButton = document.querySelector('#remix-button');
           remixButton.onclick = function (e) {
             var f = document.createElement('form');
