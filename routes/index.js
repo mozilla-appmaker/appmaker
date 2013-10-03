@@ -3,6 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+var verify = require('../lib/verify');
+
 /*
  * GET home page.
  */
@@ -12,7 +14,19 @@ module.exports = {
   },
 
   designer: function(req, res) {
-    res.render('designer');
+    if (req.method === 'POST' && req.body && req.body.data) {
+      verify.filter(req.body.data, function (htmlInjection) {
+        res.render('designer', {
+          htmlInjection: htmlInjection
+        });
+      });
+    }
+    else {
+      res.render('designer', {
+        htmlInjection: ''
+      });
+    }
+
   },
 
   testappdesigner: function(req, res) {

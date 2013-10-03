@@ -127,27 +127,34 @@ define(
       $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
     });
 
-    if (window.location.search.length > 0) {
-      var match = window.location.search.match(/[?&]template=([\w-_\.]+)/);
-      if (match[1]) {
-        $.get('/templates/' + match[1] + '.html',
-          function (data) {
-            var tmpContainer = document.createElement('div');
-            tmpContainer.innerHTML = data;
-            $('#flathead-app').html(tmpContainer.querySelector('#flathead-app').innerHTML);
-            init();
-          }).fail(function () {
-            init();
-          });
+    // Make sure there wasn't something planeted in the app container already (e.g. remix)
+    if ($('#flathead-app').find('.ceci-card > div').find('*').length === 0 ) {
+      if (window.location.search.length > 0) {
+        var match = window.location.search.match(/[?&]template=([\w-_\.]+)/);
+        if (match[1]) {
+          $.get('/templates/' + match[1] + '.html',
+            function (data) {
+              var tmpContainer = document.createElement('div');
+              tmpContainer.innerHTML = data;
+              $('#flathead-app').html(tmpContainer.querySelector('#flathead-app').innerHTML);
+              init();
+            }).fail(function () {
+              init();
+            });
+        }
       }
-    }
-    else if (localStorage.draft){
-      $('#flathead-app').html(localStorage.draft);
-      init();
+      else if (localStorage.draft){
+        $('#flathead-app').html(localStorage.draft);
+        init();
+      }
+      else {
+        init();
+      }
     }
     else {
       init();
     }
+
     var saveTimer = null;
 
     function convertHex(hex,opacity){

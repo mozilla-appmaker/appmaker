@@ -54,7 +54,7 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
-app.get('/designer', routes.designer);
+app.all('/designer', routes.designer);
 app.get('/testappdesigner', routes.testappdesigner);
 app.get('/testapp', routes.testapp);
 

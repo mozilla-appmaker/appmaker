@@ -78,7 +78,8 @@ exports.publish = function(req, res) {
 
     var installStr = __publisher.templates.install({
       iframeSrc: remoteURLs.app,
-      manifestUrl: remoteURLs.manifest
+      manifestUrl: remoteURLs.manifest,
+      appHTML: filteredHTML
     });
 
     var manifestJSON = {

@@ -17,14 +17,18 @@
     <div class="phone-inner">
       <div class="phone-top"></div>
       <div class="phone-border">
-      <div id="flathead-app">
-        <div class="ceci-card">
-          <div class="fixed-top"></div>
-          <div class="phone-canvas">
+<% if (htmlInjection.length > 0) { -%>
+      <%- htmlInjection %>
+<% } else { -%>
+        <div id="flathead-app">
+          <div class="ceci-card">
+            <div class="fixed-top"></div>
+            <div class="phone-canvas">
+            </div>
+            <div class="fixed-bottom"></div>
           </div>
-          <div class="fixed-bottom"></div>
         </div>
-      </div>
+<% } -%>
       </div>
       <div class="phone-shadow"></div>
       <div class="phone-bottom"></div>
@@ -100,7 +104,7 @@
         </div>
 
       </div>
-    
+
 
   	</div>
   </div>
@@ -209,7 +213,8 @@
         <strong>Hint:</strong> <span class="hint-text">What you gotta do, is what you gotta do!</span>
         <div class="arrow"></div>
       </div>
-    
+
     </div>
   </div>
 </div>
+<input id="appmaker-remix-url" type="hidden" value="<%- publishUrl %>">

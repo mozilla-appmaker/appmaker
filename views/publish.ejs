@@ -29,5 +29,24 @@
   </head>
   <body>
     <%- appHTML %>
+    <div>
+      <button id="remix-button">Remix</button>
+      <script>
+        (function(){
+          var remixButton = document.querySelector('#remix-button');
+          remixButton.onclick = function (e) {
+            var f = document.createElement('form');
+            var i = document.createElement('input');
+            f.method = 'post';
+            f.action = '<%= process.env.ASSET_HOST %>/designer';
+            i.type = 'hidden';
+            i.name = 'data';
+            i.value = '<%- appHTML.replace(/\n/g, "\\n") %>';
+            f.appendChild(i);
+            f.submit();
+          };
+        })();
+      </script>
+    </div>
   </body>
 </html>
