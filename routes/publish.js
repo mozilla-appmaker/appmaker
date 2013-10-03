@@ -11,12 +11,13 @@ var verify = require('../lib/verify');
 
 var __publisher;
 
-exports.init = function (store, viewsPath, publishHost, publishHostPrefix, objectPrefix) {
+exports.init = function (store, viewsPath, publishHost, publishHostPrefix, objectPrefix, useSubdomains) {
   __publisher = {
     store: store,
     objectPrefix: objectPrefix || '',
     publishHost: publishHost || '',
     publishHostPrefix: publishHostPrefix || '',
+    useSubdomains: useSubdomains,
     templates: {
       publish: null,
       install: null
@@ -44,9 +45,16 @@ exports.publish = function(req, res) {
   var appHTMLFilename = 'index.html';
   var manifestFilename = 'manifest.webapp';
 
-  var remoteInstallUrl = __publisher.publishHostPrefix + folderName + '.' + __publisher.publishHost + '/' + installHTMLFilename;
-  var remoteAppUrl = __publisher.publishHostPrefix + folderName + '.' + __publisher.publishHost + '/' + appHTMLFilename;
-  var remoteManifestUrl = __publisher.publishHostPrefix + folderName + '.' + __publisher.publishHost + '/' + manifestFilename;
+
+  var remoteURLPrefix = __publisher.useSubdomains ?
+    __publisher.publishHostPrefix + folderName + '.' + __publisher.publishHost + '/' :
+    __publisher.publishHostPrefix + __publisher.publishHost + '/store/' + __publisher.objectPrefix + '/' + folderName + '/';
+
+  var remoteURLs = {
+    install: remoteURLPrefix + installHTMLFilename,
+    app: remoteURLPrefix + appHTMLFilename,
+    manifest: remoteURLPrefix + manifestFilename
+  };
 
   var inputData = req.body;
   var manifest = inputData.manifest || {};
@@ -69,8 +77,8 @@ exports.publish = function(req, res) {
     });
 
     var installStr = __publisher.templates.install({
-      iframeSrc: remoteAppUrl,
-      manifestUrl: remoteManifestUrl
+      iframeSrc: remoteURLs.app,
+      manifestUrl: remoteURLs.manifest
     });
 
     var manifestJSON = {
@@ -108,9 +116,9 @@ exports.publish = function(req, res) {
         }
         if (++filesDone === outputFiles.length) {
           res.json({error: null,
-            app: remoteAppUrl,
-            install: remoteInstallUrl,
-            manifest: remoteManifestUrl
+            app: remoteURLs.app,
+            install: remoteURLs.install,
+            manifest: remoteURLs.manifest
           }, 200);
         }
       }, description.contentType);

@@ -794,7 +794,7 @@ define(
 
       var html = '';
       var appTreeClone = document.querySelector('#flathead-app').cloneNode(true);
-      var cards = appTreeClone.querySelectorAll('.ceci-card');
+      var cards = document.querySelectorAll('.ceci-card');
       var allElements = [];
 
       // XXXsecretrobotron: This is an unfortunate workaround for the lack of consistent <broadcast>/<listen>
