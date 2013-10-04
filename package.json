@@ -15,6 +15,7 @@
     "express": "~3.3.4",
     "ejs-locals": "~1.0.2",
     "knox": "~0.8.6",
+    "mkdirp": "0.3.5",
     "moniker": "~0.1.2",
     "node-uuid": "~1.4.1",
     "connect-fonts": "~0.0.10",
