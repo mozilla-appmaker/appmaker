@@ -3,7 +3,7 @@ define(
   function($) {
 
     $(document).ready(function(){
-      localStorage.gameModeEnabled = "no"
+      localStorage.gameModeEnabled = "no";
       setTimeout(function(){
         appMaster.init();
       },100);
