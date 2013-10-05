@@ -5,6 +5,24 @@ body {
     background-repeat: repeat-x;
 }
 
+.intro-description {
+  position: absolute;
+  right: 100px;
+  top: 200px;
+  bottom: 2em;
+  width: 600px;
+  color: #fff;
+  font-size: 20pt;
+}
+
+.intro-description a {
+  color: #19f;
+}
+
+.intro-description a:hover {
+  color: #7cf;
+}
+
 .top-line {
   height: 20px;
   background-image: url(../images/stripe.png);
