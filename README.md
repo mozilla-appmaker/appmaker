@@ -20,6 +20,9 @@ Get the submodules:
 git submodule update --init --recursive
 ```
 
+
+You'll also need to run the appmaker-components server, located at https://github.com/mozilla/appmaker-components
+
 ### Running in Development mode
 
 #### Configuration for Node
