@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["jquery", "ceci-app", "ceci", "inflector", "ceci-ui", "jquery-ui"],
+  ["jquery", "ceci-app", "ceci", "inflector", "ceci-ui", "jquery-ui", "togetherjsSupport"],
   function($, App, Ceci, Inflector) {
     "use strict";
 
@@ -207,7 +207,7 @@ define(
         },
         addClass: "clone"
       });
-      
+
       if (component && component.description) {
         var componentDescription = component.description.innerHTML;
         thumb.attr('description', componentDescription);
@@ -429,7 +429,7 @@ define(
                         "</select></div>"
                       );
                       $(definition.options).each(function(i,k){
-                        var option = document.createElement("option");                      
+                        var option = document.createElement("option");
                         $(option).attr("value",k);
                         $(option).text(k);
                         e.find("select").append(option);
@@ -846,7 +846,7 @@ define(
             }
           });
         });
-    
+
         html = appTreeClone.outerHTML;
       }
 
