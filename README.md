@@ -1,6 +1,12 @@
 Appmaker
 ========
 
+For context as to the motivation of the project, see:
+
+  * a youtube video (that's already dated, but better than nothing): http://www.youtube.com/watch?v=RaRIdLgZTPI&feature=youtu.be
+  * some words written before any code was written: https://github.com/mozilla/appmaker-words/wiki
+  * the ROADMAP.md and CONTRIBUTORS.md documents in this directory.
+
 Running the Server
 ------------------
 
@@ -48,13 +54,6 @@ If you need foreman:
 sudo gem install foreman
 ```
 
-Authoring Components:
----------------------
-
-Ideas to get you started:
-https://github.com/mozilla/appmaker/wiki/Component-Ideas
-
-
 
 Style Guide
 -----------
@@ -70,88 +69,4 @@ The overall design approach is based on making building apps fun and gamelike. W
 
 The visual guidelines outlined here are based on Appmaker’s fundamental characteristics, communicating a sense of fun, exploration, and play while building a space where developers and non developers can collaborate to create new and meaningful apps.
 
-### Firefox OS Component Guide
-
-Looking for guidance on how to make cool Firefox OS style components? Fret not, Firefox OS has its own [component guide](http://buildingfirefoxos.com/building-blocks/action-menu.html).
-
-### Color Palette
-
-The color palette describes the colors used in the Appmaker app. It is not intended to be a color guide for components, though you are certainly welcome to use it that way.
-
-
-**Appmaker Blue** - Critical call to action 
-
-```css
-background-color: #358CCE
-```
-
-**Appmaker Orange** - Primary call to action 
-
-```css
-background-color: #FF7B00
-```
-
-**Appmaker Green** - Selected item 
-
-```css
-background-color: #55B12E
-```
-
-**Almost Black** - Page background 
-
-```css
-background-color: #111111
-```
-
-**Gray Black** - Default text
-
-```css
-color: #222222
-```
-
-**Dark Gray** - Side Panel 
-
-```css
-background-color: #333333
-```
-
-**Medium Gray** - Secondary call to action 
-
-```css
-background-color: #555555
-```
-
-**Gray** - Side Panel
-
-```css
-background-color: #CCCCCC
-```
-
-**Medium Light Gray** - Container background 
-
-```css
-background-color: #DDDDDD
-```
-
-**Light Gray** - Component background 
-
-```css
-background-color: #EEEEEE
-```
-
-### Buttons
-
-Describe buttons here.
-
-### Elements
-
-Describe elements here.
-
-### Grid/Layout
-
-Describe layout here.
-
-### Editable Properties
-
-Describe input styles/types here.
-=======
+### Firefox OS Co
