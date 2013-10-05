@@ -17,6 +17,20 @@ body {
 	user-select: none;
 }
 
+.alpha {
+	position: absolute;
+	color: white;
+	font-size: 16px;
+	top: 1em;
+	left: 5em;
+}
+
+.alpha a {
+	color: goldenrod;
+	text-decoration: underline;
+}
+
+
 .phone-container body {
 	background-color: #e8ebed;
 }
