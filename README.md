@@ -57,19 +57,3 @@ If you need foreman:
 sudo gem install foreman
 ```
 
-
-Style Guide
------------
-
-### Introduction
-
-The purpose of this Style Guide is to provide a single reference for visual styles and design elements used in Appmaker. 
-
-The overall design approach is based on making building apps fun and gamelike. We want the site’s content and design to:
-* Encourage play and exploration
-* Encourage non developers to think like programmers
-* Enable anyone to build and customize apps that matter to them.
-
-The visual guidelines outlined here are based on Appmaker’s fundamental characteristics, communicating a sense of fun, exploration, and play while building a space where developers and non developers can collaborate to create new and meaningful apps.
-
-### Firefox OS Co
