@@ -198,6 +198,18 @@ button.btn-secondary:active {
 	background-color: #4a4a4a;
 }
 
+button.btn-tertiary {
+  background-color: #181;
+}
+
+button.btn-tertiary:hover {
+  background-color: #22aa22;
+}
+
+button.btn-tertiary:active {
+  background-color: #008800;
+}
+
 button.btn-toggle:nth-child(1) {
 	border-radius: 3px 0px 0px 3px;
 }
@@ -270,6 +282,17 @@ button.new {
 	margin: 12px 12px 0px 0px;
 	border-radius: 2px;
 }
+
+button.view-source {
+  float: right;
+  height: 26px;
+  width: 102px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 12px 12px 0px 0px;
+  border-radius: 2px;
+}
+
 
 button.new:hover {
 	background-color: #fa2f2f;
