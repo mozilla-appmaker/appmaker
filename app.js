@@ -7,15 +7,17 @@
 
 var
 express = require('express'),
-routes = require('./routes'),
 http = require('http'),
 engine = require('ejs-locals'),
 path = require('path'),
-s3Store = require('./lib/s3-store'),
-localStore = require('./lib/local-store'),
 uuid = require('node-uuid'),
 connect_fonts = require('connect-fonts'),
-font_sourcesanspro = require('connect-fonts-sourcesanspro');
+font_sourcesanspro = require('connect-fonts-sourcesanspro'),
+postmark = require("postmark")(process.env.POSTMARK_API_KEY);
+
+var urls = require('./lib/urls');
+var localStore = require('./lib/local-store');
+var s3Store = require('./lib/s3-store');
 
 // Cache fonts for 180 days.
 var MAX_FONT_AGE_MS = 1000 * 60 * 60 * 24 * 180;
@@ -53,16 +55,6 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', routes.index);
-app.all('/designer', routes.designer);
-app.get('/testappdesigner', routes.testappdesigner);
-app.get('/testapp', routes.testapp);
-
-// Server-side gen of ID since we'll likely eventually use this for persistance
-app.get('/store/uuid', function (req, res) {
-  res.setHeader('Content-Type', 'text/plain');
-  res.send(uuid.v1());
-});
 
 var store;
 var useSubdomains = false;
@@ -76,20 +68,32 @@ if (process.env.STORE === 's3') {
   else {
     store = s3Store.init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET);
     useSubdomains = true;
-  }  
+  }
 }
 else {
   store = localStore.init(LOCAL_STORE_BASE_PATH);
   app.use('/store', express.static(path.join(__dirname, 'store')));
 }
 
-routes.publish.init(
+var urlManager = new urls.URLManager(process.env.PUBLISH_HOST_PREFIX, process.env.PUBLISH_HOST, process.env.S3_OBJECT_PREFIX, useSubdomains);
+routes = require('./routes')(
   store,
-  __dirname + '/views', process.env.PUBLISH_HOST,
-  process.env.PUBLISH_HOST_PREFIX,
-  process.env.S3_OBJECT_PREFIX,
-  useSubdomains
+  __dirname + '/views',
+  urlManager,
+  require('./lib/remix-mailer')(postmark)
 );
+
+app.get('/', routes.index);
+app.all('/designer', routes.designer);
+app.get('/testappdesigner', routes.testappdesigner);
+app.get('/testapp', routes.testapp);
+app.get('/remix', routes.remix);
+
+// Server-side gen of ID since we'll likely eventually use this for persistance
+app.get('/store/uuid', function (req, res) {
+  res.setHeader('Content-Type', 'text/plain');
+  res.send(uuid.v1());
+});
 
 app.post('/publish', routes.publish.publish);
 
