@@ -896,11 +896,45 @@ define(
       $(".publishdialog .spinner").show();
       $('.modal-wrapper').addClass('flex');
     });
+    
+    $(".trey-tabs").on("click","a",function(){
+      $(".trey-tabs").find("a").removeClass("selected-tab");
+      var tab = $(this).attr("tab");
+      changeEditableTab(tab);
+      $(this).addClass("selected-tab");
+    })
+
+    $('.remix-button, .remix-header a').click(function(){
+      toggleRemixMode();
+    });
 
     $('.return-btn').click(function () {
       $('.modal-wrapper').removeClass('flex');
       document.removeEventListener('keydown', escapeHandler, false);
     });
+
+    function toggleRemixMode(){
+
+      $(".trey-tabs a").removeClass("selected-tab");
+     
+      if($(".page-wrapper").hasClass("remix-mode")){
+        changeEditableTab("customize");
+        $('.trey-tabs [tab=customize]').addClass("selected-tab");
+      } else {
+        changeEditableTab("code");
+        $('.trey-tabs [tab=code]').addClass("selected-tab");
+      }
+
+
+      $('.page-wrapper').toggleClass("remix-mode");
+;
+
+    }
+
+    function changeEditableTab(tab) {
+      $(".tab-sections .section").hide();
+      $(".tab-sections .section-" + tab).show();      
+    }
 
     // AMD module return
     return {

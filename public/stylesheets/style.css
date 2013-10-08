@@ -17,6 +17,11 @@ body {
 	user-select: none;
 }
 
+.page-wrapper {
+  position: relative;
+  min-width: 1000px;
+}
+
 .alpha {
 	position: absolute;
 	color: white;
@@ -496,12 +501,13 @@ button.log-toggle {
 }
 
 .tray {
-  position: fixed;
+  position: absolute;
   left: 0px;
   top: 0px;
   bottom: 0px;
   width: 260px;
   background-color: #212429;
+
 }
 
 ul.tabs {
@@ -586,7 +592,7 @@ input[type="search"] {
 }
 
 .right-column {
-  position: fixed;
+  position: absolute;
   right: 0px;
   top: 50px;
   bottom: 0px;
@@ -612,7 +618,7 @@ input[type="search"] {
 }
 
 .right-column label {
-	color: #5b6270;
+	color: #9aaac1;
 	margin-bottom: 2px;
 	display: block;
 }
@@ -623,9 +629,105 @@ input[type="search"] {
   font-weight: 400;
   line-height: 30px;
   margin: 30px 0px 10px 0px;
-  padding-bottom: 30px;
+
   text-align: center;
-  border-bottom: 1px solid #31353C;
+
+}
+
+.editable-section .trey-tabs {
+  overflow: auto;
+  margin: 10px 0 0 0;
+  padding: 0 10px;
+}
+
+.editable-section .trey-tabs a {
+  display: block;
+  border-radius: 2px 2px 0 0 ;
+  float: left;
+  padding: 5px 15px;
+  color: #999;
+  margin-right: 5px;
+
+}
+
+.editable-section .trey-tabs a.selected-tab {
+  background: #2D3138;
+  color: #EEE;
+}
+
+.section {
+	border-bottom: 1px solid #454B56;
+  background: #2D3138;
+	padding: 10px 20px;
+}
+
+
+.editable-section .remix-ui {
+  padding: 10px;
+  color: #999;
+}
+
+.remix-ui,
+.remix-ui .component-name {
+  font-size: 15px;
+}
+
+.editable-section .remix-ui h4 {
+  color: #999;
+  text-align: left;
+}
+
+.editable-section .remix-header {
+  overflow: auto;
+  border-bottom: solid 1px #444;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.editable-section .remix-header .remix-title {
+  color: #DDD;
+  font-size: 18px;
+  position: relative;
+  top:3px;
+}
+.editable-section .remix-header a {
+  margin-left: 5px;
+  float: right;
+}
+
+.editable-section .remix-wrapper {
+  text-align: center;
+}
+
+.editable-section .tab-sections textarea {
+  width: 100%;
+  height: 300px;
+}
+
+.editable-section .remix-ui input {
+  width: 300px;
+}
+
+.editable-section .remix-ui .blue-button {
+  display: inline-block;
+  color: white;
+  background: #3999e3;
+  padding: 5px 10px;
+  border-radius: 2px;
+
+  text-align: center;
+}
+
+.editable-section .remix-button {
+  color: white;
+  background: #3999e3;
+  padding: 5px 10px;
+  border-radius: 2px;
+  margin: 0 auto;
+  display: block;
+  width: 80px;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
 .info-box {
@@ -634,7 +736,7 @@ input[type="search"] {
 }
 
 .tip {
-  width: 1000px;
+  width: 1024px;
   position: absolute;
   margin: 0 auto;
   height: 80px;
@@ -1981,10 +2083,6 @@ listen.channel-visualisation  .channel-menu-toggle {
   background: rgba(102, 102, 102, 1)
 }
 
-.section {
-	border-bottom: 1px solid #31353C;
-	padding: 10px 20px;
-}
 
 .log-header {
 	padding: 10px 20px 0px 20px;
@@ -2038,3 +2136,52 @@ listen.channel-visualisation  .channel-menu-toggle {
 }
 
 
+/*Remix Mode Stuff*/
+
+.remix-mode .tray {
+  display: none;
+}
+
+.remix-mode .right-column {
+  width: 500px;
+}
+
+.remix-mode .container {
+  margin-left: 0px;
+  margin-right: 500px;
+}
+
+.remix-mode .nonremix-ui {
+  display: none;
+}
+
+.remix-ui {
+  display: none;
+}
+
+.remix-mode .remix-ui {
+  display: block;
+}
+
+.remix-mode .delete-btn {
+  display: none;
+}
+
+.editable-section .trey-tabs [tab=code],
+.editable-section .trey-tabs [tab=css] {
+  display: none;
+}
+
+.remix-mode .editable-section .trey-tabs [tab=code],
+.remix-mode .editable-section .trey-tabs [tab=css]{
+  display: block;
+}
+
+
+.tab-sections .section {
+  display: none;
+}
+
+.tab-sections .section-customize {
+  display: block;
+}
