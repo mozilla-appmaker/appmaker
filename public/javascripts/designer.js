@@ -3,8 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["jquery", "ceci-app", "ceci", "inflector", "ceci-ui", "jquery-ui"],
-  function($, App, Ceci, Inflector) {
+  ["jquery", "ceci-app", "inflector", "ceci-ui", "jquery-ui"],
+  function($, Ceci, Inflector) {
     "use strict";
 
     var selection = [];
@@ -207,7 +207,7 @@ define(
         },
         addClass: "clone"
       });
-      
+
       if (component && component.description) {
         var componentDescription = component.description.innerHTML;
         thumb.attr('description', componentDescription);
