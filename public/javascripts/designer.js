@@ -903,15 +903,15 @@ define(
       changeEditableTab(tab);
       $(this).addClass("selected-tab");
       return false;
-    })
+    });
 
     $('.remix-button').click(function(){
-      toggleRemixMode("on")
+      toggleRemixMode("on");
       return false;
     });
 
     $('.remix-header a').click(function(){
-      toggleRemixMode("off")
+      toggleRemixMode("off");
       return false;
     });
 
