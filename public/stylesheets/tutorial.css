@@ -19,18 +19,30 @@ body {
 .home-span {
   width: 100%;
   height: 540px;
-  background-color: rgb(77, 178, 39);
 }
 
 .play-video {
+  margin: 60px auto 0px auto;
+  text-align: left;
+  color: #FFF;
+  font-size: 18px;
+  height: 40px;
+  width: 180px;
+  background-image: url(/images/play.png);
+  background-repeat: no-repeat;
+  background-position: right center;
+  line-height: 40px;
+}
+
+.video-container {
   margin-top: 40px;
-  text-align: center;
 }
 
 .video-splash {
   width: 100%;
   height: 540px;
-  background-color: rgb(77, 178, 39);
+  border: 1px solid #181b1f;
+  background-image: url(/images/vid-back.png);
   display: -webkit-box;   /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
   display: -moz-box;      /* OLD: Firefox (buggy) */
   display: -ms-flexbox;   /* MID: IE 10 */
@@ -51,7 +63,7 @@ body {
 }
 
 .vid-text {
-  font-size: 56px;
+  font-size: 64px;
   font-weight: 300;
   color: #FFF;
   letter-spacing: 1px;
@@ -70,64 +82,31 @@ body {
 
 .home-description {
   color: #aeb1b5;
-  line-height: 150%;
+  line-height: 130%;
   font-size: 24px;
+  text-align: left;
   font-weight: 300;
   letter-spacing: 1px;
 }
 
-.home-apps {
-
-}
-
-.home-app {
-  height: 200px;
-  width: 300px;
-  background-color: #2f343b;
-  float: left;
-  margin-right: 30px;
-  margin-bottom: 30px;
-}
-
-.home-app:nth-last-child(1) {
-  margin-right: 0px;
-}
-
-.intro-description {
-  width: 600px;
+.home-header {
   color: #FFF;
-  font-size: 18px;
-  font-weight: 300;
 }
 
-.intro-description a {
-  color: #19f;
-}
-
-.intro-description a:hover {
-  color: #7cf;
+.break-line {
+  height: 2px;
+  width: 100%;
+  background-color: #5b6270;
+  margin-bottom: 40px;
 }
 
 .top-line {
-  height: 4px;
-  background-color: #2f343b;
+  height: 2px;
+  background-color: #358CCE;
   position: fixed;
   left: 0px;
   right: 0px;
   top: 0px;
-}
-
-.sub-header {
-  font-size: 72px;
-  margin: 80px 0px 100px 0px;
-  text-align: center;
-  color: #FFF;
-  font-weight: 200;
-}
-
-.team {
-  margin-top: 80px;
-  color: #888;
 }
 
 #home-mozilla{
@@ -159,13 +138,17 @@ input.app-name {
 }
 
 button.btn-start-app {
-  height: 120px;
-  width: 420px;
+  height: 60px;
+  width: 240px;
   display: block;
   background-color: #358CCE;
-  font-size: 36px;
+  font-size: 24px;
   margin: 40px auto;
   font-weight: 400;
+  border-radius: 3px;
+  border-bottom: 4px solid #296ea3;
+  border-top: 1px solid #5fafed;
+  box-shadow: 0px 0px 0px 2px #181b1f;
 }
 
 button.btn-start-app:hover {
@@ -186,19 +169,6 @@ button.btn-start-app:active {
   opacity: 0;
   animation:showme .4s 4s forwards;
   -webkit-animation:showme .4s 4s forwards;
-}
-
-.current-level {
-  
-}
-
-.banner {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  background: none;
 }
 
 .ball {
