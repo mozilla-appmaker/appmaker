@@ -1,53 +1,119 @@
 body {
-    background: #31353C;
-    background-image: url(../images/neighborhood.png);
-    background-position: center 286px;
-    background-repeat: repeat-x;
+  background-color: #212429;
+  font-family: 'Source Sans Pro', arial;
 }
 
-.intro-description {
-  position: absolute;
-  right: 100px;
-  top: 200px;
-  bottom: 2em;
-  width: 600px;
+.home-container {
+  margin: 0 auto;
+  width: 960px;
+}
+
+.home-container a {
+  color: #358CCE
+}
+
+.home-section {
+  width: 100%;
+}
+
+.home-span {
+  width: 100%;
+  height: 540px;
+}
+
+.play-video {
+  margin: 60px auto 0px auto;
+  text-align: left;
+  color: #FFF;
+  font-size: 18px;
+  height: 40px;
+  width: 180px;
+  background-image: url(/images/play.png);
+  background-repeat: no-repeat;
+  background-position: right center;
+  line-height: 40px;
+}
+
+.video-container {
+  margin-top: 40px;
+}
+
+.video-splash {
+  width: 100%;
+  height: 540px;
+  border: 1px solid #181b1f;
+  background-image: url(/images/vid2.png);
+  display: -webkit-box;   /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
+  display: -moz-box;      /* OLD: Firefox (buggy) */
+  display: -ms-flexbox;   /* MID: IE 10 */
+  display: -webkit-flex;  /* NEW, Chrome 21+ */
+  display: flex;          /* NEW: Opera 12.1, Firefox 22+ */
+
+  -webkit-box-align: center; -moz-box-align: center; /* OLD… */
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+
+  -webkit-box-pack: center; -moz-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+
+.vid-text {
+  font-size: 64px;
+  font-weight: 300;
+  color: #FFF;
+  letter-spacing: 1px;
+}
+
+.appmaker-version {
+  display: inline-block;
   color: #fff;
-  font-size: 20pt;
+  margin-bottom: 10px;
+  font-size: 13px;
+  text-transform: uppercase;
+  font-weight: 600;
+  background-color: #538a02;
+  padding: 5px 20px;
 }
 
-.intro-description a {
-  color: #19f;
+.home-description {
+  color: #aeb1b5;
+  line-height: 130%;
+  font-size: 24px;
+  text-align: left;
+  font-weight: 300;
+  letter-spacing: 1px;
 }
 
-.intro-description a:hover {
-  color: #7cf;
+.home-header {
+  color: #FFF;
+}
+
+.break-line {
+  height: 2px;
+  width: 100%;
+  background-color: #5b6270;
+  margin-bottom: 40px;
 }
 
 .top-line {
-  height: 20px;
-  background-image: url(../images/stripe.png);
-  width: 100%;
-  background-color: #FFF;
+  height: 2px;
+  background-color: #358CCE;
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
 }
 
-.sub-header {
-  font-size: 72px;
-  margin: 80px 0px 100px 0px;
-  text-align: center;
-  color: #FFF;
-  font-weight: 200;
-}
-
-.team {
-  margin-top: 80px;
-  color: #888;
-}
-
-.mozilla{
+#home-mozilla{
   position: fixed;
   width: 190px;
-  top: 20px;
-  right: 80px;
+  top: 0px;
+  right: 0px;
 }
 
 input.app-name {
@@ -72,13 +138,17 @@ input.app-name {
 }
 
 button.btn-start-app {
-  height: 50px;
-  width: 160px;
+  height: 60px;
+  width: 240px;
   display: block;
+  background-color: #358CCE;
+  font-size: 24px;
+  margin: 40px auto;
+  font-weight: 400;
   border-radius: 3px;
-  background-color: #006fc4;
-  font-size: 22px;
-  margin: 20px auto 0px auto;
+  border-bottom: 4px solid #296ea3;
+  border-top: 1px solid #5fafed;
+  box-shadow: 0px 0px 0px 2px #181b1f;
 }
 
 button.btn-start-app:hover {
@@ -101,41 +171,14 @@ button.btn-start-app:active {
   -webkit-animation:showme .4s 4s forwards;
 }
 
-.current-level {
-  
-}
-
-.banner {
-  display: -webkit-box;   /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
-  display: -moz-box;      /* OLD: Firefox (buggy) */
-  display: -ms-flexbox;   /* MID: IE 10 */
-  display: -webkit-flex;  /* NEW, Chrome 21+ */
-  display: flex;          /* NEW: Opera 12.1, Firefox 22+ */
-
-  -webkit-box-align: center; -moz-box-align: center; /* OLD… */
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-
-  -webkit-box-pack: center; -moz-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  background: none;
-}
-
 .ball {
-  background-image: url(../images/mail-man.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  height: 300px;
-  width: 300px;
-  border-radius: 160px;
+  height: 400px;
+  width: 400px;
+  line-height: 400px;
+  text-align: center;
+  color: #FFF;
+  border-radius: 220px;
+  font-size: 70px;
   background-color: #358CCE;
   box-shadow: inset 0px 1px 3px rgba(0,0,0,.3);
   border-bottom: 1px solid #c7e0fc;
