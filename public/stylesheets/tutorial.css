@@ -34,7 +34,7 @@ body {
   height: 513px;
   border: 1px solid #181b1f;
   background-image: url(/images/vid2.png);
-  background-position: left center;
+  background-position: left top;
   display: -webkit-box;   /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
   display: -moz-box;      /* OLD: Firefox (buggy) */
   display: -ms-flexbox;   /* MID: IE 10 */
