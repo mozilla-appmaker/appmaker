@@ -6,69 +6,79 @@
     <div class="note">
       App auto-saved at <span id="time"></span>
     </div>
-    <div class="alpha">Welcome visitor! This is pre-alpha software, expect bugs! Here's a <a href="http://www.youtube.com/watch?v=RaRIdLgZTPI">demo video</a> if you're curious. <a href="https://github.com/mozilla/appmaker/">Github</a></div>.
     <button class="btn-std btn-md publish btn-critical">Publish</button>
     <button class="btn-std btn-md new">New App</button>
   </nav>
 
-  <div class="tray">
-
-    <ul class="tabs">
-    	<li class="tab selected-tray widget"><a href="#tab1">Widgets</a></li><li class="tab"><a href="#tab2">Cards</a></li>
-    </ul>
-
-  	<div id="tab1">
-  	    <div class="library-list library-loading clearfix">
-  	    </div>
-  	</div>
-      <div id="tab2" class="cards">
-  		<button id="add-card" class="btn-add">Add Card</button>
-  	</div>	
-  </div>
-  <div class="container">
+  <div class="container animate-me">
     <div class="inner-container clearfix">
-    <div class="listen-column">
-    </div>
+    <div class="listen-column"></div>
     <div class="phone-container">
-  	  <div class="phone-inner">
-  	    <div class="phone-top"></div>
-  	    <div class="phone-border">
-  	    <div id="flathead-app">
-  	      <div class="ceci-card">
-  	        <div class="fixed-top"></div>
-  	        <div class="phone-canvas">
-  	        </div>
-  	        <div class="fixed-bottom"></div>
-  	      </div>
-  	    </div>
-  	    </div>
-  	    <div class="phone-shadow"></div>
-  	    <div class="phone-bottom"></div>
-  	  </div>
+    <div class="phone-inner">
+      <div class="phone-top"></div>
+      <div class="phone-border">
+      <div id="flathead-app">
+        <div class="ceci-card">
+          <div class="fixed-top"></div>
+          <div class="phone-canvas">
+          </div>
+          <div class="fixed-bottom"></div>
+        </div>
+      </div>
+      </div>
+      <div class="phone-shadow"></div>
+      <div class="phone-bottom"></div>
+    </div>
     </div>
     <div class="broadcast-column">
     </div>
   </div>
   </div>
-  <div class="right-column">
-    <div class="editable-section">
-      <div class="nonremix-ui">
-        <div class="name"></div>
-        <a class="remix-button" href="#">Remix</a>
+
+  <div class="tray app-column animate-me">
+
+    <div class="inner-wrapper">
+      <ul class="tabs">
+        <li class="tab selected-tray widget"><a href="#tab1">Widgets</a></li><li class="tab"><a href="#tab2">Cards</a></li>
+      </ul>
+      <div id="tab1">
+          <div class="library-list library-loading clearfix">
+          </div>
       </div>
+      <div id="tab2" class="cards">
+      <button id="add-card" class="btn-add">Add Card</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="right-column app-column animate-me">
+
+    <div class="expand-handle"></div>
+
+    <div class="inner-wrapper">
+    <div class="editable-section">
+      <div class="editable-header nonremix-ui">
+        <span class="name"></span>
+        <a class="remix-button" href="#">Remix</a>
+        <div class="delete-btn"></div>
+      </div>
+
       <div class="remix-ui">
         <div class="remix-header">
-          <span class="remix-title">Remix Widget</span>
+          <div class="remix-title">Remix this Widget</div>
+          <a class="blue-button" href="#">X</a>
           <a class="blue-button" href="#">Save</a>
+          <a class="blue-button" href="#">Finish</a>
           <a class="blue-button" href="#">Run</a>
         </div>
         <input class="component-name" type="text" placeholder="Component Name" value="New Widget Name"/>
       </div>
 
       <div class="trey-tabs">
-        <a tab="code" href="#">Code</a>
-        <a tab="css"  href="#">CSS</a>
-        <a tab="customize" class="selected-tab" href="#">Customize</a>
+        <a tab="code" class="selected-tab" href="#">Code</a>
+        <a tab="css" href="#">CSS</a>
+        <a class="selected-tab" tab="customize" href="#">Customize</a>
       </div>
 
       <div class="tab-sections">
@@ -82,14 +92,18 @@
         </div>
 
         <div class="section section-css">
-          <textarea>.widget { display: awesome; }</textarea>
+          <textarea>.widget { display: awesome:}</textarea>
         </div>
 
       </div>
     
-  		<div class="delete-btn"></div>
+
   	</div>
   </div>
+
+  </div>
+
+
   <div class="log-wrapper">
   	<div class="log">
   	  <ul class="scroll"></ul>

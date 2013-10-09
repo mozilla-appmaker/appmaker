@@ -902,10 +902,17 @@ define(
       var tab = $(this).attr("tab");
       changeEditableTab(tab);
       $(this).addClass("selected-tab");
+      return false;
     })
 
-    $('.remix-button, .remix-header a').click(function(){
-      toggleRemixMode();
+    $('.remix-button').click(function(){
+      toggleRemixMode("on")
+      return false;
+    });
+
+    $('.remix-header a').click(function(){
+      toggleRemixMode("off")
+      return false;
     });
 
     $('.return-btn').click(function () {
@@ -913,27 +920,32 @@ define(
       document.removeEventListener('keydown', escapeHandler, false);
     });
 
-    function toggleRemixMode(){
+    $(".right-column").on("click",".expand-handle",function(){
+      toggleColumns();
+    });
 
+    function toggleRemixMode(mode){
       $(".trey-tabs a").removeClass("selected-tab");
-     
-      if($(".page-wrapper").hasClass("remix-mode")){
-        changeEditableTab("customize");
-        $('.trey-tabs [tab=customize]').addClass("selected-tab");
-      } else {
+      $(".page-wrapper").removeClass("remix-mode");
+      if(mode == "on"){
         changeEditableTab("code");
         $('.trey-tabs [tab=code]').addClass("selected-tab");
+        $('.page-wrapper').addClass("remix-mode");
+      } else {
+        changeEditableTab("customize");
+        $('.trey-tabs [tab=customize]').addClass("selected-tab");
       }
+    }
 
-
-      $('.page-wrapper').toggleClass("remix-mode");
-;
-
+    function toggleColumns(){
+      $(".page-wrapper").toggleClass("tray-hidden");
+      $(".tray").toggleClass("hidden");
+      $(".right-column").toggleClass("expanded");
     }
 
     function changeEditableTab(tab) {
       $(".tab-sections .section").hide();
-      $(".tab-sections .section-" + tab).show();      
+      $(".tab-sections .section-" + tab).show();
     }
 
     // AMD module return
