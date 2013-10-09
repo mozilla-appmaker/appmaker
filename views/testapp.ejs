@@ -1,35 +1,37 @@
 <% layout('layout') -%>
 
-<div class="ceci-card">
-  <app-button>
-    <broadcast on="blue"></broadcast>
-  </app-button>
-  <app-counter>
-    <listen on="blue" for="increase"></listen>
-    <broadcast on="red"></broadcast>
-  </app-counter>
-  <app-counter>
-    <listen on="red" for="increase"></listen>
-  </app-counter>
+<div id="flathead-app">
+  <div class="ceci-card">
+    <app-button>
+      <broadcast on="blue"></broadcast>
+    </app-button>
+    <app-counter>
+      <listen on="blue" for="increase"></listen>
+      <broadcast on="red"></broadcast>
+    </app-counter>
+    <app-counter>
+      <listen on="red" for="increase"></listen>
+    </app-counter>
+  </div>
 </div>
 
 <script>
-  requirejs(["jquery", "ceci", "ceci-cards"], function($, Ceci) {
+  requirejs(["jquery", "ceci-app"], function($, Ceci) {
     var _ = document.createElement("div");
     _.appendChild(document.querySelector("div.ceci-card").cloneNode(true));
     var original = _.innerHTML;
     delete _;
 
-    Ceci.load(function() {
-      var json = document.querySelector("div.ceci-card").describe();
-      var reconstituted = Ceci.rehydrate(json);
-
-      // wipe the page! and then rebuild from the reconstituted HTML
-      document.body.innerHTML = "";
-      document.body.appendChild(reconstituted);
-      Ceci.load(function() {
-        document.querySelector("div.ceci-card").show();
-      });
+    var app = new Ceci.App({
+      container: $('#flathead-app')[0],
+      onComponentAdded: function (component) {
+      },
+      onload: function (components) {
+      },
+      onCardChange: function (card) {
+      },
+      onCardAdded: function (card) {
+      }
     });
   })
 </script>
