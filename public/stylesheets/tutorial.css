@@ -1,5 +1,5 @@
 body {
-  background-color: #212429;
+  background-color: #31353C;
   font-family: 'Source Sans Pro', arial;
 }
 
@@ -17,6 +17,7 @@ body {
 }
 
 .video-container {
+  margin-top: 20px;
 }
 
 .play-video {
@@ -37,7 +38,6 @@ body {
 .video-splash {
   width: 100%;
   height: 540px;
-  border: 1px solid #181b1f;
   background-image: url(/images/vid1.png);
   background-position: center;
   display: -webkit-box;   /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
