@@ -5,7 +5,7 @@ body {
 
 .home-container {
   margin: 0 auto;
-  width: 912px;
+  width: 960px;
 }
 
 .home-container a {
@@ -16,24 +16,29 @@ body {
   width: 100%;
 }
 
+.video-container {
+}
+
 .play-video {
-  margin: 60px auto 0px auto;
-  text-align: left;
-  color: #FFF;
-  font-size: 18px;
-  height: 40px;
-  width: 180px;
-  background-image: url(/images/play.png);
-  background-repeat: no-repeat;
-  background-position: right center;
-  line-height: 40px;
+  margin: 40px auto 0px auto;
+  text-align: center;
+}
+
+.github {
+  float: right;
+  margin-top:25px;
+}
+
+.twitter {
+  float: right;
+  margin: 25px 15px 0px 0px;
 }
 
 .video-splash {
   width: 100%;
-  height: 513px;
+  height: 540px;
   border: 1px solid #181b1f;
-  background-image: url(/images/vid2.png);
+  background-image: url(/images/vid1.png);
   background-position: center;
   display: -webkit-box;   /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
   display: -moz-box;      /* OLD: Firefox (buggy) */
@@ -48,7 +53,6 @@ body {
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
-  cursor: pointer;
 }
 
 .vid-text {
@@ -56,6 +60,15 @@ body {
   font-weight: 300;
   color: #FFF;
   letter-spacing: 1px;
+  text-align: center;
+}
+
+.vid-subtext {
+  text-align: center;
+  color: #FFF;
+  font-weight: 400;
+  font-size: 20px;
+  margin-top: 40px;
 }
 
 .appmaker-version {
@@ -78,8 +91,22 @@ body {
   letter-spacing: 1px;
 }
 
-.home-header {
-  color: #FFF;
+.home-bottom {
+  background-color: #181b1f;
+  height: 80px;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
+
+.home-logo {
+  background-image: url(/images/maker.png);
+  background-position: left center;
+  background-repeat: no-repeat;
+  height: 80px;
+  width: 390px;
+  float: left;
 }
 
 .break-line {
@@ -96,6 +123,7 @@ body {
   left: 0px;
   right: 0px;
   top: 0px;
+  z-index: 2;
 }
 
 #home-mozilla{
@@ -103,6 +131,7 @@ body {
   width: 190px;
   top: 0px;
   right: 0px;
+  z-index: 2;
 }
 
 input.app-name {
@@ -127,17 +156,18 @@ input.app-name {
 }
 
 button.btn-start-app {
-  height: 60px;
-  width: 240px;
+  height: 50px;
+  width: 180px;
   display: block;
   background-color: #358CCE;
-  font-size: 24px;
-  margin: 40px auto;
+  font-size: 20px;
+  margin: 0 auto;
   font-weight: 400;
   border-radius: 3px;
   border-bottom: 4px solid #296ea3;
   border-top: 1px solid #5fafed;
-  box-shadow: 0px 0px 0px 2px #181b1f;
+  float: left;
+  margin-top: 15px;
 }
 
 button.btn-start-app:hover {
@@ -146,6 +176,10 @@ button.btn-start-app:hover {
 
 button.btn-start-app:active {
   background-color: #2a70a6;
+}
+
+.home-header {
+  color: #FFF;
 }
 
 .level-start {
