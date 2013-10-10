@@ -455,7 +455,7 @@ define(
                         "</select></div>"
                       );
                       $(definition.options).each(function(i,k){
-                        var option = document.createElement("option");                      
+                        var option = document.createElement("option");
                         $(option).attr("value",k);
                         $(option).text(k);
                         e.find("select").append(option);
@@ -922,12 +922,10 @@ define(
       $(".publishdialog .spinner").show();
       $('.modal-wrapper').addClass('flex');
     });
-    
+
     $(".trey-tabs").on("click","a",function(){
-      $(".trey-tabs").find("a").removeClass("selected-tab");
       var tab = $(this).attr("tab");
       changeEditableTab(tab);
-      $(this).addClass("selected-tab");
       return false;
     });
 
@@ -950,19 +948,6 @@ define(
       toggleColumns();
     });
 
-    function toggleRemixMode(mode){
-      $(".trey-tabs a").removeClass("selected-tab");
-      $(".page-wrapper").removeClass("remix-mode");
-      if(mode == "on"){
-        changeEditableTab("code");
-        $('.trey-tabs [tab=code]').addClass("selected-tab");
-        $('.page-wrapper').addClass("remix-mode");
-      } else {
-        changeEditableTab("customize");
-        $('.trey-tabs [tab=customize]').addClass("selected-tab");
-      }
-    }
-
     function toggleColumns(){
       $(".page-wrapper").toggleClass("tray-hidden");
       $(".tray").toggleClass("hidden");
@@ -970,8 +955,63 @@ define(
     }
 
     function changeEditableTab(tab) {
+      $(".trey-tabs").find("a").removeClass("selected-tab");
+      $(".trey-tabs [tab='"+tab+"']").addClass("selected-tab");
       $(".tab-sections .section").hide();
       $(".tab-sections .section-" + tab).show();
+      $(".tab-sections .section-" + tab + " textarea").focus();
+      if(tab == "view-source"){
+        expandColumn();
+      } else {
+        if($(".right-column").not(".remix-mode").length == 1){
+          contractColumn();
+        }
+      }
+    }
+
+    $(document).ready(function(){
+      switchSourceView("HTML");
+    });
+
+    // View source menu
+    $(".view-source-menu").on("click","a",function(){
+      var sourceType = $(this).attr("source");
+      switchSourceView(sourceType);
+    });
+
+    function switchSourceView(view) {
+      $(".view-source-menu a").removeClass("selected");
+      $(".view-source-menu a[source='" + view + "']").addClass("selected");
+      $(".view-source-items .source-type").hide();
+      $(".view-source-items [source='" + view + "']").show();
+    }
+
+    $(".view-source-items textarea").on("keyup",function(){
+      $(".right-column").addClass("remix-mode");
+      $(".remix-helper").hide();
+      expandColumn();
+    });
+
+    $(".remix-ui a.finish-remix, .remix-ui a.cancel-remix").on("click",function(){
+      $(".right-column").removeClass("remix-mode");
+      changeEditableTab("customize");
+      contractColumn();
+    });
+
+    $(".dismiss-note").on("click",function(){
+      $(this).parent().fadeOut();
+    });
+
+    function contractColumn(){
+      $(".page-wrapper").removeClass("tray-hidden");
+      $(".tray").removeClass("hidden");
+      $(".right-column").removeClass("expanded");
+    }
+
+    function expandColumn(){
+      $(".page-wrapper").addClass("tray-hidden");
+      $(".tray").addClass("hidden");
+      $(".right-column").addClass("expanded");
     }
 
     // AMD module return

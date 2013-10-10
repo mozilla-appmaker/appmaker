@@ -22,6 +22,11 @@ body {
   min-height: 100%;
 }
 
+input,
+textarea {
+    font-family: 'Source Sans Pro', arial;
+}
+
 .page-wrapper {
   position: absolute;
   height: 100%;
@@ -293,7 +298,6 @@ button.view-source {
   margin: 12px 12px 0px 0px;
   border-radius: 2px;
 }
-
 
 button.new:hover {
   background-color: #fa2f2f;
@@ -639,6 +643,11 @@ input[type="search"] {
   min-width: 260px;
 }
 
+.right-column .inner-wrapper {
+  overflow: auto;
+  height: 100%;
+}
+
 .expand-handle {
   border-radius: 6px 0 0 6px;
   left: -30px;
@@ -710,7 +719,7 @@ input[type="search"] {
 
 .editable-section .trey-tabs {
   overflow: auto;
-  padding: 0 15px;
+  padding: 0 10px;
 }
 
 .editable-section .trey-tabs a {
@@ -733,9 +742,10 @@ input[type="search"] {
 }
 
 .section {
-	border-bottom: 1px solid #454B56;
+  border-bottom: 1px solid #454B56;
   background: #40464f;
-	padding: 15px;
+  padding: 10px 15px;
+  height: 100%;
 }
 
 .editable-section .editable-header {
@@ -743,7 +753,6 @@ input[type="search"] {
 }
 
 .editable-section .remix-ui {
-  padding: 10px 15px;
   color: #999;
 }
 
@@ -752,18 +761,49 @@ input[type="search"] {
   font-size: 15px;
 }
 
+
 .remix-ui input.component-name {
-  color: #DDD;
-  border-top: solid 1px #333;
-  border-left: solid 1px #333;
-  border-right: solid 1px #333;
-  border-bottom: solid 1px #333;
+  color: #444;
+  border-top: solid 2px #DDD;
   width: 100%;
+  padding-bottom: 2px;
+  background: #EEE;
+  font-size: 1.6rem;
+  max-width: 300px;
+  font-family: 'Source Sans Pro', arial;
 }
 
-.editable-section .remix-ui h4 {
-  color: #999;
-  text-align: left;
+.remix-ui  h3 a {
+  float: right;
+  background: black;
+  color: white;
+  margin-left: 4px;
+  position: relative;
+  top: -2px;
+  display: inline-block;
+  color: white;
+  padding: 5px 8px;
+  border-radius: 3px;
+  text-align: center;
+  font-size: 14px;
+  opacity: .6;
+}
+
+.remix-ui .dismiss-note {
+  color: #EEE;
+  text-decoration: underline;
+}
+
+.remix-ui .dismiss-note {
+  color: white;
+}
+
+.remix-ui a:hover {
+  opacity: .8;
+}
+
+.remix-ui a:active {
+  opacity: 1;
 }
 
 .editable-section .remix-header {
@@ -771,47 +811,53 @@ input[type="search"] {
   margin: 0 0 10px 0;
 }
 
-.editable-section .remix-header .cancel-remix {
+.remix-ui h3 {
+  background: #e7771c;
+  border-top: solid 2px #c16114;
   color: white;
+  padding: 7px 8px 10px 10px;
+  color: white;
+  text-align: left;
+}
+
+.remix-helper {
+  color: rgba(255,255,255,.75);
+  background: #e7771c;
+  padding: 5px 10px;
   border-radius: 2px;
-  padding: 2px 7px;
-  font-size: 14px;
-  background: #e81e1e;
-  float: right;
-  opacity: .5;
+  margin: 0 0 13px 0;
+  display: inline-block;
 }
 
-.editable-section .remix-header .cancel-remix:hover {
-  opacity: 1;
-}
-
-.editable-section .remix-header .remix-title {
-  color: #EEE;
-  font-size: 18px;
-  position: relative;
-  margin: 4px 0 8px 0px;
-  border-bottom: solid 2px #444;
-  padding-bottom: 4px;
-}
-
-.editable-section .remix-wrapper {
-  text-align: center;
+.remix-helper a {
+  color: white;
 }
 
 .editable-section .tab-sections textarea {
   width: 100%;
   height: 300px;
+  padding: 0;
+  border: none;
 }
 
-.editable-section .remix-ui .blue-button {
-  display: inline-block;
-  color: white;
-  background: #358CCE;
-  padding: 5px 8px;
-  border-radius: 2px;
-  text-align: center;
+.remix-ui .remix-wrapper {
+  padding: 10px;
+}
+
+.remix-ui {
+  display: none;
+}
+
+.remix-ui p {
+  margin: 0 0 10px 0;
   font-size: 14px;
-  margin-right: 4px;
+  background: rgba(255,255,255,.1);
+  border-radius: 2px;
+  padding: 3px 8px;
+}
+
+.remix-mode .remix-ui {
+  display: block;
 }
 
 .editable-section .remix-ui .blue-button:hover {
@@ -825,16 +871,53 @@ input[type="search"] {
 
 .editable-section .remix-button {
   color: white;
-  float: right;
   background: #358CCE;
   padding: 5px 10px;
   border-radius: 2px;
-  margin-left: 15px;
   display: inline-block;
   text-align: center;
-  margin: 0 0 0 5px;
 }
 
+.view-source-menu {
+  overflow: auto;
+  margin: 0 0 10px 0;
+}
+
+.view-source-items textarea {
+  font-size: 14px;
+  color: #555;
+}
+
+.view-source-menu a {
+  float: left;
+  display: block;
+  padding: 4px 12px;
+  color: white;
+  color: #555;
+  background: #BBB;
+  border-right: solid 1px #666;
+  font-size: 14px;
+}
+
+.view-source-menu a:hover {
+  background: #DDD;
+}
+
+.view-source-menu a.selected,
+.view-source-menu a.selected:hover
+ {
+  background: #212429;
+  color: #EEE;
+  border-right: none;
+}
+
+.view-source-menu a:first-child {
+  border-radius: 2px 0 0 2px;
+}
+.view-source-menu a:last-child {
+  border-radius: 0 2px 2px 0;
+  border: none;
+}
 
 .editable-section .remix-button:hover {
   background: #3999e3;
@@ -1336,6 +1419,7 @@ input[type="search"] {
 }
 
 .log-wrapper {
+  display: none;
   width:250px;
   position: fixed;
   bottom: 0px;
@@ -2400,6 +2484,10 @@ input#remix-panel-email {
 
 .remix-mode .delete-btn {
   display: none;
+}
+
+.editable-section input {
+  font-size: 15px;
 }
 
 .editable-section .trey-tabs [tab=code],
