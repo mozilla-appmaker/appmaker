@@ -820,9 +820,24 @@ input[type="search"] {
   text-align: left;
 }
 
+.remix-helper {
+  color: rgba(255,255,255,.75);
+  background: #e7771c;
+  padding: 5px 10px;
+  border-radius: 2px;
+  margin: 0 0 13px 0;
+  display: inline-block;
+}
+
+.remix-helper a {
+  color: white;
+}
+
 .editable-section .tab-sections textarea {
   width: 100%;
   height: 300px;
+  padding: 0;
+  border: none;
 }
 
 .remix-ui .remix-wrapper {
@@ -2319,6 +2334,10 @@ listen.channel-visualisation  .channel-menu-toggle {
 
 .remix-mode .delete-btn {
   display: none;
+}
+
+.editable-section input {
+  font-size: 15px;
 }
 
 .editable-section .trey-tabs [tab=code],

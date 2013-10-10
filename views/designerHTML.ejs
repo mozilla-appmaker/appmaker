@@ -65,10 +65,6 @@
             <a class="save-remix" title="Refresh the widget to see your changes." href="#">Save</a>
           </h3>
           <div class="remix-wrapper">
-            <p>
-              You are now remixing a component. Edit the source code and save it to make it your own. 
-              - <a class="dismiss-note" href="#">OK, thanks!</a>
-            </p>
             <input class="component-name" type="text" placeholder="Component Name" value="my-remixed-widget"/>
           </div>
         </div>
@@ -89,14 +85,26 @@
             <a source="HTML" class="selected" href="#">HTML</a>
             <a source="JS" href="#">JS</a>
             <a source="CSS" href="#">CSS</a>
+            <a source="info" href="#">Info</a>
           </div>
           <div class="view-source-items">
-            <textarea source="HTML">
-<h1>I'm a widget</h1>
-<p>I'm so useful AND amazing</p>
-            </textarea>
-            <textarea source="JS">widget.load();</textarea>
-            <textarea source="CSS">.widget { display: awesome:}</textarea>
+            <p class="remix-helper">
+              Remix this component by editing the source below!
+              - <a class="dismiss-note" href="#">OK!</a>
+            </p>
+            <div class="source-type" source="HTML">
+              <textarea><p>Here is some HTML to edit</p></textarea>
+            </div>
+            <div class="source-type" source="JS">
+              <textarea source="JS">widget.load();</textarea>
+            </div>
+            <div class="source-type" source="CSS">
+              <textarea>.widget { display: awesome:}</textarea>
+            </div>
+            <div class="source-type" source="info">
+              <label>Component Description</label>
+              <input type="text" value="This is the component description" />
+            </div>
           </div>
         </div>
 
