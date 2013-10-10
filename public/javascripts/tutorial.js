@@ -25,7 +25,7 @@ $(document).ready(function(){
   });
 
   $('.video-splash').click(function(){
-    video = '<iframe src="'+ $(this).attr('data-video') +'" width="960" height="540" frameborder="0"></iframe>';
+    video = '<iframe src="'+ $(this).attr('data-video') +'" width="912" height="513" frameborder="0"></iframe>';
     $(this).replaceWith(video);
   });
 

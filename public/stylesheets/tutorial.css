@@ -5,7 +5,7 @@ body {
 
 .home-container {
   margin: 0 auto;
-  width: 960px;
+  width: 912px;
 }
 
 .home-container a {
@@ -14,11 +14,6 @@ body {
 
 .home-section {
   width: 100%;
-}
-
-.home-span {
-  width: 100%;
-  height: 540px;
 }
 
 .play-video {
@@ -34,36 +29,30 @@ body {
   line-height: 40px;
 }
 
-.video-container {
-  margin-top: 40px;
-}
-
 .video-splash {
   width: 100%;
-  height: 540px;
+  height: 513px;
   border: 1px solid #181b1f;
   background-image: url(/images/vid2.png);
+  background-position: center;
   display: -webkit-box;   /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
   display: -moz-box;      /* OLD: Firefox (buggy) */
   display: -ms-flexbox;   /* MID: IE 10 */
   display: -webkit-flex;  /* NEW, Chrome 21+ */
   display: flex;          /* NEW: Opera 12.1, Firefox 22+ */
-
   -webkit-box-align: center; -moz-box-align: center; /* OLD… */
   -ms-flex-align: center;
   -webkit-align-items: center;
   align-items: center;
-
   -webkit-box-pack: center; -moz-box-pack: center;
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
-
   cursor: pointer;
 }
 
 .vid-text {
-  font-size: 64px;
+  font-size: 72px;
   font-weight: 300;
   color: #FFF;
   letter-spacing: 1px;
