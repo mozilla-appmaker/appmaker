@@ -777,11 +777,7 @@ input[type="search"] {
   color: #EEE;
   font-size: 18px;
   position: relative;
-  top: 3px;
-  margin: 8px 0px;
-}
-.editable-section .remix-header a {
-  margin-right: 5px;
+  margin: 4px 0 8px 0px;
 }
 
 .editable-section .remix-wrapper {
@@ -797,10 +793,17 @@ input[type="search"] {
   display: inline-block;
   color: white;
   background: #3999e3;
-  padding: 5px 10px;
+  padding: 5px 8px;
   border-radius: 2px;
   text-align: center;
-  font-size: 15px;
+  font-size: 14px;
+
+  margin-right: 4px;
+}
+
+.editable-section .remix-ui .blue-button.run {
+  float: none;
+  margin: 0;
 }
 
 .editable-section .remix-button {
@@ -814,6 +817,7 @@ input[type="search"] {
   text-align: center;
   margin: 0 0 0 5px;
 }
+
 
 .editable-section .remix-button:hover {
   background: #3999e3;;
@@ -879,7 +883,6 @@ input[type="search"] {
   top: 0px;
   bottom: 0px;
   left: 5px;
-  margin-bottom: 5px;
 }
 
 .library-list .heading {

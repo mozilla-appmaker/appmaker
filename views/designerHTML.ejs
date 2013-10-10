@@ -42,8 +42,7 @@
         <li class="tab selected-tray widget"><a href="#tab1">Widgets</a></li><li class="tab"><a href="#tab2">Cards</a></li>
       </ul>
       <div id="tab1">
-          <div class="library-list library-loading clearfix">
-          </div>
+        <div class="library-list library-loading clearfix"></div>
       </div>
       <div id="tab2" class="cards">
       <button id="add-card" class="btn-add">Add Card</button>
@@ -67,10 +66,11 @@
       <div class="remix-ui">
         <div class="remix-header">
           <div class="remix-title">Remix this Widget</div>
-          <a class="blue-button" href="#">X</a>
-          <a class="blue-button" href="#">Save</a>
-          <a class="blue-button" href="#">Finish</a>
-          <a class="blue-button" href="#">Run</a>
+          <div class="remix-buttons">
+            <a class="blue-button" title="Refresh the widget to see your changes." href="#">Refresh</a>
+            <a class="blue-button" title="Save this remixed widget for later use." href="#">Save</a>
+            <a class="blue-button" title="Cancel remixing this widget." href="#">Cancel</a>
+          </div>
         </div>
         <input class="component-name" type="text" placeholder="Component Name" value="New Widget Name"/>
       </div>
@@ -195,7 +195,7 @@
       <a class="green-button endgame" href="#">I'm Ready</a>
     </div>
 
-<<<<<<< HEAD
+
     <div class="wrapper level-status">
       <a class="optout" href="#">I quit!</a>
       <a class="show-hints" href="#"></a>
@@ -207,7 +207,5 @@
       </div>
     
     </div>
-=======
->>>>>>> 48df498f3994719672d32a221e0559e7f5d8f215
   </div>
 </div>
