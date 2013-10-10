@@ -56,63 +56,61 @@
     <div class="expand-handle"></div>
 
     <div class="inner-wrapper">
-    <div class="editable-section">
-      <div class="editable-header nonremix-ui">
-        <span class="name"></span>
-        <a class="remix-button" href="#">Remix</a>
-        <div class="delete-btn"></div>
-      </div>
-
-      <div class="remix-ui">
-        <div class="remix-header">
-          <div class="remix-title">
-            Remix Widget
-            <a class="cancel-remix" title="Cancel remixing this widget." href="#">X</a>
-          </div>
-
-          <div class="remix-buttons">
-            <a class="blue-button" title="Refresh the widget to see your changes." href="#">Refresh</a>
-            <a class="blue-button" title="Save this remixed widget for later use." href="#">Save</a>
-
+      <div class="editable-section">
+        <div class="remix-ui">
+          <h3>
+            Remix
+            <a class="cancel-remix" title="Cancel remixing this widget." href="#">Cancel</a>
+            <a class="finish-remix" title="Refresh the widget to see your changes." href="#">Done</a>
+            <a class="save-remix" title="Refresh the widget to see your changes." href="#">Save</a>
+          </h3>
+          <div class="remix-wrapper">
+            <p>
+              You are now remixing a component. Edit the source code and save it to make it your own. 
+              - <a class="dismiss-note" href="#">OK, thanks!</a>
+            </p>
+            <input class="component-name" type="text" placeholder="Component Name" value="my-remixed-widget"/>
           </div>
         </div>
-        <input class="component-name" type="text" placeholder="Component Name" value="New Widget Name"/>
+      <div class="editable-header nonremix-ui">
+        <span class="name"></span>
+        <div class="delete-btn"></div>
       </div>
-
       <div class="trey-tabs">
-        <a tab="code" class="selected-tab" href="#">Code</a>
-        <a tab="css" href="#">CSS</a>
         <a class="selected-tab" tab="customize" href="#">Customize</a>
+        <a tab="view-source" href="#">View Source</a>
       </div>
-
       <div class="tab-sections">
-
         <div class="section section-customize">
           <div class="editable-attributes"></div>
         </div>
-
-        <div class="section section-code">
-          <textarea>widget.load();</textarea>
-        </div>
-
-        <div class="section section-css">
-          <textarea>.widget { display: awesome:}</textarea>
+        <div class="section section-view-source">
+          <div class="view-source-menu">
+            <a source="HTML" class="selected" href="#">HTML</a>
+            <a source="JS" href="#">JS</a>
+            <a source="CSS" href="#">CSS</a>
+          </div>
+          <div class="view-source-items">
+            <textarea source="HTML">
+<h1>I'm a widget</h1>
+<p>I'm so useful AND amazing</p>
+            </textarea>
+            <textarea source="JS">widget.load();</textarea>
+            <textarea source="CSS">.widget { display: awesome:}</textarea>
+          </div>
         </div>
 
       </div>
-    
-
-  	</div>
+    </div>
   </div>
 
   </div>
-
 
   <div class="log-wrapper">
-  	<div class="log">
-  	  <ul class="scroll"></ul>
-  	  <button class="log-toggle"></button>
-  	</div>
+    <div class="log">
+      <ul class="scroll"></ul>
+      <button class="log-toggle"></button>
+    </div>
   </div>
 
   <div class="channel-menu channel-menu-template">

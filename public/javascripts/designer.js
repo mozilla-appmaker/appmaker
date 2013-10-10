@@ -924,19 +924,6 @@ define(
       toggleColumns();
     });
 
-    function toggleRemixMode(mode){
-      $(".trey-tabs a").removeClass("selected-tab");
-      $(".page-wrapper").removeClass("remix-mode");
-      if(mode == "on"){
-        changeEditableTab("code");
-        $('.trey-tabs [tab=code]').addClass("selected-tab");
-        $('.page-wrapper').addClass("remix-mode");
-      } else {
-        changeEditableTab("customize");
-        $('.trey-tabs [tab=customize]').addClass("selected-tab");
-      }
-    }
-
     function toggleColumns(){
       $(".page-wrapper").toggleClass("tray-hidden");
       $(".tray").toggleClass("hidden");
@@ -946,6 +933,49 @@ define(
     function changeEditableTab(tab) {
       $(".tab-sections .section").hide();
       $(".tab-sections .section-" + tab).show();
+    }
+
+    $(document).ready(function(){
+      switchSourceView("HTML");
+    });
+
+    // View source menu
+    $(".view-source-menu").on("click","a",function(){
+      var sourceType = $(this).attr("source");
+      switchSourceView(sourceType);
+    });
+
+    function switchSourceView(view) {
+      $(".view-source-menu a").removeClass("selected");
+      $(".view-source-menu a[source='" + view + "']").addClass("selected");
+      $(".view-source-items textarea").hide();
+      $(".view-source-items [source='" + view + "']").show();
+    }
+
+    $(".view-source-items textarea").on("keyup",function(){
+      $(".right-column").addClass("remix-mode");
+      expandColumn();
+    });
+
+    $(".remix-ui a.finish-remix, .remix-ui a.cancel-remix").on("click",function(){
+      $(".right-column").removeClass("remix-mode");
+      contractColumn();
+    });
+
+    $(".dismiss-note").on("click",function(){
+      $(this).parent().fadeOut();
+    });
+
+    function contractColumn(){
+      $(".page-wrapper").removeClass("tray-hidden");
+      $(".tray").removeClass("hidden");
+      $(".right-column").removeClass("expanded");
+    }
+
+    function expandColumn(){
+      $(".page-wrapper").addClass("tray-hidden");
+      $(".tray").addClass("hidden");
+      $(".right-column").addClass("expanded");
     }
 
     // AMD module return
