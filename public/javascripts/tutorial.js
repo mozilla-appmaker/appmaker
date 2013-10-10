@@ -24,9 +24,9 @@ $(document).ready(function(){
     $(parent).toggleClass("ui-open");
   });
 
-  $('.video-splash').click(function(){
-    video = '<iframe src="'+ $(this).attr('data-video') +'" width="912" height="513" frameborder="0"></iframe>';
-    $(this).replaceWith(video);
+  $('.play-video').click(function(){
+    video = '<iframe src="http://www.youtube.com/embed/RaRIdLgZTPI?autoplay=1" width="960" height="540" frameborder="0"></iframe>';
+    $('.video-splash').replaceWith(video);
   });
 
 });
