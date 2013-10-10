@@ -12,53 +12,49 @@
 
   <div class="container animate-me">
     <div class="inner-container clearfix">
-    <div class="listen-column"></div>
-    <div class="phone-container">
-    <div class="phone-inner">
-      <div class="phone-top"></div>
-      <div class="phone-border">
-<% if (htmlInjection.length > 0) { -%>
-      <%- htmlInjection %>
-<% } else { -%>
-        <div id="flathead-app">
-          <div class="ceci-card">
-            <div class="fixed-top"></div>
-            <div class="phone-canvas">
-            </div>
-            <div class="fixed-bottom"></div>
+      <div class="listen-column"></div>
+      <div class="phone-container">
+        <div class="phone-inner">
+          <div class="phone-top"></div>
+          <div class="phone-border">
+            <% if (htmlInjection.length > 0) { -%>
+              <%- htmlInjection %>
+            <% } else { -%>
+              <div id="flathead-app">
+                <div class="ceci-card">
+                  <div class="fixed-top"></div>
+                  <div class="phone-canvas"></div>
+                  <div class="fixed-bottom"></div>
+                </div>
+              </div>
+            <% } -%>
           </div>
+          <div class="phone-shadow"></div>
+          <div class="phone-bottom"></div>
         </div>
-<% } -%>
       </div>
-      <div class="phone-shadow"></div>
-      <div class="phone-bottom"></div>
+      <div class="broadcast-column">
+      </div>
     </div>
-    </div>
-    <div class="broadcast-column">
-    </div>
-  </div>
   </div>
 
   <div class="tray app-column animate-me">
-
     <div class="inner-wrapper">
       <ul class="tabs">
-        <li class="tab selected-tray widget"><a href="#tab1">Widgets</a></li><li class="tab"><a href="#tab2">Cards</a></li>
+        <li class="tab selected-tray widget"><a href="#tab1">Widgets</a></li>
+        <li class="tab"><a href="#tab2">Cards</a></li>
       </ul>
       <div id="tab1">
         <div class="library-list library-loading clearfix"></div>
       </div>
       <div id="tab2" class="cards">
-      <button id="add-card" class="btn-add">Add Card</button>
+        <button id="add-card" class="btn-add">Add Card</button>
       </div>
     </div>
-
   </div>
 
   <div class="right-column app-column animate-me">
-
     <div class="expand-handle"></div>
-
     <div class="inner-wrapper">
     <div class="editable-section">
       <div class="editable-header nonremix-ui">
@@ -77,7 +73,6 @@
           <div class="remix-buttons">
             <a class="blue-button" title="Refresh the widget to see your changes." href="#">Refresh</a>
             <a class="blue-button" title="Save this remixed widget for later use." href="#">Save</a>
-
           </div>
         </div>
         <input class="component-name" type="text" placeholder="Component Name" value="New Widget Name"/>
@@ -90,7 +85,6 @@
       </div>
 
       <div class="tab-sections">
-
         <div class="section section-customize">
           <div class="editable-attributes"></div>
         </div>
@@ -102,14 +96,10 @@
         <div class="section section-css">
           <textarea>.widget { display: awesome:}</textarea>
         </div>
-
       </div>
-
-
     </div>
   </div>
-
-  </div>
+</div>
 
 
   <div class="log-wrapper">
@@ -191,7 +181,7 @@
       <div class="step-list"></div>
       <a class="start green-button" href="#">START</a>
       <div class="sub-links">
-      <a class="optout" href="#">I don't want to play :(</a> - <a class="restart" href="#">Start Over</a>
+        <a class="optout" href="#">I don't want to play :(</a> - <a class="restart" href="#">Start Over</a>
       </div>
       <div class="mailman-head"></div>
     </div>
@@ -213,7 +203,6 @@
         <strong>Hint:</strong> <span class="hint-text">What you gotta do, is what you gotta do!</span>
         <div class="arrow"></div>
       </div>
-
     </div>
   </div>
 </div>
