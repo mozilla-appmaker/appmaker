@@ -24,6 +24,11 @@ $(document).ready(function(){
     $(parent).toggleClass("ui-open");
   });
 
+  $('.video-splash').click(function(){
+    video = '<iframe src="'+ $(this).attr('data-video') +'" width="960" height="540" frameborder="0"></iframe>';
+    $(this).replaceWith(video);
+  });
+
 });
 
 function changeStep(step){
