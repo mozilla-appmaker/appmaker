@@ -769,8 +769,20 @@ input[type="search"] {
 .editable-section .remix-header {
   overflow: auto;
   margin: 0 0 10px 0;
-  border-bottom: solid 1px #444;
-  padding-bottom: 8px;
+}
+
+.editable-section .remix-header .cancel-remix {
+  color: white;
+  border-radius: 2px;
+  padding: 2px 7px;
+  font-size: 14px;
+  background: #e81e1e;
+  float: right;
+  opacity: .5;
+}
+
+.editable-section .remix-header .cancel-remix:hover {
+  opacity: 1;
 }
 
 .editable-section .remix-header .remix-title {
@@ -778,6 +790,8 @@ input[type="search"] {
   font-size: 18px;
   position: relative;
   margin: 4px 0 8px 0px;
+  border-bottom: solid 2px #444;
+  padding-bottom: 4px;
 }
 
 .editable-section .remix-wrapper {
