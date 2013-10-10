@@ -1,161 +1,215 @@
-<nav class="top-nav clearfix">
-  <div class="logo"></div>
-  <a target="_blank" class="publish-url"></a>
-  <div class="customize-btn"></div>
-  <div class="note">
-    App auto-saved at <span id="time"></span>
-  </div>
-  <div class="alpha">Welcome visitor! This is pre-alpha software, expect bugs! Here's a <a href="http://www.youtube.com/watch?v=RaRIdLgZTPI">demo video</a> if you're curious. <a href="https://github.com/mozilla/appmaker/">Github</a></div>.
-  <button class="btn-std btn-md publish btn-critical">Publish</button>
-  <button class="btn-std btn-md new">New App</button>
-</nav>
-<ul class="tabs">
-	<li class="tab selected-tray widget"><a href="#tab1">Widgets</a></li><li class="tab"><a href="#tab2">Cards</a></li>
-</ul>
-<div class="tray">
-	<div id="tab1">
-	    <div class="library-list library-loading clearfix">
-	    </div>
-	</div>
-    <div id="tab2" class="cards">
-		<button id="add-card" class="btn-add">Add Card</button>
-	</div>
-</div>
-<div class="container">
-  <div class="inner-container clearfix">
-  <div class="listen-column">
-  </div>
-  <div class="phone-container">
-	  <div class="phone-inner">
-	    <div class="phone-top"></div>
-	    <div class="phone-border">
-	    <div id="flathead-app">
-	      <div class="ceci-card">
-	        <div class="fixed-top"></div>
-	        <div class="phone-canvas">
-	        </div>
-	        <div class="fixed-bottom"></div>
-	      </div>
-	    </div>
-	    </div>
-	    <div class="phone-shadow"></div>
-	    <div class="phone-bottom"></div>
-	  </div>
-  </div>
-  <div class="broadcast-column">
-  </div>
-</div>
-</div>
-<div class="right-column">
-	<div class="editable-section">
-		<div class="name"></div>
-		<h4>Customize</h4>
-		<div class="section">
-			<div class="editable-attributes"></div>
-		</div>
-		<div class="delete-btn"></div>
-	</div>
-</div>
-<div class="log-wrapper">
-	<div class="log">
-	  <ul class="scroll"></ul>
-	  <button class="log-toggle"></button>
-	</div>
-</div>
-
-<div class="channel-menu channel-menu-template">
-  <div class="hover-helper"></div>
-  <div class="channel-option subscription-option channel-template">
-    <div class="color-ui">
-      <div name="blue"      color="blue"    class="color"></div>
-      <div name="green"     color="green"   class="color"></div>
-      <div name="yellow"    color="yellow"  class="color"></div>
-      <div name="orange"    color="orange"  class="color"></div>
-      <div name="red"       color="red"     class="color"></div>
-      <div name="pink"      color="pink"    class="color"></div>
-      <div name="purple"    color="purple"  class="color"></div>
-      <div name="false"     color="false"   class="color"></div>
+<div class="page-wrapper">
+  <nav class="top-nav clearfix">
+    <div class="logo"></div>
+    <a target="_blank" class="publish-url"></a>
+    <div class="customize-btn"></div>
+    <div class="note">
+      App auto-saved at <span id="time"></span>
     </div>
-    <label><span class="channel-name"></span><div color="blue" class="chosen-color"></div></label>
-  </div>
-  <div class="arrow"></div>
-</div>
+    <button class="btn-std btn-md publish btn-critical">Publish</button>
+    <button class="btn-std btn-md new">New App</button>
+  </nav>
 
-<div class="modal-wrapper hidden">
-  <div class="modal">
-    <div class="publishdialog modal-inner">
-      <div class="spinner hidden">
-        <h2>Loading…</h2>
-        <div class="clearfix">
-          Publishing your app on the internets.
+  <div class="container animate-me">
+    <div class="inner-container clearfix">
+    <div class="listen-column"></div>
+    <div class="phone-container">
+    <div class="phone-inner">
+      <div class="phone-top"></div>
+      <div class="phone-border">
+      <div id="flathead-app">
+        <div class="ceci-card">
+          <div class="fixed-top"></div>
+          <div class="phone-canvas">
+          </div>
+          <div class="fixed-bottom"></div>
         </div>
       </div>
-      <div class="failure hidden">
-        <h2>Uh-oh…</h2>
-        <div class="clearfix">
-          Your app couldn't be published.  The server said:
-          <pre class="message"></pre>
-        </div>
       </div>
-      <div class="success hidden">
-        <h2>Success!</h2>
-        <div class="clearfix">
-          Your app has been published to <a class="modal-publish-link" target="_blank"></a>
-        </div>
+      <div class="phone-shadow"></div>
+      <div class="phone-bottom"></div>
+    </div>
+    </div>
+    <div class="broadcast-column">
+    </div>
+  </div>
+  </div>
+
+  <div class="tray app-column animate-me">
+
+    <div class="inner-wrapper">
+      <ul class="tabs">
+        <li class="tab selected-tray widget"><a href="#tab1">Widgets</a></li><li class="tab"><a href="#tab2">Cards</a></li>
+      </ul>
+      <div id="tab1">
+        <div class="library-list library-loading clearfix"></div>
       </div>
-      <button class="btn-std return-btn">
-        Return to app
-      </button>
+      <div id="tab2" class="cards">
+      <button id="add-card" class="btn-add">Add Card</button>
+      </div>
     </div>
-  </div>
-</div>
 
-<div class="game-status">
-  <div class="wrapper level-finished">
-    <h2>Congratulations!</h2>
-    <h1>You completed Level <span class="level-number"></span></h1>
-    <div>
-    <p>You've been promoted to...</p>
-    <div class="player-rank"></div>
-    </div>
-    <a class="next-level green-button" href="#">Continue</a>
-    <div class="mailman-head"></div>
   </div>
 
-  <div class="wrapper level-intro">
-    <h2 class="level-number"></h2>
-    <h1 class="level-name"></h1>
+  <div class="right-column app-column animate-me">
 
-    <div class="level-indicator">
-      <div class="level-progress"></div>
-      <div class="current-level"></div>
-    </div>
+    <div class="expand-handle"></div>
 
-    <h3 class="objective">Your Mission</h3>
-    <div class="step-list"></div>
-    <a class="start green-button" href="#">START</a>
-    <div class="sub-links">
-    <a class="optout" href="#">I don't want to play :(</a> - <a class="restart" href="#">Start Over</a>
-    </div>
-    <div class="mailman-head"></div>
+    <div class="inner-wrapper">
+    <div class="editable-section">
+      <div class="editable-header nonremix-ui">
+        <span class="name"></span>
+        <a class="remix-button" href="#">Remix</a>
+        <div class="delete-btn"></div>
+      </div>
+
+      <div class="remix-ui">
+        <div class="remix-header">
+          <div class="remix-title">
+            Remix Widget
+            <a class="cancel-remix" title="Cancel remixing this widget." href="#">X</a>
+          </div>
+
+          <div class="remix-buttons">
+            <a class="blue-button" title="Refresh the widget to see your changes." href="#">Refresh</a>
+            <a class="blue-button" title="Save this remixed widget for later use." href="#">Save</a>
+
+          </div>
+        </div>
+        <input class="component-name" type="text" placeholder="Component Name" value="New Widget Name"/>
+      </div>
+
+      <div class="trey-tabs">
+        <a tab="code" class="selected-tab" href="#">Code</a>
+        <a tab="css" href="#">CSS</a>
+        <a class="selected-tab" tab="customize" href="#">Customize</a>
+      </div>
+
+      <div class="tab-sections">
+
+        <div class="section section-customize">
+          <div class="editable-attributes"></div>
+        </div>
+
+        <div class="section section-code">
+          <textarea>widget.load();</textarea>
+        </div>
+
+        <div class="section section-css">
+          <textarea>.widget { display: awesome:}</textarea>
+        </div>
+
+      </div>
+    
+
+  	</div>
   </div>
 
-  <div class="wrapper game-finished">
-    <h2>You win!</h2>
-    <h1>You've been promoted to Postmaster!</h1>
-    <p>Go forth and build apps!</p>
-    <a class="green-button endgame" href="#">I'm Ready</a>
   </div>
 
-  <div class="wrapper level-status">
-    <a class="optout" href="#">I quit!</a>
-    <a class="show-hints" href="#"></a>
-    <div><span class="level-number"></span> - <span class="level-name"></span></div>
-    <div class="step-list"></div>
-    <div class="hint">
-      <strong>Hint:</strong> <span class="hint-text">What you gotta do, is what you gotta do!</span>
-      <div class="arrow"></div>
+
+  <div class="log-wrapper">
+  	<div class="log">
+  	  <ul class="scroll"></ul>
+  	  <button class="log-toggle"></button>
+  	</div>
+  </div>
+
+  <div class="channel-menu channel-menu-template">
+    <div class="hover-helper"></div>
+    <div class="channel-option subscription-option channel-template">
+      <div class="color-ui">
+        <div name="blue"      color="blue"    class="color"></div>
+        <div name="green"     color="green"   class="color"></div>
+        <div name="yellow"    color="yellow"  class="color"></div>
+        <div name="orange"    color="orange"  class="color"></div>
+        <div name="red"       color="red"     class="color"></div>
+        <div name="pink"      color="pink"    class="color"></div>
+        <div name="purple"    color="purple"  class="color"></div>
+        <div name="false"     color="false"   class="color"></div>
+      </div>
+      <label><span class="channel-name"></span><div color="blue" class="chosen-color"></div></label>
+    </div>
+    <div class="arrow"></div>
+  </div>
+
+  <div class="modal-wrapper hidden">
+    <div class="modal">
+      <div class="publishdialog modal-inner">
+        <div class="spinner hidden">
+          <h2>Loading…</h2>
+          <div class="clearfix">
+            Publishing your app on the internets.
+          </div>
+        </div>
+        <div class="failure hidden">
+          <h2>Uh-oh…</h2>
+          <div class="clearfix">
+            Your app couldn't be published.  The server said:
+            <pre class="message"></pre>
+          </div>
+        </div>
+        <div class="success hidden">
+          <h2>Success!</h2>
+          <div class="clearfix">
+            Your app has been published to <a class="modal-publish-link" target="_blank"></a>
+          </div>
+        </div>
+        <button class="btn-std return-btn">
+          Return to app
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-status">
+    <div class="wrapper level-finished">
+      <h2>Congratulations!</h2>
+      <h1>You completed Level <span class="level-number"></span></h1>
+      <div>
+      <p>You've been promoted to...</p>
+      <div class="player-rank"></div>
+      </div>
+      <a class="next-level green-button" href="#">Continue</a>
+      <div class="mailman-head"></div>
     </div>
 
+    <div class="wrapper level-intro">
+      <h2 class="level-number"></h2>
+      <h1 class="level-name"></h1>
+
+      <div class="level-indicator">
+        <div class="level-progress"></div>
+        <div class="current-level"></div>
+      </div>
+
+      <h3 class="objective">Your Mission</h3>
+      <div class="step-list"></div>
+      <a class="start green-button" href="#">START</a>
+      <div class="sub-links">
+      <a class="optout" href="#">I don't want to play :(</a> - <a class="restart" href="#">Start Over</a>
+      </div>
+      <div class="mailman-head"></div>
+    </div>
+
+    <div class="wrapper game-finished">
+      <h2>You win!</h2>
+      <h1>You've been promoted to Postmaster!</h1>
+      <p>Go forth and build apps!</p>
+      <a class="green-button endgame" href="#">I'm Ready</a>
+    </div>
+
+
+    <div class="wrapper level-status">
+      <a class="optout" href="#">I quit!</a>
+      <a class="show-hints" href="#"></a>
+      <div><span class="level-number"></span> - <span class="level-name"></span></div>
+      <div class="step-list"></div>
+      <div class="hint">
+        <strong>Hint:</strong> <span class="hint-text">What you gotta do, is what you gotta do!</span>
+        <div class="arrow"></div>
+      </div>
+    
+    </div>
   </div>
 </div>

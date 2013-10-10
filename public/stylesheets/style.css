@@ -2,34 +2,35 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+html {
+  min-height: 100%;
+}
+
 body {
-	margin: 0;
-	padding: 0;
-	font-family: 'Source Sans Pro', arial;
-	font-size: 14px;
-	color: #31353C;
-	overflow-y: scroll;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: -moz-none;
-	-ms-user-select: none;
-	user-select: none;
+  margin: 0;
+  padding: 0;
+  font-family: 'Source Sans Pro', arial;
+  font-size: 14px;
+  color: #31353C;
+  overflow-y: scroll;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  user-select: none;
+  min-height: 100%;
 }
 
-.alpha {
-	position: absolute;
-	color: white;
-	font-size: 16px;
-	top: 1em;
-	left: 5em;
+.page-wrapper {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  min-width: 1024px;
 }
-
-.alpha a {
-	color: goldenrod;
-	text-decoration: underline;
-}
-
 
 .phone-container body {
 	background-color: #e8ebed;
@@ -429,12 +430,10 @@ button.log-toggle {
   border-radius: 2px;
   background-repeat: no-repeat;
   background-position: center;
-  line-height: 40px;
-  text-indent: 40px;
-  margin: 10px auto;
-  position: fixed;
-  right: 20px;
-  top: 72px;
+  display: inline-block;
+  float: right;
+  position: relative;
+  top: 3px;
   background-color: #2c3038;
   border: 1px solid #181b1f;
 }
@@ -487,10 +486,9 @@ button.log-toggle {
   height: 50px;
   background-color: #181b1f;
   position: fixed;
-  top: 0px;
-  left: 250px;
-  right: 0px;
   z-index: 99;
+  top: 0px;
+  width: 100%;
 }
 
 .logo {
@@ -499,47 +497,63 @@ button.log-toggle {
   background-position: center;
   background-color: #358CCE;
   height: 50px;
+  float: left;
   width: 260px;
-  position: fixed;
-  top: 0px;
-  left: 0px;
   z-index: 99;
 }
 
 .container {
-  	min-width: 560px;
-	margin: 0px 250px 0px 260px;
-	overflow: hidden;
+  height: auto;
+  top: 0px;
+  bottom: 0px;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+  overflow-y: scroll;
+  min-width: 700;
+  margin: 0 245px 0 260px;
+}
+
+.tray-hidden .container {
+  margin-left: 0px;
+  margin-right: calc(100% - 720px);
+}
+
+.right-column.expanded {
+  width: calc(100% - 700px);
 }
 
 .inner-container {
 	width: 100%;
 	position: relative;
 	margin-top: 50px;
+  padding-bottom: 20px;
 }
 
 .tray {
   position: fixed;
   left: 0px;
-  top: 0px;
+  top: 50px;
   bottom: 0px;
   width: 260px;
   background-color: #212429;
+  z-index: 2  ;
 }
 
 ul.tabs {
-	height: 40px;
-	position: fixed;
-	top: 50px;
-	z-index: 100;
-	line-height: 40px;
-	text-align: center;
-	font-size: 16px;
-	background-color: #181b1f;
-	border-bottom: 1px solid #31353C;
-	list-style: none;
-	padding: 0px;
-	margin: 0px;
+  display: none;
+  height: 40px;
+  position: fixed;
+  top: 50px;
+  z-index: 100;
+  line-height: 40px;
+  text-align: center;
+  font-size: 16px;
+  background-color: #181b1f;
+  border-bottom: 1px solid #31353C;
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
 }
 
 ul.tabs a {
@@ -608,14 +622,59 @@ input[type="search"] {
 	margin-top: 30px;
 }
 
+.animate-me {
+  -webkit-transition: linear all .1s;
+  -moz-transition: linear all .1s;
+}
+
 .right-column {
-  position: fixed;
-  right: 0px;
   top: 50px;
-  bottom: 0px;
-  width: 250px;
+  right: 0 !important;
+  left: auto !important;
+  bottom: 0;
+  position: fixed;
   background-color: #212429;
   z-index: 99;
+  width: 260px;
+  min-width: 260px;
+}
+
+.expand-handle {
+  border-radius: 6px 0 0 6px;
+  left: -30px;
+  background-color: #212429;
+  position: absolute;
+  color: #888;
+  cursor: pointer;
+  width: 30px;
+  height: 61px;
+  top: 8px;
+  background:  7px center  no-repeat url(../images/arrow-left.png);
+  background-color: rgba(0,0,0,.25);
+  background-size: 15px;
+}
+
+.expand-handle:hover {
+  left: -32px;
+  width: 32px;
+  background-color: rgba(0,0,0,.3);
+} 
+
+.expanded .expand-handle:hover {
+  left: -28px;
+  width: 28px;
+} 
+
+.expanded .expand-handle {
+  background:   rgba(0,0,0,.25) 9px center no-repeat;
+  background-image: url(../images/arrow-right.png);
+  background-size: 15px;
+}
+
+.tray .ui-resizable-handle,
+.tray .expand-handle {
+  right: -27px;
+  border-radius: 0 6px 6px 0;
 }
 
 .right-column input[type=text] {
@@ -635,7 +694,7 @@ input[type="search"] {
 }
 
 .right-column label {
-	color: #5b6270;
+	color: #9aaac1;
 	margin-bottom: 2px;
 	display: block;
 }
@@ -645,10 +704,140 @@ input[type="search"] {
   color: #fff;
   font-weight: 400;
   line-height: 30px;
-  margin: 30px 0px 10px 0px;
-  padding-bottom: 30px;
+  margin: 20px 0px 10px 0px;
+  text-align: left;
+}
+
+.editable-section .trey-tabs {
+  overflow: auto;
+  padding: 0 15px;
+}
+
+.editable-section .trey-tabs a {
+  display: block;
+  border-radius: 2px 2px 0 0 ;
+  float: left;
+  padding: 5px 10px;
+  color: #999;
+  margin-right: 5px;
+}
+
+.editable-section .trey-tabs a:hover {
+  color: #BBB;
+  background: #31363d;
+}
+
+.editable-section .trey-tabs a.selected-tab {
+  background: #40464f;
+  color: #EEE;
+}
+
+.section {
+	border-bottom: 1px solid #454B56;
+  background: #40464f;
+	padding: 15px;
+}
+
+.editable-section .editable-header {
+  padding: 10px 15px;
+}
+
+.editable-section .remix-ui {
+  padding: 10px 15px;
+  color: #999;
+}
+
+.remix-ui,
+.remix-ui .component-name {
+  font-size: 15px;
+}
+
+.remix-ui input.component-name {
+  color: #DDD;
+  border-top: solid 1px #333;
+  border-left: solid 1px #333;
+  border-right: solid 1px #333;
+  border-bottom: solid 1px #333;
+  width: 100%;
+}
+
+.editable-section .remix-ui h4 {
+  color: #999;
+  text-align: left;
+}
+
+.editable-section .remix-header {
+  overflow: auto;
+  margin: 0 0 10px 0;
+}
+
+.editable-section .remix-header .cancel-remix {
+  color: white;
+  border-radius: 2px;
+  padding: 2px 7px;
+  font-size: 14px;
+  background: #e81e1e;
+  float: right;
+  opacity: .5;
+}
+
+.editable-section .remix-header .cancel-remix:hover {
+  opacity: 1;
+}
+
+.editable-section .remix-header .remix-title {
+  color: #EEE;
+  font-size: 18px;
+  position: relative;
+  margin: 4px 0 8px 0px;
+  border-bottom: solid 2px #444;
+  padding-bottom: 4px;
+}
+
+.editable-section .remix-wrapper {
   text-align: center;
-  border-bottom: 1px solid #31353C;
+}
+
+.editable-section .tab-sections textarea {
+  width: 100%;
+  height: 300px;
+}
+
+.editable-section .remix-ui .blue-button {
+  display: inline-block;
+  color: white;
+  background: #358CCE;
+  padding: 5px 8px;
+  border-radius: 2px;
+  text-align: center;
+  font-size: 14px;
+  margin-right: 4px;
+}
+
+.editable-section .remix-ui .blue-button:hover {
+  background:  #3999e3;;
+}
+
+.editable-section .remix-ui .blue-button.run {
+  float: none;
+  margin: 0;
+}
+
+.editable-section .remix-button {
+  color: white;
+  float: right;
+  background: #358CCE;
+  padding: 5px 10px;
+  border-radius: 2px;
+  margin-left: 15px;
+  display: inline-block;
+  text-align: center;
+  margin: 0 0 0 5px;
+}
+
+
+.editable-section .remix-button:hover {
+  background: #3999e3;
 }
 
 .info-box {
@@ -657,7 +846,7 @@ input[type="search"] {
 }
 
 .tip {
-  width: 1000px;
+  width: 1024px;
   position: absolute;
   margin: 0 auto;
   height: 80px;
@@ -700,18 +889,17 @@ input[type="search"] {
 .card.selected {
   box-shadow: 0;
   color: #358CCE;
-  	background-image: url(../images/card-active.png);
-	background-repeat: no-repeat;
-	background-position: left center;
+  background-image: url(../images/card-active.png);
+  background-repeat: no-repeat;
+  background-position: left center;
 }
 
 .library-list {
-  width: 245px;
   overflow-y: auto;
   position: absolute;
-  top: 90px;
+  top: 0px;
   bottom: 0px;
-  left: 15px;
+  left: 5px;
 }
 
 .library-list .heading {
@@ -818,12 +1006,12 @@ input[type="search"] {
 }
 
 .preview {
-	position: relative;
-	float: left;
-	width: 70px;
-    margin: 0px 0px 5px 5px;
-    perspective: 1000;
-    -webkit-perspective: 1000;
+  position: relative;
+  float: left;
+  width: 70px;
+  margin: 0px 0px 5px 5px;
+  perspective: 1000;
+  -webkit-perspective: 1000;
 }
 
 /* flip the pane when hovered */
@@ -1071,7 +1259,7 @@ input[type="search"] {
   border-radius: 25px;
   position: absolute;
   bottom: -24px;
-  left: -15px;
+  left: -10px;
   opacity: .15;
   -webkit-transform: scaleY(.3);
   -moz-transform: scaleY(.3);
@@ -2004,10 +2192,6 @@ listen.channel-visualisation  .channel-menu-toggle {
   background: rgba(102, 102, 102, 1)
 }
 
-.section {
-	border-bottom: 1px solid #31353C;
-	padding: 10px 20px;
-}
 
 .log-header {
 	padding: 10px 20px 0px 20px;
@@ -2060,4 +2244,50 @@ listen.channel-visualisation  .channel-menu-toggle {
 	background-color: #9f27cf;
 }
 
+.remix-mode .nonremix-ui {
+  display: none;
+}
 
+.remix-ui {
+  display: none;
+}
+
+.remix-mode .remix-ui {
+  display: block;
+}
+
+.remix-mode .delete-btn {
+  display: none;
+}
+
+.editable-section .trey-tabs [tab=code],
+.editable-section .trey-tabs [tab=css] {
+  display: none;
+}
+
+.remix-mode .editable-section .trey-tabs [tab=code],
+.remix-mode .editable-section .trey-tabs [tab=css]{
+  display: block;
+}
+
+.tab-sections .section {
+  display: none;
+}
+
+.tab-sections .section-customize {
+  display: block;
+}
+
+.right-column.hidden .inner-wrapper {
+  display: none;
+}
+
+.tray.hidden .inner-wrapper {
+  display: none;
+}
+
+.tray.hidden {
+  width: 0px;
+  display: block;
+  padding: 0px;
+}
