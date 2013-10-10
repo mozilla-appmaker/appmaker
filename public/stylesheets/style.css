@@ -806,13 +806,16 @@ input[type="search"] {
 .editable-section .remix-ui .blue-button {
   display: inline-block;
   color: white;
-  background: #3999e3;
+  background: #358CCE;
   padding: 5px 8px;
   border-radius: 2px;
   text-align: center;
   font-size: 14px;
-
   margin-right: 4px;
+}
+
+.editable-section .remix-ui .blue-button:hover {
+  background:  #3999e3;;
 }
 
 .editable-section .remix-ui .blue-button.run {
@@ -834,7 +837,7 @@ input[type="search"] {
 
 
 .editable-section .remix-button:hover {
-  background: #3999e3;;
+  background: #3999e3;
 }
 
 .info-box {
