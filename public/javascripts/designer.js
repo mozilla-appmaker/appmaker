@@ -988,6 +988,7 @@ define(
 
     $(document).ready(function(){
       switchSourceView("HTML");
+      changeEditableTab("customize");
     });
 
     // View source menu
