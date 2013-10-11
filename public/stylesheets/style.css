@@ -518,6 +518,27 @@ button.log-toggle {
   margin: 0 245px 0 260px;
 }
 
+.container .garbage-bin {
+  display: none;
+  position: absolute;
+  top: 40px;
+  right: -125px;
+  height: 50px;
+  width: 50px;
+  border-radius: 4px;
+  background-image: url(../images/garbage-icon-closed.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 40px;
+  border: dotted 2px rgba(0,0,0,.2);
+}
+
+.container .garbage-bin.garbage-open {
+  background-image: url(../images/garbage-icon-open.png);
+  border: dotted 2px rgba(0,0,0,.3);
+  background-color: rgba(0,0,0,.05);
+}
+
 .tray-hidden .container {
   margin-left: 0px;
   margin-right: calc(100% - 720px);
@@ -624,6 +645,7 @@ input[type="search"] {
   width: calc(50% - 160px);
   height: 520px;
   margin-top: 30px;
+  z-index: 12;
 }
 
 .animate-me {
@@ -2518,4 +2540,8 @@ input#remix-panel-email {
   width: 0px;
   display: block;
   padding: 0px;
+}
+
+.game-status {
+  display: none;
 }

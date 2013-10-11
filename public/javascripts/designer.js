@@ -44,9 +44,26 @@ define(
             saveTimer = setTimeout(saveApp, 500);
           });
           document.addEventListener("onselectionchanged", app.sortComponents);
-
           $('.library-list').removeClass("library-loading");
           $('.drophere').sortable(sortableOptions);
+          $('.garbage-bin').droppable({
+            tolerance : "touch",
+            over : function( event, ui ) {
+              $(this).addClass("garbage-open");
+              $(".ui-state-highlight").hide();
+            },
+            out : function( event, ui ) {
+              $(this).removeClass("garbage-open");
+              $(".ui-state-highlight").show();
+            },
+            drop : function( event, ui ) {
+              var elements = selection.slice();
+              clearSelection();
+              elements.forEach(function(element) {
+                element.removeSafely();
+              });
+            }
+          });
         },
         onCardChange: function (card) {
           var thumbId = "card-thumb-" + card.id.match(/(\d+)$/)[0];
@@ -203,8 +220,18 @@ define(
       connectWith: ".drophere",
       placeholder: "ui-state-highlight",
       handle : ".handle",
-      start : function() { $(".phone-container").addClass("dragging"); },
-      stop : function() { $(".phone-container").removeClass("dragging"); },
+      start : function(event,ui) { 
+        if(!$(ui.helper[0].firstChild).hasClass("preview-icon")){
+          var top = ui.originalPosition.top;
+          $(".phone-container").addClass("dragging"); 
+          $(".garbage-bin").show(); 
+          $(".garbage-bin").css("top", parseInt(top));
+        }
+      },
+      stop : function() { 
+        $(".phone-container").removeClass("dragging");
+        $(".garbage-bin").hide();
+      },
       receive: function (event, ui) {
         if (ui.helper) {
           var helper = $(ui.helper);
@@ -366,16 +393,6 @@ define(
           if (event.target.tagName.toLowerCase() === 'body'){
             event.preventDefault();
           }
-      }
-    });
-
-    $(document).on("mousedown",'.delete-btn',function () {
-      if(confirm("Delete this component?")){
-        var elements = selection.slice();
-        clearSelection();
-        elements.forEach(function(element) {
-          element.removeSafely();
-        });
       }
     });
 
