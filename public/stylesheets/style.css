@@ -528,9 +528,9 @@ button.log-toggle {
 }
 
 .inner-container {
-	width: 100%;
-	position: relative;
-	margin-top: 50px;
+  width: 100%;
+  position: relative;
+  margin-top: 50px;
   padding-bottom: 20px;
 }
 
@@ -703,9 +703,9 @@ input[type="search"] {
 }
 
 .right-column label {
-	color: #9aaac1;
-	margin-bottom: 2px;
-	display: block;
+  color: #9aaac1;
+  margin-bottom: 2px;
+  display: block;
 }
 
 .editable-section .name {
@@ -1447,7 +1447,7 @@ input[type="search"] {
 }
 
 span.channel {
-	height: 2px;
+  height: 2px;
 }
 
 .log .scroll li .payload {

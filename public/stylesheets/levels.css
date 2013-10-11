@@ -20,7 +20,7 @@
   position: relative;
   background: rgba(255,255,255,.95);
   padding-left: 65px;
-  
+
 }
 
 /* Level Intro */
@@ -116,9 +116,9 @@
 }
 
 @-webkit-keyframes show-hint {
-	0% {-webkit-transform: scale(0) ; }
+  0% {-webkit-transform: scale(0) ; }
   90% {-webkit-transform: scale(1.1);}
-	100% {-webkit-transform: rotate(0deg); }
+  100% {-webkit-transform: rotate(0deg); }
 }
 
 
@@ -126,8 +126,8 @@
   width: 30px;
   height: 30px;
   position: absolute;
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   bottom: -18px;
   border-left: 1px solid transparent;
   border-right: 20px solid transparent;
@@ -286,9 +286,9 @@
 }
 
 @-webkit-keyframes bobhead {
-	0% {-webkit-transform: translateY(0px) ; }
+  0% {-webkit-transform: translateY(0px) ; }
   50% {-webkit-transform: translateY(-3px);}
-	100% {-webkit-transform: translateY(0px); }
+  100% {-webkit-transform: translateY(0px); }
 }
 
 .game-status .level-indicator .level-circle {
