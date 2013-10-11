@@ -12,8 +12,8 @@ requirejs.config({
       "ceci-cards": "ceci/ceci-cards",
       "ceci-app": "ceci/ceci-app",
       "jquery-ui": "jquery-ui/ui/minified/jquery-ui.min",
-      "towtruck": "https://towtruck.mozillalabs.com/towtruck",
-      "towtruckSupport": "/javascripts/towtruckSupport",
+      "togetherjs": "https://togetherjs.com/togetherjs",
+      "togetherjsSupport": "/javascripts/togetherjsSupport",
       "angular": "angular/angular.min"
     },
     shim: {
@@ -21,8 +21,8 @@ requirejs.config({
         exports: "$",
         deps: ['jquery']
       },
-      "towtruckSupport": {
-        deps: ['towtruck']
+      "togetherjs": {
+        exports: "TogetherJS"
       }
     }
 });
