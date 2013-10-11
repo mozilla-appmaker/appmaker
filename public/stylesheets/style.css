@@ -493,6 +493,11 @@ button.log-toggle {
   z-index: 99;
   top: 0px;
   width: 100%;
+  text-align: center;
+}
+
+.top-nav .nav-ui {
+  float: right;
 }
 
 .logo {
@@ -973,36 +978,98 @@ input[type="search"] {
 }
 
 .cards {
-  width: 260px;
-  overflow-y: auto;
-  position: absolute;
-  top: 90px;
-  bottom: 0px;
-  left: 20px;
+  padding-top: 18px;
+  text-align: center;
+  width: calc(100% - 600px);
+  margin: 0 auto;
+  position: relative;
+  left: -15px;
+  display: inline-block;
 }
 
-.card {
-  height: 30px;
-  width: 100%;
+.cards .add-card {
+  color: white;
+  display: inline-block;
+  background: #659d2e;
+  font-weight: bold;
+}
+
+.cards .add-card:hover {
+  background: #84c147;
+}
+
+.card-list {
+  display: inline-block;
+}
+
+.cards button {
+  display: inline-block;
+}
+
+.card,
+.add-card {
+  margin-right: 5px;
   font-size: 16px;
-  line-height: 30px;
-  text-indent: 40px;
+  padding: 7px 15px;
+  text-align: center;
   cursor: pointer;
-  float: left;
-  color: #aeb1b5;
-  margin: 0px 0px 10px 0px;
-  border-radius: 3px 3px 0px 0px;
-  background-image: url(../images/cards.png);
-  background-repeat: no-repeat;
-  background-position: left center;
+  color: #888;
+  font-size: 14px;
+  display: inline-block;
+  background: #444;
+  color: #999;
+  border-radius: 2px 2px 0 0;
+  position: relative;
+  padding: 6px 10px 8px 10px;
+}
+
+.add-card {
+  background: green;
+  padding: 6px 15px 8px 15px;
+}
+
+.card .delete-card {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  right: 5px;
+  top: 5px;
+  opacity: .4;
+  background: url(../images/page-tab-x.png) center no-repeat;
+  background-size: 12px;
+  border-radius: 2px;
+  display: none;
+}
+
+.card.selected:only-child {
+  padding: 6px 10px 8px 10px;
+}
+
+.card.selected:only-child .delete-card {
+  display: none;
+}
+
+.card .delete-card:hover {
+  background: url(../images/page-tab-x.png) center no-repeat;
+  background-size: 12px;
+  background-color: #DDD;
+  opacity: .8;
+}
+
+.card:hover {
+  background: #666;
+  color: #BBB;
 }
 
 .card.selected {
-  box-shadow: 0;
-  color: #358CCE;
-  background-image: url(../images/card-active.png);
-  background-repeat: no-repeat;
+  color: #666;
   background-position: left center;
+  background: #FFF;
+  padding: 6px 35px 8px 10px;
+}
+
+.card.selected .delete-card {
+  display: block;
 }
 
 .library-list {

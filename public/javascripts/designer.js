@@ -77,12 +77,12 @@ define(
 
           // create card thumbnail
           var cardNumber = $(".card").length + 1;
-          var newthumb = $('<div class="card">Card ' + cardNumber + '</div>');
+          var newthumb = $('<div class="card">Page ' + cardNumber + '<a title="Delete this card" href="#" class="delete-card"></a></div>');
           newthumb.attr('id', "card-thumb-" + cardNumber);
           newthumb.click(function() {
             card.show();
           });
-          $(".cards").append(newthumb);
+          $(".card-list").append(newthumb);
           $('.drophere').sortable(sortableOptions);
           card.show();
         }
@@ -271,7 +271,6 @@ define(
 
     var saveApp = function(){
       localStorage.draft = app.serialize();
-
       var now = new Date();
       var hours = now.getHours();
       var minutes = now.getMinutes();
@@ -279,17 +278,18 @@ define(
       hours = (hours < 10) ? "0" + hours : hours;
       minutes = (minutes < 10) ? "0" + minutes : minutes;
       seconds = (seconds < 10) ? "0" + seconds : seconds;
-
       now = hours + ':' + minutes + ":" + seconds;
-
       $('.note').show();
       $('#time').text(now);
-
       console.log('Draft saved:', now);
     };
 
-    $('#add-card').click(function(){
+    $('.add-card').click(function(){
       app.addCard();
+    });
+
+    $('.cards').on("click",".delete-card",function(){
+      window.confirm("Delete this Page?");
     });
 
     $(document).on('mouseenter', '.draggable', function () {
@@ -320,10 +320,8 @@ define(
     // generate the channels list (colored clickable boxes) and append to the page
     function getChannelStrip(forAttribute) {
       var strip = $('<div class="colorstrip" id="strip-' + forAttribute + '"></div>');
-
       for (var i in channels) {
         var rdata = channels[i];
-
         strip.append(
           $('<div class="colorChoice '+ rdata.name +'" value="'+ rdata.hex +'" name="'+ rdata.name +'" title="'+ rdata.title +'" style="background-color: '+ rdata.hex +'"></div>')
         );

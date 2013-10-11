@@ -1,15 +1,15 @@
 <div class="page-wrapper">
   <nav class="top-nav clearfix">
     <div class="logo"></div>
-    <a target="_blank" class="publish-url"></a>
-    <div class="customize-btn"></div>
-    <div class="note">
-      App auto-saved at <span id="time"></span>
+    <div class="cards">
+      <div class="card-list"></div>
+      <div class="add-card">+</div>
     </div>
-    <button class="btn-std btn-md publish btn-critical">Publish</button>
-    <button class="btn-std btn-md new">New App</button>
+    <div class="nav-ui">
+      <button class="btn-std btn-md publish btn-critical">Publish</button>
+      <button class="btn-std btn-md new">New App</button>
+    </div>
   </nav>
-
   <div class="container animate-me">
     <div class="inner-container clearfix">
       <div class="listen-column"></div>
@@ -41,16 +41,7 @@
 
   <div class="tray app-column animate-me">
     <div class="inner-wrapper">
-      <ul class="tabs">
-        <li class="tab selected-tray widget"><a href="#tab1">Widgets</a></li>
-        <li class="tab"><a href="#tab2">Cards</a></li>
-      </ul>
-      <div id="tab1">
-        <div class="library-list library-loading clearfix"></div>
-      </div>
-      <div id="tab2" class="cards">
-        <button id="add-card" class="btn-add">Add Card</button>
-      </div>
+      <div class="library-list library-loading clearfix"></div>
     </div>
   </div>
 
