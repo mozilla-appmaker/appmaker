@@ -220,15 +220,15 @@ define(
       connectWith: ".drophere",
       placeholder: "ui-state-highlight",
       handle : ".handle",
-      start : function(event,ui) { 
+      start : function(event,ui) {
         if(!$(ui.helper[0].firstChild).hasClass("preview-icon")){
           var top = ui.originalPosition.top;
-          $(".phone-container").addClass("dragging"); 
-          $(".garbage-bin").show(); 
-          $(".garbage-bin").css("top", parseInt(top));
+          $(".phone-container").addClass("dragging");
+          $(".garbage-bin").show();
+          $(".garbage-bin").css("top", parseInt(top, 10));
         }
       },
-      stop : function() { 
+      stop : function() {
         $(".phone-container").removeClass("dragging");
         $(".garbage-bin").hide();
       },
