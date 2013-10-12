@@ -356,6 +356,17 @@ button.btn-add:active {
   background-color: #c91818;
 }
 
+button.btn-duplicate {
+  padding: 0px 20px;
+  border: none;
+  color: #FFF;
+  font-size: 13px;
+  cursor: pointer;
+  margin: 20px 0px;
+  height: 26px;
+  border-radius: 2px;
+}
+
 button.btn-done {
   width: 160px;
   font-size: 16px;
@@ -1933,11 +1944,11 @@ button.return-btn {
   background-position: center;
 }
 
-broadcast.channel-visualisation  .channel-menu-toggle {
+.broadcast-channels.channel-visualisation  .channel-menu-toggle {
   background-image: url(../images/broadcast_icon.png);
 }
 
-listen.channel-visualisation  .channel-menu-toggle {
+.subscription-channels.channel-visualisation  .channel-menu-toggle {
   background-image: url(../images/listen_icon.png);
 }
 
@@ -1953,7 +1964,7 @@ listen.channel-visualisation  .channel-menu-toggle {
 .subscription-channels .channel-menu-toggle {
   right: -3px;
 }
- .broadcast-channels .channel-menu-toggle  {
+.broadcast-channels .channel-menu-toggle  {
   left: -3px;
 }
 

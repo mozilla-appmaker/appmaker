@@ -292,6 +292,10 @@ define(
       window.confirm("Delete this Page?");
     });
 
+    $('#duplicate-card').click(function(){
+      app.duplicateCard(Ceci.currentCard).show();
+    });
+
     $(document).on('mouseenter', '.draggable', function () {
       $(this).children('.info-btn').show();
     }).on('mouseleave', '.draggable', function () {
@@ -605,7 +609,7 @@ define(
     $(document).on('mouseover','.channel-visualisation',function(){
       var channelType;
 
-      if($(this)[0].tagName == "LISTEN"){
+      if ($(this)[0].classList.contains('subscription-channels')) {
         channelType = "subscription";
       } else {
         channelType = "broadcast";
@@ -620,7 +624,7 @@ define(
         var channels = $(this).find(".channel");
 
         //Build out the Subscription Channels
-        channels.each(function(key, channel){
+        channels.each(function (key, channel) {
           var subItem = menu.find(".channel-template").clone();
           subItem.removeClass("channel-template");
           var title = $(channel).attr("title");
@@ -631,8 +635,11 @@ define(
           subItem.find(".channel-name").text(Inflector.titleize(Inflector.underscore(title)));
           menu.append(subItem);
         });
+
         menu.find(".channel-template").remove();
+
         $(this).append(menu);
+
         menu.addClass("menu-in");
         menu.css("margin-top",-1 * menu.outerHeight()/2 -1);
       }
@@ -750,26 +757,31 @@ define(
 
       //Changes component channel
       var onColorSelectFunction = function () {
+        var attribute;
 
         var comp = $(this);
 
         var channel = {
           hex: comp.attr('value'),
           name: comp.attr('name'),
-          title: comp.attr('title')
+          title: comp.attr('title'),
+          value: comp.attr('data-channel')
         };
 
         // change broadcast "color"
         if (comp.parents().hasClass('broadcast-menu')) {
-          element.setBroadcastChannel(channel.name);
-          displayBroadcastChannel(channel.name);
+          attribute = comp.closest(".subscription-option").attr("title");
+          if (attribute) {
+            element.setBroadcast(channel.value, attribute);
+            displayBroadcastChannel(channel.name);
+          }
         }
 
         // change listening "color"
         else {
-          var attribute = comp.closest(".subscription-option").attr("title");
-          if(attribute) {
-            element.setSubscription(channel.name, attribute);
+          attribute = comp.closest(".subscription-option").attr("title");
+          if (attribute) {
+            element.setSubscription(channel.value, attribute);
             displayListenChannel(attribute);
           }
 
@@ -839,68 +851,11 @@ define(
     };
 
     $('.publish').click(function(){
-
-      var html = '';
-      var appTreeClone = document.querySelector('#flathead-app').cloneNode(true);
-      var cards = document.querySelectorAll('.ceci-card');
-      var allElements = [];
-
-      // XXXsecretrobotron: This is an unfortunate workaround for the lack of consistent <broadcast>/<listen>
-      // support in ceci.
-      // TODO: Fix ceci to twiddle <broadcast> and <listen> elements instead of fabricating them here.
-
-      function collectComponentsFromContainer (container) {
-        var elements = [];
-        Array.prototype.forEach.call(container.children, function (child) {
-          if (child.localName.indexOf('app-') === 0) {
-            elements.push(child);
-          }
-        });
-        return elements;
-      }
-
-      if (cards.length > 0) {
-        Array.prototype.forEach.call(cards, function (card) {
-          allElements = allElements.concat(collectComponentsFromContainer(card.querySelector('.fixed-top')))
-            .concat(collectComponentsFromContainer(card.querySelector('.phone-canvas')))
-            .concat(collectComponentsFromContainer(card.querySelector('.fixed-bottom')));
-        });
-
-        allElements.forEach(function (element) {
-          var cloneElement = appTreeClone.querySelector('#' + element.id);
-          var broadcast, listen;
-          while (true) {
-            broadcast = cloneElement.querySelector('broadcast');
-            if (!broadcast) { break; }
-            cloneElement.removeChild(broadcast);
-          }
-          while (true) {
-            listen = cloneElement.querySelector('listen');
-            if (!listen) { break; }
-            cloneElement.removeChild(listen);
-          }
-
-          broadcast = document.createElement('broadcast');
-          cloneElement.appendChild(broadcast);
-          broadcast.innerHTML = '';
-          broadcast.setAttribute('on', element.broadcastChannel);
-
-          element.subscriptions.forEach(function (subscription) {
-            if (subscription.channel !== 'false') {
-              listen = document.createElement('listen');
-              listen.setAttribute('on', subscription.channel);
-              listen.setAttribute('for', subscription.listener);
-              cloneElement.appendChild(listen);
-            }
-          });
-        });
-
-        html = appTreeClone.outerHTML;
-      }
+      var portableAppTree = app.getPortableAppTree();
 
       $.ajax('/publish', {
         data: {
-          html: html
+          html: portableAppTree.outerHTML
         },
         type: 'post',
         success: function (data) {
