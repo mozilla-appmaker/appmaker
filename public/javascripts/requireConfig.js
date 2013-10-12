@@ -11,6 +11,7 @@ requirejs.config({
       "ceci-ui": "ceci/ceci-ui",
       "ceci-cards": "ceci/ceci-cards",
       "ceci-app": "ceci/ceci-app",
+      "ceci-utils": "ceci/ceci-utils",
       "jquery-ui": "jquery-ui/ui/minified/jquery-ui.min",
       "togetherjs": "https://togetherjs.com/togetherjs",
       "togetherjsSupport": "/javascripts/togetherjsSupport",
