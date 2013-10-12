@@ -757,6 +757,7 @@ define(
 
       //Changes component channel
       var onColorSelectFunction = function () {
+        var attribute;
 
         var comp = $(this);
 
@@ -769,7 +770,7 @@ define(
 
         // change broadcast "color"
         if (comp.parents().hasClass('broadcast-menu')) {
-          var attribute = comp.closest(".subscription-option").attr("title");
+          attribute = comp.closest(".subscription-option").attr("title");
           if (attribute) {
             element.setBroadcast(channel.value, attribute);
             displayBroadcastChannel(channel.name);
@@ -778,7 +779,7 @@ define(
 
         // change listening "color"
         else {
-          var attribute = comp.closest(".subscription-option").attr("title");
+          attribute = comp.closest(".subscription-option").attr("title");
           if (attribute) {
             element.setSubscription(channel.value, attribute);
             displayListenChannel(attribute);
