@@ -225,11 +225,6 @@ define(
       return result;
     }
 
-    var zIndex = 100;
-    function moveToFront(element) {
-      element.css('z-index', ++zIndex);
-    }
-
     // these options object makes components drag/droppable when passed
     // to the jQueryUI "sortable" function.
     var sortableOptions = {
@@ -247,9 +242,10 @@ define(
           $(".garbage-bin").css("top", parseInt(top, 10));
         }
       },
-      stop : function() {
+      stop : function(event, ui) {
         $(".phone-container").removeClass("dragging");
         $(".garbage-bin").hide();
+        ui.item.removeAttr("style");
       },
       receive: function (event, ui) {
         if (ui.helper) {
@@ -576,6 +572,7 @@ define(
     //Generate or remove the channel menu
     $(document).on('mouseleave','.channel-visualisation',function(){
       $(this).find(".channel-menu").remove();
+      $(this).closest(".component").removeClass("menu-open");
     });
 
     $('ul.tabs').each(function(){
@@ -639,6 +636,7 @@ define(
         menu.find(".channel-template").remove();
 
         $(this).append(menu);
+        $(this).closest(".component").addClass("menu-open");
 
         menu.addClass("menu-in");
         menu.css("margin-top",-1 * menu.outerHeight()/2 -1);
@@ -671,8 +669,6 @@ define(
       var title = thisChannel.attr("title");
       thisChannel.find(".chosen-color").attr("color",color);
       thisChannel.find("label").show();
-      // $(this).closest(".channel-visualisation").find(".channel-menu-toggle").removeClass("open-toggle");
-      // $(this).closest(".channel-menu").remove();
       $(this).parent().hide();
     });
     function clearLog() {
@@ -751,9 +747,6 @@ define(
       var compId = element.id;
 
       comp.addClass("selected");
-
-      moveToFront(comp);
-
 
       //Changes component channel
       var onColorSelectFunction = function () {
