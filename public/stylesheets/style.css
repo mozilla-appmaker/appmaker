@@ -396,6 +396,22 @@ button.log-toggle {
   display: block;
 }
 
+.component:hover {
+
+}
+
+.component {
+  z-index: 1;
+}
+
+.component.selected {
+  z-index: 2;
+}
+
+.component.menu-open {
+  z-index: 3;
+}
+
 .ui-sortable-helper .channel-visualisation,
 .ui-sortable-helper .editables-section,
 .ui-sortable-helper .customize-btn {
@@ -1980,6 +1996,7 @@ button.return-btn {
   border-radius: 5px;
   border: solid 1px #BBB;
   border-bottom: solid 2px #BBB;
+  z-index: 999999;
 }
 
 .channel-visualisation .channel-menu .hover-helper {
