@@ -18,6 +18,7 @@ postmark = require("postmark")(process.env.POSTMARK_API_KEY);
 var urls = require('./lib/urls');
 var localStore = require('./lib/local-store');
 var s3Store = require('./lib/s3-store');
+var makeAPIPublisher = require('./lib/makeapi-publisher').create(process.env.MAKEAPI_URL, process.env.MAKEAPI_KEY, process.env.MAKEAPI_SECRET);
 
 // Cache fonts for 180 days.
 var MAX_FONT_AGE_MS = 1000 * 60 * 60 * 24 * 180;
@@ -80,7 +81,8 @@ routes = require('./routes')(
   store,
   __dirname + '/views',
   urlManager,
-  require('./lib/remix-mailer')(postmark)
+  require('./lib/remix-mailer')(postmark),
+  makeAPIPublisher
 );
 
 app.get('/', routes.index);

@@ -9,7 +9,7 @@ var fs = require('fs');
 var path = require('path');
 var verify = require('../lib/verify');
 
-module.exports = function (store, viewsPath, urlManager) {
+module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
   var templates = {
     publish: null,
     install: null
@@ -104,11 +104,19 @@ module.exports = function (store, viewsPath, urlManager) {
               console.error('Trouble writing ' + description.filename + ' to S3 (' + result.statusCode + ').');
             }
             if (++filesDone === outputFiles.length) {
-              res.json({error: null,
-                app: remoteURLs.app,
-                install: remoteURLs.install,
-                manifest: remoteURLs.manifest
-              }, 200);
+              makeAPIPublisher.publish({
+                url: remoteURLs.install,
+                thumbnail: 'http://appmaker.mozillalabs.com/images/mail-man.png',
+                tags: ['appmaker'],
+                description: 'Appmaker ' + folderName,
+                title: 'Appmaker ' + folderName,
+              }, function (err, make) {
+                res.json({error: null,
+                  app: remoteURLs.app,
+                  install: remoteURLs.install,
+                  manifest: remoteURLs.manifest
+                }, 200);
+              });
             }
           }, description.contentType);
         });

@@ -7,7 +7,7 @@ var fs = require('fs');
 var verify = require('../lib/verify');
 var urls = require('../lib/urls');
 
-module.exports = function (store, viewsPath, urlManager, remixMailer) {
+module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPublisher) {
 
   return {
     index: function(req, res) {
@@ -55,6 +55,6 @@ module.exports = function (store, viewsPath, urlManager, remixMailer) {
       res.render('testapp');
     },
 
-    publish: require('./publish')(store, viewsPath, urlManager)
+    publish: require('./publish')(store, viewsPath, urlManager, makeAPIPublisher)
   }
 };
