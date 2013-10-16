@@ -482,7 +482,6 @@ define(
                       e.find("select").val(value);
                       e.on("change", function(evt) {
                         element.setAttribute(attributeName, evt.target.value);
-                        console.log(evt.target.value);
                       });
                       return e[0];
                     });
