@@ -36,7 +36,7 @@ cp sample.env .env
 A short explanation of a complete `.env` file:
 ```
 COOKIE_SECRET=A long, complex string for cookie encryption.
-ASSET_HOST=Location of the javascript, css, fonts, and images that will be used by the designer and published assets.
+ASSET_HOST=Location of the javascript, css, fonts, and images that will be used by the designer and published assets. Likely "//appmaker-components.herokuapp.com/" 
 COMPONENTS_BASE_URL=An appmaker-components repo which Ceci will query. Likely "//appmaker-components.herokuapp.com/"
 S3_BUCKET=S3 bucket name. e.g. "my.coolappmaker.com"
 S3_KEY=An access key for the S3 bucket listed above.
