@@ -14,12 +14,6 @@
         });
 
         require(["ceci-app"], function(Ceci) {
-          Ceci.load(function(){
-            Ceci.convertContainer(document.getElementsByTagName('body')[0]);
-          });
-        });
-
-        require(["ceci-app"], function(Ceci) {
           Ceci.load(function (components) {
             Ceci.convertContainer(document.getElementById('flathead-app'));
           });

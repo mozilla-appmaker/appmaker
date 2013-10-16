@@ -7,6 +7,24 @@ define(
   function($, Ceci, Inflector) {
     "use strict";
 
+    function Channel(name, title, hex) {
+      // make sure the name is a string
+      this.name = String(name);
+      this.title = title;
+      this.hex = hex;
+    }
+
+    var channels = [
+      new Channel('blue', 'Blue Moon', '#358CCE'),
+      new Channel('red', 'Red Baloon', '#e81e1e'),
+      new Channel('pink', 'Pink Heart', '#e3197b'),
+      new Channel('purple', 'Purple Horseshoe', '#9f27cf'),
+      new Channel('green', 'Green Clover', '#71b806'),
+      new Channel('yellow', 'Yellow Pot of Gold', '#e8d71e'),
+      new Channel('orange', 'Orange Star', '#ff7b00'),
+      new Channel(Ceci.emptyChannel, 'Disabled', '#444')
+    ];
+
     var selection = [];
 
     var app;
@@ -15,6 +33,7 @@ define(
 
     function init () {
       app = new Ceci.App({
+        defaultChannels: channels.map(function (c) { return c.name; }),
         container: $('#flathead-app')[0],
         onComponentAdded: function (component) {
           component = $(component);
@@ -301,24 +320,6 @@ define(
     }).on('mouseleave', '.draggable', function () {
       $(this).children('.info-btn').hide();
     });
-
-    function Channel(name, title, hex) {
-      // make sure the name is a string
-      this.name = String(name);
-      this.title = title;
-      this.hex = hex;
-    }
-
-    var channels = [
-      new Channel('blue', 'Blue Moon', '#358CCE'),
-      new Channel('red', 'Red Baloon', '#e81e1e'),
-      new Channel('pink', 'Pink Heart', '#e3197b'),
-      new Channel('purple', 'Purple Horseshoe', '#9f27cf'),
-      new Channel('green', 'Green Clover', '#71b806'),
-      new Channel('yellow', 'Yellow Pot of Gold', '#e8d71e'),
-      new Channel('orange', 'Orange Star', '#ff7b00'),
-      new Channel(Ceci.emptyChannel, 'Disabled', '#444')
-    ];
 
     //TODO: Angular this up
     // generate the channels list (colored clickable boxes) and append to the page
