@@ -113,12 +113,12 @@ b {
 }
 
 h1 {
-  font-size: 80px;
-  color: #FFF;
-  text-align: center;
-  font-weight: 300;
-  margin: 0;
+  font-size: 22px;
+  font-weight: 400;
+  margin: 0px;
   padding: 0;
+  line-height: 28px;
+  float: left;
 }
 
 h2 {
@@ -130,9 +130,9 @@ h2 {
 }
 
 h3 {
-  font-weight: 400;
-  margin: 0px;
-  font-size: 18px;
+  font-weight: 600;
+  margin: 20px 0px 2px 0px;
+  font-size: 16px;
 }
 
 h4 {
@@ -148,21 +148,19 @@ h4 {
 }
 
 h5 {
-  font-size: 16px;
-  margin: 0px 0px 20px 0px;
+  font-size: 12px;
+  margin: 0px;
   text-transform: uppercase;
   font-weight: 600;
-  line-height: 16px;
   padding: 0px;
+  color: #aeb1b5;
 }
 
 h6 {
-  color: #FFF;
   font-size: 15px;
   font-weight: 400;
   margin: 0px;
 }
-
 
 .toggle {
   position: absolute;
@@ -384,6 +382,74 @@ button.log-toggle {
   position: absolute;
   top: -15px;
   left: 110px;
+}
+
+button.add-component {
+  border-radius: 3px;
+  height: 30px;
+  padding: 0px 10px 0px 12px;
+  text-indent: 20px;
+  font-size: 12px;
+  color: #FFF;
+  text-transform: uppercase;
+  font-weight: 600;
+  background-color: #358CCE;
+  text-align: left;
+  border: 1px solid #296ea3;
+  background-image: url(../images/add_component.png);
+  background-position: 10px center;
+  background-repeat: no-repeat;
+  margin-top: 20px;
+}
+
+button.find-components {
+  border-radius: 3px;
+  height: 30px;
+  width: 180px;
+  text-indent: 35px;
+  font-size: 13px;
+  font-weight: 400;
+  background-color: #FFF;
+  text-align: left;
+  border: 1px solid #aeb1b5;
+  background-image: url(../images/bricks.png);
+  background-position: 15px center;
+  background-repeat: no-repeat;
+  margin: 20px 0px 0px 20px;
+}
+
+button.create-component {
+  border-radius: 3px;
+  height: 30px;
+  width: 180px;
+  text-indent: 35px;
+  font-size: 13px;
+  font-weight: 400;
+  background-color: #FFF;
+  text-align: left;
+  border: 1px solid #aeb1b5;
+  background-image: url(../images/lightning.png);
+  background-position: 15px center;
+  background-repeat: no-repeat;
+  margin: 10px 0px 0px 20px;
+}
+
+button.done {
+  border-radius: 3px;
+  height: 26px;
+  padding: 0px 10px 0px 12px;
+  text-indent: 20px;
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 600;
+  background-color: #e9edf2;
+  text-align: left;
+  border: 1px solid #aeb1b5;
+  background-image: url(../images/accept.png);
+  background-position: 10px center;
+  background-repeat: no-repeat;
+  margin: 12px 20px 0px 0px;
+  float: right;
 }
 
 .selected:hover button.customize-btn,
@@ -1321,16 +1387,83 @@ input[type="search"] {
   box-shadow: 0px 3px 8px rgba(0,0,0,.3);
 }
 
+ul.component-actions {
+  list-style-image:url('../images/bullet_go.png');
+  font-size: 15px;
+  font-weight: 400;
+  padding-left: 20px;
+  margin: 0px;
+}
+
+.component-actions li{
+  padding-bottom: 10px;
+}
+
+.component-actions li:nth-last-child(1){
+  padding-bottom: 0px;
+}
+
 .component-description {
-  position: absolute;
-  margin-top: 4px;
-  padding: 8px 10px;
-  max-width: 300px;
-  background-color: rgba(0,0,0,.7);
+  float: left;
+  width: calc(100% - 310px);
+}
+
+.friends {
+  color: #aeb1b5;
+  font-size: 15px;
+}
+
+.friends a{
+  color: #358CCE;
+}
+
+.component-card {
+  padding: 30px 60px;
+  position: relative;
+  border-bottom: 1px solid #aeb1b5;
+}
+
+.component-right {
+  float: right;
+  width: 310px;
+}
+
+.component-preview {
+  border: 1px solid #aeb1b5;
+  width: 100%;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box; /* Firefox */
   border-radius: 3px;
-  z-index: 999;
-  font-size: 1.3rem ;
-  color: #DDD;
+  background-color: #e8ebed;
+}
+
+.tags {
+  margin-top: 20px;
+}
+
+.tag {
+  background-color: #e9edf2;
+  border-radius: 3px;
+  font-weight: 600;
+  font-size: 12px;
+  display: inline-block;
+  height: 26px;
+  line-height: 26px;
+  padding: 0 15px 0 25px;
+  position: relative;
+  margin: 0 10px 10px 0;
+  text-decoration: none;
+}
+
+.tag::before {
+  background: #fff;
+  border-bottom: 13px solid transparent;
+  border-right: 10px solid #e9edf2;
+  border-top: 13px solid transparent;
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .channel-tip {
@@ -1615,10 +1748,6 @@ span.channel {
   color: red;
 }
 
-.hidden {
-  display: none;
-}
-
 .inner {
   padding: 20px;
 }
@@ -1675,9 +1804,28 @@ span.channel {
 }
 
 .modal {
-  max-width: 585px;
-  background-color: #eee;
+  width: 90%;
+  height: 90%;
+  background-color: #FFF;
   position: relative;
+  overflow-y: hidden;
+}
+
+.modal-header {
+  height: 50px;
+  width: 100%;
+  background-color: #FFF;
+  border-bottom: 1px solid #aeb1b5;
+  position: absolute;
+  top: 0px;
+  z-index: 99;
+}
+
+#components {
+  position: relative;
+  height: 100%;
+  overflow-y: scroll;
+  margin-top: 50px;
 }
 
 .modal-inner {
@@ -2631,5 +2779,9 @@ input#remix-panel-email {
 }
 
 .game-status {
+  display: none;
+}
+
+.hidden {
   display: none;
 }

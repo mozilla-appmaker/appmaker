@@ -40,9 +40,7 @@
   </div>
 
   <div class="tray app-column animate-me">
-    <div class="inner-wrapper">
-      <div class="library-list library-loading clearfix"></div>
-    </div>
+    <button class="find-components">Add Component</button>
   </div>
 
   <div class="right-column app-column animate-me">
@@ -126,6 +124,15 @@
       <label><span class="channel-name"></span><div color="blue" class="chosen-color"></div></label>
     </div>
     <div class="arrow"></div>
+  </div>
+
+  <div id="component-discovery-modal" class="modal-wrapper flex hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <button class="done">Done</button>
+      </div>
+      <div id="components"></div>
+    </div>
   </div>
 
   <div class="modal-wrapper hidden">
