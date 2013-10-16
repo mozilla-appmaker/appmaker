@@ -1599,10 +1599,6 @@ span.channel {
   color: red;
 }
 
-.hidden {
-  display: none;
-}
-
 .inner {
   padding: 20px;
 }
@@ -1659,9 +1655,28 @@ span.channel {
 }
 
 .modal {
-  max-width: 585px;
-  background-color: #eee;
+  width: 90%;
+  height: 90%;
+  background-color: #FFF;
   position: relative;
+  overflow-y: hidden;
+}
+
+.modal-header {
+  height: 50px;
+  width: 100%;
+  background-color: #FFF;
+  border-bottom: 1px solid #aeb1b5;
+  position: absolute;
+  top: 0px;
+  z-index: 99;
+}
+
+#components {
+  position: relative;
+  height: 100%;
+  overflow-y: scroll;
+  margin-top: 50px;
 }
 
 .modal-inner {
@@ -2614,5 +2629,9 @@ input#remix-panel-email {
 }
 
 .game-status {
+  display: none;
+}
+
+.hidden {
   display: none;
 }
