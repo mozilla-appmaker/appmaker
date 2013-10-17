@@ -272,24 +272,20 @@ define(
       $('#component-discovery-modal').addClass('hidden');
       var comp = $(this).attr('name');
       var component = document.createElement(comp);
+      app.addComponent(comp);
       Ceci.convertElement(component, function () {
-        $('.phone-canvas').append(component);
+        $('.ceci-card:visible .phone-canvas').append(component);
           component = $(component);
-
           var dropTarget = $(".drophere").find(".draggable");
           dropTarget.replaceWith(component);
-
           component.addClass("component");
           component.draggable({
             handle: 'handle'
           });
-
           component.on('mousedown', function(evt) {
             selectComponent($(evt.currentTarget));
           });
-
           component.append($('<div class="handle"></div>'));
-
           selectComponent(component);
       });
     });

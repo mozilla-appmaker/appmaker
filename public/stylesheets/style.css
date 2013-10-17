@@ -396,7 +396,10 @@ button.find-components {
   background-image: url(../images/bricks.png);
   background-position: 15px center;
   background-repeat: no-repeat;
-  margin: 20px 0px 0px 20px;
+  margin: 20px 0px 0px 0px;
+  position: fixed;
+  left: 10px;
+  top: 40px;
 }
 
 button.create-component {
@@ -594,7 +597,7 @@ button.done {
   z-index: 1;
   overflow-y: scroll;
   min-width: 700;
-  margin: 0 245px 0 260px;
+  margin: 0 245px 0 0px;
 }
 
 .container .garbage-bin {
@@ -635,6 +638,7 @@ button.done {
 }
 
 .tray {
+  display: none;
   position: fixed;
   left: 0px;
   top: 50px;
@@ -1052,12 +1056,12 @@ input[type="search"] {
 }
 
 .cards {
-  padding-top: 18px;
-  text-align: center;
-  width: calc(100% - 600px);
+  padding-top: 16px;
+  text-align: left;
+  width: calc(100% - 550px);
   margin: 0 auto;
   position: relative;
-  left: -15px;
+  left: -10px;
   display: inline-block;
 }
 
@@ -1083,12 +1087,11 @@ input[type="search"] {
 .card,
 .add-card {
   margin-right: 5px;
-  font-size: 16px;
+  font-size: 1.6rem;
   padding: 7px 15px;
   text-align: center;
   cursor: pointer;
   color: #888;
-  font-size: 14px;
   display: inline-block;
   background: #444;
   color: #999;
