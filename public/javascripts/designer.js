@@ -272,7 +272,7 @@ define(
       $('#component-discovery-modal').addClass('hidden');
       var comp = $(this).attr('name');
       var component = document.createElement(comp);
-      app.addComponent(comp);
+
       Ceci.convertElement(component, function () {
         $('.ceci-card:visible .phone-canvas').append(component);
           component = $(component);
@@ -287,7 +287,7 @@ define(
           });
           component.append($('<div class="handle"></div>'));
           selectComponent(component);
-      });
+      },true);
     });
 
     function addComponentCard(component, name, list) {
