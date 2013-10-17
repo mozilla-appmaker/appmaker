@@ -1388,6 +1388,7 @@ ul.component-actions {
   background: #f7f7f7;
   padding: 8px 15px 12px 15px;
   position: relative;
+  height: 85px;
 }
 
 .component-description h1 {
@@ -1404,9 +1405,6 @@ ul.component-actions {
   font-size: 15px;
 }
 
-.component-card .more-info .friends h3 {
-
-}
 
 .friends a {
   color: #358CCE;
@@ -1422,10 +1420,37 @@ ul.component-actions {
   position: relative;
   background: white;
   box-shadow: 0px 3px 3px rgba(0,0,0,.2);
-  width: calc(100% - 12px);
+  width: calc(100% - 25px);
   border-radius: 2px;
   border-bottom: none;
   background: #f7f7f7;
+  float: left;
+}
+
+@media (min-width: 600px) {
+  .component-card {
+    width: calc(50% - 25px);
+  }
+}
+
+
+@media (min-width: 900px) {
+  .component-card {
+    width: calc(33% - 20px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .component-card {
+    width: calc(25% - 22px);
+  }
+}
+
+@media (min-width: 1500px) {
+  .component-card {
+    width: calc(20% - 20px);
+  }
+
 }
 
 .component-card .show-more {
@@ -1453,8 +1478,6 @@ ul.component-actions {
   padding-top: 10px;
 }
 
-
-
 .component-card .more-info h3 {
   font-size: 1.4rem;
   color: #444;
@@ -1468,6 +1491,22 @@ ul.component-actions {
   border-bottom: solid 1px #CCC;
   position: relative;
   background: white;
+  height: 200px;
+  display: table;
+  width: calc(100% - 20px);
+}
+
+.component-preview .image-wrapper {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  height: 200px;
+}
+
+.component-preview img {
+  max-width: 90%;
+  max-height: 150px;
+  margin: auto;
 }
 
 .component-preview:hover .add-component-overlay {
@@ -1489,7 +1528,6 @@ ul.component-actions {
   -webkit-transition: linear all .05s;
   -moz-transition: linear all .05s;
   overflow: hidden;
-
 }
 
 .component-preview:hover .add-component-overlay {
@@ -1515,9 +1553,7 @@ ul.component-actions {
   bottom: -4px;
 }
 
-.component-preview img {
-  width: 100%;
-}
+
 
 .tags {
   margin-top: 20px;
@@ -1913,47 +1949,10 @@ span.channel {
 }
 
 #components {
-/*  position: relative;*/
-/*  height: 100%;*/
   overflow: hidden;
   margin-top: 50px;
-  width: calc(100% - 10px);
-  -moz-column-count: 5;
-  -moz-column-gap: 10px;
-  -webkit-column-count: 5;
-  -webkit-column-gap: 10px;
-  column-count: 3;
-  column-gap: 10px;
-}
 
-
-@media (min-width: 600px) {
-  #components {
-    -moz-column-count: 2;
-    -webkit-column-count: 2;
   }
-}
-
-@media (min-width: 900px) {
-  #components {
-    -moz-column-count: 3;
-    -webkit-column-count: 3;
-  }
-}
-
-@media (min-width: 1200px) {
-  #components {
-    -moz-column-count: 4;
-    -webkit-column-count: 4;
-  }
-}
-
-@media (min-width: 1500px) {
-  #components {
-    -moz-column-count: 5;
-    -webkit-column-count: 5;
-  }
-}
 
 .modal-inner {
   padding: 40px;
