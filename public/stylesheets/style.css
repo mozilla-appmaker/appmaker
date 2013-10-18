@@ -433,7 +433,8 @@ button.done {
   background-image: url(../images/accept.png);
   background-position: 10px center;
   background-repeat: no-repeat;
-  margin: 12px 20px 0px 0px;
+  position: relative;
+  top: 5px;
   float: right;
 }
 
@@ -688,23 +689,6 @@ li.tab {
 
 .selected-tray {
   color: #358CCE;
-}
-
-input[type="search"] {
-  height: 40px;
-  background-color:#181b1f;
-  border: none;
-  width: 260px;
-  background-image: url(../images/search.png);
-  background-repeat: no-repeat;
-  background-position: 10px center;
-  text-indent: 30px;
-  outline: none;
-  color: #aeb1b5;
-  position: fixed;
-  top: 100px;
-  left: 0px;
-  z-index: 99;
 }
 
 .listen-column {
@@ -1497,6 +1481,7 @@ ul.component-actions {
   background: white;
   height: 200px;
   display: table;
+  table-layout: fixed;
   width: calc(100% - 20px);
 }
 
@@ -1505,9 +1490,12 @@ ul.component-actions {
   text-align: center;
   vertical-align: middle;
   height: 200px;
+  width: 100%;
+  position: relative;
 }
 
 .component-preview img {
+  display: block;
   max-width: 90%;
   max-height: 150px;
   margin: auto;
@@ -1937,13 +1925,24 @@ span.channel {
 }
 
 .modal-header {
-  height: 50px;
-  width: 100%;
+  padding: 5px 10px;
+  width: calc(100% - 20px);
   background-color: #FFF;
   border-bottom: 1px solid #aeb1b5;
   position: absolute;
   top: 0px;
   z-index: 99;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #888;
+}
+
+.modal-header .component-search {
+  font-size: 1.6rem;
+  width: 400px;
+  position: relative;
+  padding: 4px;
+  margin-left: 5px;
 }
 
 #components-wrapper {

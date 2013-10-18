@@ -261,6 +261,7 @@ define(
     //Open components modal
     $('.find-components').click(function () {
       $('#component-discovery-modal').removeClass('hidden');
+      $(".component-search").focus();
     });
 
     $('.done').click(function () {
@@ -1013,7 +1014,24 @@ define(
         $(this).hide();
         $(this).closest(".component-card").find(".more-info").slideToggle();
       });
+      $(".component-search").on("keydown",function(){
+        setTimeout(function(){
+          filterComponents($(".component-search").val());
+        },100);
+      });
     });
+
+    function filterComponents(search){
+      var components = $(".modal .component-card");
+      components.each(function(){
+        var name = $(this).find("h1").text();
+        if(name.indexOf(search) == -1){
+          $(this).hide();
+        } else {
+          $(this).show();
+        }
+      });
+    }
 
     // View source menu
     $(".view-source-menu").on("click","a",function(){
