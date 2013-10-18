@@ -117,8 +117,6 @@ h1 {
   font-weight: 400;
   margin: 0px;
   padding: 0;
-  line-height: 28px;
-  float: left;
 }
 
 h2 {
@@ -384,23 +382,6 @@ button.log-toggle {
   left: 110px;
 }
 
-button.add-component {
-  border-radius: 3px;
-  height: 30px;
-  padding: 0px 10px 0px 12px;
-  text-indent: 20px;
-  font-size: 12px;
-  color: #FFF;
-  text-transform: uppercase;
-  font-weight: 600;
-  background-color: #358CCE;
-  text-align: left;
-  border: 1px solid #296ea3;
-  background-image: url(../images/add_component.png);
-  background-position: 10px center;
-  background-repeat: no-repeat;
-  margin-top: 20px;
-}
 
 button.find-components {
   border-radius: 3px;
@@ -415,7 +396,11 @@ button.find-components {
   background-image: url(../images/bricks.png);
   background-position: 15px center;
   background-repeat: no-repeat;
-  margin: 20px 0px 0px 20px;
+  margin: 20px 0px 0px 0px;
+  position: fixed;
+  left: 10px;
+  top: 40px;
+  z-index: 9998;
 }
 
 button.create-component {
@@ -613,7 +598,7 @@ button.done {
   z-index: 1;
   overflow-y: scroll;
   min-width: 700;
-  margin: 0 245px 0 260px;
+  margin: 0 245px 0 0px;
 }
 
 .container .garbage-bin {
@@ -654,6 +639,7 @@ button.done {
 }
 
 .tray {
+  display: none;
   position: fixed;
   left: 0px;
   top: 50px;
@@ -1071,12 +1057,12 @@ input[type="search"] {
 }
 
 .cards {
-  padding-top: 18px;
-  text-align: center;
-  width: calc(100% - 600px);
+  padding-top: 16px;
+  text-align: left;
+  width: calc(100% - 550px);
   margin: 0 auto;
   position: relative;
-  left: -15px;
+  left: -10px;
   display: inline-block;
 }
 
@@ -1102,12 +1088,11 @@ input[type="search"] {
 .card,
 .add-card {
   margin-right: 5px;
-  font-size: 16px;
+  font-size: 1.6rem;
   padding: 7px 15px;
   text-align: center;
   cursor: pointer;
   color: #888;
-  font-size: 14px;
   display: inline-block;
   background: #444;
   color: #999;
@@ -1404,8 +1389,19 @@ ul.component-actions {
 }
 
 .component-description {
-  float: left;
-  width: calc(100% - 310px);
+  background: #f7f7f7;
+  padding: 8px 15px 12px 15px;
+  position: relative;
+  height: 85px;
+}
+
+.component-description h1 {
+  float: none;
+}
+
+.component-description h6 {
+  color: #777;
+  font-size: 1.4rem;
 }
 
 .friends {
@@ -1413,36 +1409,162 @@ ul.component-actions {
   font-size: 15px;
 }
 
-.friends a{
+
+.friends a {
   color: #358CCE;
+  font-size: 1.4rem;
+  margin-right: 5px;
+  cursor: pointer;
 }
 
 .component-card {
-  padding: 30px 60px;
+  display: inline-block;
+  border: solid 1px #CCC;
+  margin: 10px;
   position: relative;
-  border-bottom: 1px solid #aeb1b5;
+  background: white;
+  box-shadow: 0px 3px 3px rgba(0,0,0,.2);
+  width: calc(100% - 25px);
+  border-radius: 2px;
+  border-bottom: none;
+  background: #f7f7f7;
+  float: left;
 }
 
-.component-right {
-  float: right;
-  width: 310px;
+@media (min-width: 600px) {
+  .component-card {
+    width: calc(50% - 25px);
+  }
+}
+
+
+@media (min-width: 900px) {
+  .component-card {
+    width: calc(33% - 20px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .component-card {
+    width: calc(25% - 22px);
+  }
+}
+
+@media (min-width: 1500px) {
+  .component-card {
+    width: calc(20% - 20px);
+  }
+
+}
+
+.component-card .show-more {
+  display: inline-block;
+  background: #DDD;
+  margin-left: 15px;
+  color: #777;
+  padding: 5px 10px;
+  display: none;
+}
+
+.component-card .tags,
+.component-card .author {
+  display: none;
+}
+
+.component-card .show-more:hover {
+  background: #CCC;
+}
+
+.component-card .more-info {
+  display: none;
+  border-top: solid 1px #DDD;
+  margin-top: 15px;
+  padding-top: 10px;
+}
+
+.component-card .more-info h3 {
+  font-size: 1.4rem;
+  color: #444;
+  padding: 0;
+  margin: 0;
 }
 
 .component-preview {
-  border: 1px solid #aeb1b5;
-  width: 100%;
-  box-sizing:border-box;
-  -moz-box-sizing:border-box; /* Firefox */
-  border-radius: 3px;
-  background-color: #e8ebed;
+  text-align: center;
+  padding: 10px 10px 8px 10px;
+  border-bottom: solid 1px #CCC;
+  position: relative;
+  background: white;
+  height: 200px;
+  display: table;
+  width: calc(100% - 20px);
 }
+
+.component-preview .image-wrapper {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  height: 200px;
+}
+
+.component-preview img {
+  max-width: 90%;
+  max-height: 150px;
+  margin: auto;
+}
+
+.component-preview:hover .add-component-overlay {
+  display: block;
+}
+
+.component-preview .add-component-overlay {
+  cursor: pointer;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  width: calc(100% - 4px);
+  background:  rgba(94,193,37,0);
+  border: solid 2px rgba(94,193,37,0);
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  background-size: 75px;
+  -webkit-transition: linear all .05s;
+  -moz-transition: linear all .05s;
+  overflow: hidden;
+}
+
+.component-preview:hover .add-component-overlay {
+  background:  rgba(94,193,37,.05);
+  border: solid 2px rgba(94,193,37,1);
+}
+
+.add-component-overlay .add-tooltip {
+  padding: 6px 10px 9px 10px;
+  background:  rgba(94,193,37,1);
+  color: white;
+  left: 11px;
+  position: absolute;
+  margin: 0 auto;
+  overflow: hidden;
+  bottom: -40px;
+  -webkit-transition: bottom .05s linear;
+  -moz-transition: bottom .05s linear;
+}
+
+.add-component-overlay:hover .add-tooltip {
+  height: 18px;
+  bottom: -4px;
+}
+
+
 
 .tags {
   margin-top: 20px;
 }
 
 .tag {
-  background-color: #e9edf2;
+  background-color: #c4cedb;
   border-radius: 3px;
   font-weight: 600;
   font-size: 12px;
@@ -1453,10 +1575,13 @@ ul.component-actions {
   position: relative;
   margin: 0 10px 10px 0;
   text-decoration: none;
+  color: ;
 }
 
+
+
 .tag::before {
-  background: #fff;
+  background: #f7f7f7;
   border-bottom: 13px solid transparent;
   border-right: 10px solid #e9edf2;
   border-top: 13px solid transparent;
@@ -1804,11 +1929,11 @@ span.channel {
 }
 
 .modal {
-  width: 90%;
-  height: 90%;
+  width: calc(100% - 40px);
+  height: calc(100% - 40px);
   background-color: #FFF;
   position: relative;
-  overflow-y: hidden;
+  background: #DDD;
 }
 
 .modal-header {
@@ -1821,12 +1946,17 @@ span.channel {
   z-index: 99;
 }
 
-#components {
-  position: relative;
-  height: 100%;
+#components-wrapper {
   overflow-y: scroll;
-  margin-top: 50px;
+  width: 100%;
+  height: 100%;
 }
+
+#components {
+  overflow: hidden;
+  margin-top: 50px;
+
+  }
 
 .modal-inner {
   padding: 40px;

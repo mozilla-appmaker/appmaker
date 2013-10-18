@@ -272,26 +272,22 @@ define(
       $('#component-discovery-modal').addClass('hidden');
       var comp = $(this).attr('name');
       var component = document.createElement(comp);
-      Ceci.convertElement(component, function () {
-        $('.phone-canvas').append(component);
-          component = $(component);
 
+      Ceci.convertElement(component, function () {
+        $('.ceci-card:visible .phone-canvas').append(component);
+          component = $(component);
           var dropTarget = $(".drophere").find(".draggable");
           dropTarget.replaceWith(component);
-
           component.addClass("component");
           component.draggable({
             handle: 'handle'
           });
-
           component.on('mousedown', function(evt) {
             selectComponent($(evt.currentTarget));
           });
-
           component.append($('<div class="handle"></div>'));
-
           selectComponent(component);
-      });
+      },true);
     });
 
     function addComponentCard(component, name, list) {
@@ -301,10 +297,12 @@ define(
       } else {
         componentDescription = "No description available";
       }
-      var card = $('<div class="component-card clearfix"></div>');
-      var descriptionColumn = $('<div class="component-description"><div class="clearfix"><h1>' + name.replace('app-', '') + '</h1></div><h5>By: Joe Thomas | Last edited 8/12/13</h5><button class="add-component" name="'+ name +'">Add Component</button><h3 class="description">Description</h3><h6>'+ componentDescription +'</h6><h3 class="friend">Friends</h3></div>');
-      var preview = $('<div class="component-right"><div class="component-preview">'+ component.thumbnail.innerHTML +'</div></div>');
-      var friendList = $('<div class="friends"></div>');
+      var card = $('<div class="component-card"></div>');
+      var descriptionColumn = $('<div class="component-description"><h1>' + name.replace('app-', '') + '</h1><h6>'+ componentDescription +'</h6></div>');
+
+      var preview = $('<div class="component-preview"><div class="image-wrapper">' + component.thumbnail.innerHTML + '</div><div name='+name+' class="add-component add-component-overlay"><div class="add-tooltip">Click to Add</div></div></div>');
+
+      var friendList = $('<div class="friends"><h3>Friends</h3></div>');
       if (component.friends.length > 0) {
         for (var i = 0; i < component.friends.length; i++) {
           friendList.append($('<a>'+ component.friends[i] +'</a>'));
@@ -312,11 +310,22 @@ define(
       } else {
         friendList.append($('<div>No Friends<div>'));
       }
+
+      var author = $('<div class="author"><h5>By: Joe Thomas | Last edited 8/12/13</h5></div>');
       var tags = $('<div class="tags clearfix"><div class="tag">Animation</div></div>');
-      descriptionColumn.append(friendList);
-      descriptionColumn.append(tags);
-      card.append(descriptionColumn);
+      var moreInfo = $('<div class="more-info"></div>');
+      var showMore = $('<a class="show-more" href="#">More Info</a>');
+
+      moreInfo.append(friendList);
+      moreInfo.append(tags);
+      moreInfo.append(author);
       card.append(preview);
+
+      descriptionColumn.append(moreInfo);
+
+      card.append(descriptionColumn);
+      card.append(showMore);
+
       list.append(card);
     }
 
@@ -1000,6 +1009,10 @@ define(
     $(document).ready(function(){
       switchSourceView("HTML");
       changeEditableTab("customize");
+      $(".modal").on("click",".component-card .show-more",function(){
+        $(this).hide();
+        $(this).closest(".component-card").find(".more-info").slideToggle();
+      });
     });
 
     // View source menu
