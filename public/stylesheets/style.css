@@ -400,6 +400,7 @@ button.find-components {
   position: fixed;
   left: 10px;
   top: 40px;
+  z-index: 9998;
 }
 
 button.create-component {
