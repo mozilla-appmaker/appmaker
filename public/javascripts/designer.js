@@ -300,7 +300,7 @@ define(
       var card = $('<div class="component-card"></div>');
       var descriptionColumn = $('<div class="component-description"><h1>' + name.replace('app-', '') + '</h1><h6>'+ componentDescription +'</h6></div>');
 
-      var preview = $('<div class="component-preview"><div class="image-wrapper"><img src="images/component-screenshots/'+ name + '.png" /></div><div name='+name+' class="add-component add-component-overlay"><div class="add-tooltip">Click to Add</div></div></div>');
+      var preview = $('<div class="component-preview"><div class="image-wrapper">' + component.thumbnail.innerHTML + '</div><div name='+name+' class="add-component add-component-overlay"><div class="add-tooltip">Click to Add</div></div></div>');
 
       var friendList = $('<div class="friends"><h3>Friends</h3></div>');
       if (component.friends.length > 0) {
