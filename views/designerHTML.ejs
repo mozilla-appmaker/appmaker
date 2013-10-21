@@ -39,8 +39,15 @@
     </div>
   </div>
 
-  <button class="find-components">Add Component</button>
-  <div class="tray app-column animate-me"></div>
+  <div class="tray app-column animate-me">
+    <div class="expand-handle"></div>
+      <div class="modal-header">
+        <input type="text" class="component-search" placehodler="Search for a component" />
+      </div>
+      <div id="components-wrapper">
+        <div id="components"></div>
+      </div>
+    </div>
 
   <div class="right-column app-column animate-me">
     <div class="expand-handle"></div>
@@ -123,18 +130,6 @@
       <label><span class="channel-name"></span><div color="blue" class="chosen-color"></div></label>
     </div>
     <div class="arrow"></div>
-  </div>
-
-  <div id="component-discovery-modal" class="modal-wrapper flex hidden">
-    <div class="modal">
-      <div class="modal-header">
-        Search <input type="text" class="component-search" placehodler="Search for a component" />
-        <button class="done">Done</button>
-      </div>
-      <div id="components-wrapper">
-        <div id="components"></div>
-      </dov>
-    </div>
   </div>
 
   <div class="modal-wrapper hidden">
