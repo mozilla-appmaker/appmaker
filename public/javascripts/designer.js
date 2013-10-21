@@ -255,6 +255,9 @@ define(
           var helper = $(ui.helper);
           app.addComponent(helper.attr('value'));
         }
+      },
+      update: function (event, ui){
+        Ceci.fireChangeEvent();
       }
     };
 
