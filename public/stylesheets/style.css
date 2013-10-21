@@ -1865,6 +1865,10 @@ span.channel {
   padding: 20px;
 }
 
+.modal {
+  display: none;
+}
+
 .modal-wrapper {
   position: fixed;
   top: 0px;
@@ -1873,6 +1877,11 @@ span.channel {
   right: 0px;
   background: rgba(0,0,0,.5);
   z-index: 9999;
+  display: none;
+}
+
+.publish-dialog {
+  width: 50%;
 }
 
 .color-modal {
@@ -1916,12 +1925,21 @@ span.channel {
   justify-content: center;
 }
 
-.modal {
+.modal#component-discovery-modal {
   width: calc(100% - 40px);
   height: calc(100% - 40px);
   background-color: #FFF;
   position: relative;
   background: #DDD;
+  display: none;
+}
+
+.publishdialog {
+  background: white;
+}
+
+.publishdialog button {
+  cursor: pointer;
 }
 
 .modal-header {
