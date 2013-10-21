@@ -279,19 +279,19 @@ define(
 
       Ceci.convertElement(component, function () {
         $('.ceci-card:visible .phone-canvas').append(component);
-          component = $(component);
-          var dropTarget = $(".drophere").find(".draggable");
-          dropTarget.replaceWith(component);
-          component.addClass("component");
-          component.draggable({
-            handle: 'handle'
-          });
-          component.on('mousedown', function(evt) {
-            selectComponent($(evt.currentTarget));
-          });
-          component.append($('<div class="handle"></div>'));
-          selectComponent(component);
-      },true);
+        component = $(component);
+        var dropTarget = $(".drophere").find(".draggable");
+        dropTarget.replaceWith(component);
+        component.addClass("component");
+        component.draggable({
+          handle: 'handle'
+        });
+        component.on('mousedown', function(evt) {
+          selectComponent($(evt.currentTarget));
+        });
+        component.append($('<div class="handle"></div>'));
+        selectComponent(component);
+      }, true);
     });
 
     function addComponentCard(component, name, list) {
