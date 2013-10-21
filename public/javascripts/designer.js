@@ -263,17 +263,20 @@ define(
 
     //Open components modal
     $('.find-components').click(function () {
-      $('#component-discovery-modal').removeClass('hidden');
-      $(".component-search").focus();
+      $(".modal-wrapper").removeClass("hidden");
+      $("#component-discovery-modal").show();
+      document.addEventListener('keydown', escapeHandler, false);
     });
 
     $('.done').click(function () {
-      $('#component-discovery-modal').addClass('hidden');
+      $('.modal-wrapper').addClass('hidden');
+      $('#component-discovery-modal').hide('hidden');
     });
 
     //Add components to phone
     $(document).on('click', '.add-component', function () {
-      $('#component-discovery-modal').addClass('hidden');
+      $(".modal-wrapper").addClass('hidden');
+      $('#component-discovery-modal').hide();
       var comp = $(this).attr('name');
       var component = document.createElement(comp);
 
@@ -916,7 +919,9 @@ define(
 
     var escapeHandler = function(e) {
       if (e.keyCode === 27) {
-        $('.modal-wrapper').removeClass('flex');
+        $(".modal-wrapper").addClass("hidden");
+        $(".modal").hide();
+        $('stringify-wrapper').removeClass('flex');
         document.removeEventListener('keydown', escapeHandler, false);
       }
     };
@@ -936,10 +941,13 @@ define(
           $('.publish-url').attr('href', data.install);
           $('.modal-publish-link').html(data.install);
           $('.modal-publish-link').attr('href', data.install);
+          $('.modal-wrapper').removeClass("hidden");
+          $(".publishdialog").show();
           $(".publishdialog .success").show();
           document.addEventListener('keydown', escapeHandler, false);
         },
         error: function (data) {
+          $(".publishdialog").show();
           $(".publishdialog .spinner").hide();
           $(".publishdialog .success").hide();
           if (data.responseJSON) {
@@ -950,6 +958,7 @@ define(
           }
           console.error('Error while publishing content:');
           console.error(data);
+          $(".publishdialog").show();
           $(".publishdialog .failure").show();
           document.addEventListener('keydown', escapeHandler, false);
         }
@@ -981,7 +990,8 @@ define(
     });
 
     $('.return-btn').click(function () {
-      $('.modal-wrapper').removeClass('flex');
+      $('.modal-wrapper').addClass("hidden");
+      $(".publishdialog").hide();
       document.removeEventListener('keydown', escapeHandler, false);
     });
 
@@ -993,6 +1003,10 @@ define(
       $(".page-wrapper").toggleClass("tray-hidden");
       $(".tray").toggleClass("hidden");
       $(".right-column").toggleClass("expanded");
+    }
+
+    function changeMode(mode){
+      $(".page-wrapper").addClass("mode-discovery");
     }
 
     function changeEditableTab(tab) {
@@ -1013,10 +1027,6 @@ define(
     $(document).ready(function(){
       switchSourceView("HTML");
       changeEditableTab("customize");
-      $(".modal").on("click",".component-card .show-more",function(){
-        $(this).hide();
-        $(this).closest(".component-card").find(".more-info").slideToggle();
-      });
       $(".component-search").on("keydown",function(){
         setTimeout(function(){
           filterComponents($(".component-search").val());
@@ -1061,10 +1071,6 @@ define(
       contractColumn();
     });
 
-    $(".dismiss-note").on("click",function(){
-      $(this).parent().fadeOut();
-    });
-
     function contractColumn(){
       $(".page-wrapper").removeClass("tray-hidden");
       $(".tray").removeClass("hidden");
@@ -1076,6 +1082,10 @@ define(
       $(".tray").addClass("hidden");
       $(".right-column").addClass("expanded");
     }
+
+    $(".dismiss-note").on("click",function(){
+      $(this).parent().fadeOut();
+    });
 
     // AMD module return
     return {
