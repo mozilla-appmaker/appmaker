@@ -104,6 +104,13 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
               console.error('Trouble writing ' + description.filename + ' to S3 (' + result.statusCode + ').');
             }
             if (++filesDone === outputFiles.length) {
+              res.json({error: null,
+                app: remoteURLs.app,
+                install: remoteURLs.install,
+                manifest: remoteURLs.manifest
+              }, 200);
+
+              // Don't wait for the MakeAPI to deliver url to user
               makeAPIPublisher.publish({
                 url: remoteURLs.install,
                 thumbnail: 'http://appmaker.mozillalabs.com/images/mail-man.png',
@@ -111,11 +118,9 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
                 description: 'Appmaker ' + folderName,
                 title: 'Appmaker ' + folderName,
               }, function (err, make) {
-                res.json({error: null,
-                  app: remoteURLs.app,
-                  install: remoteURLs.install,
-                  manifest: remoteURLs.manifest
-                }, 200);
+                if (err) {
+                  console.error(err);
+                }
               });
             }
           }, description.contentType);
