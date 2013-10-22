@@ -405,18 +405,6 @@ button.log-toggle {
   color: white;
 }
 
-.add-components:hover {
-  opacity: .9;
-}
-
-.add-components:active {
-  background-image: -webkit-linear-gradient(#588e23,#68a32e);
-  background-image: -moz-linear-gradient(#588e23,#68a32e);
-  border-width: 0 0 1px 0;
-  top: 41px;
-}
-
-
 button.create-component {
   border-radius: 3px;
   height: 30px;
