@@ -2960,6 +2960,7 @@ input#remix-panel-email {
 
 .mode-viewsource .tray {
   width: 0px;
+  overflow: hidden;
 }
 
 .mode-viewsource .container {
