@@ -132,10 +132,18 @@
     <div class="arrow"></div>
   </div>
 
-  <div class="modal-wrapper hidden">
-    <div class="modal">
-      <div class="publishdialog modal-inner">
-
+  <div class="modal-wrapper hidden flex">
+    <div class="modal" id="component-discovery-modal">
+      <div class="modal-header">
+        Search <input type="text" class="component-search" placehodler="Search for a component" />
+        <button class="done">Done</button>
+      </div>
+      <div id="components-wrapper">
+        <div id="components"></div>
+      </div>
+    </div>
+    <div class="modal publishdialog">
+      <div class="modal-inner">
         <div class="spinner hidden">
           <h2>Loading…</h2>
           <div class="clearfix">
