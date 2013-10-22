@@ -1381,14 +1381,14 @@ ul.component-actions {
   font-size: 1.4rem;
 }
 
-
 .mode-discovery .component-description h1 {
   float: none;
   font-size: 1.5rem;
+  margin-bottom: 4px;
 }
 
 .mode-discovery .component-description h6 {
-  color: #777;
+  color: #999;
   font-size: 1.3rem;
   display: block;
 }
@@ -1949,7 +1949,7 @@ span.channel {
 .modal-header .component-search {
   font-size: 1.3rem;
   position: relative;
-  padding: 4px 2px;
+  padding: 4px 6px;
   width: 100%;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -2980,8 +2980,10 @@ input#remix-panel-email {
 .tray-preview {
   display: block;
   width: 200px;
-  padding: 8px 14px;
-  background: rgba(0,0,0,.8);
+  padding: 8px 14px 10px 14px;
+  background-image: -webkit-linear-gradient(#222,#000);
+  background-image: -moz-linear-gradient(#222,#000);
+  opacity: .9;
   box-shadow: 0px 2px 2px rgba(0,0,0,.15);
   color: #DDD;
   z-index: 99999;
