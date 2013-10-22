@@ -315,11 +315,9 @@ define(
       $(".tray").find(".tray-preview[name=\"" + name + "\"]").remove();
     });
 
-    //Add components to phone from tray
-    $(document).on('click', '.add-component', function () {
-      var comp = $(this).attr('name');
-      var component = document.createElement(comp);
-      
+    var addComponentByName = function (componentName) {
+      var component = document.createElement(componentName);
+
       Ceci.convertElement(component, function () {
         $('.ceci-card:visible .phone-canvas').append(component);
         component = $(component);
@@ -337,6 +335,24 @@ define(
       }, true);
 
       return false;
+    };
+
+    //Add components to phone from tray
+    $(document).on('click', '.add-component', function(){
+      addComponentByName($(this).attr('name'));
+    });
+
+    $(".component-search").on("keypress", function(e) {
+      if (e.keyCode == 13) {
+        var visibleComponents = $("#components .component-card:visible");
+
+        // If we only have one element in search...
+        if (visibleComponents.size() === 1){
+          // ... add it.
+          addComponentByName(visibleComponents[0].getAttribute('name'));
+        }
+        // return false;
+      }
     });
 
     function prettyName(name){
