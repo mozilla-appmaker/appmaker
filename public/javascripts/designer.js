@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["jquery", "ceci-app", "inflector", "ceci-ui", "jquery-ui", "togetherjsSupport"],
+  ["jquery", "ceci-app", "inflector", "ceci-ui", "jquery-ui"],
   function($, Ceci, Inflector) {
     "use strict";
 
@@ -62,7 +62,7 @@ define(
             }
             saveTimer = setTimeout(saveApp, 500);
           });
-          document.addEventListener("onselectionchanged", app.sortComponents);
+          // document.addEventListener("onselectionchanged", app.sortComponents);
           $('.library-list').removeClass("library-loading");
           $('.drophere').sortable(sortableOptions);
           $('.garbage-bin').droppable({
@@ -262,24 +262,61 @@ define(
     };
 
     //Open components modal
-    $('.find-components').click(function () {
-      $(".modal-wrapper").removeClass("hidden");
-      $("#component-discovery-modal").show();
-      document.addEventListener('keydown', escapeHandler, false);
+    $('.tray .expand-handle').click(function () {
+      if($(".page-wrapper").hasClass("mode-discovery")){
+        changeMode("normal");
+      } else {
+        changeMode("discovery");
+      }
     });
+
+    $('.right-column .expand-handle').click(function () {
+      if($(".page-wrapper").hasClass("mode-viewsource")){
+        changeMode("normal");
+      } else {
+        changeMode("viewsource");
+      }
+    });
+
 
     $('.done').click(function () {
       $('.modal-wrapper').addClass('hidden');
       $('#component-discovery-modal').hide('hidden');
     });
 
-    //Add components to phone
+    $(document).on("mouseover",".add-component",function(e){
+      if(!$(".page-wrapper").hasClass("mode-discovery")){
+        var preview = $("<div class='tray-preview'></div>");
+        var description = $(this).find("h6").text();
+        preview.attr("name",$(this).attr("name"));
+        var thumb = $(this).find("img").clone();
+        // preview.append(thumb);
+        preview.append("<span>"+description+"</span>");
+        $(".tray").append(preview);
+        positionPreview(e);
+      }
+    });
+
+    function positionPreview(e){
+      var preview = $('.tray').find(".tray-preview");
+      var previewHeight = preview.innerHeight();
+      preview.css("left",e.pageX + 10).css("top",e.pageY - previewHeight - 60);
+    }
+
+    $(document).on("mousemove",".tray",function(e){
+      positionPreview(e);
+    });
+
+    $(document).on("mouseout",".add-component",function(){
+      var name = $(this).attr("name");
+      $(".tray").find(".tray-preview[name='"+name+"']").remove();
+    });
+
+    //Add components to phone from tray
     $(document).on('click', '.add-component', function () {
-      $(".modal-wrapper").addClass('hidden');
-      $('#component-discovery-modal').hide();
       var comp = $(this).attr('name');
       var component = document.createElement(comp);
-
+      
       Ceci.convertElement(component, function () {
         $('.ceci-card:visible .phone-canvas').append(component);
         component = $(component);
@@ -295,19 +332,31 @@ define(
         component.append($('<div class="handle"></div>'));
         selectComponent(component);
       }, true);
+
+      return false;
     });
 
+    function prettyName(name){
+      var pretty = name.replace('app-', '');
+      pretty = pretty.replace(/-/g, " ");
+      pretty = pretty.toLowerCase().replace(/\b[a-z](?=[a-z]{2})/g, function(letter) {
+        return letter.toUpperCase();
+      });
+      return pretty;
+    }
+
     function addComponentCard(component, name, list) {
+
       var componentDescription;
       if (component.description) {
         componentDescription = component.description.innerHTML;
       } else {
         componentDescription = "No description available";
       }
-      var card = $('<div class="component-card"></div>');
-      var descriptionColumn = $('<div class="component-description"><h1>' + name.replace('app-', '') + '</h1><h6>'+ componentDescription +'</h6></div>');
 
-      var preview = $('<div class="component-preview"><div class="image-wrapper">' + component.thumbnail.innerHTML + '</div><div name='+name+' class="add-component add-component-overlay"><div class="add-tooltip">Click to Add</div></div></div>');
+      var card = $('<div class="add-component component-card" name="'+name+'"><div class="add-tooltip">+</div></div>');
+      var descriptionColumn = $('<div class="component-description"><h1>' + prettyName(name) + '</h1><h6>'+ componentDescription +'</h6></div>');
+      var preview = $('<div class="component-preview"><div class="image-wrapper">' + component.thumbnail.innerHTML + '</div><div class="add-component-overlay"></div></div>');
 
       var friendList = $('<div class="friends"><h3>Friends</h3></div>');
       if (component.friends.length > 0) {
@@ -871,7 +920,7 @@ define(
       element.onColorSelectFunction = onColorSelectFunction;
 
       var componentName = element.tagName.toLowerCase();
-      $(".editable-section .name").text(componentName);
+      $(".editable-section .name").text(prettyName(componentName));
 
       //add mailbox info to right column
       /*
@@ -995,18 +1044,9 @@ define(
       document.removeEventListener('keydown', escapeHandler, false);
     });
 
-    $(".right-column").on("click",".expand-handle",function(){
-      toggleColumns();
-    });
-
-    function toggleColumns(){
-      $(".page-wrapper").toggleClass("tray-hidden");
-      $(".tray").toggleClass("hidden");
-      $(".right-column").toggleClass("expanded");
-    }
-
     function changeMode(mode){
-      $(".page-wrapper").addClass("mode-discovery");
+      $(".page-wrapper").removeClass("mode-discovery").removeClass("mode-normal").removeClass("mode-viewsource");
+      $(".page-wrapper").addClass("mode-" + mode);
     }
 
     function changeEditableTab(tab) {
@@ -1016,10 +1056,8 @@ define(
       $(".tab-sections .section-" + tab).show();
       $(".tab-sections .section-" + tab + " textarea").focus();
       if(tab == "view-source"){
-        expandColumn();
       } else {
         if($(".right-column").not(".remix-mode").length == 1){
-          contractColumn();
         }
       }
     }
@@ -1035,13 +1073,15 @@ define(
     });
 
     function filterComponents(search){
-      var components = $(".modal .component-card");
+      var components = $(".component-card");
+      search = search.toLowerCase();
       components.each(function(){
         var name = $(this).find("h1").text();
-        if(name.indexOf(search) == -1){
-          $(this).hide();
-        } else {
+        name = name.toLowerCase();
+        if(name.indexOf(search) >= 0){
           $(this).show();
+        } else {
+          $(this).hide();
         }
       });
     }
@@ -1062,26 +1102,14 @@ define(
     $(".view-source-items textarea").on("keyup",function(){
       $(".right-column").addClass("remix-mode");
       $(".remix-helper").hide();
-      expandColumn();
+
     });
 
     $(".remix-ui a.finish-remix, .remix-ui a.cancel-remix").on("click",function(){
       $(".right-column").removeClass("remix-mode");
       changeEditableTab("customize");
-      contractColumn();
+
     });
-
-    function contractColumn(){
-      $(".page-wrapper").removeClass("tray-hidden");
-      $(".tray").removeClass("hidden");
-      $(".right-column").removeClass("expanded");
-    }
-
-    function expandColumn(){
-      $(".page-wrapper").addClass("tray-hidden");
-      $(".tray").addClass("hidden");
-      $(".right-column").addClass("expanded");
-    }
 
     $(".dismiss-note").on("click",function(){
       $(this).parent().fadeOut();

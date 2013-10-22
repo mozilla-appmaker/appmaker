@@ -39,8 +39,15 @@
     </div>
   </div>
 
-  <button class="find-components">Add Component</button>
-  <div class="tray app-column animate-me"></div>
+  <div class="tray app-column animate-me">
+    <div class="expand-handle"></div>
+    <div class="modal-header">
+      <input type="text" class="component-search" placeholder="Search components..." />
+    </div>
+    <div id="components-wrapper">
+      <div id="components"></div>
+    </div>
+  </div>
 
   <div class="right-column app-column animate-me">
     <div class="expand-handle"></div>
@@ -213,4 +220,4 @@
     </div>
   </div>
 </div>
-<input id="appmaker-remix-url" type="hidden" value="<%- publishUrl %>">
+<input id="appmaker-remix-url" type="hidden" value="<%- publishUrl %>" />
