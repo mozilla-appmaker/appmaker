@@ -1550,6 +1550,7 @@ ul.component-actions {
 
 .component-card:hover .add-tooltip {
   -webkit-transform: scale(1);
+  -moz-transform: scale(1);
 }
 
 .mode-discovery .component-card .add-tooltip {
