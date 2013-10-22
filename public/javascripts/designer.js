@@ -1014,10 +1014,6 @@ define(
       $(".page-wrapper").addClass("mode-" + mode);
     }
 
-    function changeMode(mode){
-      $(".page-wrapper").addClass("mode-discovery");
-    }
-
     function changeEditableTab(tab) {
       $(".trey-tabs").find("a").removeClass("selected-tab");
       $(".trey-tabs [tab='"+tab+"']").addClass("selected-tab");
