@@ -62,7 +62,7 @@ define(
             }
             saveTimer = setTimeout(saveApp, 500);
           });
-          document.addEventListener("onselectionchanged", app.sortComponents);
+          // document.addEventListener("onselectionchanged", app.sortComponents);
           $('.library-list').removeClass("library-loading");
           $('.drophere').sortable(sortableOptions);
           $('.garbage-bin').droppable({
@@ -316,6 +316,7 @@ define(
     $(document).on('click', '.add-component', function () {
       var comp = $(this).attr('name');
       var component = document.createElement(comp);
+      
       Ceci.convertElement(component, function () {
         $('.ceci-card:visible .phone-canvas').append(component);
         component = $(component);
@@ -1055,10 +1056,8 @@ define(
       $(".tab-sections .section-" + tab).show();
       $(".tab-sections .section-" + tab + " textarea").focus();
       if(tab == "view-source"){
-
       } else {
         if($(".right-column").not(".remix-mode").length == 1){
-
         }
       }
     }
