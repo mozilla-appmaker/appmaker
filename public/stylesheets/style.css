@@ -647,6 +647,7 @@ button.done {
   width: 260px;
   background: #DDD;
   box-shadow: 0px 0px 10px rgba(0,0,0,.5);
+  z-index: 2;
 }
 
 ul.tabs {
@@ -2968,4 +2969,27 @@ input#remix-panel-email {
 
 .mode-viewsource .tray .expand-handle {
   display: none;
+}
+
+.tray-preview {
+  position: absolute;
+  top: 100px;
+  left: 100px;
+}
+
+.tray-preview {
+  display: block;
+  width: 200px;
+  padding: 8px 14px;
+  background: rgba(0,0,0,.8);
+  box-shadow: 0px 2px 2px rgba(0,0,0,.15);
+  color: #DDD;
+  z-index: 99999;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+}
+
+.tray-preview img {
+  width: 100%;
+  margin-bottom: 10px;
 }

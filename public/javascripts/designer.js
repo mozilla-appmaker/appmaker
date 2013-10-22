@@ -284,14 +284,38 @@ define(
       $('#component-discovery-modal').hide('hidden');
     });
 
-    //Add components to phone
-    $(document).on('click', '.add-component', function () {
-      $(".modal-wrapper").addClass('hidden');
-      $('#component-discovery-modal').hide();
-      var comp = $(this).attr('name');
-      console.log(comp);
-      var component = document.createElement(comp);
+    $(document).on("mouseover",".add-component",function(e){
+      if(!$(".page-wrapper").hasClass("mode-discovery")){
+        var preview = $("<div class='tray-preview'></div>");
+        var description = $(this).find("h6").text();
+        preview.attr("name",$(this).attr("name"));
+        var thumb = $(this).find("img").clone();
+        // preview.append(thumb);
+        preview.append("<span>"+description+"</span>");
+        $(".tray").append(preview);
+        positionPreview(e);
+      }
+    });
 
+    function positionPreview(e){
+      var preview = $('.tray').find(".tray-preview");
+      var previewHeight = preview.innerHeight();
+      preview.css("left",e.pageX + 10).css("top",e.pageY - previewHeight - 60);
+    }
+
+    $(document).on("mousemove",".tray",function(e){
+      positionPreview(e);
+    });
+
+    $(document).on("mouseout",".add-component",function(){
+      var name = $(this).attr("name");
+      $(".tray").find(".tray-preview[name='"+name+"']").remove();
+    });
+
+    //Add components to phone from tray
+    $(document).on('click', '.add-component', function () {
+      var comp = $(this).attr('name');
+      var component = document.createElement(comp);
       Ceci.convertElement(component, function () {
         $('.ceci-card:visible .phone-canvas').append(component);
         component = $(component);
@@ -311,16 +335,26 @@ define(
       return false;
     });
 
+    function prettyName(name){
+      var prettyName = name.replace('app-', '');
+      prettyName = prettyName.replace(/-/g, " ");
+      prettyName = prettyName.toLowerCase().replace(/\b[a-z](?=[a-z]{2})/g, function(letter) {
+        return letter.toUpperCase();
+      });
+      return prettyName;
+    }
+
     function addComponentCard(component, name, list) {
+
       var componentDescription;
       if (component.description) {
         componentDescription = component.description.innerHTML;
       } else {
         componentDescription = "No description available";
       }
-      var card = $('<div class="add-component component-card" name="'+name+'"><div class="add-tooltip">+</div></div>');
-      var descriptionColumn = $('<div class="component-description"><h1>' + name.replace('app-', '') + '</h1><h6>'+ componentDescription +'</h6></div>');
 
+      var card = $('<div class="add-component component-card" name="'+name+'"><div class="add-tooltip">+</div></div>');
+      var descriptionColumn = $('<div class="component-description"><h1>' + prettyName(name) + '</h1><h6>'+ componentDescription +'</h6></div>');
       var preview = $('<div class="component-preview"><div class="image-wrapper">' + component.thumbnail.innerHTML + '</div><div class="add-component-overlay"></div></div>');
 
       var friendList = $('<div class="friends"><h3>Friends</h3></div>');
@@ -885,7 +919,7 @@ define(
       element.onColorSelectFunction = onColorSelectFunction;
 
       var componentName = element.tagName.toLowerCase();
-      $(".editable-section .name").text(componentName);
+      $(".editable-section .name").text(prettyName(componentName));
 
       //add mailbox info to right column
       /*
