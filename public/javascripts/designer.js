@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["jquery", "ceci-app", "inflector", "ceci-ui", "jquery-ui", "togetherjsSupport"],
+  ["jquery", "ceci-app", "inflector", "ceci-ui", "jquery-ui"],
   function($, Ceci, Inflector) {
     "use strict";
 
@@ -263,8 +263,21 @@ define(
 
     //Open components modal
     $('.tray .expand-handle').click(function () {
-      changeMode("discovery");
+      if($(".page-wrapper").hasClass("mode-discovery")){
+        changeMode("normal");
+      } else {
+        changeMode("discovery");
+      }
     });
+
+    $('.right-column .expand-handle').click(function () {
+      if($(".page-wrapper").hasClass("mode-viewsource")){
+        changeMode("normal");
+      } else {
+        changeMode("viewsource");
+      }
+    });
+
 
     $('.done').click(function () {
       $('#component-discovery-modal').addClass('hidden');
@@ -274,6 +287,7 @@ define(
     $(document).on('click', '.add-component', function () {
       $('#component-discovery-modal').addClass('hidden');
       var comp = $(this).attr('name');
+      console.log(comp);
       var component = document.createElement(comp);
 
       Ceci.convertElement(component, function () {
@@ -291,6 +305,8 @@ define(
         component.append($('<div class="handle"></div>'));
         selectComponent(component);
       }, true);
+      
+      return false;
     });
 
     function addComponentCard(component, name, list) {
@@ -300,10 +316,10 @@ define(
       } else {
         componentDescription = "No description available";
       }
-      var card = $('<div class="component-card"></div>');
+      var card = $('<div class="add-component component-card" name="'+name+'"><div class="add-tooltip">+</div></div>');
       var descriptionColumn = $('<div class="component-description"><h1>' + name.replace('app-', '') + '</h1><h6>'+ componentDescription +'</h6></div>');
 
-      var preview = $('<div class="component-preview"><div class="image-wrapper">' + component.thumbnail.innerHTML + '</div><div name='+name+' class="add-component add-component-overlay"><div class="add-tooltip">Click to Add</div></div></div>');
+      var preview = $('<div class="component-preview"><div class="image-wrapper">' + component.thumbnail.innerHTML + '</div><div class="add-component-overlay"></div></div>');
 
       var friendList = $('<div class="friends"><h3>Friends</h3></div>');
       if (component.friends.length > 0) {
@@ -984,18 +1000,9 @@ define(
       document.removeEventListener('keydown', escapeHandler, false);
     });
 
-    $(".right-column").on("click",".expand-handle",function(){
-      toggleColumns();
-    });
-
-    function toggleColumns(){
-      $(".page-wrapper").toggleClass("tray-hidden");
-      $(".tray").toggleClass("hidden");
-      $(".right-column").toggleClass("expanded");
-    }
-
     function changeMode(mode){
-      $(".page-wrapper").addClass("mode-discovery");
+      $(".page-wrapper").removeClass("mode-discovery").removeClass("mode-normal").removeClass("mode-viewsource");
+      $(".page-wrapper").addClass("mode-" + mode);
     }
 
     function changeEditableTab(tab) {
@@ -1005,10 +1012,10 @@ define(
       $(".tab-sections .section-" + tab).show();
       $(".tab-sections .section-" + tab + " textarea").focus();
       if(tab == "view-source"){
-        expandColumn();
+
       } else {
         if($(".right-column").not(".remix-mode").length == 1){
-          contractColumn();
+
         }
       }
     }
@@ -1025,13 +1032,13 @@ define(
     });
 
     function filterComponents(search){
-      var components = $(".modal .component-card");
+      var components = $(".component-card");
       components.each(function(){
         var name = $(this).find("h1").text();
-        if(name.indexOf(search) == -1){
-          $(this).hide();
-        } else {
+        if(name.indexOf(search) >= 0){
           $(this).show();
+        } else {
+          $(this).hide();
         }
       });
     }
@@ -1052,13 +1059,13 @@ define(
     $(".view-source-items textarea").on("keyup",function(){
       $(".right-column").addClass("remix-mode");
       $(".remix-helper").hide();
-      expandColumn();
+
     });
 
     $(".remix-ui a.finish-remix, .remix-ui a.cancel-remix").on("click",function(){
       $(".right-column").removeClass("remix-mode");
       changeEditableTab("customize");
-      contractColumn();
+
     });
 
     $(".dismiss-note").on("click",function(){
