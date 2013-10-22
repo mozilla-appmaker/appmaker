@@ -4,8 +4,24 @@ body {
 }
 
 .home-container {
-  margin: 0 auto;
-  width: 960px;
+  margin: 40px auto;
+  width: 90%;
+}
+
+.home-right {
+  width: 60%;
+  float: left;
+}
+
+.right-inner {
+  padding: 20px;
+  background-color: #212429;
+}
+
+.home-left {
+  width: 35%;
+  float: left;
+  margin-right:5%;
 }
 
 .home-container a {
@@ -16,43 +32,58 @@ body {
   width: 100%;
 }
 
-.video-container {
-  margin: 20px 0px 100px;
-}
-
 .play-video {
   margin: 40px auto 0px auto;
   text-align: center;
 }
 
+.explanation {
+  color: #c5cdd9;
+  font-size: 20px;
+  font-weight: 400;
+}
+
 .github {
-  float: right;
-  margin-top:25px;
+  margin-top: 40px;
+  height: 60px;
+  width: 60px;
+  border-radius: 3px;
+  background-color: #373c45;
+  background-image: url(/images/github.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  float: left;
 }
 
 .twitter {
-  float: right;
-  margin: 25px 15px 0px 0px;
+  margin-top: 40px;
+  height: 60px;
+  width: 60px;
+  border-radius: 3px;
+  background-color: #373c45;
+  background-image: url(/images/twitter.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  float: left;
+  margin-left: 10px;
 }
 
 .video-splash {
-  width: 100%;
-  height: 540px;
-  background-image: url(/images/vid1.png);
-  background-position: center;
-  display: -webkit-box;   /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
-  display: -moz-box;      /* OLD: Firefox (buggy) */
-  display: -ms-flexbox;   /* MID: IE 10 */
-  display: -webkit-flex;  /* NEW, Chrome 21+ */
-  display: flex;          /* NEW: Opera 12.1, Firefox 22+ */
-  -webkit-box-align: center; -moz-box-align: center; /* OLD… */
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-  -webkit-box-pack: center; -moz-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
+  position: relative;
+  height: 0;
+  padding-bottom: 50%;
+  overflow: hidden;
+  padding-top: 30px;
+}
+
+.video-splash iframe,
+.video-splash object,
+.video-splash embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .vid-text {
@@ -98,15 +129,18 @@ body {
   bottom: 0px;
   left: 0px;
   right: 0px;
+  z-index: 2;
 }
 
 .home-logo {
-  background-image: url(/images/maker.png);
-  background-position: left center;
-  background-repeat: no-repeat;
-  height: 80px;
-  width: 390px;
-  float: left;
+  margin: 40px auto;
+  text-align: center;
+}
+
+.app-logo {
+  color: #FFF;
+  font-size: 52px;
+  font-weight: 600;
 }
 
 .break-line {
@@ -156,18 +190,16 @@ input.app-name {
 }
 
 button.btn-start-app {
-  height: 50px;
-  width: 180px;
+  height: 70px;
+  width: 100%;
   display: block;
   background-color: #358CCE;
-  font-size: 20px;
-  margin: 0 auto;
-  font-weight: 400;
+  font-size: 30px;
+  font-weight: 600;
   border-radius: 3px;
   border-bottom: 4px solid #296ea3;
   border-top: 1px solid #5fafed;
-  float: left;
-  margin-top: 15px;
+  margin-top: 40px;
 }
 
 button.btn-start-app:hover {
