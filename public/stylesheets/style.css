@@ -383,25 +383,39 @@ button.log-toggle {
 }
 
 
-button.find-components {
+.add-components {
+  display: block;
   border-radius: 3px;
-  height: 30px;
+  padding: 15px 30px;
   width: 180px;
-  text-indent: 35px;
-  font-size: 13px;
+  font-size: 1.8rem;
   font-weight: 400;
-  background-color: #FFF;
-  text-align: left;
-  border: 1px solid #aeb1b5;
-  background-image: url(../images/bricks.png);
-  background-position: 15px center;
+  background: green;
+  text-align: center;
   background-repeat: no-repeat;
+  text-shadow: 0px -1px 0px rgba(0,0,0,.2);
+  background-image: -webkit-linear-gradient(#68a32e, #588e23);
+  background-image: -moz-linear-gradient(#68a32e, #588e23);
+  border-bottom: solid 2px #3e6a13;
   margin: 20px 0px 0px 0px;
   position: fixed;
-  left: 200px;
+  left: 10px;
   top: 40px;
   z-index: 9998;
+  color: white;
 }
+
+.add-components:hover {
+  opacity: .9;
+}
+
+.add-components:active {
+  background-image: -webkit-linear-gradient(#588e23,#68a32e);
+  background-image: -moz-linear-gradient(#588e23,#68a32e);
+  border-width: 0 0 1px 0;
+  top: 41px;
+}
+
 
 button.create-component {
   border-radius: 3px;
@@ -599,7 +613,8 @@ button.done {
   z-index: 1;
   overflow-y: scroll;
   min-width: 700;
-  margin: 0 245px 0 260px;
+  margin: 0 260px 0 260px;
+
 }
 
 .container .garbage-bin {
@@ -628,15 +643,12 @@ button.done {
   margin-right: calc(100% - 720px);
 }
 
-.right-column.expanded {
-  width: calc(100% - 700px);
-}
-
 .inner-container {
   width: 100%;
   position: relative;
   margin-top: 50px;
   padding-bottom: 20px;
+  padding-top: 10px;
 }
 
 .tray {
@@ -645,12 +657,8 @@ button.done {
   top: 50px;
   bottom: 0px;
   width: 260px;
-  background-color: #212429;
-  z-index: 2  ;
-}
-
-.tray .inner-wrapper {
-
+  background: #DDD;
+  box-shadow: 0px 0px 10px rgba(0,0,0,.5);
 }
 
 ul.tabs {
@@ -736,6 +744,7 @@ li.tab {
   min-width: 260px;
 }
 
+
 .right-column .inner-wrapper {
   overflow: auto;
   height: 100%;
@@ -761,16 +770,14 @@ li.tab {
   background-image: url(../images/arrow-left.png);
 }
 
+.mode-viewsource .right-column .expand-handle {
+  background-image: url(../images/arrow-right.png);
+}
+
 .tray .expand-handle {
   border-radius: 0px 6px 6px 0px;
   right: -30px;
   background-image: url(../images/arrow-right.png);
-}
-
-.expanded .expand-handle {
-  background:   rgba(0,0,0,.25) 9px center no-repeat;
-  background-image: url(../images/arrow-right.png);
-  background-size: 15px;
 }
 
 .right-column input[type=text] {
@@ -1092,7 +1099,7 @@ li.tab {
   height: 20px;
   width: 20px;
   right: 5px;
-  top: 5px;
+  top: 7px;
   opacity: .4;
   background: url(../images/page-tab-x.png) center no-repeat;
   background-size: 12px;
@@ -1371,19 +1378,34 @@ ul.component-actions {
 
 .component-description {
   background: #f7f7f7;
-  padding: 8px 15px 12px 15px;
   position: relative;
+  padding: 10px;
+}
+
+.mode-discovery .component-description {
+  padding: 8px 15px 12px 15px;
   height: 85px;
 }
 
 .component-description h1 {
   float: none;
+  font-size: 1.4rem;
+}
+
+
+.mode-discovery .component-description h1 {
+  float: none;
   font-size: 1.5rem;
 }
 
-.component-description h6 {
+.mode-discovery .component-description h6 {
   color: #777;
   font-size: 1.3rem;
+  display: block;
+}
+
+.component-description h6 {
+  display: none;
 }
 
 .friends {
@@ -1401,41 +1423,30 @@ ul.component-actions {
 .component-card {
   display: inline-block;
   border: solid 1px #CCC;
-  margin: 10px;
+  margin: 0 0 5px 0;
   position: relative;
   background: white;
-  box-shadow: 0px 3px 3px rgba(0,0,0,.2);
-  width: calc(100% - 25px);
+  box-shadow: 0px 2px 2px rgba(0,0,0,.15);
+  width: calc(100% - 2px);
   border-radius: 2px;
   border-bottom: none;
   background: #f7f7f7;
+  cursor: pointer;
+}
+
+.mode-discovery .component-card {
+  margin: 0px 10px 10px 0px;
+  box-shadow: 0px 2px 3px rgba(0,0,0,.15);
   float: left;
+  width: calc(50% - 15px);
 }
 
-/*
-@media (min-width: 600px) {
-  .component-card {
-    width: calc(50% - 25px);
+@media (min-width: 1100px) {
+  .mode-discovery .component-card {
+  width: calc(33% - 11px);
   }
 }
 
-@media (min-width: 900px) {
-  .component-card {
-    width: calc(33% - 20px);
-  }
-}
-
-@media (min-width: 1200px) {
-  .component-card {
-    width: calc(25% - 22px);
-  }
-}
-
-@media (min-width: 1500px) {
-  .component-card {
-    width: calc(20% - 20px);
-  }
-}*/
 
 .component-card .show-more {
   display: inline-block;
@@ -1470,12 +1481,17 @@ ul.component-actions {
 }
 
 .component-preview {
+  display: none;
+}
+
+.mode-discovery .component-preview {
+  display: block;
   text-align: center;
-  padding: 10px 10px 8px 10px;
+  padding: 10px;
   border-bottom: solid 1px #CCC;
   position: relative;
   background: white;
-  height: 200px;
+  height: 150px;
   display: table;
   table-layout: fixed;
   width: calc(100% - 20px);
@@ -1485,7 +1501,7 @@ ul.component-actions {
   display: table-cell;
   text-align: center;
   vertical-align: middle;
-  height: 200px;
+  height: 115px;
   width: 100%;
   position: relative;
 }
@@ -1501,15 +1517,17 @@ ul.component-actions {
   display: block;
 }
 
+.component-card:hover {
+  outline: solid 2px rgba(94,193,37,.7);
+}
+
 .component-preview .add-component-overlay {
-  cursor: pointer;
   position: absolute;
   top: 0px;
   left: 0px;
   bottom: 0px;
   width: calc(100% - 4px);
   background:  rgba(94,193,37,0);
-  border: solid 2px rgba(94,193,37,0);
   background-position: bottom right;
   background-repeat: no-repeat;
   background-size: 75px;
@@ -1518,30 +1536,39 @@ ul.component-actions {
   overflow: hidden;
 }
 
-.component-preview:hover .add-component-overlay {
+.component-card:hover .add-component-overlay {
   background:  rgba(94,193,37,.05);
-  border: solid 2px rgba(94,193,37,1);
 }
 
-.add-component-overlay .add-tooltip {
-  padding: 6px 10px 9px 10px;
+.component-card .add-tooltip {
+  border-radius: 20px;
+  -moz-border-radius: 20px;
+  font-size: 2rem;
   background:  rgba(94,193,37,1);
   color: white;
-  left: 11px;
+  opacity: .7;
+  padding: 0px 7px 0 7px;
+  text-align: center;
+  font-weight: bold;
   position: absolute;
-  margin: 0 auto;
+  z-index: 9999;
   overflow: hidden;
-  bottom: -40px;
-  -webkit-transition: bottom .05s linear;
-  -moz-transition: bottom .05s linear;
+  -webkit-transform: scale(0);
+  -webkit-transition: all .05s linear;
+  -moz-transform: scale(0);
+  -moz-transition: all .05s linear;
+  right: 5px;
+  bottom: 6px;
 }
 
-.add-component-overlay:hover .add-tooltip {
-  height: 18px;
-  bottom: -4px;
+.component-card:hover .add-tooltip {
+  -webkit-transform: scale(1);
 }
 
-
+.mode-discovery .component-card .add-tooltip {
+  right: 5px;
+  bottom: 5px;
+}
 
 .tags {
   margin-top: 20px;
@@ -1561,8 +1588,6 @@ ul.component-actions {
   text-decoration: none;
   color: ;
 }
-
-
 
 .tag::before {
   background: #f7f7f7;
@@ -1643,7 +1668,6 @@ ul.component-actions {
 
 .dragging .fixed-top, .dragging .fixed-bottom {
   min-height: 20px;
-
 }
 
 .dragging .fixed-top {
@@ -1671,7 +1695,6 @@ ul.component-actions {
 .phone-container .fixed-bottom {
   border-top: dashed 2px #DDD;
   padding-top: 4px;
-
 }
 
 .phone-canvas {
@@ -1693,10 +1716,6 @@ ul.component-actions {
   background-image: url(../images/circle.png);
   background-position: center;
   background-repeat: no-repeat;
-}
-
-.phone-border {
-
 }
 
 .phone-shadow {
@@ -1721,8 +1740,6 @@ ul.component-actions {
   left: 970px;
   color: #999;
 }
-
-
 
 .editable-section input {
   font-size: 14px;
@@ -1768,10 +1785,6 @@ ul.component-actions {
 
 /*Log */
 
-.log-wrapper.expanded .log-toggle {
-
-}
-
 .log-wrapper {
   display: none;
   width:250px;
@@ -1783,9 +1796,6 @@ ul.component-actions {
   color: #c9cccf;
   border-top: 2px solid #181b1f;
   z-index: 100;
-}
-
-.log-wrapper.expanded {
 }
 
 .expanded .log .scroll {
@@ -1861,6 +1871,10 @@ span.channel {
   padding: 20px;
 }
 
+.modal {
+  display: none;
+}
+
 .modal-wrapper {
   position: fixed;
   top: 0px;
@@ -1869,6 +1883,11 @@ span.channel {
   right: 0px;
   background: rgba(0,0,0,.5);
   z-index: 9999;
+  display: none;
+}
+
+.publish-dialog {
+  width: 50%;
 }
 
 .color-modal {
@@ -1912,18 +1931,26 @@ span.channel {
   justify-content: center;
 }
 
-.modal {
+.modal#component-discovery-modal {
   width: calc(100% - 40px);
   height: calc(100% - 40px);
   background-color: #FFF;
   position: relative;
   background: #DDD;
+  display: none;
+}
+
+.publishdialog {
+  background: white;
+}
+
+.publishdialog button {
+  cursor: pointer;
 }
 
 .modal-header {
   padding: 10px;
   width: calc(100% - 20px);
-  background-color: rgba(0,0,0,.8);
   position: absolute;
   top: 0px;
   z-index: 99;
@@ -1935,24 +1962,26 @@ span.channel {
 .modal-header .component-search {
   font-size: 1.3rem;
   position: relative;
-  padding: 2px;
+  padding: 4px 2px;
   width: 100%;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  
 }
 
 #components-wrapper {
   overflow-y: scroll;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 50px);
   margin-top: 50px;
-  
 }
 
 #components {
   overflow: hidden;
-  margin-top: 50px;
+  padding: 2px 10px 10px 10px;
+}
+
+.mode-discovery #components {
+  padding-right: 0px;
 }
 
 .modal-inner {
@@ -2913,18 +2942,43 @@ input#remix-panel-email {
   display: none;
 }
 
+/* Styles for Modes */
 
-/*Discovery Mode*/
 .mode-discovery .tray {
   width: calc(100% - 700px);
 }
 
 .mode-discovery .container {
   margin-right: 0px;
-  margin-left: calc(100% - 720px);
+  margin-left: calc(100% - 700px);
+}
+
+.mode-discovery .tray .expand-handle {
+  background-image: url(../images/arrow-left.png); 
+}
+
+.mode-discovery .right-column .expand-handle {
+  display: none;
 }
 
 .mode-discovery .right-column {
   width: 0px;
   min-width: 0px;
+}
+
+.mode-viewsource .right-column {
+  width: calc(100% - 700px);
+}
+
+.mode-viewsource .tray {
+  width: 0px;
+}
+
+.mode-viewsource .container {
+  margin-left: 0px;
+  margin-right: calc(100% - 700px);
+}
+
+.mode-viewsource .tray .expand-handle {
+  display: none;
 }
