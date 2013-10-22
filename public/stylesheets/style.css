@@ -602,8 +602,15 @@ button.done {
   overflow-y: scroll;
   min-width: 700;
   margin: 0 260px 0 260px;
-
 }
+
+.inner-container {
+  width: 100%;
+  position: relative;
+  top: 50px;
+  padding-bottom: 20px;
+}
+
 
 .container .garbage-bin {
   display: none;
@@ -631,13 +638,6 @@ button.done {
   margin-right: calc(100% - 720px);
 }
 
-.inner-container {
-  width: 100%;
-  position: relative;
-  margin-top: 50px;
-  padding-bottom: 20px;
-  padding-top: 10px;
-}
 
 .tray {
   position: fixed;
