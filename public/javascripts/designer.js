@@ -337,12 +337,12 @@ define(
     });
 
     function prettyName(name){
-      var prettyName = name.replace('app-', '');
-      prettyName = prettyName.replace(/-/g, " ");
-      prettyName = prettyName.toLowerCase().replace(/\b[a-z](?=[a-z]{2})/g, function(letter) {
+      var pretty = name.replace('app-', '');
+      pretty = pretty.replace(/-/g, " ");
+      pretty = pretty.toLowerCase().replace(/\b[a-z](?=[a-z]{2})/g, function(letter) {
         return letter.toUpperCase();
       });
-      return prettyName;
+      return pretty;
     }
 
     function addComponentCard(component, name, list) {
