@@ -1075,8 +1075,10 @@ define(
 
     function filterComponents(search){
       var components = $(".component-card");
+      search = search.toLowerCase();
       components.each(function(){
         var name = $(this).find("h1").text();
+        name = name.toLowerCase();
         if(name.indexOf(search) >= 0){
           $(this).show();
         } else {
