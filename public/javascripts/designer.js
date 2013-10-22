@@ -264,6 +264,7 @@ define(
     //Open components modal
     $('.tray .expand-handle').click(function () {
       if($(".page-wrapper").hasClass("mode-discovery")){
+      $(".component-search").focus();
         changeMode("normal");
       } else {
         changeMode("discovery");
