@@ -1,0 +1,28 @@
+<div id="flathead-app">
+  <div class="ceci-card" id="ceci-card-1">
+    <div class="fixed-top">
+      <app-counter id="app-counter-1" countitem="">
+        <listen on="blue" for="countUp"></listen>
+      </app-counter>
+    </div>
+    <div class="phone-canvas">
+      <app-popcorn-maker id="app-popcorn-maker-1" style="position: relative;" popcornmakeurl="https://secretrobotron.mywebmaker.org/popcorn/14i9_" project="https://secretrobotron.mywebmaker.org/popcorn/14i9_">
+        <broadcast on="blue" from="event"></broadcast>
+        <listen on="green" for="play"></listen>
+        <listen on="red" for="pause"></listen>
+        <listen on="pink" for="rewind"></listen>
+      </app-popcorn-maker>
+    </div>
+    <div class="fixed-bottom">
+      <app-button id="app-button-1" buttonlabel="Play" buttoncolor="#4DB227" buttonactivecolor="#3d911f" textcolor="#FFFFFF">
+        <broadcast on="green" from="click"></broadcast>
+      </app-button>
+      <app-button id="app-button-2" buttonlabel="Pause" buttoncolor="#B24D27" buttonactivecolor="#913d1f" textcolor="#FFFFFF">
+        <broadcast on="red" from="click"></broadcast>
+      </app-button>
+      <app-button id="app-button-3" buttonlabel="Again!" buttoncolor="#4D27B2" buttonactivecolor="#3d1f91" textcolor="#FFFFFF">
+        <broadcast on="pink" from="click"></broadcast>
+      </app-button>
+    </div>
+  </div>
+</div>
