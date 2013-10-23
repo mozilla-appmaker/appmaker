@@ -3,8 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 requirejs.config({
-  "baseUrl": "/vendor/",
-  "paths": {
+  baseUrl: "/vendor/",
+  paths: {
     "inflector": "inflection-js/inflection.min",
     "jquery": "jquery/jquery.min",
     "ceci": "ceci/ceci",
@@ -13,8 +13,6 @@ requirejs.config({
     "ceci-app": "ceci/ceci-app",
     "ceci-utils": "ceci/ceci-utils",
     "jquery-ui": "jquery-ui/ui/minified/jquery-ui.min",
-    "togetherjs": "https://togetherjs.com/togetherjs",
-    "togetherjsSupport": "/javascripts/togetherjsSupport",
     "designer-keyboard": "/javascripts/designer-keyboard",
     "angular": "angular/angular.min"
   },
@@ -30,3 +28,4 @@ requirejs.config({
 });
 
 requirejs(["/javascripts/application.js"]);
+requirejs(["/javascripts/togetherjsSupport.js"]);
