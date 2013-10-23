@@ -34,15 +34,32 @@ app.engine('ejs', engine);
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
+
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
+
   app.use(express.favicon());
+
   app.use(express.logger('dev'));
-  app.use(express.bodyParser());
+
+  app.use(express.bodyParser())
+
+  app.use(express.cookieParser())
+
+  app.use(express.session({
+    secret: process.env['COOKIE_SECRET']
+  }));
+
   app.use(express.methodOverride());
+
   app.use(express.cookieParser(process.env['COOKIE_SECRET']));
-  app.use(express.session());
+
+  app.use(express.session({
+    secret: process.env['COOKIE_SECRET']
+  }));
+
   app.use(app.router);
+
   app.use(connect_fonts.setup({
     fonts: [ font_sourcesanspro ],
     allow_origin: process.env.ASSET_HOST,
@@ -54,8 +71,15 @@ app.configure(function(){
 
 app.configure('development', function(){
   app.use(express.errorHandler());
+  if (!process.env['PERSONA_AUDIENCE']){
+    console.log("Setting PERSONA_AUDIENCE to be http://localhost:" + app.get('port'));
+    process.env['PERSONA_AUDIENCE'] = 'http://localhost:' + app.get('port')
+  }
 });
 
+require("express-persona")(app, {
+  audience: process.env['PERSONA_AUDIENCE']
+});
 
 var store;
 var useSubdomains = false;

@@ -4,6 +4,7 @@
     <title><%= (typeof title === "undefined") ? "Welcome to Appmaker" : title %></title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
     <link rel="stylesheet" href="/stylesheets/animations.css" />
+    <link rel="stylesheet" href="/stylesheets/persona-buttons.css" />
     <link rel="stylesheet" href="/sourcesanspro-extralight,sourcesanspro-light,sourcesanspro-regular,sourcesanspro-semibold/fonts.css" />
 
     <link rel="component" type="text/ceci" href="<%= process.env.COMPONENTS_BASE_URL%>/package/all">
@@ -26,6 +27,11 @@
 
   </head>
   <body>
+    <div class="persona">
+      <a href="#" class="login persona-button"><span>Sign in with your Email</span></a>
+      <a href="#" class="logout persona-button"><span>Sign out</span></a>
+      <a href="#" class="account"><span></span></a>
+    </div>
     <%- body %>
   </body>
 </html>
