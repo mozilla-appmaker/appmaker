@@ -18,6 +18,8 @@ requirejs.config({
     "jquery-ui": "jquery-ui/ui/minified/jquery-ui.min",
 
     "designer-keyboard": "/javascripts/designer-keyboard",
+    "designer-utils": "/javascripts/designer-utils",
+
     "angular": "angular/angular.min"
   },
   shim: {
