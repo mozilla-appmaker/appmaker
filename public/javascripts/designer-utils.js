@@ -19,5 +19,5 @@ define(function() {
         ].join(',') +
       ")";
     }
-  }
+  };
 });
