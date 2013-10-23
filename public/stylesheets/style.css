@@ -1099,7 +1099,7 @@ li.tab {
 }
 
 .card.selected:only-child {
-  padding: 6px 10px 8px 10px;
+  padding: 0px 10px 0px 10px;
 }
 
 .card.selected:only-child .delete-card {
