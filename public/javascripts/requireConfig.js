@@ -16,6 +16,7 @@ requirejs.config({
     "togetherjs": "https://togetherjs.com/togetherjs",
     "togetherjsSupport": "/javascripts/togetherjsSupport",
     "angular": "angular/angular.min",
+    "designer-keyboard": "/javascripts/designer-keyboard",
     "persona": "https://login.persona.org/include"
   },
   shim: {
