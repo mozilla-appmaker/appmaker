@@ -42,9 +42,9 @@ app.configure(function(){
 
   app.use(express.logger('dev'));
 
-  app.use(express.bodyParser())
+  app.use(express.bodyParser());
 
-  app.use(express.cookieParser())
+  app.use(express.cookieParser());
 
   app.use(express.session({
     secret: process.env['COOKIE_SECRET']
@@ -73,7 +73,7 @@ app.configure('development', function(){
   app.use(express.errorHandler());
   if (!process.env['PERSONA_AUDIENCE']){
     console.log("Setting PERSONA_AUDIENCE to be http://localhost:" + app.get('port'));
-    process.env['PERSONA_AUDIENCE'] = 'http://localhost:' + app.get('port')
+    process.env['PERSONA_AUDIENCE'] = 'http://localhost:' + app.get('port');
   }
 });
 
