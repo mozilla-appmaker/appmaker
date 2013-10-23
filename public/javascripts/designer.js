@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["jquery", "ceci-app", "inflector", "ceci-ui", "jquery-ui"],
+  ["jquery", "ceci-app", "inflector", "ceci-ui", "jquery-ui", "designer-keyboard"],
   function($, Ceci, Inflector) {
     "use strict";
 
