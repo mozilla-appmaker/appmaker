@@ -15,9 +15,9 @@ requirejs.config({
     "jquery-ui": "jquery-ui/ui/minified/jquery-ui.min",
     "togetherjs": "https://togetherjs.com/togetherjs",
     "togetherjsSupport": "/javascripts/togetherjsSupport",
-    "persona": "https://login.persona.org/include"
+    "angular": "angular/angular.min",
     "designer-keyboard": "/javascripts/designer-keyboard",
-    "angular": "angular/angular.min"
+    "persona": "https://login.persona.org/include"
   },
   shim: {
     "jquery-ui": {

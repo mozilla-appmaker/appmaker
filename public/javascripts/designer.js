@@ -452,8 +452,20 @@ define(
       app.addCard();
     });
 
+    //Remove card and change selection
+    var removeCard = function (card) {
+      app.removeCard(card);
+      card.remove();
+      $(".cards .selected").remove();
+      $(".card").first().addClass('selected');
+      Ceci.fireChangeEvent();
+    };
+
     $('.cards').on("click",".delete-card",function(){
-      window.confirm("Delete this Page?");
+      var card = Ceci.currentCard;
+      if (window.confirm("Delete this Page?")) {
+        removeCard(card);
+      }
     });
 
     $('#duplicate-card').click(function(){
