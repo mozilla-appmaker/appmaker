@@ -454,11 +454,7 @@ define(
 
     //Remove card and change selection
     var removeCard = function (card) {
-      var component;
-      for (var i=3; i < card.elements.length; i++) {
-        component = card.elements[i];
-        component.removeSafely();
-      }
+      app.removeCard(card);
       card.remove();
       $(".cards .selected").remove();
       var newSelected = $($(".card")[0]);
@@ -468,7 +464,7 @@ define(
 
     $('.cards').on("click",".delete-card",function(){
       var card = Ceci.currentCard;
-      if (window.confirm("Delete this Page?")) { 
+      if (window.confirm("Delete this Page?")) {
         removeCard(card);
       }
     });
