@@ -464,7 +464,7 @@ define(
       var newSelected = $($(".card")[0]);
       newSelected.addClass('selected');
       Ceci.fireChangeEvent();
-    }
+    };
 
     $('.cards').on("click",".delete-card",function(){
       var card = Ceci.currentCard;
