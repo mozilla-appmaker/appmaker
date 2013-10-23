@@ -6,13 +6,17 @@ requirejs.config({
   baseUrl: "/vendor/",
   paths: {
     "inflector": "inflection-js/inflection.min",
+
     "jquery": "jquery/jquery.min",
+
     "ceci": "ceci/ceci",
     "ceci-ui": "ceci/ceci-ui",
     "ceci-cards": "ceci/ceci-cards",
     "ceci-app": "ceci/ceci-app",
     "ceci-utils": "ceci/ceci-utils",
+
     "jquery-ui": "jquery-ui/ui/minified/jquery-ui.min",
+
     "designer-keyboard": "/javascripts/designer-keyboard",
     "angular": "angular/angular.min"
   },
