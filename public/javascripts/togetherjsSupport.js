@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["togetherjs", "ceci", "jquery"],
+  ["https://togetherjyes.com/togetherjs", "ceci", "jquery"],
   function(TogetherJS, Ceci, $) {
     "use strict";
     // This enables alt-T alt-T to turn on TowTruck:
@@ -38,6 +38,8 @@ define(
         html: $("#flathead-app").html()
       });
     });
-
+  },
+  function(err){
+    console.log("Error loading TogetherJS. Likely a network disconnect.")
   }
 );
