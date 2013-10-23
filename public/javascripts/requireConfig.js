@@ -15,6 +15,7 @@ requirejs.config({
     "jquery-ui": "jquery-ui/ui/minified/jquery-ui.min",
     "togetherjs": "https://togetherjs.com/togetherjs",
     "togetherjsSupport": "/javascripts/togetherjsSupport",
+    "designer-keyboard": "/javascripts/designer-keyboard",
     "angular": "angular/angular.min"
   },
   shim: {
