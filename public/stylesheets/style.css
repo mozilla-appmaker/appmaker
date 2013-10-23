@@ -1034,7 +1034,7 @@ li.tab {
 }
 
 .cards {
-  padding-top: 16px;
+  padding-top: 20px;
   text-align: left;
   width: calc(100% - 550px);
   margin: 0 auto;
@@ -1046,16 +1046,21 @@ li.tab {
 .cards .add-card {
   color: white;
   display: inline-block;
-  background: #659d2e;
+  background: rgb(77, 178, 39);
   font-weight: bold;
+  width: 30px;
+  background-image: url(../images/add.png);
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .cards .add-card:hover {
-  background: #84c147;
+  background-color: #84c147;
 }
 
 .card-list {
   display: inline-block;
+  float: left;
 }
 
 .cards button {
@@ -1066,21 +1071,18 @@ li.tab {
 .add-card {
   margin-right: 5px;
   font-size: 1.6rem;
-  padding: 7px 15px;
   text-align: center;
   cursor: pointer;
   color: #888;
   display: inline-block;
+  float: left;
   background: #444;
   color: #999;
   border-radius: 2px 2px 0 0;
   position: relative;
-  padding: 6px 10px 8px 10px;
-}
-
-.add-card {
-  background: green;
-  padding: 6px 15px 8px 15px;
+  padding: 0px 10px;
+  height: 30px;
+  line-height: 30px;
 }
 
 .card .delete-card {
@@ -1120,7 +1122,7 @@ li.tab {
   color: #666;
   background-position: left center;
   background: #FFF;
-  padding: 6px 35px 8px 10px;
+  padding: 0px 30px 0px 10px;
 }
 
 .card.selected .delete-card {
