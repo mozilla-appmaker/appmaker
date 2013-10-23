@@ -2,14 +2,12 @@
 .persona-button{
   color: #fff;
   display: inline-block;
-  font-size: 14px;
-  font-family: Helvetica, Arial, sans-serif;
-  font-weight: bold;
+  height: 26px;
+  font-size: 16px;
   line-height: 1.1;
   overflow: hidden;
   position: relative;
   text-decoration: none;
-  text-shadow: 0 1px rgba(0,0,0,0.5), 0 0 2px rgba(0,0,0,0.2);
 
   background: #297dc3;
   background: -moz-linear-gradient(top, #43a6e2, #287cc2);
@@ -29,6 +27,10 @@
   -o-box-shadow:     0 1px 0 rgba(0,0,0,0.2);
   -webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.2);
   box-shadow:     0 1px 0 rgba(0,0,0,0.2);
+
+  position: fixed;
+  right: 240px;
+  top: 13px;
 }
 
 .persona-button:hover{
@@ -41,7 +43,6 @@
 }
 
 .persona-button:active, .persona-button:focus{
-  top: 1px;
   -moz-box-shadow:   none;
   -ms-box-shadow:   none;
   -o-box-shadow:     none;
