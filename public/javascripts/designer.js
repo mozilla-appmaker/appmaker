@@ -457,8 +457,7 @@ define(
       app.removeCard(card);
       card.remove();
       $(".cards .selected").remove();
-      var newSelected = $($(".card")[0]);
-      newSelected.addClass('selected');
+      $(".card").first().addClass('selected');
       Ceci.fireChangeEvent();
     };
 
