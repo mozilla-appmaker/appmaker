@@ -20,6 +20,8 @@ requirejs.config({
     "designer-keyboard": "/javascripts/designer-keyboard",
     "designer-utils": "/javascripts/designer-utils",
 
+    "togetherjs": "https://togetherjs.com/togetherjs-min",
+
     "angular": "angular/angular.min"
   },
   shim: {

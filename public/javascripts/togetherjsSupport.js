@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["https://togetherjyes.com/togetherjs", "ceci", "jquery"],
+  ["togetherjs", "ceci", "jquery"],
   function(TogetherJS, Ceci, $) {
     "use strict";
     // This enables alt-T alt-T to turn on TowTruck:
