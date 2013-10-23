@@ -451,7 +451,8 @@ define(
         card.text("Page " + (i + 1));
       });
 
-      $(".card").first().addClass('selected');
+      $("#card-thumb-1").addClass('selected');
+      $("#ceci-card-1").show();
       Ceci.fireChangeEvent();
     };
 
