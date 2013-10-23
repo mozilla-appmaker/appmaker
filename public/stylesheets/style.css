@@ -2942,7 +2942,7 @@ input#remix-panel-email {
 }
 
 .mode-discovery .tray .expand-handle {
-  background-image: url(../images/arrow-left.png); 
+  background-image: url(../images/arrow-left.png);
 }
 
 .mode-discovery .right-column .expand-handle {
@@ -2995,4 +2995,13 @@ input#remix-panel-email {
 .tray-preview img {
   width: 100%;
   margin-bottom: 10px;
+}
+
+.persona {
+}
+.persona .logout, .persona .account span, .persona .login {
+  z-index: 101;
+}
+.persona .logout, .persona .account {
+  display: none;
 }
