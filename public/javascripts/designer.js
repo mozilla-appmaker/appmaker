@@ -444,6 +444,13 @@ define(
       app.removeCard(card);
       card.remove();
       $(".cards .selected").remove();
+
+      $(".card-list .card").each(function(i, card){
+        card = $(card);
+        card.attr("id", "card-thumb-" + (i + 1));
+        card.text("Page " + (i + 1));
+      });
+
       $(".card").first().addClass('selected');
       Ceci.fireChangeEvent();
     };
