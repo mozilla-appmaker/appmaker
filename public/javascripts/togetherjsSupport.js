@@ -40,6 +40,6 @@ define(
     });
   },
   function(err){
-    console.log("Error loading TogetherJS. Likely a network disconnect.")
+    console.log("Error loading TogetherJS. Likely a network disconnect.");
   }
 );
