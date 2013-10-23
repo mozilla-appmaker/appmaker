@@ -3,8 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["jquery", "ceci-app", "inflector", "ceci-ui", "jquery-ui", "designer-keyboard"],
-  function($, Ceci, Inflector) {
+  ["jquery", "ceci-app", "inflector", "designer-utils", "ceci-ui", "jquery-ui", "designer-keyboard"],
+  function($, Ceci, Inflector, Utils) {
     "use strict";
 
     function Channel(name, title, hex) {
@@ -214,19 +214,6 @@ define(
     }
 
     var saveTimer = null;
-
-    function convertHex(hex,opacity){
-      hex = hex.replace('#','');
-      if (hex.length == 3) {
-        hex = hex[0]+hex[0] + hex[1]+hex[1]+hex[2]+hex[2];
-      }
-      var r = parseInt(hex.substring(0,2), 16);
-      var g = parseInt(hex.substring(2,4), 16);
-      var b = parseInt(hex.substring(4,6), 16);
-
-      var result = 'rgba('+r+','+g+','+b+','+opacity/100+')';
-      return result;
-    }
 
     // these options object makes components drag/droppable when passed
     // to the jQueryUI "sortable" function.
@@ -854,7 +841,7 @@ define(
         if (event.detail.channel) {
           var channel = getChannelByChannelName(event.detail.channel);
           channelthumb = $("<span class='channel'></span>");
-          channelthumb.css('backgroundColor', convertHex(channel.hex, 70));
+          channelthumb.css('backgroundColor', Utils.hexToRgb(channel.hex, 70));
         } else {
           channelthumb = $("<span class='channel'>&nbsp;</span>");
           channelthumb.css('backgroundColor', "#31353C");
