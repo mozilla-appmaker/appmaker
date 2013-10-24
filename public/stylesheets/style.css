@@ -1527,6 +1527,10 @@ ul.component-actions {
   background:  rgba(94,193,37,.05);
 }
 
+.component-card:hover .component-description {
+  background:  rgba(94,193,37,.08);
+}
+
 .component-card .add-tooltip {
   border-radius: 20px;
   -moz-border-radius: 20px;
@@ -1960,7 +1964,6 @@ span.channel {
   overflow-y: scroll;
   width: 100%;
   height: calc(100% - 50px);
-  margin-top: 50px;
 }
 
 #components {
@@ -2995,4 +2998,48 @@ input#remix-panel-email {
 .tray-preview img {
   width: 100%;
   margin-bottom: 10px;
+}
+
+.component-tags-wrapper {
+  padding: 10px 10px 5px 10px;
+  margin-top: 40px;
+  font-size: 13px;
+  color: #666;
+}
+
+.component-tags {
+  overflow: auto;
+}
+
+.component-tags-wrapper .see-all {
+  color: #2478b8;
+}
+
+.component-tags-wrapper .see-all:hover {
+  text-decoration: underline;
+}
+.component-tags .too-many {
+  display: none;
+}
+.component-tags div {
+  cursor: pointer;
+  display: inline-block;
+  background: #358CCE;
+  color: white;
+  margin: 0 4px 4px 0;
+  padding: 4px 6px;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  opacity: .5;
+  font-size: 13px;
+}
+
+.component-tags div span {
+  opacity: .4;
+  padding-left: 3px;
+  display: none;
+}
+
+.component-tags .active-tag {
+  opacity: 1;
 }

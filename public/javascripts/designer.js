@@ -14,6 +14,8 @@ define(
       this.hex = hex;
     }
 
+    var allTags = {};
+
     var channels = [
       new Channel('blue', 'Blue Moon', '#358CCE'),
       new Channel('red', 'Red Baloon', '#e81e1e'),
@@ -83,6 +85,9 @@ define(
               });
             }
           });
+
+          updateTags();
+
         },
         onCardChange: function (card) {
           var thumbId = "card-thumb-" + card.id.match(/(\d+)$/)[0];
@@ -159,7 +164,6 @@ define(
         fullList.append('<div class="lb"></div>');
         sortedComponentNames.forEach(function (name) {
           addComponentCard(components[name], name, componentList);
-          //addThumb(components[name], name, fullList);
         });
       };
     }
@@ -374,6 +378,11 @@ define(
       }
 
       var card = $('<div class="add-component component-card" name="'+name+'"><div class="add-tooltip">+</div></div>');
+      var tagList = component.tags;
+
+      card.data("tags",tagList);
+      card.attr("show",true);
+
       var descriptionColumn = $('<div class="component-description"><h1>' + prettyName(name) + '</h1><h6>'+ componentDescription +'</h6></div>');
       var preview = $('<div class="component-preview"><div class="image-wrapper">' + component.thumbnail.innerHTML + '</div><div class="add-component-overlay"></div></div>');
 
@@ -977,7 +986,6 @@ define(
       $('.component-description').remove();
     });
 
-
     $('.new').click(function(){
       $('.card').remove();
       clearSelection();
@@ -1081,28 +1089,191 @@ define(
       }
     }
 
+    function updateTags(){
+      //Build list and count of all tags
+      var allTags = {};
+      $(".component-card:visible").each(function(){
+        var tags = $(this).data("tags");
+        for(var i = 0; i < tags.length ; i++){
+          if(allTags[tags[i]]) {
+            allTags[tags[i]] = allTags[tags[i]] + 1;
+          } else {
+            allTags[tags[i]] = 1;
+          }
+        }
+      });
+      
+      //Add tag elements
+      var tagsContainer = $(".component-tags");
+      $(".component-tags div").remove();
+
+      //Tag display options
+      var threshold = 1; // minimum number of elements that have this tag before it's shown
+      var showTags = 6;
+      var sortBy = "count"; // sort by alphabetical or count
+      var k = 1;
+      
+      for (var tag in allTags) {
+        var tagEl = document.createElement("div");
+
+        $(tagEl).addClass("active-tag").attr("tag",tag).attr("count",allTags[tag]).html(tag + " <span>" + allTags[tag] + "</span>");
+        
+          if(allTags[tag]>threshold){
+            if(k > showTags) {    
+              $(tagEl).addClass("too-many");
+            }
+            tagsContainer.append(tagEl);
+            k++;  
+          }
+        
+
+        //Alphabetize it!
+        if(sortBy == "alpha") {
+          var firstChar = $(tagEl).text().charAt(0).toLowerCase();
+          var alphabetized = false;
+
+          while(alphabetized === false){
+            var currentIndex = $(tagEl).index();
+            var prev = $(".component-tags div:nth-child(" + currentIndex + ")");
+            if($(prev).text().charAt(0).toLowerCase() > firstChar){
+              $(prev).before($(tagEl));
+            } else {
+              alphabetized = true;
+            }
+          }
+        }//Alphabetized
+        
+        if(sortBy == "count") {
+          var thisCount = allTags[tag];
+          var sorted = false;
+
+          while(sorted === false){
+            var currentIndex = $(tagEl).index();
+            var prev = $(".component-tags div:nth-child(" + currentIndex + ")");
+            if(thisCount > prev.attr("count")){
+              $(prev).before($(tagEl));
+            } else {
+              sorted = true;
+            }
+          }
+        }//Alphabetized
+
+      
+      }
+
+    }
+
+    var keyTimer;
+    function clearTimer(){
+      window.clearTimeout(keyTimer);
+    }
     $(document).ready(function(){
       switchSourceView("HTML");
       changeEditableTab("customize");
+
+      $(".component-tags-wrapper").on("click",".see-all",function(){
+        $(this).hide();
+        $(".component-tags div").removeClass("too-many");
+      });
+
       $(".component-search").on("keydown",function(){
-        setTimeout(function(){
-          filterComponents($(".component-search").val());
-        },100);
+
+        if(keyTimer){
+          clearTimer();
+        }
+        keyTimer = window.setTimeout(function(){
+          filterBySearch($(".component-search").val());
+          clearTimer();
+        },300);
+      });
+      
+      $(".component-tags").on("click","div",function(){
+        
+        var tagNum = $(".component-tags div").length;
+        var activeTagNum = $(".component-tags .active-tag").length;
+
+        //This mode does multiple tags at once
+        // if(activeTagNum == tagNum) {
+        //   var tag = $(this).text();
+        //   $(".component-tags div").removeClass("active-tag");
+        //   $(this).addClass("active-tag");
+        // } else if (activeTagNum == 1 && $(this).hasClass("active-tag")){
+        //   $(".component-tags div").addClass("active-tag");
+        // } else {
+        //   $(this).toggleClass("active-tag");
+        // }
+
+        //This mode does one tag at a time
+        if(activeTagNum == 1 && $(this).hasClass("active-tag")) {
+          $(".component-tags div").addClass("active-tag");
+        } else {
+          var tag = $(this).text();
+          $(".component-tags div").removeClass("active-tag");
+          $(this).addClass("active-tag");
+        }
+
+        filterByTags();
       });
     });
 
-    function filterComponents(search){
-      var components = $(".component-card");
-      search = search.toLowerCase();
+    //Filtering by Tags should only show/hide results that have been first
+    //affected by the search.
+
+    function filterByTags(){
+      var activeTags = [];
+      $(".component-tags .active-tag").each(function(){
+        activeTags.push($(this).attr("tag"));
+      });
+      var components = $(".component-card[show=true]");
       components.each(function(){
-        var name = $(this).find("h1").text();
-        name = name.toLowerCase();
-        if(name.indexOf(search) >= 0){
+        var show = false;
+        var componentTags = $(this).data("tags");
+        for(var i = 0; i < activeTags.length; i++){
+          for(var j = 0; j < componentTags.length; j++){
+            if(activeTags[i] == componentTags[j]){
+              show = true;
+            }
+          }
+        }
+        if (show === true){
           $(this).show();
         } else {
           $(this).hide();
         }
       });
+
+    }
+
+    //Search
+    function filterBySearch(search){
+      var components = $(".component-card");
+      search = search.toLowerCase();
+      
+      components.each(function(){
+        var show = false;
+        $(this).hide();
+        var name = $(this).find("h1").text();
+
+        name = name.toLowerCase();
+
+        //If it's in the name
+        if(name.indexOf(search) >= 0){
+          show = true;
+        }
+        //Check against tags
+        var componentTags = $(this).data("tags");
+          for(var j = 0; j < componentTags.length; j++){
+            if(componentTags[j].indexOf(search) >= 0){
+              show = true;
+            }
+          }
+        if(show === true){
+          $(this).show();
+        }
+        $(this).attr("show",show);
+        updateTags();
+      });
+    
     }
 
     // View source menu
