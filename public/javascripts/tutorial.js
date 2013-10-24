@@ -55,7 +55,7 @@ function changeStep(step){
 
     case 2:
       skyC.show().addClass("component-selected");
-      
+
       skyC.find(".channel-ui .channel-options .channel").on("click",function(){
 
         skyC.removeClass("component-selected");
