@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%- localeInfo.lang %>" dir="<%- localeInfo.direction %>">
   <head>
-    <title><%= (typeof title === "undefined") ? "Welcome to Appmaker" : title %></title>
+    <title><%= (typeof title === "undefined") ? gettext("Welcome to Appmaker") : title %></title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
     <link rel="stylesheet" href="/stylesheets/animations.css" />
     <link rel="stylesheet" href="/stylesheets/persona-buttons.css" />
@@ -28,8 +28,8 @@
   </head>
   <body>
     <div class="persona">
-      <a href="#" class="login persona-button"><span>Sign in with your Email</span></a>
-      <a href="#" class="logout persona-button"><span>Sign out</span></a>
+      <a href="#" class="login persona-button"><span><%- gettext("Sign in with your Email") %></span></a>
+      <a href="#" class="logout persona-button"><span><%- gettext("Sign out") %></span></a>
       <a href="#" class="account"><span></span></a>
     </div>
     <%- body %>

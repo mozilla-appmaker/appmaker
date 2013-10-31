@@ -23,7 +23,8 @@
     "moniker": "~0.1.2",
     "node-uuid": "~1.4.1",
     "postmark": "0.2.0",
-    "express-persona": "~0.1.0"
+    "express-persona": "~0.1.0",
+    "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.8.tar.gz"
   },
   "engines": {
     "node": "~0.10.21",

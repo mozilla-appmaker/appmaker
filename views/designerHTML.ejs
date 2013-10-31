@@ -6,8 +6,8 @@
       <div class="add-card"></div>
     </div>
     <div class="nav-ui">
-      <button class="btn-std btn-md publish btn-critical">Publish</button>
-      <button class="btn-std btn-md new">New App</button>
+      <button class="btn-std btn-md publish btn-critical"><%- gettext("Publish") %></button>
+      <button class="btn-std btn-md new"><%- gettext("New App") %></button>
     </div>
   </nav>
   <div class="container animate-me">
@@ -42,7 +42,7 @@
   <div class="tray app-column animate-me">
     <div class="expand-handle"></div>
     <div class="modal-header">
-      <input type="text" class="component-search" placeholder="Search components..." />
+      <input type="text" class="component-search" placeholder="<%- gettext("Search components...") %>" />
     </div>
     <div id="components-wrapper">
       <div id="components"></div>
@@ -55,21 +55,21 @@
       <div class="editable-section">
         <div class="remix-ui">
           <h3>
-            Remixing
-            <a class="cancel-remix" title="Cancel remixing this widget." href="#">Cancel</a>
-            <a class="finish-remix" title="Refresh the widget to see your changes." href="#">Done</a>
-            <a class="save-remix" title="Refresh the widget to see your changes." href="#">Save</a>
+            <%- gettext("Remixing") %>
+            <a class="cancel-remix" title="<%- gettext("Cancel remixing this widget.") %>" href="#"><%- gettext("Cancel") %></a>
+            <a class="finish-remix" title="<%- gettext("Refresh the widget to see your changes.") %>" href="#"><%- gettext("Done") %></a>
+            <a class="save-remix" title="<%- gettext("Refresh the widget to see your changes.") %>" href="#"><%- gettext("Save") %></a>
           </h3>
           <div class="remix-wrapper">
-            <input class="component-name" type="text" placeholder="Component Name" value="my-remixed-widget"/>
+            <input class="component-name" type="text" placeholder="<%- gettext("Component Name") %>" value="my-remixed-widget"/>
           </div>
         </div>
       <div class="editable-header nonremix-ui">
         <span class="name"></span>
       </div>
       <div class="trey-tabs">
-        <a class="selected-tab" tab="customize" href="#">Customize</a>
-        <a tab="view-source" href="#">View Source</a>
+        <a class="selected-tab" tab="customize" href="#"><%- gettext("Customize") %></a>
+        <a tab="view-source" href="#"><%- gettext("View Source") %></a>
       </div>
       <div class="tab-sections">
         <div class="section section-customize">
@@ -77,18 +77,18 @@
         </div>
         <div class="section section-view-source">
           <div class="view-source-menu">
-            <a source="HTML" class="selected" href="#">HTML</a>
-            <a source="JS" href="#">JS</a>
-            <a source="CSS" href="#">CSS</a>
-            <a source="info" href="#">Info</a>
+            <a source="HTML" class="selected" href="#"><%- gettext("HTML") %></a>
+            <a source="JS" href="#"><%- gettext("JS") %></a>
+            <a source="CSS" href="#"><%- gettext("CSS") %></a>
+            <a source="info" href="#"><%- gettext("Info") %></a>
           </div>
           <div class="view-source-items">
             <p class="remix-helper">
-              Edit the source to Remix this component!
-              - <a class="dismiss-note" href="#">OK!</a>
+              <%- gettext("Edit the source to Remix this component!") %>
+              - <a class="dismiss-note" href="#"><%- gettext("OK!") %></a>
             </p>
             <div class="source-type" source="HTML">
-              <textarea><p>Here is some HTML to edit</p></textarea>
+              <textarea><p><%- gettext("Here is some HTML to edit") %></p></textarea>
             </div>
             <div class="source-type" source="JS">
               <textarea source="JS">widget.load();</textarea>
@@ -97,8 +97,8 @@
               <textarea>.widget { display: awesome:}</textarea>
             </div>
             <div class="source-type" source="info">
-              <label>Component Description</label>
-              <input type="text" value="This is the component description" />
+              <label><%- gettext("Component Description") %></label>
+              <input type="text" value="<%- gettext("This is the component description") %>" />
             </div>
           </div>
         </div>
@@ -135,8 +135,8 @@
   <div class="modal-wrapper hidden flex">
     <div class="modal" id="component-discovery-modal">
       <div class="modal-header">
-        Search <input type="text" class="component-search" placehodler="Search for a component" />
-        <button class="done">Done</button>
+        <%- gettext("Search") %> <input type="text" class="component-search" placehodler="<%- gettext("Search for a component") %>" />
+        <button class="done"><%- gettext("Done") %></button>
       </div>
       <div id="components-wrapper">
         <div id="components"></div>
@@ -145,26 +145,26 @@
     <div class="modal publishdialog">
       <div class="modal-inner">
         <div class="spinner hidden">
-          <h2>Loading…</h2>
+          <h2><%- gettext("Loading...") %></h2>
           <div class="clearfix">
-            Publishing your app on the internets.
+            <%- gettext("Publishing your app on the internets.") %>
           </div>
         </div>
         <div class="failure hidden">
-          <h2>Uh-oh…</h2>
+          <h2><%- gettext("Uh-oh...") %></h2>
           <div class="clearfix">
-            Your app couldn't be published.  The server said:
+            <%- gettext("Your app couldn't be published.  The server said:") %>
             <pre class="message"></pre>
           </div>
         </div>
         <div class="success hidden">
-          <h2>Success!</h2>
+          <h2><%- gettext("Success!") %></h2>
           <div class="clearfix">
-            Your app has been published to <a class="modal-publish-link" target="_blank"></a>
+            <%- gettext("Your app has been published to") %>
           </div>
         </div>
         <button class="btn-std return-btn">
-          Return to app
+          <%- gettext("Return to app") %>
         </button>
       </div>
     </div>
@@ -172,13 +172,13 @@
 
   <div class="game-status">
     <div class="wrapper level-finished">
-      <h2>Congratulations!</h2>
-      <h1>You completed Level <span class="level-number"></span></h1>
+      <h2><%- gettext("Congratulations!") %></h2>
+      <h1><%- gettext("You completed Level") %></h1>
       <div>
-      <p>You've been promoted to...</p>
+      <p><%- gettext("You've been promoted to...") %></p>
       <div class="player-rank"></div>
       </div>
-      <a class="next-level green-button" href="#">Continue</a>
+      <a class="next-level green-button" href="#"><%- gettext("Continue") %></a>
       <div class="mailman-head"></div>
     </div>
 

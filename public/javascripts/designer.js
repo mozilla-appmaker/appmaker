@@ -3,8 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["jquery", "ceci-app", "inflector", "designer-utils", "ceci-ui", "jquery-ui", "designer-keyboard"],
-  function($, Ceci, Inflector, Utils) {
+  ["jquery", "localized", "ceci-app", "inflector", "designer-utils", "ceci-ui", "jquery-ui", "designer-keyboard"],
+  function($, localized, Ceci, Inflector, Utils) {
     "use strict";
 
     function Channel(name, title, hex) {
@@ -96,7 +96,7 @@ define(
 
           // create card thumbnail
           var cardNumber = $(".card").length + 1;
-          var newthumb = $('<div class="card">Page ' + cardNumber + '<a title="Delete this card" href="#" class="delete-card"></a></div>');
+          var newthumb = $('<div class="card">' + localized.get("Page") + cardNumber + '<a title="' + localized.get("Delete this card") + '" href="#" class="delete-card"></a></div>');
           newthumb.attr('id', "card-thumb-" + cardNumber);
           newthumb.click(function() {
             card.show();
@@ -179,9 +179,13 @@ define(
                 var tmpContainer = document.createElement('div');
                 tmpContainer.innerHTML = data;
                 $('#flathead-app').html(tmpContainer.querySelector('#flathead-app').innerHTML);
-                init();
+                localized.ready(function(){
+                  init();
+                });
               }).fail(function () {
-                init();
+                localized.ready(function(){
+                  init();
+                });
               });
           }
           else if ((match = window.location.search.match(/[?&]remix=([\w-_\.]+)/)) && match[1]) {
@@ -192,25 +196,37 @@ define(
                 if (tmpContainer.querySelector('#flathead-app')) {
                   $('#flathead-app').html(tmpContainer.querySelector('#flathead-app').innerHTML);
                 }
-                init();
+                localized.ready(function(){
+                  init();
+                });
               }).fail(function () {
-                init();
+                localized.ready(function(){
+                  init();
+                });
               });
           }
           else {
-            init();
+            localized.ready(function(){
+              init();
+            });
           }
       }
       else if (localStorage.draft){
         $('#flathead-app').html(localStorage.draft);
-        init();
+        localized.ready(function(){
+          init();
+        });
       }
       else {
-        init();
+        localized.ready(function(){
+          init();
+        });
       }
     }
     else {
-      init();
+      localized.ready(function(){
+        init();
+      });
     }
 
     var saveTimer = null;
@@ -458,7 +474,7 @@ define(
 
     $('.cards').on("click",".delete-card",function(){
       var card = Ceci.currentCard;
-      if (window.confirm("Delete this Page?")) {
+      if (window.confirm(localized.get("Delete this Page?"))) {
         removeCard(card);
       }
     });
