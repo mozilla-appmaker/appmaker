@@ -32,136 +32,138 @@ define(
     var remixUrl = document.querySelector('#appmaker-remix-url').value;
 
     function init () {
-      app = new Ceci.App({
-        defaultChannels: channels.map(function (c) { return c.name; }),
-        container: $('#flathead-app')[0],
-        onComponentAdded: function (component) {
-          component = $(component);
+      localized.ready(function(){
+        app = new Ceci.App({
+          defaultChannels: channels.map(function (c) { return c.name; }),
+          container: $('#flathead-app')[0],
+          onComponentAdded: function (component) {
+            component = $(component);
 
-          var dropTarget = $(".drophere").find(".draggable");
-          dropTarget.replaceWith(component);
+            var dropTarget = $(".drophere").find(".draggable");
+            dropTarget.replaceWith(component);
 
-          component.addClass("component");
-          component.draggable({
-            handle: 'handle'
-          });
+            component.addClass("component");
+            component.draggable({
+              handle: 'handle'
+            });
 
-          component.on('mousedown', function(evt) {
-            selectComponent($(evt.currentTarget));
-          });
+            component.on('mousedown', function(evt) {
+              selectComponent($(evt.currentTarget));
+            });
 
-          component.append($('<div class="handle"></div>'));
+            component.append($('<div class="handle"></div>'));
 
-          selectComponent(component);
-        },
-        onload: function (components) {
-          this.sortComponents();
-          Ceci.registerCeciPlugin("onChange", function(){
-            if (saveTimer) {
-              clearTimeout(saveTimer);
-            }
-            saveTimer = setTimeout(saveApp, 500);
-          });
-          // document.addEventListener("onselectionchanged", app.sortComponents);
-          $('.library-list').removeClass("library-loading");
-          $('.drophere').sortable(sortableOptions);
-          $('.garbage-bin').droppable({
-            tolerance : "touch",
-            over : function( event, ui ) {
-              $(this).addClass("garbage-open");
-              $(".ui-state-highlight").hide();
-            },
-            out : function( event, ui ) {
-              $(this).removeClass("garbage-open");
-              $(".ui-state-highlight").show();
-            },
-            drop : function( event, ui ) {
-              var elements = selection.slice();
-              clearSelection();
-              elements.forEach(function(element) {
-                element.removeSafely();
-              });
-            }
-          });
-        },
-        onCardChange: function (card) {
-          var thumbId = "card-thumb-" + card.id.match(/(\d+)$/)[0];
-          $(".card").removeClass('selected');
-          $("#" + thumbId).addClass('selected');
-        },
-        onCardAdded: function (card) {
-          Array.prototype.forEach.call(card.children, function (element) {
-            element.classList.add('drophere');
-          });
+            selectComponent(component);
+          },
+          onload: function (components) {
+            this.sortComponents();
+            Ceci.registerCeciPlugin("onChange", function(){
+              if (saveTimer) {
+                clearTimeout(saveTimer);
+              }
+              saveTimer = setTimeout(saveApp, 500);
+            });
+            // document.addEventListener("onselectionchanged", app.sortComponents);
+            $('.library-list').removeClass("library-loading");
+            $('.drophere').sortable(sortableOptions);
+            $('.garbage-bin').droppable({
+              tolerance : "touch",
+              over : function( event, ui ) {
+                $(this).addClass("garbage-open");
+                $(".ui-state-highlight").hide();
+              },
+              out : function( event, ui ) {
+                $(this).removeClass("garbage-open");
+                $(".ui-state-highlight").show();
+              },
+              drop : function( event, ui ) {
+                var elements = selection.slice();
+                clearSelection();
+                elements.forEach(function(element) {
+                  element.removeSafely();
+                });
+              }
+            });
+          },
+          onCardChange: function (card) {
+            var thumbId = "card-thumb-" + card.id.match(/(\d+)$/)[0];
+            $(".card").removeClass('selected');
+            $("#" + thumbId).addClass('selected');
+          },
+          onCardAdded: function (card) {
+            Array.prototype.forEach.call(card.children, function (element) {
+              element.classList.add('drophere');
+            });
 
-          // create card thumbnail
-          var cardNumber = $(".card").length + 1;
-          var newthumb = $('<div class="card">' + localized.get("Page") + cardNumber + '<a title="' + localized.get("Delete this card") + '" href="#" class="delete-card"></a></div>');
-          newthumb.attr('id', "card-thumb-" + cardNumber);
-          newthumb.click(function() {
+            // create card thumbnail
+            var cardNumber = $(".card").length + 1;
+            var newthumb = $('<div class="card">' + localized.get("Page") + cardNumber + '<a title="' + localized.get("Delete this card") + '" href="#" class="delete-card"></a></div>');
+            newthumb.attr('id', "card-thumb-" + cardNumber);
+            newthumb.click(function() {
+              card.show();
+            });
+            $(".card-list").append(newthumb);
+            $('.drophere').sortable(sortableOptions);
             card.show();
-          });
-          $(".card-list").append(newthumb);
-          $('.drophere').sortable(sortableOptions);
-          card.show();
-        }
-      });
-
-      app.sortComponents = function() {
-        var components = Ceci._components;
-        var sortedComponentNames = Object.keys(components);
-        sortedComponentNames.sort();
-        var componentList = $('#components');
-        componentList.html('');
-        var fullList = $('.library-list');
-        fullList.html('');
-        fullList.append('<div class="suggested-components heading">Suggested</div>');
-        var suggestionCount = 0;
-
-        var suggestions = [];
-        var suggestors =  [];
-        var friends = [];
-        var component;
-        var i,j;
-        for (i=0; i < selection.length; i++) {
-          suggestors.push(selection[i].localName);
-        }
-        for (i=0; i < suggestors.length; i++) {
-          component = suggestors[i];
-          friends = components[component].friends;
-          if (friends) {
-            for (j=0; j<friends.length; j++) {
-              suggestions.push(friends[j]);
-            }
           }
-        }
-        var card = Ceci.currentCard;
-        for (i=0; i < card.elements.length; i++) {
-          component = card.elements[i];
-          friends = component.friends;
-          if (friends) {
-            for (j=0; j<friends.length; j++) {
-              suggestions.push(friends[j]);
-            }
-          }
-        }
-        /* these are what we suggest with a blank app */
-        // suggestions.push('app-fireworks');
-        // suggestions.push('app-button');
-        var alreadyMadeSuggestions = {};
-        var suggestion;
-        for (i = 0; i < Math.min(10, suggestions.length); i++) {
-          suggestion = suggestions[i];
-          if (suggestion in alreadyMadeSuggestions) continue;
-          addThumb(components[suggestion], suggestion, fullList);
-          alreadyMadeSuggestions[suggestion] = true;
-        }
-        fullList.append('<div class="lb"></div>');
-        sortedComponentNames.forEach(function (name) {
-          addComponentCard(components[name], name, componentList);
-          //addThumb(components[name], name, fullList);
         });
-      };
+
+        app.sortComponents = function() {
+          var components = Ceci._components;
+          var sortedComponentNames = Object.keys(components);
+          sortedComponentNames.sort();
+          var componentList = $('#components');
+          componentList.html('');
+          var fullList = $('.library-list');
+          fullList.html('');
+          fullList.append('<div class="suggested-components heading">Suggested</div>');
+          var suggestionCount = 0;
+
+          var suggestions = [];
+          var suggestors =  [];
+          var friends = [];
+          var component;
+          var i,j;
+          for (i=0; i < selection.length; i++) {
+            suggestors.push(selection[i].localName);
+          }
+          for (i=0; i < suggestors.length; i++) {
+            component = suggestors[i];
+            friends = components[component].friends;
+            if (friends) {
+              for (j=0; j<friends.length; j++) {
+                suggestions.push(friends[j]);
+              }
+            }
+          }
+          var card = Ceci.currentCard;
+          for (i=0; i < card.elements.length; i++) {
+            component = card.elements[i];
+            friends = component.friends;
+            if (friends) {
+              for (j=0; j<friends.length; j++) {
+                suggestions.push(friends[j]);
+              }
+            }
+          }
+          /* these are what we suggest with a blank app */
+          // suggestions.push('app-fireworks');
+          // suggestions.push('app-button');
+          var alreadyMadeSuggestions = {};
+          var suggestion;
+          for (i = 0; i < Math.min(10, suggestions.length); i++) {
+            suggestion = suggestions[i];
+            if (suggestion in alreadyMadeSuggestions) continue;
+            addThumb(components[suggestion], suggestion, fullList);
+            alreadyMadeSuggestions[suggestion] = true;
+          }
+          fullList.append('<div class="lb"></div>');
+          sortedComponentNames.forEach(function (name) {
+            addComponentCard(components[name], name, componentList);
+            //addThumb(components[name], name, fullList);
+          });
+        };
+      });
     }
 
     Ceci.registerCeciPlugin('onElementRemoved', function(element){
@@ -179,13 +181,9 @@ define(
                 var tmpContainer = document.createElement('div');
                 tmpContainer.innerHTML = data;
                 $('#flathead-app').html(tmpContainer.querySelector('#flathead-app').innerHTML);
-                localized.ready(function(){
-                  init();
-                });
+                init();
               }).fail(function () {
-                localized.ready(function(){
-                  init();
-                });
+                init();
               });
           }
           else if ((match = window.location.search.match(/[?&]remix=([\w-_\.]+)/)) && match[1]) {
@@ -196,37 +194,25 @@ define(
                 if (tmpContainer.querySelector('#flathead-app')) {
                   $('#flathead-app').html(tmpContainer.querySelector('#flathead-app').innerHTML);
                 }
-                localized.ready(function(){
-                  init();
-                });
+                init();
               }).fail(function () {
-                localized.ready(function(){
-                  init();
-                });
+                init();
               });
           }
           else {
-            localized.ready(function(){
-              init();
-            });
+            init();
           }
       }
       else if (localStorage.draft){
         $('#flathead-app').html(localStorage.draft);
-        localized.ready(function(){
-          init();
-        });
+        init();
       }
       else {
-        localized.ready(function(){
-          init();
-        });
+        init();
       }
     }
     else {
-      localized.ready(function(){
-        init();
-      });
+      init();
     }
 
     var saveTimer = null;
