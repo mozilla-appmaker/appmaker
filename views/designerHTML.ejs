@@ -191,30 +191,30 @@
         <div class="current-level"></div>
       </div>
 
-      <h3 class="objective">Your Mission</h3>
+      <h3 class="objective"><%- gettext("Your Mission") %></h3>
       <div class="step-list"></div>
-      <a class="start green-button" href="#">START</a>
+      <a class="start green-button" href="#"><%- gettext("START") %></a>
       <div class="sub-links">
-        <a class="optout" href="#">I don't want to play :(</a> - <a class="restart" href="#">Start Over</a>
+        <%- gettext("start over do not want") %>
       </div>
       <div class="mailman-head"></div>
     </div>
 
     <div class="wrapper game-finished">
-      <h2>You win!</h2>
-      <h1>You've been promoted to Postmaster!</h1>
-      <p>Go forth and build apps!</p>
-      <a class="green-button endgame" href="#">I'm Ready</a>
+      <h2><%- gettext("You win!") %></h2>
+      <h1><%- gettext("You've been promoted to Postmaster!") %></h1>
+      <p><%- gettext("Go forth and build apps!") %></p>
+      <a class="green-button endgame" href="#"><%- gettext("I'm Ready") %></a>
     </div>
 
 
     <div class="wrapper level-status">
-      <a class="optout" href="#">I quit!</a>
+      <a class="optout" href="#"><%- gettext("I quit!") %></a>
       <a class="show-hints" href="#"></a>
       <div><span class="level-number"></span> - <span class="level-name"></span></div>
       <div class="step-list"></div>
       <div class="hint">
-        <strong>Hint:</strong> <span class="hint-text">What you gotta do, is what you gotta do!</span>
+        <%- gettext("hint") %>
         <div class="arrow"></div>
       </div>
     </div>
