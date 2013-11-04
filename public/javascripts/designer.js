@@ -1204,17 +1204,6 @@ define(
         var tagNum = $(".component-tags div").length;
         var activeTagNum = $(".component-tags .active-tag").length;
 
-        //This mode does multiple tags at once
-        // if(activeTagNum == tagNum) {
-        //   var tag = $(this).text();
-        //   $(".component-tags div").removeClass("active-tag");
-        //   $(this).addClass("active-tag");
-        // } else if (activeTagNum == 1 && $(this).hasClass("active-tag")){
-        //   $(".component-tags div").addClass("active-tag");
-        // } else {
-        //   $(this).toggleClass("active-tag");
-        // }
-
         //This mode does one tag at a time
         if(activeTagNum == 1 && $(this).hasClass("active-tag")) {
           $(".component-tags div").addClass("active-tag");
