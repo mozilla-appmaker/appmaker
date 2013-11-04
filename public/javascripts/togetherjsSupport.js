@@ -38,6 +38,8 @@ define(
         html: $("#flathead-app").html()
       });
     });
-
+  },
+  function(err){
+    console.log("Error loading TogetherJS. Likely a network disconnect.");
   }
 );
