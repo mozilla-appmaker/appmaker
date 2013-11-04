@@ -1127,14 +1127,15 @@ define(
 
         $(tagEl).addClass("active-tag").attr("tag",tag).attr("count",allTags[tag]).html(tag + " <span>" + allTags[tag] + "</span>");
         
-          if(allTags[tag]>threshold){
-
-            if(tagCount > showTags) {
-              $(tagEl).addClass("too-many");
-            }
-            tagsContainer.append(tagEl);
-            tagCount++;
+        if(allTags[tag]>threshold){
+          if(tagCount > showTags) {
+            $(tagEl).addClass("too-many");
           }
+          tagsContainer.append(tagEl);
+          tagCount++;
+        }
+
+        var currentIndex,prev;
 
         //Alphabetize it!
         if(sortBy == "alpha") {
@@ -1142,8 +1143,8 @@ define(
           var alphabetized = false;
 
           while(alphabetized === false){
-            var currentIndex = $(tagEl).index();
-            var prev = $(".component-tags div:nth-child(" + currentIndex + ")");
+            currentIndex = $(tagEl).index();
+            prev = $(".component-tags div:nth-child(" + currentIndex + ")");
             if($(prev).text().charAt(0).toLowerCase() > firstChar){
               $(prev).before($(tagEl));
             } else {
@@ -1157,8 +1158,8 @@ define(
           var sorted = false;
 
           while(sorted === false){
-            var currentIndex = $(tagEl).index();
-            var prev = $(".component-tags div:nth-child(" + currentIndex + ")");
+            currentIndex = $(tagEl).index();
+            prev = $(".component-tags div:nth-child(" + currentIndex + ")");
             if(thisCount > prev.attr("count")){
               $(prev).before($(tagEl));
             } else {
@@ -1169,9 +1170,9 @@ define(
       }
 
       if(tagCount > 0){
-        $(".component-tags-wrapper").show()
+        $(".component-tags-wrapper").show();
       } else {
-        $(".component-tags-wrapper").hide()
+        $(".component-tags-wrapper").hide();
       }
 
       if(tagCount > showTags) {
