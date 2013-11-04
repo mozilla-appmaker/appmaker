@@ -1091,6 +1091,8 @@ define(
 
     function updateTags(){
       //Build list and count of all tags
+      $(".component-tags-wrapper").hide();
+
       var allTags = {};
       $(".component-card:visible").each(function(){
         var tags = $(this).data("tags");
@@ -1108,10 +1110,10 @@ define(
       $(".component-tags div").remove();
 
       //Tag display options
-      var threshold = 1; // minimum number of elements that have this tag before it's shown
-      var showTags = 6;
+      var threshold = 0; // minimum number of elements that have this tag before it's shown
+      var showTags = 8;
       var sortBy = "count"; // sort by alphabetical or count
-      var k = 1;
+      var tagCount = 0;
       
       for (var tag in allTags) {
         var tagEl = document.createElement("div");
@@ -1119,13 +1121,13 @@ define(
         $(tagEl).addClass("active-tag").attr("tag",tag).attr("count",allTags[tag]).html(tag + " <span>" + allTags[tag] + "</span>");
         
           if(allTags[tag]>threshold){
-            if(k > showTags) {    
+
+            if(tagCount > showTags) {
               $(tagEl).addClass("too-many");
             }
             tagsContainer.append(tagEl);
-            k++;  
+            tagCount++;
           }
-        
 
         //Alphabetize it!
         if(sortBy == "alpha") {
@@ -1157,8 +1159,18 @@ define(
             }
           }
         }//Alphabetized
+      }
 
-      
+      if(tagCount > 0){
+        $(".component-tags-wrapper").show()
+      } else {
+        $(".component-tags-wrapper").hide()
+      }
+
+      if(tagCount > showTags) {
+        $(".see-all").show();
+      } else {
+        $(".see-all").hide();
       }
 
     }
