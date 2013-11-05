@@ -133,7 +133,8 @@ app.get('/store/uuid', function (req, res) {
   res.send(uuid.v1());
 });
 
-// Localized Strings
+// This is a route that we use for client-side localization to return the JSON
+// when we do the XHR request to this route.
 app.get( "/strings/:lang?", i18n.stringsRoute( "en-US" ) );
 
 app.post('/publish', routes.publish.publish);
