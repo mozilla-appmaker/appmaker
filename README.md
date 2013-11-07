@@ -12,7 +12,11 @@ Running the Server
 
 ### Dependencies
 
-Execute `npm install` in the application directory:
+You must have `bower` installed globally on your machine:
+
+Excecute `sudo npm install bower -g` (Mac & *nix users)
+
+Then you can execute `npm install` in the application directory:
 
 Get the submodules:
 

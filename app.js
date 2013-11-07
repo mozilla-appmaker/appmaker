@@ -13,7 +13,8 @@ path = require('path'),
 uuid = require('node-uuid'),
 connect_fonts = require('connect-fonts'),
 font_sourcesanspro = require('connect-fonts-sourcesanspro'),
-postmark = require("postmark")(process.env.POSTMARK_API_KEY);
+postmark = require("postmark")(process.env.POSTMARK_API_KEY),
+i18n = require("webmaker-i18n");
 
 var urls = require('./lib/urls');
 var localStore = require('./lib/local-store');
@@ -37,6 +38,17 @@ app.configure(function(){
 
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
+
+  // Setup locales with i18n
+  app.use(i18n.middleware({
+    supported_languages: ["en-US", "th-TH"],
+    default_lang: "en-US",
+    mappings: { 
+      "en": "en-US",
+      "th": "th-TH"
+     },
+    translation_directory: path.resolve( __dirname, "locale" )
+  }));
 
   app.use(express.favicon());
 
@@ -120,6 +132,10 @@ app.get('/store/uuid', function (req, res) {
   res.setHeader('Content-Type', 'text/plain');
   res.send(uuid.v1());
 });
+
+// This is a route that we use for client-side localization to return the JSON
+// when we do the XHR request to this route.
+app.get( "/strings/:lang?", i18n.stringsRoute( "en-US" ) );
 
 app.post('/publish', routes.publish.publish);
 

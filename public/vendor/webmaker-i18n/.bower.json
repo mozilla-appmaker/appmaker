@@ -1,0 +1,19 @@
+{
+  "name": "webmaker-i18n",
+  "version": "0.0.2",
+  "main": "localized.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "example"
+  ],
+  "_cacheHeaders": {
+    "Content-Length": "17407",
+    "Content-Type": "application/x-gzip",
+    "Content-Disposition": "attachment; filename=node-webmaker-i18n-0.2.8.tar.gz"
+  },
+  "_source": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.8.tar.gz",
+  "_target": "*",
+  "_originalSource": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.8.tar.gz"
+}

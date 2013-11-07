@@ -14,6 +14,7 @@
   "dependencies": {
     "connect-fonts": "~0.0.10",
     "connect-fonts-sourcesanspro": "0.0.3",
+    "bower": "1.2.7",
     "express": "~3.3.4",
     "ejs-locals": "~1.0.2",
     "jsdom": "~0.8.6",
@@ -23,7 +24,8 @@
     "moniker": "~0.1.2",
     "node-uuid": "~1.4.1",
     "postmark": "0.2.0",
-    "express-persona": "~0.1.0"
+    "express-persona": "~0.1.0",
+    "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.8.tar.gz"
   },
   "engines": {
     "node": "~0.10.21",
@@ -36,6 +38,7 @@
     "grunt-contrib-csslint": "~0.1.2"
   },
   "scripts": {
-    "test": "grunt"
+    "test": "grunt",
+    "postinstall": "./node_modules/.bin/bower install"
   }
 }

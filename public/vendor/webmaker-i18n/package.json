@@ -1,0 +1,21 @@
+{
+  "name": "webmaker-i18n",
+  "version": "0.2.8",
+  "description": "Webmaker Localization Components for node.js and the browser",
+  "main": "./i18n.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mozilla/node-webmaker-i18n.git"
+  },
+  "keywords": [
+    "webmaker"
+  ],
+  "dependencies": {
+    "lodash": "2.2.1"
+  },
+  "author": "The Webmaker Team <webmaker-dev@mozilla.org>",
+  "license": "MPL-2.0"
+}

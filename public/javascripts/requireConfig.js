@@ -9,6 +9,7 @@ requirejs.config({
 
     "jquery": "jquery/jquery.min",
 
+    "localized": "webmaker-i18n/localized",
     "ceci": "ceci/ceci",
     "ceci-ui": "ceci/ceci-ui",
     "ceci-cards": "ceci/ceci-cards",

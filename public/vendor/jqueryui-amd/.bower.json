@@ -1,0 +1,14 @@
+{
+  "name": "jqueryui-amd",
+  "homepage": "https://github.com/jrburke/jqueryui-amd",
+  "version": "0.0.2",
+  "_release": "0.0.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.2",
+    "commit": "8e94333bf7dbb46a3e80c579b62faf23720812ec"
+  },
+  "_source": "git://github.com/jrburke/jqueryui-amd.git",
+  "_target": "~0.0.2",
+  "_originalSource": "jqueryui-amd"
+}

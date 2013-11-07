@@ -1,0 +1,11 @@
+{
+  "name": "webmaker-i18n",
+  "version": "0.0.2",
+  "main": "localized.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "example"
+  ]
+}

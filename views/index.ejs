@@ -10,19 +10,19 @@
 <div class="home-logo">
 	<img src="images/chef-man.png">
 	<div class="app-logo">
-		Appmaker
+		<%- gettext("app-logo") %>
 	</div>
 	<div class="home-sub">
-		Make amazing mobile apps
+		<%- gettext("home-sub") %>
 	</div>
 </div>
 <div class="home-container clearfix">
 	<div class="home-left">
 		<div class="explanation">
-			We want to make it possible for anyone to make amazing personal mobile apps. 
+			<%- gettext("explanation") %>
 		</div>
-			  <button class="btn-std btn-start-app" onclick="window.location='/designer'">
-  		Build App
+			  <button class="btn-std btn-start-app" onclick="window.location='/<%- localeInfo.lang %>/designer'">
+  		<%- gettext("Build App") %>
 		</button>
 		<a href="https://github.com/mozilla/appmaker" target="_blank"><div class="github"></div></a>
 		<a href="https://twitter.com/MozillaAppmaker" target="_blank"><div class="twitter"></div></a>
