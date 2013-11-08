@@ -1167,7 +1167,7 @@ define(
         }//Alphabetized
       }
 
-      $(".component-tags-wrapper div:gt("+parseInt(showTags-1)+")").each(function(){
+      $(".component-tags-wrapper div:gt("+parseInt(showTags-1,10)+")").each(function(){
         $(this).addClass("too-many");
       });
 
@@ -1178,7 +1178,7 @@ define(
       }
 
       if(tagCount > showTags) {
-        $(".see-all").show()
+        $(".see-all").show();
       } else {
         $(".see-all").hide();
         $(".see-fewer").hide();
