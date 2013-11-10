@@ -20,6 +20,7 @@
     "ejs-locals": "~1.0.2",
     "jsdom": "~0.8.6",
     "knox": "~0.8.6",
+    "lynx": "~0.0.11",
     "makeapi-client": "https://github.com/mozilla/makeapi-client/tarball/v0.5.10",
     "mkdirp": "0.3.5",
     "moniker": "~0.1.2",
