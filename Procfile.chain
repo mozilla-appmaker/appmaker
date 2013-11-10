@@ -1,2 +1,2 @@
-web: node app.js
+web: node app.js -p $PORT
 statsd: node node_modules/statsd/stats.js appmakerStatsConfig.js
