@@ -8,6 +8,8 @@ var ejs = require('ejs-locals/node_modules/ejs');
 var fs = require('fs');
 var path = require('path');
 var verify = require('../lib/verify');
+var lynx = require('lynx');
+var metrics = new lynx('localhost', 8125);
 
 module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
   var templates = {
@@ -125,6 +127,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
             }
           }, description.contentType);
         });
+        metrics.increment('appmaker.app_published');
       });
     }
   };

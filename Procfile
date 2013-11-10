@@ -1,1 +1,1 @@
-web: node app.js
+web: node node_modules/norman/bin/norman -f Procfile.chain start
