@@ -16,6 +16,8 @@ font_sourcesanspro = require('connect-fonts-sourcesanspro'),
 postmark = require("postmark")(process.env.POSTMARK_API_KEY),
 i18n = require("webmaker-i18n");
 
+console.log("$PORT =", env.PORT);
+
 var urls = require('./lib/urls');
 var localStore = require('./lib/local-store');
 var s3Store = require('./lib/s3-store');
