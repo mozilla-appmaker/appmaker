@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+console.log("$PORT =", process.env.PORT);
 
 var
 express = require('express'),
@@ -16,7 +17,6 @@ font_sourcesanspro = require('connect-fonts-sourcesanspro'),
 postmark = require("postmark")(process.env.POSTMARK_API_KEY),
 i18n = require("webmaker-i18n");
 
-console.log("$PORT =", process.env.PORT);
 
 var urls = require('./lib/urls');
 var localStore = require('./lib/local-store');
