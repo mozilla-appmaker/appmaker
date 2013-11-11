@@ -101,6 +101,7 @@ Optional Variables:
 {
   graphitePort: 2003
 , graphiteHost: "162.243.75.232"
+, debug: true
 , legacyNamespace: false
 , globalPrefix: "flathead"
 , port: 8125
