@@ -18,6 +18,7 @@
     "express": "~3.3.4",
     "express-persona": "~0.1.0",
     "ejs-locals": "~1.0.2",
+    "foreman": "~0.0.25",
     "jsdom": "~0.8.6",
     "knox": "~0.8.6",
     "lynx": "~0.0.11",
