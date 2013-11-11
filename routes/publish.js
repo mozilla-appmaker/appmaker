@@ -127,7 +127,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
             }
           }, description.contentType);
         });
-        metrics.increment('app_published');
+        metrics.increment('publishing');
       });
     }
   };
