@@ -1,1 +1,1 @@
-web: node PORT=$PORT node_modules/norman/bin/norman Procfile.chain
+web: PORT=$PORT node node_modules/norman/bin/norman Procfile.chain
