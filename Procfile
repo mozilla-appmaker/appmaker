@@ -1,1 +1,1 @@
-web: foreman start -f Procfile.chain
+web: node node_modules/foreman/nf.js start -f Procfile.chain
