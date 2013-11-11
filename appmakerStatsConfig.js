@@ -101,6 +101,7 @@ Optional Variables:
 {
   graphitePort: 2003
 , graphiteHost: "162.243.75.232"
+, globalPrefix: "appmaker"
 , port: 8125
 , backends: [ "./backends/graphite" ]
 }
