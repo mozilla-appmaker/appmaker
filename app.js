@@ -15,8 +15,6 @@ font_sourcesanspro = require('connect-fonts-sourcesanspro'),
 postmark = require("postmark")(process.env.POSTMARK_API_KEY),
 i18n = require("webmaker-i18n");
 
-console.log("$PORT =", process.env.PORT);
-
 
 var urls = require('./lib/urls');
 var localStore = require('./lib/local-store');
@@ -59,8 +57,6 @@ app.configure(function(){
   app.use(express.bodyParser());
 
   app.use(express.cookieParser());
-
-  console.log("COOKIE_SECRET is ", process.env['COOKIE_SECRET']);
 
   app.use(express.session({
     secret: process.env['COOKIE_SECRET']
