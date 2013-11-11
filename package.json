@@ -26,7 +26,6 @@
     "mkdirp": "0.3.5",
     "moniker": "~0.1.2",
     "node-uuid": "~1.4.1",
-    "norman": "~0.1.0",
     "postmark": "0.2.0",
     "statsd": "0.6.0",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.8.tar.gz"
