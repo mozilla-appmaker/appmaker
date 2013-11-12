@@ -1129,9 +1129,6 @@ define(
         $(tagEl).addClass("active-tag").attr("tag",tag).attr("count",allTags[tag]).html(tag + " <span>" + allTags[tag] + "</span>");
 
         if(allTags[tag]>threshold){
-          if(tagCount > showTags) {
-            $(tagEl).addClass("too-many");
-          }
           tagsContainer.append(tagEl);
           tagCount++;
         }
@@ -1170,6 +1167,10 @@ define(
         }//Alphabetized
       }
 
+      $(".component-tags-wrapper div:gt("+parseInt(showTags-1,10)+")").each(function(){
+        $(this).addClass("too-many");
+      });
+
       if(tagCount > 0){
         $(".component-tags-wrapper").show();
       } else {
@@ -1180,8 +1181,8 @@ define(
         $(".see-all").show();
       } else {
         $(".see-all").hide();
+        $(".see-fewer").hide();
       }
-
     }
 
     var keyTimer;
@@ -1194,8 +1195,16 @@ define(
 
       $(".component-tags-wrapper").on("click",".see-all",function(){
         $(this).hide();
-        $(".component-tags div").removeClass("too-many");
+        $(".see-fewer").show();
+        $(".component-tags div.too-many").css("display","inline-block");
       });
+
+      $(".component-tags-wrapper").on("click",".see-fewer",function(){
+        $(this).hide();
+        $(".see-all").show();
+        $(".component-tags div.too-many").hide();
+      });
+
 
       $(".component-search").on("keydown",function(){
 

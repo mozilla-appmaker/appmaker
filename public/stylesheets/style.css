@@ -648,6 +648,12 @@ button.done {
   background: #DDD;
   box-shadow: 0px 0px 10px rgba(0,0,0,.5);
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+#components-wrapper {
+  flex: 1;
 }
 
 ul.tabs {
@@ -1423,6 +1429,10 @@ ul.component-actions {
   cursor: pointer;
 }
 
+.component-card:last-child {
+  margin-bottom: 0px;
+}
+
 .mode-discovery .component-card {
   margin: 0px 10px 10px 0px;
   box-shadow: 0px 2px 3px rgba(0,0,0,.15);
@@ -1942,10 +1952,8 @@ span.channel {
 }
 
 .modal-header {
-  padding: 10px;
+  padding: 10px 10px 8px 10px;
   width: calc(100% - 20px);
-  position: absolute;
-  top: 0px;
   z-index: 99;
   font-size: 1.6rem;
   font-weight: bold;
@@ -1962,14 +1970,14 @@ span.channel {
 }
 
 #components-wrapper {
-  overflow-y: scroll;
-  width: 100%;
-  height: calc(100% - 50px);
+  overflow-y: auto;
+/*  height: calc(100% - 50px);*/
+  position: relative;
 }
 
 #components {
   overflow: hidden;
-  padding: 2px 10px 10px 10px;
+  padding: 0px 10px 10px 10px;
 }
 
 .mode-discovery #components {
@@ -3002,8 +3010,7 @@ input#remix-panel-email {
 }
 
 .component-tags-wrapper {
-  padding: 10px 10px 5px 10px;
-  margin-top: 40px;
+  padding: 0px 10px 5px 10px;
   font-size: 13px;
   color: #666;
 }
@@ -3012,16 +3019,24 @@ input#remix-panel-email {
   overflow: auto;
 }
 
+.component-tags-wrapper .see-fewer,
 .component-tags-wrapper .see-all {
   color: #2478b8;
+  display: none;
 }
 
+.component-tags-wrapper .see-fewer {
+  display: none;
+}
+
+.component-tags-wrapper .see-fewer:hover,
 .component-tags-wrapper .see-all:hover {
   text-decoration: underline;
 }
 .component-tags .too-many {
   display: none;
 }
+
 .component-tags div {
   cursor: pointer;
   display: inline-block;
