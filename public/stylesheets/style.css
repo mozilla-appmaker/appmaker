@@ -3060,6 +3060,10 @@ input#remix-panel-email {
   opacity: 1;
 }
 
+.persona {
+  display: none;
+}
+
 .persona .logout, .persona .account span, .persona .login {
   z-index: 101;
 }
