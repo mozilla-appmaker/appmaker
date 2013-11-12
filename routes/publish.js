@@ -127,7 +127,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
             }
           }, description.contentType);
         });
-        metrics.increment('flathead.app_published');
+        metrics.increment('appmaker.live.app_published');
       });
     }
   };
