@@ -5,10 +5,7 @@
       "folder_exclude_patterns": [
         "node_modules",
         "ceci/builder/scripts",
-        "public/vendor/angular",
-        "public/vendor/jquery",
-        "public/vendor/jquery-ui",
-        "public/vendor/requirejs"
+        "public/vendor"
       ]
     }
   ],
