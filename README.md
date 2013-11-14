@@ -12,18 +12,7 @@ Running the Server
 
 ### Dependencies
 
-You must have `bower` installed globally on your machine:
-
-Excecute `sudo npm install bower -g` (Mac & *nix users)
-
 Then you can execute `npm install` in the application directory:
-
-Get the submodules:
-
-```
-git submodule update --init --recursive
-```
-
 
 You'll also need to run the appmaker-components server, located at https://github.com/mozilla/appmaker-components
 
@@ -40,7 +29,7 @@ cp sample.env .env
 A short explanation of a complete `.env` file:
 ```
 COOKIE_SECRET=A long, complex string for cookie encryption.
-ASSET_HOST=Location of the javascript, css, fonts, and images that will be used by the designer and published assets. Likely "//appmaker-components.herokuapp.com/" 
+ASSET_HOST=Location of the javascript, css, fonts, and images that will be used by the designer and published assets. Likely "//appmaker-components.herokuapp.com/"
 COMPONENTS_BASE_URL=An appmaker-components repo which Ceci will query. Likely "//appmaker-components.herokuapp.com/"
 S3_BUCKET=S3 bucket name. e.g. "my.coolappmaker.com"
 S3_KEY=An access key for the S3 bucket listed above.
@@ -61,3 +50,8 @@ If you need foreman:
 sudo gem install foreman
 ```
 
+### Client-side dependencies
+
+We manage client-side dependencies using (bower)[http://bower.io/]. In order to add/remove these depencies, you need to have `bower` installed globally on your machine:
+
+Excecute `sudo npm install bower -g` (Mac & *nix users)
