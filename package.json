@@ -14,7 +14,7 @@
   "dependencies": {
     "connect-fonts": "~0.0.10",
     "connect-fonts-sourcesanspro": "0.0.3",
-    "bower": "1.2.7",
+    "bower": "~1.2.7",
     "express": "~3.3.4",
     "express-persona": "~0.1.0",
     "ejs-locals": "~1.0.2",
@@ -28,7 +28,8 @@
     "node-uuid": "~1.4.1",
     "postmark": "0.2.0",
     "statsd": "0.6.0",
-    "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.8.tar.gz"
+    "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.8.tar.gz",
+    "ejs": "~0.8.4"
   },
   "engines": {
     "node": "~0.10.21",

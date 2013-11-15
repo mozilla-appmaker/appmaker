@@ -4,7 +4,7 @@
 
 var knox = require('knox');
 var moniker = require('moniker');
-var ejs = require('ejs-locals/node_modules/ejs');
+var ejs = require('ejs');
 var fs = require('fs');
 var path = require('path');
 var verify = require('../lib/verify');
