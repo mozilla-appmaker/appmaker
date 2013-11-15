@@ -1,0 +1,21 @@
+<polymer-element name="ceci-broadcast" attributes="on from">
+  <template>
+    <content></content>
+  </template>
+  <script>
+    Polymer('ceci-broadcast', {
+      ready: function () {
+      },
+      fire: function (data, extra) {
+        var channel = this.getAttribute('on');
+
+        var e = new CustomEvent(channel, {bubbles: true, detail: {
+          data: data,
+          extra: extra
+        }});
+
+        document.dispatchEvent(e);
+      }
+    });
+  </script>
+</polymer-element>
