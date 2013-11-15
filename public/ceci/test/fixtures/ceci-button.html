@@ -1,4 +1,4 @@
-<polymer-element name="ceci-button" attributes="label value" extends="ceci-element">
+<polymer-element name="ceci-button" attributes="textcolour buttoncolour buttonactivecolour label value" extends="ceci-element">
   <template>
     <style>
       :host {
@@ -19,16 +19,50 @@
   <script>
     Polymer('ceci-button', {
       ready: function () {
-        this.ceci({
-          broadcasts: ['click'],
-          defaultBroadcasts: ['click']
-        });
+        this.initCeci();
       },
       buttonClick: function () {
         this.broadcast('click', this.getAttribute('value'));
       },
       labelChanged: function (oldValue, newValue) {
         this.$.button.innerHTML = newValue;
+      },
+      textcolourChanged: function (oldValue, newValue) {
+        this.$.button.style.color = newValue;
+      },
+      buttoncolourChanged: function (oldValue, newValue) {
+        this.$.button.style.backgroundColor = newValue;
+      },
+      ceci: {
+        broadcasts: ['click'],
+        defaultBroadcasts: ['click'],
+        editable: {
+          'Label': {
+            type: "text",
+            description: "A text for your label to show up in your app",
+            attribute: 'label'
+          },
+          'Text Colour': {
+            type: "text",
+            description: "The color of the button label",
+            attribute: 'textcolor'
+          },
+          'Button Colour': {
+            type: "text",
+            description: "The color of your button",
+            attribute: 'buttoncolor'
+          },
+          'Button Active Colour': {
+            type: "text",
+            description: "The color of your button",
+            attribute: 'buttonactivecolor'
+          },
+          'Value': {
+            type: "text",
+            description: "Value to be sent with a click.",
+            attribute: 'value'
+          },
+        }
       }
     });
   </script>
