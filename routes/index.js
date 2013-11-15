@@ -55,6 +55,8 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
       res.render('testapp');
     },
 
-    publish: require('./publish')(store, viewsPath, urlManager, makeAPIPublisher)
+    publish: require('./publish')(store, viewsPath, urlManager, makeAPIPublisher),
+
+    componentProxy: require('./component-proxy').proxy
   }
 };
