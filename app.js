@@ -121,6 +121,18 @@ routes = require('./routes')(
   makeAPIPublisher
 );
 
+
+app.use(function(req, res, next) {
+  // we allow cross-origin requests for stuff from the test_assets directory
+  if (req.url.substring(0, "/test_assets/") === "/test_assets/") {
+    // remove for security-by-obscurity for automated attacks
+    res.removeHeader("x-powered-by");
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  }
+  next();
+});
+
 app.get('/', routes.index);
 app.all('/designer', routes.designer);
 app.get('/testappdesigner', routes.testappdesigner);
