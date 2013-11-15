@@ -1,0 +1,88 @@
+<polymer-element name="ceci-element">
+  <template>
+    <content></content>
+  </template>
+  <script>
+    Polymer('ceci-element', {
+      ready: function () {
+      },
+      broadcast: function (name, data) {
+        var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
+        if (broadcastElement) {
+          broadcastElement.fire(data);
+        }
+      },
+      showContainingCard: function () {
+        var potentialCard = this.parentNode;
+
+        while (potentialCard && potentialCard.localName !== 'ceci-card') {
+          potentialCard = potentialCard.parentNode;
+        }
+
+        if (potentialCard) {
+          potentialCard.show();
+        }
+      },
+      ceci: function (definition) {
+        var that = this;
+
+        var observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            Array.prototype.forEach.call(mutation.addedNodes, function (addedNode) {
+              var existingNodes = [];
+
+              if (addedNode.localName === 'ceci-listen') {
+                existingNodes = that.querySelectorAll('ceci-listen[for="' + addedNode.getAttribute('for') + '"]');
+              }
+
+              if (addedNode.localName === 'ceci-broadcast') {
+                existingNodes = that.querySelectorAll('ceci-broadcast[from="' + addedNode.getAttribute('from') + '"]');
+              }
+
+              Array.prototype.forEach.call(existingNodes, function (existingNode) {
+                if (existingNode !== addedNode) {
+                  that.removeChild(existingNode);
+                }
+              });
+
+            });
+          });
+        });
+
+        observer.observe(this, {childList: true});
+
+        if (definition) {
+          this.listeners = definition.listeners || [];
+          this.broadcasts = definition.broadcasts || [];
+
+          var defaultChannel = definition.defaultChannel || 'blue';
+
+          if (Array.isArray(definition.defaultListeners)) {
+            definition.defaultListeners.forEach(function (listenerName) {
+              if (!that.querySelector('ceci-listen[for="' + listenerName + '"]')) {
+                var listener = document.createElement('ceci-listen');
+                listener.setAttribute('on', defaultChannel);
+                listener.setAttribute('for', listenerName);
+                that.appendChild(listener);
+              }
+            });
+          }
+
+          if (Array.isArray(definition.defaultBroadcasts)) {
+            definition.defaultBroadcasts.forEach(function (broadcastName) {
+              if (!that.querySelector('ceci-broadcast[from="' + broadcastName + '"]')) {
+                var broadcast = document.createElement('ceci-broadcast');
+                broadcast.setAttribute('on', defaultChannel);
+                broadcast.setAttribute('from', broadcastName);
+                that.appendChild(broadcast);
+              }
+            });
+          }
+        }
+        else {
+          console.error('Ceci definition required.');
+        }
+      }
+    });
+  </script>
+</polymer-element>
