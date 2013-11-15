@@ -58,10 +58,21 @@
 
         observer.observe(this, {childList: true});
 
-        this.listeners = definition.listeners || [];
+        this.listeners = definition.listeners || {};
         this.broadcasts = definition.broadcasts || [];
 
         var defaultChannel = definition.defaultChannel || 'blue';
+
+        Object.keys(this.listeners).forEach(function (listenerKey) {
+          var attributeMatch = listenerKey.match(/set(\w+)/);
+          var lowerCaseAttribute;
+
+          if (attributeMatch && !that[listenerKey]) {
+            that[listenerKey] = function (v) {
+              that.setAttribute(attributeMatch[1], v);
+            };
+          }
+        });
 
         if (Array.isArray(definition.defaultListeners)) {
           definition.defaultListeners.forEach(function (listenerName) {

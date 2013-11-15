@@ -33,9 +33,20 @@
       buttoncolourChanged: function (oldValue, newValue) {
         this.$.button.style.backgroundColor = newValue;
       },
+      setNonAttribute: function (v) {
+        console.log('test');
+      },
       ceci: {
         broadcasts: ['click'],
         defaultBroadcasts: ['click'],
+        listeners: {
+          setLabel: 'Set Label',
+          setValue: 'Set Value',
+          setTextColour: 'Set Text Colour',
+          setButtonColour: 'Set Button Colour',
+          setButtonActiveColour: 'Set Active Button Colour',
+          setNonAttribute: 'Do something other than just set attributes'
+        },
         editable: {
           'Label': {
             type: "text",
