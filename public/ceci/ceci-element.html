@@ -23,7 +23,14 @@
           potentialCard.show();
         }
       },
-      ceci: function (definition) {
+      initCeci: function () {
+        var definition = this.ceci;
+
+        if (!definition) {
+          console.error('Ceci definition required for ' + this.localName);
+          return;
+        }
+
         var that = this;
 
         var observer = new MutationObserver(function(mutations) {
@@ -51,36 +58,42 @@
 
         observer.observe(this, {childList: true});
 
-        if (definition) {
-          this.listeners = definition.listeners || [];
-          this.broadcasts = definition.broadcasts || [];
+        this.listeners = definition.listeners || {};
+        this.broadcasts = definition.broadcasts || [];
 
-          var defaultChannel = definition.defaultChannel || 'blue';
+        var defaultChannel = definition.defaultChannel || 'blue';
 
-          if (Array.isArray(definition.defaultListeners)) {
-            definition.defaultListeners.forEach(function (listenerName) {
-              if (!that.querySelector('ceci-listen[for="' + listenerName + '"]')) {
-                var listener = document.createElement('ceci-listen');
-                listener.setAttribute('on', defaultChannel);
-                listener.setAttribute('for', listenerName);
-                that.appendChild(listener);
-              }
-            });
+        Object.keys(this.listeners).forEach(function (listenerKey) {
+          var attributeMatch = listenerKey.match(/set(\w+)/);
+          var lowerCaseAttribute;
+
+          if (attributeMatch && !that[listenerKey]) {
+            that[listenerKey] = function (v) {
+              that.setAttribute(attributeMatch[1], v);
+            };
           }
+        });
 
-          if (Array.isArray(definition.defaultBroadcasts)) {
-            definition.defaultBroadcasts.forEach(function (broadcastName) {
-              if (!that.querySelector('ceci-broadcast[from="' + broadcastName + '"]')) {
-                var broadcast = document.createElement('ceci-broadcast');
-                broadcast.setAttribute('on', defaultChannel);
-                broadcast.setAttribute('from', broadcastName);
-                that.appendChild(broadcast);
-              }
-            });
-          }
+        if (Array.isArray(definition.defaultListeners)) {
+          definition.defaultListeners.forEach(function (listenerName) {
+            if (!that.querySelector('ceci-listen[for="' + listenerName + '"]')) {
+              var listener = document.createElement('ceci-listen');
+              listener.setAttribute('on', defaultChannel);
+              listener.setAttribute('for', listenerName);
+              that.appendChild(listener);
+            }
+          });
         }
-        else {
-          console.error('Ceci definition required.');
+
+        if (Array.isArray(definition.defaultBroadcasts)) {
+          definition.defaultBroadcasts.forEach(function (broadcastName) {
+            if (!that.querySelector('ceci-broadcast[from="' + broadcastName + '"]')) {
+              var broadcast = document.createElement('ceci-broadcast');
+              broadcast.setAttribute('on', defaultChannel);
+              broadcast.setAttribute('from', broadcastName);
+              that.appendChild(broadcast);
+            }
+          });
         }
       }
     });
