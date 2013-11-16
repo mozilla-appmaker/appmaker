@@ -140,6 +140,7 @@ app.all('/designer', routes.designer);
 app.get('/testappdesigner', routes.testappdesigner);
 app.get('/testapp', routes.testapp);
 app.get('/remix', routes.remix);
+app.get('/component-*', routes.componentProxy);
 
 // Server-side gen of ID since we'll likely eventually use this for persistance
 app.get('/store/uuid', function (req, res) {
