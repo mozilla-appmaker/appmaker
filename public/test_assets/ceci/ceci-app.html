@@ -43,7 +43,9 @@
 
     Polymer('ceci-app', {
       ready: function() {
-        this.setAttribute('id', 'ceci-app-' + uuid());
+        if (!this.getAttribute('id')){
+          this.setAttribute('id', 'ceci-app-' + uuid());
+        }
         this.dispatchEvent(new CustomEvent('ready', {bubbles: true, detail: this}));
       },
       addCard: function() {
