@@ -42,6 +42,10 @@ define(
             addComponentCard(entry.prototype.ceci, registryKey, $('#components'));
           }
         });
+
+        document.querySelector('ceci-app').addEventListener('CeciElementAdded', function (e) {
+          console.log(e);
+        }, false);
         // app = new Ceci.App({
         //   defaultChannels: channels.map(function (c) { return c.name; }),
         //   container: $('#flathead-app')[0],
@@ -317,7 +321,8 @@ define(
     var addComponentByName = function (componentName) {
       var component = document.createElement(componentName);
 
-      $('.ceci-card:visible .phone-canvas').append(component);
+      console.log(document.querySelector('ceci-card[visible]'));
+      $('ceci-card:visible ceci-middle').append(component);
       component = $(component);
       var dropTarget = $(".drophere").find(".draggable");
       dropTarget.replaceWith(component);

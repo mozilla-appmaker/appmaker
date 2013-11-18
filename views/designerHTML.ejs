@@ -20,13 +20,13 @@
             <% if (htmlInjection.length > 0) { -%>
               <%- htmlInjection %>
             <% } else { -%>
-              <div id="flathead-app">
-                <div class="ceci-card">
-                  <div class="fixed-top"></div>
-                  <div class="phone-canvas"></div>
-                  <div class="fixed-bottom"></div>
-                </div>
-              </div>
+              <ceci-app>
+                <ceci-card>
+                  <ceci-top></ceci-top>
+                  <ceci-middle></ceci-middle>
+                  <ceci-bottom></ceci-bottom>
+                </ceci-card>
+              </ceci-app>
             <% } -%>
           </div>
           <div class="phone-shadow"></div>
