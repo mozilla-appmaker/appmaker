@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+  <head>
+
+    <link rel="import" href="/ceci/ceci-broadcast.html">
+    <link rel="import" href="/ceci/ceci-listen.html">
+    <link rel="import" href="/ceci/ceci-element-base.html">
+    <link rel="import" href="/ceci/ceci-element-designer.html">
+    <link rel="import" href="/ceci/ceci-app.html">
+    <link rel="import" href="/ceci/ceci-card.html">
+
+    <link rel="import" href="/ceci/test/fixtures/ceci-button.html">
+    <link rel="import" href="/ceci/test/fixtures/ceci-hello.html">
+    <link rel="import" href="/ceci/test/fixtures/ceci-value-holder.html">
+
+    <script src="/vendor/polymer/polymer.min.js"></script>
+    <script src="/vendor/requirejs/require.js"></script>
+
+    <script src="/vendor/mocha/mocha.js"></script>
+    <script src="/vendor/sinon/lib/sinon.js"></script>
+
+    <style>
+      ceci-app {
+        float: left
+      }
+    </style>
+
+    <link rel="stylesheet" href="/vendor/mocha/mocha.css">
+  </head>
+  <body>
+
+    <div id="mocha"></div>
+
+    <script>
+      window.addEventListener('WebComponentsReady', function(e) {
+        require(
+          [
+            "/ceci/ceci-designer.js",
+            "/vendor/chai/chai.js"
+          ],
+          function(Ceci, chai) {
+            "use strict";
+
+            // window.Ceci = Ceci;
+
+            mocha.setup('bdd');
+            chai.should();
+
+            describe('ceci-designer', function(){
+              describe('#getRegisteredComponents', function(){
+                var components = Ceci.getRegisteredComponents();
+                it('should return all non-ceci-base components', function(){
+                  components.length.should.equal(3);
+                });
+
+                it('should not return ceci-base components', function(){
+                  components.indexOf(window.CustomElements.registry['ceci-app']).should.equal(-1);
+                });
+              });
+            });
+
+            mocha.run();
+          }
+        );
+      });
+    </script>
+
+
+  </body>
+</html>
