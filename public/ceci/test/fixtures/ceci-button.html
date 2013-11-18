@@ -1,4 +1,4 @@
-<polymer-element name="ceci-button" attributes="textcolour buttoncolour buttonactivecolour label value" extends="ceci-element">
+<polymer-element name="ceci-button" attributes="textcolour buttoncolour buttonactivecolour label value" extends="ceci-element" label="Click Me">
   <template>
     <style>
       :host {
@@ -47,30 +47,30 @@
           setNonAttribute: 'Do something other than just set attributes'
         },
         editable: {
-          'Label': {
+          'label': {
             type: "text",
             description: "A text for your label to show up in your app",
-            attribute: 'label'
+            name: 'Label',
           },
-          'Text Colour': {
+          'textcolor': {
             type: "text",
             description: "The color of the button label",
-            attribute: 'textcolor'
+            name: 'Text Colour'
           },
-          'Button Colour': {
+          'buttoncolor': {
             type: "text",
             description: "The color of your button",
-            attribute: 'buttoncolor'
+            name: 'Button Colour'
           },
-          'Button Active Colour': {
+          'buttonactivecolor': {
             type: "text",
             description: "The color of your button",
-            attribute: 'buttonactivecolor'
+            name: 'Button Active Colour'
           },
-          'Value': {
+          'value': {
             type: "text",
             description: "Value to be sent with a click.",
-            attribute: 'value'
+            name: 'Value'
           },
         }
       }
