@@ -3,26 +3,26 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["togetherjs", "ceci", "jquery"],
-  function(TogetherJS, Ceci, $) {
+  ["togetherjs", "jquery"],
+  function(TogetherJS, $) {
     "use strict";
     // This enables alt-T alt-T to turn on TowTruck:
     TogetherJS.config("enableShortcut", true);
     var receivedHtml = null;
 
-    Ceci.registerCeciPlugin("onChange", function () {
-      if (TogetherJS.running) {
-        var html = $("#flathead-app").html();
-        if (receivedHtml && html == receivedHtml) {
-          // We're just seeing a remote change
-          return;
-        }
-        TogetherJS.send({
-          type: "resync",
-          html: html
-        });
-      }
-    });
+    // Ceci.registerCeciPlugin("onChange", function () {
+    //   if (TogetherJS.running) {
+    //     var html = $("#flathead-app").html();
+    //     if (receivedHtml && html == receivedHtml) {
+    //       // We're just seeing a remote change
+    //       return;
+    //     }
+    //     TogetherJS.send({
+    //       type: "resync",
+    //       html: html
+    //     });
+    //   }
+    // });
 
     TogetherJS.hub.on("resync", function (msg) {
       if (! msg.sameUrl) {

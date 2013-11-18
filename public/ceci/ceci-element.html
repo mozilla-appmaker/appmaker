@@ -1,11 +1,11 @@
-<polymer-element name="ceci-element"  extends="ceci-element-base">
+<polymer-element name="ceci-element">
   <template>
     <content></content>
   </template>
   <script>
     Polymer('ceci-element', {
       ready: function () {
-        this.super();
+        console.log('ready: ceci-element');
       }
     });
   </script>
