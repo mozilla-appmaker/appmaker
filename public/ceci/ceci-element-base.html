@@ -5,6 +5,7 @@
   <script>
     Polymer('ceci-element-base', {
       ready: function () {
+        this.initCeci();
       },
       broadcast: function (name, data) {
         var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');

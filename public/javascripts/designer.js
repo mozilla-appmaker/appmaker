@@ -3,13 +3,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["jquery", "localized", "ceci-app", "inflector", "designer-utils", "ceci-ui", "jquery-ui", "designer-keyboard"],
-  function($, localized, Ceci, Inflector, Utils) {
+  ["jquery", "localized", "inflector", "designer-utils", "jquery-ui", "designer-keyboard"],
+  function($, localized, Inflector, Utils) {
     "use strict";
 
     function Channel(name, title, hex) {
       // make sure the name is a string
-      this.name = String(name);
+      this.name = name;
       this.title = title;
       this.hex = hex;
     }
@@ -24,93 +24,104 @@ define(
       new Channel('green', 'Green Clover', '#71b806'),
       new Channel('yellow', 'Yellow Pot of Gold', '#e8d71e'),
       new Channel('orange', 'Orange Star', '#ff7b00'),
-      new Channel(Ceci.emptyChannel, 'Disabled', '#444')
+      new Channel(null, 'Disabled', '#444')
     ];
 
     var selection = [];
 
-    var app;
+    var app = {};
 
     var remixUrl = document.querySelector('#appmaker-remix-url').value;
 
     function init () {
       localized.ready(function(){
-        app = new Ceci.App({
-          defaultChannels: channels.map(function (c) { return c.name; }),
-          container: $('#flathead-app')[0],
-          onComponentAdded: function (component) {
-            component = $(component);
-
-            var dropTarget = $(".drophere").find(".draggable");
-            dropTarget.replaceWith(component);
-
-            component.addClass("component");
-            component.draggable({
-              handle: 'handle'
-            });
-
-            component.on('mousedown', function(evt) {
-              selectComponent($(evt.currentTarget));
-            });
-
-            component.append($('<div class="handle"></div>'));
-
-            selectComponent(component);
-          },
-          onload: function (components) {
-            this.sortComponents();
-            Ceci.registerCeciPlugin("onChange", function(){
-              if (saveTimer) {
-                clearTimeout(saveTimer);
-              }
-              saveTimer = setTimeout(saveApp, 500);
-            });
-            // document.addEventListener("onselectionchanged", app.sortComponents);
-            $('.library-list').removeClass("library-loading");
-            $('.drophere').sortable(sortableOptions);
-            $('.garbage-bin').droppable({
-              tolerance : "touch",
-              over : function( event, ui ) {
-                $(this).addClass("garbage-open");
-                $(".ui-state-highlight").hide();
-              },
-              out : function( event, ui ) {
-                $(this).removeClass("garbage-open");
-                $(".ui-state-highlight").show();
-              },
-              drop : function( event, ui ) {
-                var elements = selection.slice();
-                clearSelection();
-                elements.forEach(function(element) {
-                  element.removeSafely();
-                });
-              }
-            });
-
-            updateTags();
-          },
-          onCardChange: function (card) {
-            var thumbId = "card-thumb-" + card.id.match(/(\d+)$/)[0];
-            $(".card").removeClass('selected');
-            $("#" + thumbId).addClass('selected');
-          },
-          onCardAdded: function (card) {
-            Array.prototype.forEach.call(card.children, function (element) {
-              element.classList.add('drophere');
-            });
-
-            // create card thumbnail
-            var cardNumber = $(".card").length + 1;
-            var newthumb = $('<div class="card">' + localized.get("Page") + cardNumber + '<a title="' + localized.get("Delete this card") + '" href="#" class="delete-card"></a></div>');
-            newthumb.attr('id', "card-thumb-" + cardNumber);
-            newthumb.click(function() {
-              card.show();
-            });
-            $(".card-list").append(newthumb);
-            $('.drophere').sortable(sortableOptions);
-            card.show();
+        var ignoreKeys = ['ceci-app', 'ceci-card', 'ceci-listen', 'ceci-broadcast', 'ceci-element', 'ceci-element-base'];
+        Object.keys(CustomElements.registry).forEach(function (registryKey) {
+          var entry = CustomElements.registry[registryKey];
+          if (registryKey.indexOf('ceci-') === 0 && ignoreKeys.indexOf(registryKey) === -1) {
+            addComponentCard(entry.prototype.ceci, registryKey, $('#components'));
           }
         });
+
+        document.querySelector('ceci-app').addEventListener('CeciElementAdded', function (e) {
+          console.log(e);
+        }, false);
+        // app = new Ceci.App({
+        //   defaultChannels: channels.map(function (c) { return c.name; }),
+        //   container: $('#flathead-app')[0],
+        //   onComponentAdded: function (component) {
+        //     component = $(component);
+
+        //     var dropTarget = $(".drophere").find(".draggable");
+        //     dropTarget.replaceWith(component);
+
+        //     component.addClass("component");
+        //     component.draggable({
+        //       handle: 'handle'
+        //     });
+
+        //     component.on('mousedown', function(evt) {
+        //       selectComponent($(evt.currentTarget));
+        //     });
+
+        //     component.append($('<div class="handle"></div>'));
+
+        //     selectComponent(component);
+        //   },
+        //   onload: function (components) {
+        //     this.sortComponents();
+        //     Ceci.registerCeciPlugin("onChange", function(){
+        //       if (saveTimer) {
+        //         clearTimeout(saveTimer);
+        //       }
+        //       saveTimer = setTimeout(saveApp, 500);
+        //     });
+        //     // document.addEventListener("onselectionchanged", app.sortComponents);
+        //     $('.library-list').removeClass("library-loading");
+        //     $('.drophere').sortable(sortableOptions);
+        //     $('.garbage-bin').droppable({
+        //       tolerance : "touch",
+        //       over : function( event, ui ) {
+        //         $(this).addClass("garbage-open");
+        //         $(".ui-state-highlight").hide();
+        //       },
+        //       out : function( event, ui ) {
+        //         $(this).removeClass("garbage-open");
+        //         $(".ui-state-highlight").show();
+        //       },
+        //       drop : function( event, ui ) {
+        //         var elements = selection.slice();
+        //         clearSelection();
+        //         elements.forEach(function(element) {
+        //           element.removeSafely();
+        //         });
+        //       }
+        //     });
+
+        //     updateTags();
+        //   },
+        //   onCardChange: function (card) {
+        //     var thumbId = "card-thumb-" + card.id.match(/(\d+)$/)[0];
+        //     $(".card").removeClass('selected');
+        //     $("#" + thumbId).addClass('selected');
+        //   },
+        //   onCardAdded: function (card) {
+        //     Array.prototype.forEach.call(card.children, function (element) {
+        //       element.classList.add('drophere');
+        //     });
+
+        //     // create card thumbnail
+        //     var cardNumber = $(".card").length + 1;
+        //     var newthumb = $('<div class="card">' + localized.get("Page") + cardNumber + '<a title="' + localized.get("Delete this card") + '" href="#" class="delete-card"></a></div>');
+        //     newthumb.attr('id', "card-thumb-" + cardNumber);
+        //     newthumb.click(function() {
+        //       card.show();
+        //     });
+        //     $(".card-list").append(newthumb);
+        //     $('.drophere').sortable(sortableOptions);
+        //     card.show();
+        //   }
+        // });
 
         app.sortComponents = function() {
           var components = Ceci._components;
@@ -169,9 +180,9 @@ define(
       });
     }
 
-    Ceci.registerCeciPlugin('onElementRemoved', function(element){
-      $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
-    });
+    // Ceci.registerCeciPlugin('onElementRemoved', function(element){
+    //   $(document).off("click", ".color-ui .color", element.onColorSelectFunction);
+    // });
 
     // Make sure there wasn't something planeted in the app container already (e.g. remix)
     if ($('#flathead-app').find('.ceci-card > div').find('*').length === 0 ) {
@@ -310,21 +321,20 @@ define(
     var addComponentByName = function (componentName) {
       var component = document.createElement(componentName);
 
-      Ceci.convertElement(component, function () {
-        $('.ceci-card:visible .phone-canvas').append(component);
-        component = $(component);
-        var dropTarget = $(".drophere").find(".draggable");
-        dropTarget.replaceWith(component);
-        component.addClass("component");
-        component.draggable({
-          handle: 'handle'
-        });
-        component.on('mousedown', function(evt) {
-          selectComponent($(evt.currentTarget));
-        });
-        component.append($('<div class="handle"></div>'));
-        selectComponent(component);
-      }, true);
+      console.log(document.querySelector('ceci-card[visible]'));
+      $('ceci-card:visible ceci-middle').append(component);
+      component = $(component);
+      var dropTarget = $(".drophere").find(".draggable");
+      dropTarget.replaceWith(component);
+      component.addClass("component");
+      component.draggable({
+        handle: 'handle'
+      });
+      component.on('mousedown', function(evt) {
+        selectComponent($(evt.currentTarget));
+      });
+      component.append($('<div class="handle"></div>'));
+      selectComponent(component);
 
       return false;
     };
@@ -356,29 +366,26 @@ define(
       return pretty;
     }
 
-    function addComponentCard(component, name, list) {
-
-      var componentDescription;
-      if (component.description) {
-        componentDescription = component.description.innerHTML;
-      } else {
-        componentDescription = "No description available";
-      }
+    function addComponentCard(componentDefinition, name, list) {
+      var thumbnail = componentDefinition.thumbnail || '';
+      var friends = componentDefinition.friends || [];
+      var description = componentDefinition.description || 'No description available';
 
       var card = $('<div class="add-component component-card" name="'+name+'"><div class="add-tooltip">+</div></div>');
-      var tagList = component.tags;
+      var tagList = componentDefinition.tags;
 
       card.data("tags",tagList);
       card.attr("show",true);
 
-      var descriptionColumn = $('<div class="component-description"><h1>' + prettyName(name) + '</h1><h6>'+ componentDescription +'</h6></div>');
-      var preview = $('<div class="component-preview"><div class="image-wrapper">' + component.thumbnail.innerHTML + '</div><div class="add-component-overlay"></div></div>');
+      var descriptionColumn = $('<div class="component-description"><h1>' + prettyName(name) + '</h1><h6>'+ description +'</h6></div>');
+      var preview = $('<div class="component-preview"><div class="image-wrapper">' + thumbnail + '</div><div class="add-component-overlay"></div></div>');
 
       var friendList = $('<div class="friends"><h3>Friends</h3></div>');
-      if (component.friends.length > 0) {
-        for (var i = 0; i < component.friends.length; i++) {
-          friendList.append($('<a>'+ component.friends[i] +'</a>'));
-        }
+
+      if (friends.length > 0) {
+        friends.forEach(function (friend) {
+          friendList.append($('<a>'+ friend +'</a>'));
+        });
       } else {
         friendList.append($('<div>No Friends<div>'));
       }
@@ -703,10 +710,10 @@ define(
 
       attributeList.html("");
 
-      var attributes = element.getEditableAttributes();
+      var attributes = Object.keys(element.ceci.editable);
 
-      attributes.forEach(function(attribute) {
-        var definition = element.getAttributeDefinition(attribute);
+      attributes.forEach(function (attribute) {
+        var definition = element.ceci.editable[attribute];
         var uiElement = getAttributeUIElement(element, attribute, definition);
         attributeList.append(uiElement);
       });
@@ -881,7 +888,7 @@ define(
         console.log(e.message);
       }
     });
-    Ceci.log("AppMaker designer is ready.", "");
+    // Ceci.log("AppMaker designer is ready.", "");
 
     var selectComponent = function(comp) {
 
@@ -1326,8 +1333,8 @@ define(
 
     // AMD module return
     return {
-      Ceci: Ceci,
-      App: Ceci.App
+      // Ceci: Ceci,
+      // App: Ceci.App
     };
   }
 );

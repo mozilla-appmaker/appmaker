@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="/stylesheets/persona-buttons.css" />
     <link rel="stylesheet" href="/sourcesanspro-extralight,sourcesanspro-light,sourcesanspro-regular,sourcesanspro-semibold/fonts.css" />
 
-    <link rel="component" type="text/ceci" href="<%= process.env.COMPONENTS_BASE_URL%>/package/all">
-
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(["_setAccount", "UA-35433268-28"]);
@@ -22,6 +20,17 @@
         s.parentNode.insertBefore(ga, s);
       })();
     </script>
+
+    <script src="/vendor/polymer/polymer.min.js"></script>
+    <link rel="import" href="/ceci/ceci-element-base.html">
+    <link rel="import" href="/ceci/ceci-element-designer.html">
+    <link rel="import" href="/ceci/ceci-broadcast.html">
+    <link rel="import" href="/ceci/ceci-listen.html">
+    <link rel="import" href="/ceci/ceci-app.html">
+    <link rel="import" href="/ceci/ceci-card.html">
+
+    <link rel="import" href="/ceci/test/fixtures/ceci-button.html">
+
     <script src="<%= process.env.ASSET_HOST%>/vendor/requirejs/require.js"></script>
     <script src="<%= process.env.ASSET_HOST%>/javascripts/requireConfig.js"></script>
 

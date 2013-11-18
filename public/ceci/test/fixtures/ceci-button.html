@@ -19,7 +19,6 @@
   <script>
     Polymer('ceci-button', {
       ready: function () {
-        this.initCeci();
       },
       buttonClick: function () {
         this.broadcast('click', this.getAttribute('value'));
