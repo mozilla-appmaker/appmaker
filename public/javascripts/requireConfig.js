@@ -20,8 +20,7 @@ requirejs.config({
 
     // "persona": "https://login.persona.org/include",
 
-    "designer-keyboard": "/javascripts/designer-keyboard",
-    "designer-utils": "/javascripts/designer-utils",
+    "designer": "/javascripts/designer",
 
     "togetherjs": "https://togetherjs.com/togetherjs-min",
 

@@ -1,4 +1,5 @@
-<polymer-element name="ceci-button" attributes="textcolour buttoncolour buttonactivecolour label value" extends="ceci-element" label="Click Me">
+<polymer-element name="ceci-button" attributes="textcolor buttoncolor buttonactivecolor label value" extends="ceci-element"
+  label="Click Me" textcolor="#ffffff" buttoncolor="#11bb11">
   <template>
     <style>
       :host {
@@ -8,6 +9,7 @@
       }
 
       :host button {
+        font-size: 18pt;
         width: 100%;
         height: 100%;
       }
@@ -26,11 +28,15 @@
       labelChanged: function (oldValue, newValue) {
         this.$.button.innerHTML = newValue;
       },
-      textcolourChanged: function (oldValue, newValue) {
+      textcolorChanged: function (oldValue, newValue) {
         this.$.button.style.color = newValue;
       },
-      buttoncolourChanged: function (oldValue, newValue) {
+      buttoncolorChanged: function (oldValue, newValue) {
+        console.log('buttoncolorChanged');
         this.$.button.style.backgroundColor = newValue;
+      },
+      buttonactivecolorChanged: function (oldValue, newValue) {
+        console.log('buttonactivecolorChanged');
       },
       setNonAttribute: function (v) {
         console.log('test');
@@ -41,9 +47,9 @@
         listeners: {
           setLabel: 'Set Label',
           setValue: 'Set Value',
-          setTextColour: 'Set Text Colour',
-          setButtonColour: 'Set Button Colour',
-          setButtonActiveColour: 'Set Active Button Colour',
+          setTextColor: 'Set Text Color',
+          setButtonColor: 'Set Button Color',
+          setButtonActiveColor: 'Set Active Button Color',
           setNonAttribute: 'Do something other than just set attributes'
         },
         editable: {
@@ -55,17 +61,17 @@
           'textcolor': {
             type: "text",
             description: "The color of the button label",
-            name: 'Text Colour'
+            name: 'Text Color'
           },
           'buttoncolor': {
             type: "text",
             description: "The color of your button",
-            name: 'Button Colour'
+            name: 'Button Color'
           },
           'buttonactivecolor': {
             type: "text",
             description: "The color of your button",
-            name: 'Button Active Colour'
+            name: 'Button Active Color'
           },
           'value': {
             type: "text",
