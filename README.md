@@ -5,7 +5,7 @@ For context as to the motivation of the project, see:
 
   * a youtube video (that's already dated, but better than nothing): http://www.youtube.com/watch?v=RaRIdLgZTPI&feature=youtu.be
   * some words written before any code was written: https://github.com/mozilla/appmaker-words/wiki
-  * the ROADMAP.md and CONTRIBUTORS.md documents in this directory.
+  * the ROADMAP.md and [CONTRIBUTING.md](https://github.com/mozilla-appmaker/appmaker/blob/develop/CONTRIBUTING.md) documents in this directory.
 
 Running the Server
 ------------------
