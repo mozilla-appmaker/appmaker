@@ -44,6 +44,12 @@ PUBLISH_URL_PREFIX=String to prepend to filenames that are saved on S3. Try use 
 foreman start
 ```
 
+Note, for the time being, at least in the `develop` branch, you will need this instead:
+
+```
+foreman start -f Procfile.chain
+```
+
 If you need foreman:
 
 ```
