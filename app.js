@@ -154,6 +154,16 @@ app.get( "/strings/:lang?", i18n.stringsRoute( "en-US" ) );
 
 app.post('/publish', routes.publish.publish);
 
+// routes for publishing and retrieving components
+// FIXME: URLs are too close to component proxy URLs
+app.use('/register', express.static(path.join(__dirname, 'app')));
+app.get('/components', routes.componentRegistry.componentsGet);
+app.get('/components/:id', routes.componentRegistry.componentsGetById);
+app.post('/components', routes.componentRegistry.componentsPost);
+app.post('/components/:id', routes.componentRegistry.componentsPostById);
+app.delete('/components/:id', routes.componentRegistry.componentsDeleteById);
+app.get('/notifications/:notificationId', routes.componentRegistry.notificationGetById);
+
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });

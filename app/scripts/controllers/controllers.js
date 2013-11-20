@@ -4,14 +4,14 @@ var app = angular.module('appmaker', ['appmaker.directives', 'appmaker.services'
 
 app.config(function ($routeProvider) {
   $routeProvider.
-    when('/', {
+    when('/register', {
       controller: 'ListCtrl', 
       resolve: {
         components: function (LoadComponents) {
           return LoadComponents();
         }
       },
-      templateUrl: '/views/list.html'
+      templateUrl: '/register/views/list.html'
     }).when('/component/:componentId', {
       controller: 'ViewCtrl',
       resolve: {
@@ -19,7 +19,7 @@ app.config(function ($routeProvider) {
           return LoadComponent();
         }
       },
-      templateUrl: '/views/viewComponent.html'
+      templateUrl: '/register/views/viewComponent.html'
     }).when('/notification/:notificationId', {
       controller: 'NotificationCtrl',
       resolve: {
@@ -27,10 +27,10 @@ app.config(function ($routeProvider) {
           return LoadNotification();
         }
       },
-      templateUrl: "/views/componentForm.html"
+      templateUrl: "/register/views/componentForm.html"
     }).when('/new', {
       controller: 'NewCtrl',
-      templateUrl:'/views/componentForm.html'
+      templateUrl:'/register/views/componentForm.html'
     }).when('/edit/:componentId', {
       controller: 'EditCtrl',
       resolve: {
@@ -38,9 +38,9 @@ app.config(function ($routeProvider) {
           return LoadComponent();
         }
       },
-      templateUrl: '/views/componentForm.html'
+      templateUrl: '/register/views/componentForm.html'
     })
-    .otherwise({redirectTo: '/'});
+    .otherwise({redirectTo: '/register/'});
 });
 
 app.controller('ListCtrl', function ($scope, components) {
@@ -80,7 +80,7 @@ app.controller('EditCtrl', function ($scope, $location, component) {
 
   $scope.remove = function() {
     $scope.component.$remove(function(component) {
-      $location.path('/');
+      $location.path('/register/');
     });
   };
 
