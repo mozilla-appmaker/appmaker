@@ -3,28 +3,23 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 requirejs.config({
-  baseUrl: "/vendor/",
+  baseUrl: "/javascripts/",
   paths: {
-    "inflector": "inflection-js/inflection.min",
+    "inflector": "/vendor/inflection-js/inflection.min",
 
-    "jquery": "jquery/jquery.min",
+    "jquery": "/vendor/jquery/jquery.min",
 
-    "localized": "webmaker-i18n/localized",
-    "ceci": "ceci/ceci",
-    "ceci-ui": "ceci/ceci-ui",
-    "ceci-cards": "ceci/ceci-cards",
-    "ceci-app": "ceci/ceci-app",
-    "ceci-utils": "ceci/ceci-utils",
+    "localized": "/vendor/webmaker-i18n/localized",
 
-    "jquery-ui": "jquery-ui/ui/minified/jquery-ui.min",
+    "jquery-ui": "/vendor/jquery-ui/ui/minified/jquery-ui.min",
 
     // "persona": "https://login.persona.org/include",
 
-    "designer": "/javascripts/designer",
+    "ceci-designer": "/ceci/ceci-designer.js",
 
     "togetherjs": "https://togetherjs.com/togetherjs-min",
 
-    "angular": "angular/angular.min"
+    "angular": "/vendor/angular/angular.min"
   },
   shim: {
     "jquery-ui": {
