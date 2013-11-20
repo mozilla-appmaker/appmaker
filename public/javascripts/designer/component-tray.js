@@ -3,38 +3,32 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["jquery", "designer/utils"],
-  function($, Util) {
+  ["designer/utils", "ceci/ceci-designer"],
+  function(Util, Ceci) {
     "use strict";
 
     var knownComponents = [];
 
-    return {
-      addComponents: function (components) {
-        components.forEach(function (component) {
-          if (knownComponents.indexOf(component.tag) === -1) {
-            knownComponents.push(component.tag);
 
-            var item = document.createElement('designer-component-tray-item');
-            var meta = component.prototype.ceci;
+    window.addEventListener('WebComponentsReady', function(e) {
+      Ceci.forEachComponent(function(name, component){
+        var item = document.createElement('designer-component-tray-item');
+        var meta = component.prototype.ceci;
 
-            if (typeof meta === 'undefined'){
-              throw new TypeError("Ceci component, \"" + tagName + "\" is lacking ceci definitions. Likely it shouldn't be returned from ceci-designer.");
-            }
+        if (typeof meta === 'undefined'){
+          throw new TypeError("Ceci component, \"" + name + "\" is lacking ceci definitions. Likely it shouldn't be returned from ceci-designer.");
+        }
 
-            item.setAttribute('name', component.tag);
-            item.setAttribute('label', Util.prettyName(component.tag));
+        item.setAttribute('name', name);
+        item.setAttribute('label', Util.prettyName(name));
 
-            item.setAttribute(meta.description);
-            item.setAttribute(meta.author);
-            item.setAttribute(meta.updatedAt);
+        item.setAttribute(meta.description);
+        item.setAttribute(meta.author);
+        item.setAttribute(meta.updatedAt);
 
-            document.getElementById('components').appendChild(item);
-          }
-        });
-      }
-    };
-
+        document.getElementById('components').appendChild(item);
+      });
+    });
   }
 );
 
