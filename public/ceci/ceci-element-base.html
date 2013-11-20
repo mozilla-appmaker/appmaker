@@ -60,7 +60,7 @@
         observer.observe(this, {childList: true});
 
         this.listeners = definition.listeners || {};
-        this.broadcasts = definition.broadcasts || [];
+        this.broadcasts = definition.broadcasts || {};
 
         var defaultChannel = definition.defaultChannel || 'blue';
 

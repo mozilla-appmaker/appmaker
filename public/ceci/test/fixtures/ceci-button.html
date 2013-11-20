@@ -21,6 +21,7 @@
   <script>
     Polymer('ceci-button', {
       ready: function () {
+        this.super();
       },
       buttonClick: function () {
         this.broadcast('click', this.getAttribute('value'));
@@ -40,8 +41,10 @@
         console.log('test');
       },
       ceci: {
-        broadcasts: ['click'],
         defaultBroadcasts: ['click'],
+        broadcasts: {
+          click: 'Occurs when button is clicked.'
+        },
         listeners: {
           setLabel: 'Set Label',
           setValue: 'Set Value',
