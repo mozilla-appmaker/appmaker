@@ -4,22 +4,16 @@
 
 define(
   [
-    "localized", "inflector", "designer/utils", "ceci/ceci-designer", "designer/component-tray",
+    "localized", "inflector", "designer/utils", "ceci/ceci-designer",
 
     // Unreferenced:
+    "designer/component-tray",
     "designer/channels",
     "designer/editable",
     "designer/keyboard",
     "jquery-ui",
   ],
-  function(localized, Inflector, Utils, ceci_designer, component_tray) {
+  function(localized, Inflector, Utils, Ceci) {
     "use strict";
-
-    component_tray.addComponents(ceci_designer.getRegisteredComponents());
-
-    // just in case this happens after require is ready
-    window.addEventListener('WebComponentsReady', function(e) {
-      component_tray.addComponents(ceci_designer.getRegisteredComponents());
-    }, false);
   }
 );
