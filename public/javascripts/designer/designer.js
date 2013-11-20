@@ -297,7 +297,6 @@ define(
     var addComponentByName = function (componentName) {
       var component = document.createElement(componentName);
 
-      console.log(document.querySelector('ceci-card[visible]'));
       $('ceci-card:visible ceci-middle').append(component);
       component = $(component);
       var dropTarget = $(".drophere").find(".draggable");
