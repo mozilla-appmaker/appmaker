@@ -141,8 +141,10 @@ app.get('/testapp', routes.testapp);
 app.get('/remix', routes.remix);
 
 //TODO: Security: https://github.com/mozilla-appmaker/appmaker/issues/602
-app.get('/component-*',  cors(), routes.proxy.gitHubComponent);
-app.get('/cors/:host/*', cors(), routes.proxy.cors);
+app.get('/component-*',         cors(), routes.proxy.gitHubComponent);
+app.get('/cors/:host/*',        cors(), routes.proxy.cors);
+app.get('/delayedCors/:host/*', cors(), routes.proxy.delayedCors);
+
 
 // This is a route that we use for client-side localization to return the JSON
 // when we do the XHR request to this route.

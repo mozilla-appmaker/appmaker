@@ -65,11 +65,42 @@ module.exports = {
     req.url = "/" + req.params[0];
 
     req.headers.host = host;
-    proxy.proxyRequest(req, resp, {
 
+    proxy.proxyRequest(req, resp, {
       host: host,
       port: port
     });
+
+  },
+
+  delayedCors: function(req, resp){
+    //TODO: So much error handling.
+
+    // Host pulled from url mapping in app.js
+    var host = req.params.host.split(":");
+    var port = 80;
+
+    if (host[1]){
+      port = parseInt(host[1]);
+    }
+
+    host = host[0];
+
+    //This is the first and only wildcard match
+    req.url = "/" + req.params[0];
+
+    req.headers.host = host;
+
+    var buffer = httpProxy.buffer(req);
+
+    setTimeout(function () {
+      proxy.proxyRequest(req, resp, {
+        host: host,
+        port: port,
+        buffer: buffer
+      });
+    }, 700);
+
   }
 
 };
