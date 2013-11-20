@@ -17,7 +17,6 @@
 var http = require('http');
 var httpProxy = require('http-proxy');
 var url = require('url');
-var cors = require('cors');
 
 var proxy = new httpProxy.RoutingProxy();
 
