@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-define(function() {
+define(['inflector'], function(Inflector) {
   return {
     hexToRgb: function(hex, opacity){
       hex = hex.replace('#', '');
@@ -18,6 +18,11 @@ define(function() {
           opacity / 100
         ].join(',') +
       ")";
+    },
+
+    prettyName: function(name){
+      name = name.replace('ceci-', '');
+      return Inflector.titleize(name);
     }
   };
 });

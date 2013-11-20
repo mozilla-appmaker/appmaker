@@ -358,15 +358,6 @@ define(
       }
     });
 
-    function prettyName(name){
-      var pretty = name.replace('app-', '');
-      pretty = pretty.replace(/-/g, " ");
-      pretty = pretty.toLowerCase().replace(/\b[a-z](?=[a-z]{2})/g, function(letter) {
-        return letter.toUpperCase();
-      });
-      return pretty;
-    }
-
     function addComponentCard(componentDefinition, name, list) {
       var thumbnail = componentDefinition.thumbnail || '';
       var friends = componentDefinition.friends || [];
