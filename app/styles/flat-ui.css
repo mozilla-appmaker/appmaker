@@ -87,7 +87,6 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: "Lato", Helvetica, Arial, sans-serif;
   font-weight: 700;
   line-height: 1.1;
   color: inherit;
@@ -949,7 +948,6 @@ fieldset[disabled] .btn-link:focus {
 }
 .navbar-unread,
 .navbar-new {
-  font-family: "Lato", Helvetica, Arial, sans-serif;
   background-color: #1abc9c;
   border-radius: 50%;
   color: #ffffff;
@@ -1256,6 +1254,7 @@ textarea {
 }
 label {
   font-weight: normal;
+  font-size: 26px;
   line-height: 1.9986363100000002em;
 }
 .form-control:-moz-placeholder {
@@ -1276,7 +1275,7 @@ label {
 .form-control {
   border: 2px solid #bdc3c7;
   color: #34495e;
-  font-family: "Lato", Helvetica, Arial, sans-serif;
+  font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
   font-size: 15px;
   padding: 8px 12px;
   height: 42px;
@@ -1692,7 +1691,7 @@ fieldset[disabled] .form-control + .input-icon,
   background: transparent;
   border: none;
   color: #34495e;
-  font-family: "Lato", Helvetica, Arial, sans-serif;
+  font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
   font-size: 14px;
   margin: 0px;
   padding: 0 0 0 5px;
@@ -2794,7 +2793,7 @@ body.vjs-full-window {
   bottom: 4em;
   left: 1em;
   right: 1em;
-  font-family: "Lato", Helvetica, Arial, sans-serif;
+  font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
 }
 .video-js .vjs-text-track {
   display: none;
@@ -3031,7 +3030,7 @@ body.vjs-full-window {
   height: 20px;
   width: 50px;
   top: 16px;
-  font: 300 13px "Lato", Helvetica, Arial, sans-serif;
+  font: 300 13px "Source Sans Pro", Helvetica, Arial, sans-serif;
 }
 .vjs-current-time {
   right: 128px;
