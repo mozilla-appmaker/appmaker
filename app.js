@@ -11,6 +11,7 @@ http = require('http'),
 engine = require('ejs-locals'),
 path = require('path'),
 uuid = require('node-uuid'),
+cors = require('cors'),
 connect_fonts = require('connect-fonts'),
 font_sourcesanspro = require('connect-fonts-sourcesanspro'),
 postmark = require("postmark")(process.env.POSTMARK_API_KEY),
@@ -136,17 +137,18 @@ routes = require('./routes')(
 
 
 app.get('/', routes.index);
-app.all('/designer', routes.designer);
-app.get('/testappdesigner', routes.testappdesigner);
-app.get('/testapp', routes.testapp);
-app.get('/remix', routes.remix);
-app.get('/component-*', routes.proxy.githubComponentProxy);
 
-// Server-side gen of ID since we'll likely eventually use this for persistance
-app.get('/store/uuid', function (req, res) {
-  res.setHeader('Content-Type', 'text/plain');
-  res.send(uuid.v1());
-});
+app.all('/designer', routes.designer);
+
+app.get('/testappdesigner', routes.testappdesigner);
+
+app.get('/testapp', routes.testapp);
+
+app.get('/remix', routes.remix);
+
+//TODO: Security: https://github.com/mozilla-appmaker/appmaker/issues/602
+app.get('/component-*',  cors(), routes.proxy.gitHubComponent);
+app.get('/cors/:host/*', cors(), routes.proxy.cors);
 
 // This is a route that we use for client-side localization to return the JSON
 // when we do the XHR request to this route.
