@@ -45,7 +45,6 @@
     Polymer('ceci-app', {
       ready: function() {
         this.setAttribute('id', 'ceci-app-' + uuid());
-        this.dispatchEvent(new CustomEvent('ready', {bubbles: true, detail: this}));
 
         if (this.querySelectorAll('ceci-card').length > 0) {
           if (!this.querySelector('ceci-card[visible]')) {
@@ -55,11 +54,16 @@
         else {
           this.addCard();
         }
+
+        this.dispatchEvent(new CustomEvent('ready', {bubbles: true, detail: this}));
+
       },
       addCard: function() {
         var newCard = document.createElement('ceci-card');
         this.appendChild(newCard);
+        newCard.show();
         this.dispatchEvent(new CustomEvent('cardAdded', {bubbles: true, detail: newCard}));
+        newCard.show();
       },
       removeCard: function(index) {
         index += 1;
@@ -70,12 +74,11 @@
 
         if (card) {
           this.removeChild(card);
+          this.dispatchEvent(new CustomEvent('cardRemoved', {bubbles: true, detail: card}));
 
           if (card.getAttribute('visible') && nextCard) {
             nextCard.show();
           }
-
-          this.dispatchEvent(new CustomEvent('cardRemoved', {bubbles: true, detail: card}));
 
           return card;
         }

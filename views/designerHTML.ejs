@@ -1,10 +1,7 @@
 <div class="page-wrapper">
   <nav class="top-nav clearfix">
     <div class="logo"></div>
-    <div class="cards clearfix">
-      <div class="card-list clearfix"></div>
-      <div class="add-card"></div>
-    </div>
+    <ceci-card-nav></ceci-card-nav>
     <div class="nav-ui">
       <button class="btn-std btn-md publish btn-critical"><%- gettext("Publish") %></button>
       <button class="btn-std btn-md new"><%- gettext("New App") %></button>
@@ -21,7 +18,6 @@
               <%- htmlInjection %>
             <% } else { -%>
               <ceci-app>
-              
               </ceci-app>
             <% } -%>
           </div>
