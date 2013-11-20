@@ -5,12 +5,13 @@
 define([], function() {
   "use strict";
 
-  var BUILT_IN = [
+  var BUILT_IN_COMPONENTS = [
     "polymer-element",
     "ceci-app",
     "ceci-broadcast",
     "ceci-card",
     "ceci-element",
+    "ceci-element-base",
     "ceci-listen"
   ];
 
@@ -18,7 +19,7 @@ define([], function() {
     getRegisteredComponents: function(){
       var components = [];
       for (var tagName in window.CustomElements.registry){
-        if (BUILT_IN.indexOf(tagName) === -1){
+        if (BUILT_IN_COMPONENTS.indexOf(tagName) === -1){
           components.push(window.CustomElements.registry[tagName]);
         }
       }
