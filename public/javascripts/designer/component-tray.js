@@ -7,51 +7,22 @@ define(
   function(Ceci, $, Util) {
     "use strict";
 
-    // TODO: refactor this into a component
-    function addComponentToTray(componentDefinition, name, list) {
-      var thumbnail = componentDefinition.thumbnail || '';
-      var friends = componentDefinition.friends || [];
-      var description = componentDefinition.description || 'No description available';
+    Ceci.forEachComponent(function(name, component){
+      var item = document.createElement('designer-component-tray-item');
+      var meta = component.prototype.ceci;
 
-      var card = $('<div class="add-component component-card" name="'+name+'"><div class="add-tooltip">+</div></div>');
-      var tagList = componentDefinition.tags;
-
-      card.data("tags",tagList);
-      card.attr("show",true);
-
-      var descriptionColumn = $('<div class="component-description"><h1>' + Util.prettyName(name) + '</h1><h6>'+ description +'</h6></div>');
-      var preview = $('<div class="component-preview"><div class="image-wrapper">' + thumbnail + '</div><div class="add-component-overlay"></div></div>');
-
-      var friendList = $('<div class="friends"><h3>Friends</h3></div>');
-
-      if (friends.length > 0) {
-        friends.forEach(function (friend) {
-          friendList.append($('<a>'+ friend +'</a>'));
-        });
-      } else {
-        friendList.append($('<div>No Friends</div>'));
+      if (typeof meta === 'undefined'){
+        throw new TypeError("Ceci component, \"" + tagName + "\" is lacking ceci definitions. Likely it shouldn't be returned from ceci-designer.");
       }
 
-      var author = $('<div class="author"><h5>By: Joe Thomas | Last edited 8/12/13</h5></div>');
-      var tags = $('<div class="tags clearfix"><div class="tag">Animation</div></div>');
-      var moreInfo = $('<div class="more-info"></div>');
-      var showMore = $('<a class="show-more" href="#">More Info</a>');
+      item.setAttribute('name', name);
+      item.setAttribute('title', Util.prettyName(name));
 
-      moreInfo.append(friendList);
-      moreInfo.append(tags);
-      moreInfo.append(author);
-      card.append(preview);
+      item.setAttribute(meta.description);
+      item.setAttribute(meta.author);
+      item.setAttribute(meta.updatedAt);
 
-      descriptionColumn.append(moreInfo);
-
-      card.append(descriptionColumn);
-      card.append(showMore);
-
-      list.append(card);
-    }
-
-    Ceci.forEachComponent(function(name, component){
-      addComponentToTray(component.prototype.ceci, name, $('#components'));
+      document.getElementById('components').appendChild(item);
     });
   }
 );

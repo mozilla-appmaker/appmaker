@@ -1,0 +1,35 @@
+<polymer-element
+  name="designer-component-tray-item"
+  >
+  <template>
+    <div class="add-component component-card" name="{{name}}" show="true">
+      <div class="add-tooltip">+</div>
+      <div class="component-preview">
+        <div class="image-wrapper">{{thumbnail}}</div>
+        <div class="add-component-overlay"></div>
+      </div>
+      <div class="component-description">
+        <h1>{{title}}</h1>
+        <h6>{{description}}</h6>
+        <div class="more-info">
+          <div class="friends">
+            <h3>Friends</h3>
+            <div>No Friends</div>
+          </div>
+          <div class="tags clearfix">
+            <div class="tag"></div>
+            <content type="designer-component-tag"></content>
+          </div>
+          <div class="author">
+            <h5>By: {{author}} | Last edited {{updatedAt}}</h5>
+          </div>
+        </div>
+      </div>
+      <a class="show-more" href="#">More Info</a>
+    </div>
+  </template>
+  <script>
+    Polymer('designer-component-tray-item', {
+    });
+  </script>
+</polymer-element>
