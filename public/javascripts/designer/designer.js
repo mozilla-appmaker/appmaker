@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  [ "jquery", "localized", "inflector", "designer/utils", "designer/editable",
+  [ "jquery", "localized", "inflector", "utils", "editable",
     "jquery-ui", "designer/keyboard"],
   function($, localized, Inflector, Utils, editable) {
     "use strict";
@@ -19,14 +19,6 @@ define(
 
     function init () {
       localized.ready(function(){
-        var ignoreKeys = ['ceci-app', 'ceci-card', 'ceci-listen', 'ceci-broadcast', 'ceci-element', 'ceci-element-base'];
-        Object.keys(CustomElements.registry).forEach(function (registryKey) {
-          var entry = CustomElements.registry[registryKey];
-          if (registryKey.indexOf('ceci-') === 0 && ignoreKeys.indexOf(registryKey) === -1) {
-            addComponentCard(entry.prototype.ceci, registryKey, $('#components'));
-          }
-        });
-
         document.querySelector('ceci-app').addEventListener('CeciElementAdded', function (e) {
           console.log(e);
         }, false);
