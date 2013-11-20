@@ -1,7 +1,6 @@
 <polymer-element
   name="designer-component-tray-item"
-  noscript
-  >
+  attributes="name description label author updatedat thumbnail" noscript>
   <template>
     <div class="add-component component-card" name="{{name}}" show="true">
       <div class="add-tooltip">+</div>
@@ -10,7 +9,7 @@
         <div class="add-component-overlay"></div>
       </div>
       <div class="component-description">
-        <h1>{{title}}</h1>
+        <h1>{{label}}</h1>
         <h6>{{description}}</h6>
         <div class="more-info">
           <div class="friends">
@@ -22,7 +21,7 @@
             <content type="designer-component-tag"></content>
           </div>
           <div class="author">
-            <h5>By: {{author}} | Last edited {{updatedAt}}</h5>
+            <h5>By: {{author}} | Last edited {{updatedat}}</h5>
           </div>
         </div>
       </div>

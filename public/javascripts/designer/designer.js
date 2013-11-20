@@ -22,6 +22,7 @@ define(
         document.querySelector('ceci-app').addEventListener('CeciElementAdded', function (e) {
           console.log(e);
         }, false);
+
         // app = new Ceci.App({
         //   defaultChannels: channels.map(function (c) { return c.name; }),
         //   container: $('#flathead-app')[0],

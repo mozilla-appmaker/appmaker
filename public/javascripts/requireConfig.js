@@ -15,7 +15,7 @@ requirejs.config({
 
     // "persona": "https://login.persona.org/include",
 
-    "ceci-designer": "/ceci/ceci-designer.js",
+    "ceci": "/ceci",
 
     "togetherjs": "https://togetherjs.com/togetherjs-min",
 
