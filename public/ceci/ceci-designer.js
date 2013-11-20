@@ -41,7 +41,10 @@ define([], function() {
       var components = [];
       for (var tagName in window.CustomElements.registry){
         if (BUILT_IN_COMPONENTS.indexOf(tagName) === -1){
-          components.push(window.CustomElements.registry[tagName]);
+          var component = window.CustomElements.registry[tagName];
+          if (component.prototype.ceci){
+            components.push(component);
+          }
         }
       }
       return components;
