@@ -65,15 +65,7 @@ app.configure(function(){
 
 
   app.use(function(req, res, next) {
-    // console.log(req.url);
-    // we allow cross-origin requests for stuff from the test_assets directory
-    console.log(req.url.substring(0, "/test_assets/".length));
-    if (req.url.substring(0, "/test_assets/".length) === "/test_assets/") {
-      // remove for security-by-obscurity for automated attacks
-      res.removeHeader("x-powered-by");
-      res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    }
+    res.removeHeader("x-powered-by");
     next();
   });
   app.use(express.methodOverride());
@@ -92,6 +84,8 @@ app.configure(function(){
     ua: 'all',
     maxage: MAX_FONT_AGE_MS
   }));
+
+  app.use("/test_assets", cors(), express.static(path.join(__dirname, 'public', 'test_assets')));
   app.use(express.static(path.join(__dirname, 'public')));
 });
 
