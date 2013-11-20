@@ -4,7 +4,7 @@
 
 define(
   [
-    "jquery", "localized", "inflector","designer/utils",
+    "localized", "inflector","designer/utils",
 
     // Unreferenced:
     "/ceci/ceci-designer.js",
@@ -14,7 +14,7 @@ define(
     "designer/keyboard",
     "jquery-ui",
   ],
-  function($, localized, Inflector, Utils) {
+  function(localized, Inflector, Utils) {
     "use strict";
 
   }
