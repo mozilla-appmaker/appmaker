@@ -50,11 +50,30 @@
               describe('#getRegisteredComponents', function(){
                 var components = Ceci.getRegisteredComponents();
                 it('should return all non-ceci-base components', function(){
-                  components.length.should.equal(3);
+                  components.should.have.length.of(3);
                 });
 
                 it('should not return ceci-base components', function(){
                   components.indexOf(window.CustomElements.registry['ceci-app']).should.equal(-1);
+                });
+              });
+
+              describe('#addChannel', function(){
+                var addChannelWrapper = function(){
+                  Ceci.addChannel({key: 'value'});
+                };
+
+                it("should throw an exception if channel doesn't have an \"id\"", function(){
+                  chai.expect(addChannelWrapper).to.throw("Channel \"id\" missing.");
+                });
+
+                it("should add valid channels", function(){
+                  Ceci.addChannel({id: "red",   hex: "#FF0000"});
+                  Ceci.addChannel({id: "green", hex: "#00FF00"});
+                  Ceci.addChannel({id: "blue",  hex: "#0000FF", arbitraryData: 'thing'});
+
+                  Object.keys(Ceci.channels).should.have.length.of(3);
+                  Ceci.channels.blue.arbitraryData.should.equal("thing");
                 });
               });
             });
