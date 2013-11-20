@@ -8,25 +8,8 @@ define(
   function($, localized, Inflector, Utils, editable) {
     "use strict";
 
-    function Channel(name, title, hex) {
-      // make sure the name is a string
-      this.name = name;
-      this.title = title;
-      this.hex = hex;
-    }
 
     var allTags = {};
-
-    var channels = [
-      new Channel('blue', 'Blue Moon', '#358CCE'),
-      new Channel('red', 'Red Baloon', '#e81e1e'),
-      new Channel('pink', 'Pink Heart', '#e3197b'),
-      new Channel('purple', 'Purple Horseshoe', '#9f27cf'),
-      new Channel('green', 'Green Clover', '#71b806'),
-      new Channel('yellow', 'Yellow Pot of Gold', '#e8d71e'),
-      new Channel('orange', 'Orange Star', '#ff7b00'),
-      new Channel(null, 'Disabled', '#444')
-    ];
 
     var selection = [];
 
