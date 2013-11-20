@@ -29,7 +29,7 @@ define(
           friendList.append($('<a>'+ friend +'</a>'));
         });
       } else {
-        friendList.append($('<div>No Friends<div>'));
+        friendList.append($('<div>No Friends</div>'));
       }
 
       var author = $('<div class="author"><h5>By: Joe Thomas | Last edited 8/12/13</h5></div>');
