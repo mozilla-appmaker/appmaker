@@ -46,7 +46,6 @@
       ready: function() {
         this.setAttribute('id', 'ceci-app-' + uuid());
         this.dispatchEvent(new CustomEvent('ready', {bubbles: true, detail: this}));
-
         if (this.querySelectorAll('ceci-card').length > 0 && !this.querySelector('ceci-card[visible]')) {
           this.querySelector('ceci-card').setAttribute('visible', true);
         }
@@ -55,7 +54,7 @@
         var newCard = document.createElement('ceci-card');
         this.appendChild(newCard);
         newCard.show();
-        this.dispatchEvent(new CustomEvent('cardadded', {bubbles: true, detail: newCard}));
+        this.dispatchEvent(new CustomEvent('cardAdded', {bubbles: true, detail: newCard}));
       },
       removeCard: function(index) {
         index += 1;

@@ -15,11 +15,11 @@ define(
     var cardList = $(".card-list");
 
     $('.add-card').click(function(){
-      document.querySelector("ceci-app").addCard();
+      app.addCard();
     });
 
     // Show a card
-    app.addEventListener('cardshow', function(data){
+    app.addEventListener('cardShown', function(data){
       cardList.find(".card").removeClass("selected");
       var card = data.detail;
       var cardIndex = $(card).index() + 1;
@@ -39,7 +39,7 @@ define(
      });
 
     // Add a card
-    app.addEventListener('cardadded', function(data){
+    app.addEventListener('cardAdded', function(data){
       var card = data.detail;
       var newthumb = $('<div class="card"><span class="card-name"></span><a title="Delete this card" href="#" class="delete-card"></a></div>');
       newthumb.click(function() {
@@ -49,6 +49,10 @@ define(
       card.show();
       adjustCardNames();
     });
+
+    if(app.countCards() == 0){
+      app.addCard();
+    }
 
     // Adjusts card tab names after delete / add actions.
     function adjustCardNames(){
