@@ -29,7 +29,10 @@
     "postmark": "0.2.0",
     "statsd": "0.6.0",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.8.tar.gz",
-    "ejs": "~0.8.4"
+    "ejs": "~0.8.4",
+    "proxy-middleware": "~0.5.0",
+    "cors": "~2.1.0",
+    "http-proxy": "~0.10.3"
   },
   "engines": {
     "node": "~0.10.21",

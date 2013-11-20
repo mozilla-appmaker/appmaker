@@ -43,7 +43,7 @@ app.configure(function(){
   app.use(i18n.middleware({
     supported_languages: ["en-US", "th-TH"],
     default_lang: "en-US",
-    mappings: { 
+    mappings: {
       "en": "en-US",
       "th": "th-TH"
      },
@@ -140,7 +140,7 @@ app.all('/designer', routes.designer);
 app.get('/testappdesigner', routes.testappdesigner);
 app.get('/testapp', routes.testapp);
 app.get('/remix', routes.remix);
-app.get('/component-*', routes.componentProxy);
+app.get('/component-*', routes.proxy.githubComponentProxy);
 
 // Server-side gen of ID since we'll likely eventually use this for persistance
 app.get('/store/uuid', function (req, res) {
