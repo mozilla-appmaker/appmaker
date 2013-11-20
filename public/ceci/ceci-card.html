@@ -51,7 +51,6 @@
             });
           });
         });
-
         observer.observe(this, { childList: true });
       },
       show: function () {
@@ -62,6 +61,7 @@
             card.removeAttribute('visible');
           }
         });
+        this.dispatchEvent(new CustomEvent('cardshow', {bubbles: true, detail: this}));
       }
     });
   </script>

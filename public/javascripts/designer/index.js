@@ -9,6 +9,7 @@ define(
     // Unreferenced:
     "/ceci/ceci-designer.js",
     "designer/component-tray",
+    "designer/cards",
     "designer/channels",
     "designer/editable",
     "designer/keyboard",
