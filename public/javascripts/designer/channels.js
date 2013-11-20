@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["/ceci/ceci-designer.js"],
+  ["ceci/ceci-designer"],
   function(Ceci) {
     "use strict";
 
