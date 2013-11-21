@@ -33,10 +33,30 @@
       :host([visible]) {
         display: block;
       }
+
+      :host #top,
+      :host #bottom {
+        padding-bottom: 4px;
+        height: 10px;
+        width: 100%;
+        display: block;
+        position: absolute;
+      }
+
+      :host #top {
+        border-bottom: dashed 2px #DDD;
+        top: 0;
+      }
+
+      :host #bottom {
+        border-top: dashed 2px #DDD;
+        bottom: 0;
+      }
     </style>
-    <content select="ceci-top"></content>
-    <content select="ceci-middle"></content>
-    <content select="ceci-bottom"></content>
+    <content></content>
+    <ceci-top id="top"></ceci-top>
+    <ceci-middle id="middle"></ceci-middle>
+    <ceci-bottom id="bottom"></ceci-bottom>
   </template>
   <script>
     Polymer('ceci-card', {
@@ -46,12 +66,12 @@
           mutations.forEach(function (mutation) {
             Array.prototype.forEach.call(mutation.addedNodes, function (addedNode) {
               if (addedNode.localName.indexOf('ceci-') === 0) {
+                console.log(that.$.top);
                 document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: addedNode}));
               }
             });
           });
         });
-
         observer.observe(this, { childList: true });
       },
       show: function () {
@@ -62,6 +82,7 @@
             card.removeAttribute('visible');
           }
         });
+        this.dispatchEvent(new CustomEvent('cardShown', {bubbles: true, detail: this}));
       }
     });
   </script>

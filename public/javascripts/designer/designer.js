@@ -28,21 +28,20 @@ define(
         //   container: $('#flathead-app')[0],
         //   onComponentAdded: function (component) {
         //     component = $(component);
-
+        //
         //     var dropTarget = $(".drophere").find(".draggable");
         //     dropTarget.replaceWith(component);
-
+        //
         //     component.addClass("component");
         //     component.draggable({
         //       handle: 'handle'
         //     });
-
+        //
         //     component.on('mousedown', function(evt) {
         //       selectComponent($(evt.currentTarget));
         //     });
-
+        //
         //     component.append($('<div class="handle"></div>'));
-
         //     selectComponent(component);
         //   },
         //   onload: function (components) {
@@ -74,30 +73,8 @@ define(
         //         });
         //       }
         //     });
-
         //     updateTags();
         //   },
-        //   onCardChange: function (card) {
-        //     var thumbId = "card-thumb-" + card.id.match(/(\d+)$/)[0];
-        //     $(".card").removeClass('selected');
-        //     $("#" + thumbId).addClass('selected');
-        //   },
-        //   onCardAdded: function (card) {
-        //     Array.prototype.forEach.call(card.children, function (element) {
-        //       element.classList.add('drophere');
-        //     });
-
-        //     // create card thumbnail
-        //     var cardNumber = $(".card").length + 1;
-        //     var newthumb = $('<div class="card">' + localized.get("Page") + cardNumber + '<a title="' + localized.get("Delete this card") + '" href="#" class="delete-card"></a></div>');
-        //     newthumb.attr('id', "card-thumb-" + cardNumber);
-        //     newthumb.click(function() {
-        //       card.show();
-        //     });
-        //     $(".card-list").append(newthumb);
-        //     $('.drophere').sortable(sortableOptions);
-        //     card.show();
-        //   }
         // });
 
         app.sortComponents = function() {
@@ -418,38 +395,6 @@ define(
       $('#time').text(now);
       console.log('Draft saved:', now);
     };
-
-    $('.add-card').click(function(){
-      app.addCard();
-    });
-
-    //Remove card and change selection
-    var removeCard = function (card) {
-      app.removeCard(card);
-      card.remove();
-      $(".cards .selected").remove();
-
-      $(".card-list .card").each(function(i, card){
-        card = $(card);
-        card.attr("id", "card-thumb-" + (i + 1));
-        card.text("Page " + (i + 1));
-      });
-
-      $("#card-thumb-1").addClass('selected');
-      $("#ceci-card-1").show();
-      Ceci.fireChangeEvent();
-    };
-
-    $('.cards').on("click",".delete-card",function(){
-      var card = Ceci.currentCard;
-      if (window.confirm(localized.get("Delete this Page?"))) {
-        removeCard(card);
-      }
-    });
-
-    $('#duplicate-card').click(function(){
-      app.duplicateCard(Ceci.currentCard).show();
-    });
 
     $(document).on('mouseenter', '.draggable', function () {
       $(this).children('.info-btn').show();

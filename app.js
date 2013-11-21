@@ -85,7 +85,12 @@ app.configure(function(){
     maxage: MAX_FONT_AGE_MS
   }));
 
-  app.use("/test_assets", cors(), express.static(path.join(__dirname, 'public', 'test_assets')));
+  // enable cors for test relevant assets
+  app.use("/test_assets/ceci/", cors());
+  app.use("/test_assets/ceci/", express.static(path.join(__dirname, 'public', 'ceci')));
+  app.use("/test_assets/vendor/", cors());
+  app.use("/test_assets/vendor/", express.static(path.join(__dirname, 'public', 'vendor')));
+
   app.use(express.static(path.join(__dirname, 'public')));
 });
 
