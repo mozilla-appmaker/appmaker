@@ -4,7 +4,7 @@ var app = angular.module('appmaker', ['appmaker.directives', 'appmaker.services'
 
 app.config(function ($routeProvider) {
   $routeProvider.
-    when('/register', {
+    when('/list', {
       controller: 'ListCtrl', 
       resolve: {
         components: function (LoadComponents) {

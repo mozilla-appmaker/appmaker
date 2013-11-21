@@ -693,7 +693,6 @@ fieldset[disabled] .btn-link:focus {
 }
 .navbar {
   font-size: 16px;
-  border-bottom: 1px solid #2C3E50;
 }
 .navbar .navbar-brand {
   border-radius: 6px 0 0 6px;
@@ -892,7 +891,7 @@ fieldset[disabled] .btn-link:focus {
   border-radius: 6px;
 }
 .navbar-inverse {
-  background: #34495e;
+  background: #2C3E50;
   font-size: 17px;
 }
 .navbar-inverse .navbar-brand {
