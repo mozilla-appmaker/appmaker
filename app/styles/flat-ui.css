@@ -693,8 +693,7 @@ fieldset[disabled] .btn-link:focus {
 }
 .navbar {
   font-size: 16px;
-  border-radius: 6px;
-  border: none;
+  border-bottom: 1px solid #2C3E50;
 }
 .navbar .navbar-brand {
   border-radius: 6px 0 0 6px;

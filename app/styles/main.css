@@ -18,3 +18,7 @@ body {
    width:0;
    height:0
 }
+
+.with-navbar {
+  margin-top: 50px;
+}
