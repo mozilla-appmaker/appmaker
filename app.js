@@ -90,6 +90,14 @@ app.configure(function(){
   app.use("/test_assets/ceci/", express.static(path.join(__dirname, 'public', 'ceci')));
   app.use("/test_assets/vendor/", cors());
   app.use("/test_assets/vendor/", express.static(path.join(__dirname, 'public', 'vendor')));
+  app.use("/test_assets", cors(), express.static(path.join(__dirname, 'public', 'test_assets')));
+
+  var lessMiddleware = require('less-middleware');
+
+  app.use(lessMiddleware({
+      src: __dirname + '/public',
+      compress: true
+  }));
 
   app.use(express.static(path.join(__dirname, 'public')));
 });
