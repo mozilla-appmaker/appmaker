@@ -4,7 +4,7 @@ var app = angular.module('appmaker', ['appmaker.directives', 'appmaker.services'
 
 app.config(function ($routeProvider) {
   $routeProvider.
-    when('/register', {
+    when('/list', {
       controller: 'ListCtrl', 
       resolve: {
         components: function (LoadComponents) {
@@ -58,6 +58,8 @@ app.controller('ViewCtrl', function ($scope, component, $location) {
 app.controller('NewCtrl', function ($scope, Component, $location) {
   $scope.component = new Component();
 
+  $scope.heading = "Add a Component";
+
   $scope.save = function() {
     $scope.component.$save(function(component) {
       $location.path('/component/' + component.id);
@@ -71,6 +73,8 @@ app.controller('NewCtrl', function ($scope, Component, $location) {
 
 app.controller('EditCtrl', function ($scope, $location, component) {
   $scope.component = component;
+
+  $scope.heading = "Edit Component";
 
   $scope.save = function() {
     $scope.component.$save(function(component) {

@@ -3494,6 +3494,12 @@ input[type="button"].btn-block {
           box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   background-clip: padding-box;
 }
+.dropdown-arrow {
+  border-bottom: none;
+  border-top: 8px outset #f3f4f5;
+  bottom: 100%;
+  top: auto;
+}
 
 .dropdown-menu.pull-right {
   right: 0;
