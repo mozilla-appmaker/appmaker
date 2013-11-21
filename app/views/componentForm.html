@@ -1,5 +1,5 @@
 <div class="container with-navbar">
-  <h1>Add a Component</h1>
+  <h1>{{heading}}</h1>
   <form name="componentForm" ng-submit="save()">
     <div class="form-group">
       <label for="name">Name your component</label>
@@ -11,8 +11,8 @@
     </div>
     <div class="form-actions">
       <button class="btn btn-hg btn-primary mrm" ng-disabled="componentForm.$invalid">Save</button>
-      <button class="btn btn-hg btn-danger" type="button" ng-click="back()">Cancel</button>
-      <button class="btn btn-hg btn-default" type="button" ng-click="remove()" ng-show="component.id">Delete</button>
+      <button class="btn btn-hg btn-danger mrm" type="button" ng-click="back()">Cancel</button>
+      <button class="btn btn-hg btn-warning" type="button" ng-click="remove()" ng-show="component.id">Delete</button>
     </div>
     <notification></notification>
   </form>
