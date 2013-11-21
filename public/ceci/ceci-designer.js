@@ -60,5 +60,5 @@ define([], function() {
 
   CeciDesigner.channels = {};
 
-  return CeciDesigner
+  return CeciDesigner;
 });

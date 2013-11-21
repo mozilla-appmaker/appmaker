@@ -3,26 +3,31 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["/ceci/ceci-designer.js", "jquery", "designer/utils"],
-  function(Ceci, $, Util) {
+  ["designer/utils", "ceci/ceci-designer"],
+  function(Util, Ceci) {
     "use strict";
 
-    Ceci.forEachComponent(function(name, component){
-      var item = document.createElement('designer-component-tray-item');
-      var meta = component.prototype.ceci;
+    var knownComponents = [];
 
-      if (typeof meta === 'undefined'){
-        throw new TypeError("Ceci component, \"" + tagName + "\" is lacking ceci definitions. Likely it shouldn't be returned from ceci-designer.");
-      }
 
-      item.setAttribute('name', name);
-      item.setAttribute('title', Util.prettyName(name));
+    window.addEventListener('WebComponentsReady', function(e) {
+      Ceci.forEachComponent(function(name, component){
+        var item = document.createElement('designer-component-tray-item');
+        var meta = component.prototype.ceci;
 
-      item.setAttribute(meta.description);
-      item.setAttribute(meta.author);
-      item.setAttribute(meta.updatedAt);
+        if (typeof meta === 'undefined'){
+          throw new TypeError("Ceci component, \"" + name + "\" is lacking ceci definitions. Likely it shouldn't be returned from ceci-designer.");
+        }
 
-      document.getElementById('components').appendChild(item);
+        item.setAttribute('name', name);
+        item.setAttribute('label', Util.prettyName(name));
+
+        item.setAttribute(meta.description);
+        item.setAttribute(meta.author);
+        item.setAttribute(meta.updatedAt);
+
+        document.getElementById('components').appendChild(item);
+      });
     });
   }
 );
