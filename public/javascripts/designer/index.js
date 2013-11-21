@@ -12,6 +12,7 @@ define(
     "designer/channels",
     "designer/editable",
     "designer/keyboard",
+    "designer/modes",
     "jquery-ui",
   ],
   function(localized, Inflector, Utils, Ceci) {
