@@ -52,7 +52,7 @@
         var newCard = document.createElement('ceci-card');
         this.appendChild(newCard);
         newCard.show();
-        this.dispatchEvent(new CustomEvent('cardadded', {bubbles: true, detail: newCard}));
+        this.dispatchEvent(new CustomEvent('cardAdded', {bubbles: true, detail: newCard}));
       },
       removeCard: function(index) {
         index += 1;
@@ -63,11 +63,11 @@
 
         if (card) {
           this.removeChild(card);
-          this.dispatchEvent(new CustomEvent('cardremoved', {bubbles: true, detail: card}));
+          this.dispatchEvent(new CustomEvent('cardRemoved', {bubbles: true, detail: card}));
           if (card.getAttribute('visible') && nextCard) {
             nextCard.show();
           }
-          this.dispatchEvent(new CustomEvent('cardremoved', {bubbles: true, detail: card}));
+          this.dispatchEvent(new CustomEvent('cardRemoved', {bubbles: true, detail: card}));
           return card;
         }
         console.error('No such card.');

@@ -70,7 +70,7 @@
             nextCard.show();
           }
 
-          this.dispatchEvent(new CustomEvent('cardremoved', {bubbles: true, detail: card}));
+          this.dispatchEvent(new CustomEvent('cardRemoved', {bubbles: true, detail: card}));
 
           return card;
         }
