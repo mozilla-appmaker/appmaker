@@ -33,9 +33,7 @@ define(
        adjustCardNames();
      });
 
-    // Add a card
-    app.addEventListener('cardAdded', function(data){
-      var card = data.detail;
+    function addCardTab (card) {
       var newthumb = $('<div class="card"><span class="card-name"></span><a title="Delete this card" href="#" class="delete-card"></a></div>');
       newthumb.click(function() {
         card.show();
@@ -43,7 +41,7 @@ define(
       $(".card-list").append(newthumb);
       card.show();
       adjustCardNames();
-    });
+    }
 
     // Adjusts card tab names after delete / add actions.
     function adjustCardNames(){
@@ -54,5 +52,18 @@ define(
       });
     }
 
+    function checkAppForExistingCards () {
+      var cards = app.querySelectorAll('ceci-card');
+      Array.prototype.forEach.call(cards, addCardTab);
+    }
+
+    // Add a card tab when app notifies that a card was added to the app.
+    app.addEventListener('cardAdded', function (e) {
+      addCardTab(e.detail);
+    }, false);
+
+    // Do it now, but also wait for "ready" event, in case we're too early.
+    app.addEventListener('ready', checkAppForExistingCards, false);
+    checkAppForExistingCards();
   }
 );
