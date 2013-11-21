@@ -11,7 +11,7 @@
   ],
   "dependencies": {
     "jquery": "~2.0.3",
-    "angular": "~1.0.7",
+    "angular": "~1.2.1",
     "jqueryui-amd": "~0.0.2",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.8.tar.gz"
   }
