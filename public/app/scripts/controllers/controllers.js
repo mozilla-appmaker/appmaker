@@ -11,7 +11,7 @@ app.config(function ($routeProvider) {
           console.log('loading components for /components');
           // return LoadComponents();
           var comps = LoadComponents();
-          console.log('components: %j', comps);
+          console.log('components: %o', comps);
           return comps; 
         }
       },
@@ -79,7 +79,7 @@ app.controller('EditCtrl', function ($scope, $location, component) {
 
   $scope.save = function() {
     $scope.component.$save(function(component) {
-      $location.path('/component/' + component.id);
+      $location.path('/component/' + component._id);
     });
   };
 

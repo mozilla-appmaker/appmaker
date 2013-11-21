@@ -18,7 +18,7 @@ var Component = mongoose.model('Component', componentSchema);
 exports.components = function (req, res) {
   Component.find({}, function (err, components) {
       console.log('retrieved %s components from mongo', components.length);
-        res.json(components);
+      res.json(components);
   });
 };
 
