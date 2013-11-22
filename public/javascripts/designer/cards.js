@@ -23,7 +23,8 @@ define(
     });
 
     // Delete a card
-    $('.cards').on("click", ".delete-card",function(){
+    $('.cards').on("click", ".delete-card",function(event){
+      event.stopPropagation();
       var tab = $(this).closest(".card");
       var index = tab.index();
       if (window.confirm("Delete this Page?")) {
@@ -35,7 +36,8 @@ define(
 
     function addCardTab (card) {
       var newthumb = $('<div class="card"><span class="card-name"></span><a title="Delete this card" href="#" class="delete-card"></a></div>');
-      newthumb.click(function() {
+      newthumb.click(function(e) {
+        if (e.toElement.className === "delete-card") return;
         card.show();
       });
       $(".card-list").append(newthumb);

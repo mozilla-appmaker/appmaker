@@ -34,6 +34,9 @@
         document.addEventListener('CeciElementAdded', function(event) {
           that.logs.push(event);
         });
+        document.addEventListener('cardShown', function(event) {
+          that.logs.push(event);
+        });
       },
       buttonClick: function() {
         this.logs = [];
