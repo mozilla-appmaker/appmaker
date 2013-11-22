@@ -1,0 +1,48 @@
+<polymer-element
+  name="design-log"
+  >
+  <template>
+    <style>
+      :host {
+        display: block;
+        background-color: #34495E;
+        color: #FFF;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+      .log {
+        border-bottom: 2px solid #2C3E50;
+        padding: 10px;
+      }
+      button {
+        border-radius: 4px;
+        background-color: #1ABC9C;
+        color: #FFF;
+        border: none;
+        padding: 6px 15px;
+        margin: 10px;
+      }
+    </style>
+    <template repeat="{{log in logs}}">
+      <div class="log">{{log.type}}</div>
+    </template>
+      <button id="clear" on-click="{{buttonClick}}">Clear</button>
+  </template>
+  <script>
+    Polymer('design-log', {
+      ready: function() {
+        this.logs = [];
+        var that = this;
+        document.addEventListener('CeciElementAdded', function(event) {
+          that.logs.push(event);
+        });
+        document.addEventListener('cardShown', function(event) {
+          that.logs.push(event);
+        });
+      },
+      buttonClick: function() {
+        this.logs = [];
+      }
+    });
+  </script>
+</polymer-element>
