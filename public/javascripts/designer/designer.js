@@ -659,7 +659,7 @@ define(
         console.log(e.message);
       }
     });
-    // Ceci.log("AppMaker designer is ready.", "");
+    //Ceci.log("AppMaker designer is ready.", "");
 
     var selectComponent = function(comp) {
 
