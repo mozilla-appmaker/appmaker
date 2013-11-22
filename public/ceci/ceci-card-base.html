@@ -1,4 +1,4 @@
-<polymer-element name="ceci-card" extends="ceci-element" attributes="visible">
+<polymer-element name="ceci-card-base" extends="ceci-element" attributes="visible">
   <template>
     <style>
       :host {
@@ -14,33 +14,21 @@
         width: 100%;
       }
 
-      :host ceci-top {
-        top: 0;
-      }
-
-      :host ceci-bottom {
-        bottom: 0;
-      }
-
-      :host ceci-middle {
-        position: absolute;
-        top: 50px;
-        bottom: 50px;
-        left: 0;
-        right: 0;
-      }
-
       :host([visible]) {
         display: block;
       }
 
       :host #top,
+      :host #middle,
       :host #bottom {
-        padding-bottom: 4px;
-        height: 10px;
-        width: 100%;
         display: block;
         position: absolute;
+        width: 100%;
+      }
+
+      :host #top,
+      :host #bottom {
+        height: 10px;
       }
 
       :host #top {
@@ -52,21 +40,24 @@
         border-top: dashed 2px #DDD;
         bottom: 0;
       }
+
+      :host #middle {
+        top: 15px;
+        bottom: 15px;
+      }
     </style>
-    <content></content>
     <ceci-top id="top"></ceci-top>
-    <ceci-middle id="middle"></ceci-middle>
+    <ceci-middle id="middle"><content></content></ceci-middle>
     <ceci-bottom id="bottom"></ceci-bottom>
   </template>
   <script>
-    Polymer('ceci-card', {
+    Polymer('ceci-card-base', {
       ready: function () {
         var that = this;
         var observer = new MutationObserver(function (mutations) {
           mutations.forEach(function (mutation) {
             Array.prototype.forEach.call(mutation.addedNodes, function (addedNode) {
               if (addedNode.localName.indexOf('ceci-') === 0) {
-                console.log(that.$.top);
                 document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: addedNode}));
               }
             });
