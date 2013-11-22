@@ -17,17 +17,9 @@
       ready: function() {
         var t = this;
 
-        this.app.addEventListener('cardAdded', function (e) {
-         t.buildTabs();
-        }, false);
-
         this.app.addEventListener('cardShown', function(data){
-          t.highlightTab(data.detail);
-        });
-
-        this.app.addEventListener('cardRemoved', function (e) {
           t.buildTabs();
-        }, false);
+        });
 
         this.app.addEventListener('ready', function (e) {
           t.buildTabs();
@@ -36,11 +28,12 @@
         this.buildTabs();
       },
       highlightTab : function(card){
-        //Figure out that index of the card that's being shown
+        //Figure out that index of the visible card
         var highlightIndex;
         var list = this.app.querySelectorAll("ceci-card") || [];
         for(var i = 0; i < list.length; i++ ){
-          if(list[i] == card){
+          if(list[i].getAttribute("visible") == "true"){
+            console.log("true");
             highlightIndex = i;
           }
         }
@@ -56,7 +49,6 @@
       addCardTab : function(index, card){
         var t = this;
         var newthumb = document.createElement("div");
-        newthumb.setAttribute("id","card");
         newthumb.innerHTML = "<span class='card-name'>Page " + index + "</span><a title='Delete this card' href='#' class='delete-card'></a>";
         newthumb.classList.add("card");
         newthumb.onclick = function() {
@@ -83,6 +75,7 @@
             this.addCardTab(j+1,c);
           }
         }
+        this.highlightTab();
       },
       addCard : function() {
        this.app.addCard();
