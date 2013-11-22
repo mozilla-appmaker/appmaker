@@ -9,9 +9,14 @@ define(
 
     var knownComponents = [];
 
+    function addComponentsFromRegistry () {
+      var trayComponentContainer = document.getElementById('components');
 
-    window.addEventListener('WebComponentsReady', function(e) {
-      Ceci.forEachComponent(function(name, component){
+      Ceci.forEachComponent(function (name, component) {
+
+        // Avoid adding components that are already in the tray
+        if (trayComponentContainer.querySelector('designer-component-tray-item[name="' + name + '"]')) return;
+
         var item = document.createElement('designer-component-tray-item');
         var meta = component.prototype.ceci;
 
@@ -26,9 +31,22 @@ define(
         item.setAttribute(meta.author);
         item.setAttribute(meta.updatedAt);
 
-        document.getElementById('components').appendChild(item);
+        item.addEventListener('click', function (e) {
+          var card = document.querySelector('ceci-card[visible]');
+          if (card) {
+            var newElement = document.createElement(name);
+            card.appendChild(newElement);
+          }
+        }, false);
+
+        trayComponentContainer.appendChild(item);
       });
-    });
+    }
+
+    // Load elements that might exist already, but also wait for WebComponentsReady in case
+    // we load this module early.
+    window.addEventListener('WebComponentsReady', addComponentsFromRegistry, false);
+    addComponentsFromRegistry();
   }
 );
 

@@ -46,8 +46,13 @@
       ready: function() {
         this.setAttribute('id', 'ceci-app-' + uuid());
         this.dispatchEvent(new CustomEvent('ready', {bubbles: true, detail: this}));
-        if (this.querySelectorAll('ceci-card').length > 0 && !this.querySelector('ceci-card[visible]')) {
-          this.querySelector('ceci-card').setAttribute('visible', true);
+        if (this.querySelectorAll('ceci-card').length > 0) {
+          if (!this.querySelector('ceci-card[visible]')) {
+            this.querySelector('ceci-card').setAttribute('visible', true);
+          }
+        }
+        else {
+          this.addCard();
         }
       },
       addCard: function() {
