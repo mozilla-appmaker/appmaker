@@ -61,6 +61,7 @@
       addCard: function() {
         var newCard = document.createElement('ceci-card');
         this.appendChild(newCard);
+        newCard.show();
         this.dispatchEvent(new CustomEvent('cardAdded', {bubbles: true, detail: newCard}));
         newCard.show();
       },
