@@ -31,19 +31,22 @@
         //Figure out that index of the visible card
         var highlightIndex;
         var list = this.app.querySelectorAll("ceci-card") || [];
-        for(var i = 0; i < list.length; i++ ){
-          if(list[i].getAttribute("visible") == "true"){
-            highlightIndex = i;
+
+        Array.prototype.forEach.call(list, function(el,index){
+          if(el.getAttribute("visible") == "true"){
+            highlightIndex = index;
           }
-        }
+        });
+
         //Highlight the corresponding tab
         var tabList = this.$.cardList.querySelectorAll('.card') || [];
-        for(var j = 0; j < tabList.length; j++ ){
-          tabList[j].classList.remove("selected");
-          if(j == (highlightIndex)){
-            tabList[j].classList.add("selected");
+        Array.prototype.forEach.call(tabList, function(el,index){
+          el.classList.remove("selected");
+          if(index == (highlightIndex)){
+            el.classList.add("selected");
           }
-        }
+        });
+
       },
       addCardTab : function(index, card){
         var t = this;
@@ -61,18 +64,20 @@
       buildTabs : function() {
         //Nuke all existing tabs
         var tabList = this.$.cardList.querySelectorAll(".card");
+
+        var t = this;
         if(tabList.length > 0){
-          for(var i = 0; i < tabList.length; i++ ){
-            this.$.cardList.removeChild(tabList[i]);
-          }
+          Array.prototype.forEach.call(tabList, function(el,index){
+            t.$.cardList.removeChild(tabList[index]);
+          });
         }
         //Add tabs for all pages
         var existingCards = this.app.querySelectorAll('ceci-card');
         if(existingCards.length > 0){
-          for(var j = 0; j < existingCards.length; j++ ){
-            var c = existingCards[j];
-            this.addCardTab(j+1,c);
-          }
+          Array.prototype.forEach.call(existingCards, function(el,index){
+            var c = existingCards[index];
+            t.addCardTab(index+1,c);
+          });
         }
         this.highlightTab();
       },
