@@ -12,10 +12,10 @@
 
   <script>
     Polymer('ceci-card-nav', {
-      app : document.querySelector("ceci-app"),
       checked : false,
       ready: function() {
         var t = this;
+        this.app = document.querySelector("ceci-app");
 
         this.app.addEventListener('cardShown', function(data){
           t.buildTabs();
