@@ -1,0 +1,84 @@
+<polymer-element name="ceci-card-nav">
+  <template>
+    <div class="cards" id="cards">
+      <div class="card-list" id="cardList"></div>
+      <div on-click="{{addCard}}" class="add-card"></div>
+    </div>
+  </template>
+  <script>
+    Polymer('ceci-card-nav', {
+      checked : false,
+      ready: function() {
+        var t = this;
+        this.app = document.querySelector("ceci-app");
+
+        this.app.addEventListener('cardShown', function(data){
+          t.buildTabs();
+        });
+
+        this.app.addEventListener('ready', function (e) {
+          t.buildTabs();
+        }, false);
+
+        this.buildTabs();
+      },
+      highlightTab : function(card){
+        //Figure out that index of the visible card
+        var highlightIndex;
+        var list = this.app.querySelectorAll("ceci-card") || [];
+
+        Array.prototype.forEach.call(list, function(el,index){
+          if(el.getAttribute("visible") == "true"){
+            highlightIndex = index;
+          }
+        });
+
+        //Highlight the corresponding tab
+        var tabList = this.$.cardList.querySelectorAll('.card') || [];
+        Array.prototype.forEach.call(tabList, function(el,index){
+          el.classList.remove("selected");
+          if(index == (highlightIndex)){
+            el.classList.add("selected");
+          }
+        });
+
+      },
+      addCardTab : function(index, card){
+        var t = this;
+        var newthumb = document.createElement("div");
+        newthumb.innerHTML = "<span class='card-name'>Page " + index + "</span><a title='Delete this card' href='#' class='delete-card'></a>";
+        newthumb.classList.add("card");
+        newthumb.onclick = function() {
+          card.show();
+        };
+        newthumb.querySelector("a").onclick = function() {
+          t.app.removeCard(index-1);
+        };
+        this.$.cardList.appendChild(newthumb);
+      },
+      buildTabs : function() {
+        //Nuke all existing tabs
+        var tabList = this.$.cardList.querySelectorAll(".card");
+
+        var t = this;
+        if(tabList.length > 0){
+          Array.prototype.forEach.call(tabList, function(el,index){
+            t.$.cardList.removeChild(tabList[index]);
+          });
+        }
+        //Add tabs for all pages
+        var existingCards = this.app.querySelectorAll('ceci-card');
+        if(existingCards.length > 0){
+          Array.prototype.forEach.call(existingCards, function(el,index){
+            var c = existingCards[index];
+            t.addCardTab(index+1,c);
+          });
+        }
+        this.highlightTab();
+      },
+      addCard : function() {
+       this.app.addCard();
+      }
+    });
+  </script>
+</polymer-element>

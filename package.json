@@ -21,6 +21,8 @@
     "foreman": "~0.0.25",
     "jsdom": "~0.8.6",
     "knox": "~0.8.6",
+    "less": "~1.5.1",
+    "less-middleware": "~0.1.14",
     "lynx": "~0.0.11",
     "makeapi-client": "https://github.com/mozilla/makeapi-client/tarball/v0.5.10",
     "mkdirp": "0.3.5",

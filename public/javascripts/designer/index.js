@@ -8,10 +8,10 @@ define(
 
     // Unreferenced:
     "designer/component-tray",
-    "designer/cards",
     "designer/channels",
     "designer/editable",
     "designer/keyboard",
+    "designer/modes",
     "jquery-ui",
   ],
   function(localized, Inflector, Utils, Ceci) {

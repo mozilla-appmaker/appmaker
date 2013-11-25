@@ -218,25 +218,6 @@ define(
       }
     };
 
-    //Open components modal
-    $('.tray .expand-handle').click(function () {
-      $(".component-search").focus();
-      if ($(".page-wrapper").hasClass("mode-discovery")) {
-        changeMode("normal");
-      }
-      else {
-        changeMode("discovery");
-      }
-    });
-
-    $('.right-column .expand-handle').click(function () {
-      if ($(".page-wrapper").hasClass("mode-viewsource")) {
-        changeMode("normal");
-      }
-      else {
-        changeMode("viewsource");
-      }
-    });
 
 
     $('.done').click(function () {
@@ -678,7 +659,7 @@ define(
         console.log(e.message);
       }
     });
-    // Ceci.log("AppMaker designer is ready.", "");
+    //Ceci.log("AppMaker designer is ready.", "");
 
     var selectComponent = function(comp) {
 
@@ -854,12 +835,6 @@ define(
       $('.modal-wrapper').addClass('flex');
     });
 
-    $(".trey-tabs").on("click","a",function(){
-      var tab = $(this).attr("tab");
-      changeEditableTab(tab);
-      return false;
-    });
-
     $('.remix-button').click(function(){
       toggleRemixMode("on");
       return false;
@@ -876,23 +851,6 @@ define(
       document.removeEventListener('keydown', escapeHandler, false);
     });
 
-    function changeMode(mode){
-      $(".page-wrapper").removeClass("mode-discovery").removeClass("mode-normal").removeClass("mode-viewsource");
-      $(".page-wrapper").addClass("mode-" + mode);
-    }
-
-    function changeEditableTab(tab) {
-      $(".trey-tabs").find("a").removeClass("selected-tab");
-      $(".trey-tabs [tab='"+tab+"']").addClass("selected-tab");
-      $(".tab-sections .section").hide();
-      $(".tab-sections .section-" + tab).show();
-      $(".tab-sections .section-" + tab + " textarea").focus();
-      if(tab == "view-source"){
-      } else {
-        if($(".right-column").not(".remix-mode").length == 1){
-        }
-      }
-    }
 
     function updateTags(){
       //Build list and count of all tags
@@ -987,8 +945,6 @@ define(
       window.clearTimeout(keyTimer);
     }
     $(document).ready(function(){
-      switchSourceView("HTML");
-      changeEditableTab("customize");
 
       $(".component-tags-wrapper").on("click",".see-all",function(){
         $(this).hide();
@@ -1001,7 +957,6 @@ define(
         $(".see-all").show();
         $(".component-tags div.too-many").hide();
       });
-
 
       $(".component-search").on("keydown",function(){
 
@@ -1091,31 +1046,6 @@ define(
       });
 
     }
-
-    // View source menu
-    $(".view-source-menu").on("click","a",function(){
-      var sourceType = $(this).attr("source");
-      switchSourceView(sourceType);
-    });
-
-    function switchSourceView(view) {
-      $(".view-source-menu a").removeClass("selected");
-      $(".view-source-menu a[source='" + view + "']").addClass("selected");
-      $(".view-source-items .source-type").hide();
-      $(".view-source-items [source='" + view + "']").show();
-    }
-
-    $(".view-source-items textarea").on("keyup",function(){
-      $(".right-column").addClass("remix-mode");
-      $(".remix-helper").hide();
-
-    });
-
-    $(".remix-ui a.finish-remix, .remix-ui a.cancel-remix").on("click",function(){
-      $(".right-column").removeClass("remix-mode");
-      changeEditableTab("customize");
-
-    });
 
     $(".dismiss-note").on("click",function(){
       $(this).parent().fadeOut();
