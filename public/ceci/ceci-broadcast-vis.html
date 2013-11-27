@@ -3,12 +3,11 @@
     <div id="broadcasts" class="channel-visualisation broadcast-channels"></div>
   </template>
   <script>
+  (function(){
+    //Animation speeds, In seconds
+    var signalSpeed = 1;
+    var bubbleDuration = 1;
     Polymer('ceci-broadcast-vis', {
-      ready: function () {
-        //In seconds
-        this.signalSpeed = 1;
-        this.bubbleDuration = 1;
-      },
       enteredView: function () {
         var that = this;
         this.component = this.parentNode.host;
@@ -22,10 +21,8 @@
       },
       addBroadcasts: function() {
         //Adds broadcast channel lines for each ceci-broadcast element in the component.
-
         var that = this;
         var broadcastElements = this.component.querySelectorAll("ceci-broadcast");
-
         Array.prototype.forEach.call(broadcastElements, function(el,index){
           var channel = document.createElement("div");
           channel.innerHTML = "<div class='dot color'></div>";
@@ -34,31 +31,29 @@
           channel.classList.add("channel");
           that.$.broadcasts.appendChild(channel);
         });
-
       },
       fire: function (data) {
         var that = this;
         var element = this.shadowRoot.querySelector(".channel[color='"+data.channelName+"']");
         
-        // Signal Indicator Dot
+        // Add a signal indicator dot...
         var indicator = document.createElement("div");
         element.appendChild(indicator);
         indicator.classList.add("indicator");
         indicator.classList.add("indicator-out");
-
-        var signalSpeedCSS = this.signalSpeed + "s";
+        var signalSpeedCSS = signalSpeed + "s";
         indicator.style.webkitAnimationDuration = signalSpeedCSS;
         indicator.style.mozAnimationDuration = signalSpeedCSS;
 
+        // ...and remove it!
         var removeIndicator = function() {
           element.removeChild(indicator);
         };
+        setTimeout(removeIndicator, signalSpeed * 1000);
 
-        setTimeout(removeIndicator, this.signalSpeed * 1000);
-
-        // Data Bubble
+        // Add a Data Bubble...
         var direction = "out";
-        var timeout = (direction === "out" ? 0 : this.signalSpeed * 1000);
+        var timeout = (direction === "out" ? 0 : signalSpeed * 1000);
         
         setTimeout(function() {
           var bubble = document.createElement("div");
@@ -66,12 +61,14 @@
           bubble.classList.add("bubblepopup")
           bubble.classList.add("bubblepop");
           element.appendChild(bubble);
+          
+          // ...and remove it!
           setTimeout(function() {
             element.removeChild(bubble);
-          }, that.bubbleDuration * 1000);
+          }, bubbleDuration * 1000);
         }, timeout);
-
       }
     });
+    })();
   </script>
 </polymer-element>
