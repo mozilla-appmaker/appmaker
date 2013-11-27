@@ -12,11 +12,9 @@
       enteredView: function () {
         var that = this;
         this.component = this.parentNode.host;
-
         this.component.addEventListener('broadcastFired', function(data){
           that.fire(data.detail);
         });
-
         this.addBroadcasts();
       },
       leftView : function(){
@@ -53,7 +51,7 @@
         indicator.style.mozAnimationDuration = signalSpeedCSS;
 
         var removeIndicator = function() {
-          that.$.broadcasts.removeChild(indicator);
+          element.removeChild(indicator);
         };
 
         setTimeout(removeIndicator, this.signalSpeed * 1000);
@@ -69,7 +67,7 @@
           bubble.classList.add("bubblepop");
           element.appendChild(bubble);
           setTimeout(function() {
-            // $(bubble).remove();
+            element.removeChild(bubble);
           }, that.bubbleDuration * 1000);
         }, timeout);
 
