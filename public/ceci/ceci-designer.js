@@ -11,6 +11,7 @@ define([], function() {
     "ceci-broadcast",
     "ceci-card",
     "ceci-element",
+    "ceci-broadcast-vis",
     "ceci-element-base",
     "ceci-listen"
   ];
