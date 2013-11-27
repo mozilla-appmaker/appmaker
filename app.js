@@ -169,7 +169,7 @@ app.post('/publish', routes.publish.publish);
 app.get('/api/component', routes.componentRegistry.components);
 app.get('/api/component/:id', routes.componentRegistry.component);
 app.post('/api/component', routes.componentRegistry.addComponent);
-app.put('/api/component/:id', routes.componentRegistry.editComponent);
+// app.put('/api/component/:id', routes.componentRegistry.editComponent);
 app.delete('/api/component/:id', routes.componentRegistry.deleteComponent);
 // app.get('/notifications/:notificationId', routes.componentRegistry.notificationGetById);
 

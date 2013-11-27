@@ -8,11 +8,7 @@ app.config(function ($routeProvider) {
       controller: 'ListCtrl', 
       resolve: {
         components: function (LoadComponents) {
-          console.log('loading components for /components');
-          // return LoadComponents();
-          var comps = LoadComponents();
-          console.log('components: %o', comps);
-          return comps; 
+          return LoadComponents();
         }
       },
       templateUrl: '/app/views/list.html'
@@ -52,10 +48,15 @@ app.controller('ListCtrl', function ($scope, components) {
 });
 
 app.controller('ViewCtrl', function ($scope, component, $location) {
+  // console.log('viewing scope: %o', $scope);
+  // console.log('viewing component.component: %o', component.component);
+  // console.log('viewing location: %o', $location);
   $scope.component = component;
 
   $scope.edit = function() {
-    $location.path('/edit/' + component._id);
+    // console.log('edit path scope: %o', $scope);
+    // console.log('edit path component: %o', $scope.component);
+    $location.path('/edit/' + $scope.component._id);
   };
 });
 
@@ -66,7 +67,7 @@ app.controller('NewCtrl', function ($scope, Component, $location) {
 
   $scope.save = function() {
     $scope.component.$save(function(component) {
-      console.log('Added new component: %s', component._id);
+      console.log('received from add component: %o', component);
       $location.path('/component/' + component._id);
     });
   };
@@ -77,12 +78,14 @@ app.controller('NewCtrl', function ($scope, Component, $location) {
 });
 
 app.controller('EditCtrl', function ($scope, $location, component) {
+  console.log('editing %o', component);
   $scope.component = component;
 
   $scope.heading = "Edit Component";
 
   $scope.save = function() {
     $scope.component.$save(function(component) {
+      console.log('received from save component: %o', component);
       $location.path('/component/' + component._id);
     });
   };

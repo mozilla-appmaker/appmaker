@@ -17,40 +17,46 @@ var Component = mongoose.model('Component', componentSchema);
 // GET
 exports.components = function (req, res) {
   Component.find({}, function (err, components) {
-      console.log('retrieved %s components from mongo', components.length);
+      // console.log('retrieved %s components from mongo', components.length);
       res.json(components);
   });
 };
 
 exports.component = function (req, res) {
   Component.findOne({_id: req.params.id}, function(err,obj) {
-    console.log('returns the component: ' + obj);
-  res.json({
-    component: obj
-    });
-});
+    // console.log('returns the component: ' + obj);
+    res.json(obj);
+  });
 };
 // POST
 
 exports.addComponent = function (req, res) {
+  // Handle Angular's lack of PUT or passing of id for updates
+  if (req.body._id){
+    return editComponent(req, res);
+  }
+  // console.log('add component: %j', req.body);
   var newComponent = new Component(req.body);
-  newComponent.save(function(err){
+  newComponent.save(function(err, component){
     if (err){
       console.error('saving new component failed');
-      req.json({error: 'Component was not saved due to ' + err});
-      return;
+      return res.json({error: 'Component was not saved due to ' + err});
     }
-    console.log("component added %j: ", req.body);
-    res.json(req.body);
+    // console.log("component added %j: ", component);
+    return res.json(component);
   });
 };
 
-// PUT
-exports.editComponent = function (req, res) {
-  //console.log("edit post: " + req.body.title);
-  Component.findByIdAndUpdate(req.params.id, {
+// PUT (Not supported by Angular, boo!)
+var editComponent = function (req, res) {
+  // console.log('edit component: %j', req.body);
+  Component.findByIdAndUpdate(req.params.id || req.body._id, {
     $set: { name: req.body.name, url: req.body.url }}, {upsert:true}, function (err, user) {
-      return res.json(true);
+      if (err){
+        console.error('saving modified component failed: ' + err);
+        return res.json({error: 'Component was not updated due to ' + err});
+      }
+      return res.json();
     }
   );
 };
