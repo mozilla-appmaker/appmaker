@@ -34,7 +34,7 @@
         });
 
         //Highlight the corresponding tab
-        var tabList = this.$.cardList.querySelectorAll('.card') || [];
+        var tabList = this.shadowRoot.querySelectorAll('.card') || [];
         Array.prototype.forEach.call(tabList, function(el,index){
           el.classList.remove("selected");
           if(index == (highlightIndex)){
@@ -58,7 +58,7 @@
       },
       buildTabs : function() {
         //Nuke all existing tabs
-        var tabList = this.$.cardList.querySelectorAll(".card");
+        var tabList = this.shadowRoot.querySelectorAll(".card");
 
         var t = this;
         if(tabList.length > 0){
