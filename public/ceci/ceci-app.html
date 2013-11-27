@@ -69,8 +69,8 @@
         index += 1;
 
         var card = this.querySelector('ceci-card:nth-child(' + index + ')');
-        var nextCard = this.querySelector('ceci-card:nth-child(' + (index + 1) + ')')
-          || this.querySelector('ceci-card:nth-child(' + (index - 1) + ')');
+        var nextCard = this.querySelector('ceci-card:nth-child(' + (index + 1) + ')') || 
+          this.querySelector('ceci-card:nth-child(' + (index - 1) + ')');
 
         if (card) {
           this.removeChild(card);
@@ -90,7 +90,7 @@
       },
       clearCards: function() {
         var card;
-        while (card = this.querySelector('ceci-card')) {
+        while ((card = this.querySelector('ceci-card')) !== null) {
           this.removeChild(card);
         }
       }
