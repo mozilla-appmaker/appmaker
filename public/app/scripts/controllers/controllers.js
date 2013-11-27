@@ -40,7 +40,7 @@ app.config(function ($routeProvider) {
       },
       templateUrl: '/app/views/componentForm.html'
     })
-    .otherwise({redirectTo: '/app'});
+    .otherwise({redirectTo: '/list'});
 });
 
 app.controller('ListCtrl', function ($scope, components) {
