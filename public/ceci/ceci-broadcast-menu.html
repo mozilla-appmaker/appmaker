@@ -65,8 +65,8 @@
                  channelOption.querySelector(".color-ui").style.display = "none";
                  var channelLine = that.component.impl.querySelector("ceci-broadcast-vis .channel[from="+from+"]");
                  channelLine.setAttribute("color",color);
-                 var broadcastElement = that.component.impl.querySelector("ceci-broadcast[from="+from+"]");
-                 broadcastElement.setAttribute("on",color);
+                 var broadcastElement = that.component.querySelector("ceci-broadcast[from="+from+"]");
+                 broadcastElement.on = color;
                });
             });
         });
