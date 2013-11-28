@@ -1,0 +1,183 @@
+@import "variables.less";
+@import "mixins.less";
+
+/* Channel Visualisation */
+
+.channel-visualisation {
+  z-index: 2;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 0px;
+  width: 600px;
+  -webkit-transition: all linear .1s;
+  -moz-transition: all linear .1s;
+
+  &.broadcast-channels {
+    right: -610px;
+  }
+
+  &.subscription-channels {
+    left: -610px;
+  }
+  
+  .channel {
+    margin: 2px 0;
+    position: relative;
+    width: 100%;
+    height: 8px;
+    color: #fff;
+    font-size: 11px;
+    line-height: 16px;
+    .border-radius(4px);
+  }
+
+  .indicator {
+    position: absolute;
+    top: 0px;
+    height: 8px;
+    width: 8px;
+    .border-radius(20px);
+    left: 0px;
+    opacity: 0;
+  }
+
+  .bubblepopup {
+    position: absolute;
+    background: white;
+    padding: 8px 12px;
+    font-size: 12px;
+    top: -32px;
+    text-overflow: ellipsis;
+    max-width:155px;
+    overflow: hidden;
+    white-space: nowrap;
+    border-style: solid;
+    border-width: 2px;
+  }
+
+  &.broadcast-channels .bubblepopup {
+    left: 3px;
+    .border-radius(8px 8px 8px 0px);
+    -webkit-transform-origin: bottom left;
+    -moz-transform-origin: bottom left;
+  }
+
+  &.subscription-channels .bubblepopup {
+    right: 3px;
+    .border-radius(8px 8px 0px 8px);
+    -webkit-transform-origin: bottom right;
+    -moz-transform-origin: bottom right;
+  }
+
+  /* Dot inside the channel line*/
+
+  .color {
+    .border-radius(25px);
+    position: absolute;
+    padding: 0px;
+    margin:0;
+    height: 8px;
+    width: 8px;
+  }
+
+  .broadcast-channels .color {
+    left: 0px;
+  }
+
+  .subscription-channels .color {
+    display: none;
+  }
+
+  .channel[color=blue] {
+    background: @channel-blue-faint;
+    .color,
+    .indicator {
+      background: @channel-blue;
+    }
+    .bubblepopup {
+      border-color: @channel-blue;
+      color: @channel-blue;
+    } 
+  }
+  
+  .channel[color=red] {
+    background: @channel-red-faint;
+    .color,
+    .indicator {
+      background: @channel-red;
+    }
+    .bubblepopup {
+      border-color: @channel-red;
+      color: @channel-red;
+    } 
+  }
+
+  .channel[color=pink] {
+    background: @channel-pink-faint;
+    .color,
+    .indicator {
+      background: @channel-pink;
+    }
+    .bubblepopup {
+      border-color: @channel-pink;
+      color: @channel-pink;
+    } 
+  }
+
+  .channel[color=purple] {
+    background: @channel-purple-faint;
+    .color,
+    .indicator {
+      background: @channel-purple;
+    }
+    .bubblepopup {
+      border-color: @channel-purple;
+      color: @channel-purple;
+    } 
+  }
+
+  .channel[color=green] {
+    background: @channel-green-faint;
+    .color,
+    .indicator {
+      background: @channel-green;
+    }
+    .bubblepopup {
+      border-color: @channel-green;
+      color: @channel-green;
+    } 
+  }
+
+  .channel[color=orange] {
+    background: @channel-orange-faint;
+    .color,
+    .indicator {
+      background: @channel-orange;
+    }
+    .bubblepopup {
+      border-color: @channel-orange;
+      color: @channel-orange;
+    } 
+  }
+
+  .channel[color=yellow] {
+    background: @channel-yellow-faint;
+    .color,
+    .indicator {
+      background: @channel-orange;
+    }
+    .bubblepopup {
+      border-color: @channel-orange;
+      color: @channel-orange;
+    } 
+  }
+
+  .channel[color=false] {
+    display: none;
+  }
+
+}

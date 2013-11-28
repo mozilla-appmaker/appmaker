@@ -35,13 +35,17 @@
       }
     </style>
     <div id="handle"></div>
+    <ceci-broadcast-vis></ceci-broadcast-vis>
   </template>
   <script>
     Polymer('ceci-element', {
-      ready: function () {
-        this.super();
-
-        var that = this;
+      broadcast: function (name, data) {
+        this.super(arguments);
+        var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
+        var broadcastDetails = { channelName : broadcastElement.on, from : name};
+        if (broadcastElement) {
+          this.dispatchEvent(new CustomEvent('broadcastFired', {name: name, bubbles: true, detail: broadcastDetails}));
+        }
       }
     });
   </script>

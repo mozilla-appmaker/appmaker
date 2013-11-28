@@ -1,0 +1,74 @@
+<polymer-element name="ceci-broadcast-vis">
+  <template>
+    <div id="broadcasts" class="channel-visualisation broadcast-channels"></div>
+  </template>
+  <script>
+  (function(){
+    //Animation speeds, In seconds
+    var signalSpeed = 1;
+    var bubbleDuration = 1;
+    Polymer('ceci-broadcast-vis', {
+      enteredView: function () {
+        var that = this;
+        this.component = this.parentNode.host;
+        this.component.addEventListener('broadcastFired', function(data){
+          that.fire(data.detail);
+        });
+        this.addBroadcasts();
+      },
+      leftView : function(){
+        this.component.removeEventListener('broadcastFired');
+      },
+      addBroadcasts: function() {
+        //Adds broadcast channel lines for each ceci-broadcast element in the component.
+        var that = this;
+        var broadcastElements = this.component.querySelectorAll("ceci-broadcast");
+        Array.prototype.forEach.call(broadcastElements, function(el,index){
+          var channel = document.createElement("div");
+          channel.innerHTML = "<div class='dot color'></div>";
+          channel.setAttribute("color",el.on);
+          channel.setAttribute("from",el.from);
+          channel.classList.add("channel");
+          that.$.broadcasts.appendChild(channel);
+        });
+      },
+      fire: function (data) {
+        var that = this;
+        var element = this.shadowRoot.querySelector(".channel[color='"+data.channelName+"']");
+
+        // Add a signal indicator dot...
+        var indicator = document.createElement("div");
+        element.appendChild(indicator);
+        indicator.classList.add("indicator");
+        indicator.classList.add("indicator-out");
+        var signalSpeedCSS = signalSpeed + "s";
+        indicator.style.webkitAnimationDuration = signalSpeedCSS;
+        indicator.style.mozAnimationDuration = signalSpeedCSS;
+
+        // ...and remove it!
+        var removeIndicator = function() {
+          element.removeChild(indicator);
+        };
+        setTimeout(removeIndicator, signalSpeed * 1000);
+
+        // Add a Data Bubble...
+        var direction = "out";
+        var timeout = (direction === "out" ? 0 : signalSpeed * 1000);
+
+        setTimeout(function() {
+          var bubble = document.createElement("div");
+          bubble.innerHTML = data.from; //data
+          bubble.classList.add("bubblepopup")
+          bubble.classList.add("bubblepop");
+          element.appendChild(bubble);
+          
+          // ...and remove it!
+          setTimeout(function() {
+            element.removeChild(bubble);
+          }, bubbleDuration * 1000);
+        }, timeout);
+      }
+    });
+    })();
+  </script>
+</polymer-element>
