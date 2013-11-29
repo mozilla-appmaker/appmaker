@@ -29,6 +29,7 @@
     "moniker": "~0.1.2",
     "node-uuid": "~1.4.1",
     "postmark": "0.2.0",
+    "request": "latest",
     "statsd": "0.6.0",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.8.tar.gz",
     "ejs": "~0.8.4",
