@@ -73,6 +73,10 @@ module.exports = {
 
   },
 
+  /*
+   * This route is only to test race conditions/loading issues with external resources
+   * This is wired up only if ARTIFICIAL_CORS_DELAY is an integer greater than 0
+  */
   delayedCors: function(req, resp){
     //TODO: So much error handling.
 
@@ -99,7 +103,7 @@ module.exports = {
         port: port,
         buffer: buffer
       });
-    }, 700);
+    }, process.env.ARTIFICIAL_CORS_DELAY);
 
   }
 
