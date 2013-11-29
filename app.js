@@ -15,6 +15,7 @@ cors = require('cors'),
 connect_fonts = require('connect-fonts'),
 font_sourcesanspro = require('connect-fonts-sourcesanspro'),
 postmark = require("postmark")(process.env.POSTMARK_API_KEY),
+lessMiddleware = require('less-middleware'),
 i18n = require("webmaker-i18n");
 
 var urls = require('./lib/urls');
@@ -40,6 +41,13 @@ app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
 
+  app.use(express.logger());
+  app.use(express.bodyParser());
+  app.use(express.cookieParser(process.env['COOKIE_SECRET']));
+  app.use(express.session({
+    secret: process.env['COOKIE_SECRET']
+  }));
+
   // Setup locales with i18n
   app.use(i18n.middleware({
     supported_languages: ["en-US", "th-TH"],
@@ -53,28 +61,12 @@ app.configure(function(){
 
   app.use(express.favicon());
 
-  app.use(express.logger('dev'));
-
-  app.use(express.bodyParser());
-
-  app.use(express.cookieParser());
-
-  app.use(express.session({
-    secret: process.env['COOKIE_SECRET']
-  }));
-
-
   app.use(function(req, res, next) {
     res.removeHeader("x-powered-by");
     next();
   });
+
   app.use(express.methodOverride());
-
-  app.use(express.cookieParser(process.env['COOKIE_SECRET']));
-
-  app.use(express.session({
-    secret: process.env['COOKIE_SECRET']
-  }));
 
   app.use(app.router);
 
@@ -90,8 +82,6 @@ app.configure(function(){
   app.use("/test_assets/ceci/", express.static(path.join(__dirname, 'public', 'ceci')));
   app.use("/test_assets/vendor/", cors());
   app.use("/test_assets/vendor/", express.static(path.join(__dirname, 'public', 'vendor')));
-
-  var lessMiddleware = require('less-middleware');
 
   app.use(lessMiddleware({
       src: __dirname + '/public',
@@ -141,7 +131,6 @@ routes = require('./routes')(
   makeAPIPublisher
 );
 
-
 app.get('/', routes.index);
 
 app.all('/designer', routes.designer);
@@ -154,8 +143,17 @@ app.get('/remix', routes.remix);
 
 //TODO: Security: https://github.com/mozilla-appmaker/appmaker/issues/602
 app.get('/component-*',         cors(), routes.proxy.gitHubComponent);
-app.get('/cors/:host/*',        cors(), routes.proxy.cors);
-app.get('/delayedCors/:host/*', cors(), routes.proxy.delayedCors);
+app.get('/component/:org/:component/:path',         cors(), routes.proxy.component);
+
+process.env.ARTIFICIAL_CORS_DELAY = parseInt(process.env.ARTIFICIAL_CORS_DELAY, 10);
+// if ARTIFICIAL_CORS_DELAY is set, we use a different proxy route
+if (("ARTIFICIAL_CORS_DELAY" in process.env) && (process.env.ARTIFICIAL_CORS_DELAY > 0)){
+  // This route is only to test race conditions/loading issues with external resources
+  app.get('/cors/:host/*',      cors(), routes.proxy.delayedCors);
+}
+else{
+  app.get('/cors/:host/*',      cors(), routes.proxy.cors);
+}
 
 
 // This is a route that we use for client-side localization to return the JSON
@@ -167,12 +165,14 @@ app.post('/publish', routes.publish.publish);
 // routes for publishing and retrieving components
 // FIXME: URLs are too close to component proxy URLs
 app.use('/register', express.static(path.join(__dirname, 'app')));
-app.get('/components', routes.componentRegistry.componentsGet);
-app.get('/components/:id', routes.componentRegistry.componentsGetById);
-app.post('/components', routes.componentRegistry.componentsPost);
-app.post('/components/:id', routes.componentRegistry.componentsPostById);
-app.delete('/components/:id', routes.componentRegistry.componentsDeleteById);
-app.get('/notifications/:notificationId', routes.componentRegistry.notificationGetById);
+
+var components = routes.componentRegistry;
+app.get('/components',                    components.componentsGet);
+app.get('/components/:id',                components.componentsGetById);
+app.post('/components',                   components.componentsPost);
+app.post('/components/:id',               components.componentsPostById);
+app.delete('/components/:id',             components.componentsDeleteById);
+app.get('/notifications/:notificationId', components.notificationGetById);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

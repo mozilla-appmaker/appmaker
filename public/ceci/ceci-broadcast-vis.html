@@ -58,10 +58,9 @@
         setTimeout(function() {
           var bubble = document.createElement("div");
           bubble.innerHTML = data.from; //data
-          bubble.classList.add("bubblepopup")
+          bubble.classList.add("bubblepopup");
           bubble.classList.add("bubblepop");
           element.appendChild(bubble);
-          
           // ...and remove it!
           setTimeout(function() {
             element.removeChild(bubble);

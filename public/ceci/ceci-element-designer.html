@@ -2,7 +2,7 @@
   <template id="ceci-element">
     <style>
       :host {
-        position: absolute;
+        position: relative;
         width: 100%;
         top: 0;
       }
@@ -10,6 +10,7 @@
       :host #handle {
         position: absolute;
         right: 0;
+        top: 0;
         opacity: .6;
         border-radius: 2px;
         background-color: white;
@@ -34,6 +35,7 @@
         opacity: 1;
       }
     </style>
+    <content></content>
     <div id="handle"></div>
 
     <ceci-listen-vis></ceci-listen-vis>

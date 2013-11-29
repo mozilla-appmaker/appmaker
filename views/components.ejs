@@ -29,33 +29,33 @@
   <div>Metronome</div>
   <script type="text/javascript">
   (function () {
-    var element = $('.moz-metronome').last()
+    var element = $('.moz-metronome').last();
     setInterval(function () {
-      element.trigger('broadcast')
-    }, element.attr('period') || 1000)
+      element.trigger('broadcast');
+    }, element.attr('period') || 1000);
   })()
   </script>
 </template>
 
 <template id="moz-camera" broadcasts>
-  
+
   <script src="/camera-action.min.js"></script>
   <div style="width: 320px; height: 240px;"></div>
   <script>
   (function () {
-    var element = $('.moz-camera div').last()
+    var element = $('.moz-camera div').last();
     var camera = new Camera(element[0], {
       'width': 320,
       'height': 240
-    })
+    });
     element.on('click', function () {
-      camera.takePhoto()
-    })
-    camera.action()
+      camera.takePhoto();
+    });
+    camera.action();
     camera.on('photo', function (data) {
-      element.parent().trigger('broadcast', data)
-    })
-    
-  })()
+      element.parent().trigger('broadcast', data);
+    });
+
+  })();
   </script>
 </template>
