@@ -153,7 +153,8 @@ app.get('/testapp', routes.testapp);
 app.get('/remix', routes.remix);
 
 //TODO: Security: https://github.com/mozilla-appmaker/appmaker/issues/602
-app.get('/component-*',         cors(), routes.proxy.gitHubComponent);
+// app.get('/component-*',         cors(), routes.proxy.gitHubComponent);
+app.get('/component/:org/:component/:path',         cors(), routes.proxy.component);
 app.get('/cors/:host/*',        cors(), routes.proxy.cors);
 app.get('/delayedCors/:host/*', cors(), routes.proxy.delayedCors);
 

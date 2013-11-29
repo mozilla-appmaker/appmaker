@@ -17,6 +17,9 @@
 var http = require('http');
 var httpProxy = require('http-proxy');
 var url = require('url');
+var request = require('request');
+var path = require('path');
+var fs = require('fs');
 
 var proxy = new httpProxy.RoutingProxy();
 
@@ -48,7 +51,50 @@ module.exports = {
     });
   },
 
-  cors: function(req, resp){
+  component: function(req, res) {
+    var org = req.params.org;
+    var component = req.params.component;
+    var filepath = req.params.path;
+
+    // if someone has setup an environment variable COMPONENTS_DIR where component repos live, we look there.
+    var envvar = "COMPONENTS_DIR";
+
+    if (org == "mozilla-appmaker" && process.env[envvar]) {
+      var fullpath = path.resolve(process.env[envvar] + '/' + component + '/' + filepath);
+      if (fs.existsSync(fullpath)) {
+        try {
+          res.sendfile(fullpath);
+        } catch (e) {
+          console.log("Exception looking for a local file", e);
+          res.json({message: 'No valid url.'}, 500);
+        }
+        return;
+      }
+    }
+
+    // Proxy the files from github static pages for now -- someday can do our own if needed.
+    var url = "http://" + org + ".github.io/" + component + "/" + filepath;
+    // console.log("doing proxy request to", url);
+    if (url) {
+      try {
+        request.get(url).on('error',
+          function(err) { console.log('error doing cors request for ', url);})
+        .pipe(res)
+        .on('error',
+          function(err) { console.log('error doing cors request for ', url);});
+      } catch (e) {
+        console.log("got exception doing the pipe", e);
+        res.json({message: 'No valid url.'}, 500);
+        return;
+      }
+    }
+    else {
+      res.json({error: 'No valid url.'}, 500);
+    }
+  },
+
+
+  cors: function(req, resp) {
     //TODO: So much error handling.
 
     // Host pulled from url mapping in app.js
