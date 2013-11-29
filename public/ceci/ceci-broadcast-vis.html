@@ -35,7 +35,7 @@
       fire: function (data) {
         var that = this;
         var element = this.shadowRoot.querySelector(".channel[color='"+data.channelName+"']");
-        
+
         // Add a signal indicator dot...
         var indicator = document.createElement("div");
         element.appendChild(indicator);
@@ -54,7 +54,7 @@
         // Add a Data Bubble...
         var direction = "out";
         var timeout = (direction === "out" ? 0 : signalSpeed * 1000);
-        
+
         setTimeout(function() {
           var bubble = document.createElement("div");
           bubble.innerHTML = data.from; //data

@@ -85,7 +85,5 @@ define(
       $(".right-column").removeClass("remix-mode");
       changeEditableTab("customize");
     });
-
-    
   }
 );
