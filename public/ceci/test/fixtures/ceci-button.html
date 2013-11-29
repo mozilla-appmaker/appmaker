@@ -48,7 +48,8 @@
         this.super();
       },
       buttonClick: function () {
-        this.broadcast('click', this.getAttribute('value'));
+        var data = "Click"
+        this.broadcast('click', data);
       },
       labelChanged: function (oldValue, newValue) {
         this.$.button.innerHTML = newValue;
