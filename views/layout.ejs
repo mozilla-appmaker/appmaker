@@ -24,6 +24,17 @@
     </script>
 
     <script src="/vendor/polymer/polymer.min.js"></script>
+
+    <script src="<%= process.env.ASSET_HOST%>/vendor/requirejs/require.js"></script>
+    <script src="<%= process.env.ASSET_HOST%>/javascripts/requireConfig.js"></script>
+    <script>
+      Polymer.require = function(tag, deps, func) {
+        require(deps, function() {
+          Polymer(tag, func.apply(this, arguments));
+        });
+      };
+    </script>
+
     <link rel="import" href="/ceci/ceci-element-base.html">
     <link rel="import" href="/ceci/ceci-element-designer.html">
     <link rel="import" href="/ceci/ceci-listen.html">
@@ -37,19 +48,12 @@
     <link rel="import" href="/component/mozilla-appmaker/component-button/component.html">
     <link rel="import" href="/component/mozilla-appmaker/component-counter/component.html">
     <link rel="import" href="/designer/design-log.html">
+    <link rel="import" href="/designer/user-state.html">
 
     <link rel="import" href="/designer/components.html">
 
-    <script src="<%= process.env.ASSET_HOST%>/vendor/requirejs/require.js"></script>
-    <script src="<%= process.env.ASSET_HOST%>/javascripts/requireConfig.js"></script>
-
   </head>
   <body>
-    <div class="persona">
-      <a href="#" class="login persona-button"><span><%- gettext("Sign in with your Email") %></span></a>
-      <a href="#" class="logout persona-button"><span><%- gettext("Sign out") %></span></a>
-      <a href="#" class="account"><span></span></a>
-    </div>
     <%- body %>
   </body>
 </html>

@@ -144,6 +144,7 @@ app.get('/remix', routes.remix);
 //TODO: Security: https://github.com/mozilla-appmaker/appmaker/issues/602
 app.get('/component-*',         cors(), routes.proxy.gitHubComponent);
 app.get('/component/:org/:component/:path',         cors(), routes.proxy.component);
+app.get('/my/apps', routes.my.apps);
 
 process.env.ARTIFICIAL_CORS_DELAY = parseInt(process.env.ARTIFICIAL_CORS_DELAY, 10);
 // if ARTIFICIAL_CORS_DELAY is set, we use a different proxy route

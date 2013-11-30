@@ -1,0 +1,97 @@
+<polymer-element
+  name="user-state"
+  attribute="email"
+  >
+  <template>
+    <style>
+      :host {
+        display: inline;
+        color: white;
+      }
+      button {
+        height: 26px;
+        width: 102px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #e81e1e;
+        margin: 12px 12px 0px 0px;
+        border-radius: 2px;
+      }
+    </style>
+    <span id="email">{{email}}</span>
+    <button id="signout" class="btn-std btn-md {{hidden: state == 'signedout'}}" on-click="{{signoutClick}}">logout</button>
+    <button id="signin" class="btn-std btn-md {{hidden: state == 'signedin'}}" on-click="{{signinClick}}">login</button>
+  </template>
+  <script>
+    Polymer('user-state', {
+      email: '',
+      state: 'signedout',
+      ready: function() {
+        var that = this;
+        document.addEventListener('user-state', function (event) {
+          that.state = event.detail.state;
+          that.email = event.detail.email;
+          if (that.state == 'signedin') {
+            that.refreshUserState();
+          }
+        });
+      },
+      signinClick: function() {
+        navigator.id.request();
+      },
+      signoutClick: function() {
+        navigator.id.logout();
+      },
+      refreshUserState: function() {
+        // go to the server and find out what the user's apps are.
+        $.getJSON("/my/apps", function(data) {
+          var items = [];
+          $.each(data.apps, function(key, val) {
+            items.push( "<li id='" + key + "'>" + val + "</li>" );
+          });
+          $( "<ul/>", {
+            "class": "my-new-list",
+            html: items.join("")
+          }).appendTo("body");
+        });
+      },
+    });
+    Polymer.require('user-state-driver', ['jquery', 'persona'],
+      // this is done via require because it needs persona loaded to
+      // be able to call navigator.id stuff
+      function(jquery, persona) {
+        navigator.id.watch({
+          onlogin: function(assertion) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/persona/verify", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.addEventListener("loadend", function(e) {
+              var data = JSON.parse(this.responseText);
+              if (data && data.status === "okay") {
+                console.log("You have been logged in as: " + data.email);
+                document.dispatchEvent(new CustomEvent('user-state', {
+                  detail: {'state': 'signedin', 'email': data.email}
+                }));
+              }
+            }, false);
+
+            xhr.send(JSON.stringify({
+              assertion: assertion
+            }));
+          },
+          onlogout: function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/persona/logout", true);
+            xhr.addEventListener("loadend", function(e) {
+              document.dispatchEvent(
+                new CustomEvent('user-state', {
+                  detail: {'state': 'signedout', 'email': ''}
+                })
+              );
+            });
+            xhr.send();
+          }
+        });
+      });
+  </script>
+</polymer-element>

@@ -265,7 +265,7 @@ button.btn-start {
 }
 
 button.publish {
-  float: right;
+  /*float: right;*/
   height: 26px;
   width: 102px;
   font-size: 16px;
@@ -275,7 +275,7 @@ button.publish {
 }
 
 button.new {
-  float: right;
+  /*float: right;*/
   height: 26px;
   width: 102px;
   font-size: 16px;
@@ -578,7 +578,9 @@ button.done {
 }
 
 .top-nav .nav-ui {
-  float: right;
+  position: fixed;
+  top: 0;
+  right: 0;
 }
 
 .logo {
@@ -2675,14 +2677,20 @@ input#remix-panel-email {
 }
 
 .persona {
-  display: none;
+  display: inline;
+  /*position: relative;*/
 }
 
-.persona .logout, .persona .account span, .persona .login {
+.persona .logout, .persona .account, .persona .login {
   z-index: 101;
 }
 .persona .logout, .persona .account {
   display: none;
+}
+
+.persona .account {
+  /*float: right;*/
+  color: white;
 }
 
 /*Channel Menu*/

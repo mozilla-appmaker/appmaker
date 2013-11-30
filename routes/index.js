@@ -59,7 +59,9 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
 
     componentRegistry: require('./component-registry'),
 
-    proxy: require('./proxy')
+    proxy: require('./proxy'),
+
+    my: require('./my')
 
   }
 };
