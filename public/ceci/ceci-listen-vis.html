@@ -32,7 +32,7 @@
           var channel = document.createElement("div");
           channel.innerHTML = "<div class='dot color'></div>";
           channel.setAttribute("color",el.on);
-          channel.setAttribute("from",el.for);
+          channel.setAttribute("for",el.for);
           channel.classList.add("channel");
           that.$.listeners.appendChild(channel);
         });
@@ -41,7 +41,7 @@
         var channel = data.detail.channel;
         var handler = data.detail.handler;
 
-        var element = this.shadowRoot.querySelector(".channel[color='"+channel+"'][from='"+handler+"']");
+        var element = this.shadowRoot.querySelector(".channel[color='"+channel+"'][for='"+handler+"']");
         // fire DAT signal bitch
 
         // Add a signal indicator dot...
