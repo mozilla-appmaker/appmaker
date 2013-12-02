@@ -142,6 +142,7 @@ app.get('/testapp', routes.testapp);
 app.get('/remix', routes.remix);
 
 //TODO: Security: https://github.com/mozilla-appmaker/appmaker/issues/602
+app.get('/api/proxy-component-*',         cors(), routes.proxy.gitHubComponent);
 app.get('/component-*',         cors(), routes.proxy.gitHubComponent);
 app.get('/component/:org/:component/:path',         cors(), routes.proxy.component);
 
@@ -163,16 +164,10 @@ app.get( "/strings/:lang?", i18n.stringsRoute( "en-US" ) );
 app.post('/publish', routes.publish.publish);
 
 // routes for publishing and retrieving components
-// FIXME: URLs are too close to component proxy URLs
-app.use('/register', express.static(path.join(__dirname, 'app')));
-
-var components = routes.componentRegistry;
-app.get('/components',                    components.componentsGet);
-app.get('/components/:id',                components.componentsGetById);
-app.post('/components',                   components.componentsPost);
-app.post('/components/:id',               components.componentsPostById);
-app.delete('/components/:id',             components.componentsDeleteById);
-app.get('/notifications/:notificationId', components.notificationGetById);
+app.get('/api/component', routes.componentRegistry.components);
+app.get('/api/component/:id', routes.componentRegistry.component);
+app.post('/api/component', routes.componentRegistry.addComponent);
+app.delete('/api/component/:id', routes.componentRegistry.deleteComponent);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
