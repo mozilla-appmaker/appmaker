@@ -1,6 +1,6 @@
 <polymer-element
   name="user-state"
-  attribute="email"
+  attribute="user"
   >
   <template>
     <style>
@@ -18,47 +18,21 @@
         border-radius: 2px;
       }
     </style>
-    <span id="email">{{email}}</span>
-    <button id="signout" class="btn-std btn-md {{hidden: state == 'signedout'}}" on-click="{{signoutClick}}">logout</button>
-    <button id="signin" class="btn-std btn-md {{hidden: state == 'signedin'}}" on-click="{{signinClick}}">login</button>
+    <span id="email">{{user.email}}</span>
+    <button id="signout" class="btn-std btn-md {{hidden: user.state == 'signedout'}}" on-click="{{signoutClick}}">logout</button>
+    <button id="signin" class="btn-std btn-md {{hidden: user.state == 'signedin'}}" on-click="{{signinClick}}">login</button>
   </template>
   <script>
-    Polymer('user-state', {
+  (function() {
+    var user = {
       email: '',
-      state: 'signedout',
-      ready: function() {
-        var that = this;
-        document.addEventListener('user-state', function (event) {
-          that.state = event.detail.state;
-          that.email = event.detail.email;
-          if (that.state == 'signedin') {
-            that.refreshUserState();
-          }
-        });
-      },
-      signinClick: function() {
-        navigator.id.request();
-      },
-      signoutClick: function() {
-        navigator.id.logout();
-      },
-      refreshUserState: function() {
-        // go to the server and find out what the user's apps are.
-        $.getJSON("/my/apps", function(data) {
-          var items = [];
-          $.each(data.apps, function(key, val) {
-            items.push( "<li id='" + key + "'>" + val + "</li>" );
-          });
-          $( "<ul/>", {
-            "class": "my-new-list",
-            html: items.join("")
-          }).appendTo("body");
-        });
-      },
-    });
+      state: 'signedout'
+    };
+
     Polymer.require('user-state-driver', ['jquery', 'persona'],
       // this is done via require because it needs persona loaded to
       // be able to call navigator.id stuff
+
       function(jquery, persona) {
         navigator.id.watch({
           onlogin: function(assertion) {
@@ -93,5 +67,45 @@
           }
         });
       });
+
+      Polymer('user-state', {
+        user: user,
+        ready: function() {
+          var that = this;
+          document.addEventListener('user-state', function (event) {
+            that.user.state = event.detail.state;
+            that.user.email = event.detail.email;
+            if (that.user.state == 'signedin') {
+              that.refreshUserState();
+            }
+          });
+        },
+
+        signinClick: function() {
+          navigator.id.request();
+        },
+        signoutClick: function() {
+          navigator.id.logout();
+        },
+        attributeChangedCallback: function(attributeName) {
+          if (attributeName == 'user') {
+            this.refreshUserState();
+          }
+        },
+        refreshUserState: function() {
+          // go to the server and find out what the user's apps are.
+          $.getJSON("/my/apps", function(data) {
+            var items = [];
+            $.each(data.apps, function(key, val) {
+              items.push( "<li id='" + key + "'>" + val + "</li>" );
+            });
+            $( "<ul/>", {
+              "class": "my-new-list",
+              html: items.join("")
+            }).appendTo("body");
+          });
+        }
+      });
+  })();
   </script>
 </polymer-element>
