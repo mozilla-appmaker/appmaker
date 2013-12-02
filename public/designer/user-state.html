@@ -7,6 +7,7 @@
       :host {
         display: inline;
         color: white;
+        position: relative;
       }
       button {
         height: 26px;
@@ -17,10 +18,85 @@
         margin: 12px 12px 0px 0px;
         border-radius: 2px;
       }
+      :host #email {
+        cursor: pointer;
+        margin-left: 0.5em;
+      }
+      :host #email:hover {
+        text-decoration: underline;
+      }
+      :host #email:before {
+        content: "\2193\0020";
+      }
+      :host #signout {
+        float: left;
+      }
+      .menubutton {
+        display: inline-block;
+      }
+      .menu {
+        z-index: 12000;
+        padding: .3em;
+        border-color: #444;
+        background-color: #222;
+        /*width: 10em;*/
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 10em;
+        float: left;
+      }
+      .hidden {
+        display: none;
+      }
+      :host #myapps {
+        display: block;
+        float: left;
+      }
+      :host #myappsheading {
+        float: left;
+        clear: both;
+        width: 100%;
+        text-align: left;
+      }
+      :host #myapps {
+        margin: 0;
+        padding: 0;
+      }
+      :host #myapps li {
+        float: left;
+        clear: both;
+        margin-top: 0;
+        padding: 0;
+        padding-left: 0.5em;
+      }
+      :host #myapps li {
+        list-style-type: none;
+        margin: 0;
+        font-size: small;
+        padding: 0;
+      }
+      :host #myapps .applink {
+        text-align: left;
+        font-size: small;
+        text-decoration: underline;
+        border: 0;
+        background-color: transparent;
+        color: white;
+        padding: 0;
+        margin: 0;
+      }
     </style>
-    <span id="email">{{user.email}}</span>
-    <button id="signout" class="btn-std btn-md {{hidden: user.state == 'signedout'}}" on-click="{{signoutClick}}">logout</button>
     <button id="signin" class="btn-std btn-md {{hidden: user.state == 'signedin'}}" on-click="{{signinClick}}">login</button>
+    <div class="menubutton" on-mousedown="{{showMenu}}">
+      <span id="email" class="{{hidden: user.state == 'signedout'}}">{{user.email}}</span>
+      <div class="menu hidden" on-exit="{{hideMenu}}">
+        <button id="signout" class="btn-std btn-md {{hidden: user.state == 'signedout'}}" on-click="{{signoutClick}}">logout</button>
+        <span id="myappsheading">My apps</span>
+        <ul id="myapps">
+        </ul>
+      </div>
+    </div>
   </template>
   <script>
   (function() {
@@ -92,17 +168,33 @@
             this.refreshUserState();
           }
         },
+        showMenu: function() {
+          console.log('showing menu');
+          var self = this;
+          var menu = this.shadowRoot.querySelector(".menu");
+          menu.classList.remove('hidden');
+          menu.addEventListener("mouseleave", function() {
+            menu.classList.add('hidden');
+          });
+        },
         refreshUserState: function() {
           // go to the server and find out what the user's apps are.
-          $.getJSON("/my/apps", function(data) {
+          var myApps = this.shadowRoot.querySelector("#myapps");
+          $.getJSON("/api/myapps", function(data) {
             var items = [];
             $.each(data.apps, function(key, val) {
-              items.push( "<li id='" + key + "'>" + val + "</li>" );
+              var app = document.createElement('li');
+              var link = document.createElement('button');
+              link.id = key;
+              link.textContent = val;
+              link.setAttribute('class', 'applink');
+              link.addEventListener('click', function() {
+                alert('loading app called: ' + val);
+                // openApp(val);
+              });
+              app.appendChild(link);
+              myApps.appendChild(app);
             });
-            $( "<ul/>", {
-              "class": "my-new-list",
-              html: items.join("")
-            }).appendTo("body");
           });
         }
       });

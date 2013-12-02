@@ -16,7 +16,7 @@ module.exports = {
     if (! request.session.email) {
       response.json({'apps': []}, 400);
     } else {
-      response.json({'apps': [1,2,3]}, 200);
+      response.json({'apps': ["fireworks","more fireworks","todo"]}, 200);
     }
   }
 };

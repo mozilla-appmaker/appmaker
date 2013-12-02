@@ -24,5 +24,9 @@ define(
       console.log("SAVING");
       var name = window.prompt("What do you want to call this app?");
     });
+
+    function openApp(appName){
+      console.log("loading an app called", appName);
+    }
   }
 );

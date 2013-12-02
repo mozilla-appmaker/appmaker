@@ -145,7 +145,6 @@ app.get('/remix', routes.remix);
 app.get('/api/proxy-component-*',         cors(), routes.proxy.gitHubComponent);
 app.get('/component-*',         cors(), routes.proxy.gitHubComponent);
 app.get('/component/:org/:component/:path',         cors(), routes.proxy.component);
-app.get('/my/apps', routes.my.apps);
 
 process.env.ARTIFICIAL_CORS_DELAY = parseInt(process.env.ARTIFICIAL_CORS_DELAY, 10);
 // if ARTIFICIAL_CORS_DELAY is set, we use a different proxy route
@@ -169,6 +168,7 @@ app.get('/api/component', routes.componentRegistry.components);
 app.get('/api/component/:id', routes.componentRegistry.component);
 app.post('/api/component', routes.componentRegistry.addComponent);
 app.delete('/api/component/:id', routes.componentRegistry.deleteComponent);
+app.get('/api/myapps', routes.my.apps);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
