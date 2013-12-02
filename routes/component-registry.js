@@ -2,92 +2,78 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+/*
+* Serve JSON to our AngularJS client
+*/
 
-var componentsMap = {
-  '1': {
-    "id": 1,
-    "name": "Button",
-    "url": "button.html"
-  },
-  '2': {
-    "id": 2,
-    "name": "Slider",
-    "url": "slider.html"
+
+var mongoose = require('mongoose');
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/componentregistry');
+
+var componentSchema = mongoose.Schema({name: 'string', url: 'string'});
+var Component = mongoose.model('Component', componentSchema);
+
+
+// GET
+exports.components = function (req, res) {
+  Component.find({}, function (err, components) {
+      if (err){
+        console.log('Unable to retrieve components');
+        return res.json(500, 'Unable to retrieve components: ' + err);
+      }
+      // console.log('retrieved %s components from mongo', components.length);
+      return res.json(components);
+  });
+};
+
+exports.component = function (req, res) {
+  Component.findOne({_id: req.params.id}, function(err,obj) {
+    // console.log('returns the component: ' + obj);
+    if (err){
+      console.log('Unable to find component for %s', req.params.id);
+      return res.json(500, {error: 'Unable to find component: ' + err});
+    }
+    return res.json(obj);
+  });
+};
+// POST
+
+exports.addComponent = function (req, res) {
+  if (req.body._id){
+    // Handle Angular's lack of PUT or passing of id for updates
+    return editComponent(req, res);
   }
-};
-var next_id = 3;
-
-//app.get('/components', function(req, res) {
-var componentsGet = function(req, res){
-  var components = [];
-
-  for (var key in componentsMap) {
-    components.push(componentsMap[key]);
-  }
-  res.send(components);
-};
-
-//app.get('/components/:id', function(req, res) {
-var componentsGetById = function(req, res){
-  console.log('Requesting component with id', req.params.id);
-  res.send(componentsMap[req.params.id]);
+  // console.log('add component: %j', req.body);
+  var newComponent = new Component(req.body);
+  newComponent.save(function(err, component){
+    if (err){
+      console.error('saving new component failed');
+      return res.json(500, {error: 'Component was not saved due to ' + err});
+    }
+    // console.log("component added %j: ", component);
+    return res.json(component);
+  });
 };
 
-//app.post('/components', function(req, res) {
-var componentsPost = function(req, res){
-  var component = {};
-  component.id = next_id++;
-  component.name = req.body.name;
-  component.url = req.body.url;
-
-  componentsMap[component.id] = component;
-
-  res.send(component);
+var editComponent = function (req, res) {
+  // console.log('edit component: %j', req.body);
+  Component.findByIdAndUpdate(req.params.id || req.body._id, {
+    $set: { name: req.body.name, url: req.body.url }}, {upsert:true}, function (err, user) {
+      if (err){
+        console.error('saving modified component failed: ' + err);
+        return res.json(500, {error: 'Component was not updated due to ' + err});
+      }
+      return res.json(null);
+    }
+  );
 };
 
-// app.post('/components/:id', function(req, res) {
-var componentsPostById = function(req, res){
-  var component = {};
-  component.id = req.params.id;
-  component.name = req.body.name;
-  component.url = req.body.url;
-
-  componentsMap[component.id] = component;
-
-  res.send(component);
+exports.deleteComponent = function (req, res) {
+  Component.remove({_id: req.params.id}, function (err) {
+    if (err) {
+      console.log('delete component error');
+      res.json(500, {error: 'unable to delete component: ' + err});
+    }
+    return res.json(true);
+  });
 };
-
-// app.delete('/components/:id', function(req, res) {
-var componentsDeleteById = function(req, res){
-  var key = req.params.id;
-  delete componentsMap[key]
-  res.send();
-};
-
-var notificationsMap = {
-  '1': {
-    "id": 1,
-    "type": "yuck",
-    "message": "This is a stupid component"
-  },
-  '2': {
-    "id": 2,
-    "type": "gross",
-    "message": "This component sucks"
-  }
-};
-
-// app.get('/notification/:notificationId', function(req, res) {
-var notificationGetById = function(req, res){
-  console.log('Requesting notification with id', req.params.notificationId);
-  res.send(notificationsMap[req.params.notificationId]);
-};
-
-module.exports = {
-  componentsGet: componentsGet,
-  componentsGetById: componentsGetById,
-  componentsPost: componentsPost,
-  componentsPostById: componentsPostById,
-  componentsDeleteById: componentsDeleteById,
-  notificationGetById: notificationGetById
-}
