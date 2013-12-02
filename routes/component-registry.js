@@ -19,7 +19,7 @@ exports.components = function (req, res) {
   Component.find({}, function (err, components) {
       if (err){
         console.log('Unable to retrieve components');
-        return res.json('Unable to retrieve components: ' + err);
+        return res.json(500, 'Unable to retrieve components: ' + err);
       }
       // console.log('retrieved %s components from mongo', components.length);
       return res.json(components);
@@ -55,7 +55,6 @@ exports.addComponent = function (req, res) {
   });
 };
 
-// PUT (Not supported by Angular, boo!)
 var editComponent = function (req, res) {
   // console.log('edit component: %j', req.body);
   Component.findByIdAndUpdate(req.params.id || req.body._id, {

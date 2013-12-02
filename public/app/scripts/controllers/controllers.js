@@ -1,11 +1,11 @@
 'use strict';
 
-var app = angular.module('appmaker', ['appmaker.directives', 'appmaker.services']);
+var app = angular.module('appmaker', ['appmaker.services']);
 
 app.config(function ($routeProvider) {
   $routeProvider.
     when('/list', {
-      controller: 'ListCtrl', 
+      controller: 'ListCtrl',
       resolve: {
         components: function (LoadComponents) {
           return LoadComponents();
@@ -20,14 +20,6 @@ app.config(function ($routeProvider) {
         }
       },
       templateUrl: '/app/views/viewComponent.html'
-    }).when('/notification/:notificationId', {
-      controller: 'NotificationCtrl',
-      resolve: {
-        notification : function (LoadNotification) {
-          return LoadNotification();
-        }
-      },
-      templateUrl: "/app/views/componentForm.html"
     }).when('/new', {
       controller: 'NewCtrl',
       templateUrl:'/app/views/componentForm.html'
@@ -100,10 +92,5 @@ app.controller('EditCtrl', function ($scope, $location, component) {
     history.go(-1)
   };
 })
-
-app.controller('NotificationCtrl', function ($scope, $location, notification) {
-  $scope.notification = notification;
-  $scope.isNotification = true;
-});
 
 
