@@ -21,6 +21,15 @@
       :host #email {
         cursor: pointer;
         margin-left: 0.5em;
+        height: 26px;
+        /*width: 102px;*/
+        width: auto;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: rgba(1, 163, 176, 1);
+        margin: 12px 12px 0px 0px;
+        overflow-x: auto;
+        border-radius: 2px;
       }
       :host #email:hover {
         text-decoration: underline;
@@ -88,7 +97,7 @@
     </style>
     <button id="signin" class="btn-std btn-md {{hidden: user.state == 'signedin'}}" on-click="{{signinClick}}">login</button>
     <div class="menubutton" on-mousedown="{{showMenu}}">
-      <span id="email" class="{{hidden: user.state == 'signedout'}}">{{user.email}}</span>
+      <button id="email" class="btn-std btn-md {{hidden: user.state == 'signedout'}}">{{user.email}}</button>
       <div class="menu hidden" on-exit="{{hideMenu}}">
         <button id="signout" class="btn-std btn-md {{hidden: user.state == 'signedout'}}" on-click="{{signoutClick}}">logout</button>
         <span id="myappsheading">My apps</span>

@@ -265,7 +265,6 @@ button.btn-start {
 }
 
 button.publish {
-  /*float: right;*/
   height: 26px;
   width: 102px;
   font-size: 16px;
@@ -275,12 +274,21 @@ button.publish {
 }
 
 button.new {
-  /*float: right;*/
   height: 26px;
   width: 102px;
   font-size: 16px;
   cursor: pointer;
   background-color: #e81e1e;
+  margin: 12px 12px 0px 0px;
+  border-radius: 2px;
+}
+
+button.save {
+  height: 26px;
+  width: 102px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: rgba(66, 197, 47, 1);
   margin: 12px 12px 0px 0px;
   border-radius: 2px;
 }
