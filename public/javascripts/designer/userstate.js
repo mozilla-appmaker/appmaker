@@ -23,6 +23,22 @@ define(
     $('.save').click(function() {
       console.log("SAVING");
       var name = window.prompt("What do you want to call this app?");
+      var html = document.querySelector('ceci-app').innerHTML;
+      $.ajax('/api/save_app', {
+        data: {
+          html: html,
+          name: name
+        },
+        type: 'post',
+        success: function (data) {
+          alert('success');
+        },
+        error: function (data) {
+          alert(String(data));
+          console.error('Error while saving app:');
+          console.error(data);
+        }
+      });
     });
 
     function openApp(appName){

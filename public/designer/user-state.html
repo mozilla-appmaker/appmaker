@@ -9,14 +9,15 @@
         color: white;
         position: relative;
       }
-      button {
+      :host button.button {
         height: 26px;
-        width: 102px;
         font-size: 16px;
         cursor: pointer;
         background-color: #e81e1e;
         margin: 12px 12px 0px 0px;
         border-radius: 2px;
+        padding-left: 1em;
+        padding-right: 1em;
       }
       :host #email {
         cursor: pointer;
@@ -30,6 +31,8 @@
         margin: 12px 12px 0px 0px;
         overflow-x: auto;
         border-radius: 2px;
+        padding-left: 1em;
+        padding-right: 1em;
       }
       :host #email:hover {
         text-decoration: underline;
@@ -38,7 +41,7 @@
         content: "\2193\0020";
       }
       :host #signout {
-        float: left;
+        float: right;
       }
       .menubutton {
         display: inline-block;
@@ -70,6 +73,8 @@
       :host #myapps {
         margin: 0;
         padding: 0;
+        clear: both;
+        width: 100%;
       }
       :host #myapps li {
         float: left;
@@ -93,22 +98,23 @@
         color: white;
         padding: 0;
         margin: 0;
+        cursor: pointer;
       }
     </style>
-    <button id="signin" class="btn-std btn-md {{hidden: user.state == 'signedin'}}" on-click="{{signinClick}}">login</button>
+    <button id="signin" class="button btn-std btn-md {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">login</button>
     <div class="menubutton" on-mousedown="{{showMenu}}">
-      <button id="email" class="btn-std btn-md {{hidden: user.state == 'signedout'}}">{{user.email}}</button>
+      <button id="email" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">{{user.email}}</button>
       <div class="menu hidden" on-exit="{{hideMenu}}">
-        <button id="signout" class="btn-std btn-md {{hidden: user.state == 'signedout'}}" on-click="{{signoutClick}}">logout</button>
         <span id="myappsheading">My apps</span>
         <ul id="myapps">
         </ul>
+        <button id="signout" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}" on-click="{{signoutClick}}">logout</button>
       </div>
     </div>
   </template>
   <script>
   (function() {
-    require(['jquery', 'persona'], function(jquery, persona) {
+    require(['jquery', 'persona', 'application'], function(jquery, persona, application) {
       var user = {
         email: '',
         state: 'signedout'
@@ -186,20 +192,28 @@
           // go to the server and find out what the user's apps are.
           var myApps = this.shadowRoot.querySelector("#myapps");
           $.getJSON("/api/myapps", function(data) {
-            var items = [];
-            $.each(data.apps, function(key, val) {
-              var app = document.createElement('li');
-              var link = document.createElement('button');
-              link.id = key;
-              link.textContent = val;
-              link.setAttribute('class', 'applink');
-              link.addEventListener('click', function() {
-                alert('loading app called: ' + val);
-                // openApp(val);
+            try {
+              var items = [];
+              $.each(data, function(key, val) {
+                var app = document.createElement('li');
+                var link = document.createElement('button');
+                link.id = key;
+                link.textContent = val.name;
+                link.setAttribute('class', 'applink');
+                link.addEventListener('click', function() {
+                  try {
+                    application.loadAppByName(val.name);
+                  } catch (e) {
+                    console.log(e);
+                  }
+                  // openApp(val);
+                });
+                app.appendChild(link);
+                myApps.appendChild(app);
               });
-              app.appendChild(link);
-              myApps.appendChild(app);
-            });
+            } catch (e) {
+              console.log(e);
+            }
           });
         }
       });

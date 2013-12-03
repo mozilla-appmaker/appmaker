@@ -266,7 +266,8 @@ button.btn-start {
 
 button.publish {
   height: 26px;
-  width: 102px;
+  padding-left: 1em;
+  padding-right: 1em;
   font-size: 16px;
   cursor: pointer;
   margin: 12px 12px 0px 0px;
@@ -275,7 +276,8 @@ button.publish {
 
 button.new {
   height: 26px;
-  width: 102px;
+  padding-left: 1em;
+  padding-right: 1em;
   font-size: 16px;
   cursor: pointer;
   background-color: #e81e1e;
@@ -285,7 +287,8 @@ button.new {
 
 button.save {
   height: 26px;
-  width: 102px;
+  padding-left: 1em;
+  padding-right: 1em;
   font-size: 16px;
   cursor: pointer;
   background-color: rgba(66, 197, 47, 1);
@@ -2686,7 +2689,6 @@ input#remix-panel-email {
 
 .persona {
   display: inline;
-  /*position: relative;*/
 }
 
 .persona .logout, .persona .account, .persona .login {
@@ -2697,7 +2699,6 @@ input#remix-panel-email {
 }
 
 .persona .account {
-  /*float: right;*/
   color: white;
 }
 
