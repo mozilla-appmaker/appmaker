@@ -180,7 +180,6 @@
           }
         },
         showMenu: function() {
-          console.log('showing menu');
           var self = this;
           var menu = this.shadowRoot.querySelector(".menu");
           menu.classList.remove('hidden');
@@ -191,6 +190,7 @@
         refreshUserState: function() {
           // go to the server and find out what the user's apps are.
           var myApps = this.shadowRoot.querySelector("#myapps");
+          myApps.innerHTML = '';
           $.getJSON("/api/myapps", function(data) {
             try {
               var items = [];
@@ -206,7 +206,6 @@
                   } catch (e) {
                     console.log(e);
                   }
-                  // openApp(val);
                 });
                 app.appendChild(link);
                 myApps.appendChild(app);

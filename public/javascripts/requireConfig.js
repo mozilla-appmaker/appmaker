@@ -19,7 +19,7 @@ requirejs.config({
 
     "togetherjs": "https://togetherjs.com/togetherjs-min",
 
-    "angular": "/vendor/angular/angular.min",
+    "angular": "/vendor/angular/angular.min"
 
   },
   shim: {

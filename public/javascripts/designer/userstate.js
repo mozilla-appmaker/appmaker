@@ -21,7 +21,6 @@ define(
     });
 
     $('.save').click(function() {
-      console.log("SAVING");
       var name = window.prompt("What do you want to call this app?");
       var html = document.querySelector('ceci-app').innerHTML;
       $.ajax('/api/save_app', {
@@ -31,12 +30,16 @@ define(
         },
         type: 'post',
         success: function (data) {
-          alert('success');
+          console.log("saved app successfully");
+          try {
+            document.querySelector('user-state').refreshUserState();
+          } catch (e) {
+            console.log(e);
+          }
         },
         error: function (data) {
-          alert(String(data));
-          console.error('Error while saving app:');
-          console.error(data);
+          alert('Error while saving app: ' + JSON.stringify(data));
+          console.error('Error while saving app:', data);
         }
       });
     });

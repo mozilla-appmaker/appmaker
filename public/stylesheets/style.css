@@ -2687,21 +2687,6 @@ input#remix-panel-email {
   opacity: 1;
 }
 
-.persona {
-  display: inline;
-}
-
-.persona .logout, .persona .account, .persona .login {
-  z-index: 101;
-}
-.persona .logout, .persona .account {
-  display: none;
-}
-
-.persona .account {
-  color: white;
-}
-
 /*Channel Menu*/
 
 .selected .channel-visualisation .channel-menu-toggle,
