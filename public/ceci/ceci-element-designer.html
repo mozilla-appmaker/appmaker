@@ -47,7 +47,6 @@
   <script>
     Polymer('ceci-element', {
       broadcast: function (name, data) {
-        console.log(name,data);
         this.super(arguments);
         var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
         var broadcastDetails = { channelName : broadcastElement.on, from : name, data: data};

@@ -11,14 +11,13 @@
       enteredView: function () {
         var that = this;
         this.component = this.parentNode.host;
-        this.addListeners();
+        this.updateListeners();
       },
       leftView : function(){
         this.component.removeEventListener('listenerFired');
       },
-      addListeners: function() {
+      updateListeners: function() {
         //Adds broadcast channel line for each ceci-listen element
-        //Also adds a listener for each one to see when it gets triggered, but that's failing right now
 
         var that = this;
         var listenerElements = this.component.querySelectorAll("ceci-listen");

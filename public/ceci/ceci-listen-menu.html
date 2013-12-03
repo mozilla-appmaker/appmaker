@@ -23,53 +23,107 @@
     (function(){
       Polymer('ceci-listen-menu', {
         showMenu : function() {
-          this.$.listenMenu.style.display = "block";
-          this.$.listenMenu.classList.add("menu-in");
-          var height = this.$.listenMenu.offsetHeight;
-          this.$.listenMenu.style.marginTop = -1 * (height/2) + "px";
+          if(this.component.querySelectorAll("ceci-listen").length > 0) {
+            this.$.listenMenu.style.display = "block";
+            this.$.listenMenu.classList.add("menu-in");
+            var height = this.$.listenMenu.offsetHeight;
+            this.$.listenMenu.style.marginTop = -1 * (height/2) + "px";
+          }
         },
         hideMenu : function() {
           this.$.listenMenu.style.display = "none";
         },
         enteredView: function () {
           var that = this;
-          this.component = this.parentNode.host;
+          this.component = that.parentNode.host;
           this.buildMenu();
         },
         buildMenu: function() {
           var that = this;
           var broadcastElements = this.component.querySelectorAll("ceci-listen");
+          var listeners =this.component.listeners;
 
-          Array.prototype.forEach.call(broadcastElements, function(el,index){
-            var channelTemplate = that.shadowRoot.querySelector(".option-template");
-            var channelOption = channelTemplate.cloneNode(true);
-            channelOption.classList.remove("option-template");
-            channelOption.querySelector(".channel-name").innerHTML = el.for;
-            that.$.listenMenu.appendChild(channelOption);
-            var listenFor = el.for;
-            var on = el.on;
+          for (var key in listeners) {
+            if (listeners.hasOwnProperty(key)) {
 
-            channelOption.querySelector("label").addEventListener('click', function(el) {
-              this.style.display = "none";
-              var colorMenu = this.parentNode.querySelector(".color-ui");
-              colorMenu.style.display = "block";
-            }, false);
+              var channelTemplate = that.shadowRoot.querySelector(".option-template");
+              var channelOption = channelTemplate.cloneNode(true);
 
-            var colorOptions = channelOption.querySelectorAll(".color-ui .color");
+              channelOption.classList.remove("option-template");
 
-            Array.prototype.forEach.call(colorOptions, function(el){
-              el.addEventListener("click",function(el) {
-                 var color = this.getAttribute("color");
-                 channelOption.querySelector("label").style.display = "block";
-                 channelOption.querySelector("label .chosen-color").setAttribute("color",color);
-                 channelOption.querySelector(".color-ui").style.display = "none";
-                 var channelLine = that.component.impl.querySelector("ceci-listen-vis .channel[for="+listenFor+"]");
-                 channelLine.setAttribute("color",color);
-                 var broadcastElement = that.component.querySelector("ceci-listen[for="+listenFor+"]");
-                 broadcastElement.on = color;
-               });
-            });
-        });
+              channelOption.querySelector(".channel-name").textContent = listeners[key].name;
+
+              that.$.listenMenu.appendChild(channelOption);
+              var listenFor = listeners[key].name;
+
+              channelOption.setAttribute("for",listenFor);
+
+              var on = "blue";
+
+              channelOption.querySelector("label").addEventListener('click', function(el) {
+                this.style.display = "none";
+                var colorMenu = this.parentNode.querySelector(".color-ui");
+                colorMenu.style.display = "block";
+              }, false);
+
+              var colorOptions = channelOption.querySelectorAll(".color-ui .color");
+
+
+              Array.prototype.forEach.call(colorOptions, function(el){
+
+                el.addEventListener("click",function(el) {
+                   var channelOption = this.parentNode.parentNode;
+                   var listenFor = channelOption.getAttribute("for");
+                   var color = this.getAttribute("color");
+                   channelOption.querySelector("label").style.display = "block";
+                   channelOption.querySelector("label .chosen-color").setAttribute("color",color);
+                   channelOption.querySelector(".color-ui").style.display = "none";
+
+                   // var channelLine = that.component.impl.querySelector("ceci-listen-vis .channel[for="+listenFor+"]");
+
+                   //Try to grab the associated ceci-listen element
+                   var listenerEl = that.component.impl.querySelector("ceci-listen[for="+listenFor+"]");
+
+
+
+                   if (color == "false"){
+                      if (listenerEl){
+                        listenerEl.parentNode.removeChild(listenerEl)
+                        // that.component.impl.removeChild(listenerEl);
+                      }
+                   } else {
+                     // If it exists
+                     if (listenerEl){
+                       listenerEl.setAttribute("on",color);
+                     } else {
+                       var newListener = document.createElement("ceci-listen");
+                       newListener.setAttribute("on",color);
+                       newListener.setAttribute("for",listenFor);
+                       console.log("Adding new ceci-listener");
+                       that.component.appendChild(newListener);
+                     }
+
+                   }
+
+
+
+
+
+                   // also, we have to notify the VIS to update itself there big guy!
+                   // with every change, it must update T'ISELF!
+
+
+
+
+                   //if it just got disabled
+
+
+                 });
+              });
+
+          }
+        }
+
         }
       });
     })();
