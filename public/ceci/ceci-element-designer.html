@@ -1,12 +1,53 @@
 <polymer-element name="ceci-element" extends="ceci-element-base">
-  <template>
+  <template id="ceci-element">
+    <style>
+      :host {
+        position: relative;
+        width: 100%;
+        top: 0;
+      }
+
+      :host #handle {
+        position: absolute;
+        right: 0;
+        top: 0;
+        opacity: .6;
+        border-radius: 2px;
+        background-color: white;
+        border: solid 1px #BBB;
+        width: 16px;
+        height: 16px;
+        padding: 3px;
+        cursor: move;
+        background-image: url('assets/move.png');
+        background-repeat: no-repeat;
+        background-position: 3px 3px;
+        margin: 3px;
+        z-index: 9999;
+        visibility: hidden;
+      }
+
+      :host:hover #handle {
+        visibility: visible;
+      }
+
+      :host #handle:hover {
+        opacity: 1;
+      }
+    </style>
     <content></content>
+    <div id="handle"></div>
+    <ceci-broadcast-vis></ceci-broadcast-vis>
   </template>
   <script>
     Polymer('ceci-element', {
-      ready: function () {
-        this.super();
-        console.log('sup');
+      broadcast: function (name, data) {
+        this.super(arguments);
+        var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
+        var broadcastDetails = { channelName : broadcastElement.on, from : name};
+        if (broadcastElement) {
+          this.dispatchEvent(new CustomEvent('broadcastFired', {name: name, bubbles: true, detail: broadcastDetails}));
+        }
       }
     });
   </script>

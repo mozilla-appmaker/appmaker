@@ -1,4 +1,3 @@
-
 <polymer-element name="ceci-button" attributes="textcolor buttoncolor buttonactivecolor label value" extends="ceci-element"
   label="Click Me" textcolor="#ffffff" buttoncolor="#11bb11">
   <template>
@@ -37,6 +36,7 @@
         border: none;
       }
     </style>
+    <shadow></shadow>
     <button id="button" on-click="{{buttonClick}}"></button>
     <content select="ceci-broadcast"></content>
     <content select="ceci-listen"></content>

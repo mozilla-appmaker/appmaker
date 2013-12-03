@@ -37,15 +37,24 @@ module.exports = function( grunt ) {
         "Gruntfile.js",
         "app.js",
         "public/javascripts/**/*.js",
-        "public/vendor/ceci/*.js"
+        "public/ceci/*.js",
+        // we should lint these, but don't know how to tell jslint that angular is defined.
+        // "app/scripts/controllers/*.js",
+        // "app/scripts/directives/*.js",
+        // "app/scripts/services/*.js"
       ]
+    },
+    inlinelint: {
+      html: ['public/ceci/**/*.html'],
+      ejs: ['**/*.ejs']
     }
   });
 
   grunt.loadNpmTasks( "grunt-contrib-csslint" );
   grunt.loadNpmTasks( "grunt-contrib-jshint" );
+  grunt.loadNpmTasks('grunt-lint-inline');
 
   // TODO: the csslinting is turned off right now, because the number
   //       of warnings is staggering. Some make sense, some don't.
-  grunt.registerTask( "default", [ /*"csslint",*/ "jshint" ]);
+  grunt.registerTask( "default", [ /*"csslint",*/ "jshint", "inlinelint" ]);
 };

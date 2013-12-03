@@ -1,17 +1,17 @@
 'use strict';
 
-var app = angular.module('appmaker', ['appmaker.directives', 'appmaker.services']);
+var app = angular.module('appmaker', ['appmaker.services']);
 
 app.config(function ($routeProvider) {
   $routeProvider.
     when('/list', {
-      controller: 'ListCtrl', 
+      controller: 'ListCtrl',
       resolve: {
         components: function (LoadComponents) {
           return LoadComponents();
         }
       },
-      templateUrl: '/register/views/list.html'
+      templateUrl: '/app/views/list.html'
     }).when('/component/:componentId', {
       controller: 'ViewCtrl',
       resolve: {
@@ -19,18 +19,10 @@ app.config(function ($routeProvider) {
           return LoadComponent();
         }
       },
-      templateUrl: '/register/views/viewComponent.html'
-    }).when('/notification/:notificationId', {
-      controller: 'NotificationCtrl',
-      resolve: {
-        notification : function (LoadNotification) {
-          return LoadNotification();
-        }
-      },
-      templateUrl: "/register/views/componentForm.html"
+      templateUrl: '/app/views/viewComponent.html'
     }).when('/new', {
       controller: 'NewCtrl',
-      templateUrl:'/register/views/componentForm.html'
+      templateUrl:'/app/views/componentForm.html'
     }).when('/edit/:componentId', {
       controller: 'EditCtrl',
       resolve: {
@@ -38,9 +30,9 @@ app.config(function ($routeProvider) {
           return LoadComponent();
         }
       },
-      templateUrl: '/register/views/componentForm.html'
+      templateUrl: '/app/views/componentForm.html'
     })
-    .otherwise({redirectTo: '/register/'});
+    .otherwise({redirectTo: '/list'});
 });
 
 app.controller('ListCtrl', function ($scope, components) {
@@ -48,10 +40,15 @@ app.controller('ListCtrl', function ($scope, components) {
 });
 
 app.controller('ViewCtrl', function ($scope, component, $location) {
+  // console.log('viewing scope: %o', $scope);
+  // console.log('viewing component.component: %o', component.component);
+  // console.log('viewing location: %o', $location);
   $scope.component = component;
 
   $scope.edit = function() {
-    $location.path('/edit/' + component.id);
+    // console.log('edit path scope: %o', $scope);
+    // console.log('edit path component: %o', $scope.component);
+    $location.path('/edit/' + $scope.component._id);
   };
 });
 
@@ -62,7 +59,8 @@ app.controller('NewCtrl', function ($scope, Component, $location) {
 
   $scope.save = function() {
     $scope.component.$save(function(component) {
-      $location.path('/component/' + component.id);
+      console.log('received from add component: %o', component);
+      $location.path('/component/' + component._id);
     });
   };
 
@@ -72,30 +70,27 @@ app.controller('NewCtrl', function ($scope, Component, $location) {
 });
 
 app.controller('EditCtrl', function ($scope, $location, component) {
+  console.log('editing %o', component);
   $scope.component = component;
 
   $scope.heading = "Edit Component";
 
   $scope.save = function() {
     $scope.component.$save(function(component) {
-      $location.path('/component/' + component.id);
+      console.log('received from save component: %o', component);
+      $location.path('/component/' + component._id);
     });
   };
 
   $scope.remove = function() {
     $scope.component.$remove(function(component) {
-      $location.path('/register/');
+      $location.path('/components/');
     });
   };
 
   $scope.back = function() {
     history.go(-1)
   };
-})
-
-app.controller('NotificationCtrl', function ($scope, $location, notification) {
-  $scope.notification = notification;
-  $scope.isNotification = true;
 })
 
 

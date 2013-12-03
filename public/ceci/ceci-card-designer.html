@@ -1,0 +1,68 @@
+<polymer-element name="ceci-card" extends="ceci-card-base">
+  <template>
+    <style>
+      :host #garbageLeft {
+        background-image: url('assets/garbage-icon-closed.png');
+        background-color: transparent;
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        right: -200px;
+        top: 50px;
+        border-radius: 20px;
+        border: dotted 3px rgba(0,0,0,.3)
+      }
+
+      :host #garbageLeft.open {
+        background-image: url('assets/garbage-icon-open.png');
+        background-color: #dddddd;
+      }
+    </style>
+    <div id="garbageLeft" hidden="true"></div>
+    <shadow></shadow>
+  </template>
+  <script>
+    Polymer('ceci-card', {
+      ready: function () {
+        this.super();
+
+        var that = this;
+
+        function createSortable () {
+          var draggedOff = false;
+
+          $(that).sortable({
+            start: function () {
+              that.$.garbageLeft.hidden = false;
+              that.$.garbageLeft.classList.remove('open');
+              draggedOff = false;
+            },
+            beforeStop: function (ev, ui) {
+              that.$.garbageLeft.hidden = true;
+              if (draggedOff) {
+                ui.item[0].parentNode.removeChild(ui.item[0]);
+              }
+            },
+            out: function (ev, ui) {
+              that.$.garbageLeft.classList.add('open');
+              draggedOff = true;
+            },
+            over: function (ev, ui) {
+              that.$.garbageLeft.classList.remove('open');
+              draggedOff = false;
+            }
+          });
+        }
+
+        var interval = setInterval(function () {
+          if (window.$ && $('<div>').sortable) {
+            clearInterval(interval);
+            createSortable();
+          }
+        }, 100);
+      }
+    });
+  </script>
+</polymer-element>
