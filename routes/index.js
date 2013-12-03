@@ -9,7 +9,7 @@ var urls = require('../lib/urls');
 
 module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPublisher) {
   var mongoose = require('mongoose');
-  var dbconn = mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/componentregistry');
+  var dbconn = mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/appmakerdev');
 
   return {
     index: function(req, res) {
