@@ -39,7 +39,6 @@
         padding: .3em;
         border-color: #444;
         background-color: #222;
-        /*width: 10em;*/
         position: absolute;
         left: 0;
         top: 0;
@@ -100,48 +99,45 @@
   </template>
   <script>
   (function() {
-    var user = {
-      email: '',
-      state: 'signedout'
-    };
-
-    Polymer.require('user-state-driver', ['jquery', 'persona'],
+    require(['jquery', 'persona'], function(jquery, persona) {
+      var user = {
+        email: '',
+        state: 'signedout'
+      };
       // this is done via require because it needs persona loaded to
       // be able to call navigator.id stuff
 
-      function(jquery, persona) {
-        navigator.id.watch({
-          onlogin: function(assertion) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/persona/verify", true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.addEventListener("loadend", function(e) {
-              var data = JSON.parse(this.responseText);
-              if (data && data.status === "okay") {
-                console.log("You have been logged in as: " + data.email);
-                document.dispatchEvent(new CustomEvent('user-state', {
-                  detail: {'state': 'signedin', 'email': data.email}
-                }));
-              }
-            }, false);
+      navigator.id.watch({
+        onlogin: function(assertion) {
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/persona/verify", true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.addEventListener("loadend", function(e) {
+            var data = JSON.parse(this.responseText);
+            if (data && data.status === "okay") {
+              console.log("You have been logged in as: " + data.email);
+              document.dispatchEvent(new CustomEvent('user-state', {
+                detail: {'state': 'signedin', 'email': data.email}
+              }));
+            }
+          }, false);
 
-            xhr.send(JSON.stringify({
-              assertion: assertion
-            }));
-          },
-          onlogout: function() {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/persona/logout", true);
-            xhr.addEventListener("loadend", function(e) {
-              document.dispatchEvent(
-                new CustomEvent('user-state', {
-                  detail: {'state': 'signedout', 'email': ''}
-                })
-              );
-            });
-            xhr.send();
-          }
-        });
+          xhr.send(JSON.stringify({
+            assertion: assertion
+          }));
+        },
+        onlogout: function() {
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/persona/logout", true);
+          xhr.addEventListener("loadend", function(e) {
+            document.dispatchEvent(
+              new CustomEvent('user-state', {
+                detail: {'state': 'signedout', 'email': ''}
+              })
+            );
+          });
+          xhr.send();
+        }
       });
 
       Polymer('user-state', {
@@ -198,6 +194,7 @@
           });
         }
       });
+    });
   })();
   </script>
 </polymer-element>

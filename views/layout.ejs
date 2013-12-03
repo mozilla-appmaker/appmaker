@@ -27,13 +27,6 @@
 
     <script src="<%= process.env.ASSET_HOST%>/vendor/requirejs/require.js"></script>
     <script src="<%= process.env.ASSET_HOST%>/javascripts/requireConfig.js"></script>
-    <script>
-      Polymer.require = function(tag, deps, func) {
-        require(deps, function() {
-          Polymer(tag, func.apply(this, arguments));
-        });
-      };
-    </script>
 
     <link rel="import" href="/ceci/ceci-element-base.html">
     <link rel="import" href="/ceci/ceci-element-designer.html">
