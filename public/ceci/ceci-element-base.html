@@ -9,8 +9,8 @@
       },
       broadcast: function (name, data) {
         var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
-        var broadcastDetails = { channelName : broadcastElement.on, from : name};
         if (broadcastElement) {
+          var broadcastDetails = { channelName : broadcastElement.on, from : name};
           broadcastElement.fire(data);
         }
       },

@@ -3,7 +3,7 @@
 
 // Leaving in some of the subscription styles for now, since I might duplicate this, or reuse somehow
 
-ceci-broadcast-menu .channel-menu-wrapper {
+[channelType=broadcast] .channel-menu-wrapper {
   position: absolute;
   left: 320px;
   top: 0px;
@@ -12,7 +12,7 @@ ceci-broadcast-menu .channel-menu-wrapper {
 }
 
 
-ceci-listen-menu .channel-menu-wrapper {
+[channelType=listen] .channel-menu-wrapper {
   position: absolute;
   left: -600px;
   top: 0px;
@@ -47,7 +47,7 @@ ceci-listen-menu .channel-menu-wrapper {
     top: 0;
   }
 
-  &.subscription-menu {
+  &.listen-menu {
     right: 10px;
 
     .hover-helper {

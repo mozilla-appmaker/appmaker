@@ -15,8 +15,8 @@
               channel : that._channel,
               extra : e.detail.extra
             }
-            // Here, have some garbage!
-            that.dispatchEvent(new CustomEvent('listenerFired', {name: name, bubbles: true, detail: listenerDetails}));
+            //This should somehow live in a ceci-listen-designer
+            that.dispatchEvent(new CustomEvent('signalFired', {name: name, bubbles: true, detail: listenerDetails}));
           }
         };
       },
@@ -33,10 +33,14 @@
         this.updateContainerElement();
         document.addEventListener(this._channel, this._eventListener, false);
       },
+      enteredView : function(){
+        this.dispatchEvent(new CustomEvent('listenerUpdated', {name: name, bubbles: true, detail: this}));
+      },
       leftView: function () {
         if (this._channel && this._eventListener) {
           document.removeEventListener(this._channel, this._eventListener, false);
         }
+        this.dispatchEvent(new CustomEvent('listenerUpdated', {name: name, bubbles: true, detail: this}));
       },
       updateContainerElement: function () {
         while (true) {

@@ -1,79 +1,12 @@
-<polymer-element name="ceci-listen-vis">
+<polymer-element name="ceci-listen-vis" extends="ceci-channel-vis">
   <template>
-    <div id="listeners" class="channel-visualisation subscription-channels"></div>
+    <div id="visLines" class="channel-visualisation subscription-channels"></div>
   </template>
   <script>
   (function(){
     //Animation speeds, In seconds
-    var signalSpeed = 1;
-    var bubbleDuration = 1;
     Polymer('ceci-listen-vis', {
-      enteredView: function () {
-        var that = this;
-        this.component = this.parentNode.host;
-        this.updateListeners();
-      },
-      leftView : function(){
-        this.component.removeEventListener('listenerFired');
-      },
-      updateListeners: function() {
-        //Adds broadcast channel line for each ceci-listen element
-
-        var that = this;
-        var listenerElements = this.component.querySelectorAll("ceci-listen");
-        Array.prototype.forEach.call(listenerElements, function(el,index){
-
-          console.log(el);
-          el.addEventListener('listenerFired', function(data){
-            that.fire(data);
-          });
-
-          var channel = document.createElement("div");
-          channel.innerHTML = "<div class='dot color'></div>";
-          channel.setAttribute("color",el.on);
-          channel.setAttribute("for",el.for);
-          channel.classList.add("channel");
-          that.$.listeners.appendChild(channel);
-        });
-      },
-      fire: function (data) {
-        var channel = data.detail.channel;
-        var handler = data.detail.handler;
-
-        var element = this.shadowRoot.querySelector(".channel[color='"+channel+"'][for='"+handler+"']");
-        // fire DAT signal bitch
-
-        // Add a signal indicator dot...
-        var indicator = document.createElement("div");
-        element.appendChild(indicator);
-        indicator.classList.add("indicator");
-        indicator.classList.add("indicator-in");
-        var signalSpeedCSS = signalSpeed + "s";
-        indicator.style.webkitAnimationDuration = signalSpeedCSS;
-        indicator.style.mozAnimationDuration = signalSpeedCSS;
-
-        // ...and remove it!
-        var removeIndicator = function() {
-          element.removeChild(indicator);
-        };
-        setTimeout(removeIndicator, signalSpeed * 1000);
-
-        var direction = "in";
-        var timeout = (direction === "out" ? 0 : signalSpeed * 1000);
-
-        setTimeout(function() {
-          var bubble = document.createElement("div");
-          bubble.innerHTML = data.detail.data; //data
-          bubble.classList.add("bubblepopup")
-          bubble.classList.add("bubblepop");
-          element.appendChild(bubble);
-
-          // ...and remove it!
-          setTimeout(function() {
-            element.removeChild(bubble);
-          }, bubbleDuration * 1000);
-        }, timeout);
-      }
+      direction : "in"
     });
     })();
   </script>
