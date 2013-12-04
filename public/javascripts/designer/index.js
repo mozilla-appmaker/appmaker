@@ -8,6 +8,7 @@ define(
 
     // Unreferenced:
     "designer/component-tray",
+    "designer/mutant",
     "designer/channels",
     "designer/editable",
     "designer/keyboard",
