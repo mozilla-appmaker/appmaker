@@ -34,7 +34,8 @@
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.8.tar.gz",
     "ejs": "~0.8.4",
     "http-proxy": "~0.10.3",
-    "cors": "~2.1.0"
+    "cors": "~2.1.0",
+    "mongoose": "~3.8.1"
   },
   "engines": {
     "node": "~0.10.21",

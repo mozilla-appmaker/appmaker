@@ -33,9 +33,17 @@ define(
 
         item.addEventListener('click', function (e) {
           var card = document.querySelector('ceci-card[visible]');
+
           if (card) {
             var newElement = document.createElement(name);
             card.appendChild(newElement);
+            window.dispatchEvent(new CustomEvent(
+              'CeciElementAdded',
+              {
+                bubbles: true,
+                detail: newElement
+              }
+            ));
           }
         }, false);
 
