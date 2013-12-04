@@ -16,7 +16,7 @@ module.exports = function (mongoose, dbconn) {
   return {
     apps: function(request, response) {
       if (! request.session.email) {
-        response.json(401, {'need to be signed in'});
+        response.json(401, {error: 'need to be signed in'});
         return;
       }
       App.find({author:request.session.email}, function (err, apps) {
@@ -31,7 +31,7 @@ module.exports = function (mongoose, dbconn) {
     },
     app: function(request, response) {
       if (! request.session.email) {
-        response.json(401, {'need to be signed in'});
+        response.json(401, {error: 'need to be signed in'});
         return;
       }
       App.findOne({author:request.session.email, name: request.query.name}, function(err, obj) {
@@ -44,7 +44,7 @@ module.exports = function (mongoose, dbconn) {
     },
     save_app: function(request, response) {
       if (! request.session.email) {
-        response.json(401, {'need to be signed in'});
+        response.json(401, {error: 'need to be signed in'});
         return;
       }
       var appObj = JSON.parse(JSON.stringify(request.body)) // make a copy

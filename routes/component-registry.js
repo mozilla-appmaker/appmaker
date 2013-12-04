@@ -16,7 +16,7 @@ module.exports = function (mongoose, dbconn) {
     // GET
     components: function (req, res) {
       if (! request.session.email) {
-        response.json(401, {'need to be signed in'});
+        response.json(401, {error: 'need to be signed in'});
         return;
       }
       Component.find({author: request.session.email}, function (err, components) {
@@ -30,7 +30,7 @@ module.exports = function (mongoose, dbconn) {
     },
     component: function (req, res) {
       if (! request.session.email) {
-        response.json(401, {'need to be signed in'});
+        response.json(401, {error: 'need to be signed in'});
         return;
       }
       Component.findOne({_id: req.params.id}, function(err,obj) {
@@ -45,7 +45,7 @@ module.exports = function (mongoose, dbconn) {
 
     addComponent: function (req, res) { // POST
       if (! request.session.email) {
-        response.json(401, {'need to be signed in'});
+        response.json(401, {error: 'need to be signed in'});
         return;
       }
       if (req.body._id){
@@ -66,7 +66,7 @@ module.exports = function (mongoose, dbconn) {
     editComponent: function (req, res) { // PUT (Not supported by Angular, boo!)
       // console.log('edit component: %j', req.body);
       if (! request.session.email) {
-        response.json(401, {'need to be signed in'});
+        response.json(401, {error: 'need to be signed in'});
         return;
       }
       Component.findByIdAndUpdate(req.params.id || req.body._id, {
@@ -81,7 +81,7 @@ module.exports = function (mongoose, dbconn) {
     },
     deleteComponent: function (req, res) { // DEL
       if (! request.session.email) {
-        response.json(401, {'need to be signed in'});
+        response.json(401, {error: 'need to be signed in'});
         return;
       }
       Component.remove({_id: req.params.id}, function (err) {
