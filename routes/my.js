@@ -11,15 +11,15 @@ var path = require('path');
 var fs = require('fs');
 
 module.exports = function (mongoose, dbconn) {
-  var appSchema = mongoose.Schema({name: 'string', html: 'string'});
+  var appSchema = mongoose.Schema({author:'string', name: 'string', html: 'string'});
   var App = mongoose.model('App', appSchema);
   return {
     apps: function(request, response) {
       if (! request.session.email) {
-        response.json({'apps': []}, 400);
+        response.json(401, {'need to be signed in'});
         return;
       }
-      App.find({}, function (err, apps) {
+      App.find({author:request.session.email}, function (err, apps) {
         if (err){
           console.log('Unable to retrieve apps');
           return response.json(500, 'Unable to retrieve apps: ' + err);
@@ -31,10 +31,10 @@ module.exports = function (mongoose, dbconn) {
     },
     app: function(request, response) {
       if (! request.session.email) {
-        response.json({'apps': []}, 400);
+        response.json(401, {'need to be signed in'});
         return;
       }
-      App.findOne({name: request.query.name}, function(err, obj) {
+      App.findOne({author:request.session.email, name: request.query.name}, function(err, obj) {
         if (err) {
           console.log('Unable to find app for %s', request.query.name);
           return response.json(500, {error: 'Unable to find app: ' + err});
@@ -44,10 +44,12 @@ module.exports = function (mongoose, dbconn) {
     },
     save_app: function(request, response) {
       if (! request.session.email) {
-        response.json({'apps': []}, 400);
+        response.json(401, {'need to be signed in'});
         return;
       }
-      var newApp = new App(request.body);
+      var appObj = JSON.parse(JSON.stringify(request.body)) // make a copy
+      appObj.author = request.session.email;
+      var newApp = new App(appObj);
       newApp.save(function(err, app){
         if (err){
           console.error('saving new app failed');

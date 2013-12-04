@@ -9,13 +9,17 @@
 
 
 module.exports = function (mongoose, dbconn) {
-  var componentSchema = dbconn.Schema({name: 'string', url: 'string'});
+  var componentSchema = dbconn.Schema({author: 'string', name: 'string', url: 'string'});
   var Component = dbconn.model('Component', componentSchema);
 
   return {
     // GET
     components: function (req, res) {
-      Component.find({}, function (err, components) {
+      if (! request.session.email) {
+        response.json(401, {'need to be signed in'});
+        return;
+      }
+      Component.find({author: request.session.email}, function (err, components) {
           if (err){
             console.log('Unable to retrieve components');
             return res.json(500, 'Unable to retrieve components: ' + err);
@@ -25,6 +29,10 @@ module.exports = function (mongoose, dbconn) {
       });
     },
     component: function (req, res) {
+      if (! request.session.email) {
+        response.json(401, {'need to be signed in'});
+        return;
+      }
       Component.findOne({_id: req.params.id}, function(err,obj) {
         // console.log('returns the component: ' + obj);
         if (err){
@@ -36,6 +44,10 @@ module.exports = function (mongoose, dbconn) {
     },
 
     addComponent: function (req, res) { // POST
+      if (! request.session.email) {
+        response.json(401, {'need to be signed in'});
+        return;
+      }
       if (req.body._id){
         // Handle Angular's lack of PUT or passing of id for updates
         return editComponent(req, res);
@@ -53,6 +65,10 @@ module.exports = function (mongoose, dbconn) {
     },
     editComponent: function (req, res) { // PUT (Not supported by Angular, boo!)
       // console.log('edit component: %j', req.body);
+      if (! request.session.email) {
+        response.json(401, {'need to be signed in'});
+        return;
+      }
       Component.findByIdAndUpdate(req.params.id || req.body._id, {
         $set: { name: req.body.name, url: req.body.url }}, {upsert:true}, function (err, user) {
           if (err){
@@ -64,6 +80,10 @@ module.exports = function (mongoose, dbconn) {
       );
     },
     deleteComponent: function (req, res) { // DEL
+      if (! request.session.email) {
+        response.json(401, {'need to be signed in'});
+        return;
+      }
       Component.remove({_id: req.params.id}, function (err) {
         if (err) {
           console.log('delete component error');
