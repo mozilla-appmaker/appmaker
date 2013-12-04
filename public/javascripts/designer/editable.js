@@ -4,7 +4,7 @@
 
 define(['inflector'], function (Inflector) {
   var editableTypeHandlers = {
-    'multiple': function (element, attributeName, title, value) {
+    'multiple': function (element, attributeName, title, value, definition) {
       var options = JSON.parse(value);
       var e = $("<div>" +
         "<label>"+title + "</label>" +
@@ -32,7 +32,7 @@ define(['inflector'], function (Inflector) {
       });
       return e[0];
     },
-    'select': function (element, attributeName, title, value) {
+    'select': function (element, attributeName, title, value, definition) {
       var e = $("<div><label>" +
         title +
         "</label><select type=\"text\" value=\"" +
@@ -42,7 +42,7 @@ define(['inflector'], function (Inflector) {
       );
       $(definition.options).each(function(i,k){
         var option = document.createElement("option");
-        $(option).attr("value",k);
+        $(option).attr("value", k);
         $(option).text(k);
         e.find("select").append(option);
       });
@@ -52,7 +52,7 @@ define(['inflector'], function (Inflector) {
       });
       return e[0];
     },
-    'text': function (element, attributeName, title, value) {
+    'text': function (element, attributeName, title, value, definition) {
       var e = $("<div><label>" +
         title +
         "</label><input type=\"text\" value=\"" +
@@ -65,7 +65,7 @@ define(['inflector'], function (Inflector) {
       });
       return e[0];
     },
-    'number': function (element, attributeName, title, value) {
+    'number': function (element, attributeName, title, value, definition) {
       var e = $(
         "<div><label>" +
         title +
@@ -81,7 +81,7 @@ define(['inflector'], function (Inflector) {
       });
       return e[0];
     },
-    'boolean': function (element, attributeName, title, value) {
+    'boolean': function (element, attributeName, title, value, definition) {
       var e = $(
         "<div><label>" +
         "<input type=\"checkbox\" " +
@@ -104,7 +104,7 @@ define(['inflector'], function (Inflector) {
       var title = definition.name || Inflector.titleize(Inflector.underscore(attributeName));
 
       if (editableTypeHandlers[definition.type]) {
-        return editableTypeHandlers[definition.type](element, attributeName, title, value);
+        return editableTypeHandlers[definition.type](element, attributeName, title, value, definition);
       }
       else {
         return $("<span>" + definition.type + " not implemented yet</span>");
@@ -120,6 +120,7 @@ define(['inflector'], function (Inflector) {
 
       attributes.forEach(function (attribute) {
         var definition = element.ceci.editable[attribute];
+        console.log({"def": definition});
         var uiElement = editable.getAttributeUIElement(element, attribute, definition);
         attributeList.append(uiElement);
       });
