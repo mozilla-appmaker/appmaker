@@ -67,11 +67,11 @@
 
         Object.keys(this.listeners).forEach(function (listenerKey) {
           var attributeMatch = listenerKey.match(/set(\w+)/);
-          var lowerCaseAttribute;
 
           if (attributeMatch && !that[listenerKey]) {
+            var attributeName = attributeMatch[1][0].toLowerCase() + attributeMatch[1].substr(1);
             that[listenerKey] = function (v) {
-              that.setAttribute(attributeMatch[1], v);
+              that.setAttribute(attributeName, v);
             };
           }
         });
