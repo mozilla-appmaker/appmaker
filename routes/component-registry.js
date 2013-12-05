@@ -20,12 +20,12 @@ module.exports = function (mongoose, dbconn) {
         return;
       }
       Component.find({author: request.session.email}, function (err, components) {
-          if (err){
-            console.log('Unable to retrieve components');
-            return res.json(500, 'Unable to retrieve components: ' + err);
-          }
-          // console.log('retrieved %s components from mongo', components.length);
-          return res.json(components);
+        if (err){
+          console.log('Unable to retrieve components');
+          return res.json(500, 'Unable to retrieve components: ' + err);
+        }
+        // console.log('retrieved %s components from mongo', components.length);
+        return res.json(components);
       });
     },
     component: function (req, res) {
