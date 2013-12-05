@@ -13,6 +13,7 @@ define(
     "designer/editable",
     "designer/keyboard",
     "designer/modes",
+    "designer/userstate",
     "jquery-ui",
   ],
   function(localized, Inflector, Utils, Ceci) {

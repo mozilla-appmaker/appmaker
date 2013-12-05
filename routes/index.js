@@ -8,6 +8,8 @@ var verify = require('../lib/verify');
 var urls = require('../lib/urls');
 
 module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPublisher) {
+  var mongoose = require('mongoose');
+  var dbconn = mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/appmakerdev');
 
   return {
     index: function(req, res) {
@@ -57,9 +59,11 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
 
     publish: require('./publish')(store, viewsPath, urlManager, makeAPIPublisher),
 
-    componentRegistry: require('./component-registry'),
+    componentRegistry: require('./component-registry')(mongoose, dbconn),
 
-    proxy: require('./proxy')
+    proxy: require('./proxy'),
+
+    my: require('./my')(mongoose, dbconn)
 
   }
 };

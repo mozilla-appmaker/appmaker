@@ -38,6 +38,7 @@ module.exports = function( grunt ) {
         "app.js",
         "public/javascripts/**/*.js",
         "public/ceci/*.js",
+        "public/designer/**.js"
         // we should lint these, but don't know how to tell jslint that angular is defined.
         // "app/scripts/controllers/*.js",
         // "app/scripts/directives/*.js",
@@ -45,7 +46,8 @@ module.exports = function( grunt ) {
       ]
     },
     inlinelint: {
-      html: ['public/ceci/**/*.html'],
+      html: ['public/ceci/**/*.html',
+      'public/designer/*.html'],
       ejs: ['**/*.ejs']
     }
   });

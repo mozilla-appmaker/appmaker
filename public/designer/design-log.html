@@ -26,7 +26,7 @@
     <template repeat="{{log in logs}}">
       <div class="log">{{log.type}}</div>
     </template>
-      <button id="clear" on-click="{{buttonClick}}">Clear</button>
+      <button id="clear" on-click="{{clear}}">Clear</button>
   </template>
   <script>
     Polymer('design-log', {
@@ -40,7 +40,7 @@
           that.logs.push(event);
         });
       },
-      buttonClick: function() {
+      clear: function() {
         this.logs = [];
       }
     });

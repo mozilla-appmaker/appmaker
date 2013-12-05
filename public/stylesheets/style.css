@@ -265,9 +265,9 @@ button.btn-start {
 }
 
 button.publish {
-  float: right;
   height: 26px;
-  width: 102px;
+  padding-left: 1em;
+  padding-right: 1em;
   font-size: 16px;
   cursor: pointer;
   margin: 12px 12px 0px 0px;
@@ -275,12 +275,23 @@ button.publish {
 }
 
 button.new {
-  float: right;
   height: 26px;
-  width: 102px;
+  padding-left: 1em;
+  padding-right: 1em;
   font-size: 16px;
   cursor: pointer;
   background-color: #e81e1e;
+  margin: 12px 12px 0px 0px;
+  border-radius: 2px;
+}
+
+button.save {
+  height: 26px;
+  padding-left: 1em;
+  padding-right: 1em;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: rgba(66, 197, 47, 1);
   margin: 12px 12px 0px 0px;
   border-radius: 2px;
 }
@@ -578,7 +589,9 @@ button.done {
 }
 
 .top-nav .nav-ui {
-  float: right;
+  position: fixed;
+  top: 0;
+  right: 0;
 }
 
 .logo {
@@ -2672,17 +2685,6 @@ input#remix-panel-email {
 
 .component-tags .active-tag {
   opacity: 1;
-}
-
-.persona {
-  display: none;
-}
-
-.persona .logout, .persona .account span, .persona .login {
-  z-index: 101;
-}
-.persona .logout, .persona .account {
-  display: none;
 }
 
 /*Channel Menu*/

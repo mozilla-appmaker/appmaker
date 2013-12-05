@@ -168,6 +168,9 @@ app.get('/api/component', routes.componentRegistry.components);
 app.get('/api/component/:id', routes.componentRegistry.component);
 app.post('/api/component', routes.componentRegistry.addComponent);
 app.delete('/api/component/:id', routes.componentRegistry.deleteComponent);
+app.get('/api/myapps', routes.my.apps);
+app.post('/api/save_app', routes.my.save_app);
+app.get('/api/app', routes.my.app);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
