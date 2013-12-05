@@ -61,13 +61,48 @@
         },
         buildMenu: function() {
           var that = this;
+          var communicators, handlertype;
 
           if(this.channelType == "broadcast") {
-            var communicators = this.component.broadcasts;
-            var handlerType = "from";
+            communicators = this.component.broadcasts;
+            handlerType = "from";
           } else {
-            var communicators = this.component.listeners;
-            var handlerType = "for";
+            communicators = this.component.listeners;
+            handlerType = "for";
+          }
+
+          function labelClickHandler(){
+            return function(){
+              this.style.display = "none";
+              var colorMenu = this.parentNode.querySelector(".color-ui");
+              colorMenu.style.display = "block";
+            };
+          }
+
+          function colorClickHandler(handlerType){
+            return function(event) {
+              var channelOption = this.parentNode.parentNode;
+              var color = this.getAttribute("color");
+              var handler = channelOption.getAttribute(handlerType);
+              that.changeChannel(handlerType, handler, color);
+              channelOption.querySelector("label").style.display = "block";
+              channelOption.querySelector("label .chosen-color").setAttribute("color",color);
+              channelOption.querySelector(".color-ui").style.display = "none";
+            };
+          }
+
+          function colorListClickHandler(handlerType){
+            return function(event) {
+              if(event.target.classList.contains("color")){
+                var channelOption = this.parentNode.parentNode;
+                var color = event.target.getAttribute("color");
+                var handler = this.parentNode.getAttribute(handlerType);
+                that.changeChannel(handlerType, handler, color);
+                channelOption.querySelector("label").style.display = "block";
+                channelOption.querySelector("label .chosen-color").setAttribute("color",color);
+                channelOption.querySelector(".color-ui").style.display = "none";
+              }
+            };
           }
 
           for (var key in communicators) {
@@ -80,13 +115,7 @@
 
               that.menu.appendChild(channelOption);
               channelOption.setAttribute(handlerType,key);
-
-              channelOption.querySelector("label").addEventListener('click', function(el) {
-                this.style.display = "none";
-                var colorMenu = this.parentNode.querySelector(".color-ui");
-                colorMenu.style.display = "block";
-              }, false);
-
+              channelOption.querySelector("label").addEventListener('click', labelClickHandler());
               var colorOptions = channelOption.querySelectorAll(".color-ui .color");
 
               //Check if there's a listener for that element already and set the appropriate color.
@@ -98,17 +127,7 @@
               }
 
               //Set up all of the click stuff for color options
-              Array.prototype.forEach.call(colorOptions, function(el){
-                el.addEventListener("click",function(el) {
-                   var channelOption = this.parentNode.parentNode;
-                   var color = this.getAttribute("color");
-                    var handler = channelOption.getAttribute(handlerType);
-                   that.changeChannel(handlerType, handler, color);
-                   channelOption.querySelector("label").style.display = "block";
-                   channelOption.querySelector("label .chosen-color").setAttribute("color",color);
-                   channelOption.querySelector(".color-ui").style.display = "none";
-                 });
-              });
+              channelOption.querySelector(".color-ui").addEventListener("click",colorListClickHandler(handlerType));
             }
           }
         }

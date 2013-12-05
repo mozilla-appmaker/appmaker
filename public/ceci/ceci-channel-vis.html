@@ -28,10 +28,11 @@
         });
 
         //Add new ones based on all the ceci-elements in the component
+        var elements;
         if(this.direction == "in") {
-          var elements = this.component.querySelectorAll("ceci-listen");
+          elements = this.component.querySelectorAll("ceci-listen");
         } else {
-          var elements = this.component.querySelectorAll("ceci-broadcast");
+          elements = this.component.querySelectorAll("ceci-broadcast");
         }
 
         Array.prototype.forEach.call(elements, function(el,index){
@@ -58,10 +59,11 @@
         var channel = data.detail.channel;
         var handler = data.detail.handler;
 
+        var element;
         if(this.direction == "in") {
-          var element = this.shadowRoot.querySelector(".channel[color='"+channel+"'][for='"+handler+"']");
+          element = this.shadowRoot.querySelector(".channel[color='"+channel+"'][for='"+handler+"']");
         } else {
-          var element = this.shadowRoot.querySelector(".channel[color='"+channel+"'][from='"+handler+"']");
+          element = this.shadowRoot.querySelector(".channel[color='"+channel+"'][from='"+handler+"']");
         }
 
         // Add a signal indicator dot...
@@ -86,7 +88,7 @@
         setTimeout(function() {
           var bubble = document.createElement("div");
           bubble.innerHTML = data.detail.data; //data
-          bubble.classList.add("bubblepopup")
+          bubble.classList.add("bubblepopup");
           bubble.classList.add("bubblepop");
           element.appendChild(bubble);
 
