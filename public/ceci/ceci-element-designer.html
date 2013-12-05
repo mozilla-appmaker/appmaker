@@ -37,15 +37,20 @@
     </style>
     <content></content>
     <div id="handle"></div>
+
+    <ceci-listen-vis></ceci-listen-vis>
+    <ceci-channel-menu channelType="listen"></ceci-channel-menu>
+
     <ceci-broadcast-vis></ceci-broadcast-vis>
+    <ceci-channel-menu channelType="broadcast"></ceci-channel-menu>
   </template>
   <script>
     Polymer('ceci-element', {
       broadcast: function (name, data) {
         this.super(arguments);
         var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
-        var broadcastDetails = { channelName : broadcastElement.on, from : name};
         if (broadcastElement) {
+          var broadcastDetails = { channel : broadcastElement.on, handler : name, data: data};
           this.dispatchEvent(new CustomEvent('broadcastFired', {name: name, bubbles: true, detail: broadcastDetails}));
         }
       }

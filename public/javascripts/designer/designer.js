@@ -513,11 +513,6 @@ define(
       }
     });
 
-    //Generate or remove the channel menu
-    $(document).on('mouseleave','.channel-visualisation',function(){
-      $(this).find(".channel-menu").remove();
-      $(this).closest(".component").removeClass("menu-open");
-    });
 
     $('ul.tabs').each(function(){
       var $active, $content, $links = $(this).find('a');
@@ -557,64 +552,36 @@ define(
       }
 
       //If there is no menu
-      if($(this).find(".channel-menu").length === 0 && $(this).find(".channel").length > 0) {
-        var menu = $(".channel-menu-template").clone();
-        menu.removeClass("channel-menu-template");
-        menu.addClass(channelType + "-menu");
-
-        var channels = $(this).find(".channel");
-
-        //Build out the Subscription Channels
-        channels.each(function (key, channel) {
-          var subItem = menu.find(".channel-template").clone();
-          subItem.removeClass("channel-template");
-          var title = $(channel).attr("title");
-          var color = $(channel).attr("color");
-          subItem.attr("title",title);
-          subItem.find(".chosen-color").attr("color",color);
-          subItem.find(".color[color="+color+"]").addClass("ui-chosen-color");
-          subItem.find(".channel-name").text(Inflector.titleize(Inflector.underscore(title)));
-          menu.append(subItem);
-        });
-
-        menu.find(".channel-template").remove();
-
-        $(this).append(menu);
-        $(this).closest(".component").addClass("menu-open");
-
-        menu.addClass("menu-in");
-        menu.css("margin-top",-1 * menu.outerHeight()/2 -1);
-      }
+      // if($(this).find(".channel-menu").length === 0 && $(this).find(".channel").length > 0) {
+      //   var menu = $(".channel-menu-template").clone();
+      //   menu.removeClass("channel-menu-template");
+      //   menu.addClass(channelType + "-menu");
+      // 
+      //   var channels = $(this).find(".channel");
+      // 
+      //   //Build out the Subscription Channels
+      //   channels.each(function (key, channel) {
+      //     var subItem = menu.find(".channel-template").clone();
+      //     subItem.removeClass("channel-template");
+      //     var title = $(channel).attr("title");
+      //     var color = $(channel).attr("color");
+      //     subItem.attr("title",title);
+      //     subItem.find(".chosen-color").attr("color",color);
+      //     subItem.find(".color[color="+color+"]").addClass("ui-chosen-color");
+      //     subItem.find(".channel-name").text(Inflector.titleize(Inflector.underscore(title)));
+      //     menu.append(subItem);
+      //   });
+      // 
+      //   menu.find(".channel-template").remove();
+      // 
+      //   $(this).append(menu);
+      //   $(this).closest(".component").addClass("menu-open");
+      // 
+      //   menu.addClass("menu-in");
+      //   menu.css("margin-top",-1 * menu.outerHeight()/2 -1);
+      // }
     });
 
-    //Channel Menu Label Click
-    $(document).on("click", ".channel-menu label", function(){
-      var menu = $(this).closest(".channel-menu");
-      var color = $(this).find(".chosen-color").attr("color");
-      var colorList = $(this).closest(".channel-option").find(".color-ui");
-      menu.find("label").show();
-      menu.find(".color-ui").hide();
-      $(this).hide();
-      colorList.find(".color").removeClass("ui-chosen-color");
-      colorList.find(".color[color="+color+"]").addClass("ui-chosen-color");
-      colorList.show();
-    });
-
-    //Subscription Menu Color Click
-    $(document).on("click", ".channel-option .color", function(){
-
-      var thisChannel = $(this).closest(".channel-option");
-      var color = $(this).attr("color");
-      $(this).closest(".channel-option").removeClass("disabled-subscription");
-
-      if(color == "false"){
-        $(this).closest(".channel-option").addClass("disabled-subscription");
-      }
-      var title = thisChannel.attr("title");
-      thisChannel.find(".chosen-color").attr("color",color);
-      thisChannel.find("label").show();
-      $(this).parent().hide();
-    });
     function clearLog() {
       document.querySelector('.log .scroll').innerHTML = '';
       Ceci.log("New app, clean log.");
@@ -736,22 +703,6 @@ define(
       var componentName = element.tagName.toLowerCase();
       $(".editable-section .name").text(prettyName(componentName));
 
-      //add mailbox info to right column
-      /*
-      $('.mailboxes').html('');
-
-      for (var i=0; i < element.subscriptions.length; i++) {
-        var channelProperty = element.subscriptions[i].listener;
-        var mailboxColor = element.subscriptions[i].channel;
-        var mailbox = $('<div class="mail"></div>').html(channelProperty).addClass(mailboxColor);
-        $('.mailboxes').append(mailbox);
-      }
-
-      //add outgoing mail info to right column
-      $('.outgoing-mail').html('');
-      var mailColor = element.broadcastChannel;
-      var outgoingMail = $('<div class="mail">Mail</div>').addClass(mailColor);
-      $('.outgoing-mail').append(outgoingMail);*/
     };
 
     //shows component description

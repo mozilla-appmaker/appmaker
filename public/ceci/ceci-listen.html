@@ -9,6 +9,14 @@
         this._eventListener = function (e) {
           if (that._element && that._element[that._handler]) {
             that._element[that._handler](e.detail.data, e.detail.extra);
+            var listenerDetails = {
+              handler : that._handler,
+              data : e.detail.data,
+              channel : that._channel,
+              extra : e.detail.extra
+            };
+            //This should somehow live in a ceci-listen-designer
+            that.dispatchEvent(new CustomEvent('signalFired', {name: name, bubbles: true, detail: listenerDetails}));
           }
         };
       },
@@ -20,18 +28,19 @@
         if (this._channel && this._eventListener) {
           document.removeEventListener(this._channel, this._eventListener, false);
         }
-
         this._handler = this.getAttribute('for');
         this._channel = this.getAttribute('on');
-
         this.updateContainerElement();
-
         document.addEventListener(this._channel, this._eventListener, false);
+      },
+      enteredView : function(){
+        this.dispatchEvent(new CustomEvent('listenerUpdated', {name: name, bubbles: true, detail: this}));
       },
       leftView: function () {
         if (this._channel && this._eventListener) {
           document.removeEventListener(this._channel, this._eventListener, false);
         }
+        this.dispatchEvent(new CustomEvent('listenerUpdated', {name: name, bubbles: true, detail: this}));
       },
       updateContainerElement: function () {
         while (true) {
