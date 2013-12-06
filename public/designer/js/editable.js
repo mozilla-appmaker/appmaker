@@ -120,7 +120,6 @@ define(['inflector'], function (Inflector) {
 
       attributes.forEach(function (attribute) {
         var definition = element.ceci.editable[attribute];
-        console.log({"def": definition});
         var uiElement = editable.getAttributeUIElement(element, attribute, definition);
         attributeList.append(uiElement);
       });

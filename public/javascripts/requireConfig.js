@@ -17,6 +17,8 @@ requirejs.config({
 
     "ceci": "/ceci",
 
+    "designer": "/designer/js",
+
     "togetherjs": "https://togetherjs.com/togetherjs-min",
 
     "angular": "/vendor/angular/angular.min"
@@ -33,5 +35,4 @@ requirejs.config({
   }
 });
 
-requirejs(["application"]);
 requirejs(["/javascripts/togetherjsSupport.js"]);
