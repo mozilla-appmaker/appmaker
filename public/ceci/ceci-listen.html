@@ -25,16 +25,22 @@
       _channel: null,
       _eventListener: null,
       update: function () {
-        if (this._channel && this._eventListener) {
+        if (this._channel && this._eventListener && this.parentNode) {
           document.removeEventListener(this._channel, this._eventListener, false);
         }
         this._handler = this.getAttribute('for');
         this._channel = this.getAttribute('on');
         this.updateContainerElement();
-        document.addEventListener(this._channel, this._eventListener, false);
+
+        if (this.parentNode) {
+          document.addEventListener(this._channel, this._eventListener, false);
+        }
+        this.dispatchEvent(new CustomEvent('listenerUpdated', {
+          name: name, bubbles: true, detail: this
+        }));
       },
-      enteredView : function(){
-        this.dispatchEvent(new CustomEvent('listenerUpdated', {name: name, bubbles: true, detail: this}));
+      enteredView: function () {
+        this.update();
       },
       leftView: function () {
         if (this._channel && this._eventListener) {
