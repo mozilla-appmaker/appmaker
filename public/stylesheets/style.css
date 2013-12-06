@@ -819,12 +819,12 @@ li.tab {
   text-align: left;
 }
 
-.editable-section .trey-tabs {
+.editable-section .tray-tabs {
   overflow: auto;
   padding: 0 10px;
 }
 
-.editable-section .trey-tabs a {
+.editable-section .tray-tabs a {
   display: block;
   border-radius: 2px 2px 0 0 ;
   float: left;
@@ -833,12 +833,12 @@ li.tab {
   margin-right: 5px;
 }
 
-.editable-section .trey-tabs a:hover {
+.editable-section .tray-tabs a:hover {
   color: #BBB;
   background: #31363d;
 }
 
-.editable-section .trey-tabs a.selected-tab {
+.editable-section .tray-tabs a.selected-tab {
   background: #40464f;
   color: #EEE;
 }
@@ -2339,13 +2339,13 @@ input#remix-panel-email {
   font-size: 15px;
 }
 
-.editable-section .trey-tabs [tab=code],
-.editable-section .trey-tabs [tab=css] {
+.editable-section .tray-tabs [tab=code],
+.editable-section .tray-tabs [tab=css] {
   display: none;
 }
 
-.remix-mode .editable-section .trey-tabs [tab=code],
-.remix-mode .editable-section .trey-tabs [tab=css]{
+.remix-mode .editable-section .tray-tabs [tab=code],
+.remix-mode .editable-section .tray-tabs [tab=css]{
   display: block;
 }
 

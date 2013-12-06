@@ -39,15 +39,15 @@ define(
 
     /* Customize vs View Source Toggle */
 
-    $(".trey-tabs").on("click","a",function(){
+    $(".tray-tabs").on("click","a",function(){
       var tab = $(this).attr("tab");
       changeEditableTab(tab);
       return false;
     });
 
     function changeEditableTab(tab) {
-      $(".trey-tabs").find("a").removeClass("selected-tab");
-      $(".trey-tabs [tab='"+tab+"']").addClass("selected-tab");
+      $(".tray-tabs").find("a").removeClass("selected-tab");
+      $(".tray-tabs [tab='"+tab+"']").addClass("selected-tab");
       $(".tab-sections .section").hide();
       $(".tab-sections .section-" + tab).show();
       $(".tab-sections .section-" + tab + " textarea").focus();
