@@ -81,22 +81,34 @@
           if (!xmlDefinition) {
             return null;
           }
-          var definitionConstituents = {broadcast: [], listener: [], editable: []};
 
-          Object.keys(definitionConstituents).forEach(function (key) {
-            var container = xmlDefinition.querySelector('ceci-' + key + '-definitions');
+          function processAttributes (inputObject) {
+            var outputObject = {};
+            Array.prototype.forEach.call(inputObject, function (attribute) {
+              outputObject[attribute.name] = attribute.value;
+            });
+            return outputObject;
+          }
+
+          var jsonDefinition = {};
+          var constituents = ['broadcast', 'listener', 'editable', 'tag'];
+
+          constituents.forEach(function (key) {
+            var container = xmlDefinition.querySelector('ceci-definition-' + key + 's');
+
+            jsonDefinition[key] = [];
+
             if (container) {
-              Array.prototype.forEach.call(container.querySelectorAll('ceci-' + key + '-definition'), function (definitionElement) {
-                var entry = {};
-                Array.prototype.forEach.call(definitionElement.attributes, function (attribute) {
-                  entry[attribute.name] = attribute.value;
-                });
-                definitionConstituents[key].push(entry);
+              Array.prototype.forEach.call(container.querySelectorAll('ceci-definition-' + key), function (definitionElement) {
+                jsonDefinition[key].push(processAttributes(definitionElement.attributes));
               });
             }
           });
 
-          return definitionConstituents;
+          var thumbnailElement = xmlDefinition.querySelector('ceci-definition-thumbnail');
+          jsonDefinition.thumbnail = thumbnailElement.getAttribute('href');
+
+          return jsonDefinition;
         },
         initCeci: function () {
           var that = this;
@@ -194,6 +206,9 @@
           processEditables();
           processBroadcasts();
           processListeners();
+
+          this.ceci.thumbnail = ceciDefinition.thumbnail;
+          this.ceci.tags = ceciDefinition.tag.map(function (t) {return t.value});
         }
       });
     })();
