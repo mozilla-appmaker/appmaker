@@ -5,26 +5,39 @@
     <style>
       :host {
         display: block;
-        background-color: #34495E;
-        color: #FFF;
-        max-height: 200px;
+        background-color: #31353C;
+        color: #b5bac2;
+        height: 200px;
         overflow-y: auto;
+        position: relative;
+        padding-top: 35px;
+        font-size: 13px;
       }
       .log {
-        border-bottom: 2px solid #2C3E50;
+        border-bottom:  1px solid #40464f;
         padding: 10px;
       }
       button {
-        border-radius: 4px;
-        background-color: #1ABC9C;
+        background: #31353C;
+        color: #b5bac2;
+        border-radius: 2px;
+        border: 2px solid #40464f;
+        padding: 4px 10px;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+      .highlight {
         color: #FFF;
-        border: none;
-        padding: 6px 15px;
-        margin: 10px;
+      }
+      .highlightChannel {
+        color: #FFF;
+        padding: 2px 4px;
+        border-radius: 2px;
       }
     </style>
     <template repeat="{{log in logs}}">
-      <div class="log">{{log.type}}</div>
+      <div class="log"><span class="highlight">{{log.component}} </span>{{log.eventType}} <span class="highlight">{{log.eventName}} </span>on <span class="{{log.eventChannel}} highlightChannel">{{log.eventChannel}}</span></div>
     </template>
       <button id="clear" on-click="{{clear}}">Clear</button>
   </template>
@@ -33,11 +46,8 @@
       ready: function() {
         this.logs = [];
         var that = this;
-        document.addEventListener('CeciElementAdded', function(event) {
-          that.logs.push(event);
-        });
-        document.addEventListener('cardShown', function(event) {
-          that.logs.push(event);
+        document.addEventListener('log', function(event) {
+          that.logs.unshift(event.detail);
         });
       },
       clear: function() {
