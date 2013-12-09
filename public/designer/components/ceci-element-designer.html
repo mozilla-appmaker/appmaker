@@ -57,7 +57,7 @@
       },
       log: function(eventChannel, eventType, eventName) {
         var message = {};
-        message.component = this.tagName;
+        message.component = this.tagName.substr(5);
         message.eventChannel = eventChannel;
         message.eventType = eventType;
         message.eventName = eventName;

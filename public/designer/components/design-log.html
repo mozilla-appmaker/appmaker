@@ -51,9 +51,9 @@
           <div class="log-message"><span class="highlight">{{log.component}} </span>{{log.eventType}} <span class="highlight">{{log.eventName}} </span>on <span class="{{log.eventChannel}} highlightChannel">{{log.eventChannel}}</span></div>
         </template>
           <button id="clear" on-click="{{clear}}">Clear</button>
-        </template>
       </div>
     </div>
+  </template>
   <script>
     Polymer('design-log', {
       ready: function() {
@@ -61,7 +61,9 @@
         var that = this;
         document.addEventListener('log', function(event) {
           that.logs.push(event.detail);
-          that.scrollTop = that.scrollHeight;
+          setTimeout (function () {
+            that.scrollTop = that.scrollHeight;
+          }, 100)
         });
       },
       clear: function() {
