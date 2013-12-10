@@ -75,19 +75,19 @@
         this.broadcast('click', this.getAttribute('clickvalue'));
       },
       labelChanged: function (oldValue, newValue) {
-        this.called['label'] = newValue;
+        this.called.label = newValue;
       },
       valueoneChanged: function (oldValue, newValue) {
-        this.called['valueone'] = newValue;
+        this.called.valueone = newValue;
       },
       setValue2: function (value) {
-        this.called['valuetwo'] = value;
+        this.called.valuetwo = value;
       },
       testListener1: function (value) {
-        this.called['testListener1'] = value;
+        this.called.testListener1 = value;
       },
       testListener2: function (value) {
-        this.called['testListener2'] = value;
+        this.called.testListener2 = value;
       }
     });
   </script>

@@ -46,7 +46,7 @@
     "grunt-cli": "~0.1.9",
     "grunt-contrib-jshint": "~0.6.3",
     "grunt-contrib-csslint": "~0.1.2",
-    "grunt-lint-inline": "~0.3.1"
+    "grunt-lint-inline": "~0.3.2"
   },
   "scripts": {
     "test": "grunt",
