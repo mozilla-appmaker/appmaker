@@ -13,7 +13,6 @@ define(
       var trayComponentContainer = document.getElementById('components');
 
       Ceci.forEachComponent(function (name, component) {
-
         // Avoid adding components that are already in the tray
         if (trayComponentContainer.querySelector('designer-component-tray-item[name="' + name + '"]')) return;
 
@@ -25,6 +24,7 @@ define(
         }
 
         item.setAttribute('name', name);
+        item.setAttribute('thumbnail', component.prototype.ceci.thumbnail);
         item.setAttribute('label', Util.prettyName(name));
 
         item.setAttribute(meta.description);
