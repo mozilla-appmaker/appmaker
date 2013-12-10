@@ -65,7 +65,8 @@
           if (attributeDefinition.editable) {
             ceciDefinition[attributeName] = {
               description: attributeDefinition.description,
-              label: attributeDefinition.label
+              label: attributeDefinition.label,
+              type: attributeDefinition.editable
             };
           }
         });
