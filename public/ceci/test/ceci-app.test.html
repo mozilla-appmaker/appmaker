@@ -7,11 +7,8 @@
     <link rel="import" href="/ceci/ceci-element-base.html">
     <link rel="import" href="/ceci/ceci-element.html">
     <link rel="import" href="/ceci/ceci-app.html">
+    <link rel="import" href="/ceci/ceci-card-base.html">
     <link rel="import" href="/ceci/ceci-card.html">
-
-    <link rel="import" href="/component/mozilla-appmaker/component-button/component.html">
-    <link rel="import" href="/ceci/test/fixtures/ceci-hello.html">
-    <link rel="import" href="/ceci/test/fixtures/ceci-value-holder.html">
 
     <script src="/vendor/polymer/polymer.min.js"></script>
     <style>
@@ -48,22 +45,6 @@
       </ceci-card>
     </ceci-app>
 
-    <ceci-app id="hello-app">
-      <ceci-card visible>
-        <ceci-top>
-          <ceci-button class="hi" label="Say hello!" value="hi">
-          </ceci-button>
-        </ceci-top>
-        <ceci-middle>
-          <ceci-value-holder>
-            <ceci-listen on="blue" for="hello"></ceci-listen>
-          </ceci-value-holder>
-        </ceci-middle>
-        <ceci-bottom>
-        </ceci-bottom>
-      </ceci-card>
-    </ceci-app>
-
     <script>
       mocha.setup('bdd');
       chai.should();
@@ -73,9 +54,9 @@
           var app = document.querySelector('ceci-app#empty-app');
 
           it('should add a card', function(){
-            app.countCards().should.equal(0);
-            app.addCard();
             app.countCards().should.equal(1);
+            app.addCard();
+            app.countCards().should.equal(2);
           });
         });
 

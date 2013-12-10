@@ -1,0 +1,94 @@
+<polymer-element name="ceci-test" attributes="label valueone valuetwo valuethree clickvalue" extends="ceci-element"
+  label="Test Label" valueone="Test Value 1">
+  <template>
+    <style>
+      :host {
+        display: block;
+        width: 100px;
+        height: 50px;
+      }
+    </style>
+    <button id="button" on-click="{{click}}">{{label}}</button>
+    <shadow></shadow>
+    <script type="text/json" id="ceci-definition">
+      {
+        "tags": ["test1", "test2", "test3"],
+        "thumbnail": "./thumbnail.png",
+        "broadcasts": {
+          "click": {
+            "label": "Click",
+            "description": "Click",
+            "default": true
+          },
+          "testBroadcast": {
+            "label": "Test Broadcast Label",
+            "description": "Test Broadcast Description"
+          }
+        },
+        "listeners": {
+          "testListener1": {
+            "description": "Test Listener 1",
+            "label": "Test Listener 1",
+            "default": true
+          },
+          "testListener2": {
+            "description": "Test Listener 2",
+            "label": "Test Listener 2"
+          }
+        },
+        "attributes": {
+          "label": {
+            "label": "Label",
+            "description": "Label",
+            "editable": "text"
+          },
+          "valueone": {
+            "label": "Value 1",
+            "description": "Value One",
+            "listener": true,
+            "defaultListener": true
+          },
+          "valuetwo": {
+            "label": "Value 2",
+            "description": "Value Two",
+            "listener": true
+          },
+          "valuethree": {
+            "label": "Value Three",
+            "description": "Value Three",
+            "listener": "setValue3"
+          }
+        }
+      }
+    </script>
+  </template>
+  <script>
+    Polymer('ceci-test', {
+      ready: function () {
+        this.super();
+        this.called = {};
+      },
+      sendTestBroadcast: function (name, data) {
+        this.broadcast(name, data);
+      },
+      click: function () {
+        this.broadcast('click', this.getAttribute('clickvalue'));
+      },
+      labelChanged: function (oldValue, newValue) {
+        this.called.label = newValue;
+      },
+      valueoneChanged: function (oldValue, newValue) {
+        this.called.valueone = newValue;
+      },
+      setValue2: function (value) {
+        this.called.valuetwo = value;
+      },
+      testListener1: function (value) {
+        this.called.testListener1 = value;
+      },
+      testListener2: function (value) {
+        this.called.testListener2 = value;
+      }
+    });
+  </script>
+</polymer-element>
