@@ -144,8 +144,17 @@
           var defaultListeners = processListeners(this.ceci.listeners, attributeResults.listeners);
           var defaultBroadcasts = processBroadcasts(this.ceci.broadcasts, ceciDefinition.broadcasts);
 
-          defaultListeners.forEach(function (d) { that.setListener(d, defaultChannel); });
-          defaultBroadcasts.forEach(function (d) { that.setBroadcast(d, defaultChannel); });
+          defaultListeners.forEach(function (d) {
+            if (!that.querySelector('ceci-listen[for="' + d + '"]')) {
+              that.setListener(d, defaultChannel);
+            }
+          });
+
+          defaultBroadcasts.forEach(function (d) {
+            if (!that.querySelector('ceci-broadcast[from="' + d + '"]')) {
+              that.setBroadcast(d, defaultChannel);
+            }
+          });
 
           this.ceci.thumbnail = ceciDefinition.thumbnail;
           this.ceci.tags = ceciDefinition.tags;
