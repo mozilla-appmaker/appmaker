@@ -98,7 +98,6 @@ define(['inflector'], function (Inflector) {
 
   var editable = {
     getAttributeUIElement: function (element, attributeName, definition) {
-      console.log(attributeName, definition);
       var value = element.getAttribute(attributeName);
       value = value !== null ? value : '';
 
