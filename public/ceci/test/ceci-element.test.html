@@ -60,7 +60,8 @@
           var element = document.querySelector('ceci-test#ceci-test1');
 
           it('should have a thumbnail in definition', function () {
-            element.ceci.thumbnail.length.should.not.be.empty;
+            // can't use should.empty because lint complains about line with no obivous side-effects
+            element.ceci.thumbnail.length.should.not.equal(0);
           });
         });
 
@@ -140,7 +141,7 @@
             element2.ceci.broadcasts.testBroadcast.should.not.have.property('default');
             element2.ceci.broadcasts.click.should.have.property('default', true);
             element2.querySelectorAll('ceci-broadcast[from="click"]').length.should.equal(1);
-            element2.querySelectorAll('ceci-broadcast[from="testBroadcast"]').should.be.empty;
+            element2.querySelectorAll('ceci-broadcast[from="testBroadcast"]').length.should.equal(0);
           });
 
           it('should use default broadcasts', function (done) {
@@ -191,7 +192,9 @@
           it('should have default listen elements', function () {
             element1.ceci.listeners.set_valueone.should.have.property('default', true);
             element1.ceci.listeners.testListener1.should.have.property('default', true);
-            element1.querySelectorAll('ceci-listen[for="set_label"]').should.be.empty;
+
+            // can't use should.empty because lint complains about line with no obivous side-effects
+            element1.querySelectorAll('ceci-listen[for="set_label"]').length.should.equal(0);
             element1.querySelectorAll('ceci-listen[for="set_valueone"]').length.should.equal(1);
             element1.querySelectorAll('ceci-listen[for="set_valuetwo"]').length.should.equal(0);
             element1.querySelectorAll('ceci-listen[for="testListener1"]').length.should.equal(1);
