@@ -46,9 +46,10 @@ define([], function() {
       for (var tagName in window.CustomElements.registry){
         if (BUILT_IN_COMPONENTS.indexOf(tagName) === -1){
           var component = window.CustomElements.registry[tagName];
-          // if (component.prototype.ceci){
+          var template = component.ctor.prototype.element.querySelector('template');
+          if (template && template.innerHTML.indexOf('ceci-definition') > -1) {
             components.push(component);
-          // }
+          }
         }
       }
       return components;
