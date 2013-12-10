@@ -13,23 +13,35 @@ define(
       var trayComponentContainer = document.getElementById('components');
 
       Ceci.forEachComponent(function (name, component) {
+
         // Avoid adding components that are already in the tray
         if (trayComponentContainer.querySelector('designer-component-tray-item[name="' + name + '"]')) return;
 
         var item = document.createElement('designer-component-tray-item');
-        var meta = component.prototype.ceci;
+        var meta;
 
-        if (typeof meta === 'undefined'){
+        // This part is ugly. Reach into CustomElements and pull out a <template>.
+
+        try {
+          var tempDiv = document.createElement('div');
+          tempDiv.innerHTML = component.ctor.prototype.element.querySelector('template').innerHTML.replace(/&quot;/g, '"');
+          meta = JSON.parse(tempDiv.querySelector('script#ceci-definition').innerText);
+        }
+        catch (e) {
+          meta = null;
+        }
+
+        if (!meta) {
           throw new TypeError("Ceci component, \"" + name + "\" is lacking ceci definitions. Likely it shouldn't be returned from ceci-designer.");
         }
 
         item.setAttribute('name', name);
-        item.setAttribute('thumbnail', component.prototype.ceci.thumbnail);
+        item.setAttribute('thumbnail', meta.thumbnail);
         item.setAttribute('label', Util.prettyName(name));
 
-        item.setAttribute(meta.description);
-        item.setAttribute(meta.author);
-        item.setAttribute(meta.updatedAt);
+        item.setAttribute('description', meta.description);
+        item.setAttribute('author', meta.author);
+        item.setAttribute('updatedat', meta.updatedAt);
 
         item.addEventListener('click', function (e) {
           var card = document.querySelector('ceci-card[visible]');
