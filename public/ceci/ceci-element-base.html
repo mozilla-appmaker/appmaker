@@ -119,7 +119,8 @@
           this.ceci = {
             broadcasts: {},
             listeners: {},
-            editables: {}
+            editables: {},
+            attributes: {}
           };
 
           var ceciDefinition = processDefinition(this);
@@ -159,6 +160,8 @@
 
           this.ceci.thumbnail = ceciDefinition.thumbnail;
           this.ceci.tags = ceciDefinition.tags;
+
+          this.ceci.attributes = ceciDefinition.attributes;
         },
         broadcast: function (name, data) {
           var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
