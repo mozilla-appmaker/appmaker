@@ -836,6 +836,7 @@ li.tab {
 .editable-section .tray-tabs a:hover {
   color: #BBB;
   background: #31363d;
+  cursor: default;
 }
 
 .editable-section .tray-tabs a.selected-tab {
