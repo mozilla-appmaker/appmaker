@@ -13,10 +13,12 @@ define([], function() {
     "ceci-card-base",
     "ceci-card-nav",
     "ceci-channel-menu",
+    "ceci-channel-vis",
     "ceci-element",
     "ceci-broadcast-vis",
     "ceci-element-base",
-    "ceci-listen"
+    "ceci-listen",
+    "ceci-listen-vis"
   ];
 
   // Because of the way requirejs works, this is a singleton.
@@ -41,14 +43,22 @@ define([], function() {
       }
       return this;
     },
+    getCeciDefinitionScript: function (elementName) {
+      // Dig into the CustomElements definition to grab the ceci definition script element
+      try {
+        return window.CustomElements.registry[elementName].prototype.element.impl.querySelector('template').content.querySelector('script#ceci-definition');
+      }
+      catch (e) {
+        return null;
+      }
+    },
     getRegisteredComponents: function(){
       var components = [];
-      for (var tagName in window.CustomElements.registry){
-        if (BUILT_IN_COMPONENTS.indexOf(tagName) === -1){
-          var component = window.CustomElements.registry[tagName];
-          var template = component.ctor.prototype.element.querySelector('template');
-          if (template && template.innerHTML.indexOf('ceci-definition') > -1) {
-            components.push(component);
+      for (var tagName in window.CustomElements.registry) {
+        if (BUILT_IN_COMPONENTS.indexOf(tagName) === -1) {
+          console.log(tagName, BUILT_IN_COMPONENTS.indexOf(tagName));
+          if (CeciDesigner.getCeciDefinitionScript(tagName)) {
+            components.push(window.CustomElements.registry[tagName]);
           }
         }
       }

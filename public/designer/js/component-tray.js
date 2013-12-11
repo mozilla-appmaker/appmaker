@@ -22,16 +22,12 @@ define(
 
         // This part is ugly. Reach into CustomElements and pull out a <template>.
 
+        var ceciDefinitionScript = Ceci.getCeciDefinitionScript(name);
+
         try {
-          var tempDiv = document.createElement('div');
-          tempDiv.innerHTML = component.ctor.prototype.element.querySelector('template').innerHTML.replace(/&quot;/g, '"');
-          meta = JSON.parse(tempDiv.querySelector('script#ceci-definition').innerText);
+          meta = JSON.parse(ceciDefinitionScript.innerHTML);
         }
         catch (e) {
-          meta = null;
-        }
-
-        if (!meta) {
           throw new TypeError("Ceci component, \"" + name + "\" is lacking ceci definitions. Likely it shouldn't be returned from ceci-designer.");
         }
 
