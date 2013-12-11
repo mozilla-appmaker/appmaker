@@ -16,6 +16,7 @@ connect_fonts = require('connect-fonts'),
 font_sourcesanspro = require('connect-fonts-sourcesanspro'),
 postmark = require("postmark")(process.env.POSTMARK_API_KEY),
 lessMiddleware = require('less-middleware'),
+enableRedirects = require('./routes/redirects'),
 i18n = require("webmaker-i18n");
 
 var urls = require('./lib/urls');
@@ -89,6 +90,8 @@ app.configure(function(){
   }));
 
   app.use(express.static(path.join(__dirname, 'public')));
+
+  enableRedirects(app);
 });
 
 app.configure('development', function(){
@@ -100,7 +103,7 @@ app.configure('development', function(){
 });
 
 require("express-persona")(app, {
-  audience: process.env['PERSONA_AUDIENCE']
+  audience: process.env.PERSONA_AUDIENCE
 });
 
 var store;
