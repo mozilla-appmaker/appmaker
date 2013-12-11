@@ -60,7 +60,6 @@ define(['inflector'], function (Inflector) {
         "\"></input></div>"
       );
       e.on("keyup", function(evt) {
-        console.log(attributeName);
         element.setAttribute(attributeName, evt.target.value);
       });
       return e[0];
@@ -101,14 +100,9 @@ define(['inflector'], function (Inflector) {
       var value = element.getAttribute(attributeName);
       value = value !== null ? value : '';
 
-      var title = definition.name || Inflector.titleize(Inflector.underscore(attributeName));
-
-      if (editableTypeHandlers[definition.type]) {
-        return editableTypeHandlers[definition.type](element, attributeName, title, value, definition);
-      }
-      else {
-        return $("<span>" + definition.type + " not implemented yet</span>");
-      }
+      var title = definition.label || Inflector.titleize(Inflector.underscore(attributeName));
+      var handler = editableTypeHandlers[definition.editable] || editableTypeHandlers.text;
+      return handler(element, attributeName, title, value, definition);
     },
     displayAttributes: function (element) {
 
@@ -116,11 +110,14 @@ define(['inflector'], function (Inflector) {
 
       attributeList.html("");
 
-      var attributes = Object.keys(element.ceci.editables);
+      var attributes = element.ceci.attributes;
 
-      attributes.forEach(function (attribute) {
-        var definition = element.ceci.editables[attribute];
-        var uiElement = editable.getAttributeUIElement(element, attribute, definition);
+      Object.keys(attributes).forEach(function (attributeName) {
+        var attributeDefinition = attributes[attributeName];
+
+        if (!attributeDefinition.editable) return;
+
+        var uiElement = editable.getAttributeUIElement(element, attributeName, attributeDefinition);
         attributeList.append(uiElement);
       });
 
