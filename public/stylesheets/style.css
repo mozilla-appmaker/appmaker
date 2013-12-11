@@ -2522,3 +2522,9 @@ input#remix-panel-email {
 .persona .logout, .persona .account {
   display: none;
 }
+
+.ui-colorpicker {
+  position: absolute;
+  padding: 20px;
+  background-color: rgb(49, 53, 60);
+}
