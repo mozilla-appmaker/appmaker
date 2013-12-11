@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-define(['inflector'], function (Inflector) {
+define(['inflector', 'colorpicker.core'], function (Inflector, ColorPickerDummy) {
   var editableTypeHandlers = {
     'multiple': function (element, attributeName, title, value, definition) {
       var options = JSON.parse(value);
@@ -91,6 +91,42 @@ define(['inflector'], function (Inflector) {
         evt.target.value = evt.target.value == "true" ? "false" : "true";
         element.setAttribute(attributeName, evt.target.value == "true" ? true : false);
       });
+      return e[0];
+    },
+    'color': function (element, attributeName, title, value, definition) {
+      var e = $(
+        '<div><label>' + title + '</label>' +
+        '<input type="text" value="' + value + '">' +
+        '</div>'
+      );
+
+      var input = e.find('input');
+      var oldColor;
+
+      input.colorpicker({
+        init: function (event, color) {
+        },
+        select: function (event, color) {
+          console.log('fpokwef', color);
+          input[0].value = '#' + color.formatted;
+          element.setAttribute(attributeName, '#' + color.formatted);
+        },
+        close: function (event, color) {
+        },
+        ok: function (event, color) {
+        },
+        open: function (event, color) {
+          oldColor = input[0].value;
+        },
+        cancel: function (event, color) {
+          element.setAttribute(attributeName, oldColor);
+        }
+      });
+
+      e.on("change", function (evt) {
+        element.setAttribute(attributeName, evt.target.value);
+      });
+
       return e[0];
     }
   };
