@@ -7,6 +7,52 @@ define(
   function(Util, Ceci) {
     "use strict";
 
+    window.searchInObject = function (term, object, path, usedObjects) {
+      path = path || '';
+      usedObjects = usedObjects || [];
+      try {
+        Object.keys(object).forEach(function (key) {
+          var subTree = object[key];
+          if (typeof subTree === 'object') {
+            if (usedObjects.indexOf(subTree) === -1) {
+              usedObjects.push(subTree);
+              searchInObject(term, subTree, path + '/' + key, usedObjects);
+            }
+          }
+          else if (typeof subTree === 'string') {
+            if (subTree.indexOf(term) > -1) {
+              console.log('Found @ ' + path + '/' + key);
+            }
+          }
+        });
+      }
+      catch (e) {
+      }
+    };
+
+    window.unwrapObject = function (object, usedObjects) {
+      var output = '{';
+      usedObjects = usedObjects || [];
+      try {
+        Object.keys(object).forEach(function (key) {
+          var subTree = object[key];
+          if (typeof subTree === 'object') {
+            if (usedObjects.indexOf(subTree) === -1) {
+              usedObjects.push(subTree);
+              output += key + ': ' + unwrapObject(subTree, usedObjects) + ',';
+            }
+          }
+          else {
+            output +=  key + ': ' + (typeof subTree === 'string' ? '"' + subTree + '"' : subTree) + ',';
+          }
+        });
+      }
+      catch (e) {
+      }
+      output += '}';
+      return output;
+    };
+
     var knownComponents = [];
 
     function addComponentsFromRegistry () {
@@ -22,16 +68,12 @@ define(
 
         // This part is ugly. Reach into CustomElements and pull out a <template>.
 
+        var ceciDefinitionScript = Ceci.getCeciDefinitionScript(name);
+
         try {
-          var tempDiv = document.createElement('div');
-          tempDiv.innerHTML = component.ctor.prototype.element.querySelector('template').innerHTML.replace(/&quot;/g, '"');
-          meta = JSON.parse(tempDiv.querySelector('script#ceci-definition').innerText);
+          meta = JSON.parse(ceciDefinitionScript.innerHTML);
         }
         catch (e) {
-          meta = null;
-        }
-
-        if (!meta) {
           throw new TypeError("Ceci component, \"" + name + "\" is lacking ceci definitions. Likely it shouldn't be returned from ceci-designer.");
         }
 
