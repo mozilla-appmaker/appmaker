@@ -1,0 +1,4 @@
+jan____
+Heya, I set this up over the weekend, but then didn’t get around to send it over: http://hoodie-appmaker-backend.jit.su is your appmaker backend. Ignore the web app, just add this to your apps:     <script src="http://http://hoodie-appmaker-backend.jit.su/_api/_files/hoodie.js"></script> and you are good to go. you admin credentials are admin / 3h_]"J>;L$?\mjC$ and these get you into http://admin.hoodie-appmaker-backend.jit.su/ and
+jan____
+http://hoodie-appmaker-backend.jit.su/_api/_utils/
