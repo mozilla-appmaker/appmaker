@@ -1,114 +1,149 @@
 <polymer-element
   name="user-state"
-  attribute="user"
+  attributes="user"
   >
   <template>
     <style>
       :host {
-        display: inline;
+        display: inline-block;
         color: white;
         position: relative;
+        margin-right: 10px;
+      }
+      :host #signin {
+        height: 26px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #e81e1e;
+        border-radius: 2px;
+        padding-left: 1em;
+        padding-right: 1em;
       }
       :host button.button {
         height: 26px;
         font-size: 16px;
         cursor: pointer;
         background-color: #e81e1e;
-        margin: 12px 12px 0px 0px;
         border-radius: 2px;
         padding-left: 1em;
         padding-right: 1em;
       }
       :host #email {
+        padding: 0 10px;
         cursor: pointer;
-        margin-left: 0.5em;
         height: 26px;
-        /*width: 102px;*/
-        width: auto;
+        width: 250px;
         font-size: 16px;
+        text-align: left;
+        padding-right: 30px;
         cursor: pointer;
-        background-color: rgba(1, 163, 176, 1);
-        margin: 12px 12px 0px 0px;
-        overflow-x: auto;
+        background-color: #01a3b0;
         border-radius: 2px;
-        padding-left: 1em;
-        padding-right: 1em;
+        background-image: url(/images/arrow-down.png);
+        background-size: 12px;
+        background-repeat: no-repeat;
+        background-position: right 10px center;
       }
       :host #email:hover {
-        text-decoration: underline;
+        text-decoration: none;
+        background-color: #0bb4c2;
       }
-      :host #email:before {
-        content: "\2193\0020";
+      :host .menu-open #email {
+        background-image: url(/images/arrow-up.png);
       }
-      :host #signout {
-        float: right;
+      :host .menu-open #email {
+        border-radius: 2px 2px 0 0;
       }
       .menubutton {
         display: inline-block;
       }
-      .menu {
+      :host .menu {
         z-index: 12000;
-        padding: .3em;
-        border-color: #444;
-        background-color: #222;
+        padding: 10px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
         position: absolute;
         left: 0;
-        top: 0;
-        height: 10em;
-        float: left;
+        top: 26px;
+        width: 100%;
+        background: #DDD;
+        text-align: left;
+        border-top: solid 2px #117b84;
       }
-      .hidden {
+      :host .menu {
+        display: none;
+      }
+      :host .menu-open .menu {
+        display: block;
+      }
+      :host .menu h3 {
+        padding: 0 0 4px 0 ;
+        margin: 0 0 10px 0;
+        border-bottom: solid 2px #BBB;
+        color: #444;
+        font-size: 16px;
+      }
+      :host .hidden {
         display: none;
       }
       :host #myapps {
         display: block;
-        float: left;
+        margin: 0 0 12px 0;
+        padding: 0;
+        clear: both;
+        width: 100%;
       }
       :host #myappsheading {
-        float: left;
-        clear: both;
-        width: 100%;
         text-align: left;
       }
-      :host #myapps {
-        margin: 0;
-        padding: 0;
-        clear: both;
-        width: 100%;
-      }
       :host #myapps li {
-        float: left;
-        clear: both;
         margin-top: 0;
         padding: 0;
-        padding-left: 0.5em;
-      }
-      :host #myapps li {
+        text-align: left;
         list-style-type: none;
         margin: 0;
         font-size: small;
         padding: 0;
+        overflow: auto;
       }
       :host #myapps .applink {
         text-align: left;
-        font-size: small;
-        text-decoration: underline;
         border: 0;
         background-color: transparent;
-        color: white;
+        color: #555;
         padding: 0;
         margin: 0;
+        padding: 3px 5px;
+        float: left;
+        width: calc(100% - 36px);
+        display: block;
         cursor: pointer;
+        border-radius: 3px;
+        font-size: 15px;
+      }
+      :host #myapps .delete-link {
+        padding: 3px 7px;
+        float: right;
+        display: block;
+        border-radius: 2px;
+        background: #AAA;
+        color: #DDD;
+      }
+      :host #myapps .delete-link:hover {
+        background: #999;
+      }
+      :host #myapps .applink:hover {
+        background: #EEE;
       }
     </style>
     <button id="signin" class="button btn-std btn-md {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">login</button>
-    <div class="menubutton" on-mousedown="{{showMenu}}">
-      <button id="email" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">{{user.email}}</button>
-      <div class="menu hidden" on-exit="{{hideMenu}}">
-        <span id="myappsheading">My apps</span>
+    <div class="menubutton">
+      <button id="email" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">{{user.email}}</button>
+      <div class="menu"><!-- add back hidden class -->
+        <h3 id="myappsheading">My apps</h3>
         <ul id="myapps">
         </ul>
-        <button id="signout" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}" on-click="{{signoutClick}}">logout</button>
+        <button id="signout" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}" on-click="{{signoutClick}}">Sign Out</button>
       </div>
     </div>
   </template>
@@ -121,7 +156,6 @@
       };
       // this is done via require because it needs persona loaded to
       // be able to call navigator.id stuff
-
       navigator.id.watch({
         onlogin: function(assertion) {
           var xhr = new XMLHttpRequest();
@@ -136,7 +170,6 @@
               }));
             }
           }, false);
-
           xhr.send(JSON.stringify({
             assertion: assertion
           }));
@@ -154,7 +187,6 @@
           xhr.send();
         }
       });
-
       Polymer('user-state', {
         user: user,
         ready: function() {
@@ -167,11 +199,11 @@
             }
           });
         },
-
         signinClick: function() {
           navigator.id.request();
         },
         signoutClick: function() {
+          this.toggleMenu();
           navigator.id.logout();
         },
         attributeChangedCallback: function(attributeName) {
@@ -179,13 +211,10 @@
             this.refreshUserState();
           }
         },
-        showMenu: function() {
+        toggleMenu: function() {
           var self = this;
-          var menu = this.shadowRoot.querySelector(".menu");
-          menu.classList.remove('hidden');
-          menu.addEventListener("mouseleave", function() {
-            menu.classList.add('hidden');
-          });
+          var menuBtn = this.shadowRoot.querySelector(".menubutton");
+          menuBtn.classList.toggle("menu-open");
         },
         refreshUserState: function() {
           // go to the server and find out what the user's apps are.
@@ -196,7 +225,20 @@
               var items = [];
               $.each(data, function(key, val) {
                 var app = document.createElement('li');
-                var link = document.createElement('button');
+                var deleteLink = document.createElement('a');
+                deleteLink.innerText = "X";
+                deleteLink.setAttribute("href","#");
+                deleteLink.classList.add("delete-link");
+                deleteLink.setAttribute("title","Delete this app.");
+                deleteLink.addEventListener('click', function() {
+                  try {
+                    alert("Deleting app!");
+                    // application.deleteAppByName(val.name);
+                  } catch (e) {
+                    console.log(e);
+                  }
+                });
+                var link = document.createElement('a');
                 link.id = key;
                 link.textContent = val.name;
                 link.setAttribute('class', 'applink');
@@ -207,8 +249,11 @@
                     console.log(e);
                   }
                 });
+                app.appendChild(deleteLink);
                 app.appendChild(link);
-                myApps.appendChild(app);
+                if(val.name){
+                  myApps.appendChild(app);
+                }
               });
             } catch (e) {
               console.log(e);
