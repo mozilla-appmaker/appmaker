@@ -58,6 +58,6 @@ sudo gem install foreman
 
 ### Client-side dependencies
 
-We manage client-side dependencies using (bower)[http://bower.io/]. In order to add/remove these depencies, you need to have `bower` installed globally on your machine:
+We manage client-side dependencies using [bower](http://bower.io/). In order to add/remove these depencies, you need to have `bower` installed globally on your machine:
 
 Excecute `sudo npm install bower -g` (Mac & *nix users)
