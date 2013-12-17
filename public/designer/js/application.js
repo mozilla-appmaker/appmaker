@@ -20,7 +20,23 @@ define(["jquery"], function($) {
             console.error(data);
           }
         });
+      },
+      deleteAppByName: function(name, callback){
+        $.ajax('/api/delete_app', {
+          data: {
+            name: name
+          },
+          type: 'delete',
+          success: function (data) {
+            callback();
+          },
+          error: function (data) {
+            console.log("Something went wrong!");
+            console.error("Error while deleting app: " + data);
+          }
+        });
       }
+
     };
   }
 );

@@ -29,13 +29,12 @@
         padding-right: 1em;
       }
       :host #email {
-        padding: 0 10px;
+        padding: 3px 10px;
         cursor: pointer;
-        height: 26px;
-        width: 250px;
         font-size: 16px;
+        width: 250px;
         text-align: left;
-        padding-right: 30px;
+        padding-right: 80px;
         cursor: pointer;
         background-color: #01a3b0;
         border-radius: 2px;
@@ -54,7 +53,7 @@
       :host .menu-open #email {
         border-radius: 2px 2px 0 0;
       }
-      .menubutton {
+      :host .menubutton {
         display: inline-block;
       }
       :host .menu {
@@ -64,11 +63,13 @@
         -moz-box-sizing: border-box;
         position: absolute;
         left: 0;
-        top: 26px;
+        top: 23px;
         width: 100%;
         background: #DDD;
         text-align: left;
         border-top: solid 2px #117b84;
+        border: solid 2px #01a3b0;
+        border-radius: 0 0 2px 2px;
       }
       :host .menu {
         display: none;
@@ -119,7 +120,7 @@
         display: block;
         cursor: pointer;
         border-radius: 3px;
-        font-size: 15px;
+        font-size: 16px;
       }
       :host #myapps .delete-link {
         padding: 3px 7px;
@@ -128,6 +129,11 @@
         border-radius: 2px;
         background: #AAA;
         color: #DDD;
+        font-size: 16px;
+      }
+      :host #noApps {
+        font-size: 16px;
+        color: #777;
       }
       :host #myapps .delete-link:hover {
         background: #999;
@@ -138,9 +144,10 @@
     </style>
     <button id="signin" class="button btn-std btn-md {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">login</button>
     <div class="menubutton">
-      <button id="email" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">{{user.email}}</button>
+      <a id="email" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">{{user.email}}</a>
       <div class="menu"><!-- add back hidden class -->
         <h3 id="myappsheading">My apps</h3>
+        <span id="noApps">You don't have any saved apps!</span>
         <ul id="myapps">
         </ul>
         <button id="signout" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}" on-click="{{signoutClick}}">Sign Out</button>
@@ -218,22 +225,29 @@
         },
         refreshUserState: function() {
           // go to the server and find out what the user's apps are.
+          var self = this;
+
           var myApps = this.shadowRoot.querySelector("#myapps");
+          var noApps = this.shadowRoot.querySelector("#noApps");
+
           myApps.innerHTML = '';
           $.getJSON("/api/myapps", function(data) {
             try {
-              var items = [];
+              var count = 0;
               $.each(data, function(key, val) {
+                count++;
                 var app = document.createElement('li');
                 var deleteLink = document.createElement('a');
-                deleteLink.innerText = "X";
+                deleteLink.innerHTML = "X";
                 deleteLink.setAttribute("href","#");
                 deleteLink.classList.add("delete-link");
                 deleteLink.setAttribute("title","Delete this app.");
                 deleteLink.addEventListener('click', function() {
                   try {
-                    alert("Deleting app!");
-                    // application.deleteAppByName(val.name);
+                    application.deleteAppByName(val.name, function() {
+                      deleteLink.parentNode.parentNode.removeChild(deleteLink.parentNode);
+                      self.refreshUserState();
+                    });
                   } catch (e) {
                     console.log(e);
                   }
@@ -255,6 +269,11 @@
                   myApps.appendChild(app);
                 }
               });
+              if(count == 0){
+                noApps.style.display = "block";
+              } else {
+                noApps.style.display = "none";
+              }
             } catch (e) {
               console.log(e);
             }

@@ -42,6 +42,15 @@ module.exports = function (mongoose, dbconn) {
         return response.json(obj);
       });
     },
+    delete_app: function(request,response){
+      App.remove({author:request.session.email, name: request.body.name},function(err){
+        if(err){
+           console.error("Error deleting this app!");
+           return response.json(500, {error: 'App was not deleted due to ' + err});
+        }
+      });
+      response.json(200);
+    },
     save_app: function(request, response) {
       if (! request.session.email) {
         response.json(401, {error: 'need to be signed in'});
@@ -61,4 +70,3 @@ module.exports = function (mongoose, dbconn) {
     }
   }
 };
-
