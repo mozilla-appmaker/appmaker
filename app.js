@@ -173,6 +173,8 @@ app.get('/api/myapps', routes.my.apps);
 app.post('/api/save_app', routes.my.save_app);
 app.delete('/api/delete_app', routes.my.delete_app);
 app.get('/api/app', routes.my.app);
+app.post('/api/rename_app', routes.my.rename_app);
+app.post('/api/update_app', routes.my.update_app);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

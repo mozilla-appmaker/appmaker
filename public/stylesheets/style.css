@@ -582,7 +582,7 @@ button.done {
   height: 50px;
   background-color: #181b1f;
   position: fixed;
-  z-index: 99;
+  z-index: 100;
   top: 0px;
   width: 100%;
   text-align: center;
@@ -590,8 +590,8 @@ button.done {
 
 .top-nav .nav-ui {
   position: fixed;
-  top: 0;
-  right: 0;
+  top: 12px;
+  right: 10px;
 }
 
 .logo {

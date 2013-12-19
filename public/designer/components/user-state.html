@@ -1,156 +1,28 @@
-<polymer-element
-  name="user-state"
-  attributes="user"
-  >
+<polymer-element name="user-state" attributes="user editingmode">
   <template>
-    <style>
-      :host {
-        display: inline-block;
-        color: white;
-        position: relative;
-        margin-right: 10px;
-      }
-      :host #signin {
-        height: 26px;
-        font-size: 16px;
-        cursor: pointer;
-        background-color: #e81e1e;
-        border-radius: 2px;
-        padding-left: 1em;
-        padding-right: 1em;
-      }
-      :host button.button {
-        height: 26px;
-        font-size: 16px;
-        cursor: pointer;
-        background-color: #e81e1e;
-        border-radius: 2px;
-        padding-left: 1em;
-        padding-right: 1em;
-      }
-      :host #email {
-        padding: 3px 10px;
-        cursor: pointer;
-        font-size: 16px;
-        width: 250px;
-        text-align: left;
-        padding-right: 80px;
-        cursor: pointer;
-        background-color: #01a3b0;
-        border-radius: 2px;
-        background-image: url(/images/arrow-down.png);
-        background-size: 12px;
-        background-repeat: no-repeat;
-        background-position: right 10px center;
-      }
-      :host #email:hover {
-        text-decoration: none;
-        background-color: #0bb4c2;
-      }
-      :host .menu-open #email {
-        background-image: url(/images/arrow-up.png);
-      }
-      :host .menu-open #email {
-        border-radius: 2px 2px 0 0;
-      }
-      :host .menubutton {
-        display: inline-block;
-      }
-      :host .menu {
-        z-index: 12000;
-        padding: 10px;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        position: absolute;
-        left: 0;
-        top: 23px;
-        width: 100%;
-        background: #DDD;
-        text-align: left;
-        border-top: solid 2px #117b84;
-        border: solid 2px #01a3b0;
-        border-radius: 0 0 2px 2px;
-      }
-      :host .menu {
-        display: none;
-      }
-      :host .menu-open .menu {
-        display: block;
-      }
-      :host .menu h3 {
-        padding: 0 0 4px 0 ;
-        margin: 0 0 10px 0;
-        border-bottom: solid 2px #BBB;
-        color: #444;
-        font-size: 16px;
-      }
-      :host .hidden {
-        display: none;
-      }
-      :host #myapps {
-        display: block;
-        margin: 0 0 12px 0;
-        padding: 0;
-        clear: both;
-        width: 100%;
-      }
-      :host #myappsheading {
-        text-align: left;
-      }
-      :host #myapps li {
-        margin-top: 0;
-        padding: 0;
-        text-align: left;
-        list-style-type: none;
-        margin: 0;
-        font-size: small;
-        padding: 0;
-        overflow: auto;
-      }
-      :host #myapps .applink {
-        text-align: left;
-        border: 0;
-        background-color: transparent;
-        color: #555;
-        padding: 0;
-        margin: 0;
-        padding: 3px 5px;
-        float: left;
-        width: calc(100% - 36px);
-        display: block;
-        cursor: pointer;
-        border-radius: 3px;
-        font-size: 16px;
-      }
-      :host #myapps .delete-link {
-        padding: 3px 7px;
-        float: right;
-        display: block;
-        border-radius: 2px;
-        background: #AAA;
-        color: #DDD;
-        font-size: 16px;
-      }
-      :host #noApps {
-        font-size: 16px;
-        color: #777;
-      }
-      :host #myapps .delete-link:hover {
-        background: #999;
-      }
-      :host #myapps .applink:hover {
-        background: #EEE;
-      }
-    </style>
-    <button id="signin" class="button btn-std btn-md {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">login</button>
-    <div class="menubutton">
-      <a id="email" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">{{user.email}}</a>
-      <div class="menu"><!-- add back hidden class -->
-        <h3 id="myappsheading">My apps</h3>
-        <span id="noApps">You don't have any saved apps!</span>
-        <ul id="myapps">
-        </ul>
-        <button id="signout" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}" on-click="{{signoutClick}}">Sign Out</button>
+    <button id="signin" class="button btn-std btn-md {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">Sign In</button>
+    <div id="signInProgress"></div>
+    <div class="{{ {hidden: user.state == 'signedout'} | tokenList }}">
+      <div class="menu-wrapper user-menu">
+        <a id="email" class="menu-button" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">{{user.email}}</a>
+        <div class="menu">
+          <h3 id="myappsheading">My apps</h3>
+          <span id="noApps">You don't have any saved apps!</span>
+          <ul id="myapps">
+          </ul>
+          <button id="signout" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}" on-click="{{signoutClick}}">Sign Out</button>
+        </div>
+      </div>
+      <div class="menu-wrapper app-menu">
+        <a class="current-app menu-button" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">App</a>
+        <div class="menu app-actions">
+          <a id="saveAppAs">Save As</a>
+          <a class="saved" id="saveApp">Save</a>
+          <a class="saved" id="renameApp">Rename</a>
+          <a id="publishApp">Publish</a>
+          <a class="saved" id="deleteApp">Delete</a>
+          <a id="newApp">New</a>
+        </div>
       </div>
     </div>
   </template>
@@ -165,12 +37,15 @@
       // be able to call navigator.id stuff
       navigator.id.watch({
         onlogin: function(assertion) {
+          document.dispatchEvent(new CustomEvent("signInStarted"));
+          //This is where it tries to log in;
           var xhr = new XMLHttpRequest();
           xhr.open("POST", "/persona/verify", true);
           xhr.setRequestHeader("Content-Type", "application/json");
           xhr.addEventListener("loadend", function(e) {
             var data = JSON.parse(this.responseText);
             if (data && data.status === "okay") {
+              document.dispatchEvent(new CustomEvent("signInFinished"));
               console.log("You have been logged in as: " + data.email);
               document.dispatchEvent(new CustomEvent('user-state', {
                 detail: {'state': 'signedin', 'email': data.email}
@@ -196,21 +71,146 @@
       });
       Polymer('user-state', {
         user: user,
+        editingmodeChanged : function(oldValue, newValue){
+          localStorage.editingmode = newValue;
+        },
         ready: function() {
           var that = this;
+
+          document.addEventListener('signInStarted', function (event) {
+            that.signInStarted();
+          });
+
+          document.addEventListener('signInFinished', function (event) {
+            that.signInFinished();
+          });
+
           document.addEventListener('user-state', function (event) {
             that.user.state = event.detail.state;
             that.user.email = event.detail.email;
+
             if (that.user.state == 'signedin') {
               that.refreshUserState();
+              if(application.getCurrentApp()){
+                application.loadAppByName(application.getCurrentApp());
+                that.editingmode = "saved";
+              } else {
+                that.updateAppName("Unsaved App");
+                that.editingmode = "draft";
+              }
+            } else if (that.user.state == 'signedout') {
+              that.signedOut();
             }
           });
+
+        },
+        enteredView : function() {
+          var self = this;
+          //This closes the menus when an action is clicked in a menu.
+          var menus = this.shadowRoot.querySelectorAll(".menu");
+          for(var j = 0; j < menus.length ; j++){
+            menus[j].addEventListener('click',function(e){
+              if(e.target.tagName == "A"){
+                self.closeMenus();
+              }
+            });
+          }
+
+          //Delete app
+          this.$.deleteApp.addEventListener('click', function() {
+            application.deleteAppByName(application.getCurrentApp());
+            application.clearCurrentApp();
+            application.newApp();
+            self.refreshUserState();
+            self.editingmode = "draft";
+          });
+
+          //New app
+          this.$.newApp.addEventListener("click",function() {
+            var log = document.querySelector("design-log");
+            log.clear();
+            application.clearCurrentApp();
+            application.newApp();
+            self.refreshUserState();
+            self.editingmode = "draft";
+          });
+
+          //Rename App
+          this.$.renameApp.addEventListener("click", function() {
+            var oldName = application.getCurrentApp();
+            var newName = window.prompt("What do you want to call this app?");
+            var html = document.querySelector('ceci-app').innerHTML;
+            if(newName){
+              application.renameApp(oldName, newName);
+            } else {
+              alert("App names can't be blank.");
+            }
+          });
+
+          //Update App
+          this.$.saveApp.addEventListener("click", function() {
+            var html = document.querySelector('ceci-app').innerHTML;
+            var name = application.getCurrentApp();
+            if(name){
+              // application.setCurrentApp(name);
+              application.updateApp(name,html)
+            }
+          });
+
+          //Publish!
+          this.$.publishApp.addEventListener("click", function() {
+            alert("Insert publish dialog here!");
+          });
+
+          //Save App As
+          this.$.saveAppAs.addEventListener("click", function() {
+            var name = window.prompt("What do you want to call this app?");
+            var html = document.querySelector('ceci-app').innerHTML;
+            if(name){
+              application.saveApp(name,html);
+              // gotta make sure it actually saves though!
+              // add as a callback? or pass in callbacks?
+              application.setCurrentApp(name);
+              self.refreshUserState();
+              self.editingmode = "saved";
+            } else {
+              console.log("Please name your app.");
+            }
+          });
+        },
+        signInStarted : function(){
+          this.$.signin.style.display = "none";
+          this.$.signInProgress.style.display = "block";
+        },
+        signInFinished : function(){
+          this.$.signInProgress.style.display = "none";
+        },
+        signedOut : function(){
+          this.$.signin.style.display = "block";
+        },
+        failedAppLoad : function(){
+          application.clearCurrentApp();
+          this.updateAppName("Unsaved App");
+        },
+        okAppLoad : function(name){
+          this.updateAppName(name);
+          this.refreshUserState();
+        },
+        updateAppName : function(name){
+          var nameEl = this.shadowRoot.querySelector(".current-app");
+          nameEl.innerHTML = name;
+        },
+        appRenameOk : function(name){
+          application.setCurrentApp(name);
+          this.refreshUserState();
+        },
+        appRenameFailed : function(){
+          alert("app rename failed");
         },
         signinClick: function() {
           navigator.id.request();
         },
         signoutClick: function() {
-          this.toggleMenu();
           navigator.id.logout();
         },
         attributeChangedCallback: function(attributeName) {
@@ -218,64 +218,71 @@
             this.refreshUserState();
           }
         },
-        toggleMenu: function() {
-          var self = this;
-          var menuBtn = this.shadowRoot.querySelector(".menubutton");
-          menuBtn.classList.toggle("menu-open");
+        toggleMenu: function(e) {
+          var parent = e.impl.toElement.parentNode;
+          var isOpen = false;
+          if(parent.classList.contains("menu-open")){
+            isOpen = true;
+          }
+
+          var menus = this.shadowRoot.querySelectorAll(".menu-wrapper");
+          for(var j = 0; j < menus.length ; j++){
+            menus[j].classList.remove("menu-open");
+          }
+          if(isOpen){
+            parent.classList.remove("menu-open");
+          } else {
+            parent.classList.add("menu-open");
+          }
+        },
+        closeMenus : function(){
+          var menus = this.shadowRoot.querySelectorAll(".menu-wrapper");
+          for(var j = 0; j < menus.length ; j++){
+            menus[j].classList.remove("menu-open");
+          }
         },
         refreshUserState: function() {
-          // go to the server and find out what the user's apps are.
+          // go to the server and find out what the user's apps are and then...
+          // Build the list of apps
+          // Update "current app" in apps menu
           var self = this;
-
           var myApps = this.shadowRoot.querySelector("#myapps");
           var noApps = this.shadowRoot.querySelector("#noApps");
+          var currentApp = application.getCurrentApp() || "";
+          var nameEl = this.shadowRoot.querySelector(".current-app");
+          nameEl.innerHTML = application.getCurrentApp() || "Unsaved Draft";
 
-          myApps.innerHTML = '';
+          myApps.innerHTML = "";
           $.getJSON("/api/myapps", function(data) {
+
             try {
               var count = 0;
               $.each(data, function(key, val) {
                 count++;
                 var app = document.createElement('li');
-                var deleteLink = document.createElement('a');
-                deleteLink.innerHTML = "X";
-                deleteLink.setAttribute("href","#");
-                deleteLink.classList.add("delete-link");
-                deleteLink.setAttribute("title","Delete this app.");
-                deleteLink.addEventListener('click', function() {
-                  try {
-                    application.deleteAppByName(val.name, function() {
-                      deleteLink.parentNode.parentNode.removeChild(deleteLink.parentNode);
-                      self.refreshUserState();
-                    });
-                  } catch (e) {
-                    console.log(e);
-                  }
-                });
                 var link = document.createElement('a');
                 link.id = key;
                 link.textContent = val.name;
-                link.setAttribute('class', 'applink');
-                link.addEventListener('click', function() {
-                  try {
-                    application.loadAppByName(val.name);
-                  } catch (e) {
-                    console.log(e);
-                  }
-                });
-                app.appendChild(deleteLink);
-                app.appendChild(link);
-                if(val.name){
-                  myApps.appendChild(app);
+
+                if(currentApp == val.name){
+                  link.classList.add('currentApp');
                 }
+                link.classList.add('class', 'applink');
+                link.addEventListener('click', function(){
+                  application.loadAppByName(val.name);
+                  self.editingmode = "saved";
+                });
+                app.appendChild(link);
+                myApps.appendChild(app);
               });
+
               if(count == 0){
                 noApps.style.display = "block";
               } else {
                 noApps.style.display = "none";
               }
             } catch (e) {
-              console.log(e);
+              // console.log(e);
             }
           });
         }
