@@ -1,30 +1,39 @@
 <polymer-element name="user-state" attributes="user editingmode">
   <template>
-    <button id="signin" class="button btn-std btn-md {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">Sign In</button>
+    <a id="signin" class="button {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">Sign In</a>
     <div id="signInProgress"></div>
-    <div class="{{ {hidden: user.state == 'signedout'} | tokenList }}">
+
+    <div class="dropdowns {{ {hidden: user.state == 'signedout'} | tokenList }}">
+
       <div class="menu-wrapper user-menu">
-        <a id="email" class="menu-button" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">{{user.email}}</a>
+        <a id="email" class="menu-button button" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">
+          <span class="icon"></span>
+          {{user.email}}
+        </a>
         <div class="menu">
           <h3 id="myappsheading">My apps</h3>
           <span id="noApps">You don't have any saved apps!</span>
-          <ul id="myapps">
+          <ul id="myapps" class="menu-options">
           </ul>
-          <button id="signout" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}" on-click="{{signoutClick}}">Sign Out</button>
+          <a id="signout" class="button" on-click="{{signoutClick}}">Sign Out</a>
         </div>
       </div>
       <div class="menu-wrapper app-menu">
-        <a class="current-app menu-button" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">App</a>
-        <div class="menu app-actions">
+        <a class="menu-button button" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">
+          <span class="icon"></span>
+          App
+        </a>
+        <div class="menu app-actions menu-options">
           <a id="saveAppAs">Save As</a>
           <a class="saved" id="saveApp">Save</a>
           <a class="saved" id="renameApp">Rename</a>
           <a id="publishApp">Publish</a>
           <a class="saved" id="deleteApp">Delete</a>
-          <a id="newApp">New</a>
         </div>
       </div>
     </div>
+
+    <a id="newApp" class="button">New App</a>
   </template>
   <script>
   (function() {
@@ -73,6 +82,12 @@
         user: user,
         editingmodeChanged : function(oldValue, newValue){
           localStorage.editingmode = newValue;
+          var appNameEl = document.querySelector(".phone-top .app-name");
+          if(newValue == "saved"){
+            appNameEl.classList.add("saved");
+          } else {
+            appNameEl.classList.remove("saved");
+          }
         },
         ready: function() {
           var that = this;
@@ -106,6 +121,7 @@
         },
         enteredView : function() {
           var self = this;
+
           //This closes the menus when an action is clicked in a menu.
           var menus = this.shadowRoot.querySelectorAll(".menu");
           for(var j = 0; j < menus.length ; j++){
@@ -133,6 +149,7 @@
             application.newApp();
             self.refreshUserState();
             self.editingmode = "draft";
+            self.closeMenus();
           });
 
           //Rename App
@@ -152,8 +169,7 @@
             var html = document.querySelector('ceci-app').innerHTML;
             var name = application.getCurrentApp();
             if(name){
-              // application.setCurrentApp(name);
-              application.updateApp(name,html)
+              application.updateApp(name,html);
             }
           });
 
@@ -197,8 +213,8 @@
           this.refreshUserState();
         },
         updateAppName : function(name){
-          var nameEl = this.shadowRoot.querySelector(".current-app");
-          nameEl.innerHTML = name;
+          var appNameEl = document.querySelector(".phone-top .app-name");
+          appNameEl.innerHTML = name;
         },
         appRenameOk : function(name){
           application.setCurrentApp(name);
@@ -219,7 +235,9 @@
           }
         },
         toggleMenu: function(e) {
-          var parent = e.impl.toElement.parentNode;
+
+          var parent = e.target.parentNode;
+
           var isOpen = false;
           if(parent.classList.contains("menu-open")){
             isOpen = true;
@@ -249,8 +267,7 @@
           var myApps = this.shadowRoot.querySelector("#myapps");
           var noApps = this.shadowRoot.querySelector("#noApps");
           var currentApp = application.getCurrentApp() || "";
-          var nameEl = this.shadowRoot.querySelector(".current-app");
-          nameEl.innerHTML = application.getCurrentApp() || "Unsaved Draft";
+          this.updateAppName(application.getCurrentApp() || "Unsaved App");
 
           myApps.innerHTML = "";
           $.getJSON("/api/myapps", function(data) {

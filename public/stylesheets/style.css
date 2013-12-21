@@ -1584,9 +1584,22 @@ ul.component-actions {
   height: 50px;
   width: 100%;
   border-radius: 6px 6px 0px 0px;
-  background-image: url(../images/mic.png);
+  /*  background-image: url(../images/mic.png);*/
   background-position: center;
   background-repeat: no-repeat;
+  text-align: center;
+}
+
+.phone-top .app-name {
+  color: #7a8a93;
+  font-size: 20px;
+  padding-top: 12px;
+  font-style: italic;
+}
+
+.phone-top .app-name.saved {
+  color: #c3cdd2;
+  font-style: normal;
 }
 
 .dragging .fixed-top, .dragging .fixed-bottom {

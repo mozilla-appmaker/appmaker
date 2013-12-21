@@ -15,7 +15,7 @@ module.exports = function (mongoose, dbconn) {
         response.json(401, {error: 'need to be signed in'});
         return;
       }
-      App.find({author:request.session.email}, function (err, apps) {
+      App.find({author:request.session.email}).sort({"name":1}).exec(function (err, apps) {
         if (err){
           console.log('Unable to retrieve apps');
           return response.json(500, 'Unable to retrieve apps: ' + err);
