@@ -132,6 +132,6 @@ Click on Compare and Pull Request button
 Write description of Pull Request and click Send Pull Request button
 
 Side Note:
-We manage client-side dependencies using (bower)[http://bower.io/]. In order to add/remove these depencies, you need to have `bower` installed globally on your machine:
+We manage client-side dependencies using [bower](http://bower.io/). In order to add/remove these depencies, you need to have `bower` installed globally on your machine:
 
 Excecute `sudo npm install bower -g` (Mac & *nix users)
