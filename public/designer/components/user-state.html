@@ -114,7 +114,16 @@
   </template>
   <script>
   (function() {
-    require(['jquery', 'persona', 'designer/application'], function(jquery, persona, application) {
+    require(['jquery', 'persona', 'designer/application', 'localized'], function(jquery, persona, application, localized) {
+
+      // This is used so that we can replace the text in those buttons inline
+      // when the DOM was ready only.
+      localized.ready(function(){
+        $("#signin").html(localized.get("login"))
+        $("#myappsheading").html(localized.get("My apps"))
+        $("#signout").html(localized.get("logout"))
+      });
+
       var user = {
         email: '',
         state: 'signedout'
