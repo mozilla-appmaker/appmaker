@@ -102,23 +102,21 @@ module.exports = function (mongoose, dbconn) {
 
       App.findOne({author:request.session.email, name: request.body.name}, function(err, obj) {
         if (obj) {
-         return response.json(500, {error: 'App name must be unique.'});
-        } else {
+          return response.json(500, {error: 'App name must be unique.'});
+        }
+        else {
           var appObj = JSON.parse(JSON.stringify(request.body)) // make a copy
-         appObj.author = request.session.email;
-         var newApp = new App(appObj);
-         newApp.save(function(err, app){
-           if (err){
-             return response.json(500, {error: 'App was not saved due to ' + err});
-           }
-           return response.json(app);
+          appObj.author = request.session.email;
+          var newApp = new App(appObj);
+          newApp.save(function(err, app){
+          if (err){
+            return response.json(500, {error: 'App was not saved due to ' + err});
+          }
+          return response.json(app);
          });
          response.json(200);
         }
       });
-
-
-
     }
   }
 };
