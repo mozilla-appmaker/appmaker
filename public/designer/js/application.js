@@ -37,6 +37,23 @@ define(["jquery"], function($) {
           }
         });
       },
+      publishApp: function(name, html){
+        $.ajax('/api/publish', {
+          data: {
+            html: html,
+            name: name
+          },
+          type: 'post',
+          success: function (data) {
+            alert('App published successfully: ' + data.app);
+          },
+          error: function (data) {
+            console.error(data);
+            // alert(data.responseJSON.error);
+          }
+        });
+
+      },
       saveApp: function(name,html){
         $.ajax('/api/save_app', {
           data: {
