@@ -62,7 +62,8 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
       var appStr = templates.publish({
         appHTML: requestHTML,
         appName: folderName,
-        gettext: req.gettext
+        gettext: req.gettext,
+        ceciComponentURL: process.env.PUBLISH_HOST_PREFIX + process.env.PUBLISH_HOST
       });
 
       var installStr = templates.install({
