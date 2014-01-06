@@ -19,6 +19,21 @@ lessMiddleware = require('less-middleware'),
 enableRedirects = require('./routes/redirects'),
 i18n = require("webmaker-i18n");
 
+try {
+  // This does a pretty great job at figuring out booleans.
+  if (!!JSON.parse(process.env.LAUNCH_STATSD_IN_PROCESS)){
+    require('./statsd');
+  }
+}
+catch(e) {
+  if (e.name === "SyntaxError"){
+    throw("Invalid value for process.env.LAUNCH_STATSD_IN_PROCESS.");
+  }
+  else{
+    throw(e);
+  }
+}
+
 var urls = require('./lib/urls');
 var localStore = require('./lib/local-store');
 var s3Store = require('./lib/s3-store');
