@@ -12,3 +12,6 @@ var statsd = require('child_process').fork(
     env: process.env
   });
 
+process.addListener('exit', function(){
+  statsd.kill();
+});
