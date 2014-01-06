@@ -158,18 +158,18 @@ app.get('/testapp', routes.testapp);
 app.get('/remix', routes.remix);
 
 //TODO: Security: https://github.com/mozilla-appmaker/appmaker/issues/602
-app.get('/api/proxy-component-*',         cors(), routes.proxy.gitHubComponent);
-app.get('/component-*',         cors(), routes.proxy.gitHubComponent);
-app.get('/component/:org/:component/:path',         cors(), routes.proxy.component);
+app.get('/api/proxy-component-*', cors(), routes.proxy.gitHubComponent);
+app.get('/component-*', cors(), routes.proxy.gitHubComponent);
+app.get('/component/:org/:component/:path', cors(), routes.proxy.component);
 
 process.env.ARTIFICIAL_CORS_DELAY = parseInt(process.env.ARTIFICIAL_CORS_DELAY, 10);
 // if ARTIFICIAL_CORS_DELAY is set, we use a different proxy route
 if (("ARTIFICIAL_CORS_DELAY" in process.env) && (process.env.ARTIFICIAL_CORS_DELAY > 0)){
   // This route is only to test race conditions/loading issues with external resources
-  app.get('/cors/:host/*',      cors(), routes.proxy.delayedCors);
+  app.get('/cors/:host/*', cors(), routes.proxy.delayedCors);
 }
 else{
-  app.get('/cors/:host/*',      cors(), routes.proxy.cors);
+  app.get('/cors/:host/*', cors(), routes.proxy.cors);
 }
 
 // This is a route that we use for client-side localization to return the JSON
