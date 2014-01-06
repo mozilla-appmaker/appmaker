@@ -3,23 +3,24 @@
   <head>
     <title>Published Flathead Project</title>
     <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/style.css" />
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300, 400,600" rel="stylesheet" type="text/css">
-    <link rel="component" type="text/ceci" href="<%= process.env.COMPONENTS_BASE_URL %>/package/all">
-    <script src="<%= process.env.ASSET_HOST %>/vendor/requirejs/require.js"></script>
-    <script>
-      (function(){
-        var requireCtx = require.config({
-          baseUrl: '<%= process.env.ASSET_HOST %>/vendor/ceci'
-        });
+    <base href="<%- ceciComponentURL %>">
 
-        require(["ceci-app"], function(Ceci) {
-          Ceci.load(function (components) {
-            Ceci.convertContainer(document.getElementById('flathead-app'));
-          });
-        });
-      })();
-    </script>
+    <script src="/vendor/polymer/polymer.min.js"></script>
+
+    <link rel="import" href="/ceci/ceci-element-base.html">
+    <link rel="import" href="/ceci/ceci-element.html">
+    <link rel="import" href="/ceci/ceci-listen.html">
+    <link rel="import" href="/ceci/ceci-card-base.html">
+    <link rel="import" href="/ceci/ceci-card.html">
+    <link rel="import" href="/ceci/ceci-app.html">
+    <link rel="import" href="/ceci/ceci-card-nav.html">
+    <link rel="import" href="/ceci/ceci-broadcast.html">
+
+    <link rel="import" href="/ceci/ceci-channel-menu.html">
+
+    <link rel="import" href="/component/mozilla-appmaker/component-button/component.html">
+    <link rel="import" href="/component/mozilla-appmaker/component-counter/component.html">
   </head>
   <body>
     <%- appHTML %>

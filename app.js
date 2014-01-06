@@ -177,7 +177,7 @@ else{
 // when we do the XHR request to this route.
 app.get( "/strings/:lang?", i18n.stringsRoute( "en-US" ) );
 
-app.post('/publish', routes.publish.publish);
+app.post('/api/publish', routes.publish.publish);
 
 // routes for publishing and retrieving components
 app.get('/api/component', routes.componentRegistry.components);
