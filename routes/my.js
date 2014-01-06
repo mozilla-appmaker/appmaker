@@ -38,7 +38,7 @@ module.exports = function (mongoose, dbconn) {
         }
       });
     },
-    update_app: function(request, response) {
+    updateApp: function(request, response) {
       var name = request.body.name;
       var html = request.body.html;
       console.log(name + " to " + html);
@@ -60,7 +60,7 @@ module.exports = function (mongoose, dbconn) {
           }
         });
     },
-    rename_app: function(request, response) {
+    renameApp: function(request, response) {
       var oldName = request.body.oldName;
       var newName = request.body.newName;
 
@@ -83,7 +83,7 @@ module.exports = function (mongoose, dbconn) {
           }
       });
     },
-    delete_app: function(request,response){
+    deleteApp: function(request,response){
       App.remove({author:request.session.email, name: request.body.name},function(err){
         if(err){
            console.error("Error deleting this app!");
@@ -92,7 +92,7 @@ module.exports = function (mongoose, dbconn) {
       });
       response.json(200);
     },
-    save_app: function(request, response) {
+    saveApp: function(request, response) {
       if (! request.session.email) {
         response.json(401, {error: 'need to be signed in'});
         return;
