@@ -16,7 +16,7 @@
         }
 
         try {
-          definitionJSON = JSON.parse(definitionScriptTag.innerText);
+          definitionJSON = JSON.parse(definitionScriptTag.innerText || definitionScriptTag.textContent);
         }
         catch (e) {
           console.error('Invalid ceci definition json.');
