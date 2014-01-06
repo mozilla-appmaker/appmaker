@@ -12,8 +12,8 @@
     "url": "https://github.com/mozilla/appmaker/issues"
   },
   "dependencies": {
-    "connect-fonts": "~0.0.10",
-    "connect-fonts-sourcesanspro": "0.0.3",
+    "connect-fonts": ">=0.0.12",
+    "connect-fonts-sourcesanspro": "~0.0.3",
     "bower": "~1.2.7",
     "express": "~3.3.4",
     "express-persona": "~0.1.0",
