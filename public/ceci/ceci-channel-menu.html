@@ -64,10 +64,10 @@
           var communicators, handlertype;
 
           if(this.channelType == "broadcast") {
-            communicators = this.component.broadcasts;
+            communicators = this.component.ceci.broadcasts;
             handlerType = "from";
           } else {
-            communicators = this.component.listeners;
+            communicators = this.component.ceci.listeners;
             handlerType = "for";
           }
 
@@ -81,7 +81,7 @@
 
           function colorClickHandler(handlerType){
             return function(event) {
-              var channelOption = this.parentNode.parentNode;
+              var channelOption = event.target.parentNode.parentNode;
               var color = this.getAttribute("color");
               var handler = channelOption.getAttribute(handlerType);
               that.changeChannel(handlerType, handler, color);
@@ -94,7 +94,7 @@
           function colorListClickHandler(handlerType){
             return function(event) {
               if(event.target.classList.contains("color")){
-                var channelOption = this.parentNode.parentNode;
+                var channelOption = event.target.parentNode.parentNode;
                 var color = event.target.getAttribute("color");
                 var handler = this.parentNode.getAttribute(handlerType);
                 that.changeChannel(handlerType, handler, color);
