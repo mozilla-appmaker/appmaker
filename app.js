@@ -11,8 +11,7 @@ engine = require('ejs-locals'),
 path = require('path'),
 uuid = require('node-uuid'),
 cors = require('cors'),
-connect_fonts = require('connect-fonts'),
-font_sourcesanspro = require('connect-fonts-sourcesanspro'),
+connectFonts = require('connect-fonts'),
 postmark = require("postmark")(process.env.POSTMARK_API_KEY),
 lessMiddleware = require('less-middleware'),
 enableRedirects = require('./routes/redirects'),
@@ -85,8 +84,8 @@ app.configure(function(){
 
   app.use(app.router);
 
-  app.use(connect_fonts.setup({
-    fonts: [ font_sourcesanspro ],
+  app.use(connectFonts.setup({
+    fonts: [require('connect-fonts-sourcesanspro')],
     allow_origin: process.env.ASSET_HOST,
     ua: 'all',
     maxage: MAX_FONT_AGE_MS
