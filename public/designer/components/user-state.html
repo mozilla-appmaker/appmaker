@@ -194,33 +194,33 @@
             }
           });
         },
-        signInStarted : function(){
+        signInStarted: function(){
           this.$.signin.style.display = "none";
           this.$.signInProgress.style.display = "block";
         },
-        signInFinished : function(){
+        signInFinished: function(){
           this.$.signInProgress.style.display = "none";
         },
-        signedOut : function(){
+        signedOut: function(){
           this.$.signin.style.display = "block";
         },
-        failedAppLoad : function(){
+        failedAppLoad: function(){
           application.clearCurrentApp();
           this.updateAppName("Unsaved App");
         },
-        okAppLoad : function(name){
+        okAppLoad: function(name){
           this.updateAppName(name);
           this.refreshUserState();
         },
-        updateAppName : function(name){
+        updateAppName: function(name){
           var appNameEl = document.querySelector(".phone-top .app-name");
           appNameEl.innerHTML = name;
         },
-        appRenameOk : function(name){
+        appRenameOk: function(name){
           application.setCurrentApp(name);
           this.refreshUserState();
         },
-        appRenameFailed : function(){
+        appRenameFailed: function(){
           alert("app rename failed");
         },
         signinClick: function() {
@@ -253,7 +253,7 @@
             parent.classList.add("menu-open");
           }
         },
-        closeMenus : function(){
+        closeMenus: function(){
           var menus = this.shadowRoot.querySelectorAll(".menu-wrapper");
           for(var j = 0; j < menus.length ; j++){
             menus[j].classList.remove("menu-open");
