@@ -184,7 +184,19 @@
 
           //Publish!
           this.$.publishApp.addEventListener("click", function() {
-            alert("Insert publish dialog here!");
+            var app = document.querySelector('ceci-app');
+            var name = app.name;
+            var html = app.innerHTML;
+            if(name){
+              application.publishApp(name,html);
+              // gotta make sure it actually saves though!
+              // add as a callback? or pass in callbacks?
+              application.setCurrentApp(name);
+              self.refreshUserState();
+              self.editingmode = "saved";
+            } else {
+              console.log("Please name your app.");
+            }
           });
 
           //Save App As
@@ -222,8 +234,11 @@
           this.refreshUserState();
         },
         updateAppName: function(name){
-          var appNameEl = document.querySelector(".phone-top .app-name");
-          appNameEl.innerHTML = name;
+          var app = document.querySelector('ceci-app');
+          if (name) {
+            app.name = name;
+          }
+          document.querySelector(".phone-top .app-name").innerHTML = app.name;
         },
         appRenameOk: function(name){
           application.setCurrentApp(name);
