@@ -21,7 +21,7 @@ i18n = require("webmaker-i18n");
 
 try {
   // This does a pretty great job at figuring out booleans.
-  if (!!JSON.parse(process.env.LAUNCH_STATSD_IN_PROCESS)){
+  if (process.env.LAUNCH_STATSD_IN_PROCESS && !!JSON.parse(process.env.LAUNCH_STATSD_IN_PROCESS)){
     require('./statsd');
   }
 }
