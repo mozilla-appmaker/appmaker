@@ -186,7 +186,7 @@
           this.$.publishApp.addEventListener("click", function() {
             var app = document.querySelector('ceci-app');
             var name = app.name;
-            var html = app.innerHTML;
+            var html = app.outerHTML;
             if(name){
               application.publishApp(name,html);
               // gotta make sure it actually saves though!
