@@ -1,116 +1,39 @@
-<polymer-element
-  name="user-state"
-  attribute="user"
-  >
+<polymer-element name="user-state" attributes="user editingmode">
   <template>
-    <style>
-      :host {
-        display: inline;
-        color: white;
-        position: relative;
-      }
-      :host button.button {
-        height: 26px;
-        font-size: 16px;
-        cursor: pointer;
-        background-color: #e81e1e;
-        margin: 12px 12px 0px 0px;
-        border-radius: 2px;
-        padding-left: 1em;
-        padding-right: 1em;
-      }
-      :host #email {
-        cursor: pointer;
-        margin-left: 0.5em;
-        height: 26px;
-        /*width: 102px;*/
-        width: auto;
-        font-size: 16px;
-        cursor: pointer;
-        background-color: rgba(1, 163, 176, 1);
-        margin: 12px 12px 0px 0px;
-        overflow-x: auto;
-        border-radius: 2px;
-        padding-left: 1em;
-        padding-right: 1em;
-      }
-      :host #email:hover {
-        text-decoration: underline;
-      }
-      :host #email:before {
-        content: "\2193\0020";
-      }
-      :host #signout {
-        float: right;
-      }
-      .menubutton {
-        display: inline-block;
-      }
-      .menu {
-        z-index: 12000;
-        padding: .3em;
-        border-color: #444;
-        background-color: #222;
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 10em;
-        float: left;
-      }
-      .hidden {
-        display: none;
-      }
-      :host #myapps {
-        display: block;
-        float: left;
-      }
-      :host #myappsheading {
-        float: left;
-        clear: both;
-        width: 100%;
-        text-align: left;
-      }
-      :host #myapps {
-        margin: 0;
-        padding: 0;
-        clear: both;
-        width: 100%;
-      }
-      :host #myapps li {
-        float: left;
-        clear: both;
-        margin-top: 0;
-        padding: 0;
-        padding-left: 0.5em;
-      }
-      :host #myapps li {
-        list-style-type: none;
-        margin: 0;
-        font-size: small;
-        padding: 0;
-      }
-      :host #myapps .applink {
-        text-align: left;
-        font-size: small;
-        text-decoration: underline;
-        border: 0;
-        background-color: transparent;
-        color: white;
-        padding: 0;
-        margin: 0;
-        cursor: pointer;
-      }
-    </style>
-    <button id="signin" class="button btn-std btn-md {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">login</button>
-    <div class="menubutton" on-mousedown="{{showMenu}}">
-      <button id="email" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">{{user.email}}</button>
-      <div class="menu hidden" on-exit="{{hideMenu}}">
-        <span id="myappsheading">My apps</span>
-        <ul id="myapps">
-        </ul>
-        <button id="signout" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}" on-click="{{signoutClick}}">logout</button>
+    <a id="signin" class="button {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">Sign In</a>
+    <div id="signInProgress"></div>
+
+    <div class="dropdowns {{ {hidden: user.state == 'signedout'} | tokenList }}">
+
+      <div class="menu-wrapper user-menu">
+        <a id="email" class="menu-button button" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">
+          <span class="icon"></span>
+          {{user.email}}
+        </a>
+        <div class="menu">
+          <h3 id="myappsheading">My apps</h3>
+          <span id="noApps">You don't have any saved apps!</span>
+          <ul id="myapps" class="menu-options">
+          </ul>
+          <a id="signout" class="button" on-click="{{signoutClick}}">Sign Out</a>
+        </div>
+      </div>
+      <div class="menu-wrapper app-menu">
+        <a class="menu-button button" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">
+          <span class="icon"></span>
+          App
+        </a>
+        <div class="menu app-actions menu-options">
+          <a id="saveAppAs">Save As</a>
+          <a class="saved" id="saveApp">Save</a>
+          <a class="saved" id="renameApp">Rename</a>
+          <a id="publishApp">Publish</a>
+          <a class="saved" id="deleteApp">Delete</a>
+        </div>
       </div>
     </div>
+
+    <a id="newApp" class="button">New App</a>
   </template>
   <script>
   (function() {
@@ -130,22 +53,23 @@
       };
       // this is done via require because it needs persona loaded to
       // be able to call navigator.id stuff
-
       navigator.id.watch({
         onlogin: function(assertion) {
+          document.dispatchEvent(new CustomEvent("signInStarted"));
+          //This is where it tries to log in;
           var xhr = new XMLHttpRequest();
           xhr.open("POST", "/persona/verify", true);
           xhr.setRequestHeader("Content-Type", "application/json");
           xhr.addEventListener("loadend", function(e) {
             var data = JSON.parse(this.responseText);
             if (data && data.status === "okay") {
+              document.dispatchEvent(new CustomEvent("signInFinished"));
               console.log("You have been logged in as: " + data.email);
               document.dispatchEvent(new CustomEvent('user-state', {
                 detail: {'state': 'signedin', 'email': data.email}
               }));
             }
           }, false);
-
           xhr.send(JSON.stringify({
             assertion: assertion
           }));
@@ -163,20 +87,151 @@
           xhr.send();
         }
       });
-
       Polymer('user-state', {
         user: user,
+        editingmodeChanged : function(oldValue, newValue){
+          localStorage.editingmode = newValue;
+          var appNameEl = document.querySelector(".phone-top .app-name");
+          if(newValue == "saved"){
+            appNameEl.classList.add("saved");
+          } else {
+            appNameEl.classList.remove("saved");
+          }
+        },
         ready: function() {
           var that = this;
+
+          document.addEventListener('signInStarted', function (event) {
+            that.signInStarted();
+          });
+
+          document.addEventListener('signInFinished', function (event) {
+            that.signInFinished();
+          });
+
           document.addEventListener('user-state', function (event) {
             that.user.state = event.detail.state;
             that.user.email = event.detail.email;
+
             if (that.user.state == 'signedin') {
               that.refreshUserState();
+              if(application.getCurrentApp()){
+                application.loadAppByName(application.getCurrentApp());
+                that.editingmode = "saved";
+              } else {
+                that.updateAppName("Unsaved App");
+                that.editingmode = "draft";
+              }
+            } else if (that.user.state == 'signedout') {
+              that.signedOut();
+            }
+          });
+
+        },
+        enteredView : function() {
+          var self = this;
+
+          //This closes the menus when an action is clicked in a menu.
+          var menus = this.shadowRoot.querySelectorAll(".menu");
+          for(var j = 0; j < menus.length ; j++){
+            menus[j].addEventListener('click',function(e){
+              if(e.target.tagName == "A"){
+                self.closeMenus();
+              }
+            });
+          }
+
+          //Delete app
+          this.$.deleteApp.addEventListener('click', function() {
+            application.deleteAppByName(application.getCurrentApp());
+            application.clearCurrentApp();
+            application.newApp();
+            self.refreshUserState();
+            self.editingmode = "draft";
+          });
+
+          //New app
+          this.$.newApp.addEventListener("click",function() {
+            var log = document.querySelector("design-log");
+            log.clear();
+            application.clearCurrentApp();
+            application.newApp();
+            self.refreshUserState();
+            self.editingmode = "draft";
+            self.closeMenus();
+          });
+
+          //Rename App
+          this.$.renameApp.addEventListener("click", function() {
+            var oldName = application.getCurrentApp();
+            var newName = window.prompt("What do you want to call this app?");
+            var html = document.querySelector('ceci-app').innerHTML;
+            if(newName){
+              application.renameApp(oldName, newName);
+            } else {
+              alert("App names can't be blank.");
+            }
+          });
+
+          //Update App
+          this.$.saveApp.addEventListener("click", function() {
+            var html = document.querySelector('ceci-app').innerHTML;
+            var name = application.getCurrentApp();
+            if(name){
+              application.updateApp(name,html);
+            }
+          });
+
+          //Publish!
+          this.$.publishApp.addEventListener("click", function() {
+            alert("Insert publish dialog here!");
+          });
+
+          //Save App As
+          this.$.saveAppAs.addEventListener("click", function() {
+            var name = window.prompt("What do you want to call this app?");
+            var html = document.querySelector('ceci-app').innerHTML;
+            if(name){
+              application.saveApp(name,html);
+              // gotta make sure it actually saves though!
+              // add as a callback? or pass in callbacks?
+              application.setCurrentApp(name);
+              self.refreshUserState();
+              self.editingmode = "saved";
+            } else {
+              console.log("Please name your app.");
             }
           });
         },
-
+        signInStarted: function(){
+          this.$.signin.style.display = "none";
+          this.$.signInProgress.style.display = "block";
+        },
+        signInFinished: function(){
+          this.$.signInProgress.style.display = "none";
+        },
+        signedOut: function(){
+          this.$.signin.style.display = "block";
+        },
+        failedAppLoad: function(){
+          application.clearCurrentApp();
+          this.updateAppName("Unsaved App");
+        },
+        okAppLoad: function(name){
+          this.updateAppName(name);
+          this.refreshUserState();
+        },
+        updateAppName: function(name){
+          var appNameEl = document.querySelector(".phone-top .app-name");
+          appNameEl.innerHTML = name;
+        },
+        appRenameOk: function(name){
+          application.setCurrentApp(name);
+          this.refreshUserState();
+        },
+        appRenameFailed: function(){
+          alert("app rename failed");
+        },
         signinClick: function() {
           navigator.id.request();
         },
@@ -188,37 +243,70 @@
             this.refreshUserState();
           }
         },
-        showMenu: function() {
-          var self = this;
-          var menu = this.shadowRoot.querySelector(".menu");
-          menu.classList.remove('hidden');
-          menu.addEventListener("mouseleave", function() {
-            menu.classList.add('hidden');
-          });
+        toggleMenu: function(e) {
+
+          var parent = e.target.parentNode;
+
+          var isOpen = false;
+          if(parent.classList.contains("menu-open")){
+            isOpen = true;
+          }
+
+          var menus = this.shadowRoot.querySelectorAll(".menu-wrapper");
+          for(var j = 0; j < menus.length ; j++){
+            menus[j].classList.remove("menu-open");
+          }
+          if(isOpen){
+            parent.classList.remove("menu-open");
+          } else {
+            parent.classList.add("menu-open");
+          }
+        },
+        closeMenus: function(){
+          var menus = this.shadowRoot.querySelectorAll(".menu-wrapper");
+          for(var j = 0; j < menus.length ; j++){
+            menus[j].classList.remove("menu-open");
+          }
         },
         refreshUserState: function() {
-          // go to the server and find out what the user's apps are.
+          // go to the server and find out what the user's apps are and then...
+          // Build the list of apps
+          // Update "current app" in apps menu
+          var self = this;
           var myApps = this.shadowRoot.querySelector("#myapps");
-          myApps.innerHTML = '';
+          var noApps = this.shadowRoot.querySelector("#noApps");
+          var currentApp = application.getCurrentApp() || "";
+          this.updateAppName(application.getCurrentApp() || "Unsaved App");
+
+          myApps.innerHTML = "";
           $.getJSON("/api/myapps", function(data) {
+
             try {
-              var items = [];
+              var count = 0;
               $.each(data, function(key, val) {
+                count++;
                 var app = document.createElement('li');
-                var link = document.createElement('button');
+                var link = document.createElement('a');
                 link.id = key;
                 link.textContent = val.name;
-                link.setAttribute('class', 'applink');
-                link.addEventListener('click', function() {
-                  try {
-                    application.loadAppByName(val.name);
-                  } catch (e) {
-                    console.log(e);
-                  }
+
+                if(currentApp == val.name){
+                  link.classList.add('currentApp');
+                }
+                link.classList.add('class', 'applink');
+                link.addEventListener('click', function(){
+                  application.loadAppByName(val.name);
+                  self.editingmode = "saved";
                 });
                 app.appendChild(link);
                 myApps.appendChild(app);
               });
+
+              if(count == 0){
+                noApps.style.display = "block";
+              } else {
+                noApps.style.display = "none";
+              }
             } catch (e) {
               console.log(e);
             }

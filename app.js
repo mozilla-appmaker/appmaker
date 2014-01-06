@@ -4,7 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
 var
 express = require('express'),
 http = require('http'),
@@ -174,7 +173,6 @@ else{
   app.get('/cors/:host/*',      cors(), routes.proxy.cors);
 }
 
-
 // This is a route that we use for client-side localization to return the JSON
 // when we do the XHR request to this route.
 app.get( "/strings/:lang?", i18n.stringsRoute( "en-US" ) );
@@ -187,8 +185,11 @@ app.get('/api/component/:id', routes.componentRegistry.component);
 app.post('/api/component', routes.componentRegistry.addComponent);
 app.delete('/api/component/:id', routes.componentRegistry.deleteComponent);
 app.get('/api/myapps', routes.my.apps);
-app.post('/api/save_app', routes.my.save_app);
+app.post('/api/save_app', routes.my.saveApp);
+app.delete('/api/delete_app', routes.my.deleteApp);
 app.get('/api/app', routes.my.app);
+app.post('/api/rename_app', routes.my.renameApp);
+app.post('/api/update_app', routes.my.updateApp);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
