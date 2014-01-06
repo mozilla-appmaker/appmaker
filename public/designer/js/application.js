@@ -4,23 +4,23 @@
 
 define(["jquery"], function($) {
     return {
-      getCurrentApp : function(){
+      getCurrentApp: function(){
         var currentApp = localStorage.currentApp;
         return currentApp;
       },
-      setCurrentApp : function(name){
+      setCurrentApp: function(name){
         localStorage.currentApp = name;
       },
-      clearCurrentApp : function(){
+      clearCurrentApp: function(){
         localStorage.removeItem("currentApp");
       },
-      newApp : function(){
+      newApp: function(){
         var app = document.querySelector("ceci-app");
         var parent = app.parentNode;
         parent.removeChild(app);
         parent.appendChild(document.createElement('ceci-app'));
       },
-      renameApp : function(oldName,newName){
+      renameApp: function(oldName,newName){
         var userState = document.querySelector('user-state');
         $.ajax('/api/rename_app', {
           data: {
@@ -37,7 +37,7 @@ define(["jquery"], function($) {
           }
         });
       },
-      saveApp : function(name,html){
+      saveApp: function(name,html){
         $.ajax('/api/save_app', {
           data: {
             html: html,
@@ -53,7 +53,7 @@ define(["jquery"], function($) {
         });
 
       },
-      updateApp : function(name,html){
+      updateApp: function(name,html){
         $.ajax('/api/update_app', {
           data: {
             name: name,
