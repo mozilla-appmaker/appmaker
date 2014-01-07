@@ -75,11 +75,9 @@
       }
 
       function processListeners (ceciDefinition, listenersDefinitionObject) {
-        var defaultListeners;
+        var defaultListeners = [];
 
-        if (!listenersDefinitionObject) return;
-
-        defaultListeners = [];
+        if (!listenersDefinitionObject) return defaultListeners;
 
         Object.keys(listenersDefinitionObject).forEach(function (listenerName) {
           var listenerDefinition = listenersDefinitionObject[listenerName];
@@ -93,11 +91,9 @@
       }
 
       function processBroadcasts (ceciDefinition, broadcastsDefinitionObject) {
-        var defaultBroadcasts;
+        var defaultBroadcasts = [];
 
-        if (!broadcastsDefinitionObject) return;
-
-        defaultBroadcasts = [];
+        if (!broadcastsDefinitionObject) return defaultBroadcasts;
 
         Object.keys(broadcastsDefinitionObject).forEach(function (broadcastName) {
           var broadcastDefinition = broadcastsDefinitionObject[broadcastName];
