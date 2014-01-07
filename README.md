@@ -76,14 +76,15 @@ PORT: The port that the web process listens on for incomming connections
 
 How you can help
 ------------------
-Fix issues by submiting Pull Requests
-Submit new components
-Add issues
-Build apps
-Run workshops
-Join our weekly call
 
-Submitting Pull Request
+* Fix issues by [submitting Pull Requests](#submitting-a-pull-request)
+* Submit new components
+* Add [issues](https://github.com/mozilla-appmaker/appmaker/issues)
+* Build apps
+* Run workshops
+* Join our weekly call
+
+Submitting A Pull Request
 ------------------
 Switch to develop branch:
 ```
@@ -126,12 +127,10 @@ Submit changes:
 git push origin your-branch-name
 ```
 
-Submit Pull Request
-Go to https://github.com/mozilla-appmaker/appmaker
-Click on Compare and Pull Request button
-Write description of Pull Request and click Send Pull Request button
+Submit the pull request at https://github.com/mozilla-appmaker/appmaker. For
+more assistance, see Github's help page on [creating a pull request](https://help.github.com/articles/creating-a-pull-request).
 
 Side Note:
 We manage client-side dependencies using [bower](http://bower.io/). In order to add/remove these depencies, you need to have `bower` installed globally on your machine:
 
-Excecute `sudo npm install bower -g` (Mac & *nix users)
+Execute `sudo npm install bower -g` (Mac & *nix users)
