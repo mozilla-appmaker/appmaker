@@ -41,7 +41,7 @@ cd mozilla-appmaker
 [Fork](https://help.github.com/articles/fork-a-repo) this repository, and
 then clone your fork into the `mozilla-appmaker` directory:
 ```
-git clone git@github.com:mozilla-appmaker/your-username/appmaker.git mozilla-appmaker
+git clone https://github.com/<your username>/appmaker.git appmaker
 ```
 
 Your directory structure should look like this:
@@ -53,7 +53,7 @@ mozilla-appmaker/
 Configure remote:
 ```
 cd appmaker
-remote add upstream https://github.com/octocat/appmaker.git
+remote add upstream https://github.com/mozilla-appmaker/appmaker.git
 git fetch upstream
 ```
 
@@ -71,13 +71,13 @@ cp sample.env .env
 
 A short explanation of a complete `.env` file:
 ```
-COOKIE_SECRET: A long, complex string for cookie encryption.
+COOKIE_SECRET: A long, complex string for cookie encryption (NOTE: You define this for your local use, the string can be anything).
 STORE: Storage approach for publishing apps. `local` is the default, `s3` requires additional environment variables (prefixed by S3_)
 S3_BUCKET: S3 bucket name. e.g. "my.coolappmaker.com"
 S3_KEY: An access key for the S3 bucket listed above.
 S3_SECRET: The secret corresponding to the specified S3 access key.
 S3_OBJECT_PREFIX: String to prepend S3 objects. Useful for storing objects in folders. E.g. "level1/level2" => <bucket>/level1/level2/<filename>.
-PUBLISH_URL_PREFIX: String to prepend to filenames that are saved on S3. Try use the URL that matches the protocol from which assets are hosted to avoid mixed content blockage.
+PUBLISH_URL_PREFIX: String to prepend to filenames that are saved when publishing. Try use the URL that matches the protocol from which assets are hosted to avoid mixed content blockage.
 PERSONA_AUDIENCE: The hostname and port of Appmaker used by Persona for authentication
 PORT: The port that the web process listens on for incomming connections
 ```
