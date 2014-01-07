@@ -1,5 +1,4 @@
-Appmaker
-========
+# Appmaker
 
 Welcome to Appmaker (beta).
 
@@ -9,20 +8,29 @@ Appmaker apps are composed of web components, custom/resusable HTML tags, connec
 
 To learn more about web components, check out the [Polymer Project](http://www.polymer-project.org/).
 
-Appmaker Website: http://www.appmaker.mozillalabs.com
-IRC: '#appmaker' on Mozilla network
-
 More resources:
 
-  * a youtube video (that's already dated, but better than nothing): http://www.youtube.com/watch?v=RaRIdLgZTPI&feature=youtu.be
-  * some words written before any code was written: https://github.com/mozilla/appmaker-words/wiki
-  * the ROADMAP.md and [CONTRIBUTING.md](https://github.com/mozilla-appmaker/appmaker/blob/develop/CONTRIBUTING.md) documents in this directory.
+  * The [Appmaker website](http://www.appmaker.mozillalabs.com).
+  * The `#appmaker` channel on [irc.mozilla.org](http://irc.mozilla.org/).
+  * A [youtube video](http://www.youtube.com/watch?v=RaRIdLgZTPI&feature=youtu.be) (that's already dated, but better than nothing).
+  * [Appmaker -- why, what how](https://github.com/mozilla/appmaker-words/wiki) provides additional context about the motivation and use cases for the project, written before any code was forged.
+  * The [ROADMAP.md](https://github.com/mozilla-appmaker/appmaker/blob/develop/ROADMAP.md) and [CONTRIBUTING.md](https://github.com/mozilla-appmaker/appmaker/blob/develop/CONTRIBUTING.md) documents in this directory.
 
-Getting Started
-------------------
+## Getting Started
+
 This section covers how to get Appmaker running locally. The workflow is optimized for contributors.
 
+### Dependencies
+
 Make sure you have `nodejs`, `npm`, and `git` installed.
+
+`grunt` is required to run the test suite. To install grunt on unix and OS X,
+run `sudo npm install -g grunt-cli`.
+
+We manage client-side dependencies using [bower](http://bower.io/). In order to add/remove these dependencies, you need to have `bower` installed globally on your machine, which can be done on unix and OS X via
+`sudo npm install bower -g`.
+
+### Forking And Cloning The Repository
 
 Create a root `mozilla-appmaker` directory:
 ```
@@ -30,10 +38,8 @@ mkdir mozilla-appmaker
 cd mozilla-appmaker
 ```
 
-Fork this repo:
-Click the "Fork" button
-
-Clone your fork into the `mozilla-appmaker` directory:
+[Fork](https://help.github.com/articles/fork-a-repo) this repository, and
+then clone your fork into the `mozilla-appmaker` directory:
 ```
 git clone git@github.com:mozilla-appmaker/your-username/appmaker.git mozilla-appmaker
 ```
@@ -50,6 +56,8 @@ cd appmaker
 remote add upstream https://github.com/octocat/appmaker.git
 git fetch upstream
 ```
+
+### Environment Setup And Configuration
 
 Install Node packages:
 ```
@@ -74,17 +82,17 @@ PERSONA_AUDIENCE: The hostname and port of Appmaker used by Persona for authenti
 PORT: The port that the web process listens on for incomming connections
 ```
 
-How you can help
-------------------
-Fix issues by submiting Pull Requests
-Submit new components
-Add issues
-Build apps
-Run workshops
-Join our weekly call
+## How you can help
 
-Submitting Pull Request
-------------------
+* Fix issues by [submitting Pull Requests](#submitting-a-pull-request)
+* Submit new components
+* Add [issues](https://github.com/mozilla-appmaker/appmaker/issues)
+* Build apps
+* Run workshops
+* Join our weekly call
+
+## Submitting A Pull Request
+
 Switch to develop branch:
 ```
 cd mozilla-appmaker/appmaker
@@ -101,19 +109,13 @@ Create a new branch:
 git checkout -b your-branch-name
 ```
 
-Make changes to local copy.
-Commit changes.
-Make sure your patch still works with latest version of develop branch:
+Make changes to the local copy, commit your changes, and then make
+sure your patch still works with latest version of develop branch:
 ```
 git checkout develop
 git pull
 git checkout your-branch-name
 git rebase develop
-```
-
-`grunt` is required to test commits. To install grunt:
-```
-npm install -g grunt-cli
 ```
 
 Test commits:
@@ -126,12 +128,5 @@ Submit changes:
 git push origin your-branch-name
 ```
 
-Submit Pull Request
-Go to https://github.com/mozilla-appmaker/appmaker
-Click on Compare and Pull Request button
-Write description of Pull Request and click Send Pull Request button
-
-Side Note:
-We manage client-side dependencies using [bower](http://bower.io/). In order to add/remove these depencies, you need to have `bower` installed globally on your machine:
-
-Excecute `sudo npm install bower -g` (Mac & *nix users)
+Submit the pull request at https://github.com/mozilla-appmaker/appmaker. For
+more assistance, see Github's help page on [creating a pull request](https://help.github.com/articles/creating-a-pull-request).
