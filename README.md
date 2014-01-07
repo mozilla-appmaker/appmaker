@@ -8,14 +8,13 @@ Appmaker apps are composed of web components, custom/resusable HTML tags, connec
 
 To learn more about web components, check out the [Polymer Project](http://www.polymer-project.org/).
 
-Appmaker Website: http://www.appmaker.mozillalabs.com
-IRC: '#appmaker' on Mozilla network
-
 More resources:
 
-  * a youtube video (that's already dated, but better than nothing): http://www.youtube.com/watch?v=RaRIdLgZTPI&feature=youtu.be
-  * some words written before any code was written: https://github.com/mozilla/appmaker-words/wiki
-  * the ROADMAP.md and [CONTRIBUTING.md](https://github.com/mozilla-appmaker/appmaker/blob/develop/CONTRIBUTING.md) documents in this directory.
+  * The [Appmaker website](http://www.appmaker.mozillalabs.com).
+  * The `#appmaker` channel on [irc.mozilla.org](http://irc.mozilla.org/).
+  * A [youtube video](http://www.youtube.com/watch?v=RaRIdLgZTPI&feature=youtu.be) (that's already dated, but better than nothing).
+  * [Appmaker -- why, what how](https://github.com/mozilla/appmaker-words/wiki) provides additional context about the motivation and use cases for the project, written before any code was forged.
+  * The [ROADMAP.md](https://github.com/mozilla-appmaker/appmaker/blob/develop/ROADMAP.md) and [CONTRIBUTING.md](https://github.com/mozilla-appmaker/appmaker/blob/develop/CONTRIBUTING.md) documents in this directory.
 
 ## Getting Started
 
