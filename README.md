@@ -1,5 +1,4 @@
-Appmaker
-========
+# Appmaker
 
 Welcome to Appmaker (beta).
 
@@ -18,11 +17,21 @@ More resources:
   * some words written before any code was written: https://github.com/mozilla/appmaker-words/wiki
   * the ROADMAP.md and [CONTRIBUTING.md](https://github.com/mozilla-appmaker/appmaker/blob/develop/CONTRIBUTING.md) documents in this directory.
 
-Getting Started
-------------------
+## Getting Started
+
 This section covers how to get Appmaker running locally. The workflow is optimized for contributors.
 
+### Dependencies
+
 Make sure you have `nodejs`, `npm`, and `git` installed.
+
+`grunt` is required to run the test suite. To install grunt on unix and OS X,
+run `sudo npm install -g grunt-cli`.
+
+We manage client-side dependencies using [bower](http://bower.io/). In order to add/remove these dependencies, you need to have `bower` installed globally on your machine, which can be done on unix and OS X via
+`sudo npm install bower -g`.
+
+### Forking And Cloning The Repository
 
 Create a root `mozilla-appmaker` directory:
 ```
@@ -30,10 +39,8 @@ mkdir mozilla-appmaker
 cd mozilla-appmaker
 ```
 
-Fork this repo:
-Click the "Fork" button
-
-Clone your fork into the `mozilla-appmaker` directory:
+[Fork](https://help.github.com/articles/fork-a-repo) this repository, and
+then clone your fork into the `mozilla-appmaker` directory:
 ```
 git clone git@github.com:mozilla-appmaker/your-username/appmaker.git mozilla-appmaker
 ```
@@ -50,6 +57,8 @@ cd appmaker
 remote add upstream https://github.com/octocat/appmaker.git
 git fetch upstream
 ```
+
+### Environment Setup And Configuration
 
 Install Node packages:
 ```
@@ -74,8 +83,7 @@ PERSONA_AUDIENCE: The hostname and port of Appmaker used by Persona for authenti
 PORT: The port that the web process listens on for incomming connections
 ```
 
-How you can help
-------------------
+## How you can help
 
 * Fix issues by [submitting Pull Requests](#submitting-a-pull-request)
 * Submit new components
@@ -84,8 +92,8 @@ How you can help
 * Run workshops
 * Join our weekly call
 
-Submitting A Pull Request
-------------------
+## Submitting A Pull Request
+
 Switch to develop branch:
 ```
 cd mozilla-appmaker/appmaker
@@ -102,19 +110,13 @@ Create a new branch:
 git checkout -b your-branch-name
 ```
 
-Make changes to local copy.
-Commit changes.
-Make sure your patch still works with latest version of develop branch:
+Make changes to the local copy, commit your changes, and then make
+sure your patch still works with latest version of develop branch:
 ```
 git checkout develop
 git pull
 git checkout your-branch-name
 git rebase develop
-```
-
-`grunt` is required to test commits. To install grunt:
-```
-npm install -g grunt-cli
 ```
 
 Test commits:
@@ -129,8 +131,3 @@ git push origin your-branch-name
 
 Submit the pull request at https://github.com/mozilla-appmaker/appmaker. For
 more assistance, see Github's help page on [creating a pull request](https://help.github.com/articles/creating-a-pull-request).
-
-Side Note:
-We manage client-side dependencies using [bower](http://bower.io/). In order to add/remove these depencies, you need to have `bower` installed globally on your machine:
-
-Execute `sudo npm install bower -g` (Mac & *nix users)
