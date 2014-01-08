@@ -7,7 +7,7 @@ var urls = require('../lib/urls');
 
 module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPublisher) {
   var mongoose = require('mongoose');
-  var dbconn = mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost/appmakerdev',function(err) {
+  var dbconn = mongoose.connect(process.env.MONGOLAB_URI || process.env.MONGO_URI || 'mongodb://localhost/appmakerdev',function(err) {
       if (err) throw new Error("Problem connecting to mongodb. Is mongod running? Is your database name correct?");
   });
 
