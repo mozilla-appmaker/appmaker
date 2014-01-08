@@ -41,7 +41,7 @@ cd mozilla-appmaker
 [Fork](https://help.github.com/articles/fork-a-repo) this repository, and
 then clone your fork into the `mozilla-appmaker` directory:
 ```
-git clone https://github.com/<your username>/appmaker.git appmaker
+git clone git@github.com:<your username>/appmaker.git appmaker
 ```
 
 Your directory structure should look like this:
@@ -53,7 +53,7 @@ mozilla-appmaker/
 Configure remote:
 ```
 cd appmaker
-remote add upstream https://github.com/mozilla-appmaker/appmaker.git
+git remote add upstream git@github.com:mozilla-appmaker/appmaker.git
 git fetch upstream
 ```
 
