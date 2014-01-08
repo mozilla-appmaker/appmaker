@@ -8,4 +8,4 @@ deploy:
   app: appmaker-integration
   on:
     repo: mozilla-appmaker/appmaker
-    branch: deploy
+    branch: develop
