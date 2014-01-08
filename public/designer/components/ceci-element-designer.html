@@ -51,8 +51,8 @@
       broadcast: function (name, data) {
         this.super(arguments);
         var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
-        this.log(broadcastElement.on, 'broadcasts', name);
         if (broadcastElement) {
+          this.log(broadcastElement.on, 'broadcasts', name);
           var broadcastDetails = { channel : broadcastElement.on, handler : name, data: data};
           this.dispatchEvent(new CustomEvent('broadcastFired', {name: name, bubbles: true, detail: broadcastDetails}));
         }
