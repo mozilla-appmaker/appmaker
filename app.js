@@ -102,7 +102,8 @@ app.configure(function(){
       compress: true
   }));
 
-  app.use(express.static(path.join(__dirname, 'public')));
+  app.use('/', cors());
+  app.use('/', express.static(path.join(__dirname, 'public')));
 
   enableRedirects(app);
 });
