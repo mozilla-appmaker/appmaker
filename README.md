@@ -82,6 +82,24 @@ PERSONA_AUDIENCE: The hostname and port of Appmaker used by Persona for authenti
 PORT: The port that the web process listens on for incomming connections
 ```
 
+### Start the Server
+
+```
+foreman start
+```
+
+or
+
+```
+foreman start -p <PORT>
+```
+
+If you need foreman:
+
+```
+sudo gem install foreman
+```
+
 ## How you can help
 
 * Fix issues by [submitting Pull Requests](#submitting-a-pull-request)
