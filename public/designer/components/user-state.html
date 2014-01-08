@@ -15,6 +15,12 @@
           <span id="noApps">You don't have any saved apps!</span>
           <ul id="myapps" class="menu-options">
           </ul>
+          <h3 id="mycomponentsheading">My components</h3>
+          <div>
+            <a id="addComponent" class="button" on-click={{addComponent}}>Add component</a>
+          </div>
+          <ul id="mycomponents" class="menu-options">
+          </ul>
           <a id="signout" class="button" on-click="{{signoutClick}}">Sign Out</a>
         </div>
       </div>
@@ -253,6 +259,38 @@
         signoutClick: function() {
           navigator.id.logout();
         },
+        learnComponent: function(src) {
+          console.log('learning about a component', src);
+          var link = document.createElement('link');
+          link.setAttribute('rel', 'import');
+          link.setAttribute('href', src);
+          document.body.appendChild(link);
+          HTMLImports.importer.load(document, function() {
+            HTMLImports.parser.parseLink(link);
+            // CustomElements polyfill needs to process the dynamic imports for definitions.
+            CustomElements.parser.parseLink(link);
+          });
+        },
+        addComponent: function() {
+          var name = window.prompt("New component name");
+          var url = window.prompt("URL? (e.g. '/mozilla-appmaker/component-foo'");
+          var self = this;
+          $.ajax('/api/learncomponent', {
+            data: {
+              url: url,
+              name: name
+            },
+            type: 'post',
+            success: function (data) {
+              self.refreshComponentsList();
+              self.learnComponent(data.url);
+              console.log("Component learned successfully");
+            },
+            error: function (data) {
+              alert(data.responseJSON.error);
+            }
+          });
+        },
         attributeChangedCallback: function(attributeName) {
           if (attributeName == 'user') {
             this.refreshUserState();
@@ -287,6 +325,10 @@
           // go to the server and find out what the user's apps are and then...
           // Build the list of apps
           // Update "current app" in apps menu
+          this.refreshAppList();
+          this.refreshComponentsList();
+        },
+        refreshAppList: function() {
           var self = this;
           var myApps = this.shadowRoot.querySelector("#myapps");
           var noApps = this.shadowRoot.querySelector("#noApps");
@@ -315,6 +357,64 @@
                 });
                 app.appendChild(link);
                 myApps.appendChild(app);
+              });
+
+              if(count == 0){
+                noApps.style.display = "block";
+              } else {
+                noApps.style.display = "none";
+              }
+            } catch (e) {
+              console.log(e);
+            }
+          });
+        },
+        forgetComponent: function(url) {
+          var self = this;
+          $.ajax('/api/forgetcomponent', {
+            data: {
+              url: url
+            },
+            type: 'delete',
+            success: function (data) {
+              self.refreshComponentsList();
+            },
+            error: function (data, err) {
+              console.log("Something went wrong!");
+              console.error("Error while forgetting component: " + data.url, err);
+            }
+          });
+        },
+        addLinkForComponent: function(thename, theurl) {
+          var myComponents = this.shadowRoot.querySelector("#mycomponents");
+          var component = document.createElement('li');
+          var name = document.createElement('span');
+          var self = this;
+          name.textContent = thename;
+          component.appendChild(name);
+          var xmarksthespot = document.createElement('a');
+          xmarksthespot.textContent = 'x';
+          xmarksthespot.setAttribute('class', 'x');
+          xmarksthespot.addEventListener('click', function() {
+            self.forgetComponent(theurl);
+          });
+          component.appendChild(xmarksthespot);
+          component.setAttribute('class', 'componentlink');
+          myComponents.appendChild(component);
+        },
+        refreshComponentsList: function() {
+          var self = this;
+
+          var myComponents = this.shadowRoot.querySelector("#mycomponents");
+          myComponents.innerHTML = "";
+          $.getJSON("/api/mycomponents", function(data) {
+
+            try {
+              var count = 0;
+              $.each(data, function(key, val) {
+                count++;
+                self.addLinkForComponent(val.name, val.url);
+                self.learnComponent("/component" + val.url + "/component.html");
               });
 
               if(count == 0){
