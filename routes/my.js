@@ -7,8 +7,11 @@
 var request = require('request');
 
 module.exports = function (mongoose, dbconn) {
+  var componentSchema = mongoose.Schema({author:'string', name: 'string', url: 'string'});
+  var Component = mongoose.model('LearnedComponent', componentSchema, 'components');
+
   var appSchema = mongoose.Schema({author:'string', name: 'string', html: 'string'});
-  var App = mongoose.model('App', appSchema);
+  var App = mongoose.model('App', appSchema, 'apps');
   return {
     apps: function(request, response) {
       if (! request.session.email) {
@@ -117,6 +120,52 @@ module.exports = function (mongoose, dbconn) {
          response.json(200);
         }
       });
+    },
+    components: function(request, response) {
+      if (! request.session.email) {
+        response.json(401, {error: 'need to be signed in'});
+        return;
+      }
+      Component.find({author:request.session.email}).sort({"name":1}).exec(function (err, components) {
+        if (err){
+          console.log('Unable to retrieve components');
+          return response.json(500, 'Unable to retrieve components: ' + err);
+        }
+        return response.json(components);
+      });
+    },
+    learnComponent: function(request, response) {
+      if (! request.session.email) {
+        response.json(401, {error: 'need to be signed in'});
+        return;
+      }
+      //Check if app with same url already exists
+      Component.findOne({author:request.session.email, url: request.body.name}, function(err, obj) {
+        if (obj) {
+          return response.json(500, {error: 'We already know about this component.'});
+        } else {
+          var compObj = JSON.parse(JSON.stringify(request.body)) // make a copy
+          compObj.author = request.session.email;
+          var newComponent = new Component(compObj);
+          newComponent.save(function(err, component){
+            if (err) {
+              return response.json(500, {error: 'Component was not learned due to ' + err});
+            }
+            return response.json(component);
+          });
+          response.json(200);
+        }
+      });
+    },
+    forgetComponent: function(request, response) {
+      console.log('in forgetComponent', JSON.stringify(request.body));
+      Component.remove({author:request.session.email, url: request.body.url}, function(err){
+        if(err){
+           console.error("Error forgetting this component!");
+           return response.json(500, {error: 'Component was not deleted due to ' + err});
+        }
+      });
+      response.json(200);
     }
   }
 };
