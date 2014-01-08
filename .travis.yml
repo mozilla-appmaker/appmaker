@@ -1,3 +1,11 @@
 language: node_js
 node_js:
-  - "0.10"
+- '0.10'
+deploy:
+  provider: heroku
+  api_key:
+    secure: aPxb8i45/AYYnqwkciUhIWFI//sPype/D+WEFoVP6/RQA0hs93Xw3nuQ/JeT3mv/JgGHHYtCHLD08POfJBtQLbyTnPiu5EcBJdIfMnxkeqBOQsPGMUQEW93E8Zg1l+0unvj70nW5LwIC/kKIHJr3SBujST5HbP+zxio1K5NrlwI=
+  app: appmaker-integration
+  on:
+    repo: mozilla-appmaker/appmaker
+    branch: develop
