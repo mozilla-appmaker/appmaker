@@ -269,11 +269,14 @@
             HTMLImports.parser.parseLink(link);
             // CustomElements polyfill needs to process the dynamic imports for definitions.
             CustomElements.parser.parseLink(link);
+            console.log("in callback from html importer", link);
           });
         },
         addComponent: function() {
-          var name = window.prompt("New component name");
           var url = window.prompt("URL? (e.g. '/mozilla-appmaker/component-foo'");
+          if (! url) return;
+          var name = window.prompt("New component name");
+          if (! name) return;
           var self = this;
           $.ajax('/api/learncomponent', {
             data: {
@@ -370,6 +373,7 @@
           });
         },
         forgetComponent: function(url) {
+          console.log("trying to forget component", url);
           var self = this;
           $.ajax('/api/forgetcomponent', {
             data: {
@@ -414,7 +418,7 @@
               $.each(data, function(key, val) {
                 count++;
                 self.addLinkForComponent(val.name, val.url);
-                self.learnComponent("/component" + val.url + "/component.html");
+                self.learnComponent(val.url);
               });
 
               if(count == 0){
