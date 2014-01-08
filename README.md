@@ -41,7 +41,7 @@ cd mozilla-appmaker
 [Fork](https://help.github.com/articles/fork-a-repo) this repository, and
 then clone your fork into the `mozilla-appmaker` directory:
 ```
-git clone git@github.com:<your username>/appmaker.git appmaker
+git clone git@github.com:<your GitHub username>/appmaker.git appmaker
 ```
 
 Your directory structure should look like this:
@@ -71,6 +71,7 @@ cp sample.env .env
 
 A short explanation of a complete `.env` file:
 ```
+MONGO_URL: REQUIRED - the URI for your mongod instance and database, for example mongodb://localhost/appmakerdev (or whatever your database is named)
 COOKIE_SECRET: A long, complex string for cookie encryption (NOTE: You define this for your local use, the string can be anything).
 STORE: Storage approach for publishing apps. `local` is the default, `s3` requires additional environment variables (prefixed by S3_)
 S3_BUCKET: S3 bucket name. e.g. "my.coolappmaker.com"
@@ -80,6 +81,14 @@ S3_OBJECT_PREFIX: String to prepend S3 objects. Useful for storing objects in fo
 PUBLISH_URL_PREFIX: String to prepend to filenames that are saved when publishing. Try use the URL that matches the protocol from which assets are hosted to avoid mixed content blockage.
 PERSONA_AUDIENCE: The hostname and port of Appmaker used by Persona for authentication
 PORT: The port that the web process listens on for incomming connections
+```
+
+### Install and run MongoDB
+
+1. Install from MongoDB installation packages, brew, apt-get, etc
+2. Either configure MongoDB to run on startup or manually start the mongod daemon. You can also run mongod from foreman by adding it to your Procfile
+```
+mongod
 ```
 
 ### Start the Server
@@ -99,6 +108,9 @@ If you need foreman:
 ```
 sudo gem install foreman
 ```
+
+NOTE: foreman's configuration file is Procfile in the root of the appmaker directory
+Foreman explanation: http://blog.daviddollar.org/2011/05/06/introducing-foreman.html
 
 ## How you can help
 
