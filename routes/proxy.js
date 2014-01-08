@@ -54,7 +54,7 @@ module.exports = {
   component: function(req, res) {
     var org = req.params.org;
     var component = req.params.component;
-    var filepath = req.params.path;
+    var filepath = req.params[0];
 
     // if someone has setup an environment variable COMPONENTS_DIR where component repos live, we look there.
     var envvar = "COMPONENTS_DIR";
