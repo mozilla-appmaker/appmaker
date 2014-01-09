@@ -33,9 +33,9 @@
         },
         showMenu : function() {
           var listeners = Object.keys(this.component.ceci.listeners);
-          if(listeners.length > 0) {
+          var broadcasts = Object.keys(this.component.ceci.broadcasts);
+          if(this.channelType == "listen" && listeners.length > 0 || this.channelType == "broadcast" && broadcasts.length > 0) {
             this.menu.style.display = "block";
-            this.menu.classList.add("menu-in");
             var height = this.menu.offsetHeight;
             this.menu.style.marginTop = -1 * (height/2) + "px";
           }
