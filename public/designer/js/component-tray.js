@@ -3,8 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["designer/utils", "ceci/ceci-designer"],
-  function(Util, Ceci) {
+  ["designer/utils", "ceci/ceci-designer", "l10n"],
+  function(Util, Ceci, L10n) {
     "use strict";
 
     var knownComponents = [];
@@ -13,6 +13,8 @@ define(
       var trayComponentContainer = document.getElementById('components');
 
       Ceci.forEachComponent(function (name, component) {
+        var urlComponent = window.CustomElements.registry[name].prototype.resolvePath('locale/' + L10n.getCurrentLang() + '.json');
+        L10n.ready({url: urlComponent});
 
         // Avoid adding components that are already in the tray
         if (trayComponentContainer.querySelector('designer-component-tray-item[name="' + name + '"]')) return;

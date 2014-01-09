@@ -14,6 +14,15 @@
 
     <script src="/vendor/requirejs/require.js"></script>
     <script src="/javascripts/requireConfig.js"></script>
+    <script>
+    (function () {
+        // We need to make sure we have our client-side .json file loaded before
+        // all the components so that we can use it when the HTML file loaded.
+      require(['l10n'], function(localized) {
+        localized.ready({url: "/strings/" + localized.getCurrentLang() });
+      });
+    })();
+    </script>
     <script src="/vendor/platform/platform.js"></script>
     <script src="/vendor/polymer/polymer.js"></script>
 
@@ -44,6 +53,7 @@
     <link rel="import" href="/component/mozilla-appmaker/component-image/component.html">
     <link rel="import" href="/component/mozilla-appmaker/component-header/component.html">
     <link rel="import" href="/component/mozilla-appmaker/component-text-input/component.html">
+    <link rel="import" href="/component/mozilla-appmaker/component-spacer/component.html">
 
     <link rel="import" href="/designer/components/ceci-element-designer.html">
     <link rel="import" href="/designer/components/ceci-card-designer.html">

@@ -55,10 +55,12 @@
     </div>
   </template>
   <script>
+  require(['l10n'], function(l10n) {
     Polymer('design-log', {
       ready: function() {
         this.logs = [];
         var that = this;
+        this.$.clear.innerHTML = l10n.get("Clear");
         document.addEventListener('log', function(event) {
           that.logs.push(event.detail);
           setTimeout (function () {
@@ -70,5 +72,6 @@
         this.logs = [];
       }
     });
+  });
   </script>
 </polymer-element>

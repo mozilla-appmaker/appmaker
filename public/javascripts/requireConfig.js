@@ -9,7 +9,7 @@ requirejs.config({
 
     "jquery": "/vendor/jquery/jquery.min",
 
-    "localized": "/vendor/webmaker-i18n/localized",
+    "l10n": "l10n",
 
     "jquery-ui": "/vendor/jquery-ui/ui/minified/jquery-ui.min",
 

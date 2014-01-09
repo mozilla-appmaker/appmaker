@@ -64,11 +64,12 @@ app.configure(function(){
 
   // Setup locales with i18n
   app.use(i18n.middleware({
-    supported_languages: ["en-US", "th-TH"],
+    supported_languages: ["en-US", "th-TH", "pt-BR"],
     default_lang: "en-US",
     mappings: {
       "en": "en-US",
-      "th": "th-TH"
+      "th": "th-TH",
+      "pt": "pt-BR"
      },
     translation_directory: path.resolve( __dirname, "locale" )
   }));

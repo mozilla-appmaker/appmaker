@@ -6,6 +6,8 @@
     </div>
   </template>
   <script>
+  require(['l10n'], function(l10n) {
+    l10n.ready({url: "/strings/" + l10n.getCurrentLang()});
     Polymer('ceci-card-nav', {
       checked : false,
       ready: function() {
@@ -46,7 +48,7 @@
       addCardTab : function(index, card){
         var t = this;
         var newthumb = document.createElement("div");
-        newthumb.innerHTML = "<span class='card-name'>Page " + index + "</span><a title='Delete this card' href='#' class='delete-card'></a>";
+        newthumb.innerHTML = "<span class='card-name'>" + l10n.get("Page") + " " + index + "</span><a title='" + l10n.get("Delete this card") + "' href='#' class='delete-card'></a>";
         newthumb.classList.add("card");
         newthumb.onclick = function() {
           card.show();
@@ -80,5 +82,6 @@
        this.app.addCard();
       }
     });
+  });
   </script>
 </polymer-element>
