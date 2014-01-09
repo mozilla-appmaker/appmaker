@@ -7,7 +7,7 @@
         top: 0;
       }
 
-      :host #handle {
+      :host .handle {
         position: absolute;
         right: 0;
         top: 0;
@@ -23,22 +23,22 @@
         /* https://github.com/mozilla-appmaker/appmaker/issues/685 */
         background-image: url('/designer/images/move.png');
         background-repeat: no-repeat;
-        background-position: 3px 3px;
+        background-position: 5px 5px;
         margin: 3px;
         z-index: 9999;
         visibility: hidden;
+        display: block;
       }
 
-      :host:hover #handle {
+      :host:hover .handle {
         visibility: visible;
       }
 
-      :host #handle:hover {
+      :host .handle:hover {
         opacity: 1;
       }
     </style>
     <content></content>
-    <div id="handle"></div>
 
     <ceci-listen-vis></ceci-listen-vis>
     <ceci-channel-menu channelType="listen"></ceci-channel-menu>
@@ -64,6 +64,12 @@
         message.eventType = eventType;
         message.eventName = eventName;
         this.dispatchEvent(new CustomEvent('log', {bubbles: true, detail: message}));
+      },
+      enteredView: function () {
+        this.super();
+        var handle = document.createElement('div');
+        handle.className = 'handle';
+        this.appendChild(handle);
       }
     });
   </script>
