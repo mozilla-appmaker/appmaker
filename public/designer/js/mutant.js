@@ -39,7 +39,6 @@ define(
         selectElement(element);
       });
       selectElement(element);
-      console.log(e);
     }, false);
   }
 );

@@ -45,13 +45,6 @@ define(
           if (card) {
             var newElement = document.createElement(name);
             card.appendChild(newElement);
-            window.dispatchEvent(new CustomEvent(
-              'CeciElementAdded',
-              {
-                bubbles: true,
-                detail: newElement
-              }
-            ));
           }
         }, false);
 
