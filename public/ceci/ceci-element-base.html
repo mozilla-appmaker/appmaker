@@ -126,7 +126,7 @@
             return;
           }
 
-          var attributeResults = processAttributes(this.ceci.editables, ceciDefinition.attributes);
+          var attributeResults = processAttributes(this.ceci.editables, ceciDefinition.attributes || {});
 
           Object.keys(attributeResults.attributeListeners).forEach(function (attributeName) {
             var listenerName = attributeResults.attributeListeners[attributeName];
