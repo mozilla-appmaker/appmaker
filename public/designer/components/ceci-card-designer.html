@@ -35,6 +35,7 @@
 
           $(that).sortable({
             distance : 10,
+            handle: '.handle',
             start: function () {
               that.$.garbageLeft.hidden = false;
               that.$.garbageLeft.classList.remove('open');
