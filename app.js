@@ -148,6 +148,8 @@ routes = require('./routes')(
   makeAPIPublisher
 );
 
+app.locals.extraComponents = routes.proxy.findComponents();
+
 app.get('/', routes.index);
 
 app.all('/designer', routes.designer);

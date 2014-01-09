@@ -31,6 +31,10 @@
 
     <link rel="import" href="/ceci/ceci-channel-menu.html">
 
+    <% extraComponents.forEach(function(href) { %>
+    <link rel="import" href="<%= href %>">
+    <% }) %>
+
     <link rel="import" href="/component/mozilla-appmaker/component-button/component.html">
     <link rel="import" href="/component/mozilla-appmaker/component-chat-window/component.html">
     <link rel="import" href="/component/mozilla-appmaker/component-counter/component.html">
