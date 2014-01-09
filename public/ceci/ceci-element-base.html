@@ -224,7 +224,7 @@
           }
         },
         enteredView: function () {
-          // dummy function to prevent a polymer super() loop (looks like a polymer bug)
+          document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));
         }
       });
     })();
