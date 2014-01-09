@@ -121,6 +121,16 @@ Foreman explanation: http://blog.daviddollar.org/2011/05/06/introducing-foreman.
 * Run workshops
 * Join our weekly call
 
+## Component Development
+Required reading:
+https://github.com/mozilla-appmaker/appmaker/blob/develop/public/ceci/README.md
+
+Ceci is a set of foundational elements used in a AppMaker app, implemented as a set of [Polymer](http://polymer-project.org/) components.
+If you create a new component, it's really an HTML tag that Polymer processes and then injects a variety of capabilities into that tag / JS object (TODO better explanation)
+
+### Example AppMaker Component
+TODO link to the Counter example, provide explanation
+
 ## Submitting A Pull Request
 
 Switch to develop branch:
@@ -134,9 +144,9 @@ Pull the latest version:
 git pull
 ```
 
-Create a new branch:
+Create a new branch (for example a feature branch):
 ```
-git checkout -b your-branch-name
+git checkout -b your-feature-branch-name
 ```
 
 Make changes to the local copy, commit your changes, and then make
@@ -144,7 +154,7 @@ sure your patch still works with latest version of develop branch:
 ```
 git checkout develop
 git pull
-git checkout your-branch-name
+git checkout your-feature-branch-name
 git rebase develop
 ```
 
@@ -155,7 +165,7 @@ grunt
 
 Submit changes:
 ```
-git push origin your-branch-name
+git push origin your-feature-branch-name
 ```
 
 Submit the pull request at https://github.com/mozilla-appmaker/appmaker. For
