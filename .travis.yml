@@ -4,7 +4,7 @@ node_js:
 deploy:
   provider: heroku
   api_key:
-    secure: aPxb8i45/AYYnqwkciUhIWFI//sPype/D+WEFoVP6/RQA0hs93Xw3nuQ/JeT3mv/JgGHHYtCHLD08POfJBtQLbyTnPiu5EcBJdIfMnxkeqBOQsPGMUQEW93E8Zg1l+0unvj70nW5LwIC/kKIHJr3SBujST5HbP+zxio1K5NrlwI=
+    secure: fys/5xYyoJfE/v54v56u8J9YbsjqP6wHRMwh831wyDLCjL18vjMGDqglVKXfw9X3WegNaX4YR0ZOIqyQ70IymMBYTXt8Zp/BfKwu2nFnF18RsnjlEidFi6/JQj1afb/XKl834Z+emMSD3rSeCeeVMkx9DKK0HhBdZEiFBRV8D20=
   app: appmaker-integration
   on:
     repo: mozilla-appmaker/appmaker
