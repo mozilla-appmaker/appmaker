@@ -1,6 +1,15 @@
 module.exports = function( grunt ) {
   grunt.initConfig({
     pkg: grunt.file.readJSON( "package.json" ),
+    simplemocha: {
+      options: {
+        timeout: 3000,
+        ignoreLeaks: true,
+        ui: 'bdd',
+        reporter: 'spec'
+      },
+      all: { src: 'test/*.js' }
+    },
     csslint: {
       lax: {
         options: {
@@ -55,8 +64,10 @@ module.exports = function( grunt ) {
   grunt.loadNpmTasks( "grunt-contrib-csslint" );
   grunt.loadNpmTasks( "grunt-contrib-jshint" );
   grunt.loadNpmTasks('grunt-lint-inline');
+  grunt.loadNpmTasks('grunt-simple-mocha');
 
   // TODO: the csslinting is turned off right now, because the number
   //       of warnings is staggering. Some make sense, some don't.
-  grunt.registerTask( "default", [ /*"csslint",*/ "jshint", "inlinelint" ]);
+  grunt.registerTask( "default", [ /*"csslint",*/ "jshint", "inlinelint",
+                                   "simplemocha" ]);
 };

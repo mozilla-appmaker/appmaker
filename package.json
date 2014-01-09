@@ -42,11 +42,13 @@
   },
   "devDependencies": {
     "foreman": "~0.0.25",
+    "mocha": "1.17.0",
     "grunt": "~0.4.1",
     "grunt-cli": "~0.1.9",
     "grunt-contrib-jshint": "~0.6.3",
     "grunt-contrib-csslint": "~0.1.2",
-    "grunt-lint-inline": "~0.3.2"
+    "grunt-lint-inline": "~0.3.2",
+    "grunt-simple-mocha": "~0.4.0"
   },
   "scripts": {
     "test": "grunt",
