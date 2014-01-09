@@ -4,13 +4,24 @@
   </template>
   <script>
     Polymer('ceci-broadcast', {
+      _element: null,
       fire: function (data, extra) {
         var channel = this.on;
         var e = new CustomEvent(channel, {bubbles: true, detail: {
           data: data,
-          extra: extra
+          extra: extra,
+          originCeciElement: this._element
         }});
         document.dispatchEvent(e);
+      },
+      enteredView: function () {
+        while (true) {
+          this._element = this.parentNode;
+          if (!this._element) break;
+          if (this._element.localName.indexOf('ceci-') === 0 && ['ceci-listen', 'ceci-broadcast'].indexOf(this._element.localName) === -1) {
+            break;
+          }
+        }
       }
     });
   </script>
