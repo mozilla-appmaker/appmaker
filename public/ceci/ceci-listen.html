@@ -7,7 +7,9 @@
       ready: function () {
         var that = this;
         this._eventListener = function (e) {
-          if (that._element && that._element[that._handler]) {
+          // Make sure that this <ceci-listen> is inside a valid ceci element, and that the broadcast which triggered this
+          // listener did not originate inside the same ceci element. i.e. an element cannot listen to its own broadcasts.
+          if (that._element && that._element !== e.detail.originCeciElement && that._element[that._handler]) {
             that._element[that._handler](e.detail.data, e.detail.extra);
             var listenerDetails = {
               handler : that._handler,
