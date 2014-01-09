@@ -32,9 +32,8 @@
           this.menu.style.display = "none";
         },
         showMenu : function() {
-          var listeners = Object.keys(this.component.ceci.listeners);
-          var broadcasts = Object.keys(this.component.ceci.broadcasts);
-          if(this.channelType == "listen" && listeners.length > 0 || this.channelType == "broadcast" && broadcasts.length > 0) {
+          var items = this.channelType == "listen" ? Object.keys(this.component.ceci.listeners) : Object.keys(this.component.ceci.broadcasts);
+          if (items.length > 0) {
             this.menu.style.display = "block";
             var height = this.menu.offsetHeight;
             this.menu.style.marginTop = -1 * (height/2) + "px";

@@ -98,7 +98,9 @@ define(["jquery"], function($) {
             app.innerHTML = data.html;
             localStorage.currentApp = name;
             userState.okAppLoad(name);
-            document.querySelector('ceci-card-nav').buildTabs;
+            // Update the page/card tabs
+            var cardNav = document.querySelector('ceci-card-nav');
+            cardNav.buildTabs();
           },
           error: function (data) {
             console.error('Error while loading app:');
