@@ -19,8 +19,6 @@
     "express": "~3.3.4",
     "express-persona": "~0.1.0",
     "ejs-locals": "~1.0.2",
-    "foreman": "~0.0.25",
-    "jsdom": "~0.8.6",
     "knox": "~0.8.6",
     "less": "~1.5.1",
     "less-middleware": "~0.1.14",
@@ -43,6 +41,7 @@
     "npm": ">1.2.x"
   },
   "devDependencies": {
+    "foreman": "~0.0.25",
     "grunt": "~0.4.1",
     "grunt-cli": "~0.1.9",
     "grunt-contrib-jshint": "~0.6.3",
