@@ -51,6 +51,19 @@ module.exports = {
     });
   },
 
+  findComponents: function() {
+    var componentsDir = process.env["COMPONENTS_DIR"];
+
+    if (!componentsDir) return [];
+
+    return fs.readdirSync(componentsDir).filter(function(filename) {
+      return fs.existsSync(path.join(componentsDir, filename,
+                                     'component.html'));
+    }).map(function(name) {
+      return '/component/mozilla-appmaker/' + name + '/component.html';
+    });
+  },
+
   component: function(req, res) {
     var org = req.params.org;
     var component = req.params.component;
