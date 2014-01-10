@@ -107,7 +107,6 @@ define(['inflector', 'colorpicker.core'], function (Inflector, ColorPickerDummy)
         init: function (event, color) {
         },
         select: function (event, color) {
-          console.log('fpokwef', color);
           input[0].value = '#' + color.formatted;
           element.setAttribute(attributeName, '#' + color.formatted);
         },
@@ -141,7 +140,6 @@ define(['inflector', 'colorpicker.core'], function (Inflector, ColorPickerDummy)
       return handler(element, attributeName, title, value, definition);
     },
     displayAttributes: function (element) {
-
       var attributeList = $(".editable-attributes");
 
       attributeList.html("");
@@ -156,9 +154,6 @@ define(['inflector', 'colorpicker.core'], function (Inflector, ColorPickerDummy)
         var uiElement = editable.getAttributeUIElement(element, attributeName, attributeDefinition);
         attributeList.append(uiElement);
       });
-
-      var editables = $(".editable-section");
-      editables.show();
     }
   };
 
