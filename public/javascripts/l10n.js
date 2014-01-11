@@ -24,7 +24,7 @@ var l10n = {
             console.log("[L10n]: Translation file cached. Firing callback for: ", url);
 
             var data = _requestCache[url].response;
-            for (key in data) {
+            for (var key in data) {
               if(data.hasOwnProperty(key)) {
                 _strings[key] = data[key];
               }
@@ -56,7 +56,7 @@ var l10n = {
           try {
             _requestCache[url].response = JSON.parse(this.responseText);
             var data = JSON.parse(this.responseText);
-            for (key in data) {
+            for (var key in data) {
               if(data.hasOwnProperty(key)) {
                 _strings[key] = data[key];
               }
@@ -72,7 +72,7 @@ var l10n = {
       var html = document.querySelector( "html" );
       return html && html.lang ? html.lang : "en-US";
     }
-  }
+  };
   return l10n;
 });
 

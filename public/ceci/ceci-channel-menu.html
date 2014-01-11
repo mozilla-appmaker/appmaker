@@ -98,6 +98,12 @@
             };
           }
 
+          function showColorUI(){
+            this.style.display = "none";
+            var colorMenu = this.parentNode.querySelector(".color-ui");
+            colorMenu.style.display = "block";
+          }
+
           for (var key in communicators) {
             if (communicators.hasOwnProperty(key)) {
 
@@ -109,11 +115,7 @@
               that.menu.appendChild(channelOption);
               channelOption.setAttribute(handlerType, key);
 
-              channelOption.querySelector("label").addEventListener('click', function(){
-                this.style.display = "none";
-                var colorMenu = this.parentNode.querySelector(".color-ui");
-                colorMenu.style.display = "block";
-              });
+              channelOption.querySelector("label").addEventListener('click', showColorUI);
 
               var colorOptions = channelOption.querySelectorAll(".color-ui .color");
 
@@ -126,7 +128,8 @@
               }
 
               //Set up all of the click stuff for color options
-              channelOption.querySelector(".color-ui").addEventListener("click",colorListClickHandler(handlerType));
+              channelOption.querySelector(".color-ui").addEventListener("click",colorListClickHandler(handlerType)
+              );
             }
           }
         }

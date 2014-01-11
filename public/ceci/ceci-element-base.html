@@ -238,7 +238,7 @@
         },
         localized: function () {
           var attributes = this.ceci.attributes;
-          for(attribute in attributes) {
+          for(var attribute in attributes) {
             if (attributes.hasOwnProperty(attribute)) {
               this[attribute] = this.gettext(this.localName + "/attributes/" + attribute) || this[attribute];
             }
