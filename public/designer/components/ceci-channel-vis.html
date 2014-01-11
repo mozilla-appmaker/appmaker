@@ -8,10 +8,9 @@
       enteredView: function () {
         var that = this;
         this.component = this.parentNode.host;
+        // TODO: This shouldn't be done on the window
         window.addEventListener('channelUpdated', function(data){
-          if(that.component.impl == data.impl.target.parentNode){
-            that.updateChannelVis();
-          }
+          that.updateChannelVis();
         });
         this.updateChannelVis();
       },
