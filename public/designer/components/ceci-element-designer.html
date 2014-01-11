@@ -66,10 +66,10 @@
         this.dispatchEvent(new CustomEvent('log', {bubbles: true, detail: message}));
       },
       enteredView: function () {
-        this.super();
         var handle = document.createElement('div');
         handle.className = 'handle';
         this.appendChild(handle);
+        this.super();
       }
     });
   </script>

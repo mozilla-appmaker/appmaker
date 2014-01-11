@@ -35,7 +35,7 @@ catch(e) {
 var urls = require('./lib/urls');
 var localStore = require('./lib/local-store');
 var s3Store = require('./lib/s3-store');
-var makeAPIPublisher = require('./lib/makeapi-publisher').create(process.env.MAKEAPI_URL, process.env.MAKEAPI_KEY, process.env.MAKEAPI_SECRET);
+var makeAPIPublisher = require('./lib/makeapi-publisher').create(process.env.MAKEAPI_URL, process.env.MAKEAPI_ID, process.env.MAKEAPI_SECRET);
 
 // Cache fonts for 180 days.
 var MAX_FONT_AGE_MS = 1000 * 60 * 60 * 24 * 180;
@@ -148,6 +148,8 @@ routes = require('./routes')(
   makeAPIPublisher
 );
 
+app.locals.extraComponents = routes.proxy.findComponents();
+
 app.get('/', routes.index);
 
 app.all('/designer', routes.designer);
@@ -191,6 +193,9 @@ app.get('/api/app', routes.my.app);
 app.post('/api/rename_app', routes.my.renameApp);
 app.post('/api/update_app', routes.my.updateApp);
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
-});
+module.exports = app;
+
+if (!module.parent)
+  http.createServer(app).listen(app.get('port'), function(){
+    console.log("Express server listening on port " + app.get('port'));
+  });

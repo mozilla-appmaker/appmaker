@@ -119,6 +119,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
               tags: ['appmaker'],
               description: 'Appmaker ' + folderName,
               title: 'Appmaker ' + folderName,
+              email: req.session.email
             }, function (err, make) {
               if (err) {
                 console.error(err);

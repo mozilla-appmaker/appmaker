@@ -2,7 +2,6 @@
   <template>
     <style>
       :host {
-        position: absolute;
         width: 100%;
         height: 100%;
         display: none;
@@ -22,7 +21,6 @@
       :host #middle,
       :host #bottom {
         display: block;
-        position: absolute;
         width: 100%;
       }
 
@@ -53,17 +51,6 @@
   <script>
     Polymer('ceci-card-base', {
       ready: function () {
-        var that = this;
-        var observer = new MutationObserver(function (mutations) {
-          mutations.forEach(function (mutation) {
-            Array.prototype.forEach.call(mutation.addedNodes, function (addedNode) {
-              if (addedNode.localName.indexOf('ceci-') === 0) {
-                document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: addedNode}));
-              }
-            });
-          });
-        });
-        observer.observe(this, { childList: true });
       },
       show: function () {
         this.setAttribute('visible', true);
