@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-define(["jquery"], function($) {
+define(["jquery", "l10n"], function($, l10n) {
     return {
       getCurrentApp: function(){
         var currentApp = localStorage.currentApp;
@@ -45,7 +45,7 @@ define(["jquery"], function($) {
           },
           type: 'post',
           success: function (data) {
-            alert('App published successfully: ' + data.app);
+            alert(l10n.get('App published successfully:') + ' ' + data.app);
           },
           error: function (data) {
             console.error(data);
