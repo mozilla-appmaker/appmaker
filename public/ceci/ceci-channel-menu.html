@@ -41,7 +41,7 @@
           }
         },
         changeChannel : function(handlerType, handler ,color){
-          var visEl = this.component.querySelector("ceci-"+this.channelType+"["+handlerType+"="+handler+"]");
+          var visEl = this.component.querySelector("ceci-"+this.channelType+"["+handlerType+"=\""+handler+"\"]");
           if (color == "false"){
              if (visEl){
                visEl.parentNode.removeChild(visEl);
@@ -66,18 +66,12 @@
           if(this.channelType == "broadcast") {
             communicators = this.component.ceci.broadcasts;
             handlerType = "from";
-          } else {
+          }
+          else {
             communicators = this.component.ceci.listeners;
             handlerType = "for";
           }
 
-          function labelClickHandler(){
-            return function(){
-              this.style.display = "none";
-              var colorMenu = this.parentNode.querySelector(".color-ui");
-              colorMenu.style.display = "block";
-            };
-          }
 
           function colorClickHandler(handlerType){
             return function(event) {
@@ -99,7 +93,7 @@
                 var handler = this.parentNode.getAttribute(handlerType);
                 that.changeChannel(handlerType, handler, color);
                 channelOption.querySelector("label").style.display = "block";
-                channelOption.querySelector("label .chosen-color").setAttribute("color",color);
+                channelOption.querySelector("label .chosen-color").setAttribute("color", color);
                 channelOption.querySelector(".color-ui").style.display = "none";
               }
             };
@@ -114,8 +108,14 @@
               channelOption.querySelector(".channel-name").textContent = key;
 
               that.menu.appendChild(channelOption);
-              channelOption.setAttribute(handlerType,key);
-              channelOption.querySelector("label").addEventListener('click', labelClickHandler());
+              channelOption.setAttribute(handlerType, key);
+
+              channelOption.querySelector("label").addEventListener('click', function(){
+                this.style.display = "none";
+                var colorMenu = this.parentNode.querySelector(".color-ui");
+                colorMenu.style.display = "block";
+              });
+
               var colorOptions = channelOption.querySelectorAll(".color-ui .color");
 
               //Check if there's a listener for that element already and set the appropriate color.
