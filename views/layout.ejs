@@ -14,7 +14,17 @@
 
     <script src="/vendor/requirejs/require.js"></script>
     <script src="/javascripts/requireConfig.js"></script>
-    <script src="/vendor/polymer/polymer.min.js"></script>
+    <script>
+    (function () {
+        // We need to make sure we have our client-side .json file loaded before
+        // all the components so that we can use it when the HTML file loaded.
+      require(['l10n'], function(localized) {
+        localized.ready({url: "/strings/" + localized.getCurrentLang() });
+      });
+    })();
+    </script>
+    <script src="/vendor/platform/platform.js"></script>
+    <script src="/vendor/polymer/polymer.js"></script>
 
     <script src="/vendor/angular/angular.min.js"></script>
     <script src="/vendor/angular-resource/angular-resource.min.js"></script>
@@ -36,6 +46,7 @@
     <% }) %>
 
     <link rel="import" href="/component/mozilla-appmaker/component-button/component.html">
+    <link rel="import" href="/component/mozilla-appmaker/component-alternating-gate/component.html">
     <link rel="import" href="/component/mozilla-appmaker/component-chat-window/component.html">
     <link rel="import" href="/component/mozilla-appmaker/component-counter/component.html">
     <link rel="import" href="/component/mozilla-appmaker/component-fireworks/component.html">
@@ -43,6 +54,7 @@
     <link rel="import" href="/component/mozilla-appmaker/component-image/component.html">
     <link rel="import" href="/component/mozilla-appmaker/component-header/component.html">
     <link rel="import" href="/component/mozilla-appmaker/component-text-input/component.html">
+
     <link rel="import" href="/component/mozilla-appmaker/component-form/component.html">
     <link rel="import" href="/component/mozilla-appmaker/component-dataview/component.html">
     <link rel="import" href="/component/mozilla-appmaker/component-editform/component.html">

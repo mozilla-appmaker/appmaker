@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="menu-wrapper app-menu">
-        <a class="menu-button button" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">
+        <a class="menu-button button" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}" id="App">
           <span class="icon"></span>
           App
         </a>
@@ -37,15 +37,7 @@
   </template>
   <script>
   (function() {
-    require(['jquery', 'persona', 'designer/application', 'localized'], function(jquery, persona, application, localized) {
-
-      // This is used so that we can replace the text in those buttons inline
-      // when the DOM was ready only.
-      localized.ready(function(){
-        $("#signin").html(localized.get("login"))
-        $("#myappsheading").html(localized.get("My apps"))
-        $("#signout").html(localized.get("logout"))
-      });
+    require(['l10n', 'jquery', 'persona', 'designer/application'], function(l10n, jquery, persona, application) {
 
       var user = {
         email: '',
@@ -101,6 +93,21 @@
         ready: function() {
           var that = this;
 
+
+          l10n.ready({url: "/strings/" + l10n.getCurrentLang()});
+          that.$.signin.innerHTML = l10n.get("Sign In");
+          that.$.myappsheading.innerHTML = l10n.get("My apps");
+          that.$.noApps.innerHTML = l10n.get("You don't have any saved apps!");
+          that.$.signout.innerHTML = l10n.get("Sign Out");
+          that.$.App.innerHTML = l10n.get("App");
+          that.$.saveAppAs.innerHTML = l10n.get("Save As");
+          that.$.saveApp.innerHTML = l10n.get("Save");
+          that.$.renameApp.innerHTML = l10n.get("Rename");
+          that.$.publishApp.innerHTML = l10n.get("Publish");
+          that.$.deleteApp.innerHTML = l10n.get("Delete");
+          that.$.newApp.innerHTML = l10n.get("New App");
+
+
           document.addEventListener('signInStarted', function (event) {
             that.signInStarted();
           });
@@ -119,7 +126,7 @@
                 application.loadAppByName(application.getCurrentApp());
                 that.editingmode = "saved";
               } else {
-                that.updateAppName("Unsaved App");
+                that.updateAppName(l10n.get("Unsaved App"));
                 that.editingmode = "draft";
               }
             } else if (that.user.state == 'signedout') {
@@ -164,12 +171,12 @@
           //Rename App
           this.$.renameApp.addEventListener("click", function() {
             var oldName = application.getCurrentApp();
-            var newName = window.prompt("What do you want to call this app?");
+            var newName = window.prompt(l10n.get("What do you want to call this app?"));
             var html = document.querySelector('ceci-app').innerHTML;
             if(newName){
               application.renameApp(oldName, newName);
             } else {
-              alert("App names can't be blank.");
+              alert(l10n.get("App names can't be blank."));
             }
           });
 
@@ -201,7 +208,7 @@
 
           //Save App As
           this.$.saveAppAs.addEventListener("click", function() {
-            var name = window.prompt("What do you want to call this app?");
+            var name = window.prompt(l10n.get("What do you want to call this app?"));
             var html = document.querySelector('ceci-app').innerHTML;
             if(name){
               application.saveApp(name,html);
@@ -227,7 +234,7 @@
         },
         failedAppLoad: function(){
           application.clearCurrentApp();
-          this.updateAppName("Unsaved App");
+          this.updateAppName(l10n.get("Unsaved App"));
         },
         okAppLoad: function(name){
           this.updateAppName(name);
@@ -291,7 +298,7 @@
           var myApps = this.shadowRoot.querySelector("#myapps");
           var noApps = this.shadowRoot.querySelector("#noApps");
           var currentApp = application.getCurrentApp() || "";
-          this.updateAppName(application.getCurrentApp() || "Unsaved App");
+          this.updateAppName(application.getCurrentApp() || l10n.get("Unsaved App"));
 
           myApps.innerHTML = "";
           $.getJSON("/api/myapps", function(data) {
