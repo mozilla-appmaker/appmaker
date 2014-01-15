@@ -40,7 +40,7 @@ var l10n = {
 
 
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
+        xhr.open('GET', url, false);
         xhr.onreadystatechange = function(){
           _requestCache[url] = {};
           _requestCache[url].status = xhr.status;
