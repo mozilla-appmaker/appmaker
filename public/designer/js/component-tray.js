@@ -35,7 +35,7 @@ define(
 
         item.setAttribute('name', name);
         item.setAttribute('thumbnail', meta.thumbnail);
-        item.setAttribute('label', Util.prettyName(name));
+        item.setAttribute('label', meta.name || Util.prettyName(name));
 
         item.setAttribute('description', meta.description);
         item.setAttribute('author', meta.author);
