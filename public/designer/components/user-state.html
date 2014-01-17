@@ -19,9 +19,9 @@
         </div>
       </div>
       <div class="menu-wrapper app-menu">
-        <a class="menu-button button" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}" id="App">
+        <a class="menu-button button" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">
           <span class="icon"></span>
-          App
+          <span id="App">App</span>
         </a>
         <div class="menu app-actions menu-options">
           <a id="saveAppAs">Save As</a>
