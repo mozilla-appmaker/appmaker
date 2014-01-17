@@ -48,7 +48,7 @@
   </template>
   <script>
     Polymer('ceci-element', {
-      broadcast: function (name, data) {
+      broadcast: function(name, data) {
         this.super(arguments);
         var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
         if (broadcastElement) {
@@ -65,7 +65,7 @@
         message.eventName = eventName;
         this.dispatchEvent(new CustomEvent('log', {bubbles: true, detail: message}));
       },
-      enteredView: function () {
+      enteredView: function() {
         var handle = document.createElement('div');
         handle.className = 'handle';
         this.appendChild(handle);

@@ -9,15 +9,15 @@ define(
 
     var knownComponents = [];
 
-    function addComponentsFromRegistry () {
-      var trayComponentContainer = document.getElementById('components');
+    function addComponentsFromRegistry() {
+      var componentTrayContainer = document.getElementById('components');
 
       Ceci.forEachComponent(function (name, component) {
         var urlComponent = window.CustomElements.registry[name].prototype.resolvePath('locale/' + L10n.getCurrentLang() + '.json');
         L10n.ready({url: urlComponent});
 
         // Avoid adding components that are already in the tray
-        if (trayComponentContainer.querySelector('designer-component-tray-item[name="' + name + '"]')) return;
+        if (componentTrayContainer.querySelector('designer-component-tray-item[name="' + name + '"]')) return;
 
         var item = document.createElement('designer-component-tray-item');
         var meta;
@@ -29,12 +29,13 @@ define(
         try {
           meta = JSON.parse(ceciDefinitionScript.innerHTML);
         }
-        catch (e) {
+        catch(e) {
           throw new TypeError("Ceci component, \"" + name + "\" is lacking ceci definitions. Likely it shouldn't be returned from ceci-designer.");
         }
 
         item.setAttribute('name', name);
-        item.setAttribute('thumbnail', meta.thumbnail);
+        item.setAttribute('thumbnail', window.CustomElements.registry[name].prototype.resolvePath(meta.thumbnail));
+
         item.setAttribute('label', meta.name || Util.prettyName(name));
 
         item.setAttribute('description', meta.description);
@@ -50,7 +51,7 @@ define(
           }
         }, false);
 
-        trayComponentContainer.appendChild(item);
+        componentTrayContainer.appendChild(item);
       });
     }
 
