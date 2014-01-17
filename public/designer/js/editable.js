@@ -2,12 +2,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-define(['inflector', 'colorpicker.core'], function (Inflector, ColorPickerDummy) {
+define(['inflector', 'colorpicker.core', 'l10n'], function (Inflector, ColorPickerDummy, L10n) {
+  var urlComponent = window.CustomElements;
   var editableTypeHandlers = {
     'multiple': function (element, attributeName, title, value, definition) {
+      var labelName = L10n.get(element.localName+"/attributes/"+attributeName+"/label") || title;
+      var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var options = JSON.parse(value);
       var e = $("<div>" +
-        "<label>"+title + "</label>" +
+        "<label>"+ labelName + "</label>" +
         "<div class=\"option-list\"></div>" +
         "</div>"
       );
@@ -33,10 +36,12 @@ define(['inflector', 'colorpicker.core'], function (Inflector, ColorPickerDummy)
       return e[0];
     },
     'select': function (element, attributeName, title, value, definition) {
+      var labelName = L10n.get(element.localName+"/attributes/"+attributeName+"/label") || title;
+      var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var e = $("<div><label>" +
-        title +
+        labelName +
         "</label><select type=\"text\" value=\"" +
-        value +
+        eValue +
         "\"> "+
         "</select></div>"
       );
@@ -53,10 +58,12 @@ define(['inflector', 'colorpicker.core'], function (Inflector, ColorPickerDummy)
       return e[0];
     },
     'text': function (element, attributeName, title, value, definition) {
+      var labelName = L10n.get(element.localName+"/attributes/"+attributeName+"/label") || title;
+      var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var e = $("<div><label>" +
-        title +
+        labelName +
         "</label><input type=\"text\" value=\"" +
-        value +
+        eValue +
         "\"></input></div>"
       );
       e.on("keyup", function(evt) {
@@ -65,15 +72,17 @@ define(['inflector', 'colorpicker.core'], function (Inflector, ColorPickerDummy)
       return e[0];
     },
     'number': function (element, attributeName, title, value, definition) {
+      var labelName = L10n.get(element.localName+"/attributes/"+attributeName+"/label") || title;
+      var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var e = $(
         "<div><label>" +
-        title +
+        labelName +
         "</label><input type=\"number\" min=\"" +
         definition.min +
         "\" max=\"" +
         definition.max +
         "\" value=\"" +
-        value + "\" /></div>"
+        eValue + "\" /></div>"
       );
       e.on("change", function(evt) {
         element.setAttribute(attributeName, evt.target.value);
@@ -81,11 +90,13 @@ define(['inflector', 'colorpicker.core'], function (Inflector, ColorPickerDummy)
       return e[0];
     },
     'boolean': function (element, attributeName, title, value, definition) {
+      var labelName = L10n.get(element.localName+"/attributes/"+attributeName+"/label") || title;
+      var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var e = $(
         "<div><label>" +
         "<input type=\"checkbox\" " +
         (value == "true" ? " checked=\"true\" " : "") + "\" value=\"" +
-        value + "\" />" + title + " </div>"
+        eValue + "\" />" + labelName + " </div>"
       );
       e.on("change", function(evt) {
         evt.target.value = evt.target.value == "true" ? "false" : "true";
@@ -94,9 +105,11 @@ define(['inflector', 'colorpicker.core'], function (Inflector, ColorPickerDummy)
       return e[0];
     },
     'color': function (element, attributeName, title, value, definition) {
+      var labelName = L10n.get(element.localName+"/attributes/"+attributeName+"/label") || title;
+      var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var e = $(
-        '<div><label>' + title + '</label>' +
-        '<input type="text" value="' + value + '">' +
+        '<div><label>' + labelName + '</label>' +
+        '<input type="text" value="' + eValue + '">' +
         '</div>'
       );
 
@@ -107,7 +120,6 @@ define(['inflector', 'colorpicker.core'], function (Inflector, ColorPickerDummy)
         init: function (event, color) {
         },
         select: function (event, color) {
-          console.log('fpokwef', color);
           input[0].value = '#' + color.formatted;
           element.setAttribute(attributeName, '#' + color.formatted);
         },
@@ -141,7 +153,6 @@ define(['inflector', 'colorpicker.core'], function (Inflector, ColorPickerDummy)
       return handler(element, attributeName, title, value, definition);
     },
     displayAttributes: function (element) {
-
       var attributeList = $(".editable-attributes");
 
       attributeList.html("");
@@ -156,9 +167,6 @@ define(['inflector', 'colorpicker.core'], function (Inflector, ColorPickerDummy)
         var uiElement = editable.getAttributeUIElement(element, attributeName, attributeDefinition);
         attributeList.append(uiElement);
       });
-
-      var editables = $(".editable-section");
-      editables.show();
     }
   };
 

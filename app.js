@@ -35,7 +35,7 @@ catch(e) {
 var urls = require('./lib/urls');
 var localStore = require('./lib/local-store');
 var s3Store = require('./lib/s3-store');
-var makeAPIPublisher = require('./lib/makeapi-publisher').create(process.env.MAKEAPI_URL, process.env.MAKEAPI_KEY, process.env.MAKEAPI_SECRET);
+var makeAPIPublisher = require('./lib/makeapi-publisher').create(process.env.MAKEAPI_URL, process.env.MAKEAPI_ID, process.env.MAKEAPI_SECRET);
 
 // Cache fonts for 180 days.
 var MAX_FONT_AGE_MS = 1000 * 60 * 60 * 24 * 180;
@@ -64,11 +64,17 @@ app.configure(function(){
 
   // Setup locales with i18n
   app.use(i18n.middleware({
-    supported_languages: ["en-US", "th-TH"],
+    supported_languages: ["bn-BD", "en-US", "fr", "ru", "pt-BR", "th-TH"],
     default_lang: "en-US",
     mappings: {
       "en": "en-US",
-      "th": "th-TH"
+      "th": "th-TH",
+      "pt": "pt-BR",
+      "fr-FR": "fr",
+      "fr-CA": "fr",
+      "ru-RU": "ru",
+      "bn": "bn-BD",
+      "bn-IN": "bn-BD"
      },
     translation_directory: path.resolve( __dirname, "locale" )
   }));

@@ -32,16 +32,15 @@
           this.menu.style.display = "none";
         },
         showMenu : function() {
-          var listeners = Object.keys(this.component.ceci.listeners);
-          if(listeners.length > 0) {
+          var items = this.channelType == "listen" ? Object.keys(this.component.ceci.listeners) : Object.keys(this.component.ceci.broadcasts);
+          if (items.length > 0) {
             this.menu.style.display = "block";
-            this.menu.classList.add("menu-in");
             var height = this.menu.offsetHeight;
             this.menu.style.marginTop = -1 * (height/2) + "px";
           }
         },
         changeChannel : function(handlerType, handler ,color){
-          var visEl = this.component.querySelector("ceci-"+this.channelType+"["+handlerType+"="+handler+"]");
+          var visEl = this.component.querySelector("ceci-"+this.channelType+"["+handlerType+"=\""+handler+"\"]");
           if (color == "false"){
              if (visEl){
                visEl.parentNode.removeChild(visEl);
@@ -66,18 +65,12 @@
           if(this.channelType == "broadcast") {
             communicators = this.component.ceci.broadcasts;
             handlerType = "from";
-          } else {
+          }
+          else {
             communicators = this.component.ceci.listeners;
             handlerType = "for";
           }
 
-          function labelClickHandler(){
-            return function(){
-              this.style.display = "none";
-              var colorMenu = this.parentNode.querySelector(".color-ui");
-              colorMenu.style.display = "block";
-            };
-          }
 
           function colorClickHandler(handlerType){
             return function(event) {
@@ -99,10 +92,16 @@
                 var handler = this.parentNode.getAttribute(handlerType);
                 that.changeChannel(handlerType, handler, color);
                 channelOption.querySelector("label").style.display = "block";
-                channelOption.querySelector("label .chosen-color").setAttribute("color",color);
+                channelOption.querySelector("label .chosen-color").setAttribute("color", color);
                 channelOption.querySelector(".color-ui").style.display = "none";
               }
             };
+          }
+
+          function showColorUI(){
+            this.style.display = "none";
+            var colorMenu = this.parentNode.querySelector(".color-ui");
+            colorMenu.style.display = "block";
           }
 
           for (var key in communicators) {
@@ -114,8 +113,10 @@
               channelOption.querySelector(".channel-name").textContent = key;
 
               that.menu.appendChild(channelOption);
-              channelOption.setAttribute(handlerType,key);
-              channelOption.querySelector("label").addEventListener('click', labelClickHandler());
+              channelOption.setAttribute(handlerType, key);
+
+              channelOption.querySelector("label").addEventListener('click', showColorUI);
+
               var colorOptions = channelOption.querySelectorAll(".color-ui .color");
 
               //Check if there's a listener for that element already and set the appropriate color.
@@ -127,7 +128,8 @@
               }
 
               //Set up all of the click stuff for color options
-              channelOption.querySelector(".color-ui").addEventListener("click",colorListClickHandler(handlerType));
+              channelOption.querySelector(".color-ui").addEventListener("click",colorListClickHandler(handlerType)
+              );
             }
           }
         }

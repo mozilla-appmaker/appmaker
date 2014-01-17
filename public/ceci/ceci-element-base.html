@@ -4,6 +4,10 @@
   </template>
   <script>
     (function () {
+      var L10n;
+      require(['l10n'], function(localized) {
+        L10n = localized;
+      });
       var defaultChannel = 'blue';
 
       function processDefinition (element) {
@@ -111,7 +115,6 @@
           if (this.ceci) return;
 
           var that = this;
-
           this.ceci = {
             broadcasts: {},
             listeners: {},
@@ -126,7 +129,7 @@
             return;
           }
 
-          var attributeResults = processAttributes(this.ceci.editables, ceciDefinition.attributes);
+          var attributeResults = processAttributes(this.ceci.editables, ceciDefinition.attributes || {});
 
           Object.keys(attributeResults.attributeListeners).forEach(function (attributeName) {
             var listenerName = attributeResults.attributeListeners[attributeName];
@@ -158,6 +161,9 @@
           this.ceci.tags = ceciDefinition.tags;
 
           this.ceci.attributes = ceciDefinition.attributes;
+
+          that.localized();
+
         },
         broadcast: function (name, data) {
           var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
@@ -225,6 +231,17 @@
         },
         enteredView: function () {
           document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));
+        },
+        gettext: function (keyname) {
+          return L10n.get(keyname);
+        },
+        localized: function () {
+          var attributes = this.ceci.attributes;
+          for(var attribute in attributes) {
+            if (attributes.hasOwnProperty(attribute)) {
+              this[attribute] = this.gettext(this.localName + "/attributes/" + attribute) || this[attribute];
+            }
+          }
         }
       });
     })();
