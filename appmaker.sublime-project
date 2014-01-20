@@ -6,7 +6,12 @@
         "node_modules",
         "ceci/builder/scripts",
         "public/app/fonts",
-        "public/vendor"
+        "public/vendor",
+        "public/app/fonts"
+      ],
+      "file_exclude_patterns": [
+        "**/bootstrap.min.css",
+        "**/bootstrap.css"
       ]
     }
   ],
