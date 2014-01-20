@@ -16,9 +16,7 @@ define(
         L10n.ready({url: urlComponent});
 
         // Avoid adding components that are already in the tray
-        if (trayComponentContainer.querySelector('designer-component-tray-item[name="' + name + '"]')) {
-          return;
-        }
+        if (trayComponentContainer.querySelector('designer-component-tray-item[name="' + name + '"]')) return;
 
         var item = document.createElement('designer-component-tray-item');
         var meta;
