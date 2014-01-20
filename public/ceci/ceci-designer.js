@@ -54,10 +54,12 @@ define([], function() {
     },
     getRegisteredComponents: function(){
       var components = [];
+      // console.log(JSON.stringify(window.CustomElements.registry));
       for (var tagName in window.CustomElements.registry) {
         if (BUILT_IN_COMPONENTS.indexOf(tagName) === -1) {
-          console.log(tagName, BUILT_IN_COMPONENTS.indexOf(tagName));
+          console.log('not a BUILTIN', tagName);
           if (CeciDesigner.getCeciDefinitionScript(tagName)) {
+            console.log("got ceci definition");
             components.push(window.CustomElements.registry[tagName]);
           }
         }
@@ -67,6 +69,7 @@ define([], function() {
     forEachComponent: function(fn){
       var components = this.getRegisteredComponents();
       for (var x in components){
+        console.log('in forEachComponent', components[x].name, components[x]);
         fn(components[x].name, components[x]);
       }
       return this;

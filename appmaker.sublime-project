@@ -5,6 +5,7 @@
       "folder_exclude_patterns": [
         "node_modules",
         "ceci/builder/scripts",
+        "public/app/fonts",
         "public/vendor"
       ]
     }

@@ -194,6 +194,10 @@ app.get('/api/app', routes.my.app);
 app.post('/api/rename_app', routes.my.renameApp);
 app.post('/api/update_app', routes.my.updateApp);
 
+app.get('/api/mycomponents', routes.my.components);
+app.post('/api/learncomponent', routes.my.learnComponent);
+app.delete('/api/forgetcomponent', routes.my.forgetComponent);
+
 module.exports = app;
 
 if (!module.parent)
@@ -201,10 +205,3 @@ if (!module.parent)
     console.log("Express server listening on port " + app.get('port'));
   });
 
-app.get('/api/mycomponents', routes.my.components);
-app.post('/api/learncomponent', routes.my.learnComponent);
-app.delete('/api/forgetcomponent', routes.my.forgetComponent);
-
-http.createServer(app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
-});

@@ -32,6 +32,7 @@
     require(['l10n'], function(l10n) {
       Polymer('designer-component-tray-item', {
         ready: function () {
+          console.log("333 this", this, this.name);
           this.super();
           this.$[this.name].innerHTML = l10n.get(this.name) || this.$[this.name].innerHTML;
         }

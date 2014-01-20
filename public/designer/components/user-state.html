@@ -43,7 +43,7 @@
   </template>
   <script>
   (function() {
-    require(['l10n', 'jquery', 'persona', 'designer/application'], function(l10n, jquery, persona, application) {
+    require(['l10n', 'jquery', 'persona', 'designer/application', 'designer/component-tray'], function(l10n, jquery, persona, application, tray) {
 
       var user = {
         email: '',
@@ -264,17 +264,29 @@
         signoutClick: function() {
           navigator.id.logout();
         },
+        loadLinks: function(urls, callback) {
+          // see https://gist.github.com/sjmiles/8478807
+          var doc = document.createDocumentFragment();
+          urls.forEach(function(url) {
+            var link = doc.appendChild(document.createElement('link'));
+            link.rel = "import";
+            link.href = url;
+          });
+          // load-all-links in document method should be factored somewhere
+          // very similar method used in x-meta
+          HTMLImports.importer.load(doc, function() {
+            doc.querySelectorAll('link').array().forEach(
+              function(link) {
+                HTMLImports.parser.parse(link.content);
+                CustomElements.parser.parse(link.content);
+              }
+            );
+            callback && callback();
+          }.bind(this));
+        },
         learnComponent: function(src) {
           console.log('learning about a component', src);
-          var link = document.createElement('link');
-          link.setAttribute('rel', 'import');
-          link.setAttribute('href', src);
-          document.body.appendChild(link);
-          HTMLImports.importer.load(document, function() {
-            HTMLImports.parser.parseLink(link);
-            // CustomElements polyfill needs to process the dynamic imports for definitions.
-            CustomElements.parser.parseLink(link);
-          });
+          this.loadLinks([src], tray.addComponentsFromRegistry);
         },
         addComponent: function() {
           var name = window.prompt("New component name");
@@ -419,7 +431,7 @@
               $.each(data, function(key, val) {
                 count++;
                 self.addLinkForComponent(val.name, val.url);
-                self.learnComponent("/component" + val.url + "/component.html");
+                self.learnComponent(val.url);
               });
 
               if(count == 0){
