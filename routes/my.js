@@ -158,7 +158,6 @@ module.exports = function (mongoose, dbconn) {
       });
     },
     forgetComponent: function(request, response) {
-      console.log('in forgetComponent', JSON.stringify(request.body));
       Component.remove({author:request.session.email, url: request.body.url}, function(err){
         if(err){
            console.error("Error forgetting this component!");

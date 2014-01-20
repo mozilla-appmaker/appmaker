@@ -9,7 +9,7 @@
         <div class="add-component-overlay"></div>
       </div>
       <div class="component-description">
-        <h1 id="{{name}}">{{label}}</h1>
+        <h1 id="component-name">{{label}}</h1>
         <h6>{{description}}</h6>
         <div class="more-info">
           <div class="friends">
@@ -32,9 +32,10 @@
     require(['l10n'], function(l10n) {
       Polymer('designer-component-tray-item', {
         ready: function () {
-          console.log("in designer-component-tray-item, this is:", this, "THIS.name = ", this.name);
           this.super();
-          this.$[this.name].innerHTML = l10n.get(this.name) || this.$[this.name].innerHTML;
+        },
+        enteredView: function() {
+          this.$['component-name'].innerHTML = l10n.get(this.name) || this.$['component-name'].innerHTML;
         }
       });
     });

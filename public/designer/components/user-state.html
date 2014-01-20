@@ -272,8 +272,6 @@
             link.rel = "import";
             link.href = url;
           });
-          // load-all-links in document method should be factored somewhere
-          // very similar method used in x-meta
           HTMLImports.importer.load(doc, function() {
             doc.querySelectorAll('link').array().forEach(
               function(link) {
@@ -285,7 +283,6 @@
           }.bind(this));
         },
         learnComponent: function(src) {
-          console.log('learning about a component', src);
           this.loadLinks([src], tray.addComponentsFromRegistry);
         },
         addComponent: function() {
@@ -303,7 +300,6 @@
             success: function (data) {
               self.refreshComponentsList();
               self.learnComponent(data.url);
-              console.log("Component learned successfully");
             },
             error: function (data) {
               alert(data.responseJSON.error);
