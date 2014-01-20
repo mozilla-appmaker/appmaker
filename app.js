@@ -194,9 +194,9 @@ app.get('/api/app', routes.my.app);
 app.post('/api/rename_app', routes.my.renameApp);
 app.post('/api/update_app', routes.my.updateApp);
 
-app.get('/api/mycomponents', routes.my.components);
-app.post('/api/learncomponent', routes.my.learnComponent);
-app.delete('/api/forgetcomponent', routes.my.forgetComponent);
+app.get('/api/componentlinks', routes.my.components);
+app.post('/api/componentlinks', routes.my.learnComponent);
+app.delete('/api/componentlinks', routes.my.forgetComponent);
 
 module.exports = app;
 

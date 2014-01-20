@@ -291,7 +291,7 @@
           var name = window.prompt("New component name");
           if (! name) return;
           var self = this;
-          $.ajax('/api/learncomponent', {
+          $.ajax('/api/componentlinks', {
             data: {
               url: url,
               name: name
@@ -387,7 +387,7 @@
         forgetComponent: function(url) {
           console.log("trying to forget component", url);
           var self = this;
-          $.ajax('/api/forgetcomponent', {
+          $.ajax('/api/componentlinks', {
             data: {
               url: url
             },
@@ -423,7 +423,7 @@
 
           var myComponents = this.shadowRoot.querySelector("#mycomponents");
           myComponents.innerHTML = "";
-          $.getJSON("/api/mycomponents", function(data) {
+          $.getJSON("/api/componentlinks", function(data) {
 
             try {
               var count = 0;
