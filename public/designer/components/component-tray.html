@@ -1,15 +1,15 @@
 <polymer-element
   name="designer-component-tray-item"
-  attributes="name description label author updatedat thumbnail">
+  attributes="name description label author updatedat thumbnail" noscript>
   <template>
     <div class="add-component component-card" name="{{name}}" show="true">
       <div class="add-tooltip">+</div>
       <div class="component-preview">
-        <div class="image-wrapper"><img src="/component/mozilla-appmaker/component-{{label}}/{{thumbnail}}"></div>
+        <div class="image-wrapper"><img src="{{thumbnail}}"></div>
         <div class="add-component-overlay"></div>
       </div>
       <div class="component-description">
-        <h1 id="component-name">{{label}}</h1>
+        <h1>{{label}}</h1>
         <h6>{{description}}</h6>
         <div class="more-info">
           <div class="friends">
@@ -28,16 +28,4 @@
       <a class="show-more" href="#">More Info</a>
     </div>
   </template>
-  <script>
-    require(['l10n'], function(l10n) {
-      Polymer('designer-component-tray-item', {
-        ready: function () {
-          this.super();
-        },
-        enteredView: function() {
-          this.$['component-name'].innerHTML = l10n.get(this.name) || this.$['component-name'].innerHTML;
-        }
-      });
-    });
-  </script>
 </polymer-element>
