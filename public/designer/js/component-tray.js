@@ -60,7 +60,7 @@ define(
 
     // Load elements that might exist already, but also wait for WebComponentsReady in case
     // we load this module early.
-    window.addEventListener('WebComponentsReady', DesignerTray.addComponentsFromRegistry, false);
+    window.addEventListener("polymer-element-defined", DesignerTray.addComponentsFromRegistry);
     DesignerTray.addComponentsFromRegistry();
     return DesignerTray;
   }
