@@ -204,9 +204,14 @@ app.get('/api/app', routes.my.app);
 app.post('/api/rename_app', routes.my.renameApp);
 app.post('/api/update_app', routes.my.updateApp);
 
+app.get('/api/componentlinks', routes.my.components);
+app.post('/api/componentlinks', routes.my.learnComponent);
+app.delete('/api/componentlinks', routes.my.forgetComponent);
+
 module.exports = app;
 
 if (!module.parent)
   http.createServer(app).listen(app.get('port'), function(){
     console.log("Express server listening on port " + app.get('port'));
   });
+

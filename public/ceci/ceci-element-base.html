@@ -4,10 +4,6 @@
   </template>
   <script>
     (function () {
-      var L10n;
-      require(['l10n'], function(localized) {
-        L10n = localized;
-      });
       var defaultChannel = 'blue';
 
       function processDefinition (element) {
@@ -109,7 +105,7 @@
 
         return defaultBroadcasts;
       }
-
+      require(['l10n'], function(L10n) {
       Polymer('ceci-element-base', {
         ready: function () {
           if (this.ceci) return;
@@ -243,6 +239,7 @@
             }
           }
         }
+      });
       });
     })();
   </script>
