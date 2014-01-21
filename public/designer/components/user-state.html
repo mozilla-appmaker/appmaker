@@ -299,9 +299,24 @@
           }
           return path;
         },
+        checkComponentURL: function(src, cb) {
+          $.ajax(src, {
+            data: {},
+            type: 'get',
+            success: function (data) {
+              // we have a URL, that's good.
+              console.log("GOT URL CONTENT", data);
+              // cb && cb(src);
+            },
+            error: function (data, err) {
+              console.log("Something went wrong!", data, err);
+              window.alert("There was an error checking the component at the url: " + src);
+              console.error("Error while checking component: " + src, err);
+          }});
+        },
         learnComponent: function(src) {
           var self = this;
-          this.loadLinks([src], function() {
+          self.loadLinks([src], function() {
             tray.addComponentsFromRegistry();
             name = self.guessNameFromURL(src);
             window.dispatchEvent(new CustomEvent('ceci-component-loaded', {detail: {url: src, name: name}}));
@@ -318,6 +333,9 @@
             parser.pathname = "component/" + url + "/component.html";
             url = parser.href;
           }
+          this.checkComponentURL(url, self.storeComponentURL);
+        },
+        storeComponentURL: function(url) {
           var self = this;
           $.ajax('/api/componentlinks', {
             data: {
