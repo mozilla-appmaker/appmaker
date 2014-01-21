@@ -46,7 +46,9 @@
               <img src="<%= process.env.ASSET_HOST %>/images/chef-man.png">
             </div>
             <input type="email" id="remix-panel-email" placeholder="Your Email">
-            <button id="remix-button"><%- gettext("Remix") %></button>
+            <button id="remix-button" class="remix-button"><%- gettext("Mail me the remix link") %></button>
+            <div class="remix-explanation centered"><%- gettext("or") %></p>
+            <button id="remix-now-button" class="remix-button"><%- gettext("Remix now") %></button>
             <div id="remix-explanation">
               <%- gettext("This app was created with Mozilla Labs' Appmaker. We'll send you a link so you can remix it and make it your own.") %>
             </div>
@@ -99,6 +101,13 @@
               closeRemixPanel();
             }, 500);
           };
+
+          var remixNowButton = document.querySelector("#remix-now-button");
+          remixNowButton.onclick = function (e) {
+            var remixURL = '<%= process.env.ASSET_HOST %>/remix?app=<%- appName %>';
+            window.open(remixURL);
+          };
+
         })();
       </script>
     </div>

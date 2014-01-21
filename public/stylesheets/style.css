@@ -2236,7 +2236,7 @@ button.return-btn {
   margin: 0 auto;
 }
 
-button#remix-button {
+button.remix-button {
   background: #358CCE;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -2254,11 +2254,11 @@ button#remix-button {
   font-size: 24px;
 }
 
-button#remix-button:hover {
+button.remix-button:hover {
   background: #3f9fe8;
 }
 
-button#remix-button:active {
+button.remix-button:active {
   background: #2b75ad;
   border-top: none;
 }
@@ -2324,7 +2324,11 @@ input#remix-panel-email {
   background-color: #e66337;
 }
 
-#remix-explanation {
+.centered {
+  text-align: center;
+}
+
+.remix-explanation {
   width: 100%;
   color: #aeb1b5;
   font-size: 20px;
