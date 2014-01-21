@@ -16,8 +16,8 @@
     <script src="/javascripts/requireConfig.js"></script>
     <script>
     (function () {
-        // We need to make sure we have our client-side .json file loaded before
-        // all the components so that we can use it when the HTML file loaded.
+      // We need to make sure we have our client-side .json file loaded before
+      // all the components so that we can use it when the HTML file loaded.
       require(['l10n'], function(localized) {
         localized.ready({url: "/strings/" + localized.getCurrentLang() });
       });
@@ -25,6 +25,7 @@
     </script>
     <script src="/vendor/platform/platform.js"></script>
     <script src="/vendor/polymer/polymer.js"></script>
+    <script src="/javascripts/polymer-register-event-shim.js"></script>
 
     <script src="/vendor/angular/angular.min.js"></script>
     <script src="/vendor/angular-resource/angular-resource.min.js"></script>

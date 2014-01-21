@@ -6,6 +6,9 @@
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300, 400,600" rel="stylesheet" type="text/css">
     <base href="<%- ceciComponentURL %>">
 
+    <script src="/vendor/requirejs/require.js"></script>
+    <script src="/javascripts/requireConfig.js"></script>
+
     <script src="/vendor/platform/platform.js"></script>
     <script src="/vendor/polymer/polymer.js"></script>
 
@@ -20,8 +23,16 @@
 
     <link rel="import" href="/ceci/ceci-channel-menu.html">
 
+    <!-- This is a list of all known components. Ideally, this is a compiled list of only-the-app components -->
     <link rel="import" href="/component/mozilla-appmaker/component-button/component.html">
+    <link rel="import" href="/component/mozilla-appmaker/component-chat-window/component.html">
     <link rel="import" href="/component/mozilla-appmaker/component-counter/component.html">
+    <link rel="import" href="/component/mozilla-appmaker/component-fireworks/component.html">
+    <link rel="import" href="/component/mozilla-appmaker/component-header/component.html">
+    <link rel="import" href="/component/mozilla-appmaker/component-image/component.html">
+    <link rel="import" href="/component/mozilla-appmaker/component-spacer/component.html">
+    <link rel="import" href="/component/mozilla-appmaker/component-text-input/component.html">
+    <link rel="import" href="/component/mozilla-appmaker/component-textbox/component.html">
   </head>
   <body>
     <%- appHTML %>
@@ -32,10 +43,12 @@
         <div id="remix-panel-content" class="hidden">
           <div id="remix-panel-inner">
             <div id="remix-logo">
-              <img src ="<%= process.env.ASSET_HOST %>/images/chef-man.png">
+              <img src="<%= process.env.ASSET_HOST %>/images/chef-man.png">
             </div>
             <input type="email" id="remix-panel-email" placeholder="Your Email">
-            <button id="remix-button"><%- gettext("Remix") %></button>
+            <button id="remix-button" class="remix-button"><%- gettext("Mail me the remix link") %></button>
+            <div class="remix-explanation centered"><%- gettext("or") %></p>
+            <button id="remix-now-button" class="remix-button"><%- gettext("Remix now") %></button>
             <div id="remix-explanation">
               <%- gettext("This app was created with Mozilla Labs' Appmaker. We'll send you a link so you can remix it and make it your own.") %>
             </div>
@@ -88,6 +101,13 @@
               closeRemixPanel();
             }, 500);
           };
+
+          var remixNowButton = document.querySelector("#remix-now-button");
+          remixNowButton.onclick = function (e) {
+            var remixURL = '<%= process.env.ASSET_HOST %>/remix?app=<%- appName %>';
+            window.open(remixURL);
+          };
+
         })();
       </script>
     </div>

@@ -15,6 +15,12 @@
           <span id="noApps">You don't have any saved apps!</span>
           <ul id="myapps" class="menu-options">
           </ul>
+          <h3 id="mycomponentsheading">My components</h3>
+          <div>
+            <a id="addComponent" class="button" on-click={{addComponent}}>Add component</a>
+          </div>
+          <ul id="mycomponents" class="menu-options">
+          </ul>
           <a id="signout" class="button" on-click="{{signoutClick}}">Sign Out</a>
         </div>
       </div>
@@ -37,7 +43,7 @@
   </template>
   <script>
   (function() {
-    require(['l10n', 'jquery', 'persona', 'designer/application'], function(l10n, jquery, persona, application) {
+    require(['l10n', 'jquery', 'persona', 'designer/application', 'designer/component-tray'], function(l10n, jquery, persona, application, tray) {
 
       var user = {
         email: '',
@@ -219,6 +225,11 @@
               console.log("Please name your app.");
             }
           });
+
+          window.addEventListener("ceci-component-loaded",function(e) {
+            self.addLinkForComponent(e.detail.url, e.detail.name);
+          });
+
         },
         signInStarted: function(){
           this.$.signin.style.display = "none";
@@ -258,6 +269,70 @@
         signoutClick: function() {
           navigator.id.logout();
         },
+        loadLinks: function(urls, callback) {
+          // see https://gist.github.com/sjmiles/8478807
+          var doc = document.createDocumentFragment();
+          urls.forEach(function(url) {
+            var link = doc.appendChild(document.createElement('link'));
+            link.rel = "import";
+            link.href = url;
+          });
+          HTMLImports.importer.load(doc, function() {
+            doc.querySelectorAll('link').array().forEach(
+              function(link) {
+                HTMLImports.parser.parse(link.content);
+                CustomElements.parser.parse(link.content);
+              }
+            );
+            callback && callback();
+          }.bind(this));
+        },
+        guessNameFromURL: function(url) {
+          var suffix = '/component.html';
+          // this is a cheap & cheerful URL parser ;-)
+          var parser = document.createElement('a');
+          parser.href = url;
+          var path = parser.pathname;
+          if (path.indexOf(suffix, path.length - suffix.length) !== -1) {
+            path = path.slice(0, path.length - suffix.length);
+            return path.split('/').pop();
+          }
+          return path;
+        },
+        learnComponent: function(src) {
+          var self = this;
+          this.loadLinks([src], function() {
+            tray.addComponentsFromRegistry();
+            name = self.guessNameFromURL(src);
+            window.dispatchEvent(new CustomEvent('ceci-component-loaded', {detail: {url: src, name: name}}));
+          });
+        },
+        addComponent: function() {
+          var url = window.prompt("Component URL? (either full path 'http://example.com/dir/component.html' or, for github pages, 'username/repo')");
+          if (! url) return;
+          if (url.split('/').length == 2 && url.indexOf('http') == -1) {
+            // We're assuming it's a username/repo, and assuming component.html as the leafname.
+            // use the DOM to create the right URL.
+            var parser = document.createElement('a');
+            parser.href = document.URL;
+            parser.pathname = "component/" + url + "/component.html";
+            url = parser.href;
+          }
+          var self = this;
+          $.ajax('/api/componentlinks', {
+            data: {
+              url: url
+            },
+            type: 'post',
+            success: function (data) {
+              self.refreshComponentsList();
+              self.learnComponent(data.url);
+            },
+            error: function (data) {
+              alert(data.responseJSON.error);
+            }
+          });
+        },
         attributeChangedCallback: function(attributeName) {
           if (attributeName == 'user') {
             this.refreshUserState();
@@ -292,6 +367,10 @@
           // go to the server and find out what the user's apps are and then...
           // Build the list of apps
           // Update "current app" in apps menu
+          this.refreshAppList();
+          this.refreshComponentsList();
+        },
+        refreshAppList: function() {
           var self = this;
           var myApps = this.shadowRoot.querySelector("#myapps");
           var noApps = this.shadowRoot.querySelector("#noApps");
@@ -327,6 +406,66 @@
               } else {
                 noApps.style.display = "none";
               }
+            } catch (e) {
+              console.log(e);
+            }
+          });
+        },
+        forgetComponent: function(url) {
+          console.log("trying to forget component", url);
+          var self = this;
+          $.ajax('/api/componentlinks', {
+            data: {
+              url: url
+            },
+            type: 'delete',
+            success: function (data) {
+              self.refreshComponentsList();
+              console.log("XXX: Need to tell polymer to forget about this component");
+              console.log("XXX: Need to remove the component from the tray");
+            },
+            error: function (data, err) {
+              console.log("Something went wrong!");
+              console.error("Error while forgetting component: " + data.url, err);
+            }
+          });
+        },
+        addLinkForComponent: function(theurl, thename) {
+          console.log("in addLinkForComponent", theurl, thename);
+          var myComponents = this.shadowRoot.querySelector("#mycomponents");
+          try {
+          var component = document.createElement('li');
+          var self = this;
+          // We need to find the name from the registry based on the URL
+          var name = document.createElement('a');
+          name.textContent = thename;
+          component.appendChild(name);
+          var xmarksthespot = document.createElement('a');
+          xmarksthespot.setAttribute('class', 'x');
+          xmarksthespot.addEventListener('click', function(event) {
+            if (window.confirm("Are you sure you want to forget about the component at " + theurl)) {
+              self.forgetComponent(theurl);
+            }
+            event.stopPropagation();
+          });
+          name.appendChild(xmarksthespot);
+          name.setAttribute('class', 'componentlink');
+          myComponents.appendChild(component);
+        } catch (e) {
+          console.log(e);
+        }
+        },
+        refreshComponentsList: function() {
+          var self = this;
+          var myComponents = this.shadowRoot.querySelector("#mycomponents");
+          myComponents.innerHTML = "";
+          $.getJSON("/api/componentlinks", function(data) {
+            try {
+              var count = 0;
+              $.each(data, function(key, val) {
+                count++;
+                self.learnComponent(val.url);
+              });
             } catch (e) {
               console.log(e);
             }
