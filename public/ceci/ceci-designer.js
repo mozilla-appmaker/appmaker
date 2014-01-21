@@ -56,7 +56,6 @@ define([], function() {
       var components = [];
       for (var tagName in window.CustomElements.registry) {
         if (BUILT_IN_COMPONENTS.indexOf(tagName) === -1) {
-          console.log(tagName, BUILT_IN_COMPONENTS.indexOf(tagName));
           if (CeciDesigner.getCeciDefinitionScript(tagName)) {
             components.push(window.CustomElements.registry[tagName]);
           }

@@ -55,7 +55,12 @@ app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
 
-  app.use(express.logger());
+  app.use(express.logger(function(tokens, req, res) {
+    if (res.statusCode >= 400) // or whatever you want logged
+      return express.logger.dev(tokens, req, res);
+    return null;
+  }));
+
   app.use(express.bodyParser());
   app.use(express.cookieParser(process.env['COOKIE_SECRET']));
   app.use(express.session({

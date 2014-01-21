@@ -52,6 +52,7 @@ define(
         }, false);
 
         componentTrayContainer.appendChild(item);
+        item.label = L10n.get(name) || item.label;
       });
     }
 
