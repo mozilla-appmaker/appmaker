@@ -308,8 +308,16 @@
           });
         },
         addComponent: function() {
-          var url = window.prompt("Component URL? (e.g. http://username.github.io/component-foo/component.html)");
+          var url = window.prompt("Component URL? (either full path 'http://example.com/dir/component.html' or, for github pages, 'username/repo')");
           if (! url) return;
+          if (url.split('/').length == 2 && url.indexOf('http') == -1) {
+            // We're assuming it's a username/repo, and assuming component.html as the leafname.
+            // use the DOM to create the right URL.
+            var parser = document.createElement('a');
+            parser.href = document.URL;
+            parser.pathname = "component/" + url + "/component.html";
+            url = parser.href;
+          }
           var self = this;
           $.ajax('/api/componentlinks', {
             data: {
@@ -413,6 +421,8 @@
             type: 'delete',
             success: function (data) {
               self.refreshComponentsList();
+              console.log("XXX: Need to tell polymer to forget about this component");
+              console.log("XXX: Need to remove the component from the tray");
             },
             error: function (data, err) {
               console.log("Something went wrong!");
@@ -432,8 +442,11 @@
           component.appendChild(name);
           var xmarksthespot = document.createElement('a');
           xmarksthespot.setAttribute('class', 'x');
-          xmarksthespot.addEventListener('click', function() {
-            self.forgetComponent(theurl);
+          xmarksthespot.addEventListener('click', function(event) {
+            if (window.confirm("Are you sure you want to forget about the component at " + theurl)) {
+              self.forgetComponent(theurl);
+            }
+            event.stopPropagation();
           });
           name.appendChild(xmarksthespot);
           name.setAttribute('class', 'componentlink');
@@ -446,7 +459,6 @@
           var self = this;
           var myComponents = this.shadowRoot.querySelector("#mycomponents");
           myComponents.innerHTML = "";
-          // need to clear the tray and the registry as well XXX
           $.getJSON("/api/componentlinks", function(data) {
             try {
               var count = 0;
