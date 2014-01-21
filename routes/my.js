@@ -7,7 +7,7 @@
 var request = require('request');
 
 module.exports = function (mongoose, dbconn) {
-  var componentSchema = mongoose.Schema({author:'string', name: 'string', url: 'string'});
+  var componentSchema = mongoose.Schema({author:'string', url: 'string'});
   var Component = mongoose.model('LearnedComponent', componentSchema, 'components');
 
   var appSchema = mongoose.Schema({author:'string', name: 'string', html: 'string'});

@@ -225,6 +225,11 @@
               console.log("Please name your app.");
             }
           });
+
+          window.addEventListener("ceci-component-loaded",function(e) {
+            self.addLinkForComponent(e.detail.url, e.detail.name);
+          });
+
         },
         signInStarted: function(){
           this.$.signin.style.display = "none";
@@ -282,19 +287,33 @@
             callback && callback();
           }.bind(this));
         },
+        guessNameFromURL: function(url) {
+          var suffix = '/component.html';
+          // this is a cheap & cheerful URL parser ;-)
+          var parser = document.createElement('a');
+          parser.href = url;
+          var path = parser.pathname;
+          if (path.indexOf(suffix, path.length - suffix.length) !== -1) {
+            path = path.slice(0, path.length - suffix.length);
+            return path.split('/').pop();
+          }
+          return path;
+        },
         learnComponent: function(src) {
-          this.loadLinks([src], tray.addComponentsFromRegistry);
+          var self = this;
+          this.loadLinks([src], function() {
+            tray.addComponentsFromRegistry();
+            name = self.guessNameFromURL(src);
+            window.dispatchEvent(new CustomEvent('ceci-component-loaded', {detail: {url: src, name: name}}));
+          });
         },
         addComponent: function() {
-          var url = window.prompt("URL? (e.g. '/mozilla-appmaker/component-foo'");
+          var url = window.prompt("Component URL? (e.g. http://username.github.io/component-foo/component.html)");
           if (! url) return;
-          var name = window.prompt("New component name");
-          if (! name) return;
           var self = this;
           $.ajax('/api/componentlinks', {
             data: {
-              url: url,
-              name: name
+              url: url
             },
             type: 'post',
             success: function (data) {
@@ -401,43 +420,40 @@
             }
           });
         },
-        addLinkForComponent: function(thename, theurl) {
+        addLinkForComponent: function(theurl, thename) {
+          console.log("in addLinkForComponent", theurl, thename);
           var myComponents = this.shadowRoot.querySelector("#mycomponents");
+          try {
           var component = document.createElement('li');
-          var name = document.createElement('span');
           var self = this;
+          // We need to find the name from the registry based on the URL
+          var name = document.createElement('a');
           name.textContent = thename;
           component.appendChild(name);
           var xmarksthespot = document.createElement('a');
-          xmarksthespot.textContent = 'x';
           xmarksthespot.setAttribute('class', 'x');
           xmarksthespot.addEventListener('click', function() {
             self.forgetComponent(theurl);
           });
-          component.appendChild(xmarksthespot);
-          component.setAttribute('class', 'componentlink');
+          name.appendChild(xmarksthespot);
+          name.setAttribute('class', 'componentlink');
           myComponents.appendChild(component);
+        } catch (e) {
+          console.log(e);
+        }
         },
         refreshComponentsList: function() {
           var self = this;
-
           var myComponents = this.shadowRoot.querySelector("#mycomponents");
           myComponents.innerHTML = "";
+          // need to clear the tray and the registry as well XXX
           $.getJSON("/api/componentlinks", function(data) {
-
             try {
               var count = 0;
               $.each(data, function(key, val) {
                 count++;
-                self.addLinkForComponent(val.name, val.url);
                 self.learnComponent(val.url);
               });
-
-              if(count == 0){
-                noApps.style.display = "block";
-              } else {
-                noApps.style.display = "none";
-              }
             } catch (e) {
               console.log(e);
             }
