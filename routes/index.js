@@ -38,17 +38,22 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
     },
 
     remix: function (req, res) {
-      var email = req.query.email;
+      var email = (req.query.email === undefined ? false : req.query.email);
       var app = req.query.app;
+      var appURL = process.env.ASSET_HOST + '/designer?remix=' + app;
 
-      if (email) {
-        var appURL = process.env.ASSET_HOST + '/designer?remix=' + app;
-        remixMailer.send(email, appURL, function () {
-          res.json({error: null}, 200);
-        });
+      if (email !== false) {
+        if (email) {
+          remixMailer.send(email, appURL, function () {
+            res.json({error: null}, 200);
+          });
+        }
+        else {
+          res.json({error: 'No valid email.'}, 500);
+        }
       }
       else {
-        res.json({error: 'No valid email.'}, 500);
+        res.redirect(appURL);
       }
     },
 

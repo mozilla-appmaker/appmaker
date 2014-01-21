@@ -52,6 +52,17 @@ user-state {
     .green-button;
   }
 
+  #addComponent {
+    .green-button;
+    margin: 0 0 3px 3px;
+  }
+
+  .componentlink {
+    display: block;
+    color: black;
+    size: large;
+  }
+
   .app-menu .menu-button {
     min-width: 50px;
   }
@@ -150,7 +161,7 @@ user-state {
     display: none;
   }
 
-  #myapps {
+  #myapps,#mycomponents {
     display: block;
     margin: 0 0 12px 0;
     padding: 0;
@@ -158,11 +169,11 @@ user-state {
     width: 100%;
   }
 
-  #myappsheading {
+  #myappsheading,#mycomponentsheading {
     text-align: left;
   }
 
-  #myapps li {
+  #myapps li, #mycomponents li {
     margin-top: 0;
     padding: 0;
     text-align: left;
@@ -179,6 +190,23 @@ user-state {
     background-size: 22px;
     background-repeat: no-repeat;
     padding-left: 24px !important;
+  }
+
+  a.componentlink {
+    background-image: url(/images/component.png);
+    background-position: left;
+    background-size: 22px;
+    background-repeat: no-repeat;
+    padding-left: 24px !important;
+  }
+
+  .x {
+    background-image: url(/images/delete.png);
+    background-position: left;
+    background-size: 16px;
+    background-repeat: no-repeat;
+    padding-left: 24px !important;
+    margin-left: 10px;
   }
 
   .menu-options a {
@@ -198,15 +226,21 @@ user-state {
       font-weight: bold;
       background-color: #CCC
     }
-
+    &.x {
+      display:inline;
+    }
     &:hover {
       background-color: white;
+    }
+    &.x:hover {
+      background-color: none;
+      font-weight: bold;
     }
   }
 
 
 
-  #noApps {
+  #noApps,#noComponents {
     font-size: 16px;
     color: #777;
   }
@@ -248,5 +282,4 @@ user-state {
     0% { -moz-transform: rotate(0deg)}
     100% { -moz-transform: rotate(360deg)}
   }
-
 }

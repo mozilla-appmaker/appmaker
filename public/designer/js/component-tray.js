@@ -8,33 +8,31 @@ define(
     "use strict";
 
     var knownComponents = [];
-
-    function addComponentsFromRegistry () {
-      var trayComponentContainer = document.getElementById('components');
-
-      Ceci.forEachComponent(function (name, component) {
+    var DesignerTray = {
+      addComponentWithName: function(name, component) {
+        var componentTrayContainer = document.getElementById('components');
         var urlComponent = window.CustomElements.registry[name].prototype.resolvePath('locale/' + L10n.getCurrentLang() + '.json');
         L10n.ready({url: urlComponent});
 
         // Avoid adding components that are already in the tray
-        if (trayComponentContainer.querySelector('designer-component-tray-item[name="' + name + '"]')) return;
+        if (componentTrayContainer.querySelector('designer-component-tray-item[name="' + name + '"]')) return;
 
         var item = document.createElement('designer-component-tray-item');
         var meta;
 
         // This part is ugly. Reach into CustomElements and pull out a <template>.
-
         var ceciDefinitionScript = Ceci.getCeciDefinitionScript(name);
 
         try {
           meta = JSON.parse(ceciDefinitionScript.innerHTML);
         }
         catch (e) {
-          throw new TypeError("Ceci component, \"" + name + "\" is lacking ceci definitions. Likely it shouldn't be returned from ceci-designer.");
+          throw new TypeError("Ceci component, \"" + name + "\" is either lacking ceci definitions or has a JSON error. Likely it shouldn't be returned from ceci-designer.");
         }
 
         item.setAttribute('name', name);
-        item.setAttribute('thumbnail', meta.thumbnail);
+        item.setAttribute('thumbnail', window.CustomElements.registry[name].prototype.resolvePath(meta.thumbnail));
+
         item.setAttribute('label', meta.name || Util.prettyName(name));
 
         item.setAttribute('description', meta.description);
@@ -50,14 +48,21 @@ define(
           }
         }, false);
 
-        trayComponentContainer.appendChild(item);
-      });
+        componentTrayContainer.appendChild(item);
+        item.label = L10n.get(name) || item.label;
+      },
+      addComponentsFromRegistry: function() {
+        Ceci.forEachComponent(function (name, component) {
+          DesignerTray.addComponentWithName(name, component);
+        });
+      }
     }
 
     // Load elements that might exist already, but also wait for WebComponentsReady in case
     // we load this module early.
-    window.addEventListener('WebComponentsReady', addComponentsFromRegistry, false);
-    addComponentsFromRegistry();
+    window.addEventListener("polymer-element-defined", DesignerTray.addComponentsFromRegistry);
+    DesignerTray.addComponentsFromRegistry();
+    return DesignerTray;
   }
 );
 
