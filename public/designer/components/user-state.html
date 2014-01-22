@@ -35,6 +35,7 @@
           <a class="saved" id="renameApp">Rename</a>
           <a id="publishApp">Publish</a>
           <a class="saved" id="deleteApp">Delete</a>
+          <a class="hidden" id="viewlink">App URL</a>
         </div>
       </div>
     </div>
@@ -109,6 +110,7 @@
           that.$.renameApp.innerHTML = l10n.get("Rename");
           that.$.publishApp.innerHTML = l10n.get("Publish");
           that.$.deleteApp.innerHTML = l10n.get("Delete");
+          that.$.viewlink.innerHTML = l10n.get("App URL");
           that.$.newApp.innerHTML = l10n.get("New App");
 
 
@@ -245,9 +247,10 @@
           application.clearCurrentApp();
           this.updateAppName(l10n.get("Unsaved App"));
         },
-        okAppLoad: function(name){
+        okAppLoad: function(name, data){
           this.updateAppName(name);
           this.refreshUserState();
+          this.setAppURL(data['last-published-url']);
         },
         updateAppName: function(name){
           var app = document.querySelector('ceci-app');
@@ -434,26 +437,26 @@
           console.log("in addLinkForComponent", theurl, thename);
           var myComponents = this.shadowRoot.querySelector("#mycomponents");
           try {
-          var component = document.createElement('li');
-          var self = this;
-          // We need to find the name from the registry based on the URL
-          var name = document.createElement('a');
-          name.textContent = thename;
-          component.appendChild(name);
-          var xmarksthespot = document.createElement('a');
-          xmarksthespot.setAttribute('class', 'x');
-          xmarksthespot.addEventListener('click', function(event) {
-            if (window.confirm("Are you sure you want to forget about the component at " + theurl)) {
-              self.forgetComponent(theurl);
-            }
-            event.stopPropagation();
-          });
-          name.appendChild(xmarksthespot);
-          name.setAttribute('class', 'componentlink');
-          myComponents.appendChild(component);
-        } catch (e) {
-          console.log(e);
-        }
+            var component = document.createElement('li');
+            var self = this;
+            // We need to find the name from the registry based on the URL
+            var name = document.createElement('a');
+            name.textContent = thename;
+            component.appendChild(name);
+            var xmarksthespot = document.createElement('a');
+            xmarksthespot.setAttribute('class', 'x');
+            xmarksthespot.addEventListener('click', function(event) {
+              if (window.confirm("Are you sure you want to forget about the component at " + theurl)) {
+                self.forgetComponent(theurl);
+              }
+              event.stopPropagation();
+            });
+            name.appendChild(xmarksthespot);
+            name.setAttribute('class', 'componentlink');
+            myComponents.appendChild(component);
+          } catch (e) {
+            console.log(e);
+          }
         },
         refreshComponentsList: function() {
           var self = this;
@@ -470,6 +473,17 @@
               console.log(e);
             }
           });
+        },
+        setAppURL: function(url) {
+          var viewlink = this.$.viewlink;
+          if(url) {
+            viewlink.setAttribute("href", url);
+            viewlink.classList.remove("hidden");
+          }
+          else {
+            viewlink.setAttribute("href", '');
+            viewlink.classList.add("hidden");
+          }
         }
       });
     });
