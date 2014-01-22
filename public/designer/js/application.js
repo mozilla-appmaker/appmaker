@@ -40,21 +40,39 @@ define(["jquery", "l10n"], function($, l10n) {
       publishApp: function(name, html){
         $.ajax('/api/publish', {
           data: {
-            html: html,
-            name: name
+            name: name,
+            html: html
           },
           type: 'post',
           success: function (data) {
+            // FIXME: remove this alert and replace with a nice looking modal
             alert(l10n.get('App published successfully:') + ' ' + data.app);
+            // update the user state menu to have an App URL entry
+            var userState = document.querySelector('user-state');
+            userState.setAppURL(data.app);
+
+            // also notify API that we have a url now (or that it got updated)
+            $.ajax('api/update_app', {
+              data: {
+                name: name,
+                url: data.app
+              },
+              type: 'post',
+              success: function (data) {
+                console.log("app update (for publish url) succeeded");
+              },
+              error: function (data) {
+                console.error("app update (for publish url) failed", data);
+              }
+            });
           },
           error: function (data) {
             console.error(data);
             // alert(data.responseJSON.error);
           }
         });
-
       },
-      saveApp: function(name,html){
+      saveApp: function(name, html){
         $.ajax('/api/save_app', {
           data: {
             html: html,
@@ -97,7 +115,7 @@ define(["jquery", "l10n"], function($, l10n) {
             var app = document.querySelector('ceci-app');
             app.innerHTML = data.html;
             localStorage.currentApp = name;
-            userState.okAppLoad(name);
+            userState.okAppLoad(name, data);
             // Update the page/card tabs
             var cardNav = document.querySelector('ceci-card-nav');
             cardNav.buildTabs();

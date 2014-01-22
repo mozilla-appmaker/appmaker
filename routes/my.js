@@ -10,14 +10,27 @@ module.exports = function (mongoose, dbconn) {
   var componentSchema = mongoose.Schema({author:'string', url: 'string', name: 'string'});
   var Component = mongoose.model('LearnedComponent', componentSchema, 'components');
 
-  var appSchema = mongoose.Schema({author:'string', name: 'string', html: 'string'});
+  var appSchema = mongoose.Schema({
+    'author': 'string',
+    'name': 'string',
+    'html': 'string',
+    'last-published-url': 'string'
+  });
   var App = mongoose.model('App', appSchema, 'apps');
+
+  var checkAuthorised = function(request, response, next) {
+    if (! request.session.email) {
+      response.json(401, {error: 'need to be signed in'});
+      return false;
+    }
+    if(next) next();
+    return true;
+  };
+
   return {
     apps: function(request, response) {
-      if (! request.session.email) {
-        response.json(401, {error: 'need to be signed in'});
-        return;
-      }
+      if (!checkAuthorised(request, response)) return;
+
       App.find({author:request.session.email}).sort({"name":1}).exec(function (err, apps) {
         if (err){
           console.log('Unable to retrieve apps');
@@ -27,10 +40,8 @@ module.exports = function (mongoose, dbconn) {
       });
     },
     app: function(request, response) {
-      if (! request.session.email) {
-        response.json(401, {error: 'need to be signed in'});
-        return;
-      }
+      if (!checkAuthorised(request, response)) return;
+
       App.findOne({author:request.session.email, name: request.query.name}, function(err, obj) {
         if (!obj) {
           console.log('Unable to find app for %s', request.query.name);
@@ -42,18 +53,23 @@ module.exports = function (mongoose, dbconn) {
       });
     },
     updateApp: function(request, response) {
+      if (!checkAuthorised(request, response)) return;
+
       var name = request.body.name;
-      var html = request.body.html;
-      console.log(name + " to " + html);
-      if (! request.session.email) {
-        response.json(401, {error: 'need to be signed in'});
-        return;
+      var html = request.body.html || false;
+      var url = request.body.url || false;
+
+      if(html === false && url === false) {
+        return response.json(409, {error: 'App was not updated as no data was sent with the request'});
       }
+
+      var setObj = {};
+      if(html) setObj.html = html;
+      if(url) setObj['last-published-url'] = url;
+
       App.update(
         {author:request.session.email, name: name},
-        {
-          $set: {html: html}
-        },
+        { $set: setObj },
         {},
         function(err,obj){
           if(err){
@@ -64,13 +80,10 @@ module.exports = function (mongoose, dbconn) {
         });
     },
     renameApp: function(request, response) {
+      if (!checkAuthorised(request, response)) return;
+
       var oldName = request.body.oldName;
       var newName = request.body.newName;
-
-      if (! request.session.email) {
-        response.json(401, {error: 'need to be signed in'});
-        return;
-      }
 
       App.update(
         {author:request.session.email, name: oldName},
@@ -87,6 +100,8 @@ module.exports = function (mongoose, dbconn) {
       });
     },
     deleteApp: function(request,response){
+      if (!checkAuthorised(request, response)) return;
+
       App.remove({author:request.session.email, name: request.body.name},function(err){
         if(err){
            console.error("Error deleting this app!");
@@ -96,10 +111,7 @@ module.exports = function (mongoose, dbconn) {
       response.json(200);
     },
     saveApp: function(request, response) {
-      if (! request.session.email) {
-        response.json(401, {error: 'need to be signed in'});
-        return;
-      }
+      if (!checkAuthorised(request, response)) return;
 
       //Check if app with same name already exists
 
@@ -122,10 +134,8 @@ module.exports = function (mongoose, dbconn) {
       });
     },
     components: function(request, response) {
-      if (! request.session.email) {
-        response.json(401, {error: 'need to be signed in'});
-        return;
-      }
+      if (!checkAuthorised(request, response)) return;
+
       Component.find({author:request.session.email}).sort({"name":1}).exec(function (err, components) {
         if (err){
           console.log('Unable to retrieve components');
@@ -135,10 +145,8 @@ module.exports = function (mongoose, dbconn) {
       });
     },
     learnComponent: function(request, response) {
-      if (! request.session.email) {
-        response.json(401, {error: 'need to be signed in'});
-        return;
-      }
+      if (!checkAuthorised(request, response)) return;
+
       //Check if app with same url already exists
       Component.findOne({author:request.session.email, url: request.body.name}, function(err, obj) {
         if (obj) {
@@ -158,6 +166,8 @@ module.exports = function (mongoose, dbconn) {
       });
     },
     forgetComponent: function(request, response) {
+      if (!checkAuthorised(request, response)) return;
+
       Component.remove({author:request.session.email, url: request.body.url}, function(err){
         if(err){
            console.error("Error forgetting this component!");
