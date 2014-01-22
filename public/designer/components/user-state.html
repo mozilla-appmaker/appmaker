@@ -115,7 +115,7 @@
           that.$.newApp.innerHTML = l10n.get("New App");
 
           function loadRemixContent (remixName) {
-            var remixUrl = document.querySelector('#appmaker-remix-url').value.replace('{remixName}', remixName);
+            var remixUrl = document.querySelector('#appmaker-remix-url').value.replace('{remixName}', remixName) + '/index.html';
             application.loadAppByUrl(remixUrl);
             that.editingmode = 'draft';
           }
