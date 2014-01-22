@@ -21,7 +21,6 @@ var l10n = {
 
         if (_requestCache.hasOwnProperty(url)) {
           if (_requestCache[url].status === 200) {
-            console.log("[L10n]: Translation file cached. Firing callback for: ", url);
 
             var data = _requestCache[url].response;
             for (var key in data) {
