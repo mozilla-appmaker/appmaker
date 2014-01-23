@@ -50,7 +50,6 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
 
       function cleanString (str, removeQuotes) {
         str = str.replace(/>/g, '&gt;').replace(/</g, '&lt;');
-
         if (removeQuotes) {
           str = str.replace(/'/g, '').replace(/"/g, '')
         }
@@ -63,7 +62,8 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
         appHTML: requestHTML,
         appName: folderName,
         gettext: req.gettext,
-        ceciComponentURL: process.env.ASSET_HOST
+        ceciComponentURL: process.env.ASSET_HOST,
+        remixURL: encodeURIComponent(encodeURIComponent(remoteURLs.app))
       });
 
       var installStr = templates.install({

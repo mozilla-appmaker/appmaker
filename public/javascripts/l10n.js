@@ -5,12 +5,19 @@ define([], function () {
       _requestedStrings = false;
 
 var l10n = {
+    debug: function(message) {
+    },
     get: function (key) {
       return _strings[key] || "";
     },
     ready: function (options) {
       var noCache = !!options.noCache,
+          verboseLogging = !!options.verboseLogging,
           url = options.url || '/strings';
+
+      if (verboseLogging){
+        this.debug = console.log;
+      }
 
       // Add cache busting if requested.
       url = url + (noCache ? '?bust=' + Date.now() : '');
@@ -21,7 +28,7 @@ var l10n = {
 
         if (_requestCache.hasOwnProperty(url)) {
           if (_requestCache[url].status === 200) {
-            console.log("[L10n]: Translation file cached. Firing callback for: ", url);
+            this.debug("[L10n]: Translation file cached. Firing callback for: ", url);
 
             var data = _requestCache[url].response;
             for (var key in data) {
@@ -33,7 +40,7 @@ var l10n = {
           }
 
           if (_requestCache[url].status === 404) {
-            console.log("[L10n]: Skipping the request for: " + url + " Status: " + _requestCache[url].status);
+            this.debug("[L10n]: Skipping the request for: " + url + " Status: " + _requestCache[url].status);
             return;
           }
         }

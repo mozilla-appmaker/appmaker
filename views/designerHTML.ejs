@@ -16,12 +16,8 @@
             <div class="app-name"></div>
           </div>
           <div class="phone-border">
-            <% if (htmlInjection.length > 0) { -%>
-              <%- htmlInjection %>
-            <% } else { -%>
-              <ceci-app>
-              </ceci-app>
-            <% } -%>
+            <ceci-app>
+            </ceci-app>
           </div>
           <div class="phone-shadow"></div>
           <div class="phone-bottom"></div>
@@ -155,4 +151,5 @@
     </div>
   </div>
 </div>
-<input id="appmaker-remix-url" type="hidden" value="<%- publishUrl %>" />
+
+<% include publishpane %>

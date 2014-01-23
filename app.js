@@ -15,7 +15,8 @@ connectFonts = require('connect-fonts'),
 postmark = require("postmark")(process.env.POSTMARK_API_KEY),
 lessMiddleware = require('less-middleware'),
 enableRedirects = require('./routes/redirects'),
-i18n = require("webmaker-i18n");
+i18n = require('webmaker-i18n'),
+components = require('./lib/components');
 
 try {
   // This does a pretty great job at figuring out booleans.
@@ -159,7 +160,11 @@ routes = require('./routes')(
   makeAPIPublisher
 );
 
-app.locals.extraComponents = routes.proxy.findComponents();
+
+// Load components from various sources
+components.load(function(components){
+  app.locals.components = components;
+});
 
 app.get('/', routes.index);
 

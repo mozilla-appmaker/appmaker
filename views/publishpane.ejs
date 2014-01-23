@@ -1,0 +1,87 @@
+    <div id="publish-pane" class="hidden">
+      <div id="publish-pane-panel">
+        <button id="close-publish-pane-panel"></button>
+        <div id="publish-pane-panel-content" class="hidden">
+          <div id="publish-pane-panel-inner">
+            <div id="publish-pane-logo">
+              <img src="<%= process.env.ASSET_HOST %>/images/chef-man.png">
+              <p class="publish-guide-text">
+                <%- gettext("Your app was successfully published!") %>
+                <%- gettext("It's ready for use at:") %>
+                <a id="applink" href=''></a>
+              </p>
+            </div>
+            <input type="email" id="publish-pane-panel-email" placeholder="Your Email">
+            <button id="publish-pane-button"><%- gettext("Mail me my app URL") %></button>
+            <div id="publish-pane-explanation" class="publish-guide-text">
+              <%- gettext("This app was created with Mozilla Labs' Appmaker. We'll send you a link so you can remix it and make it your own.") %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function(){
+          var master = document.getElementById('publish-pane');
+          var panel = document.getElementById('publish-pane-panel');
+          var content = document.getElementById('publish-pane-panel-content');
+          var close = document.getElementById('close-publish-pane-panel');
+          var email = document.getElementById('publish-pane-panel-email');
+          var appurl = document.getElementById('applink');
+          var mailButton = document.querySelector('#publish-pane-button');
+
+          window.showPublishPane = showPublishPane = function(name, data) {
+            master.classList.remove('hidden');
+            setTimeout(function() {
+              panel.classList.add('expanded');
+              content.classList.remove('hidden');
+              mailButton.disabled = false;
+              email.disabled = false;
+              mailButton.classList.remove('fadeout');
+              email.classList.remove('fadeout');
+              email.value = '';
+              appurl.setAttribute('href', data.app);
+              appurl.innerHTML = data.app;
+            }, 50);
+          };
+
+          function closeRemixPanel (e) {
+            panel.classList.remove('expanded');
+            content.classList.add('hidden');
+            master.classList.add('hidden');
+          }
+
+          close.onclick = closeRemixPanel;
+        }());
+      </script>
+
+<%if (typeof appName !== "undefined") { %>
+      <script>
+        /**
+         * Copied from the remix panel, but this needs to become a function that contacts
+         * the app API for mailing out a user's application URL rather than remix information.
+         */
+        (function() {
+          var mailButton = document.querySelector('#publish-pane-button');
+          mailButton.onclick = function (e) {
+            mailButton.disabled = true;
+            email.disabled = false;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '<%= process.env.ASSET_HOST %>/remix?app=<%- appName %>&email=' + email.value, true);
+            xhr.onerror = function (e) {
+              console.error(e);
+            };
+            xhr.onload = function (e) {
+              console.log(e);
+            };
+            xhr.send(null);
+            setTimeout(function () {
+              mailButton.classList.add('fadeout');
+              email.classList.add('fadeout');
+              closeRemixPanel();
+            }, 500);
+          };
+        }());
+      </script>
+<% } %>
+    </div>
