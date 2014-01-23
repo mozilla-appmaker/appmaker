@@ -1,37 +1,144 @@
 <% layout('layout') -%>
-<link rel='stylesheet' href='/stylesheets/tutorial.css' />
-<script type="text/javascript" charset="utf-8" src="/vendor/jquery/jquery.js"></script>
-<script type="text/javascript" charset="utf-8" src="/vendor/jquery-ui/ui/minified/jquery-ui.min.js"></script>
-<script type="text/javascript" charset="utf-8" src="/javascripts/tutorial.js"></script>
-<div class="top-line"></div>
-<div id="home-mozilla">
-	<a href="http://www.mozilla.org"><img src="images/mozilla.png"></a>
-</div>
-<div class="home-logo">
-	<img src="images/chef-man.png">
-	<div class="app-logo">
-		<%- gettext("app-logo") %>
-	</div>
-	<div class="home-sub">
-		<%- gettext("home-sub") %>
-	</div>
-</div>
-<div class="home-container clearfix">
-	<div class="home-left">
-		<div class="explanation">
-			<%- gettext("explanation") %>
-		</div>
-			  <button class="btn-std btn-start-app" onclick="window.location='/<%- localeInfo.lang %>/designer'">
-  		<%- gettext("Build App") %>
-		</button>
-		<a href="https://github.com/mozilla/appmaker" target="_blank"><div class="github"></div></a>
-		<a href="https://twitter.com/MozillaAppmaker" target="_blank"><div class="twitter"></div></a>
-	</div>
-	<div class="home-right">
-		<div class="right-inner">
-			<div class="video-splash">
-				<iframe src="//www.youtube.com/embed/RaRIdLgZTPI?html5=1" width="960" height="540" frameborder="0"></iframe>
+
+<html>
+	<head>
+		<title>Mozilla Appmaker</title>
+		<link rel='stylesheet' href='/stylesheets/site.css' />
+		<link rel='stylesheet' href='/stylesheets/font-awesome.css' />
+		<link href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" rel="stylesheet" />
+		<script type="text/javascript" charset="utf-8" src="/vendor/jquery/jquery.js"></script>
+		<script type="text/javascript" charset="utf-8" src="/vendor/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+		<!-- rss-feed-parser.js taken from http://designshack.net/articles/javascript/build-an-automated-rss-feed-list-with-jquery/ -->
+		<script type="text/javascript" charset="utf-8" src="/javascripts/rss-feed-parser.js"></script>
+		<script type="text/javascript" charset="utf-8" src="/javascripts/tutorial.js"></script>
+	</head>
+	<body>
+		<div id="nav">
+			<div class="wrap">
+				<a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
+				<div>
+					<div id="wordmark" class="left">
+	                    <a href="/"><img src="images/appmaker_wordmark.png" />
+	                    </a>
+		            </div>
+					<ul id="nav-page-links">
+			            <div class="right">
+			            	<li id="designer-page" class="right"><a href="/<%- localeInfo.lang %>/designer" class="build-app"><i class="fa fa-mobile"></i><span>Build App</span></a></li>
+			            	<li id="blog-page" class="right"><a href="">Blog</a></li>
+			                <li id="contribute-page" class="right"><a href="/contribute">Contribute</a></li>
+			                <li id="about-page" class="right"><a href="/about">About</a></li>
+			            </div>
+			        </ul>
+			    </div>
 			</div>
 		</div>
-	</div>
-</div>
+		<div id="banner" class="content-block">
+			<div class="wrap">
+				<div class="two-column">
+					<h1><%- gettext("Let's Build an App") %></h1>
+					<div class="banner-description"><%- gettext("We want to make it possible for anyone to make amazing personal mobile apps. You don't need to know code to get started!") %></div>
+					<button class="button-link white-text-button">Learn More</button>
+					<button class="button-link white-text-button build-app" onclick="window.location='/<%- localeInfo.lang %>/designer'"><i class="fa fa-mobile"></i><span>Build App</span></button>
+				</div>
+				<div class="two-column">
+					<div class="video-splash">
+						<iframe src="//www.youtube.com/embed/RaRIdLgZTPI?html5=1" width="960" height="540" frameborder="0"></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="quote" class="content-block">
+			<div class="wrap">
+				<span>"With Appmaker from Mozilla Labs, anyone can easily create a fun or useful app for themselves or their friends"</i></span>
+			</div>
+		</div>
+		<div id="try-demo" class="content-block light-blue-bg">
+			<div class="wrap">
+				<h1>Try our Demo Apps</h1>
+				<div id="demo-text" class="left">
+					Explore some of the apps we built and make your own! You can start remixing and discover what you can do with Appmaker.
+				</div>
+				<div id="demo-preview" class="left">
+					<div class="three-column">
+						&nbsp;
+					</div>
+					<div class="three-column">
+						demo app preview & link here
+					</div>
+					<div class="three-column">
+						&nbsp;
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="widgets" class="content-block">
+			<div class="wrap">
+				<div class="two-column">
+					<h3>Twitter</h3>
+					<a class="twitter-timeline"  href="https://twitter.com/MozillaAppmaker" height="250"  data-widget-id="425786940290371584" data-chrome="noheader nofooter">Tweets by @MozillaAppmaker</a>
+				    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+				</div>
+				<div class="two-column">
+					<h3>Recent Blog Posts</h3>
+					<div id="recent-blog"></div>
+				</div>
+			</div>
+		</div>
+		<footer id="footer" class="content-block">
+			<div class="wrap">
+				<div class="left" id="mozilla-labs"><img src="images/logo.png" /></div>
+				<div id="footer-links" class="right">
+					<div class="four-column">
+						<header>About</header>
+						<ul>
+							<li><a href="">About Appmaker</a></li>
+							<li><a href="">FAQ</a></li>
+							<li><a href="">Blog</a></li>
+						</ul>
+					</div>
+					<div class="four-column">
+						<header>Resources</header>
+						<ul>
+							<li><a href="">Contribute</a></li>
+							<li><a href="">Documentation</a></li>
+							<li><a href="">Donate</a></li>
+						</ul>
+					</div>
+					<div class="four-column">
+						<header>Info</header>
+						<ul>
+							<li><a href="">Privacy Policy</a></li>
+							<li><a href="">Legal Notices</a></li>
+							<li><a href="">Feedback</a></li>
+						</ul>
+					</div>
+					<div class="four-column">
+						<header>Contact</header>
+						<ul>
+							<li><a href="">E-mailing List</a></li>
+						</ul>
+						<div id="social">
+							<img src="images/icon_twitter.png" />
+							<img src="images/icon_youtube.png" />
+							<img src="images/icon_github.png" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script>
+		</footer>
+		</div>
+		<script>
+			// sample code taken from http://designshack.net/articles/javascript/build-an-automated-rss-feed-list-with-jquery/
+			$.ajax({
+			    url: document.location.protocol + '//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=' + encodeURIComponent("http://appmaking.mozillalabs.com/feed/"),
+			    dataType: 'json',
+			    success: function(data) {
+			      $.each(data.responseData.feed.entries, function(key, value){
+			        var thehtml = '<a href="'+value.link+'" target="_blank">'+value.title+'</a><br/>';
+			        $("#recent-blog").append(thehtml);
+			      });
+			    }
+			});
+		</script>
+	</body>

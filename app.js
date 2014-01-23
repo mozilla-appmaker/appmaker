@@ -161,7 +161,12 @@ routes = require('./routes')(
 
 app.locals.extraComponents = routes.proxy.findComponents();
 
+
 app.get('/', routes.index);
+
+app.get('/about', routes.about);
+
+app.get('/contribute', routes.contribute);
 
 app.all('/designer', routes.designer);
 

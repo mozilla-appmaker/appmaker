@@ -16,6 +16,14 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
       res.render('index.ejs');
     },
 
+    about: function(req, res) {
+      res.render('about.ejs');
+    },
+
+    contribute: function(req, res) {
+      res.render('contribute.ejs');
+    },
+
     designer: function (req, res) {
       var publishUrl = urlManager.createURLPrefix('{remixName}');
 
