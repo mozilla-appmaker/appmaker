@@ -166,15 +166,15 @@ define(["jquery", "l10n"], function($, l10n) {
           type: 'get',
           success: function (data) {
 
-           //TODO
-//              var app = document.querySelector('ceci-app'); //get the ceci-app tag
-//              var ceci_app_parent = app.parentNode; //get it's parent b/c we're going to replace the existing tag with the deserialized ceci-app tag
-//              ceci_app_parent.replaceChild($(data.html)[0],app);
-
+            //we already have a temporary ceci-app element in place, so we need to replace it with
+              //the one we're fetching from the database
             var app = document.querySelector('ceci-app');
+            //var ceciParentNode = app.parentNode;
             app.innerHTML = data.html;
             app.appid = data.appid;
 
+            app.setAttribute("name",name);
+            app.setAttribute("appid",app.appid);
 
             localStorage.currentApp = name;
             userState.okAppLoad(name, data);

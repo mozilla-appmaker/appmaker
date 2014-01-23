@@ -247,13 +247,16 @@
             var name = window.prompt(l10n.get("What do you want to call this app?"));
 
             var ceci_app = document.querySelector('ceci-app');
+            ceci_app.name = name;
+            ceci_app.setAttribute("name", name);
 
             if(!ceci_app.appid){
                 ceci_app.appid = 'ceci-app-' + uuid();
             }
 
-            var html = ceci_app.outerHTML;
-
+            ceci_app.setAttribute("appid", ceci_app.appid);
+//            var html = ceci_app.outerHTML;
+              var html = ceci_app.innerHTML;
             if(name){
               application.saveApp(name,ceci_app.appid,html);
               // gotta make sure it actually saves though!
