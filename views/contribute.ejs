@@ -1,114 +1,113 @@
-<% layout('layout') -%>
-
-<html>
-	<head>
-		<title>Mozilla Appmaker</title>
-		<link rel='stylesheet' href='/stylesheets/site.css' />
-		<link rel='stylesheet' href='/stylesheets/font-awesome.css' />
-		<link href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" rel="stylesheet" />
-		<script type="text/javascript" charset="utf-8" src="/vendor/jquery/jquery.js"></script>
-		<script type="text/javascript" charset="utf-8" src="/vendor/jquery-ui/ui/minified/jquery-ui.min.js"></script>
-		<script type="text/javascript" charset="utf-8" src="/javascripts/tutorial.js"></script>
-	</head>
-	<body>
-		<div id="nav">
-			<div class="wrap">
-				<a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
-				<div>
-					<div id="wordmark" class="left">
-	                    <a href="/"><img src="images/appmaker_wordmark.png" />
-	                    </a>
-		            </div>
-					<ul id="nav-page-links">
-			            <div class="right">
-			            	<li id="designer-page" class="right"><a href="/<%- localeInfo.lang %>/designer" class="build-app"><i class="fa fa-mobile"></i><span>Build App</span></a></li>
-			            	<li id="blog-page" class="right"><a href="">Blog</a></li>
-			                <li id="contribute-page" class="right active-page"><a href="/contribute">Contribute</a></li>
-			                <li id="about-page" class="right"><a href="/about">About</a></li>
-			            </div>
-			        </ul>
-			    </div>
-			</div>
-		</div>
-		<div id="banner" class="content-block">
-			<div class="wrap">
-				<div class="two-column">
-					<h1>Contributing to Appmaker</h1>
-					<div class="banner-description">
-						So you want to help?  If you're interested, we are too!  Quick and dirty or complex, we want to work with you.  Appmaker grows with your ideas.
-					</div>
-				</div>
-				<div class="two-column">
-				</div>
-			</div>
-		</div>
-		<div id="contribution-needed" class="content-block light-blue-bg">
-			<div class="wrap">
-				<h2>Contributions Needed</h2>
-				<p>
-					For Appmaker to succeed, we need
-					<ul>
-						<li>an authoring environment which is as simple to learn as it is effective</li>
-						<li>useful and composable components, and</li>
-						<li>excellent sample apps and tutorials.</li>
-					</ul>
-				</p>
-				<p>
-					There is much work to do to finish and perfect all of these areas, and we’re hoping you can help with at least one of these areas.
-				</p>
-				<p>
-					The authoring environment (which we call the designer) is the core of Appmaker.  Key skills we could use today are user testing, QA, visual & interaction design, and webdev (node.js and front-end).  The best way to find out what’s needed for the designer is to see our <a href="//github.com/mozilla-appmaker/appmaker/issues?labels=Good+for+Contributors&page=1&state=open" target="_blank">Github issues labeled “good for contributors”</a>.
-				</p>
-				<p>
-					We could use both fixes to our existing components, or new ones.  We’ll likely make a separate page to keep track of the components that the community would like to see built, and co-design them. If you are keen to help here, do get in touch and find out what the latest thinking is (or just make a pull request).
-				</p>
-				<p>
-					Finally, it would be very useful to show new Appmaker users what kinds of apps could be built, so we can build a showcase that explains the breadth of possible apps, and gives people good starting points.  If you have introduced Appmaker to new audiences, please share your materials, so that we can make it easy for others to find them.
-				</p>
-			</div>
-		</div>
-		<footer id="footer" class="content-block">
-			<div class="wrap">
-				<div class="left" id="mozilla-labs"><img src="images/logo.png" /></div>
-				<div id="footer-links" class="right">
-					<div class="four-column">
-						<header>About</header>
-						<ul>
-							<li><a href="">About Appmaker</a></li>
-							<li><a href="">FAQ</a></li>
-							<li><a href="">Blog</a></li>
-						</ul>
-					</div>
-					<div class="four-column">
-						<header>Resources</header>
-						<ul>
-							<li><a href="">Contribute</a></li>
-							<li><a href="">Documentation</a></li>
-							<li><a href="">Donate</a></li>
-						</ul>
-					</div>
-					<div class="four-column">
-						<header>Info</header>
-						<ul>
-							<li><a href="">Privacy Policy</a></li>
-							<li><a href="">Legal Notices</a></li>
-							<li><a href="">Feedback</a></li>
-						</ul>
-					</div>
-					<div class="four-column">
-						<header>Contact</header>
-						<ul>
-							<li><a href="">E-mailing List</a></li>
-						</ul>
-						<div id="social">
-							<img src="images/icon_twitter.png" />
-							<img src="images/icon_youtube.png" />
-							<img src="images/icon_github.png" />
-						</div>
-					</div>
-				</div>
-			</div>
-			<script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script>
-		</footer>
-		</div>
-	</body>
+<!DOCTYPE html>
+<html lang="<%- localeInfo.lang %>" dir="<%- localeInfo.direction %>">
+    <head>
+        <title>Mozilla Appmaker</title>
+        <link rel='stylesheet' href='/stylesheets/site.css' />
+        <link rel='stylesheet' href='/stylesheets/font-awesome.css' />
+        <link href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" rel="stylesheet" />
+        <script type="text/javascript" charset="utf-8" src="/vendor/jquery/jquery.js"></script>
+        <script type="text/javascript" charset="utf-8" src="/vendor/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="/javascripts/tutorial.js"></script>
+    </head>
+    <body>
+        <div id="nav">
+            <div class="wrap">
+                <a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
+                <div>
+                    <div id="wordmark" class="left">
+                        <a href="/"><img src="images/appmaker_wordmark.png" />
+                        </a>
+                    </div>
+                    <ul id="nav-page-links">
+                        <div class="right">
+                            <li id="designer-page" class="right"><a href="/<%- localeInfo.lang %>/designer" class="build-app"><i class="fa fa-mobile"></i><span>Build App</span></a></li>
+                            <li id="blog-page" class="right"><a href="">Blog</a></li>
+                            <li id="contribute-page" class="right active-page"><a href="/contribute">Contribute</a></li>
+                            <li id="about-page" class="right"><a href="/about">About</a></li>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="banner" class="content-block">
+            <div class="wrap">
+                <div class="two-column">
+                    <h1>Contributing to Appmaker</h1>
+                    <div class="banner-description">
+                        So you want to help?  If you're interested, we are too!  Quick and dirty or complex, we want to work with you.  Appmaker grows with your ideas.
+                    </div>
+                </div>
+                <div class="two-column">
+                </div>
+            </div>
+        </div>
+        <div id="contribution-needed" class="content-block light-blue-bg">
+            <div class="wrap">
+                <h2>Contributions Needed</h2>
+                <p>
+                    For Appmaker to succeed, we need
+                    <ul>
+                        <li>an authoring environment which is as simple to learn as it is effective</li>
+                        <li>useful and composable components, and</li>
+                        <li>excellent sample apps and tutorials.</li>
+                    </ul>
+                </p>
+                <p>
+                    There is much work to do to finish and perfect all of these areas, and we’re hoping you can help with at least one of these areas.
+                </p>
+                <p>
+                    The authoring environment (which we call the designer) is the core of Appmaker.  Key skills we could use today are user testing, QA, visual & interaction design, and webdev (node.js and front-end).  The best way to find out what’s needed for the designer is to see our <a href="//github.com/mozilla-appmaker/appmaker/issues?labels=Good+for+Contributors&page=1&state=open" target="_blank">Github issues labeled “good for contributors”</a>.
+                </p>
+                <p>
+                    We could use both fixes to our existing components, or new ones.  We’ll likely make a separate page to keep track of the components that the community would like to see built, and co-design them. If you are keen to help here, do get in touch and find out what the latest thinking is (or just make a pull request).
+                </p>
+                <p>
+                    Finally, it would be very useful to show new Appmaker users what kinds of apps could be built, so we can build a showcase that explains the breadth of possible apps, and gives people good starting points.  If you have introduced Appmaker to new audiences, please share your materials, so that we can make it easy for others to find them.
+                </p>
+            </div>
+        </div>
+        <footer id="footer" class="content-block">
+            <div class="wrap">
+                <div class="left" id="mozilla-labs"><img src="images/logo.png" /></div>
+                <div id="footer-links" class="right">
+                    <div class="four-column">
+                        <header>About</header>
+                        <ul>
+                            <li><a href="">About Appmaker</a></li>
+                            <li><a href="">FAQ</a></li>
+                            <li><a href="">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div class="four-column">
+                        <header>Resources</header>
+                        <ul>
+                            <li><a href="">Contribute</a></li>
+                            <li><a href="">Documentation</a></li>
+                            <li><a href="">Donate</a></li>
+                        </ul>
+                    </div>
+                    <div class="four-column">
+                        <header>Info</header>
+                        <ul>
+                            <li><a href="">Privacy Policy</a></li>
+                            <li><a href="">Legal Notices</a></li>
+                            <li><a href="">Feedback</a></li>
+                        </ul>
+                    </div>
+                    <div class="four-column">
+                        <header>Contact</header>
+                        <ul>
+                            <li><a href="">E-mailing List</a></li>
+                        </ul>
+                        <div id="social">
+                            <img src="images/icon_twitter.png" />
+                            <img src="images/icon_youtube.png" />
+                            <img src="images/icon_github.png" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script>
+        </footer>
+        </div>
+    </body>
