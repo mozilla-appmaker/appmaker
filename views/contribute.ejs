@@ -7,8 +7,6 @@
         <link href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" rel="stylesheet" />
         <script type="text/javascript" charset="utf-8" src="/vendor/jquery/jquery.js"></script>
         <script type="text/javascript" charset="utf-8" src="/vendor/jquery-ui/ui/minified/jquery-ui.min.js"></script>
-        <!-- rss-feed-parser.js taken from http://designshack.net/articles/javascript/build-an-automated-rss-feed-list-with-jquery/ -->
-        <script type="text/javascript" charset="utf-8" src="/javascripts/rss-feed-parser.js"></script>
         <script type="text/javascript" charset="utf-8" src="/javascripts/tutorial.js"></script>
     </head>
     <body>
@@ -24,7 +22,7 @@
                         <div class="right">
                             <li id="designer-page" class="right"><a href="/<%- localeInfo.lang %>/designer" class="build-app"><i class="fa fa-mobile"></i><span>Build App</span></a></li>
                             <li id="blog-page" class="right"><a href="">Blog</a></li>
-                            <li id="contribute-page" class="right"><a href="/contribute">Contribute</a></li>
+                            <li id="contribute-page" class="right active-page"><a href="/contribute">Contribute</a></li>
                             <li id="about-page" class="right"><a href="/about">About</a></li>
                         </div>
                     </ul>
@@ -34,53 +32,38 @@
         <div id="banner" class="content-block">
             <div class="wrap">
                 <div class="two-column">
-                    <h1><%- gettext("Let's Build an App") %></h1>
-                    <div class="banner-description"><%- gettext("We want to make it possible for anyone to make amazing personal mobile apps. You don't need to know code to get started!") %></div>
-                    <button class="button-link white-text-button">Learn More</button>
-                    <button class="button-link white-text-button build-app" onclick="window.location='/<%- localeInfo.lang %>/designer'"><i class="fa fa-mobile"></i><span>Build App</span></button>
+                    <h1>Contributing to Appmaker</h1>
+                    <div class="banner-description">
+                        So you want to help?  If you're interested, we are too!  Quick and dirty or complex, we want to work with you.  Appmaker grows with your ideas.
+                    </div>
                 </div>
                 <div class="two-column">
-                    <div class="video-splash">
-                        <iframe src="//www.youtube.com/embed/RaRIdLgZTPI?html5=1" width="960" height="540" frameborder="0"></iframe>
-                    </div>
                 </div>
             </div>
         </div>
-        <div id="quote" class="content-block">
+        <div id="contribution-needed" class="content-block light-blue-bg">
             <div class="wrap">
-                <span>"With Appmaker from Mozilla Labs, anyone can easily create a fun or useful app for themselves or their friends"</i></span>
-            </div>
-        </div>
-        <div id="try-demo" class="content-block light-blue-bg">
-            <div class="wrap">
-                <h1>Try our Demo Apps</h1>
-                <div id="demo-text" class="left">
-                    Explore some of the apps we built and make your own! You can start remixing and discover what you can do with Appmaker.
-                </div>
-                <div id="demo-preview" class="left">
-                    <div class="three-column">
-                        &nbsp;
-                    </div>
-                    <div class="three-column">
-                        demo app preview & link here
-                    </div>
-                    <div class="three-column">
-                        &nbsp;
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="widgets" class="content-block">
-            <div class="wrap">
-                <div class="two-column">
-                    <h3>Twitter</h3>
-                    <a class="twitter-timeline"  href="https://twitter.com/MozillaAppmaker" height="250"  data-widget-id="425786940290371584" data-chrome="noheader nofooter">Tweets by @MozillaAppmaker</a>
-                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-                </div>
-                <div class="two-column">
-                    <h3>Recent Blog Posts</h3>
-                    <div id="recent-blog"></div>
-                </div>
+                <h2>Contributions Needed</h2>
+                <p>
+                    For Appmaker to succeed, we need
+                    <ul>
+                        <li>an authoring environment which is as simple to learn as it is effective</li>
+                        <li>useful and composable components, and</li>
+                        <li>excellent sample apps and tutorials.</li>
+                    </ul>
+                </p>
+                <p>
+                    There is much work to do to finish and perfect all of these areas, and we’re hoping you can help with at least one of these areas.
+                </p>
+                <p>
+                    The authoring environment (which we call the designer) is the core of Appmaker.  Key skills we could use today are user testing, QA, visual & interaction design, and webdev (node.js and front-end).  The best way to find out what’s needed for the designer is to see our <a href="//github.com/mozilla-appmaker/appmaker/issues?labels=Good+for+Contributors&page=1&state=open" target="_blank">Github issues labeled “good for contributors”</a>.
+                </p>
+                <p>
+                    We could use both fixes to our existing components, or new ones.  We’ll likely make a separate page to keep track of the components that the community would like to see built, and co-design them. If you are keen to help here, do get in touch and find out what the latest thinking is (or just make a pull request).
+                </p>
+                <p>
+                    Finally, it would be very useful to show new Appmaker users what kinds of apps could be built, so we can build a showcase that explains the breadth of possible apps, and gives people good starting points.  If you have introduced Appmaker to new audiences, please share your materials, so that we can make it easy for others to find them.
+                </p>
             </div>
         </div>
         <footer id="footer" class="content-block">
@@ -127,17 +110,4 @@
             <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script>
         </footer>
         </div>
-        <script>
-            // sample code taken from http://designshack.net/articles/javascript/build-an-automated-rss-feed-list-with-jquery/
-            $.ajax({
-                url: document.location.protocol + '//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=' + encodeURIComponent("http://appmaking.mozillalabs.com/feed/"),
-                dataType: 'json',
-                success: function(data) {
-                  $.each(data.responseData.feed.entries, function(key, value){
-                    var thehtml = '<a href="'+value.link+'" target="_blank">'+value.title+'</a><br />';
-                    $("#recent-blog").append(thehtml);
-                  });
-                }
-            });
-        </script>
     </body>
