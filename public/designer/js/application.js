@@ -109,8 +109,8 @@ define(["jquery", "l10n"], function($, l10n) {
       $.ajax('/api/update_app', {
         data: {
           name: name,
-          html: html,
-          appid: appid
+          appid: appid,
+          html: html
         },
         type: 'post',
           success: function (data) {
@@ -186,6 +186,8 @@ define(["jquery", "l10n"], function($, l10n) {
             console.error('Error while loading app:');
             console.error(data);
             userState.failedAppLoad();
+            //appload failed (app was deleted?) so remove from localStorage
+            localStorage.currentApp = "";
           }
         });
       },

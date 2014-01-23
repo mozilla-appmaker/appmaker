@@ -202,10 +202,11 @@
 
           //Update App
           this.$.saveApp.addEventListener("click", function() {
-            var html = document.querySelector('ceci-app').innerHTML;
+            var ceciApp = document.querySelector('ceci-app');
+            var html = ceciApp.innerHTML;
             var name = application.getCurrentApp();
             if(name){
-              application.updateApp(name,html);
+              application.updateApp(name,ceciApp.appid,html);
             }
           });
 

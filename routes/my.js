@@ -64,7 +64,6 @@ module.exports = function (mongoose, dbconn) {
         return response.json(apps);
       });
     },
-    //Does anything call this controller
     app: function(request, response) {
       if (!checkAuthorised(request, response)) return;
 
