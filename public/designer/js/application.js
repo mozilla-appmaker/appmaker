@@ -124,38 +124,38 @@ define(["jquery", "l10n"], function($, l10n) {
       });
     },
     loadAppByUrl: function(url) {
-        var userState = document.querySelector('user-state');
-        $.ajax(url, {
-          type: 'get',
-          success: function (data) {
-            var openingTag = '<ceci-app';
-            var closingTag = '</ceci-app>';
-            var indexOfOpeningTag = data.indexOf(openingTag);
-            var indexOfClosingTag = data.indexOf(closingTag);
+      var userState = document.querySelector('user-state');
+      $.ajax(url, {
+        type: 'get',
+        success: function (data) {
+          var openingTag = '<ceci-app';
+          var closingTag = '</ceci-app>';
+          var indexOfOpeningTag = data.indexOf(openingTag);
+          var indexOfClosingTag = data.indexOf(closingTag);
 
-            if (indexOfOpeningTag > -1 && indexOfClosingTag > -1) {
-              var range = document.createRange();
-              var container = document.body;
-              range.selectNode(document.body);
-              var fragment = range.createContextualFragment(data.substring(indexOfOpeningTag, indexOfClosingTag + closingTag.length));
-              var newApp = fragment.querySelector('ceci-app');
-              var currentApp = document.querySelector('ceci-app');
-              currentApp.parentNode.replaceChild(newApp, currentApp);
-            }
-            else {
-              console.error('Error while parsing loaded app.');
-            }
-
-            // Call this regardless of whether or not successfully loaded. Just need UI to be in the right state.
-            userState.failedAppLoad();
-            document.querySelector('ceci-card-nav').buildTabs();
-          },
-          error: function (data) {
-            console.error('Error while loading app:');
-            console.error(data);
-            userState.failedAppLoad();
+          if (indexOfOpeningTag > -1 && indexOfClosingTag > -1) {
+            var range = document.createRange();
+            var container = document.body;
+            range.selectNode(document.body);
+            var fragment = range.createContextualFragment(data.substring(indexOfOpeningTag, indexOfClosingTag + closingTag.length));
+            var newApp = fragment.querySelector('ceci-app');
+            var currentApp = document.querySelector('ceci-app');
+            currentApp.parentNode.replaceChild(newApp, currentApp);
           }
-        });
+          else {
+            console.error('Error while parsing loaded app.');
+          }
+
+          // Call this regardless of whether or not successfully loaded. Just need UI to be in the right state.
+          userState.failedAppLoad();
+          document.querySelector('ceci-card-nav').buildTabs();
+        },
+        error: function (data) {
+          console.error('Error while loading app:');
+          console.error(data);
+          userState.failedAppLoad();
+        }
+      });
     },
       loadAppByName: function(name) {
         var userState = document.querySelector('user-state');
