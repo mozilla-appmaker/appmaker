@@ -35,7 +35,8 @@ requirejs.config({
     "colorpicker.i18n.en": "/vendor/colorpicker/i18n/jquery.ui.colorpicker-en",
     "colorpicker.i18n.fr": "/vendor/colorpicker/i18n/jquery.ui.colorpicker-fr",
     "colorpicker.i18n.nl": "/vendor/colorpicker/i18n/jquery.ui.colorpicker-nl",
-    "colorpicker.i18n.pt-br": "/vendor/colorpicker/i18n/jquery.ui.colorpicker-pt-br"
+    "colorpicker.i18n.pt-br": "/vendor/colorpicker/i18n/jquery.ui.colorpicker-pt-br",
+    "Firebase": "https://cdn.firebase.com/v0/firebase"
   },
   shim: {
     "jquery-ui": {

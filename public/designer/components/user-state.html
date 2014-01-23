@@ -213,9 +213,19 @@
           //Save App As
           this.$.saveAppAs.addEventListener("click", function() {
             var name = window.prompt(l10n.get("What do you want to call this app?"));
-            var html = document.querySelector('ceci-app').innerHTML;
+
+            var ceci_app = document.querySelector('ceci-app');
+
+            if(!ceci_app.appid){
+                ceci_app.appid = 'ceci-app-' + uuid();
+            }
+
+            var html = ceci_app.outerHTML;
+
+            console.log("user-state save as: " + ceci_app.appid)
+
             if(name){
-              application.saveApp(name,html);
+              application.saveApp(name,ceci_app.appid,html);
               // gotta make sure it actually saves though!
               // add as a callback? or pass in callbacks?
               application.setCurrentApp(name);

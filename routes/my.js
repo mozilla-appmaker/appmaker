@@ -4,13 +4,35 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+function hex(length){
+    if (length > 8) return hex(8) + hex(length-8); // routine is good for up to 8 digits
+    var myHex = Math.random().toString(16).slice(2,2+length);
+    return pad(myHex, length); // just in case we don't get 8 digits for some reason
+}
+
+function pad(str, length){
+    while(str.length < length){
+        str += '0';
+    }
+    return str;
+}
+
+function variant(){
+    return '89ab'[Math.floor(Math.random() * 4)];
+}
+
+// Public interface
+function uuid(){
+    return hex(8) + '-' + hex(4) + '-4' + hex(3) + '-' + variant() + hex(3) + '-' + hex(12);
+}
+
 var request = require('request');
 
 module.exports = function (mongoose, dbconn) {
   var componentSchema = mongoose.Schema({author:'string', url: 'string'});
   var Component = mongoose.model('LearnedComponent', componentSchema, 'components');
 
-  var appSchema = mongoose.Schema({author:'string', name: 'string', html: 'string'});
+  var appSchema = mongoose.Schema({author:'string', appid: 'string', name: 'string', html: 'string'});
   var App = mongoose.model('App', appSchema, 'apps');
   return {
     apps: function(request, response) {
@@ -26,6 +48,7 @@ module.exports = function (mongoose, dbconn) {
         return response.json(apps);
       });
     },
+    //Does anything call this controller
     app: function(request, response) {
       if (! request.session.email) {
         response.json(401, {error: 'need to be signed in'});
@@ -42,28 +65,30 @@ module.exports = function (mongoose, dbconn) {
       });
     },
     updateApp: function(request, response) {
-      var name = request.body.name;
+      var appid = request.body.appid;
+      console.log("update app: " + appid);
       var html = request.body.html;
-      console.log(name + " to " + html);
+
       if (! request.session.email) {
         response.json(401, {error: 'need to be signed in'});
         return;
       }
       App.update(
-        {author:request.session.email, name: name},
+        {author:request.session.email, appid: appid},
         {
           $set: {html: html}
         },
         {},
         function(err,obj){
           if(err){
-            return response.json(500, {error: 'App was not pudated due to ' + err});
+            return response.json(500, {error: 'App was not updated due to ' + err});
           } else {
             return response.json(200, {message: 'App was updated successfully'});
           }
         });
     },
     renameApp: function(request, response) {
+      var appid = request.body.appid;
       var oldName = request.body.oldName;
       var newName = request.body.newName;
 
@@ -73,7 +98,7 @@ module.exports = function (mongoose, dbconn) {
       }
 
       App.update(
-        {author:request.session.email, name: oldName},
+        {author:request.session.email, appid: appid, name: oldName},
         {
           $set: {name: newName}
         },
@@ -87,7 +112,7 @@ module.exports = function (mongoose, dbconn) {
       });
     },
     deleteApp: function(request,response){
-      App.remove({author:request.session.email, name: request.body.name},function(err){
+      App.remove({author:request.session.email, appid: request.body.appid},function(err){
         if(err){
            console.error("Error deleting this app!");
            return response.json(500, {error: 'App was not deleted due to ' + err});
@@ -95,21 +120,46 @@ module.exports = function (mongoose, dbconn) {
       });
       response.json(200);
     },
+    getFormJSON: function(request, response){
+        if (! request.session.email) {
+            response.json(401, {error: 'need to be signed in'});
+            return;
+        }
+
+        App.findOne({author:request.session.email, formJSON: request.body}, function(err,obj){
+            if (err){
+                console.log('Unable to retrieve formJSON');
+                return response.json(500, 'Unable to retrieve formJSON: ' + err);
+            }
+
+            return response.json(obj);
+        });
+
+    },
     saveApp: function(request, response) {
       if (! request.session.email) {
         response.json(401, {error: 'need to be signed in'});
         return;
       }
+      var incoming_appid = request.body.appid;
+      console.log("my.js - incoming appid: " + incoming_appid);
+      if(!incoming_appid){
+          incoming_appid = 'ceci-app-' + uuid();
+      }
+      console.log("my.js - after incoming appid: " + incoming_appid)
 
       //Check if app with same name already exists
 
-      App.findOne({author:request.session.email, name: request.body.name}, function(err, obj) {
+      App.findOne({author:request.session.email, appid: incoming_appid}, function(err, obj) {
         if (obj) {
           return response.json(500, {error: 'App name must be unique.'});
         }
         else {
           var appObj = JSON.parse(JSON.stringify(request.body)) // make a copy
+
           appObj.author = request.session.email;
+          appObj.appid = incoming_appid;
+
           var newApp = new App(appObj);
           newApp.save(function(err, app){
           if (err){

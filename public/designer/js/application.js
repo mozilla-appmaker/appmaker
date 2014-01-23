@@ -54,27 +54,45 @@ define(["jquery", "l10n"], function($, l10n) {
         });
 
       },
-      saveApp: function(name,html){
-        $.ajax('/api/save_app', {
-          data: {
-            html: html,
-            name: name
-          },
-          type: 'post',
-          success: function (data) {
-            console.log("App Saved Successfully");
-          },
-          error: function (data) {
-            alert(data.responseJSON.error);
-          }
-        });
+//      saveApp: function(name,html){
+//        $.ajax('/api/save_app', {
+//          data: {
+//            html: html,
+//            name: name
+//          },
+//          type: 'post',
+//          success: function (data) {
+//            console.log("App Saved Successfully");
+//          },
+//          error: function (data) {
+//            alert(data.responseJSON.error);
+//          }
+//        });
+//
+//      },
+        saveApp: function(name,appid,html){
+            $.ajax('/api/save_app', {
+                data: {
+                    html: html,
+                    name: name,
+                    appid: appid
+                },
+                type: 'post',
+                success: function (data) {
+                    console.log("App Saved Successfully");
+                    console.log(data)
+                },
+                error: function (data) {
+                    alert(data.responseJSON.error);
+                }
+            });
 
-      },
+        },
       updateApp: function(name,html){
         $.ajax('/api/update_app', {
           data: {
             name: name,
-            html: html,
+            html: html
           },
           type: 'post',
           success: function (data) {
@@ -94,8 +112,17 @@ define(["jquery", "l10n"], function($, l10n) {
           },
           type: 'get',
           success: function (data) {
+
+           //TODO
+//              var app = document.querySelector('ceci-app'); //get the ceci-app tag
+//              var ceci_app_parent = app.parentNode; //get it's parent b/c we're going to replace the existing tag with the deserialized ceci-app tag
+//              ceci_app_parent.replaceChild($(data.html)[0],app);
+
             var app = document.querySelector('ceci-app');
             app.innerHTML = data.html;
+            app.appid = data.appid;
+
+
             localStorage.currentApp = name;
             userState.okAppLoad(name);
             // Update the page/card tabs

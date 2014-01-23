@@ -1,1 +1,2 @@
-web: node app.js
+web: supervisor app.js
+#--debug-brk=52973
