@@ -169,8 +169,8 @@ define(["jquery", "l10n"], function($, l10n) {
             //we already have a temporary ceci-app element in place, so we need to replace it with
               //the one we're fetching from the database
             var app = document.querySelector('ceci-app');
-            //var ceciParentNode = app.parentNode;
-            app.innerHTML = data.html;
+            var ceciParentNode = app.parentNode;
+            app.outerHTML = data.html;
             app.appid = data.appid;
 
             app.setAttribute("name",name);
