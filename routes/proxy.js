@@ -32,9 +32,9 @@ module.exports = {
     var fileName = path.slice(1).join('/');
     var target = 'http://' + user + '.github.io/' + componentName + fileName;
     console.log('proxying %s to %s', request.url, target);
-    var proxy_request = http.request(target);
-    proxy_request.headers = request.headers;
-    proxy_request.addListener('response', function (proxy_response) {
+    var proxyRequest = http.request(target);
+    proxyRequest.headers = request.headers;
+    proxyRequest.addListener('response', function (proxy_response) {
       proxy_response.addListener('data', function(chunk) {
         response.write(chunk, 'binary');
       });
@@ -44,23 +44,10 @@ module.exports = {
       response.writeHead(proxy_response.statusCode, proxy_response.headers);
     });
     request.addListener('data', function(chunk) {
-      proxy_request.write(chunk, 'binary');
+      proxyRequest.write(chunk, 'binary');
     });
     request.addListener('end', function() {
-      proxy_request.end();
-    });
-  },
-
-  findComponents: function() {
-    var componentsDir = process.env["COMPONENTS_DIR"];
-
-    if (!componentsDir) return [];
-
-    return fs.readdirSync(componentsDir).filter(function(filename) {
-      return fs.existsSync(path.join(componentsDir, filename,
-                                     'component.html'));
-    }).map(function(name) {
-      return '/component/mozilla-appmaker/' + name + '/component.html';
+      proxyRequest.end();
     });
   },
 
@@ -70,18 +57,15 @@ module.exports = {
     var filepath = req.params[0];
 
     // if someone has setup an environment variable COMPONENTS_DIR where component repos live, we look there.
-    var envvar = "COMPONENTS_DIR";
-
-    if (org == "mozilla-appmaker" && process.env[envvar]) {
-      var fullpath = path.resolve(process.env[envvar] + '/' + component + '/' + filepath);
-      if (fs.existsSync(fullpath)) {
-        try {
+    if (org == "mozilla-appmaker" && process.env.COMPONENTS_DIR) {
+      var fullpath = path.resolve(process.env.COMPONENTS_DIR + '/' + component + '/' + filepath);
+      try {
+        if (fs.existsSync(fullpath)){
           res.sendfile(fullpath);
-        } catch (e) {
-          console.log("Exception looking for a local file", e);
-          res.json({message: 'No valid url.'}, 500);
         }
-        return;
+      }
+      catch(e) {
+        console.log("Exception looking for a local file", e);
       }
     }
 
@@ -95,7 +79,8 @@ module.exports = {
         .pipe(res)
         .on('error',
           function(err) { console.log('error doing cors request for ', url);});
-      } catch (e) {
+      }
+      catch(e) {
         console.log("got exception doing the pipe", e);
         res.json({message: 'No valid url.'}, 500);
         return;
