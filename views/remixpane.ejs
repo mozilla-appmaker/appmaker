@@ -1,0 +1,75 @@
+    <div id="remix-pane">
+      <div id="remix-icon"></div>
+      <div id="remix-panel">
+        <button id="close-remix-panel"></button>
+        <div id="remix-panel-content" class="hidden">
+          <div id="remix-panel-inner">
+            <div id="remix-logo">
+              <img src="<%= process.env.ASSET_HOST %>/images/chef-man.png">
+            </div>
+            <input type="email" id="remix-panel-email" placeholder="Your Email">
+            <button id="remix-button" class="remix-button"><%- gettext("Mail me the remix link") %></button>
+            <div class="remix-explanation centered"><%- gettext("or") %></p>
+            <button id="remix-now-button" class="remix-button"><%- gettext("Remix now") %></button>
+            <div id="remix-explanation">
+              <%- gettext("This app was created with Mozilla Labs' Appmaker. We'll send you a link so you can remix it and make it your own.") %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        (function(){
+          var open = document.getElementById('remix-icon');
+          var panel = document.getElementById('remix-panel');
+          var content = document.getElementById('remix-panel-content');
+          var close = document.getElementById('close-remix-panel');
+          var email = document.getElementById('remix-panel-email');
+
+          open.onclick = function (e) {
+            panel.classList.add('expanded');
+            content.classList.remove('hidden');
+            open.classList.add('hidden');
+            remixButton.disabled = false;
+            email.disabled = false;
+            remixButton.classList.remove('fadeout');
+            email.classList.remove('fadeout');
+            email.value = '';
+          };
+
+          function closeRemixPanel (e) {
+            panel.classList.remove('expanded');
+            content.classList.add('hidden');
+            open.classList.remove('hidden');
+          }
+
+          close.onclick = closeRemixPanel;
+
+          var remixButton = document.querySelector('#remix-button');
+          remixButton.onclick = function (e) {
+            remixButton.disabled = true;
+            email.disabled = false;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '<%= process.env.ASSET_HOST %>/remix?app=<%- remixURL %>&email=' + email.value, true);
+            xhr.onerror = function (e) {
+              console.error(e);
+            };
+            xhr.onload = function (e) {
+              console.log(e);
+            };
+            xhr.send(null);
+            setTimeout(function () {
+              remixButton.classList.add('fadeout');
+              email.classList.add('fadeout');
+              closeRemixPanel();
+            }, 500);
+          };
+
+          var remixNowButton = document.querySelector("#remix-now-button");
+          remixNowButton.onclick = function (e) {
+            var remixURL = '<%= process.env.ASSET_HOST %>/remix?app=<%- remixURL %>';
+            window.open(remixURL);
+          };
+
+        })();
+      </script>
+    </div>

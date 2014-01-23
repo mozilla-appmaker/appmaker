@@ -23,6 +23,21 @@ define(['inflector'], function(Inflector) {
     prettyName: function(name){
       name = name.replace('ceci-', '');
       return Inflector.titleize(name);
+    },
+
+
+    // from http://jeffreifman.com/2006/06/26/how-can-i-get-query-string-values-from-url-in-javascript/
+    // linked from http://stackoverflow.com/questions/2090551/parse-query-string-in-javascript
+    getQueryStringVariable: function (variable) {
+      var query = window.location.search.substring(1);
+      var vars = query.split('&');
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+          return decodeURIComponent(pair[1]);
+        }
+      }
+      return null;
     }
   };
 });

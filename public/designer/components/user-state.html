@@ -35,6 +35,7 @@
           <a class="saved" id="renameApp">Rename</a>
           <a id="publishApp">Publish</a>
           <a class="saved" id="deleteApp">Delete</a>
+          <a class="hidden" id="viewlink">App URL</a>
         </div>
       </div>
     </div>
@@ -43,7 +44,8 @@
   </template>
   <script>
   (function() {
-    require(['l10n', 'jquery', 'persona', 'designer/application', 'designer/component-tray'], function(l10n, jquery, persona, application, tray) {
+    require(['l10n', 'jquery', 'persona', 'designer/application', 'designer/component-tray', 'designer/utils'],
+      function(l10n, jquery, persona, application, tray, utils) {
 
       var user = {
         email: '',
@@ -109,8 +111,13 @@
           that.$.renameApp.innerHTML = l10n.get("Rename");
           that.$.publishApp.innerHTML = l10n.get("Publish");
           that.$.deleteApp.innerHTML = l10n.get("Delete");
+          that.$.viewlink.innerHTML = l10n.get("App URL");
           that.$.newApp.innerHTML = l10n.get("New App");
 
+          function loadRemixContent (remixName) {
+            application.loadAppByUrl(decodeURIComponent(remixName));
+            that.editingmode = 'draft';
+          }
 
           document.addEventListener('signInStarted', function (event) {
             that.signInStarted();
@@ -124,16 +131,26 @@
             that.user.state = event.detail.state;
             that.user.email = event.detail.email;
 
+            var remixName = utils.getQueryStringVariable('remix');
+
             if (that.user.state == 'signedin') {
               that.refreshUserState();
-              if(application.getCurrentApp()){
-                application.loadAppByName(application.getCurrentApp());
-                that.editingmode = "saved";
-              } else {
-                that.updateAppName(l10n.get("Unsaved App"));
-                that.editingmode = "draft";
+              if (remixName) {
+                loadRemixContent(remixName);
+              }
+              else {
+                if(application.getCurrentApp()){
+                  application.loadAppByName(application.getCurrentApp());
+                  that.editingmode = "saved";
+                } else {
+                  that.updateAppName(l10n.get("Unsaved App"));
+                  that.editingmode = "draft";
+                }
               }
             } else if (that.user.state == 'signedout') {
+              if (remixName) {
+                loadRemixContent(remixName);
+              }
               that.signedOut();
             }
           });
@@ -156,9 +173,7 @@
           this.$.deleteApp.addEventListener('click', function() {
             application.deleteAppByName(application.getCurrentApp());
             application.clearCurrentApp();
-            application.newApp();
-            self.refreshUserState();
-            self.editingmode = "draft";
+            self.$.newApp.click();
           });
 
           //New app
@@ -170,6 +185,7 @@
             self.refreshUserState();
             self.editingmode = "draft";
             self.closeMenus();
+            self.setAppURL(false);
           });
 
           //Rename App
@@ -198,16 +214,31 @@
             var app = document.querySelector('ceci-app');
             var name = app.name;
             var html = app.outerHTML;
-            if(name){
-              application.publishApp(name,html);
-              // gotta make sure it actually saves though!
-              // add as a callback? or pass in callbacks?
+            // This might need to be made its own thing so it can be called
+            // in various places:
+            while (!name || name === l10n.get("Unsaved App")) {
+              name = prompt("Please name your app first:");
+              if(name === null) break;
+            }
+            if(!name) {
+              return console.error("Save was cancelled.");
+            }
+            // we have a name: publish!
+            var alreadySaved = self.editingmode === "saved";
+            application.publishApp(name, html, alreadySaved, function resulthandler(err,data) {
+              if(err) {
+                if (data) {
+                  console.error("app was published, but updating failed");
+                } else {
+                  console.error("app sas not successfully published");
+                }
+                return;
+              }
+              console.log(data);
               application.setCurrentApp(name);
               self.refreshUserState();
               self.editingmode = "saved";
-            } else {
-              console.log("Please name your app.");
-            }
+            });
           });
 
           //Save App As
@@ -255,9 +286,10 @@
           application.clearCurrentApp();
           this.updateAppName(l10n.get("Unsaved App"));
         },
-        okAppLoad: function(name){
+        okAppLoad: function(name, data){
           this.updateAppName(name);
           this.refreshUserState();
+          this.setAppURL(data['last-published-url']);
         },
         updateAppName: function(name){
           var app = document.querySelector('ceci-app');
@@ -444,26 +476,26 @@
           console.log("in addLinkForComponent", theurl, thename);
           var myComponents = this.shadowRoot.querySelector("#mycomponents");
           try {
-          var component = document.createElement('li');
-          var self = this;
-          // We need to find the name from the registry based on the URL
-          var name = document.createElement('a');
-          name.textContent = thename;
-          component.appendChild(name);
-          var xmarksthespot = document.createElement('a');
-          xmarksthespot.setAttribute('class', 'x');
-          xmarksthespot.addEventListener('click', function(event) {
-            if (window.confirm("Are you sure you want to forget about the component at " + theurl)) {
-              self.forgetComponent(theurl);
-            }
-            event.stopPropagation();
-          });
-          name.appendChild(xmarksthespot);
-          name.setAttribute('class', 'componentlink');
-          myComponents.appendChild(component);
-        } catch (e) {
-          console.log(e);
-        }
+            var component = document.createElement('li');
+            var self = this;
+            // We need to find the name from the registry based on the URL
+            var name = document.createElement('a');
+            name.textContent = thename;
+            component.appendChild(name);
+            var xmarksthespot = document.createElement('a');
+            xmarksthespot.setAttribute('class', 'x');
+            xmarksthespot.addEventListener('click', function(event) {
+              if (window.confirm("Are you sure you want to forget about the component at " + theurl)) {
+                self.forgetComponent(theurl);
+              }
+              event.stopPropagation();
+            });
+            name.appendChild(xmarksthespot);
+            name.setAttribute('class', 'componentlink');
+            myComponents.appendChild(component);
+          } catch (e) {
+            console.log(e);
+          }
         },
         refreshComponentsList: function() {
           var self = this;
@@ -480,6 +512,17 @@
               console.log(e);
             }
           });
+        },
+        setAppURL: function(url) {
+          var viewlink = this.$.viewlink;
+          if(url) {
+            viewlink.setAttribute("href", url);
+            viewlink.classList.remove("hidden");
+          }
+          else {
+            viewlink.setAttribute("href", '');
+            viewlink.classList.add("hidden");
+          }
         }
       });
     });

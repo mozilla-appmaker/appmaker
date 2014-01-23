@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+//TODO add uuid node module to packages and use instead
 function hex(length){
     if (length > 8) return hex(8) + hex(length-8); // routine is good for up to 8 digits
     var myHex = Math.random().toString(16).slice(2,2+length);
@@ -32,14 +33,29 @@ module.exports = function (mongoose, dbconn) {
   var componentSchema = mongoose.Schema({author:'string', url: 'string'});
   var Component = mongoose.model('LearnedComponent', componentSchema, 'components');
 
-  var appSchema = mongoose.Schema({author:'string', appid: 'string', name: 'string', html: 'string'});
+  var appSchema = mongoose.Schema({
+    'appid': 'string',
+    'author': 'string',
+    'name': 'string',
+    'html': 'string',
+    'last-published-url': 'string'
+  });
+
   var App = mongoose.model('App', appSchema, 'apps');
+
+  var checkAuthorised = function(request, response, next) {
+    if (! request.session.email) {
+      response.json(401, {error: 'need to be signed in'});
+      return false;
+    }
+    if(next) next();
+    return true;
+  };
+
   return {
     apps: function(request, response) {
-      if (! request.session.email) {
-        response.json(401, {error: 'need to be signed in'});
-        return;
-      }
+      if (!checkAuthorised(request, response)) return;
+
       App.find({author:request.session.email}).sort({"name":1}).exec(function (err, apps) {
         if (err){
           console.log('Unable to retrieve apps');
@@ -50,132 +66,108 @@ module.exports = function (mongoose, dbconn) {
     },
     //Does anything call this controller
     app: function(request, response) {
-      if (! request.session.email) {
-        response.json(401, {error: 'need to be signed in'});
-        return;
-      }
+      if (!checkAuthorised(request, response)) return;
+
       App.findOne({author:request.session.email, name: request.query.name}, function(err, obj) {
         if (!obj) {
-          console.log('Unable to find app for %s', request.query.name);
+          console.error('Unable to find app for %s', request.query.name);
           return response.json(500, {error: 'Unable to find app: ' + err});
         } else {
-          console.log("success");
           return response.json(obj);
         }
       });
     },
     updateApp: function(request, response) {
-      var appid = request.body.appid;
-      console.log("update app: " + appid);
-      var html = request.body.html;
+      if (!checkAuthorised(request, response)) return;
 
-      if (! request.session.email) {
-        response.json(401, {error: 'need to be signed in'});
-        return;
+      var name = request.body.name;
+      //TODO update appid? this probably shouldn't change, but then again, we're updating name here which probably
+        //shouldn't change outside of renameApp
+      var html = request.body.html || false;
+      var url = request.body.url || false;
+
+      if(html === false && url === false) {
+          return response.json(409, {error: 'App was not updated as no data was sent with the request'});
       }
+
+      var setObj = {};
+      if(html) setObj.html = html;
+      if(url) setObj['last-published-url'] = url;
+
       App.update(
-        {author:request.session.email, appid: appid},
-        {
-          $set: {html: html}
-        },
-        {},
-        function(err,obj){
-          if(err){
-            return response.json(500, {error: 'App was not updated due to ' + err});
-          } else {
-            return response.json(200, {message: 'App was updated successfully'});
-          }
-        });
+          {author:request.session.email, name: name},
+          { $set: setObj },
+          {},
+          function(err,obj){
+              if(err){
+                  return response.json(500, {error: 'App was not updated due to ' + err});
+              } else {
+                  return response.json(200, {message: 'App was updated successfully'});
+              }
+          });
     },
+
     renameApp: function(request, response) {
-      var appid = request.body.appid;
+      if (!checkAuthorised(request, response)) return;
+
       var oldName = request.body.oldName;
       var newName = request.body.newName;
 
-      if (! request.session.email) {
-        response.json(401, {error: 'need to be signed in'});
-        return;
-      }
-
       App.update(
-        {author:request.session.email, appid: appid, name: oldName},
-        {
-          $set: {name: newName}
-        },
-        {},
-        function(err,obj){
-          if(err){
-            return response.json(500, {error: 'App was not renamed due to ' + err});
-          } else {
-            return response.json(200, {message: 'App was renamed successfully'});
-          }
-      });
+          {author:request.session.email, name: oldName},
+          {
+              $set: {name: newName}
+          },
+          {},
+          function(err,obj){
+              if(err){
+                  return response.json(500, {error: 'App was not renamed due to ' + err});
+              } else {
+                  return response.json(200, {message: 'App was renamed successfully'});
+              }
+          });
     },
     deleteApp: function(request,response){
-      App.remove({author:request.session.email, appid: request.body.appid},function(err){
-        if(err){
-           console.error("Error deleting this app!");
-           return response.json(500, {error: 'App was not deleted due to ' + err});
-        }
+      if (!checkAuthorised(request, response)) return;
+
+      App.remove({author:request.session.email, name: request.body.name},function(err){
+          if(err){
+              console.error("Error deleting this app!");
+              return response.json(500, {error: 'App was not deleted due to ' + err});
+          }
       });
       response.json(200);
     },
-    getFormJSON: function(request, response){
-        if (! request.session.email) {
-            response.json(401, {error: 'need to be signed in'});
-            return;
-        }
-
-        App.findOne({author:request.session.email, formJSON: request.body}, function(err,obj){
-            if (err){
-                console.log('Unable to retrieve formJSON');
-                return response.json(500, 'Unable to retrieve formJSON: ' + err);
-            }
-
-            return response.json(obj);
-        });
-
-    },
     saveApp: function(request, response) {
-      if (! request.session.email) {
-        response.json(401, {error: 'need to be signed in'});
-        return;
-      }
-      var incoming_appid = request.body.appid;
-      console.log("my.js - incoming appid: " + incoming_appid);
-      if(!incoming_appid){
-          incoming_appid = 'ceci-app-' + uuid();
-      }
-      console.log("my.js - after incoming appid: " + incoming_appid)
+      if (!checkAuthorised(request, response)) return;
+
+      //check that appid is included, if not, generate one
+      var request_appid = request.body.appid;
+      if(!request_appid){ request_appid = 'ceci-app-' + uuid(); }
 
       //Check if app with same name already exists
-
-      App.findOne({author:request.session.email, appid: incoming_appid}, function(err, obj) {
-        if (obj) {
-          return response.json(500, {error: 'App name must be unique.'});
-        }
-        else {
-          var appObj = JSON.parse(JSON.stringify(request.body)) // make a copy
-
-          appObj.author = request.session.email;
-          appObj.appid = incoming_appid;
-
-          var newApp = new App(appObj);
-          newApp.save(function(err, app){
-          if (err){
-            return response.json(500, {error: 'App was not saved due to ' + err});
+      App.findOne({author:request.session.email, name: request.body.name}, function(err, obj) {
+          if (obj) {
+              return response.json(500, {error: 'App name must be unique.'});
           }
-          return response.json(app);
-         });
-         response.json(200);
-        }
+          else {
+              var appObj = JSON.parse(JSON.stringify(request.body)) // make a copy
+              appObj.author = request.session.email;
+              appObj.appid = request_appid;
+              var newApp = new App(appObj);
+              newApp.save(function(err, app){
+                  if (err){
+                      return response.json(500, {error: 'App was not saved due to ' + err});
+                  }
+                  return response.json(app);
+              });
+              response.json(200);
+          }
       });
     },
     components: function(request, response) {
-      if (! request.session.email) {
-        response.json(401, {error: 'need to be signed in'});
-        return;
-      }
+      if (!checkAuthorised(request, response)) return;
+
       Component.find({author:request.session.email}).sort({"name":1}).exec(function (err, components) {
         if (err){
           console.log('Unable to retrieve components');
@@ -185,10 +177,8 @@ module.exports = function (mongoose, dbconn) {
       });
     },
     learnComponent: function(request, response) {
-      if (! request.session.email) {
-        response.json(401, {error: 'need to be signed in'});
-        return;
-      }
+      if (!checkAuthorised(request, response)) return;
+
       //Check if app with same url already exists
       Component.findOne({author:request.session.email, url: request.body.name}, function(err, obj) {
         if (obj) {
@@ -208,6 +198,8 @@ module.exports = function (mongoose, dbconn) {
       });
     },
     forgetComponent: function(request, response) {
+      if (!checkAuthorised(request, response)) return;
+
       Component.remove({author:request.session.email, url: request.body.url}, function(err){
         if(err){
            console.error("Error forgetting this component!");

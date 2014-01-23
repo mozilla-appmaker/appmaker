@@ -81,6 +81,7 @@ S3_OBJECT_PREFIX: String to prepend S3 objects. Useful for storing objects in fo
 PUBLISH_URL_PREFIX: String to prepend to filenames that are saved when publishing. Try use the URL that matches the protocol from which assets are hosted to avoid mixed content blockage.
 PERSONA_AUDIENCE: The hostname and port of Appmaker used by Persona for authentication
 PORT: The port that the web process listens on for incomming connections
+GITHUB_TOKEN: A personal Github token used for loading lists of components from the mozilla-appmaker org during development (https://github.com/blog/1509-personal-api-tokens)
 ```
 
 ### Install and run MongoDB
