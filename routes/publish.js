@@ -58,12 +58,30 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
 
       var requestHTML = inputData.html;
 
+      // core appmaker components
+      var coreComponents = [
+        "/component/mozilla-appmaker/component-button/component.html",
+        "/component/mozilla-appmaker/component-chat-window/component.html",
+        "/component/mozilla-appmaker/component-counter/component.html",
+        "/component/mozilla-appmaker/component-fireworks/component.html",
+        "/component/mozilla-appmaker/component-header/component.html",
+        "/component/mozilla-appmaker/component-image/component.html",
+        "/component/mozilla-appmaker/component-spacer/component.html",
+        "/component/mozilla-appmaker/component-text-input/component.html",
+        "/component/mozilla-appmaker/component-textbox/component.html"
+      ];
+
+      var appComponents = [
+        //... mine the requestHTML for these? ...
+      ];
+
       var appStr = templates.publish({
         appHTML: requestHTML,
         appName: folderName,
         gettext: req.gettext,
         ceciComponentURL: process.env.ASSET_HOST,
-        remixURL: encodeURIComponent(encodeURIComponent(remoteURLs.app))
+        remixURL: encodeURIComponent(encodeURIComponent(remoteURLs.app)),
+        components: coreComponents.concat(appComponents)
       });
 
       var installStr = templates.install({
