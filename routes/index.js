@@ -19,22 +19,10 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
     designer: function (req, res) {
       var publishUrl = urlManager.createURLPrefix('{remixName}');
 
-      // htmlInjection is disabled for now because the old verify process isn't dependable
-
-      // if (req.method === 'POST' && req.body && req.body.data) {
-      //   verify.filter(req.body.data, function (htmlInjection) {
-      //     res.render('designer', {
-      //       htmlInjection: htmlInjection,
-      //       publishUrl: publishUrl
-      //     });
-      //   });
-      // }
-      // else {
-        res.render('designer', {
-          htmlInjection: '',
-          publishUrl: publishUrl
-        });
-      // }
+      res.render('designer', {
+        htmlInjection: '',
+        publishUrl: publishUrl
+      });
     },
 
     remix: function (req, res) {

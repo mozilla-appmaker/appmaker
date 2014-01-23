@@ -81,7 +81,7 @@
             remixButton.disabled = true;
             email.disabled = false;
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', '<%= process.env.ASSET_HOST %>/remix?app=<%- appName %>&email=' + email.value, true);
+            xhr.open('GET', '<%= process.env.ASSET_HOST %>/remix?app=<%- remixURL %>&email=' + email.value, true);
             xhr.onerror = function (e) {
               console.error(e);
             };
@@ -98,7 +98,7 @@
 
           var remixNowButton = document.querySelector("#remix-now-button");
           remixNowButton.onclick = function (e) {
-            var remixURL = '<%= process.env.ASSET_HOST %>/remix?app=<%- appName %>';
+            var remixURL = '<%= process.env.ASSET_HOST %>/remix?app=<%- remixURL %>';
             window.open(remixURL);
           };
 
