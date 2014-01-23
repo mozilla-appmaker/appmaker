@@ -166,7 +166,12 @@ components.load(function(components){
   app.locals.components = components;
 });
 
+
 app.get('/', routes.index);
+
+app.get('/about', routes.about);
+
+app.get('/contribute', routes.contribute);
 
 app.all('/designer', routes.designer);
 
@@ -195,7 +200,7 @@ else{
 // when we do the XHR request to this route.
 app.get( "/strings/:lang?", i18n.stringsRoute( "en-US" ) );
 
-app.post('/api/publish', routes.publish.publish);
+app.post('/api/publish', routes.publish.publish(app));
 
 // routes for publishing and retrieving components
 app.get('/api/component', routes.componentRegistry.components);
