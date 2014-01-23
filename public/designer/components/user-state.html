@@ -115,7 +115,7 @@
           that.$.newApp.innerHTML = l10n.get("New App");
 
           function loadRemixContent (remixName) {
-            application.loadAppByUrl("//" + decodeURIComponent(remixName));
+            application.loadAppByUrl(decodeURIComponent(remixName));
             that.editingmode = 'draft';
           }
 
