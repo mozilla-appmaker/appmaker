@@ -44,7 +44,8 @@
   </template>
   <script>
   (function() {
-    require(['l10n', 'jquery', 'persona', 'designer/application', 'designer/component-tray'], function(l10n, jquery, persona, application, tray) {
+    require(['l10n', 'jquery', 'persona', 'designer/application', 'designer/component-tray', 'designer/utils'],
+      function(l10n, jquery, persona, application, tray, utils) {
 
       var user = {
         email: '',
@@ -113,6 +114,10 @@
           that.$.viewlink.innerHTML = l10n.get("App URL");
           that.$.newApp.innerHTML = l10n.get("New App");
 
+          function loadRemixContent (remixName) {
+            application.loadAppByUrl(decodeURIComponent(remixName));
+            that.editingmode = 'draft';
+          }
 
           document.addEventListener('signInStarted', function (event) {
             that.signInStarted();
@@ -126,16 +131,26 @@
             that.user.state = event.detail.state;
             that.user.email = event.detail.email;
 
+            var remixName = utils.getQueryStringVariable('remix');
+
             if (that.user.state == 'signedin') {
               that.refreshUserState();
-              if(application.getCurrentApp()){
-                application.loadAppByName(application.getCurrentApp());
-                that.editingmode = "saved";
-              } else {
-                that.updateAppName(l10n.get("Unsaved App"));
-                that.editingmode = "draft";
+              if (remixName) {
+                loadRemixContent(remixName);
+              }
+              else {
+                if(application.getCurrentApp()){
+                  application.loadAppByName(application.getCurrentApp());
+                  that.editingmode = "saved";
+                } else {
+                  that.updateAppName(l10n.get("Unsaved App"));
+                  that.editingmode = "draft";
+                }
               }
             } else if (that.user.state == 'signedout') {
+              if (remixName) {
+                loadRemixContent(remixName);
+              }
               that.signedOut();
             }
           });

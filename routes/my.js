@@ -44,10 +44,9 @@ module.exports = function (mongoose, dbconn) {
 
       App.findOne({author:request.session.email, name: request.query.name}, function(err, obj) {
         if (!obj) {
-          console.log('Unable to find app for %s', request.query.name);
+          console.error('Unable to find app for %s', request.query.name);
           return response.json(500, {error: 'Unable to find app: ' + err});
         } else {
-          console.log("success");
           return response.json(obj);
         }
       });

@@ -63,7 +63,8 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
         appHTML: requestHTML,
         appName: folderName,
         gettext: req.gettext,
-        ceciComponentURL: process.env.ASSET_HOST
+        ceciComponentURL: process.env.ASSET_HOST,
+        remixURL: encodeURIComponent(encodeURIComponent(remoteURLs.app))
       });
 
       var installStr = templates.install({
