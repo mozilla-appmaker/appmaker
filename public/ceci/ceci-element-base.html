@@ -244,7 +244,11 @@
           var attributes = this.ceci.attributes;
           for(var attribute in attributes) {
             if (attributes.hasOwnProperty(attribute)) {
-              this[attribute] = this.gettext(this.localName + "/attributes/" + attribute) || this[attribute];
+
+              // Check to see if attribute is still default value. Otherwise, skip localization.
+              if (this[attribute] === this._instanceAttributes[attribute]) {
+                this[attribute] = this.gettext(this.localName + "/attributes/" + attribute) || this[attribute];
+              }
             }
           }
         }
