@@ -1,275 +1,275 @@
 <!DOCTYPE html>
 <html lang="<%- localeInfo.lang %>" dir="<%- localeInfo.direction %>">
-    <head>
-        <title>Mozilla Appmaker</title>
-        <link rel='stylesheet' href='/stylesheets/site.css' />
-        <link rel='stylesheet' href='/stylesheets/font-awesome.css' />
-        <link href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" rel="stylesheet" />
-        <script type="text/javascript" charset="utf-8" src="/vendor/jquery/jquery.js"></script>
-        <script type="text/javascript" charset="utf-8" src="/vendor/jquery-ui/ui/minified/jquery-ui.min.js"></script>
-        <script type="text/javascript" charset="utf-8" src="/javascripts/tutorial.js"></script>
-    </head>
-    <body>
-        <div id="nav">
-            <div class="wrap">
-                <a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
-                <div>
-                    <div id="wordmark" class="left">
-                        <a href="/"><img src="images/appmaker_wordmark.png" />
-                        </a>
-                    </div>
-                    <ul id="nav-page-links">
-                        <div class="right">
-                            <li id="designer-page" class="right"><a href="/<%- localeInfo.lang %>/designer" class="build-app"><i class="fa fa-mobile"></i><span>Build App</span></a></li>
-                            <li id="blog-page" class="right"><a href="">Blog</a></li>
-                            <li id="contribute-page" class="right"><a href="/contribute">Contribute</a></li>
-                            <li id="about-page" class="right active-page"><a href="/about">About</a></li>
-                        </div>
-                    </ul>
-                </div>
+  <head>
+    <title>Mozilla Appmaker</title>
+    <link rel='stylesheet' href='/stylesheets/site.css' />
+    <link rel='stylesheet' href='/stylesheets/font-awesome.css' />
+    <link href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" rel="stylesheet" />
+    <script type="text/javascript" charset="utf-8" src="/vendor/jquery/jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/vendor/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/javascripts/tutorial.js"></script>
+  </head>
+  <body>
+    <div id="nav">
+      <div class="wrap">
+        <a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
+        <div>
+          <div id="wordmark" class="left">
+            <a href="/"><img src="images/appmaker_wordmark.png" />
+            </a>
+          </div>
+          <ul id="nav-page-links">
+            <div class="right">
+              <li id="designer-page" class="right"><a href="/<%- localeInfo.lang %>/designer" class="build-app"><i class="fa fa-mobile"></i><span>Build App</span></a></li>
+              <li id="blog-page" class="right"><a href="">Blog</a></li>
+              <li id="contribute-page" class="right"><a href="/contribute">Contribute</a></li>
+              <li id="about-page" class="right active-page"><a href="/about">About</a></li>
             </div>
+          </ul>
         </div>
-        <div id="banner" class="content-block">
-            <div class="wrap">
-                <div class="two-column">
-                    <h1>About Appmaker</h1>
-                    <div class="banner-description">
-                        we want to make it possible for anyone to make amazing personal mobile apps.  You don't need to know code to get started!
-                    </div>
-                </div>
-                <div class="two-column">
-                </div>
+      </div>
+    </div>
+    <div id="banner" class="content-block">
+      <div class="wrap">
+        <div class="two-column">
+          <h1>About Appmaker</h1>
+          <div class="banner-description">
+            we want to make it possible for anyone to make amazing personal mobile apps.  You don't need to know code to get started!
+          </div>
+        </div>
+        <div class="two-column">
+        </div>
+      </div>
+    </div>
+    <div id="faq" class="content-block light-blue-bg">
+      <div class="wrap">
+        <h2>Frequently Asked Questions (FAQs)</h2>
+        <div id="q-list">
+          <section class="two-column">
+            <header><%- gettext("About Appmaker") %></header>
+            <ul>
+              <li><a href="#"><%- gettext("What is Appmaker?") %></a></li>
+              <li><a href="#"><%- gettext("How much does it cost?") %></a></li>
+              <li><a href="#"><%- gettext("Where can try it?") %></a></li>
+              <li><a href="#"><%- gettext("How does it work?") %></a></li>
+              <li><a href="#"><%- gettext("Are there tutorials, how-to guides or help documentation?") %></a></li>
+            </ul>
+          </section>
+          <section class="two-column">
+            <header><%- gettext("Using Appmaker") %>r</header>
+            <ul>
+              <li><a href="#"><%- gettext("What kinds of apps does it make?") %></a></li>
+              <li><a href="#"><%- gettext("Can I build on other people’s apps?") %></a></li>
+              <li><a href="#"><%- gettext("Is it ready to use?") %></a></li>
+              <li><a href="#"><%- gettext("What are examples of apps I can build?") %></a></li>
+              <li><a href="#"><%- gettext("Where do the apps work?") %></a></li>
+              <li><a href="#"><%- gettext("How do I share apps?") %></a></li>
+            </ul>
+          </section>
+          <section class="two-column">
+            <header><%- gettext("Contributing to Appmaker") %></header>
+            <ul>
+              <li><a href="#"><%- gettext("I'm a developer, how can I get involved?") %></a></li>
+              <li><a href="#"><%- gettext("How can I help other people make their own apps?") %></a></li>
+              <li><a href="#"><%- gettext("I want to contribute right now — what can I do?") %></a></li>
+              <li><a href="#"><%- gettext("Can I see the source code?") %></a></li>
+              <li><a href="#"><%- gettext("Why did you create Appmaker?") %></a></li>
+            </ul>
+          </section>
+          <section class="two-column">
+          </section>
+        </div>
+        <div id="faq-in-full">
+          <!-- About Appmaker starts ==================== -->
+          <section>
+            <header><a name=""><%- gettext("What is Appmaker?") %></a></header>
+            <div>
+              <p>
+                <%- gettext("Appmaker is a browser-based authoring tool that lets people make their own mobile apps") %>
+              </p>
             </div>
-        </div>
-        <div id="faq" class="content-block light-blue-bg">
-            <div class="wrap">
-                <h2>Frequently Asked Questions (FAQs)</h2>
-                <div id="q-list">
-                    <section class="two-column">
-                        <header><%- gettext("About Appmaker") %></header>
-                        <ul>
-                            <li><a href="#"><%- gettext("What is Appmaker?") %></a></li>
-                            <li><a href="#"><%- gettext("How much does it cost?") %></a></li>
-                            <li><a href="#"><%- gettext("Where can try it?") %></a></li>
-                            <li><a href="#"><%- gettext("How does it work?") %></a></li>
-                            <li><a href="#"><%- gettext("Are there tutorials, how-to guides or help documentation?") %></a></li>
-                        </ul>
-                    </section>
-                    <section class="two-column">
-                        <header><%- gettext("Using Appmaker") %>r</header>
-                        <ul>
-                            <li><a href="#"><%- gettext("What kinds of apps does it make?") %></a></li>
-                            <li><a href="#"><%- gettext("Can I build on other people’s apps?") %></a></li>
-                            <li><a href="#"><%- gettext("Is it ready to use?") %></a></li>
-                            <li><a href="#"><%- gettext("What are examples of apps I can build?") %></a></li>
-                            <li><a href="#"><%- gettext("Where do the apps work?") %></a></li>
-                            <li><a href="#"><%- gettext("How do I share apps?") %></a></li>
-                        </ul>
-                    </section>
-                    <section class="two-column">
-                        <header><%- gettext("Contributing to Appmaker") %></header>
-                        <ul>
-                            <li><a href="#"><%- gettext("I'm a developer, how can I get involved?") %></a></li>
-                            <li><a href="#"><%- gettext("How can I help other people make their own apps?") %></a></li>
-                            <li><a href="#"><%- gettext("I want to contribute right now — what can I do?") %></a></li>
-                            <li><a href="#"><%- gettext("Can I see the source code?") %></a></li>
-                            <li><a href="#"><%- gettext("Why did you create Appmaker?") %></a></li>
-                        </ul>
-                    </section>
-                    <section class="two-column">
-                    </section>
-                </div>
-                <div id="faq-in-full">
-                    <!-- About Appmaker starts ==================== -->
-                    <section>
-                        <header><a name=""><%- gettext("What is Appmaker?") %></a></header>
-                        <div>
-                            <p>
-                                <%- gettext("Appmaker is a browser-based authoring tool that lets people make their own mobile apps") %>
-                            </p>
-                        </div>
-                    </section>
-                    <section>
-                        <header><a name=""><%- gettext("How much does it cost?") %></a></header>
-                        <div>
-                            <p>
-                                <%- gettext("Appmaker in an open source project and will always be 100% free!") %>
-                            </p>
-                        </div>
-                    </section>
-                    <section>
-                        <header><a name=""><%- gettext("Where can try it?") %></a></header>
-                        <div>
-                            <p>
-                                <%- gettext("Give it a whirl at http://appmaker.mozillalabs.com") %>
-                            </p>
-                        </div>
-                    </section>
-                    <section>
-                        <header><a name=""><%- gettext("How does it work?") %></a></header>
-                        <div>
-                            <p>
-                                <%- gettext("Appmaker lets you combine a selection of web components — small units of functionality — to buildpersonalized apps. Components include buttons, lists, photo shutters, maps with geolocation, chat rooms and more. Written in HTML, these components are designed to function like tiny webpages and Appmaker allows you to snap them together. Remember building with Lego? It works in a similar way.") %>
-                            </p>
-                        </div>
-                    </section>
-                    <section>
-                        <header><a name=""><%- gettext("Are there tutorials, how-to guides or help documentation?") %></a></header>
-                        <div>
-                            <p>
-                                <%- gettext("We'll have tutorials and documentation available in the future. In the meantime, visit our [[About page]] for a demo video and our [contribution] page for a quick experiment you can try.") %>
-                            </p>
-                        </div>
-                    </section>
-                    <!-- About Appmaker ends ==================== -->
-                    <!-- Using Appmaker starts ==================== -->
-                    <section>
-                        <header><a name=""><%- gettext("What kinds of apps does it make?") %></a></header>
-                        <div>
-                            <p>
-                                <%- gettext("Appmaker is great for quickly making simple, personal apps. It isn't meant to be a platform for writing the next Angry Birds. Instead, it’s intended to help you make apps that are relevant to you, your friends or your community") %>
-                            </p>
-                        </div>
-                    </section>
-                    <section>
-                        <header><a name=""><%- gettext("Can I build on other people’s apps?") %></a></header>
-                        <div>
-                            <p>
-                                <%- gettext("One of the best things about Appmaker is that every app is remixable. If you find an app that someone else has made and you want to create your own version of it, you can hit the \"remix\" button. The app will open in the Appmaker designer, ready for you to customize.") %>
-                            </p>
-                        </div>
-                    </section>
-                    <section>
-                        <header><a name=""><%- gettext("Is it ready to use?") %></a></header>
-                        <div>
-                            <p>
-                                <%- gettext("It's ready to try! You can author simple apps and send them to your friends. Currently, Appmaker is \"Pre-Alpha\" software (that means it's not even in \"Beta\" yet) and won't be stable until late 2014. We encourage you to have fun with Appmaker, but for now, it might not work exactly as you expect it to.") %>
-                            </p>
-                        </div>
-                    </section>
-                    <section>
-                        <header><a name=""><%- gettext("What are examples of apps I can build?") %></a></header>
-                        <div>
-                            <p>
-                                <%- gettext("Try making a simple game for your friends. Do you have a business? Create a price list or a customer service gateway. Enjoy sports? Build a scoreboard or a tournament-organizing app. As the Appmaker community grows, so too will the number of web components and the sophistication of apps.") %>
-                            </p>
-                        </div>
-                    </section>
-                    <section>
-                        <header><a name=""><%- gettext("Where do the apps work?") %></a></header>
-                        <div>
-                            <p>
-                                <%- gettext("Appmaker apps will run online and offline. We currently support Firefox, Firefox for Android and FirefoxOS.") %>
-                            </p>
-                            <p>
-                                <%- gettext("Appmaker apps are written in modular HTML5, JavaScript and CSS. Our intention is to make Appmakerapps compatible and stable across all Firefox offerings, and eventually support iOS. This way, people will be able to load an app on any phone and everybody will have the same Appmaker experience.") %>
-                            </p>
-                        </div>
-                    </section>
-                    <section>
-                        <header><a name=""><%- gettext("How do I share apps?") %></a></header>
-                        <div>
-                            <p>
-                                <%- gettext("Just email, SMS or otherwise share the URL that appears when you publish your app within Appmaker. The recipient can install the app directly onto their phone. That's it!") %>
-                            </p>
-                        </div>
-                    </section>
-                    <!-- Using Appmaker ends ==================== -->
-                    <!-- Contributing to Appmaker starts ==================== -->
-                    <section>
-                        <header><a name=""><%- gettext("I'm a developer, how can I get involved?") %></a></header>
-                        <div>
-                            <p>
-                                <%- gettext("Appmaker is an open source project and we invite you to influence the direction of this project by designing modules, helping us build the Appmaker infrastructure, providing feedback and contributing to the overall direction of the project. Please visit our [[Contribution page]] to learn more.") %>
-                            </p>
-                        </div>
-                    </section>
-                    <section>
-                        <header><a name=""><%- gettext("How can I help other people make their own apps?") %></a></header>
-                        <div>
-                            <p>
-                                <%- gettext("If you want to mentor appmaking in your local community, we're working on educational resources on [webmaker.org] to support you. In the meantime, check out our other free tools to teach the web [/teach], or create your own appmaking tutorial using our template.[/teach-templates]") %>
-                                <%- gettext("If you want to get your hands dirty by helping us envision new modules that work for your community and networks, we'd also recommend joining one of our participatory design workshops. Subscribe to [[theAppmaker email list]] to learn more.") %>
-                            </p>
-                        </div>
-                    </section>
-                    <section>
-                        <header><a name=""><%- gettext("I want to contribute right now — what can I do?") %></a></header>
-                        <div>
-                            <p>
-                                <%- gettext("1) Join the [[Appmaker mailing list]]") %><br />
-                                <%- gettext("2) Host a [[kitchen table test]] for family or friends and tell us what you think.") %><br />
-                                <%- gettext("3) If something doesn't work as expected, or if you have feature requests, you can file a bug at http://github.com/mozilla-appmaker/appmaker/issues") %><br />
-                                <%- gettext("4) Contribute some code — here's a [[guide on writing components]] to grow the functionality of Appmaker.") %><br />
-                                <%- gettext("5) Become an Appmaker mentor in your community and help people create their own mobile apps. Contact us at appmaker@mozilla.com to get started.") %>
-                            </p>
-                        </div>
-                    </section>
-                    <section>
-                        <header><a name=""><%- gettext("Can I see the source code?") %></a></header>
-                        <div>
-                            <p>
-                                <%- gettext("You sure can! It's on GitHub [http://github.com/mozilla/appmaker/]") %>
-                            </p>
-                        </div>
-                    </section>
-                    <section>
-                        <header><a name=""><%- gettext("Why did you create Appmaker?") %></a></header>
-                        <div>
-                            <p>
-                                <%- gettext("Appmaker is Mozilla project. We’re a global community that promotes openness, innovation & opportunity on the web. We work to keep the Internet alive and accessible, so people worldwide can be informed contributors and creators of the web. We believe this act of human collaboration across an open platform is essential to individual growth and our collective future.") %>
-                            </p>
-                            <p>
-                                <%- gettext("By giving people the power to make their own mobile apps, we're turning a black box technology—the \"read only\" paradigm of the mobile phone—into a programmable, \"read/write\" paradigm to give people greater agency over their technology and their lives.") %>
-                            </p>
-                        </div>
-                    </section>
-                    <!-- Contributing to Appmaker ends ==================== -->
-                </div>
+          </section>
+          <section>
+            <header><a name=""><%- gettext("How much does it cost?") %></a></header>
+            <div>
+              <p>
+                <%- gettext("Appmaker in an open source project and will always be 100% free!") %>
+              </p>
             </div>
-        </div>
-        <footer id="footer" class="content-block">
-            <div class="wrap">
-                <div class="left" id="mozilla-labs"><img src="images/logo.png" /></div>
-                <div id="footer-links" class="right">
-                    <div class="four-column">
-                        <header>About</header>
-                        <ul>
-                            <li><a href="">About Appmaker</a></li>
-                            <li><a href="">FAQ</a></li>
-                            <li><a href="">Blog</a></li>
-                        </ul>
-                    </div>
-                    <div class="four-column">
-                        <header>Resources</header>
-                        <ul>
-                            <li><a href="">Contribute</a></li>
-                            <li><a href="">Documentation</a></li>
-                            <li><a href="">Donate</a></li>
-                        </ul>
-                    </div>
-                    <div class="four-column">
-                        <header>Info</header>
-                        <ul>
-                            <li><a href="">Privacy Policy</a></li>
-                            <li><a href="">Legal Notices</a></li>
-                            <li><a href="">Feedback</a></li>
-                        </ul>
-                    </div>
-                    <div class="four-column">
-                        <header>Contact</header>
-                        <ul>
-                            <li><a href="">E-mailing List</a></li>
-                        </ul>
-                        <div id="social">
-                            <img src="images/icon_twitter.png" />
-                            <img src="images/icon_youtube.png" />
-                            <img src="images/icon_github.png" />
-                        </div>
-                    </div>
-                </div>
+          </section>
+          <section>
+            <header><a name=""><%- gettext("Where can try it?") %></a></header>
+            <div>
+              <p>
+                <%- gettext("Give it a whirl at http://appmaker.mozillalabs.com") %>
+              </p>
             </div>
-            <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script>
-        </footer>
+          </section>
+          <section>
+            <header><a name=""><%- gettext("How does it work?") %></a></header>
+            <div>
+              <p>
+                <%- gettext("Appmaker lets you combine a selection of web components — small units of functionality — to buildpersonalized apps. Components include buttons, lists, photo shutters, maps with geolocation, chat rooms and more. Written in HTML, these components are designed to function like tiny webpages and Appmaker allows you to snap them together. Remember building with Lego? It works in a similar way.") %>
+              </p>
+            </div>
+          </section>
+          <section>
+            <header><a name=""><%- gettext("Are there tutorials, how-to guides or help documentation?") %></a></header>
+            <div>
+              <p>
+                <%- gettext("We'll have tutorials and documentation available in the future. In the meantime, visit our [[About page]] for a demo video and our [contribution] page for a quick experiment you can try.") %>
+              </p>
+            </div>
+          </section>
+          <!-- About Appmaker ends ==================== -->
+          <!-- Using Appmaker starts ==================== -->
+          <section>
+            <header><a name=""><%- gettext("What kinds of apps does it make?") %></a></header>
+            <div>
+              <p>
+                <%- gettext("Appmaker is great for quickly making simple, personal apps. It isn't meant to be a platform for writing the next Angry Birds. Instead, it’s intended to help you make apps that are relevant to you, your friends or your community") %>
+              </p>
+            </div>
+          </section>
+          <section>
+            <header><a name=""><%- gettext("Can I build on other people’s apps?") %></a></header>
+            <div>
+              <p>
+                <%- gettext("One of the best things about Appmaker is that every app is remixable. If you find an app that someone else has made and you want to create your own version of it, you can hit the \"remix\" button. The app will open in the Appmaker designer, ready for you to customize.") %>
+              </p>
+            </div>
+          </section>
+          <section>
+            <header><a name=""><%- gettext("Is it ready to use?") %></a></header>
+            <div>
+              <p>
+                <%- gettext("It's ready to try! You can author simple apps and send them to your friends. Currently, Appmaker is \"Pre-Alpha\" software (that means it's not even in \"Beta\" yet) and won't be stable until late 2014. We encourage you to have fun with Appmaker, but for now, it might not work exactly as you expect it to.") %>
+              </p>
+            </div>
+          </section>
+          <section>
+            <header><a name=""><%- gettext("What are examples of apps I can build?") %></a></header>
+            <div>
+              <p>
+                <%- gettext("Try making a simple game for your friends. Do you have a business? Create a price list or a customer service gateway. Enjoy sports? Build a scoreboard or a tournament-organizing app. As the Appmaker community grows, so too will the number of web components and the sophistication of apps.") %>
+              </p>
+            </div>
+          </section>
+          <section>
+            <header><a name=""><%- gettext("Where do the apps work?") %></a></header>
+            <div>
+              <p>
+                <%- gettext("Appmaker apps will run online and offline. We currently support Firefox, Firefox for Android and FirefoxOS.") %>
+              </p>
+              <p>
+                <%- gettext("Appmaker apps are written in modular HTML5, JavaScript and CSS. Our intention is to make Appmakerapps compatible and stable across all Firefox offerings, and eventually support iOS. This way, people will be able to load an app on any phone and everybody will have the same Appmaker experience.") %>
+              </p>
+            </div>
+          </section>
+          <section>
+            <header><a name=""><%- gettext("How do I share apps?") %></a></header>
+            <div>
+              <p>
+                <%- gettext("Just email, SMS or otherwise share the URL that appears when you publish your app within Appmaker. The recipient can install the app directly onto their phone. That's it!") %>
+              </p>
+            </div>
+          </section>
+          <!-- Using Appmaker ends ==================== -->
+          <!-- Contributing to Appmaker starts ==================== -->
+          <section>
+            <header><a name=""><%- gettext("I'm a developer, how can I get involved?") %></a></header>
+            <div>
+              <p>
+                <%- gettext("Appmaker is an open source project and we invite you to influence the direction of this project by designing modules, helping us build the Appmaker infrastructure, providing feedback and contributing to the overall direction of the project. Please visit our [[Contribution page]] to learn more.") %>
+              </p>
+            </div>
+          </section>
+          <section>
+            <header><a name=""><%- gettext("How can I help other people make their own apps?") %></a></header>
+            <div>
+              <p>
+                <%- gettext("If you want to mentor appmaking in your local community, we're working on educational resources on [webmaker.org] to support you. In the meantime, check out our other free tools to teach the web [/teach], or create your own appmaking tutorial using our template.[/teach-templates]") %>
+                <%- gettext("If you want to get your hands dirty by helping us envision new modules that work for your community and networks, we'd also recommend joining one of our participatory design workshops. Subscribe to [[theAppmaker email list]] to learn more.") %>
+              </p>
+            </div>
+          </section>
+          <section>
+            <header><a name=""><%- gettext("I want to contribute right now — what can I do?") %></a></header>
+            <div>
+              <p>
+                <%- gettext("1) Join the [[Appmaker mailing list]]") %><br />
+                <%- gettext("2) Host a [[kitchen table test]] for family or friends and tell us what you think.") %><br />
+                <%- gettext("3) If something doesn't work as expected, or if you have feature requests, you can file a bug at http://github.com/mozilla-appmaker/appmaker/issues") %><br />
+                <%- gettext("4) Contribute some code — here's a [[guide on writing components]] to grow the functionality of Appmaker.") %><br />
+                <%- gettext("5) Become an Appmaker mentor in your community and help people create their own mobile apps. Contact us at appmaker@mozilla.com to get started.") %>
+              </p>
+            </div>
+          </section>
+          <section>
+            <header><a name=""><%- gettext("Can I see the source code?") %></a></header>
+            <div>
+              <p>
+                <%- gettext("You sure can! It's on GitHub [http://github.com/mozilla/appmaker/]") %>
+              </p>
+            </div>
+          </section>
+          <section>
+            <header><a name=""><%- gettext("Why did you create Appmaker?") %></a></header>
+            <div>
+              <p>
+                <%- gettext("Appmaker is Mozilla project. We’re a global community that promotes openness, innovation & opportunity on the web. We work to keep the Internet alive and accessible, so people worldwide can be informed contributors and creators of the web. We believe this act of human collaboration across an open platform is essential to individual growth and our collective future.") %>
+              </p>
+              <p>
+                <%- gettext("By giving people the power to make their own mobile apps, we're turning a black box technology—the \"read only\" paradigm of the mobile phone—into a programmable, \"read/write\" paradigm to give people greater agency over their technology and their lives.") %>
+              </p>
+            </div>
+          </section>
+          <!-- Contributing to Appmaker ends ==================== -->
         </div>
-    </body>
+      </div>
+    </div>
+    <footer id="footer" class="content-block">
+      <div class="wrap">
+        <div class="left" id="mozilla-labs"><img src="images/logo.png" /></div>
+        <div id="footer-links" class="right">
+          <div class="four-column">
+            <header>About</header>
+            <ul>
+              <li><a href="">About Appmaker</a></li>
+              <li><a href="">FAQ</a></li>
+              <li><a href="">Blog</a></li>
+            </ul>
+          </div>
+          <div class="four-column">
+            <header>Resources</header>
+            <ul>
+              <li><a href="">Contribute</a></li>
+              <li><a href="">Documentation</a></li>
+              <li><a href="">Donate</a></li>
+            </ul>
+          </div>
+          <div class="four-column">
+            <header>Info</header>
+            <ul>
+              <li><a href="">Privacy Policy</a></li>
+              <li><a href="">Legal Notices</a></li>
+              <li><a href="">Feedback</a></li>
+            </ul>
+          </div>
+          <div class="four-column">
+            <header>Contact</header>
+            <ul>
+              <li><a href="">E-mailing List</a></li>
+            </ul>
+            <div id="social">
+              <img src="images/icon_twitter.png" />
+              <img src="images/icon_youtube.png" />
+              <img src="images/icon_github.png" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script>
+    </footer>
+    </div>
+  </body>
