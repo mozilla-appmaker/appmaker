@@ -4,8 +4,7 @@
   </template>
   <script>
     require(['l10n'], function(L10n) {
-      var defaultChannel = 'blue';
-
+      var DEFAULT_CHANNEL = 'blue';
       var localizedSetter = L10n.get('Set {attribute}') || 'Set {attribute}';
 
       function processDefinition (element) {
@@ -59,7 +58,7 @@
             result.listeners[listenerName] = {
               description: '(Setter) ' + attributeDefinition.description,
               label: localizedSetter.replace('{attribute}', attributeDefinition.label),
-              'default': !!attributeDefinition.defaultListener,
+              'default': attributeDefinition.defaultListener,
               attribute: attributeName
             };
           }
@@ -83,9 +82,13 @@
 
         Object.keys(listenersDefinitionObject).forEach(function (listenerName) {
           var listenerDefinition = listenersDefinitionObject[listenerName];
+          var channel = DEFAULT_CHANNEL;
           ceciDefinition[listenerName] = listenerDefinition;
           if (!!listenerDefinition['default']) {
-            defaultListeners.push(listenerName);
+            if (listenerDefinition['default'] !== true) {
+              channel = listenerDefinition['default'];
+            }
+            defaultListeners.push({name: listenerName, channel: channel });
           }
         });
 
@@ -99,9 +102,13 @@
 
         Object.keys(broadcastsDefinitionObject).forEach(function (broadcastName) {
           var broadcastDefinition = broadcastsDefinitionObject[broadcastName];
+          var channel = DEFAULT_CHANNEL;
           ceciDefinition[broadcastName] = broadcastDefinition;
           if (!!broadcastDefinition['default']) {
-            defaultBroadcasts.push(broadcastName);
+            if (broadcastDefinition['default'] !== true) {
+              channel = broadcastDefinition['default'];
+            }
+            defaultBroadcasts.push({name: broadcastName, channel: channel });
           }
         });
 
@@ -144,14 +151,14 @@
           var defaultBroadcasts = processBroadcasts(this.ceci.broadcasts, ceciDefinition.broadcasts);
 
           defaultListeners.forEach(function (d) {
-            if (!that.querySelector('ceci-listen[for="' + d + '"]')) {
-              that.setListener(d, defaultChannel);
+            if (!that.querySelector('ceci-listen[for="' + d.name + '"]')) {
+              that.setListener(d.name, d.channel);
             }
           });
 
           defaultBroadcasts.forEach(function (d) {
-            if (!that.querySelector('ceci-broadcast[from="' + d + '"]')) {
-              that.setBroadcast(d, defaultChannel);
+            if (!that.querySelector('ceci-broadcast[from="' + d.name + '"]')) {
+              that.setBroadcast(d.name, d.channel);
             }
           });
 
