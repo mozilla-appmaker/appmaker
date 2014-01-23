@@ -50,7 +50,6 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
 
       function cleanString (str, removeQuotes) {
         str = str.replace(/>/g, '&gt;').replace(/</g, '&lt;');
-
         if (removeQuotes) {
           str = str.replace(/'/g, '').replace(/"/g, '')
         }

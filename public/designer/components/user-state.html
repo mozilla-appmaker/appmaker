@@ -173,9 +173,7 @@
           this.$.deleteApp.addEventListener('click', function() {
             application.deleteAppByName(application.getCurrentApp());
             application.clearCurrentApp();
-            application.newApp();
-            self.refreshUserState();
-            self.editingmode = "draft";
+            self.$.newApp.click();
           });
 
           //New app
@@ -187,6 +185,7 @@
             self.refreshUserState();
             self.editingmode = "draft";
             self.closeMenus();
+            self.setAppURL(false);
           });
 
           //Rename App
@@ -215,16 +214,31 @@
             var app = document.querySelector('ceci-app');
             var name = app.name;
             var html = app.outerHTML;
-            if(name){
-              application.publishApp(name,html);
-              // gotta make sure it actually saves though!
-              // add as a callback? or pass in callbacks?
+            // This might need to be made its own thing so it can be called
+            // in various places:
+            while (!name || name === l10n.get("Unsaved App")) {
+              name = prompt("Please name your app first:");
+              if(name === null) break;
+            }
+            if(!name) {
+              return console.error("Save was cancelled.");
+            }
+            // we have a name: publish!
+            var alreadySaved = self.editingmode === "saved";
+            application.publishApp(name, html, alreadySaved, function resulthandler(err,data) {
+              if(err) {
+                if (data) {
+                  console.error("app was published, but updating failed");
+                } else {
+                  console.error("app sas not successfully published");
+                }
+                return;
+              }
+              console.log(data);
               application.setCurrentApp(name);
               self.refreshUserState();
               self.editingmode = "saved";
-            } else {
-              console.log("Please name your app.");
-            }
+            });
           });
 
           //Save App As

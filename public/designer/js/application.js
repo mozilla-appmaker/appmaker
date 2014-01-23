@@ -9,7 +9,9 @@ define(["jquery", "l10n"], function($, l10n) {
         return currentApp;
       },
       setCurrentApp: function(name){
-        localStorage.currentApp = name;
+        if (name && name !== l10n.get("Unsaved App")) {
+          localStorage.currentApp = name;
+        }
       },
       clearCurrentApp: function(){
         localStorage.removeItem("currentApp");
@@ -37,42 +39,54 @@ define(["jquery", "l10n"], function($, l10n) {
           }
         });
       },
-      publishApp: function(name, html){
-        $.ajax('/api/publish', {
-          data: {
-            name: name,
-            html: html
-          },
-          type: 'post',
-          success: function (data) {
-            // FIXME: remove this alert and replace with a nice looking modal
-            alert(l10n.get('App published successfully:') + ' ' + data.app);
-            // update the user state menu to have an App URL entry
-            var userState = document.querySelector('user-state');
-            userState.setAppURL(data.app);
-
-            // also notify API that we have a url now (or that it got updated)
-            $.ajax('api/update_app', {
-              data: {
-                name: name,
-                url: data.app
-              },
-              type: 'post',
-              success: function (data) {
-                console.log("app update (for publish url) succeeded");
-              },
-              error: function (data) {
-                console.error("app update (for publish url) failed", data);
-              }
-            });
-          },
-          error: function (data) {
-            console.error(data);
-            // alert(data.responseJSON.error);
+      publishApp: function(name, html, alreadySaved, afterPublish) {
+        // make sure to save first; If that succeeds, perform a publish
+        var op = alreadySaved ? this.updateApp : this.saveApp;
+        op(name, html, function callAPIPublish(err) {
+          if(err) {
+            return console.error("publish failed in save step", err);
           }
+          $.ajax('/api/publish', {
+            data: {
+              name: name,
+              html: html
+            },
+            type: 'post',
+            success: function (data) {
+              setTimeout(function() {
+                // FIXME: This should not be on window
+                window.showPublishPane(name, data);
+              },10);
+
+              // update the user state menu to have an App URL entry
+              var userState = document.querySelector('user-state');
+              userState.setAppURL(data.app);
+
+              // also notify API that we have a url now (or that it got updated)
+              $.ajax('api/update_app', {
+                data: {
+                  name: name,
+                  url: data.app
+                },
+                type: 'post',
+                success: function (updateData) {
+                  console.log("app update (for publish url) succeeded");
+                if(afterPublish) { afterPublish(false, data); }
+                },
+                error: function (data) {
+                  console.error("app update (for publish url) failed", updateData);
+                  if(afterPublish) { afterPublish(updateData, data); }
+                }
+              });
+            },
+            error: function (data) {
+              console.error(data);
+              if(afterPublish) { afterPublish(data); }
+            }
+          });
         });
       },
-      saveApp: function(name, html){
+      saveApp: function(name, html,next){
         $.ajax('/api/save_app', {
           data: {
             html: html,
@@ -80,15 +94,17 @@ define(["jquery", "l10n"], function($, l10n) {
           },
           type: 'post',
           success: function (data) {
-            console.log("App Saved Successfully");
+            console.log("App saved successfully");
+            if(next) { next(false, data); }
           },
           error: function (data) {
-            alert(data.responseJSON.error);
+            console.error("App was not saved successfully!"), data;
+            if(next) { next(data); }
           }
         });
 
       },
-      updateApp: function(name,html){
+      updateApp: function(name,html,next){
         $.ajax('/api/update_app', {
           data: {
             name: name,
@@ -97,9 +113,11 @@ define(["jquery", "l10n"], function($, l10n) {
           type: 'post',
           success: function (data) {
             console.log("App updated successfully!");
+            if(next) { next(false, data); }
           },
           error: function (data) {
-            console.log("App was not updated successfully!");
+            console.log("App was not updated successfully!", data);
+            if(next) { next(data); }
           }
         });
 
