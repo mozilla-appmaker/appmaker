@@ -50,7 +50,7 @@ button#publish-pane-button {
   border-top: 1px solid #74b3e3;
   border-bottom: 1px solid #0f1113;
   height: 50px;
-  margin: 10px 0px 50px 0px;
+  margin: 10px 0px 50px 3px;
   color: #FFF;
   font-size: 24px;
 }
@@ -138,9 +138,16 @@ input#publish-pane-panel-email {
   line-height: 140%;
 }
 
-.publish-guide-text a {
+p.app-link {
+  display: block;
+  font-size: 130%;
+  margin-top: 1em;
+}
+
+p.app-link a {
   color: #358CCE;
   text-decoration: none;
+  font-size: 130%;
 }
 
 #publish-pane-logo {
