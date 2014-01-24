@@ -24,7 +24,7 @@ define(["jquery", "l10n"], function($, l10n) {
 //        var ca = document.querySelector("ceci-app");
 //        //TODO figure out a better spot to set appids. ceci-app.ready would be ideal, but then
 //        //we have to decouple appidChanged and initFirebase
-//        ca.appid = "ceci-app"+uuid();
+        ca.appid = "ceci-app"+uuid();
       },
       renameApp: function(oldName,newName){
         var userState = document.querySelector('user-state');
@@ -112,7 +112,7 @@ define(["jquery", "l10n"], function($, l10n) {
         $.ajax('/api/update_app', {
           data: {
             name: name,
-            html: html,
+            html: html
           },
           type: 'post',
           success: function (data) {
@@ -142,7 +142,6 @@ define(["jquery", "l10n"], function($, l10n) {
             var indexOfOpeningTag = data.indexOf(openingTag);
             var indexOfClosingTag = data.indexOf(closingTag);
 
-
             if (indexOfOpeningTag > -1 && indexOfClosingTag > -1) {
               var range = document.createRange();
               var container = document.body;
@@ -166,6 +165,17 @@ define(["jquery", "l10n"], function($, l10n) {
             userState.failedAppLoad();
           }
         });
+      },
+      _insertCeciAppElement: function(){
+        var app = document.querySelector('ceci-app');
+        if(!app){
+        //ceci-app element doesn't exist
+        var phoneBorderElement = document.querySelector(".phone-border");
+        phoneBorderElement.appendChild(document.createElement("ceci-app"));
+        return document.querySelector("ceci-app") //TODO just return reference above?
+        } else {
+        return app;
+        }
       },
       loadAppByName: function(name) {
         var userState = document.querySelector('user-state');

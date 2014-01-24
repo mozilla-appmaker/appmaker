@@ -254,8 +254,8 @@
 
             var ceci_app = document.querySelector('ceci-app');
             ceci_app.name = name;
-            ceci_app.setAttribute("name", name);
-            ceci_app.setAttribute("appid", ceci_app.appid);
+            ceci_app.appid = "ceci-app"+uuid();
+
             //If we use outerHTML, it will cause ceci-app to load twice, once for the insertion of the ceci-app element,
               //the second for the copying over of outerHTML (which loads an entire new ceci-app element). This is
               //why ceci-app was loading twice and creating race events
@@ -289,7 +289,9 @@
           console.log("app failed to load, create a new scratch ceci-app");
 
           var phoneBorderElement = document.querySelector(".phone-border");
-          phoneBorderElement.appendChild(document.createElement("ceci-app"));
+          var ca = document.createElement("ceci-app");
+          ca.appid = "temp-"+uuid();
+          phoneBorderElement.appendChild(ca);
           this.updateAppName(l10n.get("Unsaved App"));
         },
         okAppLoad: function(name, data){

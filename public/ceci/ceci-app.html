@@ -57,7 +57,7 @@
 
         this.dispatchEvent(new CustomEvent('ready', {bubbles: true, detail: this}));
         this.firebase = null;
-        this.initFirebase();
+        //this.initFirebase();
 
         console.log("ceci-app ready")
         window.dispatchEvent(new CustomEvent("CeciAppReady"));
@@ -99,7 +99,7 @@
         }
       },
       appidChanged: function(){
-        console.log("appid changed")
+        console.log("appid changed: " + this.appid)
         this.initFirebase();
       },
       initFirebase: function(){
