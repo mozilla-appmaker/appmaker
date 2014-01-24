@@ -7,6 +7,28 @@ body {
   margin: 0 auto;
 }
 
+.install-container p {
+  color: rgb(174, 177, 181);
+  font-size: 20px;
+  line-height: 140%;
+}
+
+.install-container h1 {
+  color: #ec6334;
+  font-family: 'Lucida Grande';
+}
+
+.install-container img {
+  height: 10em;
+  float: left;
+  margin-right: 2em;
+}
+
+.install-container a {
+  color: rgb(53, 140, 206);
+  text-decoration: none;
+}
+
 button#install {
   font-family: 'Source Sans Pro', arial;
   width: 100%;
@@ -26,15 +48,4 @@ button#install:hover {
 
 button#install:active {
   background-color: #2a70a6;
-}
-
-.iframe-container {
-  width: 100%;
-  height: 550px;
-}
-
-iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
 }
