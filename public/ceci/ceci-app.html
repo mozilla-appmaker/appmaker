@@ -46,6 +46,7 @@
   require(['Firebase'], function() {
     Polymer('ceci-app', {
       ready: function() {
+        console.log("ceci-app ready")
         if (this.querySelectorAll('ceci-card').length > 0) {
           if (!this.querySelector('ceci-card[visible]')) {
             this.querySelector('ceci-card').setAttribute('visible', true);
@@ -59,7 +60,6 @@
         this.firebase = null;
         //this.initFirebase();
 
-        console.log("ceci-app ready")
         window.dispatchEvent(new CustomEvent("CeciAppReady"));
       },
       addCard: function() {
