@@ -146,12 +146,10 @@
                 } else {
                   console.log("no current app, inject temp ceci-app")
                   var phoneBorderElement = document.querySelector(".phone-border");
-                  phoneBorderElement.appendChild(document.createElement("ceci-app"));
+                  var ca = document.createElement("ceci-app");
+                  phoneBorderElement.appendChild(ca);
+                  ca.appid = "temp-"+uuid();
 
-                  window.addEventListener("CeciAppReady", function(){
-                    var ca = document.querySelector("ceci-app");
-                    ca.appid = "temp-"+uuid();
-                  });
                   that.updateAppName(l10n.get("Unsaved App"));
                   that.editingmode = "draft";
                 }
