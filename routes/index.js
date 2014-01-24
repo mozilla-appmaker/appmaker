@@ -36,7 +36,7 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
     remix: function (req, res) {
       var email = (req.query.email === undefined ? false : req.query.email);
       var app = req.query.app;
-      var appURL = process.env.ASSET_HOST + '/designer?remix=' + app;
+      var appURL = process.env.ASSET_HOST + '/designer?remix=' + encodeURIComponent(app);
 
       if (email !== false) {
         if (email) {
