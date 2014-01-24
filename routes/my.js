@@ -80,19 +80,21 @@ module.exports = function (mongoose, dbconn) {
       if (!checkAuthorised(request, response)) return;
 
       var name = request.body.name;
-      //TODO update appid? this probably shouldn't change, but then again, we're updating name here which probably
-        //shouldn't change outside of renameApp
+      //TODO query by appid instead of name
+      console.log("updateapp")
+      console.log("incoming html", request.body.html);
+      console.log("incoming ur", request.body.url);
       var html = request.body.html || false;
       var url = request.body.url || false;
 
-      if(html === false && url === false) {
+      if(html === false) {
           return response.json(409, {error: 'App was not updated as no data was sent with the request'});
       }
 
       var setObj = {};
       if(html) setObj.html = html;
       if(url) setObj['last-published-url'] = url;
-
+      console.log("setobj",setObj);
       App.update(
           {author:request.session.email, name: name},
           { $set: setObj },

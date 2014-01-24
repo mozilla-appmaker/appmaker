@@ -24,7 +24,7 @@ define(["jquery", "l10n"], function($, l10n) {
 //        var ca = document.querySelector("ceci-app");
 //        //TODO figure out a better spot to set appids. ceci-app.ready would be ideal, but then
 //        //we have to decouple appidChanged and initFirebase
-        ca.appid = "ceci-app"+uuid();
+        app.appid = "ceci-app"+uuid();
       },
       renameApp: function(oldName,newName){
         var userState = document.querySelector('user-state');
@@ -70,7 +70,8 @@ define(["jquery", "l10n"], function($, l10n) {
               $.ajax('api/update_app', {
                 data: {
                   name: name,
-                  url: data.app
+                  url: data.app,
+                  html: html
                 },
                 type: 'post',
                 success: function (updateData) {
