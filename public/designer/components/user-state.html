@@ -140,9 +140,18 @@
               }
               else {
                 if(application.getCurrentApp()){
+                  console.log("current app was in local storage, load it")
                   application.loadAppByName(application.getCurrentApp());
                   that.editingmode = "saved";
                 } else {
+                  console.log("no current app, inject temp ceci-app")
+                  var phoneBorderElement = document.querySelector(".phone-border");
+                  phoneBorderElement.appendChild(document.createElement("ceci-app"));
+
+                  window.addEventListener("CeciAppReady", function(){
+                    var ca = document.querySelector("ceci-app");
+                    ca.appid = "temp-"+uuid();
+                  });
                   that.updateAppName(l10n.get("Unsaved App"));
                   that.editingmode = "draft";
                 }
@@ -249,14 +258,11 @@
             var ceci_app = document.querySelector('ceci-app');
             ceci_app.name = name;
             ceci_app.setAttribute("name", name);
-
-            if(!ceci_app.appid){
-                ceci_app.appid = 'ceci-app-' + uuid();
-            }
-
             ceci_app.setAttribute("appid", ceci_app.appid);
-//            var html = ceci_app.outerHTML;
-              var html = ceci_app.innerHTML;
+            //If we use outerHTML, it will cause ceci-app to load twice, once for the insertion of the ceci-app element,
+              //the second for the copying over of outerHTML (which loads an entire new ceci-app element). This is
+              //why ceci-app was loading twice and creating race events
+            var html = ceci_app.innerHTML;
             if(name){
               application.saveApp(name,ceci_app.appid,html);
               // gotta make sure it actually saves though!
@@ -286,6 +292,10 @@
         },
         failedAppLoad: function(){
           application.clearCurrentApp();
+          console.log("app failed to load, create a new scratch ceci-app");
+
+          var phoneBorderElement = document.querySelector(".phone-border");
+          phoneBorderElement.appendChild(document.createElement("ceci-app"));
           this.updateAppName(l10n.get("Unsaved App"));
         },
         okAppLoad: function(name, data){
@@ -295,10 +305,10 @@
         },
         updateAppName: function(name){
           var app = document.querySelector('ceci-app');
-          if (name) {
+          if (app && name) {
             app.name = name;
+            document.querySelector(".phone-top .app-name").innerHTML = app.name;
           }
-          document.querySelector(".phone-top .app-name").innerHTML = app.name;
         },
         appRenameOk: function(name){
           application.setCurrentApp(name);
@@ -414,12 +424,16 @@
           this.refreshAppList();
           this.refreshComponentsList();
         },
+        //TODO move to event system and call refreshAppList after appLoaded event
         refreshAppList: function() {
           var self = this;
           var myApps = this.shadowRoot.querySelector("#myapps");
           var noApps = this.shadowRoot.querySelector("#noApps");
           var currentApp = application.getCurrentApp() || "";
-          this.updateAppName(application.getCurrentApp() || l10n.get("Unsaved App"));
+          //TODO handle this better
+          if(currentApp){
+            this.updateAppName(currentApp || l10n.get("Unsaved App"));
+          }
 
           myApps.innerHTML = "";
           $.getJSON("/api/myapps", function(data) {

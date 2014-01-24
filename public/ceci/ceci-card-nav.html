@@ -11,22 +11,21 @@
       checked : false,
       ready: function() {
         var t = this;
-        this.app = document.querySelector("ceci-app");
 
-        this.app.addEventListener('cardShown', function(data){
+        window.addEventListener('cardShown', function(data){
           t.buildTabs();
         });
 
-        this.app.addEventListener('ready', function (e) {
+        window.addEventListener('ready', function (e) {
           t.buildTabs();
         }, false);
 
-        this.buildTabs();
+        t.buildTabs();
       },
       highlightTab : function(card){
         //Figure out that index of the visible card
         var highlightIndex;
-        var list = this.app.querySelectorAll("ceci-card") || [];
+        var list = document.querySelectorAll("ceci-card") || [];
 
         Array.prototype.forEach.call(list, function(el,index){
           if(el.getAttribute("visible") == "true"){
@@ -68,17 +67,40 @@
           });
         }
         //Add tabs for all pages
-        var existingCards = this.app.querySelectorAll('ceci-card');
-        if(existingCards.length > 0){
-          Array.prototype.forEach.call(existingCards, function(el,index){
-            var c = existingCards[index];
-            t.addCardTab(index+1,c);
-          });
+        var existingCards = document.querySelectorAll('ceci-card');
+        if(!existingCards){
+            var self = this;
+            document.getElementsByTagName('ceci-card')[0].addEventListener('WebComponentReady', function(){
+                var existingCards = document.querySelectorAll('ceci-card');
+                if(existingCards.length > 0){
+                    Array.prototype.forEach.call(existingCards, function(el,index){
+                        var c = existingCards[index];
+                        t.addCardTab(index+1,c);
+                    });
+                }
+                this.highlightTab();
+            });
+        } else {
+            if(existingCards.length > 0){
+                Array.prototype.forEach.call(existingCards, function(el,index){
+                    var c = existingCards[index];
+                    t.addCardTab(index+1,c);
+                });
+            }
+            this.highlightTab();
         }
-        this.highlightTab();
       },
       addCard : function() {
-       this.app.addCard();
+       var ca = document.querySelector("ceci-app");
+       if(!ca){
+           var self = this;
+           document.getElementsByTagName('ceci-card')[0].addEventListener('WebComponentReady', function(){
+             self.ca = document.querySelector("ceci-app");
+             self.ca.addCard();
+           });
+       } else {
+           ca.addCard();
+       }
       }
     });
   });

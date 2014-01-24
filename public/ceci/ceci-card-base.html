@@ -60,7 +60,7 @@
             card.removeAttribute('visible');
           }
         });
-        this.dispatchEvent(new CustomEvent('cardShown', {bubbles: true, detail: this}));
+        window.dispatchEvent(new CustomEvent('cardShown', {bubbles: true, detail: this}));
       }
     });
   </script>

@@ -140,10 +140,6 @@ module.exports = function (mongoose, dbconn) {
     saveApp: function(request, response) {
       if (!checkAuthorised(request, response)) return;
 
-      //check that appid is included, if not, generate one
-      var request_appid = request.body.appid;
-      if(!request_appid){ request_appid = 'ceci-app-' + uuid(); }
-
       //Check if app with same name already exists
       App.findOne({author:request.session.email, name: request.body.name}, function(err, obj) {
           if (obj) {
@@ -152,7 +148,7 @@ module.exports = function (mongoose, dbconn) {
           else {
               var appObj = JSON.parse(JSON.stringify(request.body)) // make a copy
               appObj.author = request.session.email;
-              appObj.appid = request_appid;
+              appObj.appid = request.body.appid;
               var newApp = new App(appObj);
               newApp.save(function(err, app){
                   if (err){

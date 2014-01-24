@@ -113,14 +113,14 @@ define(["jquery", "l10n"], function($, l10n) {
           html: html
         },
         type: 'post',
-          success: function (data) {
-            console.log("App updated successfully!");
-            if(next) { next(false, data); }
-          },
-          error: function (data) {
-            console.log("App was not updated successfully!", data);
-            if(next) { next(data); }
-          }
+        success: function (data) {
+          console.log("App updated successfully!");
+          if(next) { next(false, data); }
+        },
+        error: function (data) {
+          console.log("App was not updated successfully!", data);
+          if(next) { next(data); }
+        }
       });
     },
     loadAppByUrl: function(url) {
@@ -157,7 +157,21 @@ define(["jquery", "l10n"], function($, l10n) {
         }
       });
     },
+    _insertCeciAppElement: function(){
+      var app = document.querySelector('ceci-app');
+      if(!app){
+        //ceci-app element doesn't exist
+        console.log("insert ceci app element - didn't exist")
+        var phoneBorderElement = document.querySelector(".phone-border");
+        phoneBorderElement.appendChild(document.createElement("ceci-app"));
+        return document.querySelector("ceci-app") //TODO just return reference above?
+      } else {
+        console.log("insert ceci app element - existed!!!!!!!")
+        return app;
+      }
+    },
       loadAppByName: function(name) {
+        var self = this;
         var userState = document.querySelector('user-state');
         $.ajax('/api/app', {
           data: {
@@ -165,16 +179,15 @@ define(["jquery", "l10n"], function($, l10n) {
           },
           type: 'get',
           success: function (data) {
-
+            console.log("loadAppByName - success callback")
             //we already have a temporary ceci-app element in place, so we need to replace it with
               //the one we're fetching from the database
-            var app = document.querySelector('ceci-app');
-            var ceciParentNode = app.parentNode;
-            app.outerHTML = data.html;
+            var app = self._insertCeciAppElement();
+            app.innerHTML = data.html;
             app.appid = data.appid;
 
-            app.setAttribute("name",name);
-            app.setAttribute("appid",app.appid);
+//            app.setAttribute("name",name);
+//            app.setAttribute("appid",app.appid);
 
             localStorage.currentApp = name;
             userState.okAppLoad(name, data);
