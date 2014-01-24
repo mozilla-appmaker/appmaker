@@ -43,10 +43,10 @@ define(["jquery", "l10n"], function($, l10n) {
           }
         });
       },
-      publishApp: function(name, html, alreadySaved, afterPublish) {
+      publishApp: function(name, appid, html, alreadySaved, afterPublish) {
         // make sure to save first; If that succeeds, perform a publish
         var op = alreadySaved ? this.updateApp : this.saveApp;
-        op(name, html, function callAPIPublish(err) {
+        op(name, appid, html, function callAPIPublish(err) {
           if(err) {
             return console.error("publish failed in save step", err);
           }

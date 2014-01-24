@@ -233,7 +233,7 @@
             }
             // we have a name: publish!
             var alreadySaved = self.editingmode === "saved";
-            application.publishApp(name, html, alreadySaved, function resulthandler(err,data) {
+            application.publishApp(name, app.appid, html, alreadySaved, function resulthandler(err,data) {
               if(err) {
                 if (data) {
                   console.error("app was published, but updating failed");
