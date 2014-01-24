@@ -9,10 +9,12 @@
 <body>
   <script type="template/html">
     <img src="<%= process.env.ASSET_HOST %>/images/chef-man.png">
-    <h1>You'll need Firefox for this App</h1>
-    <p>In order to install this app, you'll need to open this page in a
-    Firefox browser. However, if you just want to see this app in action,
-    click <a href="">here</a> to load it as a regular URL.</p>
+    <h1><%- gettext("You'll need Firefox for this App") %></h1>
+    <p>
+      <%- gettext("In order to install this app") %>
+      <%- gettext("see this app in action") %>
+      <a href=""><%- gettext("click here")%></a>
+    </p>
   </script>
   <div class="install-container"></div>
   <script>
@@ -25,7 +27,7 @@
         var installButton = document.createElement('button');
         container.appendChild(installButton);
         installButton.id = "install";
-        installButton.innerHTML = "<%- gettext('Install App') %>"
+        installButton.innerHTML = "<%- gettext('Install App') %>";
         installButton.addEventListener('click', function (e) {
           var installRequest = navigator.mozApps.install('<%- manifestUrl %>');
 
