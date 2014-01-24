@@ -30,6 +30,14 @@
           var appurl = document.getElementById('applink');
           var mailButton = document.querySelector('#publish-pane-button');
 
+          function closePublishPanel (e) {
+            panel.classList.remove('expanded');
+            content.classList.add('hidden');
+            master.classList.add('hidden');
+          }
+
+          close.onclick = closePublishPanel;
+
           window.showPublishPane = showPublishPane = function(name, data) {
             master.classList.remove('hidden');
             setTimeout(function() {
@@ -42,46 +50,29 @@
               email.value = '';
               appurl.setAttribute('href', data.app);
               appurl.innerHTML = data.app;
+
+              (function() {
+                var mailButton = document.querySelector('#publish-pane-button');
+                mailButton.onclick = function (e) {
+                  mailButton.disabled = true;
+                  email.disabled = false;
+                  var xhr = new XMLHttpRequest();
+                  xhr.open('GET', '<%= process.env.ASSET_HOST %>/notify?appURL=' + encodeURIComponent(data.app) + '&email=' + email.value, true);
+                  xhr.onerror = function (e) {
+                    console.error(e);
+                  };
+                  xhr.onload = function (e) {
+                    console.log(e);
+                  };
+
+                  // TODO: add in nice button handling here, since the email should not
+                  //       necessarily close the publish dialog.
+
+                  xhr.send(null);
+                };
+              }());
             }, 50);
           };
-
-          function closeRemixPanel (e) {
-            panel.classList.remove('expanded');
-            content.classList.add('hidden');
-            master.classList.add('hidden');
-          }
-
-          close.onclick = closeRemixPanel;
         }());
       </script>
-
-<%if (typeof appName !== "undefined") { %>
-      <script>
-        /**
-         * Copied from the remix panel, but this needs to become a function that contacts
-         * the app API for mailing out a user's application URL rather than remix information.
-         */
-        (function() {
-          var mailButton = document.querySelector('#publish-pane-button');
-          mailButton.onclick = function (e) {
-            mailButton.disabled = true;
-            email.disabled = false;
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '<%= process.env.ASSET_HOST %>/remix?app=<%- appName %>&email=' + email.value, true);
-            xhr.onerror = function (e) {
-              console.error(e);
-            };
-            xhr.onload = function (e) {
-              console.log(e);
-            };
-            xhr.send(null);
-            setTimeout(function () {
-              mailButton.classList.add('fadeout');
-              email.classList.add('fadeout');
-              closeRemixPanel();
-            }, 500);
-          };
-        }());
-      </script>
-<% } %>
     </div>

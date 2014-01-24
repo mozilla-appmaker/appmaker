@@ -156,7 +156,7 @@ routes = require('./routes')(
   store,
   __dirname + '/views',
   urlManager,
-  require('./lib/remix-mailer')(postmark),
+  require('./lib/mailer')(postmark),
   makeAPIPublisher
 );
 
@@ -179,7 +179,9 @@ app.get('/testappdesigner', routes.testappdesigner);
 
 app.get('/testapp', routes.testapp);
 
+// remix and publish email notification routes
 app.get('/remix', routes.remix);
+app.get('/notify', routes.notify);
 
 //TODO: Security: https://github.com/mozilla-appmaker/appmaker/issues/602
 app.get('/api/proxy-component-*', cors(), routes.proxy.gitHubComponent);

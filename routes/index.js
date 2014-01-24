@@ -40,7 +40,7 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
 
       if (email !== false) {
         if (email) {
-          remixMailer.send(email, appURL, function () {
+          remixMailer.sendRemixMail(req, email, appURL, function () {
             res.json({error: null}, 200);
           });
         }
@@ -50,6 +50,24 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
       }
       else {
         res.redirect(appURL);
+      }
+    },
+
+    notify: function(req, res) {
+      var email = (req.query.email === undefined ? false : req.query.email);
+      var appURL = (req.query.appURL === undefined ? false : req.query.appURL);
+
+      if (appURL) {
+        if (email) {
+          remixMailer.sendPublishMail(req, email, appURL, function () {
+            res.json({error: null}, 200);
+          });
+        }
+        else {
+          res.json({error: 'No valid email.'}, 500);
+        }
+      } else {
+        res.json({error: 'No valid appURL.'}, 500);
       }
     },
 
