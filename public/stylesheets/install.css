@@ -5,6 +5,7 @@ body {
 .install-container {
   max-width: 800px;
   margin: 0 auto;
+  font-family: 'Lucida Grande';
 }
 
 .install-container p {
@@ -15,7 +16,6 @@ body {
 
 .install-container h1 {
   color: #ec6334;
-  font-family: 'Lucida Grande';
 }
 
 .install-container img {
