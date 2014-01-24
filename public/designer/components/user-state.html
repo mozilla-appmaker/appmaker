@@ -312,12 +312,53 @@
           HTMLImports.importer.load(doc, function() {
             doc.querySelectorAll('link').array().forEach(
               function(link) {
-                HTMLImports.parser.parse(link.content);
+                try {
+                  HTMLImports.parser.parse(link.content);
+                } catch (e) {
+                  console.log("HTMLImports failed to load a component at", link.href);
+                }
                 CustomElements.parser.parse(link.content);
               }
             );
             callback && callback();
           }.bind(this));
+        },
+        mkGitHubURL: function(repo, user) {
+          // use the DOM to create the right URL.
+          var parser = document.createElement('a');
+          parser.href = document.URL;
+          parser.pathname = "component/" + repo + '/' + user + "/component.html";
+          url = parser.href;
+          return url;
+        },
+        addComponent: function() {
+          var url = window.prompt("Component URL? (either full path 'http://example.com/dir/component.html' or, for github pages, 'username/repo')");
+          if (! url) return;
+          // first, detect github moniker and turn those into known URL structures
+          // (we don't know that there is a component at that URL though (in particular if 
+          // they don't have GH pages setup)
+          if (url.split('/').length == 2 && url.indexOf('http') == -1) {
+            var parts = url.split('/');
+            // We're assuming it's a username/repo, and assuming component.html as the leafname.
+            url = this.mkGitHubURL(parts[0], parts[1]);
+          } else {
+            // We're going to do pattern detection on Github URLs to map them to the proxy if they're
+            // to github.io, and complain if they're github.com URLs
+            var parser = document.createElement('a');
+            parser.href = url;
+            var host = parser.host;
+            if (host == 'github.com') {
+              alert("If using Github to host the component, you need to make a gh-page branch");
+              return;
+            }
+            if (host.indexOf(".github.io", this.length - ".github.io".length) !== -1) {
+              // it's a GH pages page, yea!
+              var gh_user = host.split('.')[0];
+              var gh_repo = parser.pathname.split('/')[0]
+              url = this.mkGitHubURL(gh_user, gh_repo);
+            }
+          }
+          this.checkComponentURL(url);
         },
         guessNameFromURL: function(url) {
           var suffix = '/component.html';
@@ -331,34 +372,58 @@
           }
           return path;
         },
-        learnComponent: function(src) {
+        checkComponentURL: function(url) {
+          // We want to make sure that we can reach this URL, and that it's a component
           var self = this;
-          this.loadLinks([src], function() {
+          // Let's load it!
+          $.ajax(url, {
+            data: {},
+            type: 'get',
+            success: function (data) {
+              // we have a reachable URL, that's good.
+              console.log("Loaded component from ", url, "calling learnComponent");
+              // Check to make sure that the file has a reasonable structure
+              self.checkComponent(url, data);
+            },
+            error: function (data, err) {
+              // it may be because it's behind a CORS thing, in which case we will try to proxy through the server
+              console.log("Something went wrong!", data, err);
+              window.alert("There was an error checking the component at the url: " + url);
+              console.error("Error while checking component: " + url, err);
+          }});
+        },
+        checkComponent: function(url, data) {
+          var parser = new DOMParser();
+          var compDOM = parser.parseFromString(data, "text/xml");
+          var componentElement = compDOM.documentElement;
+          // console.log(componentElement.innerHTML);
+          console.log("tagname", componentElement.tagName);
+          if (componentElement.tagName != "polymer-element") {
+            alert("this isn't a component file uh oh");
+            return;
+          }
+          name = componentElement.getAttribute('name');
+          this.learnComponent(url, name);
+        },
+        learnComponent: function(url, name) {
+          var self = this;
+          self.storeComponentURL(url, name);
+          self.loadLinks([url], function() {
             tray.addComponentsFromRegistry();
-            name = self.guessNameFromURL(src);
-            window.dispatchEvent(new CustomEvent('ceci-component-loaded', {detail: {url: src, name: name}}));
+            window.dispatchEvent(new CustomEvent('ceci-component-loaded', {detail: {url: url, name: name}}));
           });
         },
-        addComponent: function() {
-          var url = window.prompt("Component URL? (either full path 'http://example.com/dir/component.html' or, for github pages, 'username/repo')");
-          if (! url) return;
-          if (url.split('/').length == 2 && url.indexOf('http') == -1) {
-            // We're assuming it's a username/repo, and assuming component.html as the leafname.
-            // use the DOM to create the right URL.
-            var parser = document.createElement('a');
-            parser.href = document.URL;
-            parser.pathname = "component/" + url + "/component.html";
-            url = parser.href;
-          }
+        storeComponentURL: function(url, name) {
           var self = this;
           $.ajax('/api/componentlinks', {
             data: {
-              url: url
+              url: url,
+              name: name
             },
             type: 'post',
             success: function (data) {
-              self.refreshComponentsList();
-              self.learnComponent(data.url);
+              // self.refreshComponentsList();
+              // self.learnComponent(data.url);
             },
             error: function (data) {
               alert(data.responseJSON.error);
@@ -463,29 +528,24 @@
           });
         },
         addLinkForComponent: function(theurl, thename) {
-          console.log("in addLinkForComponent", theurl, thename);
           var myComponents = this.shadowRoot.querySelector("#mycomponents");
-          try {
-            var component = document.createElement('li');
-            var self = this;
-            // We need to find the name from the registry based on the URL
-            var name = document.createElement('a');
-            name.textContent = thename;
-            component.appendChild(name);
-            var xmarksthespot = document.createElement('a');
-            xmarksthespot.setAttribute('class', 'x');
-            xmarksthespot.addEventListener('click', function(event) {
-              if (window.confirm("Are you sure you want to forget about the component at " + theurl)) {
-                self.forgetComponent(theurl);
-              }
-              event.stopPropagation();
-            });
-            name.appendChild(xmarksthespot);
-            name.setAttribute('class', 'componentlink');
-            myComponents.appendChild(component);
-          } catch (e) {
-            console.log(e);
-          }
+          var component = document.createElement('li');
+          var self = this;
+          // We need to find the name from the registry based on the URL
+          var name = document.createElement('a');
+          name.textContent = thename;
+          component.appendChild(name);
+          var xmarksthespot = document.createElement('a');
+          xmarksthespot.setAttribute('class', 'x');
+          xmarksthespot.addEventListener('click', function(event) {
+            if (window.confirm("Are you sure you want to forget about the component at " + theurl)) {
+              self.forgetComponent(theurl);
+            }
+            event.stopPropagation();
+          });
+          name.appendChild(xmarksthespot);
+          name.setAttribute('class', 'componentlink');
+          myComponents.appendChild(component);
         },
         refreshComponentsList: function() {
           var self = this;
