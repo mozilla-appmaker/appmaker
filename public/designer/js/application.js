@@ -24,7 +24,7 @@ define(["jquery", "l10n"], function($, l10n) {
 //        var ca = document.querySelector("ceci-app");
 //        //TODO figure out a better spot to set appids. ceci-app.ready would be ideal, but then
 //        //we have to decouple appidChanged and initFirebase
-//        ca.appid = "ceci-app"+uuid();
+        ca.appid = "ceci-app"+uuid();
       },
       renameApp: function(oldName,newName){
         var userState = document.querySelector('user-state');
@@ -165,12 +165,10 @@ define(["jquery", "l10n"], function($, l10n) {
       var app = document.querySelector('ceci-app');
       if(!app){
         //ceci-app element doesn't exist
-        console.log("insert ceci app element - didn't exist")
         var phoneBorderElement = document.querySelector(".phone-border");
         phoneBorderElement.appendChild(document.createElement("ceci-app"));
         return document.querySelector("ceci-app") //TODO just return reference above?
       } else {
-        console.log("insert ceci app element - existed!!!!!!!")
         return app;
       }
     },
