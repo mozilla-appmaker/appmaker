@@ -48,8 +48,8 @@
               mailButton.classList.remove('fadeout');
               email.classList.remove('fadeout');
               email.value = '';
-              appurl.setAttribute('href', data.app);
-              appurl.innerHTML = data.app;
+              appurl.setAttribute('href', data.install);
+              appurl.innerHTML = data.install;
 
               (function() {
                 var mailButton = document.querySelector('#publish-pane-button');
@@ -57,7 +57,7 @@
                   mailButton.disabled = true;
                   email.disabled = false;
                   var xhr = new XMLHttpRequest();
-                  xhr.open('GET', '<%= process.env.ASSET_HOST %>/notify?appURL=' + encodeURIComponent(data.app) + '&email=' + email.value, true);
+                  xhr.open('GET', '<%= process.env.ASSET_HOST %>/notify?appURL=' + encodeURIComponent(data.install) + '&email=' + email.value, true);
                   xhr.onerror = function (e) {
                     console.error(e);
                   };
