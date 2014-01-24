@@ -21,6 +21,10 @@ define(["jquery", "l10n"], function($, l10n) {
         var parent = app.parentNode;
         parent.removeChild(app);
         parent.appendChild(document.createElement('ceci-app'));
+//        var ca = document.querySelector("ceci-app");
+//        //TODO figure out a better spot to set appids. ceci-app.ready would be ideal, but then
+//        //we have to decouple appidChanged and initFirebase
+//        ca.appid = "ceci-app"+uuid();
       },
       renameApp: function(oldName,newName){
         var userState = document.querySelector('user-state');
