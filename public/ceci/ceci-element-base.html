@@ -150,17 +150,19 @@
           var defaultListeners = processListeners(this.ceci.listeners, attributeResults.listeners);
           var defaultBroadcasts = processBroadcasts(this.ceci.broadcasts, ceciDefinition.broadcasts);
 
-          defaultListeners.forEach(function (d) {
-            if (!that.querySelector('ceci-listen[for="' + d.name + '"]')) {
-              that.setListener(d.name, d.channel);
-            }
-          });
+          this.applyDefaults = function () {
+            defaultListeners.forEach(function (d) {
+              if (!that.querySelector('ceci-listen[for="' + d.name + '"]')) {
+                that.setListener(d.name, d.channel);
+              }
+            });
 
-          defaultBroadcasts.forEach(function (d) {
-            if (!that.querySelector('ceci-broadcast[from="' + d.name + '"]')) {
-              that.setBroadcast(d.name, d.channel);
-            }
-          });
+            defaultBroadcasts.forEach(function (d) {
+              if (!that.querySelector('ceci-broadcast[from="' + d.name + '"]')) {
+                that.setBroadcast(d.name, d.channel);
+              }
+            });
+          };
 
           this.ceci.thumbnail = ceciDefinition.thumbnail;
           this.ceci.tags = ceciDefinition.tags;
@@ -168,7 +170,6 @@
           this.ceci.attributes = ceciDefinition.attributes;
 
           that.localized();
-
         },
         broadcast: function (name, data) {
           var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
