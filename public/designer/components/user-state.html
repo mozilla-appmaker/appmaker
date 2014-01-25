@@ -297,27 +297,36 @@
         signoutClick: function() {
           navigator.id.logout();
         },
-        loadLinks: function(urls, callback) {
+        loadLink: function(name, url, callback) {
           // see https://gist.github.com/sjmiles/8478807
           var doc = document.createDocumentFragment();
-          urls.forEach(function(url) {
-            var link = doc.appendChild(document.createElement('link'));
-            link.rel = "import";
-            link.href = url;
-          });
-          HTMLImports.importer.load(doc, function() {
-            doc.querySelectorAll('link').array().forEach(
-              function(link) {
-                try {
-                  HTMLImports.parser.parse(link.content);
-                } catch (e) {
-                  console.log("HTMLImports failed to load a component at", link.href);
-                }
+          var link = doc.appendChild(document.createElement('link'));
+          link.rel = "import";
+          link.href = url;
+
+          try {
+            HTMLImports.importer.load(doc, function() {
+              try {
+                HTMLImports.parser.parse(link.content);
                 CustomElements.parser.parse(link.content);
+                callback();
+              } catch (e) {
+                console.log("HTMLImports.parser failed for component at", link.href);
+                callback({
+                  error: "HTMLImports.parser failed to load component",
+                  url: url,
+                  name: name
+                });
               }
-            );
-            callback && callback();
-          }.bind(this));
+            }.bind(this));
+          } catch (e) {
+            console.log("HTMLImports.importer.load failed for component at", link.href);
+            callback({
+              error: "HTMLImports.importer.load failed to load component",
+              url: url,
+              name: name
+            });
+          }
         },
         mkGitHubURL: function(repo, user) {
           // use the DOM to create the right URL.
@@ -334,11 +343,12 @@
             var self = this;
             var url = window.prompt("Component URL? (either full path 'http://example.com/dir/component.html' or, for github pages, 'username/repo')");
             if (! url) return;
+            url = url.trim();
             // first, detect github moniker and turn those into known URL structures
             // (we don't know that there is a component at that URL though (in particular if
             // they don't have GH pages setup)
             if (url.split('/').length === 2 && url.indexOf('http') === -1) {
-              var parts = url.split('/');
+              var parts = url.split('/').map(function(v) { return v.trim(); });
               // We're assuming it's a username/repo, and assuming component.html as the leafname.
               url = this.mkGitHubURL(parts[0], parts[1]);
             } else {
@@ -428,9 +438,13 @@
         },
         addComponentToUI: function(url, name) {
           // Add to the menu
-          this.addLinkForComponent(url, name);
+          var menuItem = this.addLinkForComponent(url, name);
           // add to polymer, the tray, etc.
-          this.loadLinks([url], function() {
+          this.loadLink(name, url, function(err, result) {
+            if (err) {
+              return console.error(err.error);
+            }
+            menuItem.setBroken(false);
             tray.addComponentsFromRegistry();
           });
         },
@@ -439,9 +453,13 @@
 
           var component = document.createElement('li');
           component.setAttribute('data-link-name', name);
-          // assume breakage
-          component.classList.add('broken');
           component.classList.add('component');
+          component.setBroken = function(b) {
+            if(b) component.classList.add("broken");
+            else component.classList.remove("broken");
+          };
+          // assume broken, unbreak if legal component.
+          component.setBroken(true);
 
           var componentEntry = document.createElement('a');
           componentEntry.textContent = name;
@@ -451,22 +469,18 @@
           closeButton.setAttribute('class', 'x');
           closeButton.addEventListener('click', function(event) {
             if (window.confirm("Are you sure you want to forget about the component at " + url)) {
-              self.forgetComponent(url);
+              self.forgetComponent(name, url);
               return;
             }
             event.stopPropagation();
-          });
-
-          window.addEventListener('componentAdded', function(event) {
-            var name = event.name;
-            var menuitem = document.querySelector("[data-link-name="+name+"]");
-            component.classList.remove('broken');
           });
 
           var myComponents = this.shadowRoot.querySelector("#mycomponents");
           componentEntry.appendChild(closeButton);
           component.appendChild(componentEntry);
           myComponents.appendChild(component);
+
+          return component;
         },
         attributeChangedCallback: function(attributeName) {
           if (attributeName == 'user') {
@@ -547,7 +561,7 @@
             }
           });
         },
-        forgetComponent: function(url) {
+        forgetComponent: function(name, url) {
           var self = this;
           $.ajax('/api/componentlinks', {
             data: {
@@ -555,10 +569,11 @@
             },
             type: 'delete',
             success: function (data) {
+              tray.forgetComponent(name);
               console.log("we've deleted the component");
-              self.refreshComponentsList();
               console.log("XXX: Need to tell polymer to forget about this component");
-              console.log("XXX: Need to remove the component from the tray");
+              // FIXME: it does not appear polymer actually supports "forgetting"
+              //        of elements during the lifetime of a page without reloading.
             },
             error: function (data, err) {
               console.log("Something went wrong!");
