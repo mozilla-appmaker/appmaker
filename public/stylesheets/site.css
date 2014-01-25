@@ -63,6 +63,16 @@ a{
   color: #237694;
 }
 
+.blue-bg-button{
+  border: none;
+  background: #6fcce2;
+  color: #fff;
+}
+
+.full-width-button{
+  width: 100%;
+}
+
 .build-app{
   position: relative;
 }
@@ -87,17 +97,14 @@ a{
   width: 49%;
 }
 
-.two-column:first-of-type{
-  margin-right: 1%;
-}
-
-.two-column:last-of-type{
-  margin-left: 1%;
+.two-column:not(:last-of-type),
+.three-column:not(:last-of-type){
+  margin-right: 2%;
 }
 
 .three-column{
   float: left;
-  width: 33.3333%;
+  width: 32%; /* (100%-2*2%)/3 */
 }
 
 .four-column{
@@ -218,8 +225,14 @@ a{
 
 /*widgets section ============*/
 
-#widgets{
+#recent-blog{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 
+#recent-blog a{
+  font-size: 14px;
 }
 
 /*footer ============*/
