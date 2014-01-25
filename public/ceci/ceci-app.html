@@ -46,7 +46,7 @@
   require(['Firebase'], function() {
     Polymer('ceci-app', {
       ready: function() {
-        console.log("ceci-app ready")
+        console.log("ceci-app ready");
         if (this.querySelectorAll('ceci-card').length > 0) {
           if (!this.querySelector('ceci-card[visible]')) {
             this.querySelector('ceci-card').setAttribute('visible', true);
@@ -99,7 +99,7 @@
         }
       },
       appidChanged: function(){
-        console.log("appid changed: " + this.appid)
+        console.log("appid changed: " + this.appid);
         this.initFirebase();
       },
       initFirebase: function(){
@@ -108,7 +108,7 @@
           this.firebase = new Firebase(firebaseHost+this.appid); //TODO check .info to make sure we're connected
           console.log("firebase id: ", this.appid);
           console.log("firing CeciDataConnectionLoaded");
-          window.dispatchEvent(new CustomEvent("CeciDataConnectionLoaded"))
+          window.dispatchEvent(new CustomEvent("CeciDataConnectionLoaded"));
         }
       },
       getFirebase: function(){
@@ -116,7 +116,7 @@
       },
       getFirebaseObject: function(childRefPath, itemName, callback){
         if(!this.firebase){
-            console.error("Firebase connection was null")
+            console.error("Firebase connection was null");
             return null;
         }
         var self = this;
@@ -126,7 +126,7 @@
       },
       setFirebaseObject: function(childRefPath, data){
         if(!this.firebase){
-          console.error("Firebase connection was null")
+          console.error("Firebase connection was null");
           return null;
         }
         var dataRef = this.firebase.child(childRefPath);
