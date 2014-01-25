@@ -10,7 +10,7 @@ To learn more about web components, check out the [Polymer Project](http://www.p
 
 More resources:
 
-  * The [Appmaker website](http://www.appmaker.mozillalabs.com).
+  * The [Appmaker website](https://appmaker.mozillalabs.com/).
   * The `#appmaker` channel on [irc.mozilla.org](http://irc.mozilla.org/).
   * A [youtube video](http://www.youtube.com/watch?v=RaRIdLgZTPI&feature=youtu.be) (that's already dated, but better than nothing).
   * [Appmaker -- why, what how](https://github.com/mozilla/appmaker-words/wiki) provides additional context about the motivation and use cases for the project, written before any code was forged.
