@@ -23,31 +23,23 @@ var fs = require('fs');
 
 var proxy = new httpProxy.RoutingProxy();
 
-function doProxy (target, request, response) {
-  var proxyRequest = http.request(target);
-  proxyRequest.headers = request.headers;
-  proxyRequest.addListener('response', function (proxy_response) {
-    proxy_response.addListener('data', function(chunk) {
-      response.write(chunk, 'binary');
-    });
-    proxy_response.addListener('end', function() {
-      response.end();
-    });
-    response.writeHead(proxy_response.statusCode, proxy_response.headers);
-  });
-  request.addListener('data', function(chunk) {
-    proxyRequest.write(chunk, 'binary');
-  });
-  request.addListener('end', function() {
-    proxyRequest.end();
-  });
-}
-
 module.exports = {
-  remix: function (request, response) {
-    var url = decodeURIComponent(request.query.url);
+  remix: function (req, res) {
+    var url = decodeURIComponent(req.query.url);
     console.log('Proxying remix %s', url);
-    doProxy(url, request, response);
+
+    try {
+      request.get(url).on('error',
+        function (err) { console.error('Error during remix proxy for ', url); })
+      .pipe(res)
+      .on('error',
+        function (err) { console.error('Error during remix proxy for ', url); });
+    }
+    catch (e) {
+      console.error('Error creating pipe for remix proxy', e);
+      res.json({ message: 'No valid url.' }, 500);
+      return;
+    }
   },
   gitHubComponent: function(request, response) {
     var urlObj = url.parse(request.url);
@@ -57,7 +49,23 @@ module.exports = {
     var fileName = path.slice(1).join('/');
     var target = 'http://' + user + '.github.io/' + componentName + fileName;
     console.log('proxying %s to %s', request.url, target);
-    doProxy(target, request, response);
+    var proxyRequest = http.request(target);
+    proxyRequest.headers = request.headers;
+    proxyRequest.addListener('response', function (proxy_response) {
+      proxy_response.addListener('data', function(chunk) {
+        response.write(chunk, 'binary');
+      });
+      proxy_response.addListener('end', function() {
+        response.end();
+      });
+      response.writeHead(proxy_response.statusCode, proxy_response.headers);
+    });
+    request.addListener('data', function(chunk) {
+      proxyRequest.write(chunk, 'binary');
+    });
+    request.addListener('end', function() {
+      proxyRequest.end();
+    });
   },
 
   component: function(req, res) {
