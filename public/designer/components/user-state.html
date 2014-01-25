@@ -257,9 +257,6 @@
             }
           });
 
-          window.addEventListener("ceci-component-loaded",function(e) {
-            self.addLinkForComponent(e.detail.url, e.detail.name);
-          });
 
         },
         signInStarted: function(){
@@ -358,7 +355,10 @@
               url = this.mkGitHubURL(gh_user, gh_repo);
             }
           }
-          this.checkComponentURL(url);
+          var name = this.getNameForComponentURL(url);
+          if (name) {
+            this.storeComponentURL(url, name)
+          }
         },
         guessNameFromURL: function(url) {
           var suffix = '/component.html';
@@ -372,7 +372,7 @@
           }
           return path;
         },
-        checkComponentURL: function(url) {
+        getNameForComponentURL: function(url) {
           // We want to make sure that we can reach this URL, and that it's a component
           var self = this;
           // Let's load it!
@@ -383,16 +383,17 @@
               // we have a reachable URL, that's good.
               console.log("Loaded component from ", url, "calling learnComponent");
               // Check to make sure that the file has a reasonable structure
-              self.checkComponent(url, data);
+              return self.getNameForComponent(url, data);
             },
             error: function (data, err) {
               // it may be because it's behind a CORS thing, in which case we will try to proxy through the server
               console.log("Something went wrong!", data, err);
               window.alert("There was an error checking the component at the url: " + url);
               console.error("Error while checking component: " + url, err);
+              return '';
           }});
         },
-        checkComponent: function(url, data) {
+        getNameForComponent: function(url, data) {
           var parser = new DOMParser();
           var compDOM = parser.parseFromString(data, "text/xml");
           var componentElement = compDOM.documentElement;
@@ -400,18 +401,22 @@
           console.log("tagname", componentElement.tagName);
           if (componentElement.tagName != "polymer-element") {
             alert("this isn't a component file uh oh");
-            return;
+            return '';
           }
-          name = componentElement.getAttribute('name');
-          this.learnComponent(url, name);
+          return componentElement.getAttribute('name');
+        },
+        addComponentToUI: function(url, name) {
+          var self = this;
+          self.addLinkForComponent(url, name); // Add to the menu
+          self.loadLinks([url], function() { // add to polymer, the tray, …
+            tray.addComponentsFromRegistry();
+          });
         },
         learnComponent: function(url, name) {
+          // This function is to teach appmaker (client & server) about a new component URL
           var self = this;
           self.storeComponentURL(url, name);
-          self.loadLinks([url], function() {
-            tray.addComponentsFromRegistry();
-            window.dispatchEvent(new CustomEvent('ceci-component-loaded', {detail: {url: url, name: name}}));
-          });
+          self.addComponentToUI(url, name);
         },
         storeComponentURL: function(url, name) {
           var self = this;
@@ -426,7 +431,7 @@
               // self.learnComponent(data.url);
             },
             error: function (data) {
-              alert(data.responseJSON.error);
+              alert("error storing info about component:", data.responseJSON.error);
             }
           });
         },
@@ -556,7 +561,8 @@
               var count = 0;
               $.each(data, function(key, val) {
                 count++;
-                self.learnComponent(val.url);
+                console.log("Database says we have a component", val);
+                self.addComponentToUI(val.url, val.name);
               });
             } catch (e) {
               console.log(e);

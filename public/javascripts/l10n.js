@@ -69,7 +69,7 @@ var l10n = {
               }
             }
           } catch (err) {
-            console.error("Localized Error: " + err);
+            console.error("Localized Error: " + err + ", url = ", url);
           }
         };
         xhr.send(null);
