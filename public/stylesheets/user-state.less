@@ -202,10 +202,10 @@ user-state {
 
   .x {
     background-image: url(/images/delete.png);
-    background-position: left;
+    background-position: 3px;
     background-size: 16px;
     background-repeat: no-repeat;
-    padding-left: 24px !important;
+    padding-left: 16px !important;
     margin-left: 10px;
   }
 
@@ -218,9 +218,15 @@ user-state {
     margin: 0;
     padding: 3px 6px;
     display: block;
-    cursor: pointer;
     .border-radius(3px);
     font-size: 16px;
+
+    &.app {
+      cursor: pointer;
+    }
+    &.app:hover {
+      background-color: white;
+    }
 
     &.currentApp {
       font-weight: bold;
@@ -228,17 +234,23 @@ user-state {
     }
     &.x {
       display:inline;
-    }
-    &:hover {
-      background-color: white;
+      margin-left: 1em;
+      text-align: center;
     }
     &.x:hover {
-      background-color: none;
+      background-color: white;
       font-weight: bold;
     }
   }
 
-
+  .broken {
+    font-style: italic;
+  }
+  .broken a.componentlink:after {
+    padding-left: 1em;
+    content: "broken";
+    color: darkred;
+  }
 
   #noApps,#noComponents {
     font-size: 16px;

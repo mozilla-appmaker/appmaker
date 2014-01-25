@@ -47,6 +47,8 @@ define(
           }
         }, false);
 
+        window.dispatchEvent(new CustomEvent('componentAdded', {name: name}));
+
         componentTrayContainer.appendChild(item);
         item.label = L10n.get(name) || item.label;
       },
