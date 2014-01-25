@@ -45,6 +45,7 @@ define(
           if (card) {
             var newElement = document.createElement(name);
             card.appendChild(newElement);
+            newElement.applyDefaults();
           }
         }, false);
 

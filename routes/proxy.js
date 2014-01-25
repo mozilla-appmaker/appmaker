@@ -24,6 +24,23 @@ var fs = require('fs');
 var proxy = new httpProxy.RoutingProxy();
 
 module.exports = {
+  remix: function (req, res) {
+    var url = decodeURIComponent(req.query.url);
+    console.log('Proxying remix %s', url);
+
+    try {
+      request.get(url).on('error',
+        function (err) { console.error('Error during remix proxy for ', url); })
+      .pipe(res)
+      .on('error',
+        function (err) { console.error('Error during remix proxy for ', url); });
+    }
+    catch (e) {
+      console.error('Error creating pipe for remix proxy', e);
+      res.json({ message: 'No valid url.' }, 500);
+      return;
+    }
+  },
   gitHubComponent: function(request, response) {
     var urlObj = url.parse(request.url);
     var user = request.headers.host.match(/^(.*)-components\/*/)[1]

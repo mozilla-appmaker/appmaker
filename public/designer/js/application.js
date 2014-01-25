@@ -124,6 +124,12 @@ define(["jquery", "l10n"], function($, l10n) {
       },
       loadAppByUrl: function(url) {
         var userState = document.querySelector('user-state');
+
+        // try to route through appmaker proxy server if protocols don't match
+        if (window.location.protocol === 'https:' && url.indexOf('https') !== 0) {
+          url = '/api/remix-proxy?url=' + encodeURIComponent(encodeURIComponent(url));
+        }
+
         $.ajax(url, {
           type: 'get',
           success: function (data) {

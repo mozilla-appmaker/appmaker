@@ -1,34 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-  <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet" type="text/css">
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600">
   <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/install.css" />
-  <title>My Flathead App</title>
-  <script>
-    document.addEventListener('DOMContentLoaded', function (e) {
-      var installButton = document.querySelector('#install');
-
-      installButton.addEventListener('click', function (e) {
-        var installRequest = navigator.mozApps.install('<%- manifestUrl %>');
-
-        installRequest.onsuccess = function (data) {
-          console.log('hooray!', data, this.result);
-        };
-
-        installRequest.onerror = function (err) {
-          console.error(':(', this.error);
-        };
-      }, false);
-    }, false);
-  </script>
+  <title>My Appmaker App</title>
 </head>
 <body>
-  <div class="install-container">
-    <button id="install">Install App</button>
-    <div class="iframe-container">
-      <iframe src="<%- iframeSrc %>"></iframe>
-    </div>
-  </div>
+  <script type="template/html">
+    <img src="<%= process.env.ASSET_HOST %>/images/chef-man.png">
+    <h1><%- gettext("You'll need Firefox for this App") %></h1>
+    <p>
+      <%- gettext("In order to install this app") %>
+      <%- gettext("see this app in action") %>
+      <a href=""><%- gettext("click here")%></a>
+    </p>
+  </script>
+  <div class="install-container"></div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function (e) {
+
+      var container = document.querySelector(".install-container");
+
+      // add install button if we're in FF, otherwise give user handy links
+      if(navigator.mozApps && navigator.mozApps.install) {
+        var installButton = document.createElement('button');
+        container.appendChild(installButton);
+        installButton.id = "install";
+        installButton.innerHTML = "<%- gettext('Install App') %>";
+        installButton.addEventListener('click', function (e) {
+          var installRequest = navigator.mozApps.install('<%- manifestUrl %>');
+
+          installRequest.onsuccess = function (data) {
+            console.log('hooray!', data, this.result);
+          };
+
+          installRequest.onerror = function (err) {
+            console.error(':(', this.error);
+          };
+        }, false);
+      }
+
+      else {
+        var scr = document.querySelector("script[type='template/html']");
+        container.innerHTML = scr.textContent;
+        var a = container.querySelector("a");
+        a.href = window.location.toString().replace("install.html", "index.html");
+      }
+    }, false);
+  </script>
 </body>
 </html>

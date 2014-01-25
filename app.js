@@ -220,6 +220,8 @@ app.get('/api/componentlinks', routes.my.components);
 app.post('/api/componentlinks', routes.my.learnComponent);
 app.delete('/api/componentlinks', routes.my.forgetComponent);
 
+app.get('/api/remix-proxy', routes.proxy.remix);
+
 module.exports = app;
 
 if (!module.parent)
