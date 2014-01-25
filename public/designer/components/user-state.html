@@ -335,9 +335,9 @@
             var url = window.prompt("Component URL? (either full path 'http://example.com/dir/component.html' or, for github pages, 'username/repo')");
             if (! url) return;
             // first, detect github moniker and turn those into known URL structures
-            // (we don't know that there is a component at that URL though (in particular if 
+            // (we don't know that there is a component at that URL though (in particular if
             // they don't have GH pages setup)
-            if (url.split('/').length == 2 && url.indexOf('http') == -1) {
+            if (url.split('/').length === 2 && url.indexOf('http') === -1) {
               var parts = url.split('/');
               // We're assuming it's a username/repo, and assuming component.html as the leafname.
               url = this.mkGitHubURL(parts[0], parts[1]);
@@ -347,7 +347,7 @@
               var parser = document.createElement('a');
               parser.href = url;
               var host = parser.host;
-              if (host == 'github.com') {
+              if (host === 'github.com') {
                 alert("If using Github to host the component, you need to make a gh-page branch");
                 return;
               }
@@ -366,18 +366,6 @@
           } catch (e) {
             console.log(e);
           }
-        },
-        guessNameFromURL: function(url) {
-          var suffix = '/component.html';
-          // this is a cheap & cheerful URL parser ;-)
-          var parser = document.createElement('a');
-          parser.href = url;
-          var path = parser.pathname;
-          if (path.indexOf(suffix, path.length - suffix.length) !== -1) {
-            path = path.slice(0, path.length - suffix.length);
-            return path.split('/').pop();
-          }
-          return path;
         },
         getNameForComponentURL: function(url, cb) {
           // We want to make sure that we can reach this URL, and that it's a component
@@ -400,27 +388,27 @@
           }});
         },
         getNameForComponent: function(url, data) {
-          var parser = new DOMParser();
-          var compDOM = parser.parseFromString(data, "text/xml");
-          var componentElement = compDOM.documentElement;
-          if (componentElement.tagName != "polymer-element") {
+          var doc = document.createDocumentFragment();
+          doc.appendChild(document.createElement("body"));
+          doc.querySelector("body").innerHTML = data;
+          var componentElement = doc.querySelector("polymer-element");
+          if (!componentElement) {
             alert("this isn't a component file uh oh");
             return '';
           }
           return componentElement.getAttribute('name');
         },
-        addComponentToUI: function(url, name) {
-          this.addLinkForComponent(url, name); // Add to the menu
-          this.loadLinks([url], function() { // add to polymer, the tray, …
-            tray.addComponentsFromRegistry();
-          });
-        },
         learnComponent: function(url, name) {
           // This function is to teach appmaker (client & server) about a new component URL
-          this.storeComponentURL(url, name);
-          this.addComponentToUI(url, name);
+          var self = this;
+          if (tray.isKnownComponent(name)) {
+            return console.error("we already know a component <"+name+">");
+          }
+          this.storeComponentURL(url, name, function(err, result) {
+            self.addComponentToUI(url, name);
+          });
         },
-        storeComponentURL: function(url, name) {
+        storeComponentURL: function(url, name, next) {
           var self = this;
           $.ajax('/api/componentlinks', {
             data: {
@@ -429,12 +417,56 @@
             },
             type: 'post',
             success: function (data) {
-              // no news is good news.
+              // keep going
+              next && next();
             },
             error: function (data) {
+              // break off the process by not calling next()
               alert("error storing info about component:", data.responseJSON.error);
             }
           });
+        },
+        addComponentToUI: function(url, name) {
+          // Add to the menu
+          this.addLinkForComponent(url, name);
+          // add to polymer, the tray, etc.
+          this.loadLinks([url], function() {
+            tray.addComponentsFromRegistry();
+          });
+        },
+        addLinkForComponent: function(url, name) {
+          var self = this;
+
+          var component = document.createElement('li');
+          component.setAttribute('data-link-name', name);
+          // assume breakage
+          component.classList.add('broken');
+          component.classList.add('component');
+
+          var componentEntry = document.createElement('a');
+          componentEntry.textContent = name;
+          componentEntry.setAttribute('class', 'componentlink');
+
+          var closeButton = document.createElement('a');
+          closeButton.setAttribute('class', 'x');
+          closeButton.addEventListener('click', function(event) {
+            if (window.confirm("Are you sure you want to forget about the component at " + url)) {
+              self.forgetComponent(url);
+              return;
+            }
+            event.stopPropagation();
+          });
+
+          window.addEventListener('componentAdded', function(event) {
+            var name = event.name;
+            var menuitem = document.querySelector("[data-link-name="+name+"]");
+            component.classList.remove('broken');
+          });
+
+          var myComponents = this.shadowRoot.querySelector("#mycomponents");
+          componentEntry.appendChild(closeButton);
+          component.appendChild(componentEntry);
+          myComponents.appendChild(component);
         },
         attributeChangedCallback: function(attributeName) {
           if (attributeName == 'user') {
@@ -533,36 +565,6 @@
               console.error("Error while forgetting component: " + data.url, err);
             }
           });
-        },
-        addLinkForComponent: function(theurl, thename) {
-          var myComponents = this.shadowRoot.querySelector("#mycomponents");
-          var component = document.createElement('li');
-          var self = this;
-          // We need to find the name from the registry based on the URL
-          var name = document.createElement('a');
-          name.textContent = thename;
-          component.appendChild(name);
-          component.setAttribute('id', 'url-' + theurl);
-          component.setAttribute('component_link_name', thename);
-          component.classList.add('broken'); // assume breakage
-          component.classList.add('component'); // assume breakage
-          window.addEventListener('componentAdded', function(event) {
-            var name = event.name;
-            var menuitem = document.querySelector("[component_link_name="+name+"]");
-            component.classList.remove('broken');
-          });
-          var xmarksthespot = document.createElement('a');
-          xmarksthespot.setAttribute('class', 'x');
-          xmarksthespot.addEventListener('click', function(event) {
-            if (window.confirm("Are you sure you want to forget about the component at " + theurl)) {
-              self.forgetComponent(theurl);
-              return;
-            }
-            event.stopPropagation();
-          });
-          name.appendChild(xmarksthespot);
-          name.setAttribute('class', 'componentlink');
-          myComponents.appendChild(component);
         },
         refreshComponentsList: function() {
           var self = this;
