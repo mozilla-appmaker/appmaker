@@ -13,8 +13,13 @@
                 <a id="applink" href=''></a>
               </p>
             </div>
-            <input type="email" id="publish-pane-panel-email" placeholder="Your Email">
-            <button id="publish-pane-button"><%- gettext("Mail me my app URL") %></button>
+            <div class="mail-link">
+              <input type="email" id="publish-pane-panel-email" placeholder="Your Email">
+              <button id="publish-pane-button"><%- gettext("Mail me my app URL") %></button>
+            </div>
+            <div class="mail-notice">
+              <p class="publish-guide-text">We have mailed you your app URL!</p>
+            </div>
           </div>
         </div>
       </div>
@@ -54,19 +59,26 @@
                 var mailButton = document.querySelector('#publish-pane-button');
                 mailButton.onclick = function (e) {
                   mailButton.disabled = true;
-                  email.disabled = false;
+                  email.disabled = true;
+
+                  document.querySelector(".mail-link").classList.add("toggled");
+
                   var xhr = new XMLHttpRequest();
                   xhr.open('GET', '<%= process.env.ASSET_HOST %>/notify?appURL=' + encodeURIComponent(data.install) + '&email=' + email.value, true);
                   xhr.onerror = function (e) {
                     console.error(e);
+                    mailButton.removeAttribute("disabled");
+                    email.removeAttribute("disabled");
+                    document.querySelector(".mail-link").classList.remove("faded");
                   };
                   xhr.onload = function (e) {
                     console.log(e);
                   };
-
-                  // TODO: add in nice button handling here, since the email should not
-                  //       necessarily close the publish dialog.
-
+                  xhr.onreadystatechange = function (e) {
+                    if(xhr.readyState === 4 && xhr.status === 200 ) {
+                      document.querySelector(".mail-notice").classList.add("toggled");
+                    }
+                  };
                   xhr.send(null);
                 };
               }());

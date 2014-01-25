@@ -166,3 +166,19 @@ p.app-link a {
 .publish-pane-mode .delete-btn {
   display: none;
 }
+
+#publish-pane .mail-link {
+  -webkit-transition: opacity 0.35s linear;
+          transition: opacity 0.35s linear;
+}
+
+#publish-pane .mail-link { opacity: 1; }
+#publish-pane .mail-link.toggled { opacity: 0; }
+
+#publish-pane .mail-notice {
+  -webkit-transition: opacity 0.5s linear;
+          transition: opacity 0.5s linear;
+}
+
+#publish-pane .mail-notice { position:relative; opacity: 0; text-align:center; }
+#publish-pane .mail-notice.toggled { opacity: 1; top: -10em; }
