@@ -11,8 +11,6 @@ define(
     var DesignerTray = {
       addComponentWithName: function(name, component) {
         var componentTrayContainer = document.getElementById('components');
-        var urlComponent = window.CustomElements.registry[name].prototype.resolvePath('locale/' + L10n.getCurrentLang() + '.json');
-        L10n.ready({url: urlComponent});
 
         // Avoid adding components that are already in the tray
         if (componentTrayContainer.querySelector('designer-component-tray-item[name="' + name + '"]')) return;

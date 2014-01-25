@@ -12,6 +12,7 @@
     "url": "https://github.com/mozilla/appmaker/issues"
   },
   "dependencies": {
+    "async": "0.2.10",
     "connect-fonts": ">=0.0.12",
     "connect-fonts-sourcesanspro": "~0.0.3",
     "tmp": "~0.0.23",
@@ -22,6 +23,7 @@
     "knox": "~0.8.6",
     "less": "~1.5.1",
     "less-middleware": "~0.1.14",
+    "lodash": "2.4.1",
     "lynx": "~0.0.11",
     "makeapi-client": "https://github.com/mozilla/makeapi-client/tarball/v0.5.10",
     "mkdirp": "0.3.5",
@@ -29,7 +31,7 @@
     "node-uuid": "~1.4.1",
     "postmark": "0.2.0",
     "statsd": "0.6.0",
-    "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.3.5.tar.gz",
+    "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.3.7.tar.gz",
     "ejs": "~0.8.4",
     "http-proxy": "~0.10.3",
     "cors": "~2.1.0",
