@@ -57,7 +57,7 @@ module.exports = {
     var fileName = path.slice(1).join('/');
     var target = 'http://' + user + '.github.io/' + componentName + fileName;
     console.log('proxying %s to %s', request.url, target);
-    doProxy(request, response);
+    doProxy(target, request, response);
   },
 
   component: function(req, res) {
