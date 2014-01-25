@@ -23,7 +23,32 @@ var fs = require('fs');
 
 var proxy = new httpProxy.RoutingProxy();
 
+function doProxy (target, request, response) {
+  var proxyRequest = http.request(target);
+  proxyRequest.headers = request.headers;
+  proxyRequest.addListener('response', function (proxy_response) {
+    proxy_response.addListener('data', function(chunk) {
+      response.write(chunk, 'binary');
+    });
+    proxy_response.addListener('end', function() {
+      response.end();
+    });
+    response.writeHead(proxy_response.statusCode, proxy_response.headers);
+  });
+  request.addListener('data', function(chunk) {
+    proxyRequest.write(chunk, 'binary');
+  });
+  request.addListener('end', function() {
+    proxyRequest.end();
+  });
+}
+
 module.exports = {
+  remix: function (request, response) {
+    var url = decodeURIComponent(request.query.url);
+    console.log('Proxying remix %s', url);
+    doProxy(url, request, response);
+  },
   gitHubComponent: function(request, response) {
     var urlObj = url.parse(request.url);
     var user = request.headers.host.match(/^(.*)-components\/*/)[1]
@@ -32,23 +57,7 @@ module.exports = {
     var fileName = path.slice(1).join('/');
     var target = 'http://' + user + '.github.io/' + componentName + fileName;
     console.log('proxying %s to %s', request.url, target);
-    var proxyRequest = http.request(target);
-    proxyRequest.headers = request.headers;
-    proxyRequest.addListener('response', function (proxy_response) {
-      proxy_response.addListener('data', function(chunk) {
-        response.write(chunk, 'binary');
-      });
-      proxy_response.addListener('end', function() {
-        response.end();
-      });
-      response.writeHead(proxy_response.statusCode, proxy_response.headers);
-    });
-    request.addListener('data', function(chunk) {
-      proxyRequest.write(chunk, 'binary');
-    });
-    request.addListener('end', function() {
-      proxyRequest.end();
-    });
+    doProxy(request, response);
   },
 
   component: function(req, res) {
