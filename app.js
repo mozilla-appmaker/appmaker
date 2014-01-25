@@ -16,7 +16,9 @@ postmark = require("postmark")(process.env.POSTMARK_API_KEY),
 lessMiddleware = require('less-middleware'),
 enableRedirects = require('./routes/redirects'),
 i18n = require('webmaker-i18n'),
-components = require('./lib/components');
+components = require('./lib/components'),
+localeBuild = require('./lib/localeBuild'),
+localComponents = [];
 
 try {
   // This does a pretty great job at figuring out booleans.
@@ -160,13 +162,6 @@ routes = require('./routes')(
   makeAPIPublisher
 );
 
-
-// Load components from various sources
-components.load(function(components){
-  app.locals.components = components;
-});
-
-
 app.get('/', routes.index);
 
 app.get('/about', routes.about);
@@ -224,8 +219,19 @@ app.get('/api/remix-proxy', routes.proxy.remix);
 
 module.exports = app;
 
-if (!module.parent)
-  http.createServer(app).listen(app.get('port'), function(){
-    console.log("Express server listening on port " + app.get('port'));
+if (!module.parent) {
+  // Load components from various sources
+  components.load(function(components) {
+    app.locals.components = components;
+    localeBuild(components, i18n.getSupportLanguages(), function(map) {
+      i18n.addLocaleObject(map, function(bool) {
+        if(bool) {
+          http.createServer(app).listen(app.get('port'), function(){
+            console.log("Express server listening on port " + app.get('port'));
+          });
+        }
+      });
+    });
   });
+}
 
