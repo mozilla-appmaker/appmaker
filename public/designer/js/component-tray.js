@@ -8,6 +8,7 @@ define(
     "use strict";
 
     var knownComponents = [];
+
     var DesignerTray = {
       addComponentWithName: function(name, component) {
         var componentTrayContainer = document.getElementById('components');
@@ -47,6 +48,9 @@ define(
           }
         }, false);
 
+        knownComponents.push(name);
+        window.dispatchEvent(new CustomEvent('componentAdded', {name: name}));
+
         componentTrayContainer.appendChild(item);
         item.label = L10n.get(name) || item.label;
       },
@@ -54,6 +58,9 @@ define(
         Ceci.forEachComponent(function (name, component) {
           DesignerTray.addComponentWithName(name, component);
         });
+      },
+      isKnownComponent: function(name) {
+        return knownComponents.indexOf(name) > -1;
       }
     }
 

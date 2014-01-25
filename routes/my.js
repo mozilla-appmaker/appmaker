@@ -146,22 +146,21 @@ module.exports = function (mongoose, dbconn) {
     learnComponent: function(request, response) {
       if (!checkAuthorised(request, response)) return;
 
-      //Check if app with same url already exists
-      Component.findOne({author:request.session.email, url: request.body.name}, function(err, obj) {
+      //Check if component with same url already exists
+      Component.findOne({author:request.session.email, url: request.body.url}, function(err, obj) {
         if (obj) {
-          return response.json(500, {error: 'We already know about this component.'});
-        } else {
-          var compObj = JSON.parse(JSON.stringify(request.body)) // make a copy
-          compObj.author = request.session.email;
-          var newComponent = new Component(compObj);
-          newComponent.save(function(err, component){
-            if (err) {
-              return response.json(500, {error: 'Component was not learned due to ' + err});
-            }
-            return response.json(component);
-          });
-          response.json(200);
+          return response.json(500, {error: 'We already know the component at '+obj.url+' (as '+obj.name+')'});
         }
+        var compObj = JSON.parse(JSON.stringify(request.body)) // make a copy
+        compObj.author = request.session.email;
+        var newComponent = new Component(compObj);
+        newComponent.save(function(err, component){
+          if (err) {
+            return response.json(500, {error: 'Component was not learned due to ' + err});
+          }
+          return response.json(component);
+        });
+        response.json(200);
       });
     },
     forgetComponent: function(request, response) {

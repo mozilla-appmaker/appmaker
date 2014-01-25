@@ -234,7 +234,6 @@
                 }
                 return;
               }
-              console.log(data);
               application.setCurrentApp(name);
               self.refreshUserState();
               self.editingmode = "saved";
@@ -257,9 +256,6 @@
             }
           });
 
-          window.addEventListener("ceci-component-loaded",function(e) {
-            self.addLinkForComponent(e.detail.url, e.detail.name);
-          });
 
         },
         signInStarted: function(){
@@ -332,47 +328,46 @@
           return url;
         },
         addComponent: function() {
-          var url = window.prompt("Component URL? (either full path 'http://example.com/dir/component.html' or, for github pages, 'username/repo')");
-          if (! url) return;
-          // first, detect github moniker and turn those into known URL structures
-          // (we don't know that there is a component at that URL though (in particular if 
-          // they don't have GH pages setup)
-          if (url.split('/').length == 2 && url.indexOf('http') == -1) {
-            var parts = url.split('/');
-            // We're assuming it's a username/repo, and assuming component.html as the leafname.
-            url = this.mkGitHubURL(parts[0], parts[1]);
-          } else {
-            // We're going to do pattern detection on Github URLs to map them to the proxy if they're
-            // to github.io, and complain if they're github.com URLs
-            var parser = document.createElement('a');
-            parser.href = url;
-            var host = parser.host;
-            if (host == 'github.com') {
-              alert("If using Github to host the component, you need to make a gh-page branch");
-              return;
+          // in a try/except block because called from an onclick handler,
+          // so want to atch exceptions.
+          try {
+            var self = this;
+            var url = window.prompt("Component URL? (either full path 'http://example.com/dir/component.html' or, for github pages, 'username/repo')");
+            if (! url) return;
+            // first, detect github moniker and turn those into known URL structures
+            // (we don't know that there is a component at that URL though (in particular if
+            // they don't have GH pages setup)
+            if (url.split('/').length === 2 && url.indexOf('http') === -1) {
+              var parts = url.split('/');
+              // We're assuming it's a username/repo, and assuming component.html as the leafname.
+              url = this.mkGitHubURL(parts[0], parts[1]);
+            } else {
+              // We're going to do pattern detection on Github URLs to map them to the proxy if they're
+              // to github.io, and complain if they're github.com URLs
+              var parser = document.createElement('a');
+              parser.href = url;
+              var host = parser.host;
+              if (host === 'github.com') {
+                alert("If using Github to host the component, you need to make a gh-page branch");
+                return;
+              }
+              if (host.indexOf(".github.io", this.length - ".github.io".length) !== -1) {
+                // it's a GH pages page, yea!
+                var gh_user = host.split('.')[0];
+                var gh_repo = parser.pathname.split('/')[0]
+                url = this.mkGitHubURL(gh_user, gh_repo);
+              }
             }
-            if (host.indexOf(".github.io", this.length - ".github.io".length) !== -1) {
-              // it's a GH pages page, yea!
-              var gh_user = host.split('.')[0];
-              var gh_repo = parser.pathname.split('/')[0]
-              url = this.mkGitHubURL(gh_user, gh_repo);
-            }
+            this.getNameForComponentURL(url, function(name) {
+              if (name) {
+                self.learnComponent(url, name)
+              }
+            });
+          } catch (e) {
+            console.log(e);
           }
-          this.checkComponentURL(url);
         },
-        guessNameFromURL: function(url) {
-          var suffix = '/component.html';
-          // this is a cheap & cheerful URL parser ;-)
-          var parser = document.createElement('a');
-          parser.href = url;
-          var path = parser.pathname;
-          if (path.indexOf(suffix, path.length - suffix.length) !== -1) {
-            path = path.slice(0, path.length - suffix.length);
-            return path.split('/').pop();
-          }
-          return path;
-        },
-        checkComponentURL: function(url) {
+        getNameForComponentURL: function(url, cb) {
           // We want to make sure that we can reach this URL, and that it's a component
           var self = this;
           // Let's load it!
@@ -381,39 +376,39 @@
             type: 'get',
             success: function (data) {
               // we have a reachable URL, that's good.
-              console.log("Loaded component from ", url, "calling learnComponent");
               // Check to make sure that the file has a reasonable structure
-              self.checkComponent(url, data);
+              cb(self.getNameForComponent(url, data));
             },
             error: function (data, err) {
               // it may be because it's behind a CORS thing, in which case we will try to proxy through the server
               console.log("Something went wrong!", data, err);
               window.alert("There was an error checking the component at the url: " + url);
               console.error("Error while checking component: " + url, err);
+              cb(null);
           }});
         },
-        checkComponent: function(url, data) {
-          var parser = new DOMParser();
-          var compDOM = parser.parseFromString(data, "text/xml");
-          var componentElement = compDOM.documentElement;
-          // console.log(componentElement.innerHTML);
-          console.log("tagname", componentElement.tagName);
-          if (componentElement.tagName != "polymer-element") {
+        getNameForComponent: function(url, data) {
+          var doc = document.createDocumentFragment();
+          doc.appendChild(document.createElement("body"));
+          doc.querySelector("body").innerHTML = data;
+          var componentElement = doc.querySelector("polymer-element");
+          if (!componentElement) {
             alert("this isn't a component file uh oh");
-            return;
+            return '';
           }
-          name = componentElement.getAttribute('name');
-          this.learnComponent(url, name);
+          return componentElement.getAttribute('name');
         },
         learnComponent: function(url, name) {
+          // This function is to teach appmaker (client & server) about a new component URL
           var self = this;
-          self.storeComponentURL(url, name);
-          self.loadLinks([url], function() {
-            tray.addComponentsFromRegistry();
-            window.dispatchEvent(new CustomEvent('ceci-component-loaded', {detail: {url: url, name: name}}));
+          if (tray.isKnownComponent(name)) {
+            return console.error("we already know a component <"+name+">");
+          }
+          this.storeComponentURL(url, name, function(err, result) {
+            self.addComponentToUI(url, name);
           });
         },
-        storeComponentURL: function(url, name) {
+        storeComponentURL: function(url, name, next) {
           var self = this;
           $.ajax('/api/componentlinks', {
             data: {
@@ -422,13 +417,56 @@
             },
             type: 'post',
             success: function (data) {
-              // self.refreshComponentsList();
-              // self.learnComponent(data.url);
+              // keep going
+              next && next();
             },
             error: function (data) {
-              alert(data.responseJSON.error);
+              // break off the process by not calling next()
+              alert("error storing info about component:", data.responseJSON.error);
             }
           });
+        },
+        addComponentToUI: function(url, name) {
+          // Add to the menu
+          this.addLinkForComponent(url, name);
+          // add to polymer, the tray, etc.
+          this.loadLinks([url], function() {
+            tray.addComponentsFromRegistry();
+          });
+        },
+        addLinkForComponent: function(url, name) {
+          var self = this;
+
+          var component = document.createElement('li');
+          component.setAttribute('data-link-name', name);
+          // assume breakage
+          component.classList.add('broken');
+          component.classList.add('component');
+
+          var componentEntry = document.createElement('a');
+          componentEntry.textContent = name;
+          componentEntry.setAttribute('class', 'componentlink');
+
+          var closeButton = document.createElement('a');
+          closeButton.setAttribute('class', 'x');
+          closeButton.addEventListener('click', function(event) {
+            if (window.confirm("Are you sure you want to forget about the component at " + url)) {
+              self.forgetComponent(url);
+              return;
+            }
+            event.stopPropagation();
+          });
+
+          window.addEventListener('componentAdded', function(event) {
+            var name = event.name;
+            var menuitem = document.querySelector("[data-link-name="+name+"]");
+            component.classList.remove('broken');
+          });
+
+          var myComponents = this.shadowRoot.querySelector("#mycomponents");
+          componentEntry.appendChild(closeButton);
+          component.appendChild(componentEntry);
+          myComponents.appendChild(component);
         },
         attributeChangedCallback: function(attributeName) {
           if (attributeName == 'user') {
@@ -484,6 +522,7 @@
                 var app = document.createElement('li');
                 var link = document.createElement('a');
                 link.id = key;
+                link.classList.add('app');
                 link.textContent = val.name;
 
                 if(currentApp == val.name){
@@ -509,7 +548,6 @@
           });
         },
         forgetComponent: function(url) {
-          console.log("trying to forget component", url);
           var self = this;
           $.ajax('/api/componentlinks', {
             data: {
@@ -517,6 +555,7 @@
             },
             type: 'delete',
             success: function (data) {
+              console.log("we've deleted the component");
               self.refreshComponentsList();
               console.log("XXX: Need to tell polymer to forget about this component");
               console.log("XXX: Need to remove the component from the tray");
@@ -527,26 +566,6 @@
             }
           });
         },
-        addLinkForComponent: function(theurl, thename) {
-          var myComponents = this.shadowRoot.querySelector("#mycomponents");
-          var component = document.createElement('li');
-          var self = this;
-          // We need to find the name from the registry based on the URL
-          var name = document.createElement('a');
-          name.textContent = thename;
-          component.appendChild(name);
-          var xmarksthespot = document.createElement('a');
-          xmarksthespot.setAttribute('class', 'x');
-          xmarksthespot.addEventListener('click', function(event) {
-            if (window.confirm("Are you sure you want to forget about the component at " + theurl)) {
-              self.forgetComponent(theurl);
-            }
-            event.stopPropagation();
-          });
-          name.appendChild(xmarksthespot);
-          name.setAttribute('class', 'componentlink');
-          myComponents.appendChild(component);
-        },
         refreshComponentsList: function() {
           var self = this;
           var myComponents = this.shadowRoot.querySelector("#mycomponents");
@@ -556,7 +575,7 @@
               var count = 0;
               $.each(data, function(key, val) {
                 count++;
-                self.learnComponent(val.url);
+                self.addComponentToUI(val.url, val.name);
               });
             } catch (e) {
               console.log(e);
