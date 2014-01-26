@@ -14,7 +14,7 @@ define(
         var componentTrayContainer = document.getElementById('components');
 
         // Avoid adding components that are already in the tray
-        if (componentTrayContainer.querySelector('designer-component-tray-item[name="' + name + '"]')) return;
+        if(knownComponents.indexOf(name) > -1) return;
 
         var item = document.createElement('designer-component-tray-item');
         var meta;
@@ -49,8 +49,6 @@ define(
         }, false);
 
         knownComponents.push(name);
-        window.dispatchEvent(new CustomEvent('componentAdded', {name: name}));
-
         componentTrayContainer.appendChild(item);
         item.label = L10n.get(name) || item.label;
       },
@@ -61,6 +59,15 @@ define(
       },
       isKnownComponent: function(name) {
         return knownComponents.indexOf(name) > -1;
+      },
+      forgetComponent: function(name) {
+        var pos = knownComponents.indexOf(name)
+        if (pos > -1) {
+          knownComponents.splice(pos, 1);
+          var componentTrayContainer = document.getElementById('components');
+          var item = componentTrayContainer.querySelector("[name='" + name + "']");
+          item.parentNode.removeChild(item);
+        }
       }
     }
 
