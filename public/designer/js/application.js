@@ -166,10 +166,9 @@ define(["jquery", "l10n"], function($, l10n) {
             }
             else {
               console.error('Error while parsing loaded app.');
+              userState.failedAppLoad();
             }
-
-            // Call this regardless of whether or not successfully loaded. Just need UI to be in the right state.
-            userState.failedAppLoad();
+            
             document.querySelector('ceci-card-nav').buildTabs();
           },
           error: function (data) {
