@@ -109,7 +109,7 @@ define(["jquery", "l10n"], function($, l10n) {
         });
 
       },
-      updateApp: function(name,html,next){
+      updateApp: function(name,appid,html,next){
         $.ajax('/api/update_app', {
           data: {
             name: name,
@@ -150,6 +150,11 @@ define(["jquery", "l10n"], function($, l10n) {
               var fragment = range.createContextualFragment(data.substring(indexOfOpeningTag, indexOfClosingTag + closingTag.length));
               var newApp = fragment.querySelector('ceci-app');
               var currentApp = document.querySelector('ceci-app');
+              if(!currentApp){
+                var phoneBorderElement = document.querySelector(".phone-border");
+                phoneBorderElement.appendChild(document.createElement("ceci-app"));
+                currentApp = document.querySelector("ceci-app")
+              }
               currentApp.parentNode.replaceChild(newApp, currentApp);
             }
             else {
