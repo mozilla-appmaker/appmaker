@@ -21,9 +21,9 @@ define(["jquery", "l10n"], function($, l10n) {
         var parent = app.parentNode;
         parent.removeChild(app);
         parent.appendChild(document.createElement('ceci-app'));
-//        //TODO figure out a better spot to set appids. ceci-app.ready would be ideal, but then
+//        //TODO https://github.com/mozilla-appmaker/appmaker/issues/897
 //        //we have to decouple appidChanged and initFirebase
-        app.appid = "ceci-app"+uuid();
+        app.appid = "ceci-app-"+uuid();
       },
       renameApp: function(oldName,newName){
         var userState = document.querySelector('user-state');
@@ -165,17 +165,6 @@ define(["jquery", "l10n"], function($, l10n) {
             userState.failedAppLoad();
           }
         });
-      },
-      _insertCeciAppElement: function(){
-        var app = document.querySelector('ceci-app');
-        if(!app){
-          //ceci-app element doesn't exist
-          var phoneBorderElement = document.querySelector(".phone-border");
-          phoneBorderElement.appendChild(document.createElement("ceci-app"));
-          return document.querySelector("ceci-app") //TODO just return reference above?
-        } else {
-          return app;
-        }
       },
       loadAppByName: function(name) {
         var userState = document.querySelector('user-state');

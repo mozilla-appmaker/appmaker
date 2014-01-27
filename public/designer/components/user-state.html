@@ -140,11 +140,9 @@
               }
               else {
                 if(application.getCurrentApp()){
-                  console.log("current app was in local storage, load it")
                   application.loadAppByName(application.getCurrentApp());
                   that.editingmode = "saved";
                 } else {
-                  console.log("no current app, inject temp ceci-app")
                   var phoneBorderElement = document.querySelector(".phone-border");
                   var ca = document.createElement("ceci-app");
                   phoneBorderElement.appendChild(ca);
@@ -252,13 +250,13 @@
           this.$.saveAppAs.addEventListener("click", function() {
             var name = window.prompt(l10n.get("What do you want to call this app?"));
 
-            var ceci_app = document.querySelector('ceci-app');
-            ceci_app.name = name;
-            ceci_app.appid = "ceci-app"+uuid();
+            var ceciApp = document.querySelector('ceci-app');
+            ceciApp.name = name;
+            ceciApp.appid = "ceci-app-"+uuid();
 
-            var html = ceci_app.innerHTML;
+            var html = ceciApp.innerHTML;
             if(name){
-              application.saveApp(name,ceci_app.appid,html);
+              application.saveApp(name,ceciApp.appid,html);
               // gotta make sure it actually saves though!
               // add as a callback? or pass in callbacks?
               application.setCurrentApp(name);
@@ -538,7 +536,6 @@
           this.refreshAppList();
           this.refreshComponentsList();
         },
-        //TODO move to event system and call refreshAppList after appLoaded event
         refreshAppList: function() {
           var self = this;
           var myApps = this.shadowRoot.querySelector("#myapps");
