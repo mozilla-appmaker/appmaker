@@ -139,6 +139,7 @@ define(["jquery", "l10n"], function($, l10n) {
         }
       },
       loadAppByUrl: function(url) {
+        var self = this;
         var userState = document.querySelector('user-state');
 
         // try to route through appmaker proxy server if protocols don't match
@@ -160,7 +161,7 @@ define(["jquery", "l10n"], function($, l10n) {
               range.selectNode(document.body);
               var fragment = range.createContextualFragment(data.substring(indexOfOpeningTag, indexOfClosingTag + closingTag.length));
               var newApp = fragment.querySelector('ceci-app');
-              var currentApp = getOrInsertCeciApp();
+              var currentApp = self.getOrInsertCeciApp();
               currentApp.parentNode.replaceChild(newApp, currentApp);
             }
             else {
