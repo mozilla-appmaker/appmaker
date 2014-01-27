@@ -96,16 +96,16 @@ module.exports = function (mongoose, dbconn) {
       if(url) setObj['last-published-url'] = url;
       console.log("setobj",setObj);
       App.update(
-          {author:request.session.email, name: name},
-          { $set: setObj },
-          {},
-          function(err,obj){
-              if(err){
-                  return response.json(500, {error: 'App was not updated due to ' + err});
-              } else {
-                  return response.json(200, {message: 'App was updated successfully'});
-              }
-          });
+        {author:request.session.email, name: name},
+        { $set: setObj },
+        {},
+        function(err,obj){
+          if(err){
+            return response.json(500, {error: 'App was not updated due to ' + err});
+          } else {
+            return response.json(200, {message: 'App was updated successfully'});
+          }
+        });
     },
 
     renameApp: function(request, response) {
@@ -115,27 +115,27 @@ module.exports = function (mongoose, dbconn) {
       var newName = request.body.newName;
 
       App.update(
-          {author:request.session.email, name: oldName},
-          {
-              $set: {name: newName}
-          },
-          {},
-          function(err,obj){
-              if(err){
-                  return response.json(500, {error: 'App was not renamed due to ' + err});
-              } else {
-                  return response.json(200, {message: 'App was renamed successfully'});
-              }
-          });
+        {author:request.session.email, name: oldName},
+        {
+          $set: {name: newName}
+        },
+        {},
+        function(err,obj){
+          if(err){
+            return response.json(500, {error: 'App was not renamed due to ' + err});
+          } else {
+            return response.json(200, {message: 'App was renamed successfully'});
+          }
+        });
     },
     deleteApp: function(request,response){
       if (!checkAuthorised(request, response)) return;
 
       App.remove({author:request.session.email, name: request.body.name},function(err){
-          if(err){
-              console.error("Error deleting this app!");
-              return response.json(500, {error: 'App was not deleted due to ' + err});
-          }
+        if(err){
+          console.error("Error deleting this app!");
+          return response.json(500, {error: 'App was not deleted due to ' + err});
+        }
       });
       response.json(200);
     },
@@ -144,22 +144,22 @@ module.exports = function (mongoose, dbconn) {
 
       //Check if app with same name already exists
       App.findOne({author:request.session.email, name: request.body.name}, function(err, obj) {
-          if (obj) {
-              return response.json(500, {error: 'App name must be unique.'});
-          }
-          else {
-              var appObj = JSON.parse(JSON.stringify(request.body)) // make a copy
-              appObj.author = request.session.email;
-              appObj.appid = request.body.appid;
-              var newApp = new App(appObj);
-              newApp.save(function(err, app){
-                  if (err){
-                      return response.json(500, {error: 'App was not saved due to ' + err});
-                  }
-                  return response.json(app);
-              });
-              response.json(200);
-          }
+        if (obj) {
+            return response.json(500, {error: 'App name must be unique.'});
+        }
+        else {
+          var appObj = JSON.parse(JSON.stringify(request.body)) // make a copy
+          appObj.author = request.session.email;
+          appObj.appid = request.body.appid;
+          var newApp = new App(appObj);
+          newApp.save(function(err, app){
+            if (err){
+                return response.json(500, {error: 'App was not saved due to ' + err});
+            }
+            return response.json(app);
+          });
+          response.json(200);
+        }
       });
     },
     components: function(request, response) {
@@ -198,8 +198,8 @@ module.exports = function (mongoose, dbconn) {
 
       Component.remove({author:request.session.email, url: request.body.url}, function(err){
         if(err){
-           console.error("Error forgetting this component!");
-           return response.json(500, {error: 'Component was not deleted due to ' + err});
+          console.error("Error forgetting this component!");
+          return response.json(500, {error: 'Component was not deleted due to ' + err});
         }
       });
       response.json(200);

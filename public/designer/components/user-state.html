@@ -256,9 +256,6 @@
             ceci_app.name = name;
             ceci_app.appid = "ceci-app"+uuid();
 
-            //If we use outerHTML, it will cause ceci-app to load twice, once for the insertion of the ceci-app element,
-              //the second for the copying over of outerHTML (which loads an entire new ceci-app element). This is
-              //why ceci-app was loading twice and creating race events
             var html = ceci_app.innerHTML;
             if(name){
               application.saveApp(name,ceci_app.appid,html);
@@ -547,7 +544,6 @@
           var myApps = this.shadowRoot.querySelector("#myapps");
           var noApps = this.shadowRoot.querySelector("#noApps");
           var currentApp = application.getCurrentApp() || "";
-          //TODO handle this better
           if(currentApp){
             this.updateAppName(currentApp || l10n.get("Unsaved App"));
           }

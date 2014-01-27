@@ -128,7 +128,7 @@ Required reading:
 https://github.com/mozilla-appmaker/appmaker/blob/develop/public/ceci/README.md
 
 Ceci is a set of foundational elements used in a AppMaker app, implemented as a set of [Polymer](http://polymer-project.org/) components.
-If you create a new component, it's really an HTML tag that Polymer processes and then injects a variety of capabilities into that tag / JS object (TODO better explanation)
+If you create a new component, it's really an HTML tag that Polymer processes and then injects a variety of capabilities into that tag / JS object
 
 ### Example AppMaker Component
 TODO link to the Counter example, provide explanation
