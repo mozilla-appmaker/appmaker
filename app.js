@@ -65,7 +65,7 @@ app.configure(function(){
   }));
 
   app.use(express.bodyParser());
-  app.use(express.cookieParser(process.env['COOKIE_SECRET']));
+  app.use(express.cookieParser());
 
   app.use(express.cookieSession({
     key: "appmaker.sid",
