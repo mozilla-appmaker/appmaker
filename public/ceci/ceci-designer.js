@@ -66,7 +66,7 @@ define([], function() {
     forEachComponent: function(fn){
       var components = this.getRegisteredComponents();
       for (var x in components){
-        fn(components[x].name, components[x]);
+        fn(components[x].tag, components[x]);
       }
       return this;
     }
