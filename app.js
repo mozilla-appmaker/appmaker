@@ -68,7 +68,13 @@ app.configure(function(){
   app.use(express.cookieParser(process.env['COOKIE_SECRET']));
 
   app.use(express.cookieSession({
-    secret: process.env['COOKIE_SECRET']
+    key: "appmaker.sid",
+    secret: process.env.COOKIE_SECRET,
+    cookie: {
+      maxAge: 60 * 60 * 24 * 31, // 31 days. Persona saves session data for 1 month
+      secure: !!process.env.FORCE_SSL
+    },
+    proxy: true
   }));
 
   // Setup locales with i18n
