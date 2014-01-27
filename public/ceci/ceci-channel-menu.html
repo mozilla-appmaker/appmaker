@@ -20,7 +20,7 @@
   </div>
 </template>
   <script>
-    (function(){
+    require(['l10n'], function(L10n) {
       Polymer('ceci-channel-menu', {
         enteredView: function () {
           var that = this;
@@ -108,8 +108,17 @@
             if (communicators.hasOwnProperty(key)) {
               var channelTemplate = that.shadowRoot.querySelector(".option-template");
               var channelOption = channelTemplate.cloneNode(true);
+              var localizedSetter = L10n.get('Set {attribute}') || 'Set {attribute}';
+              var matchLabel = key.match(/[^_]*_(.+)/);
+
               channelOption.classList.remove("option-template");
-              channelOption.querySelector(".channel-name").textContent = communicators[key].label || key;
+
+              if(matchLabel) {
+                channelOption.querySelector(".channel-name").textContent = localizedSetter.replace("{attribute}",
+                  L10n.get(that.component.localName + "/attributes/" + matchLabel[1] + "/label") || communicators[key].label || key);
+              } else {
+                channelOption.querySelector(".channel-name").textContent = communicators[key].label || key;
+              }
 
               that.menu.appendChild(channelOption);
               channelOption.setAttribute(handlerType, key);

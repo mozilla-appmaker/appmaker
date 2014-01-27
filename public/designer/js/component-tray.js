@@ -8,14 +8,13 @@ define(
     "use strict";
 
     var knownComponents = [];
+
     var DesignerTray = {
       addComponentWithName: function(name, component) {
         var componentTrayContainer = document.getElementById('components');
-        var urlComponent = window.CustomElements.registry[name].prototype.resolvePath('locale/' + L10n.getCurrentLang() + '.json');
-        L10n.ready({url: urlComponent});
 
         // Avoid adding components that are already in the tray
-        if (componentTrayContainer.querySelector('designer-component-tray-item[name="' + name + '"]')) return;
+        if(knownComponents.indexOf(name) > -1) return;
 
         var item = document.createElement('designer-component-tray-item');
         var meta;
@@ -45,9 +44,11 @@ define(
           if (card) {
             var newElement = document.createElement(name);
             card.appendChild(newElement);
+            newElement.applyDefaults();
           }
         }, false);
 
+        knownComponents.push(name);
         componentTrayContainer.appendChild(item);
         item.label = L10n.get(name) || item.label;
       },
@@ -55,6 +56,18 @@ define(
         Ceci.forEachComponent(function (name, component) {
           DesignerTray.addComponentWithName(name, component);
         });
+      },
+      isKnownComponent: function(name) {
+        return knownComponents.indexOf(name) > -1;
+      },
+      forgetComponent: function(name) {
+        var pos = knownComponents.indexOf(name)
+        if (pos > -1) {
+          knownComponents.splice(pos, 1);
+          var componentTrayContainer = document.getElementById('components');
+          var item = componentTrayContainer.querySelector("[name='" + name + "']");
+          item.parentNode.removeChild(item);
+        }
       }
     }
 

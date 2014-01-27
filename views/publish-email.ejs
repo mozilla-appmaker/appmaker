@@ -1,0 +1,9 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/style.css">
+  </head>
+  <body>
+    <h2><%- gettext("Your Appmaker App is ready!") %></h2>
+    <p><%- gettext("Your app has been successfully published") %> <a href="<%- appURL %>"><%- appURL %></a></p>
+  </body>
+</html>

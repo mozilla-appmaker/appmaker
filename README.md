@@ -10,7 +10,7 @@ To learn more about web components, check out the [Polymer Project](http://www.p
 
 More resources:
 
-  * The [Appmaker website](http://www.appmaker.mozillalabs.com).
+  * The [Appmaker website](https://appmaker.mozillalabs.com/).
   * The `#appmaker` channel on [irc.mozilla.org](http://irc.mozilla.org/).
   * A [youtube video](http://www.youtube.com/watch?v=RaRIdLgZTPI&feature=youtu.be) (that's already dated, but better than nothing).
   * [Appmaker -- why, what how](https://github.com/mozilla/appmaker-words/wiki) provides additional context about the motivation and use cases for the project, written before any code was forged.
@@ -82,6 +82,7 @@ PUBLISH_URL_PREFIX: String to prepend to filenames that are saved when publishin
 PERSONA_AUDIENCE: The hostname and port of Appmaker used by Persona for authentication
 PORT: The port that the web process listens on for incomming connections
 GITHUB_TOKEN: A personal Github token used for loading lists of components from the mozilla-appmaker org during development (https://github.com/blog/1509-personal-api-tokens)
+EXCLUDED_COMPONENTS: A comma-delimited list of component repositories to exclude from the mozilla-appmaker org. The name is the repo name rather than the component name, though this is usually the same.
 ```
 
 ### Install and run MongoDB

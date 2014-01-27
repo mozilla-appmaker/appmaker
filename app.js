@@ -16,7 +16,9 @@ postmark = require("postmark")(process.env.POSTMARK_API_KEY),
 lessMiddleware = require('less-middleware'),
 enableRedirects = require('./routes/redirects'),
 i18n = require('webmaker-i18n'),
-components = require('./lib/components');
+components = require('./lib/components'),
+localeBuild = require('./lib/localeBuild'),
+localComponents = [];
 
 try {
   // This does a pretty great job at figuring out booleans.
@@ -156,17 +158,15 @@ routes = require('./routes')(
   store,
   __dirname + '/views',
   urlManager,
-  require('./lib/remix-mailer')(postmark),
+  require('./lib/mailer')(postmark),
   makeAPIPublisher
 );
 
-
-// Load components from various sources
-components.load(function(components){
-  app.locals.components = components;
-});
-
 app.get('/', routes.index);
+
+app.get('/about', routes.about);
+
+app.get('/contribute', routes.contribute);
 
 app.all('/designer', routes.designer);
 
@@ -174,7 +174,9 @@ app.get('/testappdesigner', routes.testappdesigner);
 
 app.get('/testapp', routes.testapp);
 
+// remix and publish email notification routes
 app.get('/remix', routes.remix);
+app.get('/notify', routes.notify);
 
 //TODO: Security: https://github.com/mozilla-appmaker/appmaker/issues/602
 app.get('/api/proxy-component-*', cors(), routes.proxy.gitHubComponent);
@@ -195,7 +197,7 @@ else{
 // when we do the XHR request to this route.
 app.get( "/strings/:lang?", i18n.stringsRoute( "en-US" ) );
 
-app.post('/api/publish', routes.publish.publish);
+app.post('/api/publish', routes.publish.publish(app));
 
 // routes for publishing and retrieving components
 app.get('/api/component', routes.componentRegistry.components);
@@ -213,10 +215,23 @@ app.get('/api/componentlinks', routes.my.components);
 app.post('/api/componentlinks', routes.my.learnComponent);
 app.delete('/api/componentlinks', routes.my.forgetComponent);
 
+app.get('/api/remix-proxy', routes.proxy.remix);
+
 module.exports = app;
 
-if (!module.parent)
-  http.createServer(app).listen(app.get('port'), function(){
-    console.log("Express server listening on port " + app.get('port'));
+if (!module.parent) {
+  // Load components from various sources
+  components.load(function(components) {
+    app.locals.components = components;
+    localeBuild(components, i18n.getSupportLanguages(), function(map) {
+      i18n.addLocaleObject(map, function(bool) {
+        if(bool) {
+          http.createServer(app).listen(app.get('port'), function(){
+            console.log("Express server listening on port " + app.get('port'));
+          });
+        }
+      });
+    });
   });
+}
 
