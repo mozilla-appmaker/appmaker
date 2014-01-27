@@ -57,7 +57,6 @@
 
         this.dispatchEvent(new CustomEvent('ready', {bubbles: true, detail: this}));
         this.firebase = null;
-        //this.initFirebase();
 
         window.dispatchEvent(new CustomEvent("CeciAppReady"));
       },
