@@ -170,12 +170,12 @@ define(["jquery", "l10n"], function($, l10n) {
       _insertCeciAppElement: function(){
         var app = document.querySelector('ceci-app');
         if(!app){
-        //ceci-app element doesn't exist
-        var phoneBorderElement = document.querySelector(".phone-border");
-        phoneBorderElement.appendChild(document.createElement("ceci-app"));
-        return document.querySelector("ceci-app") //TODO just return reference above?
+          //ceci-app element doesn't exist
+          var phoneBorderElement = document.querySelector(".phone-border");
+          phoneBorderElement.appendChild(document.createElement("ceci-app"));
+          return document.querySelector("ceci-app") //TODO just return reference above?
         } else {
-        return app;
+          return app;
         }
       },
       loadAppByName: function(name) {
