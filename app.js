@@ -66,7 +66,8 @@ app.configure(function(){
 
   app.use(express.bodyParser());
   app.use(express.cookieParser(process.env['COOKIE_SECRET']));
-  app.use(express.session({
+
+  app.use(express.cookieSession({
     secret: process.env['COOKIE_SECRET']
   }));
 
