@@ -127,6 +127,17 @@ define(["jquery", "l10n"], function($, l10n) {
         });
 
       },
+      getOrInsertCeciApp: function(){
+        var app = document.querySelector('ceci-app');
+        if(!app){
+          //ceci-app element doesn't exist
+          var phoneBorderElement = document.querySelector(".phone-border");
+          phoneBorderElement.appendChild(document.createElement("ceci-app"));
+          return document.querySelector("ceci-app");
+        } else {
+          return app;
+        }
+      },
       loadAppByUrl: function(url) {
         var userState = document.querySelector('user-state');
 
@@ -149,12 +160,7 @@ define(["jquery", "l10n"], function($, l10n) {
               range.selectNode(document.body);
               var fragment = range.createContextualFragment(data.substring(indexOfOpeningTag, indexOfClosingTag + closingTag.length));
               var newApp = fragment.querySelector('ceci-app');
-              var currentApp = document.querySelector('ceci-app');
-              if(!currentApp){
-                var phoneBorderElement = document.querySelector(".phone-border");
-                phoneBorderElement.appendChild(document.createElement("ceci-app"));
-                currentApp = document.querySelector("ceci-app")
-              }
+              var currentApp = getOrInsertCeciApp();
               currentApp.parentNode.replaceChild(newApp, currentApp);
             }
             else {
@@ -174,13 +180,14 @@ define(["jquery", "l10n"], function($, l10n) {
       },
       loadAppByName: function(name) {
         var userState = document.querySelector('user-state');
+        var self = this;
         $.ajax('/api/app', {
           data: {
             name: name
           },
           type: 'get',
           success: function (data) {
-            var app = document.querySelector('ceci-app');
+            var app = self.getOrInsertCeciApp();
             app.innerHTML = data.html;
             localStorage.currentApp = name;
             userState.okAppLoad(name, data);
