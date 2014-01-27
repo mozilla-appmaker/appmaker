@@ -289,7 +289,7 @@
           this.refreshUserState();
         },
         appRenameFailed: function(){
-          window.alert("app rename failed");
+          window.alert(l10n.get("app rename failed"));
         },
         signinClick: function() {
           navigator.id.request();
@@ -343,7 +343,7 @@
           // in a try/except block because called from an onclick handler,
           // so want to atch exceptions.
           try {
-            var url = window.prompt("Component URL? (either full path 'http://example.com/dir/component.html' or, for github pages, 'username/repo')");
+            var url = window.prompt(L10n.get("component url?"));
             if (! url) return;
             url = url.trim();
             // first, detect github moniker and turn those into known URL structures
@@ -358,7 +358,7 @@
             else {
               // Reject URLs without a protocol (if it's not on http or https, it's not an acceptable URL)
               if (url.indexOf("http") !== 0) {
-                return self.signalComponentError("components needs a fully qualified URL, including the http/https protocol prefix");
+                return self.signalComponentError(L10n("Need qualified url"));
               }
               // We're going to do pattern detection on Github URLs to map them to the proxy if they're
               // to github.io, and complain if they're github.com URLs
@@ -366,7 +366,7 @@
               parser.href = url;
               var host = parser.host;
               if (host === 'github.com') {
-                return self.signalComponentError("If using Github to host the component, you need to make a gh-page branch");
+                return self.signalComponentError(L10n.get("Need gh-pages branch"));
               }
               if (host.indexOf(".github.io", this.length - ".github.io".length) !== -1) {
                 // it's a GH pages page, yea!
@@ -407,7 +407,7 @@
             },
             error: function (data, err) {
               // it may be because it's behind a CORS thing, in which case we will try to proxy through the server
-              cb("There was an error checking the component at the url: " + url, data);
+              cb(L10n.get("getNameForComponentURL failed") + url, data);
           }});
         },
         getNameForComponent: function(url, data) {
@@ -416,7 +416,7 @@
           doc.querySelector("body").innerHTML = data;
           var componentElement = doc.querySelector("polymer-element");
           if (!componentElement) {
-            return self.signalComponentError("The supplied URL does not appear to describe a component.");
+            return self.signalComponentError(L10n.get("Does not seem component"));
           }
           return componentElement.getAttribute('name');
         },
@@ -424,14 +424,14 @@
           // This function is to teach appmaker (client & server) about a new component URL
           var self = this;
           if (tray.isKnownComponent(name)) {
-            return self.signalComponentError("Your component was not added, as Appmaker already knows a <"+name+"> compoennt")
+            return self.signalComponentError(L10n.get("We already know") + name)
           }
           this.storeComponentURL(url, name, function(err, result) {
             self.addComponentToUI(url, name, function(err, result) {
               if(err) {
                 return self.signalComponentError(err);
               }
-              window.alert("Component <"+name+"> was added to your list of custom elements.");
+              window.alert(L10n.get("Successfully added component ") + name);
             });
           });
         },
@@ -449,7 +449,7 @@
             },
             error: function (data) {
               // break off the process by not calling next()
-              selt.signalComponentError("error storing info about component:" + JSON.stringify(data.responseJSON.error), data.responseJSON)
+              selt.signalComponentError(L10n.get("error storing info about component: ") + JSON.stringify(data.responseJSON.error), data.responseJSON)
             }
           });
         },
@@ -489,7 +489,7 @@
           var closeButton = document.createElement('a');
           closeButton.setAttribute('class', 'x');
           closeButton.addEventListener('click', function(event) {
-            if (window.confirm("Are you sure you want to forget about the component at " + url)) {
+            if (window.confirm(L10n.get("Are you sure you want to forget about the component at ") + url)) {
               self.forgetComponent(name, url);
               return;
             }
@@ -601,8 +601,7 @@
               //        of elements during the lifetime of a page without reloading.
             },
             error: function (data, err) {
-              console.log("Something went wrong!");
-              console.error("Error while forgetting component: " + data.url, err);
+              self.signalComponentError(L10n("Forget failed") + data.url, err);
             }
           });
         },
