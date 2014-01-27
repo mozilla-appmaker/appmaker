@@ -90,11 +90,12 @@ define(["jquery", "l10n"], function($, l10n) {
           });
         });
       },
-      saveApp: function(name, html,next){
+      saveApp: function(name, appid, html,next){
         $.ajax('/api/save_app', {
           data: {
             html: html,
-            name: name
+            name: name,
+            appid: appid
           },
           type: 'post',
           success: function (data) {
