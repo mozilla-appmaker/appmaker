@@ -10,6 +10,10 @@
     <script src="/vendor/platform/platform.js"></script>
     <script src="/vendor/polymer/polymer.js"></script>
 
+    <script src="/vendor/requirejs/require.js"></script>
+    <script src="/javascripts/requireConfig.js"></script>
+
+
     <% bundles.emit('ceci.html').forEach(function(href) { %>
     <link rel="import" href="/<%= href %>">
     <% }); %>
