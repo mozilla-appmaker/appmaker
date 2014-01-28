@@ -143,6 +143,11 @@
                   application.loadAppByName(application.getCurrentApp());
                   that.editingmode = "saved";
                 } else {
+                  var phoneBorderElement = document.querySelector(".phone-border");
+                  var ca = document.createElement("ceci-app");
+                  phoneBorderElement.appendChild(ca);
+                  ca.appid = "temp-"+uuid();
+
                   that.updateAppName(l10n.get("Unsaved App"));
                   that.editingmode = "draft";
                 }
@@ -202,10 +207,11 @@
 
           //Update App
           this.$.saveApp.addEventListener("click", function() {
-            var html = document.querySelector('ceci-app').innerHTML;
+            var ceciApp = document.querySelector('ceci-app');
+            var html = ceciApp.innerHTML;
             var name = application.getCurrentApp();
             if(name){
-              application.updateApp(name,html);
+              application.updateApp(name,ceciApp.appid,html);
             }
           });
 
@@ -225,7 +231,7 @@
             }
             // we have a name: publish!
             var alreadySaved = self.editingmode === "saved";
-            application.publishApp(name, html, alreadySaved, function resulthandler(err,data) {
+            application.publishApp(name, app.appid, html, alreadySaved, function resulthandler(err,data) {
               if(err) {
                 if (data) {
                   console.error("app was published, but updating failed");
@@ -243,9 +249,14 @@
           //Save App As
           this.$.saveAppAs.addEventListener("click", function() {
             var name = window.prompt(l10n.get("What do you want to call this app?"));
-            var html = document.querySelector('ceci-app').innerHTML;
+
+            var ceciApp = document.querySelector('ceci-app');
+            ceciApp.name = name;
+            ceciApp.appid = "ceci-app-"+uuid();
+
+            var html = ceciApp.innerHTML;
             if(name){
-              application.saveApp(name,html);
+              application.saveApp(name,ceciApp.appid,html);
               // gotta make sure it actually saves though!
               // add as a callback? or pass in callbacks?
               application.setCurrentApp(name);
@@ -270,6 +281,11 @@
         },
         failedAppLoad: function(){
           application.clearCurrentApp();
+
+          var phoneBorderElement = document.querySelector(".phone-border");
+          var ca = document.createElement("ceci-app");
+          ca.appid = "temp-"+uuid();
+          phoneBorderElement.appendChild(ca);
           this.updateAppName(l10n.get("Unsaved App"));
         },
         okAppLoad: function(name, data){
@@ -279,10 +295,10 @@
         },
         updateAppName: function(name){
           var app = document.querySelector('ceci-app');
-          if (name) {
+          if (app && name) {
             app.name = name;
+            document.querySelector(".phone-top .app-name").innerHTML = app.name;
           }
-          document.querySelector(".phone-top .app-name").innerHTML = app.name;
         },
         appRenameOk: function(name){
           application.setCurrentApp(name);
@@ -524,7 +540,9 @@
           var myApps = this.shadowRoot.querySelector("#myapps");
           var noApps = this.shadowRoot.querySelector("#noApps");
           var currentApp = application.getCurrentApp() || "";
-          this.updateAppName(application.getCurrentApp() || l10n.get("Unsaved App"));
+          if(currentApp){
+            this.updateAppName(currentApp || l10n.get("Unsaved App"));
+          }
 
           myApps.innerHTML = "";
           $.getJSON("/api/myapps", function(data) {

@@ -35,7 +35,7 @@ module.exports = function( grunt ) {
         src: [
           "public/**/*.css"
         ]
-      },
+      }
     },
     jshint: {
       options: {
