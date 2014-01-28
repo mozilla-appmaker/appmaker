@@ -1,4 +1,4 @@
-<polymer-element name="ceci-app" attributes="name" name="New App">
+<polymer-element name="ceci-app" attributes="name appid" name="New App">
   <template>
     <style>
       :host {
@@ -42,10 +42,10 @@
 
     })(this);
 
+
+  require(['Firebase'], function() {
     Polymer('ceci-app', {
       ready: function() {
-        this.setAttribute('id', 'ceci-app-' + uuid());
-
         if (this.querySelectorAll('ceci-card').length > 0) {
           if (!this.querySelector('ceci-card[visible]')) {
             this.querySelector('ceci-card').setAttribute('visible', true);
@@ -56,7 +56,9 @@
         }
 
         this.dispatchEvent(new CustomEvent('ready', {bubbles: true, detail: this}));
+        this.firebase = null;
 
+        window.dispatchEvent(new CustomEvent("CeciAppReady"));
       },
       addCard: function() {
         var newCard = document.createElement('ceci-card');
@@ -93,7 +95,36 @@
         while ((card = this.querySelector('ceci-card')) !== null) {
           this.removeChild(card);
         }
+      },
+      appidChanged: function(){
+        this.initFirebase();
+      },
+      initFirebase: function(){
+        var firebaseHost = "https://flathead.firebaseio.com/";
+        if(this.appid) {
+          this.firebase = new Firebase(firebaseHost+this.appid);
+          window.dispatchEvent(new CustomEvent("CeciDataConnectionLoaded"));
+        }
+      },
+      getFirebaseObject: function(childRefPath, itemName, callback){
+        if(!this.firebase){
+            console.error("Firebase connection was null");
+            return null;
+        }
+        var self = this;
+        this.firebase.child(childRefPath).once("value", function(data) {
+          callback(data.val());
+        });
+      },
+      setFirebaseObject: function(childRefPath, data){
+        if(!this.firebase){
+          console.error("Firebase connection was null");
+          return null;
+        }
+        var dataRef = this.firebase.child(childRefPath);
+        dataRef.set(data);
       }
     });
+  });
   </script>
 </polymer-element>

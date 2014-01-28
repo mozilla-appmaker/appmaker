@@ -21,6 +21,9 @@ define(["jquery", "l10n"], function($, l10n) {
         var parent = app.parentNode;
         parent.removeChild(app);
         parent.appendChild(document.createElement('ceci-app'));
+//        //TODO https://github.com/mozilla-appmaker/appmaker/issues/897
+//        //we have to decouple appidChanged and initFirebase
+        app.appid = "ceci-app-"+uuid();
       },
       renameApp: function(oldName,newName){
         var userState = document.querySelector('user-state');
@@ -39,10 +42,10 @@ define(["jquery", "l10n"], function($, l10n) {
           }
         });
       },
-      publishApp: function(name, html, alreadySaved, afterPublish) {
+      publishApp: function(name, appid, html, alreadySaved, afterPublish) {
         // make sure to save first; If that succeeds, perform a publish
         var op = alreadySaved ? this.updateApp : this.saveApp;
-        op(name, html, function callAPIPublish(err) {
+        op(name, appid, html, function callAPIPublish(err) {
           if(err) {
             return console.error("publish failed in save step", err);
           }
@@ -66,7 +69,8 @@ define(["jquery", "l10n"], function($, l10n) {
               $.ajax('api/update_app', {
                 data: {
                   name: name,
-                  url: data.app
+                  url: data.app,
+                  html: html
                 },
                 type: 'post',
                 success: function (updateData) {
@@ -86,11 +90,12 @@ define(["jquery", "l10n"], function($, l10n) {
           });
         });
       },
-      saveApp: function(name, html,next){
+      saveApp: function(name, appid, html,next){
         $.ajax('/api/save_app', {
           data: {
             html: html,
-            name: name
+            name: name,
+            appid: appid
           },
           type: 'post',
           success: function (data) {
@@ -104,11 +109,11 @@ define(["jquery", "l10n"], function($, l10n) {
         });
 
       },
-      updateApp: function(name,html,next){
+      updateApp: function(name,appid,html,next){
         $.ajax('/api/update_app', {
           data: {
             name: name,
-            html: html,
+            html: html
           },
           type: 'post',
           success: function (data) {
@@ -122,7 +127,19 @@ define(["jquery", "l10n"], function($, l10n) {
         });
 
       },
+      getOrInsertCeciApp: function(){
+        var app = document.querySelector('ceci-app');
+        if(!app){
+          //ceci-app element doesn't exist
+          var phoneBorderElement = document.querySelector(".phone-border");
+          phoneBorderElement.appendChild(document.createElement("ceci-app"));
+          return document.querySelector("ceci-app");
+        } else {
+          return app;
+        }
+      },
       loadAppByUrl: function(url) {
+        var self = this;
         var userState = document.querySelector('user-state');
 
         // try to route through appmaker proxy server if protocols don't match
@@ -138,22 +155,20 @@ define(["jquery", "l10n"], function($, l10n) {
             var indexOfOpeningTag = data.indexOf(openingTag);
             var indexOfClosingTag = data.indexOf(closingTag);
 
-
             if (indexOfOpeningTag > -1 && indexOfClosingTag > -1) {
               var range = document.createRange();
               var container = document.body;
               range.selectNode(document.body);
               var fragment = range.createContextualFragment(data.substring(indexOfOpeningTag, indexOfClosingTag + closingTag.length));
               var newApp = fragment.querySelector('ceci-app');
-              var currentApp = document.querySelector('ceci-app');
+              var currentApp = self.getOrInsertCeciApp();
               currentApp.parentNode.replaceChild(newApp, currentApp);
             }
             else {
               console.error('Error while parsing loaded app.');
+              userState.failedAppLoad();
             }
-
-            // Call this regardless of whether or not successfully loaded. Just need UI to be in the right state.
-            userState.failedAppLoad();
+            
             document.querySelector('ceci-card-nav').buildTabs();
           },
           error: function (data) {
@@ -165,13 +180,14 @@ define(["jquery", "l10n"], function($, l10n) {
       },
       loadAppByName: function(name) {
         var userState = document.querySelector('user-state');
+        var self = this;
         $.ajax('/api/app', {
           data: {
             name: name
           },
           type: 'get',
           success: function (data) {
-            var app = document.querySelector('ceci-app');
+            var app = self.getOrInsertCeciApp();
             app.innerHTML = data.html;
             localStorage.currentApp = name;
             userState.okAppLoad(name, data);
