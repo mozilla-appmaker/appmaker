@@ -19,10 +19,6 @@ requirejs.config({
 
     "designer": "/designer/js",
 
-    "togetherjs": "https://togetherjs.com/togetherjs-min",
-
-    "angular": "/vendor/angular/angular.min",
-
     "colorpicker.core": "/vendor/colorpicker/jquery.colorpicker",
     "colorpicker.swatches.crayola": "/vendor/colorpicker/swatches/jquery.ui.colorpicker-crayola",
     "colorpicker.swatches.pantone": "/vendor/colorpicker/swatches/jquery.ui.colorpicker-pantone",
@@ -54,11 +50,6 @@ requirejs.config({
     "colorpicker.i18n.en": ["colorpicker.core"],
     "colorpicker.i18n.fr": ["colorpicker.core"],
     "colorpicker.i18n.nl": ["colorpicker.core"],
-    "colorpicker.i18n.pt-br": ["colorpicker.core"],
-    "togetherjs": {
-      exports: "TogetherJS"
-    }
+    "colorpicker.i18n.pt-br": ["colorpicker.core"]
   }
 });
-
-requirejs(["/javascripts/togetherjsSupport.js"]);
