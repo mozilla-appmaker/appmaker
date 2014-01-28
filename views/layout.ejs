@@ -9,12 +9,24 @@
     <link rel="stylesheet" href="/stylesheets/user-state.css" />
     <link rel="stylesheet" href="/stylesheets/broadcast-menu.css" />
     <link rel="stylesheet" href="/stylesheets/animations.css" />
-    <link rel="stylesheet" href="/sourcesanspro-extralight,sourcesanspro-light,sourcesanspro-regular,sourcesanspro-semibold/fonts.css" />
 
     <link rel="stylesheet" href="/vendor/colorpicker/jquery.colorpicker.css" />
 
+    <link rel="stylesheet" href="/sourcesanspro-extralight,sourcesanspro-light,sourcesanspro-regular,sourcesanspro-semibold/fonts.css" />
+
+    <script src="/vendor/platform/platform.js"></script>
+    <script src="/vendor/polymer/polymer.js"></script>
+    <script src="/javascripts/polymer-register-event-shim.js"></script>
+
+
     <script src="/vendor/requirejs/require.js"></script>
-    <script src="/javascripts/requireConfig.js"></script>
+    <% if (!!process.env.BUNDLE) { %>
+      <script src="/javascripts/designer-build.js"></script>
+    <% } else { %>
+      <script src="/javascripts/requireConfig.js"></script>
+    <% } %>
+
+
     <script>
     (function () {
       // We need to make sure we have our client-side .json file loaded before
@@ -24,9 +36,6 @@
       });
     })();
     </script>
-    <script src="/vendor/platform/platform.js"></script>
-    <script src="/vendor/polymer/polymer.js"></script>
-    <script src="/javascripts/polymer-register-event-shim.js"></script>
 
     <link rel="import" href="/ceci/ceci-element-base.html">
     <link rel="import" href="/ceci/ceci-listen.html">
