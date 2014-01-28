@@ -37,7 +37,8 @@
     "cors": "~2.1.0",
     "mongoose": "~3.8.1",
     "request": "~2.30.0",
-    "node-github": "0.0.3"
+    "node-github": "0.0.3",
+    "express-bundles": "git://github.com/simonwex/express-bundles#v0.0.3"
   },
   "engines": {
     "node": "~0.10.21",

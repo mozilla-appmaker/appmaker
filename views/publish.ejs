@@ -7,22 +7,12 @@
     <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300, 400,600" rel="stylesheet" type="text/css">
     <base href="<%- ceciComponentURL %>">
 
-    <script src="/vendor/requirejs/require.js"></script>
-    <script src="/javascripts/requireConfig.js"></script>
-
     <script src="/vendor/platform/platform.js"></script>
     <script src="/vendor/polymer/polymer.js"></script>
 
-    <link rel="import" href="/ceci/ceci-element-base.html">
-    <link rel="import" href="/ceci/ceci-element.html">
-    <link rel="import" href="/ceci/ceci-listen.html">
-    <link rel="import" href="/ceci/ceci-card-base.html">
-    <link rel="import" href="/ceci/ceci-card.html">
-    <link rel="import" href="/ceci/ceci-app.html">
-    <link rel="import" href="/ceci/ceci-card-nav.html">
-    <link rel="import" href="/ceci/ceci-broadcast.html">
-
-    <link rel="import" href="/ceci/ceci-channel-menu.html">
+    <% bundles.emit('ceci.html').forEach(function(href) { %>
+    <link rel="import" href="/<%= href %>">
+    <% }); %>
 
     <!-- This is a list of all known components. Ideally, this is a compiled list of only-the-app components -->
     <% components.forEach(function(href) { %>

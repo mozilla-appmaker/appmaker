@@ -26,7 +26,6 @@
       <script src="/javascripts/requireConfig.js"></script>
     <% } %>
 
-
     <script>
     (function () {
       // We need to make sure we have our client-side .json file loaded before
@@ -37,28 +36,14 @@
     })();
     </script>
 
-    <link rel="import" href="/ceci/ceci-element-base.html">
-    <link rel="import" href="/ceci/ceci-listen.html">
-    <link rel="import" href="/ceci/ceci-card-base.html">
-    <link rel="import" href="/ceci/ceci-app.html">
-    <link rel="import" href="/ceci/ceci-card-nav.html">
-    <link rel="import" href="/ceci/ceci-broadcast.html">
 
-    <link rel="import" href="/ceci/ceci-channel-menu.html">
+    <% bundles.emit('designer-components.html').forEach(function(href) { %>
+    <link rel="import" href="/<%= href %>">
+    <% }); %>
 
     <% components.forEach(function(href) { %>
     <link rel="import" href="<%= href %>">
     <% }) %>
-
-    <link rel="import" href="/designer/components/ceci-element-designer.html">
-    <link rel="import" href="/designer/components/ceci-card-designer.html">
-    <link rel="import" href="/designer/components/ceci-broadcast-vis.html">
-    <link rel="import" href="/designer/components/ceci-channel-vis.html">
-    <link rel="import" href="/designer/components/ceci-listen-vis.html">
-
-    <link rel="import" href="/designer/components/design-log.html">
-    <link rel="import" href="/designer/components/user-state.html">
-    <link rel="import" href="/designer/components/component-tray.html">
 
     <script type="text/javascript">
       var _gaq = _gaq || [];
