@@ -57,9 +57,7 @@
 
         this.dispatchEvent(new CustomEvent('ready', {bubbles: true, detail: this}));
         this.firebase = null;
-        this.initFirebase();
 
-        console.log("ceci-app ready")
         window.dispatchEvent(new CustomEvent("CeciAppReady"));
       },
       addCard: function() {
@@ -99,24 +97,18 @@
         }
       },
       appidChanged: function(){
-        console.log("appid changed")
         this.initFirebase();
       },
       initFirebase: function(){
         var firebaseHost = "https://flathead.firebaseio.com/";
         if(this.appid) {
-          this.firebase = new Firebase(firebaseHost+this.appid); //TODO check .info to make sure we're connected
-          console.log("firebase id: ", this.appid);
-          console.log("firing CeciDataConnectionLoaded");
-          window.dispatchEvent(new CustomEvent("CeciDataConnectionLoaded"))
+          this.firebase = new Firebase(firebaseHost+this.appid);
+          window.dispatchEvent(new CustomEvent("CeciDataConnectionLoaded"));
         }
-      },
-      getFirebase: function(){
-        return this.firebase;
       },
       getFirebaseObject: function(childRefPath, itemName, callback){
         if(!this.firebase){
-            console.error("Firebase connection was null")
+            console.error("Firebase connection was null");
             return null;
         }
         var self = this;
@@ -126,7 +118,7 @@
       },
       setFirebaseObject: function(childRefPath, data){
         if(!this.firebase){
-          console.error("Firebase connection was null")
+          console.error("Firebase connection was null");
           return null;
         }
         var dataRef = this.firebase.child(childRefPath);

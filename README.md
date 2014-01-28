@@ -83,6 +83,7 @@ PERSONA_AUDIENCE: The hostname and port of Appmaker used by Persona for authenti
 PORT: The port that the web process listens on for incomming connections
 GITHUB_TOKEN: A personal Github token used for loading lists of components from the mozilla-appmaker org during development (https://github.com/blog/1509-personal-api-tokens)
 EXCLUDED_COMPONENTS: A comma-delimited list of component repositories to exclude from the mozilla-appmaker org. The name is the repo name rather than the component name, though this is usually the same.
+BUNDLE: Any non-null value will cause the application to bundle as many resources as possible
 ```
 
 ### Install and run MongoDB
@@ -128,7 +129,7 @@ Required reading:
 https://github.com/mozilla-appmaker/appmaker/blob/develop/public/ceci/README.md
 
 Ceci is a set of foundational elements used in a AppMaker app, implemented as a set of [Polymer](http://polymer-project.org/) components.
-If you create a new component, it's really an HTML tag that Polymer processes and then injects a variety of capabilities into that tag / JS object (TODO better explanation)
+If you create a new component, it's really an HTML tag that Polymer processes and then injects a variety of capabilities into that tag / JS object
 
 ### Example AppMaker Component
 TODO link to the Counter example, provide explanation

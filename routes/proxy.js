@@ -91,20 +91,24 @@ module.exports = {
     // console.log("doing proxy request to", url);
     if (url) {
       try {
-        request.get(url).on('error',
-          function(err) { console.log('error doing cors request for ', url);})
+        request.get(url).on('error', function(err) {
+          console.error('error doing cors request for ', url);
+          res.json({error: 'No valid url (1).'}, 500);
+        })
         .pipe(res)
-        .on('error',
-          function(err) { console.log('error doing cors request for ', url);});
+        .on('error', function(err) {
+          console.error('error doing piped cors request for ', url);
+          res.json({error: 'No valid url (2).'}, 500);
+        });
       }
       catch(e) {
         console.log("got exception doing the pipe", e);
-        res.json({message: 'No valid url.'}, 500);
+        res.json({message: 'No valid url (3).'}, 500);
         return;
       }
     }
     else {
-      res.json({error: 'No valid url.'}, 500);
+      res.json({error: 'No valid url (4).'}, 500);
     }
   },
 

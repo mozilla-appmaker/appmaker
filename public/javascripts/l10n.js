@@ -4,7 +4,7 @@ define([], function () {
       _requestCache = {},
       _requestedStrings = false;
 
-var l10n = {
+  var l10n = {
     debug: function(message) {
     },
     get: function (key) {
