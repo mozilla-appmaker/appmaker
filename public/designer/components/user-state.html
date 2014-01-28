@@ -201,7 +201,7 @@
             if(newName){
               application.renameApp(oldName, newName);
             } else {
-              alert(l10n.get("App names can't be blank."));
+              window.alert(l10n.get("App names can't be blank."));
             }
           });
 
@@ -305,7 +305,7 @@
           this.refreshUserState();
         },
         appRenameFailed: function(){
-          alert("app rename failed");
+          window.alert(l10n.get("app rename failed"));
         },
         signinClick: function() {
           navigator.id.request();
@@ -344,38 +344,45 @@
             });
           }
         },
-        mkGitHubURL: function(repo, user) {
-          // use the DOM to create the right URL.
-          var parser = document.createElement('a');
-          parser.href = document.URL;
-          parser.pathname = "component/" + repo + '/' + user + "/component.html";
-          url = parser.href;
-          return url;
+        signalComponentError: function(err) {
+          console.error(err);
+          if(arguments.length>1) {
+            Array.prototype.slice.call(arguments, 1).forEach(function(data) {
+              console.error(data);
+            });
+          }
+          window.alert(err);
+          return;
         },
         addComponent: function() {
+          var self = this;
           // in a try/except block because called from an onclick handler,
           // so want to atch exceptions.
           try {
-            var self = this;
-            var url = window.prompt("Component URL? (either full path 'http://example.com/dir/component.html' or, for github pages, 'username/repo')");
+            var url = window.prompt(L10n.get("component url?"));
             if (! url) return;
             url = url.trim();
             // first, detect github moniker and turn those into known URL structures
             // (we don't know that there is a component at that URL though (in particular if
             // they don't have GH pages setup)
-            if (url.split('/').length === 2 && url.indexOf('http') === -1) {
+            var chunked = url.split('/');
+            if (chunked.length === 2 && chunked[0].indexOf(".") === -1 && url.indexOf('http') === -1) {
               var parts = url.split('/').map(function(v) { return v.trim(); });
               // We're assuming it's a username/repo, and assuming component.html as the leafname.
               url = this.mkGitHubURL(parts[0], parts[1]);
-            } else {
+            }
+            else {
+              // Reject URLs without a protocol (if it's not on http or https, it's not an acceptable URL)
+              if (url.indexOf("http") !== 0) {
+                return self.signalComponentError(L10n("Need qualified url"));
+              }
               // We're going to do pattern detection on Github URLs to map them to the proxy if they're
               // to github.io, and complain if they're github.com URLs
               var parser = document.createElement('a');
               parser.href = url;
               var host = parser.host;
               if (host === 'github.com') {
-                alert("If using Github to host the component, you need to make a gh-page branch");
-                return;
+                return self.signalComponentError(L10n.get("Need gh-pages branch"));
               }
               if (host.indexOf(".github.io", this.length - ".github.io".length) !== -1) {
                 // it's a GH pages page, yea!
@@ -384,14 +391,23 @@
                 url = this.mkGitHubURL(gh_user, gh_repo);
               }
             }
-            this.getNameForComponentURL(url, function(name) {
-              if (name) {
-                self.learnComponent(url, name)
+            this.getNameForComponentURL(url, function(err, result) {
+              if (err) {
+                return self.signalComponentError(err, result);
               }
+              self.learnComponent(url, result)
             });
           } catch (e) {
             console.log(e);
           }
+        },
+        mkGitHubURL: function(repo, user) {
+          // use the DOM to create the right URL.
+          var parser = document.createElement('a');
+          parser.href = document.URL;
+          parser.pathname = "component/" + repo + '/' + user + "/component.html";
+          url = parser.href;
+          return url;
         },
         getNameForComponentURL: function(url, cb) {
           // We want to make sure that we can reach this URL, and that it's a component
@@ -403,14 +419,11 @@
             success: function (data) {
               // we have a reachable URL, that's good.
               // Check to make sure that the file has a reasonable structure
-              cb(self.getNameForComponent(url, data));
+              cb(null, self.getNameForComponent(url, data));
             },
             error: function (data, err) {
               // it may be because it's behind a CORS thing, in which case we will try to proxy through the server
-              console.log("Something went wrong!", data, err);
-              window.alert("There was an error checking the component at the url: " + url);
-              console.error("Error while checking component: " + url, err);
-              cb(null);
+              cb(L10n.get("getNameForComponentURL failed") + url, data);
           }});
         },
         getNameForComponent: function(url, data) {
@@ -419,8 +432,7 @@
           doc.querySelector("body").innerHTML = data;
           var componentElement = doc.querySelector("polymer-element");
           if (!componentElement) {
-            alert("this isn't a component file uh oh");
-            return '';
+            return self.signalComponentError(L10n.get("Does not seem component"));
           }
           return componentElement.getAttribute('name');
         },
@@ -428,10 +440,15 @@
           // This function is to teach appmaker (client & server) about a new component URL
           var self = this;
           if (tray.isKnownComponent(name)) {
-            return console.error("we already know a component <"+name+">");
+            return self.signalComponentError(L10n.get("We already know") + name)
           }
           this.storeComponentURL(url, name, function(err, result) {
-            self.addComponentToUI(url, name);
+            self.addComponentToUI(url, name, function(err, result) {
+              if(err) {
+                return self.signalComponentError(err);
+              }
+              window.alert(L10n.get("Successfully added component ") + name);
+            });
           });
         },
         storeComponentURL: function(url, name, next) {
@@ -448,20 +465,24 @@
             },
             error: function (data) {
               // break off the process by not calling next()
-              alert("error storing info about component:", data.responseJSON.error);
+              selt.signalComponentError(L10n.get("error storing info about component: ") + JSON.stringify(data.responseJSON.error), data.responseJSON)
             }
           });
         },
-        addComponentToUI: function(url, name) {
+        addComponentToUI: function(url, name, cb) {
+          var self = this;
           // Add to the menu
           var menuItem = this.addLinkForComponent(url, name);
           // add to polymer, the tray, etc.
           this.loadLink(name, url, function(err, result) {
             if (err) {
-              return console.error(err.error);
+              if(cb) cb(err.error)
+              else self.signalComponentError(err.error);
+              return;
             }
             menuItem.setBroken(false);
             tray.addComponentsFromRegistry();
+            if(cb) cb(null, name);
           });
         },
         addLinkForComponent: function(url, name) {
@@ -484,7 +505,7 @@
           var closeButton = document.createElement('a');
           closeButton.setAttribute('class', 'x');
           closeButton.addEventListener('click', function(event) {
-            if (window.confirm("Are you sure you want to forget about the component at " + url)) {
+            if (window.confirm(L10n.get("Are you sure you want to forget about the component at ") + url)) {
               self.forgetComponent(name, url);
               return;
             }
@@ -587,15 +608,18 @@
             },
             type: 'delete',
             success: function (data) {
+              // remove from tray, and user pulldown menu
               tray.forgetComponent(name);
+              var userState = document.querySelector("user-state").shadowRoot;
+              var li = userState.querySelector("[data-link-name='"+name+"']");
+              li.parentNode.removeChild(li);
               console.log("we've deleted the component");
               console.log("XXX: Need to tell polymer to forget about this component");
               // FIXME: it does not appear polymer actually supports "forgetting"
               //        of elements during the lifetime of a page without reloading.
             },
             error: function (data, err) {
-              console.log("Something went wrong!");
-              console.error("Error while forgetting component: " + data.url, err);
+              self.signalComponentError(L10n("Forget failed") + data.url, err);
             }
           });
         },
