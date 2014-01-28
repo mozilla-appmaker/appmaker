@@ -29,7 +29,7 @@ user-state {
 
   .menu-button {
     padding: 3px 50px 5px 28px;
-    background-color: #01a3b0;
+    background-color: @brand-brightblue;
     background-image: url(/images/arrow-down.png);
     background-size: 24px;
     background-repeat: no-repeat;
@@ -38,7 +38,7 @@ user-state {
 
     &:hover {
       text-decoration: none;
-      background-color: #0bb4c2;
+      background-color: @brand-brightblue-hover;
     }
 
   }
@@ -111,8 +111,8 @@ user-state {
     width: 100%;
     background: #DDD;
     text-align: left;
-    border-top: solid 2px #117b84;
-    border: solid 2px #01a3b0;
+    // border-top: solid 2px #117b84;
+    border: solid 2px @brand-brightblue;
     border-radius: 0 0 2px 2px;
     display: none;
   }
@@ -213,30 +213,35 @@ user-state {
     text-align: left;
     border: 0;
     background-color: transparent;
-    color: #555;
+    color: #777;
     padding: 0;
     margin: 0;
     padding: 3px 6px;
     display: block;
-    .border-radius(3px);
+    .border-radius(2px);
     font-size: 16px;
+    border-top: solid 1px #DDD;
+    border-bottom: solid 1px #DDD;
+    cursor: pointer;
 
-    &.app {
-      cursor: pointer;
-    }
-    &.app:hover {
-      background-color: white;
+    &:hover {
+      color: #333;
+      background-color: #EFEFEF;
     }
 
     &.currentApp {
-      font-weight: bold;
-      background-color: #CCC
+      color: #333;
+      background-color: #EFEFEF;
+      border-bottom: solid 1px white;
+      border-top: solid 1px #CCC
     }
+
     &.x {
       display:inline;
       margin-left: 1em;
       text-align: center;
     }
+
     &.x:hover {
       background-color: white;
       font-weight: bold;
@@ -256,7 +261,6 @@ user-state {
     font-size: 16px;
     color: #777;
   }
-
 
   .app-actions a {
     display: block;
