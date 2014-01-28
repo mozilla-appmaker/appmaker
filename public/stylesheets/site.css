@@ -8,6 +8,7 @@ body{
 h1{
   font-size: 50px;
   margin-bottom: 20px;
+    margin-top: 5px;
 }
 
 h3{
@@ -34,6 +35,20 @@ a{
 
 .light-blue-bg{
   background: #e9f7fb;
+}
+
+.button-link-blue {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  background: #283e56;
+  font-size: 14px;
+  text-transform: uppercase;
+  line-height: 20px;
+  cursor: pointer;
+  color: white;
+  display: inline-block;
+  margin-top: 20px;
 }
 
 .button-link{
@@ -125,6 +140,33 @@ a{
   padding: 40px 0;
 }
 
+/*Contribute block*/
+
+#contribute-block {
+  padding: 15px 0 35px 0;
+}
+
+#contribute-block .three-column {
+  border-top: solid 2px #b6cdd3;
+  padding-top: 20px;
+}
+
+#contribute-block h3 {
+  margin-bottom: 0px;
+}
+
+#contribute-block p:first-of-type {
+  margin-top: 12px;
+}
+
+
+#contribute-block h2 {
+  font-size: 40px;
+  padding-top: 18px;
+  padding-bottom: 20px;
+  margin: 0px;
+  color: #537a97;
+}
 
 /*nav link section ==============*/
 
@@ -144,10 +186,19 @@ a{
 #nav-page-links li{
   margin-top: 10px;
   padding: 0 20px;
+
   text-transform: uppercase;
 }
 
-#nav-page-links li.active-page a{
+#nav-page-links li.active-page a {
+  padding-bottom: 10px;
+  border-bottom: 10px solid #fff;
+  color: #95daea;
+}
+
+#nav-page-links li#about-page:hover a,
+#nav-page-links li#blog-page:hover a,
+#nav-page-links li#contribute-page:hover a{
   padding-bottom: 10px;
   border-bottom: 10px solid #fff;
   color: #95daea;
@@ -219,8 +270,56 @@ a{
   width: 41.666%;
 }
 
+#try-demo {
+  padding-bottom: 0px;
+}
+
+#try-demo h1 {
+  text-align : center;
+}
+
+#try-demo p {
+  text-align: center;
+  padding: 0 100px;
+}
+
 #demo-preview{
-  width: 58.333%;
+  width: 100%;
+  margin-top: 50px;
+}
+
+.demo-app {
+  width: 230px;
+  height: 160px;
+  margin: 0 auto;
+  background-size: 100%;
+  background-position: 0 20px;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  -webkit-transition: all .05s linear;
+  -moz-transition: all .05s linear;
+  opacity: .8;
+  display: block;
+}
+
+.demo-app-fireworks {
+  background-image: url(../images/demo-apps/demo-app-fireworks.png);
+}
+
+.demo-app-catgrower {
+  background-image: url(../images/demo-apps/demo-app-catgrower.png);
+}
+
+.demo-app-chatroom {
+  background-image: url(../images/demo-apps/demo-app-chatroom.png);
+}
+
+
+
+.demo-app:hover {
+  background-position: 0 0;
+  width: 240px;
+  opacity: 1;
 }
 
 /*widgets section ============*/
@@ -322,6 +421,28 @@ footer{
 
 /*tablet layout*/
 @media only screen and (max-width: 960px){
+
+
+  #try-demo p {
+    text-align: center;
+    padding: 0;
+  }
+
+  .demo-app {
+    background-position: top;
+    margin-bottom: 20px;
+    opacity: 1;
+  }
+
+  .demo-app:last-child {
+    margin-bottom: 40px;
+  }
+
+  .demo-app:hover {
+    background-position: top;
+    width: 230px;
+  }
+
   .wrap{
     padding: 0 5%;
     width: 90%;
@@ -366,7 +487,6 @@ footer{
   #nav{
     padding-bottom: 20px;
   }
-
 
   #wordmark a{
     position: relative;
@@ -426,6 +546,9 @@ footer{
     float: left;
     width: 100%;
   }
+
+
+
 }
 
 
