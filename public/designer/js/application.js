@@ -168,7 +168,7 @@ define(["jquery", "l10n"], function($, l10n) {
               console.error('Error while parsing loaded app.');
               userState.failedAppLoad();
             }
-            
+
             document.querySelector('ceci-card-nav').buildTabs();
           },
           error: function (data) {

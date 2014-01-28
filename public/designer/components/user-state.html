@@ -119,6 +119,15 @@
             that.editingmode = 'draft';
           }
 
+          function setupTempApp() {
+            var phoneBorderElement = document.querySelector(".phone-border");
+            var ca = document.createElement("ceci-app");
+            phoneBorderElement.appendChild(ca);
+            ca.appid = "temp-"+uuid();
+            that.updateAppName(l10n.get("Unsaved App"));
+            that.editingmode = "draft";
+          }
+
           document.addEventListener('signInStarted', function (event) {
             that.signInStarted();
           });
@@ -143,18 +152,14 @@
                   application.loadAppByName(application.getCurrentApp());
                   that.editingmode = "saved";
                 } else {
-                  var phoneBorderElement = document.querySelector(".phone-border");
-                  var ca = document.createElement("ceci-app");
-                  phoneBorderElement.appendChild(ca);
-                  ca.appid = "temp-"+uuid();
-
-                  that.updateAppName(l10n.get("Unsaved App"));
-                  that.editingmode = "draft";
+                  setupTempApp();
                 }
               }
             } else if (that.user.state == 'signedout') {
               if (remixName) {
                 loadRemixContent(remixName);
+              } else {
+                setupTempApp();
               }
               that.signedOut();
             }
