@@ -52,7 +52,9 @@
           card.show();
         };
         newthumb.querySelector("a").onclick = function() {
-          t.app.removeCard(index-1);
+          t.getOrWaitForCeciApp(function(ceciApp){
+              ceciApp.removeCard(index-1);
+          });
         };
         this.$.cardList.appendChild(newthumb);
       },
@@ -89,14 +91,19 @@
         }
       },
       addCard : function() {
+        this.getOrWaitForCeciApp(function(ceciApp){
+          ceciApp.addCard();
+        });
+      },
+      getOrWaitForCeciApp : function(callback){
         var ca = document.querySelector("ceci-app");
         if(!ca){
           document.getElementsByTagName('ceci-card')[0].addEventListener('WebComponentReady', function(){
-            var ca = document.querySelector("ceci-app");
-            ca.addCard();
+              var ca = document.querySelector("ceci-app");
+              callback(ca);
           });
         } else {
-          ca.addCard();
+          callback(ca);
         }
       }
     });
