@@ -12,15 +12,15 @@
       ready: function() {
         var t = this;
 
-        window.addEventListener('cardShown', function(data){
+        function resetTabs() {
           t.buildTabs();
-        });
+        }
 
-        window.addEventListener('ready', function (e) {
-          t.buildTabs();
-        }, false);
+        window.addEventListener('cardShown', resetTabs);
+        window.addEventListener('ready', resetTabs);
+        window.addEventListener('resetcards', resetTabs);
 
-        t.buildTabs();
+        resetTabs();
       },
       highlightTab : function(){
         //Figure out that index of the visible card
