@@ -71,6 +71,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
           gettext: req.gettext,
           ceciComponentURL: process.env.ASSET_HOST,
           remixURL: encodeURIComponent(encodeURIComponent(remoteURLs.app)),
+          bundles: app.locals.bundles,
           components: coreComponents.concat(appComponents)
         });
 
