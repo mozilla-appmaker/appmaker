@@ -14,7 +14,7 @@ define(
     "designer/keyboard",
     "designer/modes",
     "designer/userstate",
-    "jquery-ui",
+    "jquery-ui"
   ],
   function(l10n, Inflector, Utils, Ceci) {
     "use strict";

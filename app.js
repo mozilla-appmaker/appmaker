@@ -18,6 +18,7 @@ enableRedirects = require('./routes/redirects'),
 i18n = require('webmaker-i18n'),
 components = require('./lib/components'),
 localeBuild = require('./lib/localeBuild'),
+bundles = require('./lib/bundles'),
 localComponents = [];
 
 try {
@@ -77,6 +78,8 @@ app.configure(function(){
     proxy: true
   }));
 
+  bundles.configure(app);
+
   // Setup locales with i18n
   app.use(i18n.middleware({
     supported_languages: ["bn-BD", "en-US", "fr", "ru", "pt-BR", "th-TH"],
@@ -119,8 +122,8 @@ app.configure(function(){
   app.use("/test_assets/vendor/", express.static(path.join(__dirname, 'public', 'vendor')));
 
   app.use(lessMiddleware({
-      src: __dirname + '/public',
-      compress: true
+    src: __dirname + '/public',
+    compress: true
   }));
 
   app.use('/', cors());

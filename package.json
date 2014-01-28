@@ -37,7 +37,8 @@
     "cors": "~2.1.0",
     "mongoose": "~3.8.1",
     "request": "~2.30.0",
-    "node-github": "0.0.3"
+    "node-github": "0.0.3",
+    "express-bundles": "git://github.com/simonwex/express-bundles#v0.0.3"
   },
   "engines": {
     "node": "~0.10.21",
@@ -53,7 +54,8 @@
     "grunt-contrib-csslint": "~0.1.2",
     "grunt-lint-inline": "~0.3.2",
     "grunt-simple-mocha": "~0.4.0",
-    "async": "~0.2.10"
+    "async": "~0.2.10",
+    "grunt-contrib-requirejs": "~0.4.1"
   },
   "scripts": {
     "test": "grunt"

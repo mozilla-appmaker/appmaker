@@ -48,26 +48,65 @@ module.exports = function( grunt ) {
         "public/javascripts/**/*.js",
         "public/ceci/*.js",
         "public/designer/**.js"
-        // we should lint these, but don't know how to tell jslint that angular is defined.
-        // "app/scripts/controllers/*.js",
-        // "app/scripts/directives/*.js",
-        // "app/scripts/services/*.js"
       ]
     },
     inlinelint: {
       html: ['public/ceci/**/*.html',
       'public/designer/*.html'],
       ejs: ['**/*.ejs']
+    },
+    requirejs: {
+      compile: {
+        options: {
+          baseUrl: "./public/javascripts",
+          mainConfigFile: "public/javascripts/requireConfig.js",
+          paths: {
+            persona: "empty:",
+            Firebase: "empty:"
+          },
+          name: "requireConfig",
+          include: [
+            // Dependencies don't seem to work properly for the colorpicker
+            "jquery",
+            "jquery-ui",
+            "colorpicker.swatches.crayola",
+            "colorpicker.swatches.pantone",
+            "colorpicker.swatches.ral-classic",
+            "colorpicker.parts.memory",
+            "colorpicker.parts.rgbslider",
+            "colorpicker.parsers.rgbslider",
+            "colorpicker.parsers.cmyk-parser",
+            "colorpicker.i18n.de",
+            "colorpicker.i18n.en",
+            "colorpicker.i18n.fr",
+            "colorpicker.i18n.nl",
+            "colorpicker.i18n.pt-br",
+            "colorpicker.core",
+            "designer/index"
+          ],
+          out: "public/javascripts/designer-build.js",
+          optimize: "uglify2",
+          generateSourceMaps: true,
+          preserveLicenseComments: false
+        }
+      }
     }
   });
 
-  grunt.loadNpmTasks( "grunt-contrib-csslint" );
-  grunt.loadNpmTasks( "grunt-contrib-jshint" );
-  grunt.loadNpmTasks('grunt-lint-inline');
-  grunt.loadNpmTasks('grunt-simple-mocha');
+  grunt.loadNpmTasks("grunt-contrib-csslint");
+  grunt.loadNpmTasks("grunt-contrib-jshint");
+  grunt.loadNpmTasks("grunt-lint-inline");
+  grunt.loadNpmTasks("grunt-simple-mocha");
+  grunt.loadNpmTasks("grunt-contrib-requirejs");
+
 
   // TODO: the csslinting is turned off right now, because the number
   //       of warnings is staggering. Some make sense, some don't.
-  grunt.registerTask( "default", [ /*"csslint",*/ "jshint", "inlinelint",
-                                   "simplemocha" ]);
+  grunt.registerTask("default", [
+    /*"csslint",*/
+    "jshint",
+    "inlinelint",
+    "simplemocha",
+    "requirejs"
+  ]);
 };
