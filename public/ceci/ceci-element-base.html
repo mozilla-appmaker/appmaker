@@ -164,9 +164,9 @@
           };
 
           this.ceci.thumbnail = ceciDefinition.thumbnail;
-          this.ceci.tags = ceciDefinition.tags;
+          this.ceci.tags = ceciDefinition.tags || [];
 
-          this.ceci.attributes = ceciDefinition.attributes;
+          this.ceci.attributes = ceciDefinition.attributes || {};
 
           that.localized();
         },
