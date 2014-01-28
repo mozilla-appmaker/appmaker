@@ -126,6 +126,7 @@
             ca.appid = "temp-"+uuid();
             that.updateAppName(l10n.get("Unsaved App"));
             that.editingmode = "draft";
+            window.dispatchEvent(new CustomEvent("resetcards"));
           }
 
           document.addEventListener('signInStarted', function (event) {
@@ -196,6 +197,7 @@
             self.editingmode = "draft";
             self.closeMenus();
             self.setAppURL(false);
+            window.dispatchEvent(new CustomEvent("resetcards"));
           });
 
           //Rename App
