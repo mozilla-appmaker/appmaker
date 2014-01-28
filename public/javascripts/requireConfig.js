@@ -39,7 +39,7 @@ requirejs.config({
       exports: "$",
       deps: ['jquery']
     },
-    "colorpicker.core": ["jquery"],
+    "colorpicker.core": ["jquery-ui"],
     "colorpicker.swatches.crayola": ["colorpicker.core"],
     "colorpicker.swatches.pantone": ["colorpicker.core"],
     "colorpicker.swatches.ral-classic": ["colorpicker.core"],
