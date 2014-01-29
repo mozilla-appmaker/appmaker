@@ -193,10 +193,11 @@
             log.clear();
             application.clearCurrentApp();
             application.newApp();
-            self.refreshUserState();
-            self.editingmode = "draft";
             self.closeMenus();
             self.setAppURL(false);
+            self.refreshUserState();
+            self.updateAppName(l10n.get("Unsaved App"));
+            self.editingmode = "draft";
             window.dispatchEvent(new CustomEvent("resetcards"));
           });
 
