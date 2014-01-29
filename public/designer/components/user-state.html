@@ -124,7 +124,7 @@
               var phoneBorderElement = document.querySelector(".phone-border");
               var ca = document.createElement("ceci-app");
               phoneBorderElement.appendChild(ca);
-              ca.appid = "temp-"+uuid();
+              ca.setAttribute("appid","temp-"+uuid());
               that.updateAppName(l10n.get("Unsaved App"));
               that.editingmode = "draft";
               window.dispatchEvent(new CustomEvent("resetcards"));
@@ -260,8 +260,8 @@
             var name = window.prompt(l10n.get("What do you want to call this app?"));
 
             var ceciApp = document.querySelector('ceci-app');
-            ceciApp.name = name;
-            ceciApp.appid = "ceci-app-"+uuid();
+            ceciApp.setAttribute("name", name);
+            ceciApp.setAttribute("appid", "ceci-app-"+uuid());
 
             var html = ceciApp.outerHTML;
             if(name){
@@ -293,7 +293,7 @@
 
           var phoneBorderElement = document.querySelector(".phone-border");
           var ca = document.createElement("ceci-app");
-          ca.appid = "temp-"+uuid();
+          ca.setAttribute("appid", "temp-"+uuid());
           phoneBorderElement.appendChild(ca);
           this.updateAppName(l10n.get("Unsaved App"));
         },
@@ -305,7 +305,7 @@
         updateAppName: function(name){
           var app = document.querySelector('ceci-app');
           if (app && name) {
-            app.name = name;
+            app.setAttribute("name", name);
             document.querySelector(".phone-top .app-name").innerHTML = app.name;
           }
         },
