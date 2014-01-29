@@ -204,7 +204,6 @@
           this.$.renameApp.addEventListener("click", function() {
             var oldName = application.getCurrentApp();
             var newName = window.prompt(l10n.get("What do you want to call this app?"));
-            var html = document.querySelector('ceci-app').innerHTML;
             if(newName){
               application.renameApp(oldName, newName);
             } else {
@@ -215,7 +214,7 @@
           //Update App
           this.$.saveApp.addEventListener("click", function() {
             var ceciApp = document.querySelector('ceci-app');
-            var html = ceciApp.innerHTML;
+            var html = ceciApp.outerHTML;
             var name = application.getCurrentApp();
             if(name){
               application.updateApp(name,ceciApp.appid,html);
@@ -243,7 +242,7 @@
                 if (data) {
                   console.error("app was published, but updating failed");
                 } else {
-                  console.error("app sas not successfully published");
+                  console.error("app was not successfully published");
                 }
                 return;
               }
@@ -261,7 +260,7 @@
             ceciApp.name = name;
             ceciApp.appid = "ceci-app-"+uuid();
 
-            var html = ceciApp.innerHTML;
+            var html = ceciApp.outerHTML;
             if(name){
               application.saveApp(name,ceciApp.appid,html);
               // gotta make sure it actually saves though!

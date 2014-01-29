@@ -163,6 +163,7 @@ define(["jquery", "l10n"], function($, l10n) {
               var newApp = fragment.querySelector('ceci-app');
               var currentApp = self.getOrInsertCeciApp();
               currentApp.parentNode.replaceChild(newApp, currentApp);
+              newApp.setAttribute("appid", "ceci-app-"+uuid());
             }
             else {
               console.error('Error while parsing loaded app.');
@@ -188,7 +189,7 @@ define(["jquery", "l10n"], function($, l10n) {
           type: 'get',
           success: function (data) {
             var app = self.getOrInsertCeciApp();
-            app.innerHTML = data.html;
+            app.outerHTML = data.html;
             localStorage.currentApp = name;
             userState.okAppLoad(name, data);
             // Update the page/card tabs
