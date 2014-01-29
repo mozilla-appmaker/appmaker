@@ -34,7 +34,7 @@ define(
 
         item.setAttribute('label', meta.name || Util.prettyName(name));
 
-        item.setAttribute('description', meta.description);
+        item.setAttribute('description', L10n.get(name + "/description") || meta.description);
         item.setAttribute('author', meta.author);
         item.setAttribute('updatedat', meta.updatedAt);
 
