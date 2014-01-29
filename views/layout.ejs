@@ -41,9 +41,13 @@
     <link rel="import" href="/<%= href %>">
     <% }); %>
 
-    <% components.forEach(function(href) { %>
-    <link rel="import" href="<%= href %>">
-    <% }) %>
+    <% if (!!process.env.BUNDLE){ %>
+      <link rel="import" href="/bundles/components/mozilla-appmaker.html">
+    <% } else { %>
+      <% components.forEach(function(href) { %>
+      <link rel="import" href="<%= href %>">
+      <% }) %>
+    <% } %>
 
     <script type="text/javascript">
       var _gaq = _gaq || [];
