@@ -472,7 +472,7 @@
             },
             error: function (data) {
               // break off the process by not calling next()
-              selt.signalComponentError(l10n.get("error storing info about component: ") + JSON.stringify(data.responseJSON.error), data.responseJSON)
+              self.signalComponentError(l10n.get("error storing info about component: ") + JSON.stringify(data.responseJSON.error), data.responseJSON)
             }
           });
         },
