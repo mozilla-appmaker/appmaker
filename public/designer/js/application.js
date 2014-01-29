@@ -189,7 +189,17 @@ define(["jquery", "l10n"], function($, l10n) {
           type: 'get',
           success: function (data) {
             var app = self.getOrInsertCeciApp();
-            app.outerHTML = data.html;
+            var html = data.html;
+            // our apps must be wrapped by a <ceci-app> element
+            if(html.indexOf("<ceci-app") === -1 && html.indexOf("</ceci-app>") === -1) {
+              var err = l10n.get("Malformed app HTML");
+              err += " (appid: "+data.appid+")\n";
+              err += l10n.get("This app will not be loaded");
+              console.error(err);
+              alert(err);
+              return;
+            }
+            app.outerHTML = html;
             localStorage.currentApp = name;
             userState.okAppLoad(name, data);
             // Update the page/card tabs
