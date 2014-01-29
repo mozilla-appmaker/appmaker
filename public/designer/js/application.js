@@ -190,9 +190,14 @@ define(["jquery", "l10n"], function($, l10n) {
           success: function (data) {
             var app = self.getOrInsertCeciApp();
             var html = data.html;
-            // old style apps lack a <ceci-app appid="..." name="..."> leading, and </ceci-app> trailing tag.
+            // our apps must be wrapped by a <ceci-app> element
             if(html.indexOf("<ceci-app") === -1 && html.indexOf("</ceci-app>") === -1) {
-              html = '<ceci-app appid="'+data.appid+'" name="'+data.name+'">' + html + "</ceci-app>";
+              var err = l10n.get("Malformed app HTML");
+              err += " (appid: "+data.appid+")\n";
+              err += l10n.get("This app will not be loaded");
+              console.error(err);
+              alert(err);
+              return;
             }
             app.outerHTML = html;
             localStorage.currentApp = name;
