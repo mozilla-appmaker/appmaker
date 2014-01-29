@@ -189,7 +189,12 @@ define(["jquery", "l10n"], function($, l10n) {
           type: 'get',
           success: function (data) {
             var app = self.getOrInsertCeciApp();
-            app.outerHTML = data.html;
+            var html = data.html;
+            // old style apps lack a <ceci-app appid="..." name="..."> leading, and </ceci-app> trailing tag.
+            if(html.indexOf("<ceci-app") === -1 && html.indexOf("</ceci-app>") === -1) {
+              html = '<ceci-app appid="'+data.appid+'" name="'+data.name+'">' + html + "</ceci-app>";
+            }
+            app.outerHTML = html;
             localStorage.currentApp = name;
             userState.okAppLoad(name, data);
             // Update the page/card tabs
