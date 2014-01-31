@@ -103,7 +103,7 @@ define(["jquery", "l10n"], function($, l10n) {
             if(next) { next(false, data); }
           },
           error: function (data) {
-            console.error("App was not saved successfully!"), data;
+            console.error("App was not saved successfully!");
             if(next) { next(data); }
           }
         });
