@@ -81,8 +81,6 @@ module.exports = function (mongoose, dbconn) {
 
       var name = request.body.name;
       //TODO query by appid instead of name https://github.com/mozilla-appmaker/appmaker/issues/898
-      console.log("incoming html", request.body.html);
-      console.log("incoming ur", request.body.url);
       var html = request.body.html || false;
       var url = request.body.url || false;
 

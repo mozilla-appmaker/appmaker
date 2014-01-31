@@ -271,6 +271,7 @@
               application.setCurrentApp(name);
               self.refreshUserState();
               self.editingmode = "saved";
+              window.dispatchEvent(new CustomEvent("CeciAppSaveAs"));
             } else {
               console.log("Please name your app.");
             }
@@ -302,12 +303,24 @@
           this.refreshUserState();
           this.setAppURL(data['last-published-url']);
         },
-        updateAppName: function(name){
-          var app = document.querySelector('ceci-app');
-          if (app && name) {
-            app.setAttribute("name", name);
-            document.querySelector(".phone-top .app-name").innerHTML = app.name;
+        getOrWaitForCeciApp: function(callback){
+          var ceciApp = document.querySelector("ceci-app");
+          if(!ceciApp){
+            window.addEventListener("CeciAppReady", function(e){
+              var ceciApp = document.querySelector("ceci-app");
+              callback(ceciApp);
+            });
+          } else {
+            callback(ceciApp);
           }
+        },
+        updateAppName: function(name){
+          this.getOrWaitForCeciApp(function(ceciApp){
+            if (ceciApp && name) {
+              ceciApp.setAttribute("name", name);
+              document.querySelector(".phone-top .app-name").innerHTML = ceciApp.name;
+            }
+          });
         },
         appRenameOk: function(name){
           application.setCurrentApp(name);
