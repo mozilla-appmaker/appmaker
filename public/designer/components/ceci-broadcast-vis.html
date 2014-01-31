@@ -1,0 +1,25 @@
+<polymer-element name="ceci-broadcast-vis" extends="ceci-channel-vis">
+  <template>
+    <div id="visLines" class="channel-visualisation broadcast-channels"></div>
+  </template>
+  <script>
+  (function(){
+    //Animation speeds, In seconds
+    Polymer('ceci-broadcast-vis', {
+      direction : "out",
+      enteredView: function () {
+        var that = this;
+        this.component = this.parentNode.host;
+        this.component.addEventListener('broadcastFired', function(data){
+          that.fire(data);
+        });
+        this.super();
+      },
+      leftView : function(){
+        this.super();
+        this.component.removeEventListener('broadcastFired');
+      }
+    });
+    })();
+  </script>
+</polymer-element>

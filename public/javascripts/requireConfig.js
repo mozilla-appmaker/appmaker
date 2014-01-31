@@ -3,40 +3,54 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 requirejs.config({
-  baseUrl: "/vendor/",
+  baseUrl: "/javascripts/",
   paths: {
-    "inflector": "inflection-js/inflection.min",
+    "inflector": "../vendor/inflection-js/inflection.min",
 
-    "jquery": "jquery/jquery.min",
+    "jquery": "../vendor/jquery/jquery.min",
 
-    "localized": "webmaker-i18n/localized",
-    "ceci": "ceci/ceci",
-    "ceci-ui": "ceci/ceci-ui",
-    "ceci-cards": "ceci/ceci-cards",
-    "ceci-app": "ceci/ceci-app",
-    "ceci-utils": "ceci/ceci-utils",
+    "l10n": "l10n",
 
-    "jquery-ui": "jquery-ui/ui/minified/jquery-ui.min",
+    "jquery-ui": "../vendor/jquery-ui/ui/minified/jquery-ui.min",
 
-    // "persona": "https://login.persona.org/include",
+    "persona": "https://login.persona.org/include",
 
-    "designer-keyboard": "/javascripts/designer-keyboard",
-    "designer-utils": "/javascripts/designer-utils",
+    "ceci": "../ceci",
 
-    "togetherjs": "https://togetherjs.com/togetherjs-min",
+    "designer": "../designer/js",
 
-    "angular": "angular/angular.min"
+    "colorpicker.core": "../vendor/colorpicker/jquery.colorpicker",
+    "colorpicker.swatches.crayola": "../vendor/colorpicker/swatches/jquery.ui.colorpicker-crayola",
+    "colorpicker.swatches.pantone": "../vendor/colorpicker/swatches/jquery.ui.colorpicker-pantone",
+    "colorpicker.swatches.ral-classic": "../vendor/colorpicker/swatches/jquery.ui.colorpicker-ral-classic",
+    "colorpicker.parts.memory": "../vendor/colorpicker/parts/jquery.ui.colorpicker-memory",
+    "colorpicker.parts.rgbslider": "../vendor/colorpicker/parts/jquery.ui.colorpicker-rgbslider",
+    "colorpicker.parsers.rgbslider": "../vendor/colorpicker/parsers/jquery.ui.colorpicker-cmyk-parser",
+    "colorpicker.parsers.cmyk-parser": "../vendor/colorpicker/parsers/jquery.ui.colorpicker-cmyk-percentage-parser",
+    "colorpicker.i18n.de": "../vendor/colorpicker/i18n/jquery.ui.colorpicker-de",
+    "colorpicker.i18n.en": "../vendor/colorpicker/i18n/jquery.ui.colorpicker-en",
+    "colorpicker.i18n.fr": "../vendor/colorpicker/i18n/jquery.ui.colorpicker-fr",
+    "colorpicker.i18n.nl": "../vendor/colorpicker/i18n/jquery.ui.colorpicker-nl",
+    "colorpicker.i18n.pt-br": "../vendor/colorpicker/i18n/jquery.ui.colorpicker-pt-br",
+    "Firebase": "https://cdn.firebase.com/v0/firebase"
   },
   shim: {
     "jquery-ui": {
       exports: "$",
       deps: ['jquery']
     },
-    "togetherjs": {
-      exports: "TogetherJS"
-    }
+    "colorpicker.core": ["jquery-ui"],
+    "colorpicker.swatches.crayola": ["colorpicker.core"],
+    "colorpicker.swatches.pantone": ["colorpicker.core"],
+    "colorpicker.swatches.ral-classic": ["colorpicker.core"],
+    "colorpicker.parts.memory": ["colorpicker.core"],
+    "colorpicker.parts.rgbslider": ["colorpicker.core"],
+    "colorpicker.parsers.rgbslider": ["colorpicker.core"],
+    "colorpicker.parsers.cmyk-parser": ["colorpicker.core"],
+    "colorpicker.i18n.de": ["colorpicker.core"],
+    "colorpicker.i18n.en": ["colorpicker.core"],
+    "colorpicker.i18n.fr": ["colorpicker.core"],
+    "colorpicker.i18n.nl": ["colorpicker.core"],
+    "colorpicker.i18n.pt-br": ["colorpicker.core"]
   }
 });
-
-requirejs(["/javascripts/application.js"]);
-requirejs(["/javascripts/togetherjsSupport.js"]);

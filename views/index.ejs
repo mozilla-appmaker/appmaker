@@ -1,37 +1,144 @@
-<% layout('layout') -%>
-<link rel='stylesheet' href='/stylesheets/tutorial.css' />
-<script type="text/javascript" charset="utf-8" src="/vendor/jquery/jquery.js"></script>
-<script type="text/javascript" charset="utf-8" src="/vendor/jquery-ui/ui/minified/jquery-ui.min.js"></script>
-<script type="text/javascript" charset="utf-8" src="/javascripts/tutorial.js"></script>
-<div class="top-line"></div>
-<div id="home-mozilla">
-	<a href="http://www.mozilla.org"><img src="images/mozilla.png"></a>
-</div>
-<div class="home-logo">
-	<img src="images/chef-man.png">
-	<div class="app-logo">
-		<%- gettext("app-logo") %>
-	</div>
-	<div class="home-sub">
-		<%- gettext("home-sub") %>
-	</div>
-</div>
-<div class="home-container clearfix">
-	<div class="home-left">
-		<div class="explanation">
-			<%- gettext("explanation") %>
-		</div>
-			  <button class="btn-std btn-start-app" onclick="window.location='/<%- localeInfo.lang %>/designer'">
-  		<%- gettext("Build App") %>
-		</button>
-		<a href="https://github.com/mozilla/appmaker" target="_blank"><div class="github"></div></a>
-		<a href="https://twitter.com/MozillaAppmaker" target="_blank"><div class="twitter"></div></a>
-	</div>
-	<div class="home-right">
-		<div class="right-inner">
-			<div class="video-splash">
-				<iframe src="//www.youtube.com/embed/RaRIdLgZTPI?html5=1" width="960" height="540" frameborder="0"></iframe>
-			</div>
-		</div>
-	</div>
-</div>
+<!DOCTYPE html>
+<html lang="<%- localeInfo.lang %>" dir="<%- localeInfo.direction %>">
+  <head>
+    <title>Mozilla Appmaker</title>
+    <link rel='stylesheet' href='/stylesheets/site.css' />
+    <link rel='stylesheet' href='/stylesheets/font-awesome.css' />
+    <link href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" rel="stylesheet" />
+    <script type="text/javascript" charset="utf-8" src="/vendor/jquery/jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/vendor/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <!-- rss-feed-parser.js taken from http://designshack.net/articles/javascript/build-an-automated-rss-feed-list-with-jquery/ -->
+    <script type="text/javascript" charset="utf-8" src="/javascripts/rss-feed-parser.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/javascripts/tutorial.js"></script>
+  </head>
+  <body>
+    <div id="nav">
+      <div class="wrap">
+        <a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
+        <div>
+          <div id="wordmark" class="left">
+            <a href="/<%- localeInfo.lang %>"><img src="images/appmaker_wordmark.png" />
+            </a>
+          </div>
+          <ul id="nav-page-links">
+            <div class="right">
+              <li id="designer-page" class="right"><a href="/<%- localeInfo.lang %>/designer" class="build-app"><i class="fa fa-mobile"></i><span><%- gettext("Build App") %></span></a></li>
+              <li id="blog-page" class="right"><a href="//appmaking.mozillalabs.com/"><%- gettext("Blog") %></a></li>
+              <li id="contribute-page" class="right"><a href="/<%- localeInfo.lang %>/contribute"><%- gettext("Contribute") %></a></li>
+              <li id="about-page" class="right"><a href="/<%- localeInfo.lang %>/about"><%- gettext("About") %></a></li>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="banner" class="content-block">
+      <div class="wrap">
+        <div class="two-column">
+          <h1><%- gettext("Let's Build an App") %></h1>
+          <div class="banner-description"><%- gettext("Finally, a simple way to create and share personal mobile apps, even if you don't know code. 100% free and open source.") %></div>
+          <button class="button-link white-text-button build-app" onclick="window.location='/<%- localeInfo.lang %>/designer'"><i class="fa fa-mobile"></i><span><%- gettext("Build App") %></span></button>
+        </div>
+        <div class="two-column">
+          <div class="video-splash">
+            <iframe src="//www.youtube.com/embed/eyh4ayEZEJY?html5=1" width="960" height="540" frameborder="0"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="quote" class="content-block">
+      <div class="wrap">
+        <span><i><%- gettext("\"Mozilla  Appmaker lets you drag and drop components to easily build fun and  useful apps for your friends, your business, your classroom and your  community.\"") %></i></span>
+      </div>
+    </div>
+
+    <div id="contribute-block" class="content-block">
+
+      <div class="wrap">
+        <div class="three-column">
+          <h2>Help make Appmaker better!</h2>
+          <!-- <p>We're looking </p> -->
+        </div>
+        <div class="three-column">
+          <h3>Have an Opinion?</h3>
+          <p>
+            Then we'd love your feedback! Fill out our short Usability Survey while <a href="">building an app</a> and
+            we'll use your feedback to improve Appmaker.
+          <p>
+          <p>
+            <a class="button-link-blue" href="https://docs.google.com/forms/d/16Qyz8oHl_RwMV-cdtwxHyVlamg0IDg5s4NOjYdMznv0/viewform">
+              Take the Survey
+            </a>
+          </p>
+        </div>
+        <div class="three-column">
+          <h3>Like to Build Stuff?</h3>
+          <p>
+            We're looking for <strong>component</strong> contributors. If you're handy with code or want to get better,
+            you can help! Check out our guide to see how to get started.
+          <p>
+          <p>
+            <a class="button-link-blue" href="http://github.com/mozilla-appmaker/appmaker/wiki/Contributing-a-component">Find out How</a>
+          </p>
+        </div>
+    </div>
+  </div>
+
+
+
+    <div id="try-demo" class="content-block light-blue-bg">
+      <div class="wrap">
+        <h1><%- gettext("Try our Demo Apps") %></h1>
+        <!-- <h1><%- gettext("Try our Demo Apps") %></h1> -->
+
+        <p>
+          <%- gettext("We've built some demo apps for you to try. We hope you remix them and make  them your own - it's a great way to discover what you can do with Appmaker.") %>
+          </>
+
+        <div id="demo-preview">
+          <div class="three-column">
+            <a class="demo-app demo-app-fireworks" title="Remix the Fireworks App" href="https://appmaker.mozillalabs.com/designer?remix=http%253A%252F%252Froomy-tin-222.appalot.me%252Findex.html" class="demo-app"></a>
+          </div>
+          <div class="three-column">
+            <a title="Remix the Chatroom App" href="https://appmaker.mozillalabs.com/designer?remix=http%253A%252F%252Fsecond-shade-263.appalot.me%252Findex.html" class="demo-app demo-app-chatroom"></a>
+          </div>
+          <div class="three-column">
+            <a class="demo-app demo-app-catgrower" title="Remix the Cat Grower app" href="https://appmaker.mozillalabs.com/designer?remix=http%253A%252F%252Fsame-earthquake-20.appalot.me%252Findex.html"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="widgets" class="content-block">
+      <div class="wrap">
+        <div class="three-column">
+          <h3>Twitter</h3>
+          <a class="twitter-timeline"  href="https://twitter.com/MozillaAppmaker" height="250"  data-widget-id="425786940290371584" data-chrome="noheader nofooter">Tweets by @MozillaAppmaker</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        </div>
+        <div class="three-column">
+          <h3><%- gettext("Recent Blog Posts") %></h3>
+          <div id="recent-blog"></div>
+        </div>
+        <div class="three-column">
+          <h3><%- gettext("Get Appmaker Updates") %></h3>
+          <div id="sign-up-mailing-list"></div>
+          <button class="button-link blue-bg-button full-width-button" onclick="window.location='//mail.mozilla.org/listinfo/appmaker-announce'"><%- gettext("Sign me up!") %></button>
+        </div>
+      </div>
+    </div>
+    <% include footer %>
+    </div>
+    <script>
+      // sample code taken from http://designshack.net/articles/javascript/build-an-automated-rss-feed-list-with-jquery/
+      $.ajax({
+        url: document.location.protocol + '//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=' + encodeURIComponent("http://appmaking.mozillalabs.com/feed/"),
+        dataType: 'json',
+        success: function(data) {
+          $.each(data.responseData.feed.entries.slice(0,10), function(key, value){
+              var thehtml = '<a href="'+value.link+'" target="_blank">'+value.title+'</a><br />';
+              $("#recent-blog").append(thehtml);
+          });
+        }
+      });
+    </script>
+  </body>

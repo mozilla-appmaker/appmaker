@@ -8,7 +8,7 @@
 </template>
 
 <template id="moz-button" broadcasts>
-  <button onclick="$(this).parent().trigger('broadcast')">Click Me</button>
+  <button onclick="$(this).parent().trigger('broadcast')"><%- gettext("Click Me") %></button>
 </template>
 
 <template id="moz-counter" ondblclick="$(this).find('div').text(parseFloat($(this).text()) + 1)">
@@ -17,7 +17,7 @@
 
 <template id="moz-input-form" broadcasts>
   <input type="text">
-  <button onclick="$(this).parent().trigger('broadcast', $(this).prev().val())">Submit</button>
+  <button onclick="$(this).parent().trigger('broadcast', $(this).prev().val())"><%- gettext("Submit") %></button>
 </template>
 
 <template id="moz-log" ondblclick="$(this).append(arguments[1] + '<br>')">
@@ -29,33 +29,33 @@
   <div>Metronome</div>
   <script type="text/javascript">
   (function () {
-    var element = $('.moz-metronome').last()
+    var element = $('.moz-metronome').last();
     setInterval(function () {
-      element.trigger('broadcast')
-    }, element.attr('period') || 1000)
+      element.trigger('broadcast');
+    }, element.attr('period') || 1000);
   })()
   </script>
 </template>
 
 <template id="moz-camera" broadcasts>
-  
+
   <script src="/camera-action.min.js"></script>
   <div style="width: 320px; height: 240px;"></div>
   <script>
   (function () {
-    var element = $('.moz-camera div').last()
+    var element = $('.moz-camera div').last();
     var camera = new Camera(element[0], {
       'width': 320,
       'height': 240
-    })
+    });
     element.on('click', function () {
-      camera.takePhoto()
-    })
-    camera.action()
+      camera.takePhoto();
+    });
+    camera.action();
     camera.on('photo', function (data) {
-      element.parent().trigger('broadcast', data)
-    })
-    
-  })()
+      element.parent().trigger('broadcast', data);
+    });
+
+  })();
   </script>
 </template>

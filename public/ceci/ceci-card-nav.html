@@ -1,0 +1,112 @@
+<polymer-element name="ceci-card-nav">
+  <template>
+    <div class="cards" id="cards">
+      <div class="card-list" id="cardList"></div>
+      <div on-click="{{addCard}}" class="add-card"></div>
+    </div>
+  </template>
+  <script>
+  require(['l10n'], function(l10n) {
+    Polymer('ceci-card-nav', {
+      checked : false,
+      ready: function() {
+        var t = this;
+
+        function resetTabs() {
+          t.buildTabs();
+        }
+
+        window.addEventListener('cardShown', resetTabs);
+        window.addEventListener('ready', resetTabs);
+        window.addEventListener('resetcards', resetTabs);
+
+        resetTabs();
+      },
+      highlightTab : function(){
+        //Figure out that index of the visible card
+        var highlightIndex;
+        var list = document.querySelectorAll("ceci-card") || [];
+
+        Array.prototype.forEach.call(list, function(el,index){
+          if(el.getAttribute("visible") == "true"){
+            highlightIndex = index;
+          }
+        });
+
+        //Highlight the corresponding tab
+        var tabList = this.shadowRoot.querySelectorAll('.card') || [];
+        Array.prototype.forEach.call(tabList, function(el,index){
+          el.classList.remove("selected");
+          if(index == (highlightIndex)){
+            el.classList.add("selected");
+          }
+        });
+
+      },
+      addCardTab : function(index, card){
+        var t = this;
+        var newthumb = document.createElement("div");
+        newthumb.innerHTML = "<span class='card-name'>" + l10n.get("Page") + " " + index + "</span><a title='" + l10n.get("Delete this card") + "' href='#' class='delete-card'></a>";
+        newthumb.classList.add("card");
+        newthumb.onclick = function() {
+          card.show();
+        };
+        newthumb.querySelector("a").onclick = function() {
+          t.getOrWaitForCeciApp(function(ceciApp){
+              ceciApp.removeCard(index-1);
+          });
+        };
+        this.$.cardList.appendChild(newthumb);
+      },
+      buildTabs : function() {
+        //Nuke all existing tabs
+        var tabList = this.shadowRoot.querySelectorAll(".card");
+
+        var t = this;
+        if(tabList.length > 0){
+          Array.prototype.forEach.call(tabList, function(el,index){
+            t.$.cardList.removeChild(tabList[index]);
+          });
+        }
+        //Add tabs for all pages
+        var existingCards = document.querySelectorAll('ceci-card');
+        if(!existingCards){
+          var self = this;
+          document.getElementsByTagName('ceci-card')[0].addEventListener('WebComponentReady', function(){
+            var existingCards = document.querySelectorAll('ceci-card');
+            if(existingCards.length > 0){
+              Array.prototype.forEach.call(existingCards, function(el,index){
+                t.addCardTab(index+1,existingCards[index]);
+              });
+            }
+            this.highlightTab();
+          });
+        } else {
+          if(existingCards.length > 0){
+            Array.prototype.forEach.call(existingCards, function(el,index){
+              t.addCardTab(index+1,existingCards[index]);
+            });
+          }
+          this.highlightTab();
+        }
+      },
+      addCard : function() {
+        this.getOrWaitForCeciApp(function(ceciApp){
+          ceciApp.addCard();
+        });
+      },
+      getOrWaitForCeciApp : function(callback){
+        var ca = document.querySelector("ceci-app");
+        if(!ca){
+          document.getElementsByTagName('ceci-card')[0].addEventListener('WebComponentReady', function(){
+            var ca = document.querySelector("ceci-app");
+            callback(ca);
+          });
+        } else {
+          callback(ca);
+        }
+      }
+    });
+  });
+  </script>
+</polymer-element>

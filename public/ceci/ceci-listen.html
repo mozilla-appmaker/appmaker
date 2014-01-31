@@ -1,0 +1,70 @@
+<polymer-element name="ceci-listen" attributes="on for">
+  <template>
+    <content></content>
+  </template>
+  <script>
+    Polymer('ceci-listen', {
+      ready: function () {
+        var that = this;
+        this._eventListener = function (e) {
+          // Make sure that this <ceci-listen> is inside a valid ceci element, and that the broadcast which triggered this
+          // listener did not originate inside the same ceci element. i.e. an element cannot listen to its own broadcasts.
+          if (that._element && that._element !== e.detail.originCeciElement && that._element[that._handler]) {
+            that._element[that._handler](e.detail.data, e.detail.extra);
+            var listenerDetails = {
+              handler : that._handler,
+              data : e.detail.data,
+              channel : that._channel,
+              extra : e.detail.extra
+            };
+            //This should somehow live in a ceci-listen-designer
+            that.dispatchEvent(new CustomEvent('signalFired', {name: name, bubbles: true, detail: listenerDetails}));
+          }
+        };
+      },
+      _element: null,
+      _handler: null,
+      _channel: null,
+      _eventListener: null,
+      update: function () {
+        if (this._channel && this._eventListener && this.parentNode) {
+          document.removeEventListener(this._channel, this._eventListener, false);
+        }
+        this._handler = this.getAttribute('for');
+        this._channel = this.getAttribute('on');
+        this.updateContainerElement();
+
+        if (this.parentNode) {
+          document.addEventListener(this._channel, this._eventListener, false);
+        }
+        this.dispatchEvent(new CustomEvent('listenerUpdated', {
+          name: name, bubbles: true, detail: this
+        }));
+      },
+      enteredView: function () {
+        this.update();
+      },
+      leftView: function () {
+        if (this._channel && this._eventListener) {
+          document.removeEventListener(this._channel, this._eventListener, false);
+        }
+        this.dispatchEvent(new CustomEvent('listenerUpdated', {name: name, bubbles: true, detail: this}));
+      },
+      updateContainerElement: function () {
+        while (true) {
+          this._element = this.parentNode;
+          if (!this._element) break;
+          if (this._element.localName.indexOf('ceci-') === 0 && ['ceci-listen', 'ceci-broadcast'].indexOf(this._element.localName) === -1) {
+            break;
+          }
+        }
+      },
+      onChanged: function (oldValue, newValue) {
+        this.update();
+      },
+      forChanged: function (oldValue, newValue) {
+        this.update();
+      }
+    });
+  </script>
+</polymer-element>

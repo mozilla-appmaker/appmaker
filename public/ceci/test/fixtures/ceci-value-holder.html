@@ -1,0 +1,16 @@
+<polymer-element name="ceci-value-holder" extends="ceci-element" attributes="value">
+  <template>
+  </template>
+  <script>
+    Polymer('ceci-value-holder', {
+      ready: function () {
+      },
+      setValue: function(newValue) {
+        this.value(newValue);
+      },
+      getValue: function(){
+        return this.value;
+      }
+    });
+  </script>
+</polymer-element>

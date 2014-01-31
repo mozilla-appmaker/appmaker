@@ -1,0 +1,679 @@
+<polymer-element name="user-state" attributes="user editingmode">
+  <template>
+    <a id="signin" class="button {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">Sign In</a>
+    <div id="signInProgress"></div>
+
+    <div class="dropdowns {{ {hidden: user.state == 'signedout'} | tokenList }}">
+
+      <div class="menu-wrapper user-menu">
+        <a id="email" class="menu-button button" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">
+          <span class="icon"></span>
+          {{user.email}}
+        </a>
+        <div class="menu">
+          <h3 id="myappsheading">My apps</h3>
+          <span id="noApps">You don't have any saved apps!</span>
+          <ul id="myapps" class="menu-options">
+          </ul>
+          <h3 id="mycomponentsheading">My components</h3>
+          <div>
+            <a id="addComponent" class="button" on-click={{addComponent}}>Add component</a>
+          </div>
+          <ul id="mycomponents" class="menu-options">
+          </ul>
+          <a id="signout" class="button" on-click="{{signoutClick}}">Sign Out</a>
+        </div>
+      </div>
+      <div class="menu-wrapper app-menu">
+        <a class="menu-button button" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">
+          <span class="icon"></span>
+          <span id="App">App</span>
+        </a>
+        <div class="menu app-actions menu-options">
+          <a id="saveAppAs">Save As</a>
+          <a class="saved" id="saveApp">Save</a>
+          <a class="saved" id="renameApp">Rename</a>
+          <a id="publishApp">Publish</a>
+          <a class="saved" id="deleteApp">Delete</a>
+          <a class="hidden" id="viewlink">App URL</a>
+        </div>
+      </div>
+    </div>
+
+    <a id="newApp" class="button">New App</a>
+  </template>
+  <script>
+  (function() {
+    require(['l10n', 'jquery', 'persona', 'designer/application', 'designer/component-tray', 'designer/utils'],
+      function(l10n, jquery, persona, application, tray, utils) {
+
+      var user = {
+        email: '',
+        state: 'signedout'
+      };
+      // this is done via require because it needs persona loaded to
+      // be able to call navigator.id stuff
+      navigator.id.watch({
+        onlogin: function(assertion) {
+          document.dispatchEvent(new CustomEvent("signInStarted"));
+          //This is where it tries to log in;
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/persona/verify", true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.addEventListener("loadend", function(e) {
+            var data = JSON.parse(this.responseText);
+            if (data && data.status === "okay") {
+              document.dispatchEvent(new CustomEvent("signInFinished"));
+              console.log("You have been logged in as: " + data.email);
+              document.dispatchEvent(new CustomEvent('user-state', {
+                detail: {'state': 'signedin', 'email': data.email}
+              }));
+            }
+          }, false);
+          xhr.send(JSON.stringify({
+            assertion: assertion
+          }));
+        },
+        onlogout: function() {
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/persona/logout", true);
+          xhr.addEventListener("loadend", function(e) {
+            document.dispatchEvent(
+              new CustomEvent('user-state', {
+                detail: {'state': 'signedout', 'email': ''}
+              })
+            );
+          });
+          xhr.send();
+        }
+      });
+      Polymer('user-state', {
+        user: user,
+        editingmodeChanged : function(oldValue, newValue){
+          localStorage.editingmode = newValue;
+          var appNameEl = document.querySelector(".phone-top .app-name");
+          if(newValue == "saved"){
+            appNameEl.classList.add("saved");
+          } else {
+            appNameEl.classList.remove("saved");
+          }
+        },
+        ready: function() {
+          var that = this;
+
+          that.$.signin.innerHTML = l10n.get("Sign In");
+          that.$.myappsheading.innerHTML = l10n.get("My apps");
+          that.$.noApps.innerHTML = l10n.get("You don't have any saved apps!");
+          that.$.signout.innerHTML = l10n.get("Sign Out");
+          that.$.App.innerHTML = l10n.get("App");
+          that.$.saveAppAs.innerHTML = l10n.get("Save As");
+          that.$.saveApp.innerHTML = l10n.get("Save");
+          that.$.renameApp.innerHTML = l10n.get("Rename");
+          that.$.publishApp.innerHTML = l10n.get("Publish");
+          that.$.deleteApp.innerHTML = l10n.get("Delete");
+          that.$.viewlink.innerHTML = l10n.get("App URL");
+          that.$.newApp.innerHTML = l10n.get("New App");
+
+          function loadRemixContent (remixName) {
+            application.loadAppByUrl(decodeURIComponent(remixName));
+            that.editingmode = 'draft';
+          }
+
+          function setupTempApp() {
+            if(!document.querySelector("ceci-app")) {
+              var phoneBorderElement = document.querySelector(".phone-border");
+              var ca = document.createElement("ceci-app");
+              phoneBorderElement.appendChild(ca);
+              ca.setAttribute("appid","temp-"+uuid());
+              that.updateAppName(l10n.get("Unsaved App"));
+              that.editingmode = "draft";
+              window.dispatchEvent(new CustomEvent("resetcards"));
+            }
+          }
+
+          document.addEventListener('signInStarted', function (event) {
+            that.signInStarted();
+          });
+
+          document.addEventListener('signInFinished', function (event) {
+            that.signInFinished();
+          });
+
+          document.addEventListener('user-state', function (event) {
+            that.user.state = event.detail.state;
+            that.user.email = event.detail.email;
+
+            var remixName = utils.getQueryStringVariable('remix');
+
+            if (that.user.state == 'signedin') {
+              that.refreshUserState();
+              if (remixName) {
+                loadRemixContent(remixName);
+              }
+              else {
+                if(application.getCurrentApp()){
+                  application.loadAppByName(application.getCurrentApp());
+                  that.editingmode = "saved";
+                } else {
+                  setupTempApp();
+                }
+              }
+            } else if (that.user.state == 'signedout') {
+              if (remixName) {
+                loadRemixContent(remixName);
+              } else {
+                setupTempApp();
+              }
+              that.signedOut();
+            }
+          });
+
+        },
+        enteredView : function() {
+          var self = this;
+
+          //This closes the menus when an action is clicked in a menu.
+          var menus = this.shadowRoot.querySelectorAll(".menu");
+          for(var j = 0; j < menus.length ; j++){
+            menus[j].addEventListener('click',function(e){
+              if(e.target.tagName == "A"){
+                self.closeMenus();
+              }
+            });
+          }
+
+          //Delete app
+          this.$.deleteApp.addEventListener('click', function() {
+            application.deleteAppByName(application.getCurrentApp());
+            application.clearCurrentApp();
+            self.$.newApp.click();
+          });
+
+          //New app
+          this.$.newApp.addEventListener("click",function() {
+            var log = document.querySelector("design-log");
+            log.clear();
+            application.clearCurrentApp();
+            application.newApp();
+            self.closeMenus();
+            self.setAppURL(false);
+            self.refreshUserState();
+            self.updateAppName(l10n.get("Unsaved App"));
+            self.editingmode = "draft";
+            window.dispatchEvent(new CustomEvent("resetcards"));
+          });
+
+          //Rename App
+          this.$.renameApp.addEventListener("click", function() {
+            var oldName = application.getCurrentApp();
+            var newName = window.prompt(l10n.get("What do you want to call this app?"));
+            if(newName){
+              application.renameApp(oldName, newName);
+            } else {
+              window.alert(l10n.get("App names can't be blank."));
+            }
+          });
+
+          //Update App
+          this.$.saveApp.addEventListener("click", function() {
+            var ceciApp = document.querySelector('ceci-app');
+            var html = ceciApp.outerHTML;
+            var name = application.getCurrentApp();
+            if(name){
+              application.updateApp(name,ceciApp.appid,html);
+            }
+          });
+
+          //Publish!
+          this.$.publishApp.addEventListener("click", function() {
+            var app = document.querySelector('ceci-app');
+            var name = app.name;
+            var html = app.outerHTML;
+            // This might need to be made its own thing so it can be called
+            // in various places:
+            while (!name || name === l10n.get("Unsaved App")) {
+              name = prompt("Please name your app first:");
+              if(name === null) break;
+            }
+            if(!name) {
+              return console.error("Save was cancelled.");
+            }
+            // we have a name: publish!
+            var alreadySaved = self.editingmode === "saved";
+            application.publishApp(name, app.appid, html, alreadySaved, function resulthandler(err,data) {
+              if(err) {
+                if (data) {
+                  console.error("app was published, but updating failed");
+                } else {
+                  console.error("app was not successfully published");
+                }
+                return;
+              }
+              application.setCurrentApp(name);
+              self.refreshUserState();
+              self.editingmode = "saved";
+            });
+          });
+
+          //Save App As
+          this.$.saveAppAs.addEventListener("click", function() {
+            var name = window.prompt(l10n.get("What do you want to call this app?"));
+
+            var ceciApp = document.querySelector('ceci-app');
+            ceciApp.setAttribute("name", name);
+            ceciApp.setAttribute("appid", "ceci-app-"+uuid());
+
+            var html = ceciApp.outerHTML;
+            if(name){
+              application.saveApp(name,ceciApp.appid,html);
+              // gotta make sure it actually saves though!
+              // add as a callback? or pass in callbacks?
+              application.setCurrentApp(name);
+              self.refreshUserState();
+              self.editingmode = "saved";
+              window.dispatchEvent(new CustomEvent("CeciAppSaveAs"));
+            } else {
+              console.log("Please name your app.");
+            }
+          });
+
+
+        },
+        signInStarted: function(){
+          this.$.signin.style.display = "none";
+          this.$.signInProgress.style.display = "block";
+        },
+        signInFinished: function(){
+          this.$.signInProgress.style.display = "none";
+        },
+        signedOut: function(){
+          this.$.signin.style.display = "block";
+        },
+        failedAppLoad: function(){
+          application.clearCurrentApp();
+
+          var phoneBorderElement = document.querySelector(".phone-border");
+          var ca = document.createElement("ceci-app");
+          ca.setAttribute("appid", "temp-"+uuid());
+          phoneBorderElement.appendChild(ca);
+          this.updateAppName(l10n.get("Unsaved App"));
+        },
+        okAppLoad: function(name, data){
+          this.updateAppName(name);
+          this.refreshUserState();
+          this.setAppURL(data['last-published-url']);
+        },
+        getOrWaitForCeciApp: function(callback){
+          var ceciApp = document.querySelector("ceci-app");
+          if(!ceciApp){
+            window.addEventListener("CeciAppReady", function(e){
+              var ceciApp = document.querySelector("ceci-app");
+              callback(ceciApp);
+            });
+          } else {
+            callback(ceciApp);
+          }
+        },
+        updateAppName: function(name){
+          this.getOrWaitForCeciApp(function(ceciApp){
+            if (ceciApp && name) {
+              ceciApp.setAttribute("name", name);
+              document.querySelector(".phone-top .app-name").innerHTML = ceciApp.name;
+            }
+          });
+        },
+        appRenameOk: function(name){
+          application.setCurrentApp(name);
+          this.refreshUserState();
+        },
+        appRenameFailed: function(){
+          window.alert(l10n.get("app rename failed"));
+        },
+        signinClick: function() {
+          navigator.id.request();
+        },
+        signoutClick: function() {
+          navigator.id.logout();
+        },
+        loadLink: function(name, url, callback) {
+          // see https://gist.github.com/sjmiles/8478807
+          var doc = document.createDocumentFragment();
+          var link = doc.appendChild(document.createElement('link'));
+          link.rel = "import";
+          link.href = url;
+
+          try {
+            HTMLImports.importer.load(doc, function() {
+              try {
+                HTMLImports.parser.parse(link.content);
+                CustomElements.parser.parse(link.content);
+                callback();
+              } catch (e) {
+                console.log("HTMLImports.parser failed for component at", link.href);
+                callback({
+                  error: "HTMLImports.parser failed to load component",
+                  url: url,
+                  name: name
+                });
+              }
+            }.bind(this));
+          } catch (e) {
+            console.log("HTMLImports.importer.load failed for component at", link.href);
+            callback({
+              error: "HTMLImports.importer.load failed to load component",
+              url: url,
+              name: name
+            });
+          }
+        },
+        signalComponentError: function(err) {
+          console.error(err);
+          if(arguments.length>1) {
+            Array.prototype.slice.call(arguments, 1).forEach(function(data) {
+              console.error(data);
+            });
+          }
+          window.alert(err);
+          return;
+        },
+        addComponent: function() {
+          var self = this;
+          // in a try/except block because called from an onclick handler,
+          // so want to atch exceptions.
+          try {
+            var url = window.prompt(l10n.get("component url?"));
+            if (! url) return;
+            url = url.trim();
+            // first, detect github moniker and turn those into known URL structures
+            // (we don't know that there is a component at that URL though (in particular if
+            // they don't have GH pages setup)
+            var chunked = url.split('/');
+            if (chunked.length === 2 && chunked[0].indexOf(".") === -1 && url.indexOf('http') === -1) {
+              var parts = url.split('/').map(function(v) { return v.trim(); });
+              // We're assuming it's a username/repo, and assuming component.html as the leafname.
+              url = this.mkGitHubURL(parts[0], parts[1]);
+            }
+            else {
+              // Reject URLs without a protocol (if it's not on http or https, it's not an acceptable URL)
+              if (url.indexOf("http") !== 0) {
+                return self.signalComponentError(l10n("Need qualified url"));
+              }
+              // We're going to do pattern detection on Github URLs to map them to the proxy if they're
+              // to github.io, and complain if they're github.com URLs
+              var parser = document.createElement('a');
+              parser.href = url;
+              var host = parser.host;
+              if (host === 'github.com') {
+                return self.signalComponentError(l10n.get("Need gh-pages branch"));
+              }
+              if (host.indexOf(".github.io", this.length - ".github.io".length) !== -1) {
+                // it's a GH pages page, yea!
+                var gh_user = host.split('.')[0];
+                var gh_repo = parser.pathname.split('/')[0]
+                url = this.mkGitHubURL(gh_user, gh_repo);
+              }
+            }
+            this.getNameForComponentURL(url, function(err, result) {
+              if (err) {
+                return self.signalComponentError(err, result);
+              }
+              self.learnComponent(url, result)
+            });
+          } catch (e) {
+            console.log(e);
+          }
+        },
+        mkGitHubURL: function(repo, user) {
+          // use the DOM to create the right URL.
+          var parser = document.createElement('a');
+          parser.href = document.URL;
+          parser.pathname = "component/" + repo + '/' + user + "/component.html";
+          url = parser.href;
+          return url;
+        },
+        getNameForComponentURL: function(url, cb) {
+          // We want to make sure that we can reach this URL, and that it's a component
+          var self = this;
+          // Let's load it!
+          $.ajax(url, {
+            data: {},
+            type: 'get',
+            success: function (data) {
+              // we have a reachable URL, that's good.
+              // Check to make sure that the file has a reasonable structure
+              cb(null, self.getNameForComponent(url, data));
+            },
+            error: function (data, err) {
+              // it may be because it's behind a CORS thing, in which case we will try to proxy through the server
+              cb(l10n.get("getNameForComponentURL failed") + url, data);
+          }});
+        },
+        getNameForComponent: function(url, data) {
+          var doc = document.createDocumentFragment();
+          doc.appendChild(document.createElement("body"));
+          doc.querySelector("body").innerHTML = data;
+          var componentElement = doc.querySelector("polymer-element");
+          if (!componentElement) {
+            return self.signalComponentError(l10n.get("Does not seem component"));
+          }
+          return componentElement.getAttribute('name');
+        },
+        learnComponent: function(url, name) {
+          // This function is to teach appmaker (client & server) about a new component URL
+          var self = this;
+          if (tray.isKnownComponent(name)) {
+            return self.signalComponentError(l10n.get("We already know") + name)
+          }
+          this.storeComponentURL(url, name, function(err, result) {
+            self.addComponentToUI(url, name, function(err, result) {
+              if(err) {
+                return self.signalComponentError(err);
+              }
+              window.alert(l10n.get("Successfully added component ") + name);
+            });
+          });
+        },
+        storeComponentURL: function(url, name, next) {
+          var self = this;
+          $.ajax('/api/componentlinks', {
+            data: {
+              url: url,
+              name: name
+            },
+            type: 'post',
+            success: function (data) {
+              // keep going
+              next && next();
+            },
+            error: function (data) {
+              // break off the process by not calling next()
+              self.signalComponentError(l10n.get("error storing info about component: ") + JSON.stringify(data.responseJSON.error), data.responseJSON)
+            }
+          });
+        },
+        addComponentToUI: function(url, name, cb) {
+          var self = this;
+          // Add to the menu
+          var menuItem = this.addLinkForComponent(url, name);
+          // add to polymer, the tray, etc.
+          this.loadLink(name, url, function(err, result) {
+            if (err) {
+              if(cb) cb(err.error)
+              else self.signalComponentError(err.error);
+              return;
+            }
+            menuItem.setBroken(false);
+            tray.addComponentsFromRegistry();
+            if(cb) cb(null, name);
+          });
+        },
+        addLinkForComponent: function(url, name) {
+          var self = this;
+
+          var component = document.createElement('li');
+          component.setAttribute('data-link-name', name);
+          component.classList.add('component');
+          component.setBroken = function(b) {
+            if(b) component.classList.add("broken");
+            else component.classList.remove("broken");
+          };
+          // assume broken, unbreak if legal component.
+          component.setBroken(true);
+
+          var componentEntry = document.createElement('a');
+          componentEntry.textContent = name;
+          componentEntry.setAttribute('class', 'componentlink');
+
+          var closeButton = document.createElement('a');
+          closeButton.setAttribute('class', 'x');
+          closeButton.addEventListener('click', function(event) {
+            if (window.confirm(l10n.get("Are you sure you want to forget about the component at ") + url)) {
+              self.forgetComponent(name, url);
+              return;
+            }
+            event.stopPropagation();
+          });
+
+          var myComponents = this.shadowRoot.querySelector("#mycomponents");
+          componentEntry.appendChild(closeButton);
+          component.appendChild(componentEntry);
+          myComponents.appendChild(component);
+
+          return component;
+        },
+        attributeChangedCallback: function(attributeName) {
+          if (attributeName == 'user') {
+            this.refreshUserState();
+          }
+        },
+        toggleMenu: function(e) {
+
+          var parent = e.target.parentNode;
+
+          var isOpen = false;
+          if(parent.classList.contains("menu-open")){
+            isOpen = true;
+          }
+
+          var menus = this.shadowRoot.querySelectorAll(".menu-wrapper");
+          for(var j = 0; j < menus.length ; j++){
+            menus[j].classList.remove("menu-open");
+          }
+          if(isOpen){
+            parent.classList.remove("menu-open");
+          } else {
+            parent.classList.add("menu-open");
+          }
+        },
+        closeMenus: function(){
+          var menus = this.shadowRoot.querySelectorAll(".menu-wrapper");
+          for(var j = 0; j < menus.length ; j++){
+            menus[j].classList.remove("menu-open");
+          }
+        },
+        refreshUserState: function() {
+          // go to the server and find out what the user's apps are and then...
+          // Build the list of apps
+          // Update "current app" in apps menu
+          this.refreshAppList();
+          this.refreshComponentsList();
+        },
+        refreshAppList: function() {
+          var self = this;
+          var myApps = this.shadowRoot.querySelector("#myapps");
+          var noApps = this.shadowRoot.querySelector("#noApps");
+          var currentApp = application.getCurrentApp() || "";
+          if(currentApp){
+            this.updateAppName(currentApp || l10n.get("Unsaved App"));
+          }
+
+          myApps.innerHTML = "";
+          $.getJSON("/api/myapps", function(data) {
+
+            try {
+              var count = 0;
+              $.each(data, function(key, val) {
+                count++;
+                var app = document.createElement('li');
+                var link = document.createElement('a');
+                link.id = key;
+                link.classList.add('app');
+                link.textContent = val.name;
+
+                if(currentApp == val.name){
+                  link.classList.add('currentApp');
+                }
+                link.classList.add('class', 'applink');
+                link.addEventListener('click', function(){
+                  application.loadAppByName(val.name);
+                  self.editingmode = "saved";
+                });
+                app.appendChild(link);
+                myApps.appendChild(app);
+              });
+
+              if(count == 0){
+                noApps.style.display = "block";
+              } else {
+                noApps.style.display = "none";
+              }
+            } catch (e) {
+              console.log(e);
+            }
+          });
+        },
+        forgetComponent: function(name, url) {
+          var self = this;
+          $.ajax('/api/componentlinks', {
+            data: {
+              url: url
+            },
+            type: 'delete',
+            success: function (data) {
+              // remove from tray, and user pulldown menu
+              tray.forgetComponent(name);
+              var userState = document.querySelector("user-state").shadowRoot;
+              var li = userState.querySelector("[data-link-name='"+name+"']");
+              li.parentNode.removeChild(li);
+              console.log("we've deleted the component");
+              console.log("XXX: Need to tell polymer to forget about this component");
+              // FIXME: it does not appear polymer actually supports "forgetting"
+              //        of elements during the lifetime of a page without reloading.
+            },
+            error: function (data, err) {
+              self.signalComponentError(l10n("Forget failed") + data.url, err);
+            }
+          });
+        },
+        refreshComponentsList: function() {
+          var self = this;
+          var myComponents = this.shadowRoot.querySelector("#mycomponents");
+          myComponents.innerHTML = "";
+          $.getJSON("/api/componentlinks", function(data) {
+            try {
+              var count = 0;
+              $.each(data, function(key, val) {
+                count++;
+                self.addComponentToUI(val.url, val.name);
+              });
+            } catch (e) {
+              console.log(e);
+            }
+          });
+        },
+        setAppURL: function(url) {
+          var viewlink = this.$.viewlink;
+          if(url) {
+            viewlink.setAttribute("href", url);
+            viewlink.classList.remove("hidden");
+          }
+          else {
+            viewlink.setAttribute("href", '');
+            viewlink.classList.add("hidden");
+          }
+        }
+      });
+    });
+  })();
+  </script>
+</polymer-element>

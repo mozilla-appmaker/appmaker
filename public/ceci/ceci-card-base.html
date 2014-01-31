@@ -1,0 +1,65 @@
+<polymer-element name="ceci-card-base" attributes="visible">
+  <template>
+    <style>
+      :host {
+        width: 100%;
+        height: 100%;
+        display: none;
+      }
+
+      :host ceci-top, :host ceci-bottom {
+        position: absolute;
+        height: 50px;
+        width: 100%;
+      }
+
+      :host([visible]) {
+        display: block;
+      }
+
+      :host #middle {
+        display: block;
+        width: 100%;
+      }
+
+      :host #top,
+      :host #bottom {
+        display: none;
+      }
+
+      :host #top {
+        border-bottom: dashed 2px #DDD;
+        top: 0;
+      }
+
+      :host #bottom {
+        border-top: dashed 2px #DDD;
+        bottom: 0;
+      }
+
+      :host #middle {
+        top: 15px;
+        bottom: 15px;
+      }
+    </style>
+    <ceci-top id="top"></ceci-top>
+    <ceci-middle id="middle"><content></content></ceci-middle>
+    <ceci-bottom id="bottom"></ceci-bottom>
+  </template>
+  <script>
+    Polymer('ceci-card-base', {
+      ready: function () {
+      },
+      show: function () {
+        this.setAttribute('visible', true);
+        var that = this;
+        Array.prototype.forEach.call(document.querySelectorAll('ceci-card'), function (card) {
+          if (card !== that) {
+            card.removeAttribute('visible');
+          }
+        });
+        window.dispatchEvent(new CustomEvent('cardShown', {bubbles: true, detail: this}));
+      }
+    });
+  </script>
+</polymer-element>

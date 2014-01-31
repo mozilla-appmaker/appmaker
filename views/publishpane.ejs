@@ -1,0 +1,89 @@
+    <div id="publish-pane" class="hidden">
+      <div id="publish-pane-panel">
+        <button id="close-publish-pane-panel"></button>
+        <div id="publish-pane-panel-content" class="hidden">
+          <div id="publish-pane-panel-inner">
+            <div id="publish-pane-logo">
+              <img src="<%= process.env.ASSET_HOST %>/images/chef-man.png">
+              <p class="publish-guide-text">
+                <%- gettext("Your app was successfully published!") %>
+                <%- gettext("It's ready for use at:") %>
+              </p>
+              <p class="app-link">
+                <a id="applink" href=''></a>
+              </p>
+            </div>
+            <div class="mail-link">
+              <input type="email" id="publish-pane-panel-email" placeholder="Your Email">
+              <button id="publish-pane-button"><%- gettext("Mail me my app URL") %></button>
+            </div>
+            <div class="mail-notice">
+              <p class="publish-guide-text">We have mailed you your app URL!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function(){
+          var master = document.getElementById('publish-pane');
+          var panel = document.getElementById('publish-pane-panel');
+          var content = document.getElementById('publish-pane-panel-content');
+          var close = document.getElementById('close-publish-pane-panel');
+          var email = document.getElementById('publish-pane-panel-email');
+          var appurl = document.getElementById('applink');
+          var mailButton = document.querySelector('#publish-pane-button');
+
+          function closePublishPanel (e) {
+            panel.classList.remove('expanded');
+            content.classList.add('hidden');
+            master.classList.add('hidden');
+          }
+
+          close.onclick = closePublishPanel;
+
+          window.showPublishPane = showPublishPane = function(name, data) {
+            master.classList.remove('hidden');
+            setTimeout(function() {
+              panel.classList.add('expanded');
+              content.classList.remove('hidden');
+              mailButton.disabled = false;
+              email.disabled = false;
+              mailButton.classList.remove('fadeout');
+              email.classList.remove('fadeout');
+              email.value = '';
+              appurl.setAttribute('href', data.install);
+              appurl.innerHTML = data.install;
+
+              (function() {
+                var mailButton = document.querySelector('#publish-pane-button');
+                mailButton.onclick = function (e) {
+                  mailButton.disabled = true;
+                  email.disabled = true;
+
+                  document.querySelector(".mail-link").classList.add("toggled");
+
+                  var xhr = new XMLHttpRequest();
+                  xhr.open('GET', '<%= process.env.ASSET_HOST %>/notify?appURL=' + encodeURIComponent(data.install) + '&email=' + email.value, true);
+                  xhr.onerror = function (e) {
+                    console.error(e);
+                    mailButton.removeAttribute("disabled");
+                    email.removeAttribute("disabled");
+                    document.querySelector(".mail-link").classList.remove("faded");
+                  };
+                  xhr.onload = function (e) {
+                    console.log(e);
+                  };
+                  xhr.onreadystatechange = function (e) {
+                    if(xhr.readyState === 4 && xhr.status === 200 ) {
+                      document.querySelector(".mail-notice").classList.add("toggled");
+                    }
+                  };
+                  xhr.send(null);
+                };
+              }());
+            }, 50);
+          };
+        }());
+      </script>
+    </div>

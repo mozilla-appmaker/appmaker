@@ -3,91 +3,32 @@
   <head>
     <title>Published Flathead Project</title>
     <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/style.css" />
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300, 400,600" rel="stylesheet" type="text/css">
-    <link rel="component" type="text/ceci" href="<%= process.env.COMPONENTS_BASE_URL %>/package/all">
-    <script src="<%= process.env.ASSET_HOST %>/vendor/requirejs/require.js"></script>
-    <script>
-      (function(){
-        var requireCtx = require.config({
-          baseUrl: '<%= process.env.ASSET_HOST %>/vendor/ceci'
-        });
+    <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/remix.css" />
+    <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300, 400,600" rel="stylesheet" type="text/css">
+    <base href="<%- ceciComponentURL %>">
 
-        require(["ceci-app"], function(Ceci) {
-          Ceci.load(function (components) {
-            Ceci.convertContainer(document.getElementById('flathead-app'));
-          });
-        });
-      })();
-    </script>
+    <script src="/vendor/platform/platform.js"></script>
+    <script src="/vendor/polymer/polymer.js"></script>
+
+    <script src="/vendor/requirejs/require.js"></script>
+    <script src="/javascripts/requireConfig.js"></script>
+
+
+    <% bundles.emit('ceci.html').forEach(function(href) { %>
+    <link rel="import" href="/<%= href %>">
+    <% }); %>
+
+    <!-- This is a list of all known components. Ideally, this is a compiled list of only-the-app components -->
+    <% if (!!process.env.BUNDLE){ %>
+      <link rel="import" href="/bundles/components/mozilla-appmaker.html">
+    <% } else { %>
+      <% components.forEach(function(href) { %>
+      <link rel="import" href="<%= href %>">
+      <% }) %>
+    <% } %>
   </head>
   <body>
     <%- appHTML %>
-    <div>
-      <div id="remix-icon"></div>
-      <div id="remix-panel">
-        <button id="close-remix-panel"></button>
-        <div id="remix-panel-content" class="hidden">
-          <div id="remix-panel-inner">
-            <div id="remix-logo">
-              <img src ="<%= process.env.ASSET_HOST %>/images/chef-man.png">
-            </div>
-            <input type="email" id="remix-panel-email" placeholder="Your Email">
-            <button id="remix-button">Remix</button>
-            <div id="remix-explanation">
-              This app was created with Mozilla Labs' Appmaker. We'll send you a link so you can remix it and make it your own.
-            </div>
-          </div>
-        </div>
-      </div>
-      <script>
-        (function(){
-          var open = document.getElementById('remix-icon');
-          var panel = document.getElementById('remix-panel');
-          var content = document.getElementById('remix-panel-content');
-          var close = document.getElementById('close-remix-panel');
-          var email = document.getElementById('remix-panel-email');
-
-          open.onclick = function (e) {
-            panel.classList.add('expanded');
-            content.classList.remove('hidden');
-            open.classList.add('hidden');
-            remixButton.disabled = false;
-            email.disabled = false;
-            remixButton.classList.remove('fadeout');
-            email.classList.remove('fadeout');
-            email.value = '';
-          };
-
-          function closeRemixPanel (e) {
-            panel.classList.remove('expanded');
-            content.classList.add('hidden');
-            open.classList.remove('hidden');
-          }
-
-          close.onclick = closeRemixPanel;
-
-          var remixButton = document.querySelector('#remix-button');
-          remixButton.onclick = function (e) {
-            remixButton.disabled = true;
-            email.disabled = false;
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '<%= process.env.ASSET_HOST %>/remix?app=<%- appName %>&email=' + email.value, true);
-            xhr.onerror = function (e) {
-              console.error(e);
-            };
-            xhr.onload = function (e) {
-              console.log(e);
-            };
-            xhr.send(null);
-            setTimeout(function () {
-              remixButton.classList.add('fadeout');
-              email.classList.add('fadeout');
-              closeRemixPanel();
-            }, 500);
-          };
-        })();
-      </script>
-    </div>
+    <% include remixpane %>
   </body>
 </html>

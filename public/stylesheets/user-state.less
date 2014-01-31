@@ -1,0 +1,304 @@
+@import "variables.less";
+@import "mixins.less";
+
+user-state {
+  color: white;
+  position: relative;
+  text-align: left;
+  z-index: 99999;
+  position: relative;
+
+  .dropdowns {
+    display: inline-block;
+  }
+
+  #signin {
+    background: #358CCE;
+    float: right;
+    margin-left: 8px;
+  }
+
+  .button {
+    display: inline-block;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: left;
+    .border-radius(2px);
+    padding: 3px 12px 5px 12px;
+  }
+
+  .menu-button {
+    padding: 3px 50px 5px 28px;
+    background-color: @brand-brightblue;
+    background-image: url(/images/arrow-down.png);
+    background-size: 24px;
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    color:rgba(255,255,255,.9);
+
+    &:hover {
+      text-decoration: none;
+      background-color: @brand-brightblue-hover;
+    }
+
+  }
+
+  #signout {
+    .red-button;
+    margin: 0 0 3px 3px;
+  }
+
+  #newApp {
+    .green-button;
+  }
+
+  #addComponent {
+    .green-button;
+    margin: 0 0 3px 3px;
+  }
+
+  .componentlink {
+    display: block;
+    color: black;
+    size: large;
+  }
+
+  .app-menu .menu-button {
+    min-width: 50px;
+  }
+
+  .icon {
+    display: block;
+    position: absolute;
+    left: 5px;
+    right: 0px;
+    height: 20px;
+    width: 20px;
+    background-size: 16px;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .user-menu .icon {
+    background-image: url(/images/icon_user.png);
+  }
+
+  .app-menu .icon {
+    background-image: url(/images/icon_gear.png);
+  }
+
+  .user-menu.menu-open .icon {
+    background-image: url(/images/icon_user_lookdown.png);
+  }
+
+  .menu-open .menu-button {
+    background-image: url(/images/arrow-up.png);
+    .border-radius(2px 2px 0 0);
+  }
+
+  .menubutton {
+    display: inline-block;
+  }
+
+  .menu {
+    z-index: 12000;
+    padding: 5px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    top: 28px;
+    width: 100%;
+    background: #DDD;
+    text-align: left;
+    // border-top: solid 2px #117b84;
+    border: solid 2px @brand-brightblue;
+    border-radius: 0 0 2px 2px;
+    display: none;
+  }
+
+  .menu-open  {
+    .menu-button {
+      color: rgba(255,255,255,1);
+    }
+    .menu {
+      display: block;
+    }
+  }
+
+  .app-menu.menu-open .icon {
+    -webkit-animation: 1s gearspin;
+    -webkit-animation-timing-function: ease-out;
+    -moz-animation: linear 1s gearspin;
+    -moz-animation-timing-function: ease-out;
+  }
+
+  @-moz-keyframes gearspin {
+    0% { -moz-transform: rotate(0deg)}
+    100% { -moz-transform: rotate(360deg)}
+  }
+
+  @-webkit-keyframes gearspin {
+    0%    { -webkit-transform: rotate(0deg)}
+    100%  { -webkit-transform: rotate(360deg)}
+  }
+
+  .menu h3 {
+    padding: 0 0 4px 0 ;
+    margin: 2px 2px 8px 2px;
+    border-bottom: solid 2px #BBB;
+    color: #444;
+    font-size: 16px;
+  }
+
+  .menu-wrapper {
+    display: inline-block;
+    position: relative;
+    margin-right: 8px;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  #myapps,#mycomponents {
+    display: block;
+    margin: 0 0 12px 0;
+    padding: 0;
+    clear: both;
+    width: 100%;
+  }
+
+  #myappsheading,#mycomponentsheading {
+    text-align: left;
+  }
+
+  #myapps li, #mycomponents li {
+    margin-top: 0;
+    padding: 0;
+    text-align: left;
+    list-style-type: none;
+    margin: 0;
+    font-size: small;
+    padding: 0;
+    overflow: auto;
+  }
+
+  a.applink {
+    background-image: url(/images/icon_app_published.png);
+    background-position: left;
+    background-size: 22px;
+    background-repeat: no-repeat;
+    padding-left: 24px !important;
+  }
+
+  a.componentlink {
+    background-image: url(/images/component.png);
+    background-position: left;
+    background-size: 22px;
+    background-repeat: no-repeat;
+    padding-left: 24px !important;
+  }
+
+  .x {
+    background-image: url(/images/delete.png);
+    background-position: 3px;
+    background-size: 16px;
+    background-repeat: no-repeat;
+    padding-left: 16px !important;
+    margin-left: 10px;
+  }
+
+  .menu-options a {
+    text-align: left;
+    border: 0;
+    background-color: transparent;
+    color: #777;
+    padding: 0;
+    margin: 0;
+    padding: 3px 6px;
+    display: block;
+    .border-radius(2px);
+    font-size: 16px;
+    border-top: solid 1px #DDD;
+    border-bottom: solid 1px #DDD;
+    cursor: pointer;
+
+    &:hover {
+      color: #333;
+      background-color: #EFEFEF;
+    }
+
+    &.currentApp {
+      color: #333;
+      background-color: #EFEFEF;
+      border-bottom: solid 1px white;
+      border-top: solid 1px #CCC
+    }
+
+    &.x {
+      display:inline;
+      margin-left: 1em;
+      text-align: center;
+    }
+
+    &.x:hover {
+      background-color: white;
+      font-weight: bold;
+    }
+  }
+
+  .broken {
+    font-style: italic;
+  }
+  .broken a.componentlink:after {
+    padding-left: 1em;
+    content: "broken";
+    color: darkred;
+  }
+
+  #noApps,#noComponents {
+    font-size: 16px;
+    color: #777;
+  }
+
+  .app-actions a {
+    display: block;
+    font-size: 16px;
+    color: #555;
+    cursor: pointer;
+    &.hidden {
+      display: none;
+    }
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  &[editingmode="draft"] .menu a.saved {
+    display: none;
+  }
+
+  #signInProgress {
+    display: none;
+    height: 25px;
+    width: 25px;
+    background-size: 25px;
+    background-image: url(/images/throbber-spinner.png);
+    -webkit-animation: linear 1s spin infinite;
+    -moz-animation: linear 1s spin infinite;
+    float: right;
+    margin: 0 20px;
+  }
+
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg)}
+    100% { -webkit-transform: rotate(360deg)}
+  }
+
+  @-moz-keyframes spin {
+    0% { -moz-transform: rotate(0deg)}
+    100% { -moz-transform: rotate(360deg)}
+  }
+}

@@ -1,0 +1,242 @@
+<!doctype html>
+<html>
+  <head>
+
+    <link rel="import" href="/ceci/ceci-broadcast.html">
+    <link rel="import" href="/ceci/ceci-listen.html">
+    <link rel="import" href="/ceci/ceci-element-base.html">
+    <link rel="import" href="/ceci/ceci-element.html">
+
+    <link rel="import" href="/ceci/test/fixtures/ceci-test.html">
+
+    <script src="/vendor/polymer/polymer.min.js"></script>
+
+    <style>
+      ceci-test {
+        visibility: hidden;
+      }
+    </style>
+
+    <link rel="stylesheet" href="/vendor/mocha/mocha.css">
+    <script src="/vendor/mocha/mocha.js"></script>
+    <script src="/vendor/chai/chai.js"></script>
+    <script src="/vendor/sinon/lib/sinon.js"></script>
+  </head>
+  <body>
+
+    <div id="mocha"></div>
+
+    <ceci-test id="ceci-test1" valueone="Test Value 2">
+      <div data-test="test"></div>
+    </ceci-test>
+
+    <ceci-test id="ceci-test2"></ceci-test>
+    <ceci-test id="ceci-test3"></ceci-test>
+    <ceci-test id="ceci-test4"></ceci-test>
+    <ceci-test id="ceci-test5"></ceci-test>
+    <ceci-test id="ceci-test6">
+      <ceci-listen on="indigo" for="testListener1"></ceci-listen>
+      <ceci-broadcast on="auburn" from="testBroadcast"></ceci-broadcast>
+    </ceci-test>
+
+    <script>
+      mocha.setup('bdd');
+      chai.should();
+      chai.expect();
+
+      describe('ceci-element', function () {
+        describe('tags', function () {
+          var element = document.querySelector('ceci-test#ceci-test1');
+
+          it('should have tags in definition', function(){
+            element.ceci.tags.length.should.equal(3);
+            element.ceci.tags.should.contain('test1');
+            element.ceci.tags.should.contain('test2');
+            element.ceci.tags.should.contain('test3');
+          });
+        });
+
+        describe('thumbnail', function () {
+          var element = document.querySelector('ceci-test#ceci-test1');
+
+          it('should have a thumbnail in definition', function () {
+            // can't use should.empty because lint complains about line with no obivous side-effects
+            element.ceci.thumbnail.length.should.not.equal(0);
+          });
+        });
+
+        describe('content', function () {
+          var element = document.querySelector('ceci-test#ceci-test1');
+
+          it('should contain specified html content', function () {
+            element.querySelectorAll('div[data-test]').length.should.equal(1);
+          });
+        });
+
+        describe('attributes', function () {
+          var element1 = document.querySelector('ceci-test#ceci-test1');
+          var element2 = document.querySelector('ceci-test#ceci-test2');
+
+          it('should have correct attributes and default values', function () {
+            element1.label.should.equal('Test Label');
+            element1.label.should.equal(element1.getAttribute('label'));
+            element1.valueone.should.equal('Test Value 2');
+            element1.valueone.should.equal(element1.getAttribute('valueone'));
+            element2.valueone.should.equal('Test Value 1');
+            element2.valueone.should.equal(element2.getAttribute('valueone'));
+          });
+        });
+
+        describe('bindings', function () {
+          var element = document.querySelector('ceci-test#ceci-test3');
+
+          it('should respond to attribute changes', function (done) {
+            element.label.should.equal('Test Label');
+            element.label = 'Test Label 2';
+            element.label.should.equal('Test Label 2');
+            element.valueone.should.equal(element.getAttribute('valueone'));
+            setTimeout(function () {
+              element.$.button.innerHTML.should.equal('Test Label 2');
+              done();
+            }, 200);
+          });
+
+          it('should respond to bevaviours', function (done) {
+            document.addEventListener('test channel delta', function testListener (e) {
+              document.removeEventListener('test channel delta', testListener, false);
+              e.detail.data.should.equal('smooo');
+              done();
+            }, false);
+
+            element.setBroadcast('click', 'test channel delta');
+
+            var e = new MouseEvent('click');
+            element.clickvalue = 'smooo';
+
+            setTimeout(function () {
+              element.$.button.dispatchEvent(e);
+            }, 200);
+          });
+        });
+
+        describe('editables', function () {
+          var element = document.querySelector('ceci-test#ceci-test3');
+
+          it('should have an editable label', function () {
+            element.ceci.editables.should.have.property('label').and.have.property('description', 'Label');
+            element.ceci.editables.should.have.property('label').and.have.property('label', 'Label');
+          });
+        });
+
+        describe('broadcasts', function () {
+          var element2 = document.querySelector('ceci-test#ceci-test2');
+          var element6 = document.querySelector('ceci-test#ceci-test6');
+
+          it('should have a broadcast definitions', function () {
+            element2.ceci.broadcasts.should.have.property('click');
+            element2.ceci.broadcasts.should.have.property('testBroadcast');
+          });
+
+          it('should have default broadcast elements', function () {
+            element2.ceci.broadcasts.testBroadcast.should.not.have.property('default');
+            element2.ceci.broadcasts.click.should.have.property('default', true);
+            element2.querySelectorAll('ceci-broadcast[from="click"]').length.should.equal(1);
+            element2.querySelectorAll('ceci-broadcast[from="testBroadcast"]').length.should.equal(0);
+          });
+
+          it('should use default broadcasts', function (done) {
+            document.addEventListener('blue', function testListener (e) {
+              if (e.detail.data === 'test click') {
+                document.removeEventListener('blue', testListener, false);
+                done();
+              }
+            }, false);
+            element2.sendTestBroadcast('click', 'test click');
+          });
+
+          it('should use added broadcasts', function (done) {
+            document.addEventListener('test channel alpha', function testListener (e) {
+              document.removeEventListener('test channel alpha', testListener, false);
+              e.detail.data.should.equal('test data alpha');
+              done();
+            }, false);
+            element2.setBroadcast('testBroadcast', 'test channel alpha');
+            setTimeout(function () {
+              element2.sendTestBroadcast('testBroadcast', 'test data alpha');
+            }, 200);
+          });
+
+          it('should use broadcasts added as content', function (done) {
+            document.addEventListener('auburn', function testListener (e) {
+              document.removeEventListener('auburn', testListener, false);
+              e.detail.data.should.equal('test data beta');
+              done();
+            }, false);
+            element6.sendTestBroadcast('testBroadcast', 'test data beta');
+          });
+        });
+
+        describe('listeners', function () {
+          var element1 = document.querySelector('ceci-test#ceci-test4');
+          var element2 = document.querySelector('ceci-test#ceci-test5');
+          var element6 = document.querySelector('ceci-test#ceci-test6');
+
+          it('should have a listener definitions', function () {
+            element1.ceci.listeners.should.have.property('testListener1');
+            element1.ceci.listeners.should.have.property('testListener2');
+            element1.ceci.listeners.should.have.property('set_valueone');
+            element1.ceci.listeners.should.have.property('set_valuetwo');
+            element1.ceci.listeners.should.have.property('setValue3');
+          });
+
+          it('should have default listen elements', function () {
+            element1.ceci.listeners.set_valueone.should.have.property('default', true);
+            element1.ceci.listeners.testListener1.should.have.property('default', true);
+
+            // can't use should.empty because lint complains about line with no obivous side-effects
+            element1.querySelectorAll('ceci-listen[for="set_label"]').length.should.equal(0);
+            element1.querySelectorAll('ceci-listen[for="set_valueone"]').length.should.equal(1);
+            element1.querySelectorAll('ceci-listen[for="set_valuetwo"]').length.should.equal(0);
+            element1.querySelectorAll('ceci-listen[for="testListener1"]').length.should.equal(1);
+          });
+
+          it('should listen to default listeners', function (done) {
+            document.dispatchEvent(new CustomEvent('blue', {detail: {data:'test test'}}));
+            setTimeout(function () {
+              element1.called.should.have.property('valueone', 'test test');
+              element1.called.should.have.property('testListener1', 'test test');
+              element1.called.should.not.have.property('testListener2');
+              done();
+            }, 200);
+          });
+
+          it('should listen to added listeners', function (done) {
+            element2.setListener('testListener2', 'frog');
+            setTimeout(function () {
+              document.dispatchEvent(new CustomEvent('frog', {detail: {data:'frog test'}}));
+              setTimeout(function () {
+                element2.called.should.have.property('testListener2', 'frog test');
+                done();
+              }, 200);
+            }, 200);
+          });
+
+          it('should listen to listeners added as content', function (done) {
+            document.dispatchEvent(new CustomEvent('indigo', {detail: {data:'panda test'}}));
+            setTimeout(function () {
+              element6.called.should.have.property('testListener1', 'panda test');
+              done();
+            }, 200);
+          });
+        });
+
+      });
+    </script>
+
+    <script>
+      window.addEventListener('WebComponentsReady', function (e) {
+        mocha.run();
+      });
+    </script>
+  </body>
+</html>

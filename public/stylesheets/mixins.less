@@ -1,0 +1,27 @@
+.border-radius (@radius: 5px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  -ms-border-radius: @radius;
+  -o-border-radius: @radius;
+  border-radius: @radius;
+}
+
+.green-button {
+  background: @green;
+  &:hover {
+    background: @green-hover;
+  }
+  &:active {
+    background: @green-active;
+  }
+}
+
+.red-button {
+  background: @red;
+  &:hover {
+    background: @red-hover;
+  }
+  &:active {
+    background: @red-active;
+  }
+}

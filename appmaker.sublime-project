@@ -5,10 +5,13 @@
       "folder_exclude_patterns": [
         "node_modules",
         "ceci/builder/scripts",
-        "public/vendor/angular",
-        "public/vendor/jquery",
-        "public/vendor/jquery-ui",
-        "public/vendor/requirejs"
+        "public/app/fonts",
+        "public/vendor",
+        "public/app/fonts"
+      ],
+      "file_exclude_patterns": [
+        "**/bootstrap.min.css",
+        "**/bootstrap.css"
       ]
     }
   ],

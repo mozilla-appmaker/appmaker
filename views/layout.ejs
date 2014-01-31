@@ -3,11 +3,51 @@
   <head>
     <title><%= (typeof title === "undefined") ? gettext("Welcome to Appmaker") : title %></title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/publishpane.css" />
+    <link rel="stylesheet" href="/stylesheets/cards.css" />
+    <link rel="stylesheet" href="/stylesheets/channel-vis.css" />
+    <link rel="stylesheet" href="/stylesheets/user-state.css" />
+    <link rel="stylesheet" href="/stylesheets/broadcast-menu.css" />
     <link rel="stylesheet" href="/stylesheets/animations.css" />
-    <link rel="stylesheet" href="/stylesheets/persona-buttons.css" />
+
+    <link rel="stylesheet" href="/vendor/colorpicker/jquery.colorpicker.css" />
+
     <link rel="stylesheet" href="/sourcesanspro-extralight,sourcesanspro-light,sourcesanspro-regular,sourcesanspro-semibold/fonts.css" />
 
-    <link rel="component" type="text/ceci" href="<%= process.env.COMPONENTS_BASE_URL%>/package/all">
+    <script src="/vendor/platform/platform.js"></script>
+    <script src="/vendor/polymer/polymer.js"></script>
+    <script src="/javascripts/polymer-register-event-shim.js"></script>
+
+
+    <script src="/vendor/requirejs/require.js"></script>
+    <% if (!!process.env.BUNDLE) { %>
+      <script src="/javascripts/designer-build.js"></script>
+    <% } else { %>
+      <script src="/javascripts/requireConfig.js"></script>
+    <% } %>
+
+    <script>
+    (function () {
+      // We need to make sure we have our client-side .json file loaded before
+      // all the components so that we can use it when the HTML file loaded.
+      require(['l10n'], function(localized) {
+        localized.ready({url: "/strings/" + localized.getCurrentLang() });
+      });
+    })();
+    </script>
+
+
+    <% bundles.emit('designer-components.html').forEach(function(href) { %>
+    <link rel="import" href="/<%= href %>">
+    <% }); %>
+
+    <% if (!!process.env.BUNDLE){ %>
+      <link rel="import" href="/bundles/components/mozilla-appmaker.html">
+    <% } else { %>
+      <% components.forEach(function(href) { %>
+      <link rel="import" href="<%= href %>">
+      <% }) %>
+    <% } %>
 
     <script type="text/javascript">
       var _gaq = _gaq || [];
@@ -22,16 +62,9 @@
         s.parentNode.insertBefore(ga, s);
       })();
     </script>
-    <script src="<%= process.env.ASSET_HOST%>/vendor/requirejs/require.js"></script>
-    <script src="<%= process.env.ASSET_HOST%>/javascripts/requireConfig.js"></script>
 
   </head>
   <body>
-    <div class="persona">
-      <a href="#" class="login persona-button"><span><%- gettext("Sign in with your Email") %></span></a>
-      <a href="#" class="logout persona-button"><span><%- gettext("Sign out") %></span></a>
-      <a href="#" class="account"><span></span></a>
-    </div>
     <%- body %>
   </body>
 </html>

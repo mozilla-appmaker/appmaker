@@ -9,11 +9,11 @@
     "example"
   ],
   "_cacheHeaders": {
-    "Content-Length": "17407",
+    "Content-Length": "17805",
     "Content-Type": "application/x-gzip",
-    "Content-Disposition": "attachment; filename=node-webmaker-i18n-0.2.8.tar.gz"
+    "Content-Disposition": "attachment; filename=node-webmaker-i18n-0.3.5.tar.gz"
   },
-  "_source": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.8.tar.gz",
+  "_source": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.3.5.tar.gz",
   "_target": "*",
-  "_originalSource": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.8.tar.gz"
+  "_originalSource": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.3.5.tar.gz"
 }

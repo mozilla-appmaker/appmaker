@@ -1,0 +1,104 @@
+/* Variables and Mixins*/
+@import (reference) "variables.less";
+@import (reference) "mixins.less";
+
+/* Styles for the card tabs */
+
+.cards {
+  padding-top: 20px;
+  text-align: left;
+  width: ~"calc(100% - 330px)"; /* ~is an escaped value which won't get processed by less */
+  margin: 0 auto;
+  position: relative;
+  left: -17px;
+  display: inline-block;
+
+  .add-card {
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: inline-block;
+    float: left;
+    padding: 0px 10px;
+    height: 30px;
+    width: 30px;
+    background-color: @green;
+    background-image: url(../images/add.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    .border-radius(2px 2px 0 0);
+
+    &:hover {
+      background-color: @green-hover;
+    }
+
+    &:active {
+      background-color: @green-active;
+    }
+  }
+
+  .card-list {
+    display: inline-block;
+    float: left;
+  }
+
+  .delete-card {
+   position: absolute;
+   height: 20px;
+   width: 20px;
+   right: 5px;
+   top: 7px;
+   opacity: .4;
+   background: url(../images/page-tab-x.png) center no-repeat;
+   background-size: 12px;
+   .border-radius(2px);
+   display: none;
+ }
+
+ .card {
+   margin-right: 5px;
+   font-size: 1.6rem;
+   text-align: center;
+   cursor: pointer;
+   display: inline-block;
+   float: left;
+   background: #444;
+   color: #999;
+   .border-radius(2px 2px 0 0);
+   position: relative;
+   padding: 0px 10px;
+   height: 30px;
+   line-height: 30px;
+
+   &.selected:only-child {
+     padding: 0px 10px 0px 10px;
+   }
+
+   &.selected:only-child .delete-card {
+     display: none;
+   }
+
+   .delete-card:hover {
+     background: url(../images/page-tab-x.png) center no-repeat;
+     background-size: 12px;
+     background-color: #DDD;
+     opacity: .8;
+   }
+
+   &:hover {
+     background: #666;
+     color: #BBB;
+   }
+
+   &.selected {
+     color: #666;
+     background-position: left center;
+     background: #FFF;
+     padding: 0px 30px 0px 10px;
+   }
+
+   &.selected .delete-card {
+     display: block;
+   }
+ }
+
+}

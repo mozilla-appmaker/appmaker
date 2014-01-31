@@ -1,0 +1,184 @@
+/*publish pane*/
+
+#publish-pane-panel {
+  position: fixed;
+  right: 0px;
+  left: 0px;
+  top: 100%;
+  height: 100%;
+  margin-top: -5px;
+  background-color: #ec6334;
+  border-top: 3px solid #ec6334;
+  z-index: 999;
+  font-family: 'Source Sans Pro', arial;
+  -webkit-transition: top 0.2s, height 0.2s;
+     -moz-transition: top 0.2s, height 0.2s;
+          transition: top 0.2s, height 0.2s;
+  overflow: hidden;
+}
+
+#publish-pane-panel.expanded {
+  top: 0px;
+}
+
+#publish-pane-panel-content {
+  position: absolute;
+  top: 50px;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+  height: 100%;
+  background-color: #212429;
+  z-index: 999;
+}
+
+#publish-pane-panel-inner {
+  width: 60%;
+  margin: 0 auto;
+}
+
+button#publish-pane-button {
+  background: #358CCE;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  width: 100%;
+  display: block;
+  border-radius: 2px;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box; /* Firefox */
+  border-top: 1px solid #74b3e3;
+  border-bottom: 1px solid #0f1113;
+  height: 50px;
+  margin: 10px 0px 50px 3px;
+  color: #FFF;
+  font-size: 24px;
+}
+
+button#publish-pane-button:hover {
+  background: #3f9fe8;
+}
+
+button#publish-pane-button:active {
+  background: #2b75ad;
+  border-top: none;
+}
+
+button#close-publish-pane-panel {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 1px solid #b04623;
+  float: right;
+  height: 30px;
+  width: 30px;
+  border-radius: 2px;
+  margin: 10px 10px 0px 0px;
+  background: url(../images/close-panel.png) center no-repeat;
+  background-color: #ff7445;
+}
+
+button#close-publish-pane-panel:hover {
+  background-color: #fc7f56;
+}
+
+button#close-publish-pane-panel:active {
+  background-color: #e66337;
+}
+
+input#publish-pane-panel-email {
+  width: 100%;
+  margin-top: 50px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 3px solid #0f1113;
+  height: 50px;
+  font-size: 18px;
+  outline: none;
+  text-indent: 10px;
+}
+
+#publish-pane-icon {
+  height: 20px;
+  width: 24px;
+  position: fixed;
+  bottom: 3px;
+  right: 30px;
+  border-radius: 3px 3px 0px 0px;
+  background: url(../images/remix.png) center no-repeat;
+  background-color: #ec6334;
+  z-index: 999;
+}
+
+#publish-pane-icon:hover {
+  background-color: #fc7f56;
+}
+
+#publish-pane-icon:active {
+  background-color: #e66337;
+}
+
+#publish-pane-icon:hover + #publish-pane-panel{
+  background-color: #fc7f56;
+}
+
+#publish-pane-icon:active + #publish-pane-panel{
+  background-color: #e66337;
+}
+
+#publish-pane-explanation {
+  width: 100%;
+  color: #aeb1b5;
+  font-size: 20px;
+  line-height: 140%;
+}
+
+.publish-guide-text {
+  color: #aeb1b5;
+  font-size: 20px;
+  line-height: 140%;
+}
+
+p.app-link {
+  display: block;
+  font-size: 130%;
+  margin-top: 1em;
+}
+
+p.app-link a {
+  color: #358CCE;
+  text-decoration: none;
+  font-size: 130%;
+}
+
+#publish-pane-logo {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.publish-pane-ui {
+  display: none;
+}
+
+.publish-pane-mode .publish-pane-ui {
+  display: block;
+}
+
+.publish-pane-mode .delete-btn {
+  display: none;
+}
+
+#publish-pane .mail-link {
+  -webkit-transition: opacity 0.35s linear;
+          transition: opacity 0.35s linear;
+}
+
+#publish-pane .mail-link { opacity: 1; }
+#publish-pane .mail-link.toggled { opacity: 0; }
+
+#publish-pane .mail-notice {
+  -webkit-transition: opacity 0.5s linear;
+          transition: opacity 0.5s linear;
+}
+
+#publish-pane .mail-notice { position:relative; opacity: 0; text-align:center; }
+#publish-pane .mail-notice.toggled { opacity: 1; top: -10em; }

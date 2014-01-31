@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 var fs = require('fs'),
-    langMap = require("./langmap"),
+    langMap = require("langmap"),
     _ = require("lodash"),
     momentLang = require("./momentLang"),
     path = require('path'),
@@ -12,7 +12,9 @@ var fs = require('fs'),
 var BIDI_RTL_LANGS = ['ar', 'fa', 'he'],
     translations = {},
     default_lang = 'en-US',
-    default_locale = 'en_US';
+    default_locale = 'en_US',
+    listSupportedLang,
+    listOfLanguages;
 
 function gettext(sid, locale) {
   if (translations[locale][sid] && translations[locale][sid].length) {
@@ -123,11 +125,19 @@ function localeFrom(language) {
 }
 
 /**
- * Given a locale, return language name
+ * Given a locale, return native language name e.g. given "th-TH" will return "ภาษาไทย"
  **/
 function languageNameFor(locale) {
   locale = languageFrom(locale);
-  return langMap[locale] ? langMap[locale].name : "Unknown";
+  return langMap[locale] ? langMap[locale]["nativeName"] : "Unknown";
+}
+
+/**
+ * Given a locale, return English language name e.g. given "th-TH" will return "Thai"
+ **/
+function languageEnglishName(locale) {
+  locale = languageFrom(locale);
+  return langMap[locale] ? langMap[locale]["englishName"] : "Unknown";
 }
 
 /**
@@ -175,10 +185,24 @@ exports.format = format = function(fmt, obj, named) {
 };
 
 /**
- * Returns the list of translations abide is currently configured to support.
+ * Returns the list of locales that we support in an array format
  **/
 exports.getLocales = function() {
   return Object.keys(translations);
+};
+
+/**
+ * Returns the list of languages that we support in an array format
+ **/
+exports.getLanguages = function() {
+  return listSupportedLang;
+};
+
+/**
+* Returns the list of languages that we support in an array format based on the lang-Countries found in your locale dir
+**/
+exports.getSupportLanguages = function() {
+  return listOfLanguages;
 };
 
 /**
@@ -201,6 +225,11 @@ function getStrings(lang) {
   return strings;
 }
 exports.getStrings = getStrings;
+exports.languageFrom = languageFrom;
+exports.localeFrom = localeFrom;
+exports.langToMomentJSLang = langToMomentJSLang;
+exports.languageEnglishName = languageEnglishName;
+exports.languageNameFor = languageNameFor;
 
 /**
  * A route servers can use to expose strings for a given lang:
@@ -219,13 +248,48 @@ exports.stringsRoute = function(defaultLang) {
  * headers or URLs, and provides `gettext` and `format` to other middleware functions.
  */
 exports.middleware = function(options) {
-  options = options || {};
-  options.supported_languages = options.supported_languages || ['en-US'];
-  options.translation_directory = options.translation_directory || 'locale/';
+  if (!options) {
+    throw new Error("No options passed in the middleware function. Please see the README for more info.");
+  } else if (!options.translation_directory) {
+    throw new Error("No path to translation_directory specified in the middleware function. Please see the README for more info.");
+  } else if (!options.supported_languages) {
+    throw new Error("No supported_languages option passed. Please see the README for more info.")
+  }
+
+
+  if (options.supported_languages && options.supported_languages.length) {
+    listSupportedLang = options.supported_languages.slice(0);
+    listOfLanguages = options.supported_languages;
+  } else {
+    throw new Error("Please check your supported_languages config.")
+  }
   options.mappings = options.mappings || {};
 
-  default_lang = options.default_lang || 'en-US';
+  // Use the lang-Countries found in your locale dir without explicitly specifying them.
+  if( listSupportedLang.length === 1 && listSupportedLang[0] === '*') {
+
+    // Read the translation_directory and get all the language codes
+    listSupportedLang = fs.readdirSync(options.translation_directory);
+
+    // Change the locale to lang e.g. en_US ==> en-US
+    for (var i = listSupportedLang.length - 1; i >= 0; i--) {
+      listSupportedLang[i] = languageFrom(listSupportedLang[i]);
+    };
+    options.supported_languages = listSupportedLang.slice(0);
+    listOfLanguages = options.supported_languages;
+  }
+  // If there is a '*' in the supported_languages field with some other languages.
+  else if (listSupportedLang.indexOf('*') !== -1 && listSupportedLang.length !== 1) {
+    throw new Error("Bad Config - Check your supported_languages field. Please see the README for more details.");
+  }
+
+  if (options.default_lang && listSupportedLang.indexOf(options.default_lang) === -1) {
+    throw new Error("An unknown default_lang was passed. Please check your config or see the README for more details.")
+  }
+  default_lang = options.default_lang || "en-US";
   default_locale = localeFrom(default_lang);
+
+
 
   function messages_file_path(locale) {
     return path.resolve(path.join(__dirname, '..', '..', '..'),
@@ -254,13 +318,12 @@ exports.middleware = function(options) {
           locale, messages_file_path(locale), e
         );
         console.error(msg);
-        throw msg;
+        return;
       }
     });
     return localeStrings;
   }
 
-  // Load supported languages
   options.supported_languages.forEach(function(lang) {
     var locale = localeFrom(lang);
 
@@ -271,8 +334,16 @@ exports.middleware = function(options) {
         'Bad locale=[%s] missing .json files in [%s]. See locale/README (%s)',
         locale, messages_file_path(locale), e
       );
+      // Only console error if bad config then we remove them off from the list so
+      // that we can continue with no problem.
       console.error(msg);
-      throw msg;
+      listSupportedLang = _.remove(listSupportedLang, function(l) {
+        return l !== locale;
+      });
+      options.supported_languages = _.remove(options.supported_languages, function(l) {
+       return l !== locale;
+     });
+      return;
     }
   });
 
@@ -287,7 +358,7 @@ exports.middleware = function(options) {
     translations[dynamicLang] = translations[locale];
     // Extend the language name mappings too, in case we're missing a generic language name.
     langMap[dynamicLang] = langMap[dynamicLang] || langMap[mapping];
-    options.supported_languages.push(dynamicLang);
+    listSupportedLang.push(dynamicLang);
   });
 
   function checkUrlLocale(req) {
@@ -305,7 +376,7 @@ exports.middleware = function(options) {
     // We do this so that we don't falsely consume more of the URL than we should
     // and stip things that aren't actually locales we know about.
     var lang = bestLanguage(parseAcceptLanguage(matches[1]),
-                            options.supported_languages,
+                            listSupportedLang,
                             "unknown");
     if (lang === "unknown") {
       return;
@@ -327,7 +398,7 @@ exports.middleware = function(options) {
 
     var langs = parseAcceptLanguage(req.headers['accept-language']),
         lang_dir,
-        lang = bestLanguage(langs, options.supported_languages, default_lang),
+        lang = bestLanguage(langs, listSupportedLang, default_lang),
         locale,
         localeInfo = {},
         locals = {},
@@ -343,6 +414,7 @@ exports.middleware = function(options) {
     // localeInfo object will contain all the necessary informations that we need
     // from the coming request and we will later attached that to the locals and req
     localeInfo.name = languageNameFor(lang);
+    localeInfo.engName = languageEnglishName(lang);
     localeInfo.lang = languageFrom(lang);
     localeInfo.locale = locale;
     localeInfo.momentLang = langToMomentJSLang(lang);
@@ -350,6 +422,7 @@ exports.middleware = function(options) {
 
     locals.localeInfo = localeInfo;
     req.localeInfo = localeInfo;
+    locals.languageEnglishName = languageEnglishName;
     locals.languageNameFor = languageNameFor;
 
     var formatFnName = 'format';

@@ -1,0 +1,103 @@
+<polymer-element name="ceci-channel-vis">
+  <script>
+  (function(){
+    //Animation speeds, In seconds
+    var signalSpeed = 1;
+    var bubbleDuration = 1;
+    Polymer('ceci-channel-vis', {
+      enteredView: function () {
+        var that = this;
+        this.component = this.parentNode.host;
+        // TODO: This shouldn't be done on the window
+        window.addEventListener('channelUpdated', function(data){
+          that.updateChannelVis();
+        });
+        this.updateChannelVis();
+      },
+      leftView : function(){
+        this.component.removeEventListener('channelUpdated');
+      },
+      updateChannelVis: function() {
+        var that = this;
+        // Remove all existing channel lines
+        var existingLines = this.$.visLines.querySelectorAll(".channel");
+
+        Array.prototype.forEach.call(existingLines, function(el,index){
+          el.parentNode.removeChild(el);
+        });
+
+        //Add new ones based on all the ceci-elements in the component
+        var elements;
+        if(this.direction == "in") {
+          elements = this.component.querySelectorAll("ceci-listen");
+        } else {
+          elements = this.component.querySelectorAll("ceci-broadcast");
+        }
+
+        Array.prototype.forEach.call(elements, function(el,index){
+          el.addEventListener('signalFired', function(data){
+            that.fire(data);
+          });
+
+          var channel = document.createElement("div");
+
+          channel.innerHTML = "<div class='dot color'></div>";
+          channel.setAttribute("color",el.getAttribute("on"));
+
+          if(that.direction == "in") {
+            channel.setAttribute("for",el.getAttribute("for"));
+          } else {
+            channel.setAttribute("from",el.getAttribute("from"));
+          }
+
+          channel.classList.add("channel");
+          that.$.visLines.appendChild(channel);
+        });
+      },
+      fire : function (data) {
+        var channel = data.detail.channel;
+        var handler = data.detail.handler;
+
+        var element;
+        if(this.direction == "in") {
+          element = this.shadowRoot.querySelector(".channel[color='"+channel+"'][for='"+handler+"']");
+        } else {
+          element = this.shadowRoot.querySelector(".channel[color='"+channel+"'][from='"+handler+"']");
+        }
+
+        // Add a signal indicator dot...
+        var indicator = document.createElement("div");
+        element.appendChild(indicator);
+
+        indicator.classList.add("indicator");
+        indicator.classList.add("indicator-" + this.direction);
+        var signalSpeedCSS = signalSpeed + "s";
+        indicator.style.webkitAnimationDuration = signalSpeedCSS;
+        indicator.style.mozAnimationDuration = signalSpeedCSS;
+
+        // ...and remove it!
+        var removeIndicator = function() {
+          element.removeChild(indicator);
+        };
+
+        setTimeout(removeIndicator, signalSpeed * 1000);
+
+        var timeout = (this.direction === "out" ? 0 : signalSpeed * 1000);
+
+        setTimeout(function() {
+          var bubble = document.createElement("div");
+          bubble.innerHTML = data.detail.data; //data
+          bubble.classList.add("bubblepopup");
+          bubble.classList.add("bubblepop");
+          element.appendChild(bubble);
+
+          // ...and remove it!
+          setTimeout(function() {
+            element.removeChild(bubble);
+          }, bubbleDuration * 1000);
+        }, timeout);
+      }
+    });
+    })();
+  </script>
+</polymer-element>

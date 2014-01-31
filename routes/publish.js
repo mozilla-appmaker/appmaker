@@ -7,7 +7,6 @@ var moniker = require('moniker');
 var ejs = require('ejs');
 var fs = require('fs');
 var path = require('path');
-var verify = require('../lib/verify');
 var lynx = require('lynx');
 var metrics = new lynx('localhost', 8125);
 
@@ -32,44 +31,54 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
   });
 
   return {
-    publish: function(req, res) {
-      var folderName = moniker.choose() + '-' + Math.round(Math.random() * 1000);
-      var installHTMLFilename =  'install.html';
-      var appHTMLFilename = 'index.html';
-      var manifestFilename = 'manifest.webapp';
+    publish: function(app) {
+      return function(req, res) {
+        var folderName = moniker.choose() + '-' + Math.round(Math.random() * 1000);
+        var installHTMLFilename =  'install.html';
+        var appHTMLFilename = 'index.html';
+        var manifestFilename = 'manifest.webapp';
 
-      var remoteURLPrefix = urlManager.createURLPrefix(folderName);
+        var remoteURLPrefix = urlManager.createURLPrefix(folderName);
 
-      var remoteURLs = {
-        install: remoteURLPrefix + installHTMLFilename,
-        app: remoteURLPrefix + appHTMLFilename,
-        manifest: remoteURLPrefix + manifestFilename
-      };
+        var remoteURLs = {
+          install: remoteURLPrefix + installHTMLFilename,
+          app: remoteURLPrefix + appHTMLFilename,
+          manifest: remoteURLPrefix + manifestFilename
+        };
 
-      var inputData = req.body;
-      var manifest = inputData.manifest || {};
+        var inputData = req.body;
+        var manifest = inputData.manifest || {};
 
-      function cleanString (str, removeQuotes) {
-        str = str.replace(/>/g, '&gt;').replace(/</g, '&lt;');
-
-        if (removeQuotes) {
-          str = str.replace(/'/g, '').replace(/"/g, '')
+        function cleanString (str, removeQuotes) {
+          str = str.replace(/>/g, '&gt;').replace(/</g, '&lt;');
+          if (removeQuotes) {
+            str = str.replace(/'/g, '').replace(/"/g, '')
+          }
+          return str;
         }
-        return str;
-      }
 
-      var requestHTML = inputData.html;
+        var requestHTML = inputData.html;
 
-      // Do some cleansing!
-      verify.filter(requestHTML, function (filteredHTML) {
+        // core appmaker components
+        var coreComponents = app.locals.components
+        var appComponents = [
+          //... mine the requestHTML for these? ...
+        ];
+
         var appStr = templates.publish({
-          appHTML: filteredHTML,
-          appName: folderName
+          appHTML: requestHTML,
+          appName: folderName,
+          gettext: req.gettext,
+          ceciComponentURL: process.env.ASSET_HOST,
+          remixURL: encodeURIComponent(encodeURIComponent(remoteURLs.app)),
+          bundles: app.locals.bundles,
+          components: coreComponents.concat(appComponents)
         });
 
         var installStr = templates.install({
           iframeSrc: remoteURLs.app,
-          manifestUrl: remoteURLs.manifest
+          manifestUrl: remoteURLs.manifest,
+          gettext: req.gettext
         });
 
         var manifestJSON = {
@@ -119,6 +128,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
                 tags: ['appmaker'],
                 description: 'Appmaker ' + folderName,
                 title: 'Appmaker ' + folderName,
+                email: req.session.email
               }, function (err, make) {
                 if (err) {
                   console.error(err);
@@ -128,7 +138,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
           }, description.contentType);
         });
         metrics.increment('appmaker.live.app_published');
-      });
+      };
     }
   };
 };

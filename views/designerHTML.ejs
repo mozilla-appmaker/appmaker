@@ -1,13 +1,10 @@
 <div class="page-wrapper">
   <nav class="top-nav clearfix">
     <div class="logo"></div>
-    <div class="cards clearfix">
-      <div class="card-list clearfix"></div>
-      <div class="add-card"></div>
-    </div>
+    <ceci-card-nav></ceci-card-nav>
     <div class="nav-ui">
-      <button class="btn-std btn-md publish btn-critical"><%- gettext("Publish") %></button>
-      <button class="btn-std btn-md new"><%- gettext("New App") %></button>
+      <user-state></user-state>
+      <!-- <button class="btn-std btn-md publish btn-critical"><%- gettext("Publish") %></button> -->
     </div>
   </nav>
   <div class="container animate-me">
@@ -15,19 +12,10 @@
       <div class="listen-column"></div>
       <div class="phone-container">
         <div class="phone-inner">
-          <div class="phone-top"></div>
+          <div class="phone-top">
+            <div class="app-name"></div>
+          </div>
           <div class="phone-border">
-            <% if (htmlInjection.length > 0) { -%>
-              <%- htmlInjection %>
-            <% } else { -%>
-              <div id="flathead-app">
-                <div class="ceci-card">
-                  <div class="fixed-top"></div>
-                  <div class="phone-canvas"></div>
-                  <div class="fixed-bottom"></div>
-                </div>
-              </div>
-            <% } -%>
           </div>
           <div class="phone-shadow"></div>
           <div class="phone-bottom"></div>
@@ -48,8 +36,8 @@
       <div class="component-tags-wrapper">
         <span class="component-tags"></span>
         <br/>
-        <a class="see-all" href="#">Show all tags</a>
-        <a class="see-fewer" href="#">Show top tags</a>
+        <a class="see-all" href="#"><%- gettext("Show all tags") %></a>
+        <a class="see-fewer" href="#"><%- gettext("Show top tags") %></a>
       </div>
     </div>
     <div id="components-wrapper">
@@ -58,6 +46,7 @@
   </div>
 
   <div class="right-column app-column animate-me">
+    <design-log></design-log>
     <div class="expand-handle"></div>
     <div class="inner-wrapper">
       <div class="editable-section">
@@ -75,9 +64,9 @@
       <div class="editable-header nonremix-ui">
         <span class="name"></span>
       </div>
-      <div class="trey-tabs">
+      <div class="tray-tabs">
         <a class="selected-tab" tab="customize" href="#"><%- gettext("Customize") %></a>
-        <a tab="view-source" href="#"><%- gettext("View Source") %></a>
+        <!-- <a tab="view-source" href="#"><%- gettext("View Source") %></a> -->
       </div>
       <div class="tab-sections">
         <div class="section section-customize">
@@ -122,34 +111,11 @@
     </div>
   </div>
 
-  <div class="channel-menu channel-menu-template">
-    <div class="hover-helper"></div>
-    <div class="channel-option subscription-option channel-template">
-      <div class="color-ui">
-        <div name="blue"      color="blue"    class="color" data-channel="blue"></div>
-        <div name="green"     color="green"   class="color" data-channel="green"></div>
-        <div name="yellow"    color="yellow"  class="color" data-channel="yellow"></div>
-        <div name="orange"    color="orange"  class="color" data-channel="orange"></div>
-        <div name="red"       color="red"     class="color" data-channel="red"></div>
-        <div name="pink"      color="pink"    class="color" data-channel="pink"></div>
-        <div name="purple"    color="purple"  class="color" data-channel="purple"></div>
-        <div name="false"     color="false"   class="color" data-channel=""></div>
-      </div>
-      <label><span class="channel-name"></span><div color="blue" class="chosen-color"></div></label>
-    </div>
-    <div class="arrow"></div>
-  </div>
-
   <div class="modal-wrapper hidden flex">
     <div class="modal" id="component-discovery-modal">
       <div class="modal-header">
-<<<<<<< HEAD
-        Search <input type="search" class="component-search" placeholder="Search by name or tags" />
-        <button class="done">Done</button>
-=======
         <%- gettext("Search") %> <input type="text" class="component-search" placehodler="<%- gettext("Search for a component") %>" />
         <button class="done"><%- gettext("Done") %></button>
->>>>>>> 60fdecdae6d079ef5e41ab206be45f6a77b1b7ec
       </div>
       <div id="components-wrapper">
         <div id="components"></div>
@@ -182,55 +148,6 @@
       </div>
     </div>
   </div>
-
-  <div class="game-status">
-    <div class="wrapper level-finished">
-      <h2><%- gettext("Congratulations!") %></h2>
-      <h1><%- gettext("You completed Level") %></h1>
-      <div>
-      <p><%- gettext("You've been promoted to...") %></p>
-      <div class="player-rank"></div>
-      </div>
-      <a class="next-level green-button" href="#"><%- gettext("Continue") %></a>
-      <div class="mailman-head"></div>
-    </div>
-
-    <div class="wrapper level-intro">
-      <h2 class="level-number"></h2>
-      <h1 class="level-name"></h1>
-
-      <div class="level-indicator">
-        <div class="level-progress"></div>
-        <div class="current-level"></div>
-      </div>
-
-      <h3 class="objective"><%- gettext("Your Mission") %></h3>
-      <div class="step-list"></div>
-      <a class="start green-button" href="#"><%- gettext("START") %></a>
-      <div class="sub-links">
-        <%- gettext("start over do not want") %>
-      </div>
-      <div class="mailman-head"></div>
-    </div>
-
-    <div class="wrapper game-finished">
-      <h2><%- gettext("You win!") %></h2>
-      <h1><%- gettext("You've been promoted to Postmaster!") %></h1>
-      <p><%- gettext("Go forth and build apps!") %></p>
-      <a class="green-button endgame" href="#"><%- gettext("I'm Ready") %></a>
-    </div>
-
-
-    <div class="wrapper level-status">
-      <a class="optout" href="#"><%- gettext("I quit!") %></a>
-      <a class="show-hints" href="#"></a>
-      <div><span class="level-number"></span> - <span class="level-name"></span></div>
-      <div class="step-list"></div>
-      <div class="hint">
-        <%- gettext("hint") %>
-        <div class="arrow"></div>
-      </div>
-    </div>
-  </div>
 </div>
-<input id="appmaker-remix-url" type="hidden" value="<%- publishUrl %>" />
+
+<% include publishpane %>

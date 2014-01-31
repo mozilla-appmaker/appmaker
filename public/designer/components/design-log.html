@@ -1,0 +1,77 @@
+<polymer-element
+  name="design-log"
+  >
+  <template>
+    <style>
+      :host {
+        display: block;
+        background-color: #31353C;
+        color: #b5bac2;
+        height: 200px;
+        position: relative;
+        font-size: 13px;
+        overflow-y: auto;
+      }
+      .log-message {
+        padding-bottom: 5px;
+      }
+      .log {
+         width: 100%;
+         height: 100%;
+         display: table;
+      }
+      .log-content {
+         display: table-cell;
+         vertical-align: bottom;
+         min-height: 100%;
+         padding: 0px 10px;
+      }
+      button {
+        background: #31353C;
+        color: #b5bac2;
+        border-radius: 2px;
+        border: 2px solid #40464f;
+        padding: 4px 10px;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+      .highlight {
+        color: #FFF;
+      }
+      .highlightChannel {
+        color: #FFF;
+        padding: 2px 4px;
+        border-radius: 2px;
+      }
+    </style>
+    <div class="log">
+      <div class="log-content">
+        <template repeat="{{log in logs}}">
+          <div class="log-message"><span class="highlight">{{log.component}} </span>{{log.eventType}} <span class="highlight">{{log.eventName}} </span>on <span class="{{log.eventChannel}} highlightChannel">{{log.eventChannel}}</span></div>
+        </template>
+          <button id="clear" on-click="{{clear}}">Clear</button>
+      </div>
+    </div>
+  </template>
+  <script>
+  require(['l10n'], function(l10n) {
+    Polymer('design-log', {
+      ready: function() {
+        this.logs = [];
+        var that = this;
+        this.$.clear.innerHTML = l10n.get("Clear");
+        document.addEventListener('log', function(event) {
+          that.logs.push(event.detail);
+          setTimeout (function () {
+            that.scrollTop = that.scrollHeight;
+          }, 100)
+        });
+      },
+      clear: function() {
+        this.logs = [];
+      }
+    });
+  });
+  </script>
+</polymer-element>

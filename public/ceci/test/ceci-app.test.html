@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+  <head>
+
+    <link rel="import" href="/ceci/ceci-broadcast.html">
+    <link rel="import" href="/ceci/ceci-listen.html">
+    <link rel="import" href="/ceci/ceci-element-base.html">
+    <link rel="import" href="/ceci/ceci-element.html">
+    <link rel="import" href="/ceci/ceci-app.html">
+    <link rel="import" href="/ceci/ceci-card-base.html">
+    <link rel="import" href="/ceci/ceci-card.html">
+
+    <script src="/vendor/polymer/polymer.min.js"></script>
+    <style>
+      ceci-app {
+        float: left
+      }
+    </style>
+
+    <link rel="stylesheet" href="/vendor/mocha/mocha.css">
+  </head>
+  <body>
+
+    <div id="mocha"></div>
+    <script src="/vendor/mocha/mocha.js"></script>
+    <script src="/vendor/chai/chai.js"></script>
+    <script src="/vendor/sinon/lib/sinon.js"></script>
+
+    <ceci-app id="empty-app">
+    </ceci-app>
+
+    <ceci-app id="to-be-empty-app">
+      <ceci-card visible>
+      </ceci-card>
+      <ceci-card>
+      </ceci-card>
+    </ceci-app>
+
+    <ceci-app id="three-card-app">
+      <ceci-card visible>
+      </ceci-card>
+      <ceci-card id="removeCard-theone">
+      </ceci-card>
+      <ceci-card >
+      </ceci-card>
+    </ceci-app>
+
+    <script>
+      mocha.setup('bdd');
+      chai.should();
+
+      describe('ceci-app', function(){
+        describe('#addCard()', function(){
+          var app = document.querySelector('ceci-app#empty-app');
+
+          it('should add a card', function(){
+            app.countCards().should.equal(1);
+            app.addCard();
+            app.countCards().should.equal(2);
+          });
+        });
+
+        describe('#clearCards', function(){
+          var app = document.querySelector('ceci-app#to-be-empty-app');
+          it('should remove all cards', function(){
+            app.countCards().should.equal(2);
+            app.clearCards();
+            app.countCards().should.equal(0);
+          });
+        });
+
+        describe('#removeCard', function(){
+          var app = document.querySelector('ceci-app#three-card-app');
+          it('should remove and return a card by index', function(){
+            app.countCards().should.equal(3);
+            var card = app.removeCard(1);
+            card.getAttribute('id').should.equal('removeCard-theone');
+            app.countCards().should.equal(2);
+          });
+        });
+      });
+    </script>
+
+    <script>
+      window.addEventListener('WebComponentsReady', function(e) {
+        mocha.run();
+      });
+    </script>
+  </body>
+</html>
