@@ -271,6 +271,7 @@
               application.setCurrentApp(name);
               self.refreshUserState();
               self.editingmode = "saved";
+              window.dispatchEvent(new CustomEvent("CeciAppSaveAs"));
             } else {
               console.log("Please name your app.");
             }
