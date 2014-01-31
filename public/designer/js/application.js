@@ -102,9 +102,9 @@ define(["jquery", "l10n"], function($, l10n) {
             console.log("App saved successfully");
             if(next) { next(false, data); }
           },
-          error: function (data) {
-            console.error("App was not saved successfully!");
-            if(next) { next(data); }
+          error: function (error) {
+            console.log("App was not saved successfully!", error);
+            if(next) { next(error); }
           }
         });
 
@@ -120,9 +120,9 @@ define(["jquery", "l10n"], function($, l10n) {
             console.log("App updated successfully!");
             if(next) { next(false, data); }
           },
-          error: function (data) {
-            console.log("App was not updated successfully!", data);
-            if(next) { next(data); }
+          error: function (error) {
+            console.log("App was not updated successfully!", error);
+            if(next) { next(error); }
           }
         });
 

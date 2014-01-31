@@ -221,7 +221,9 @@
             var name = application.getCurrentApp();
             if(name){
               application.updateApp(name,ceciApp.appid,html, function(err,data){
-                if(err){
+                if(!err){
+                  console.log("App save.");
+                } else {
                   alert(l10n.get("Your app could not be saved at this time. Please try again."));
                   console.error("SaveApp ajax error", err);
                 }
@@ -271,21 +273,16 @@
             var html = ceciApp.outerHTML;
             if(name){
               application.saveApp(name,ceciApp.appid,html, function(err,data){
-                if(err){
-                  alert(l10n.get("Your app could not be saved at this time. Please try again."));
-                  console.error("SaveApp ajax error", err);
-                } else {
+                if(!err){
                   application.setCurrentApp(name);
                   self.refreshUserState();
                   self.editingmode = "saved";
+                  window.dispatchEvent(new CustomEvent("CeciAppSaveAs"));
+                } else {
+                  alert(l10n.get("Your app could not be saved at this time. Please try again."));
+                  console.error("SaveApp ajax error", err);
                 }
               });
-              // gotta make sure it actually saves though!
-              // add as a callback? or pass in callbacks?
-              application.setCurrentApp(name);
-              self.refreshUserState();
-              self.editingmode = "saved";
-              window.dispatchEvent(new CustomEvent("CeciAppSaveAs"));
             } else {
               console.log("Please name your app.");
             }
