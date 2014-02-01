@@ -1,4 +1,4 @@
-<% include header %>
+<% layout('views-layout') %>
     <div id="banner" class="content-block">
       <div class="wrap">
         <div class="two-column">
@@ -60,7 +60,7 @@
 
         <p>
           <%- gettext("We've built some demo apps for you to try. We hope you remix them and make  them your own - it's a great way to discover what you can do with Appmaker.") %>
-          </>
+          </p>
 
         <div id="demo-preview">
           <div class="three-column">
@@ -94,8 +94,6 @@
         </div>
       </div>
     </div>
-    <% include footer %>
-    </div>
     <script>
       // sample code taken from http://designshack.net/articles/javascript/build-an-automated-rss-feed-list-with-jquery/
       $.ajax({
@@ -109,4 +107,3 @@
         }
       });
     </script>
-  </body>

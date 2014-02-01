@@ -19,7 +19,7 @@
         <a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
         <div>
           <div id="wordmark" class="left">
-            <a href="/<%- localeInfo.lang %>"><img src="images/appmaker_wordmark.png" />
+            <a href="/<%- localeInfo.lang %>"><img src="images/appmaker_wordmark.png" alt="logo" />
             </a>
           </div>
           <ul id="nav-page-links">
@@ -33,3 +33,48 @@
         </div>
       </div>
     </div>
+    <%- body %>
+    <footer id="footer" class="content-block">
+      <div class="wrap">
+        <div class="left" id="mozilla-labs"><img src="images/logo.png" alt="logo" /></div>
+        <div id="footer-links" class="right">
+          <div class="four-column">
+            <header><%- gettext("About") %></header>
+            <ul>
+              <li><a href=""><%- gettext("About Appmaker") %></a></li>
+              <li><a href=""><%- gettext("FAQ") %></a></li>
+              <li><a href=""><%- gettext("Blog") %></a></li>
+            </ul>
+          </div>
+          <div class="four-column">
+            <header><%- gettext("Resources") %></header>
+            <ul>
+              <li><a href=""><%- gettext("Contribute") %></a></li>
+              <li><a href=""><%- gettext("Documentation") %></a></li>
+              <li><a href=""><%- gettext("Donate") %></a></li>
+            </ul>
+          </div>
+          <div class="four-column">
+            <header>Info</header>
+            <ul>
+              <li><a href=""><%- gettext("Privacy Policy") %></a></li>
+              <li><a href=""><%- gettext("Legal Notices") %></a></li>
+              <li><a href=""><%- gettext("Feedback") %></a></li>
+            </ul>
+          </div>
+          <div class="four-column">
+            <header>Contact</header>
+            <ul>
+              <li><a href=""><%- gettext("E-mailing List") %></a></li>
+            </ul>
+            <div id="social">
+              <img src="images/icon_twitter.png" alt="Twitter" />
+              <img src="images/icon_youtube.png" alt="Youtube"/>
+              <img src="images/icon_github.png" alt="Github"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script>
+    </footer>
+</body>
