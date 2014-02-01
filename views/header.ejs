@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="<%- localeInfo.lang %>" dir="<%- localeInfo.direction %>">
+  <head>
+    <title>Mozilla Appmaker</title>
+    <link rel='stylesheet' href='/stylesheets/site.css' />
+    <link rel='stylesheet' href='/stylesheets/font-awesome.css' />
+    <link href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" rel="stylesheet" />
+    <script type="text/javascript" charset="utf-8" src="/vendor/jquery/jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/vendor/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <% if (view === 'home') { %>
+    <!-- rss-feed-parser.js taken from http://designshack.net/articles/javascript/build-an-automated-rss-feed-list-with-jquery/ -->
+    <script type="text/javascript" charset="utf-8" src="/javascripts/rss-feed-parser.js"></script>
+    <% } %>
+    <script type="text/javascript" charset="utf-8" src="/javascripts/tutorial.js"></script>
+  </head>
+  <body>
+    <div id="nav">
+      <div class="wrap">
+        <a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
+        <div>
+          <div id="wordmark" class="left">
+            <a href="/<%- localeInfo.lang %>"><img src="images/appmaker_wordmark.png" />
+            </a>
+          </div>
+          <ul id="nav-page-links">
+            <div class="right">
+              <li id="designer-page" class="right"><a href="/<%- localeInfo.lang %>/designer" class="build-app"><i class="fa fa-mobile"></i><span><%- gettext("Build App") %></span></a></li>
+              <li id="blog-page" class="right"><a href="//appmaking.mozillalabs.com/"><%- gettext("Blog") %></a></li>
+              <li id="contribute-page" class="right <% if (view === 'contribute') { %>active-page<% } %>"><a href="/<%- localeInfo.lang %>/contribute"><%- gettext("Contribute") %></a></li>
+              <li id="about-page" class="right <% if (view === 'about') { %>active-page<% } %>"><a href="/<%- localeInfo.lang %>/about"><%- gettext("About") %></a></li>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
