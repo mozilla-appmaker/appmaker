@@ -1,33 +1,31 @@
 Vagrant.configure("2") do |config|
 
-# Name of the box you are going to use.
+  # Name of the box you are going to use.
   config.vm.box = "appmaker-aws"
 
-# Keypair to access AWS.
+  # Keypair to access AWS.
 
   config.vm.provider :aws do |aws, override|
     aws.access_key_id = "AKAI......"
     aws.secret_access_key = "SECRETACCESSKEY"
     aws.keypair_name = "KEYPAIR NAME"
 
-# Define the region where an AMI available
+    # Define the region where an AMI available
     aws.availability_zone="us-east-1c"
     aws.region="us-east-1"
 
-# Define the type of instance
-   aws.instance_type="m1.small"
+    # Define the type of instance
+    aws.instance_type="m1.small"
 
-# An AMI of Ubuntu 12.04 (available in US-EAST-1 region)
-   aws.ami = "ami-971922fe"
+    # An AMI of Ubuntu 12.04 (available in US-EAST-1 region)
+    aws.ami = "ami-971922fe"
 
-# Specify Security group name which you have to create at AWS
-# (You will need to allow traffic to port 5000)
-  aws.security_groups="security-group-name"
+    # Specify Security group name which you have to create at AWS
+    # (You will need to allow traffic to port 5000)
+    aws.security_groups="security-group-name"
 
-# Path to the keypair
+    # Path to the keypair
     override.ssh.username = "ubuntu"
     override.ssh.private_key_path = "/path/to/your/private/key.pem"
-
-
-end
+  end
 end
