@@ -124,6 +124,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
               // Don't wait for the MakeAPI to deliver url to user
               makeAPIPublisher.publish({
                 url: remoteURLs.install,
+                remix: remoteURLs.app,
                 thumbnail: 'http://appmaker.mozillalabs.com/images/mail-man.png',
                 tags: ['appmaker'],
                 description: 'Appmaker ' + folderName,
