@@ -3,7 +3,7 @@
       <div class="wrap">
         <div class="two-column">
           <h1><%- gettext("Let's Build an App") %></h1>
-          <div class="banner-description"><%- gettext("Finally, a simple way to create and share personal mobile apps, even if you don't know code. 100% free and open source.") %></div>
+          <div class="banner-description"><%- gettext("bannerDescription") %></div>
           <button class="button-link white-text-button build-app" onclick="window.location='/<%- localeInfo.lang %>/designer'"><i class="fa fa-mobile"></i><span><%- gettext("Build App") %></span></button>
         </div>
         <div class="two-column">
@@ -15,7 +15,7 @@
     </div>
     <div id="quote" class="content-block">
       <div class="wrap">
-        <span><i><%- gettext("\"Mozilla  Appmaker lets you drag and drop components to easily build fun and  useful apps for your friends, your business, your classroom and your  community.\"") %></i></span>
+        <span><i><%- gettext("indexQuote") %></i></span>
       </div>
     </div>
 
@@ -23,43 +23,34 @@
 
       <div class="wrap">
         <div class="three-column">
-          <h2>Help make Appmaker better!</h2>
-          <!-- <p>We're looking </p> -->
+          <h2><%- gettext("Help make Appmaker better!") %></h2>
         </div>
         <div class="three-column">
-          <h3>Have an Opinion?</h3>
-          <p>
-            Then we'd love your feedback! Fill out our short Usability Survey while <a href="">building an app</a> and
-            we'll use your feedback to improve Appmaker.
-          <p>
+          <h3><%- gettext("Have an Opinion?") %></h3>
+          <p><%- gettext("opinionDesc") %></p>
           <p>
             <a class="button-link-blue" href="https://docs.google.com/forms/d/16Qyz8oHl_RwMV-cdtwxHyVlamg0IDg5s4NOjYdMznv0/viewform">
-              Take the Survey
+              <%- gettext("Take the Survey") %>
             </a>
           </p>
         </div>
         <div class="three-column">
-          <h3>Like to Build Stuff?</h3>
+          <h3><%- gettext("Like to Build Stuff?") %></h3>
           <p>
-            We're looking for <strong>component</strong> contributors. If you're handy with code or want to get better,
-            you can help! Check out our guide to see how to get started.
+            <%- gettext("buildStuffDesc") %></p>
           <p>
-          <p>
-            <a class="button-link-blue" href="http://github.com/mozilla-appmaker/appmaker/wiki/Contributing-a-component">Find out How</a>
+            <a class="button-link-blue" href="http://github.com/mozilla-appmaker/appmaker/wiki/Contributing-a-component"><%- gettext("Find out How") %></a>
           </p>
         </div>
     </div>
   </div>
 
-
-
     <div id="try-demo" class="content-block light-blue-bg">
       <div class="wrap">
         <h1><%- gettext("Try our Demo Apps") %></h1>
-        <!-- <h1><%- gettext("Try our Demo Apps") %></h1> -->
 
         <p>
-          <%- gettext("We've built some demo apps for you to try. We hope you remix them and make  them your own - it's a great way to discover what you can do with Appmaker.") %>
+          <%- gettext("demoAppDesc") %>
           </p>
 
         <div id="demo-preview">
