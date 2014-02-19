@@ -38,6 +38,7 @@ define(
       element.addEventListener('click', function(e){
         selectElement(element);
       });
+
       selectElement(element);
     }, false);
   }

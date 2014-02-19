@@ -6,7 +6,6 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
   var urlComponent = window.CustomElements;
   var editableTypeHandlers = {
     'multiple': function (element, attributeName, title, value, definition) {
-      var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var options = JSON.parse(value);
       var e = $("<div>" +
         "<label>"+ title + "</label>" +
@@ -35,11 +34,10 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       return e[0];
     },
     'select': function (element, attributeName, title, value, definition) {
-      var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var e = $("<div><label>" +
         title +
         "</label><select type=\"text\" value=\"" +
-        eValue +
+        value +
         "\"> "+
         "</select></div>"
       );
@@ -56,11 +54,10 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       return e[0];
     },
     'text': function (element, attributeName, title, value, definition) {
-      var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var e = $("<div><label>" +
         title +
         "</label><input type=\"text\" value=\"" +
-        eValue +
+        value +
         "\"></input></div>"
       );
       e.on("keyup", function(evt) {
@@ -69,7 +66,6 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       return e[0];
     },
     'number': function (element, attributeName, title, value, definition) {
-      var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var e = $(
         "<div><label>" +
         title +
@@ -78,7 +74,7 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
         "\" max=\"" +
         definition.max +
         "\" value=\"" +
-        eValue + "\" /></div>"
+        value + "\" /></div>"
       );
       e.on("change", function(evt) {
         element.setAttribute(attributeName, evt.target.value);
@@ -86,12 +82,11 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       return e[0];
     },
     'boolean': function (element, attributeName, title, value, definition) {
-      var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var e = $(
         "<div><label>" +
         "<input type=\"checkbox\" " +
         (value == "true" ? " checked=\"true\" " : "") + "\" value=\"" +
-        eValue + "\" />" + title + " </div>"
+        value + "\" />" + title + " </div>"
       );
       e.on("change", function(evt) {
         evt.target.value = evt.target.value == "true" ? "false" : "true";
@@ -100,10 +95,9 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       return e[0];
     },
     'color': function (element, attributeName, title, value, definition) {
-      var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var e = $(
         '<div><label>' + title + '</label>' +
-        '<input type="text" value="' + eValue + '">' +
+        '<input type="text" value="' + value + '">' +
         '</div>'
       );
 
@@ -139,7 +133,10 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
 
   var editable = {
     getAttributeUIElement: function (element, attributeName, definition) {
-      var value = element.getAttribute(attributeName);
+      // Use element[attributeName] instead of element.getAttribute(attributeName) because Polymer's
+      // DOM might not reflect most recent attribute changes yet.
+      var value = element[attributeName];
+
       value = value !== null ? value : '';
 
       var title = definition.label || Inflector.titleize(Inflector.underscore(attributeName));

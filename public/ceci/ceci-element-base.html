@@ -251,6 +251,8 @@
               }
             }
           }
+          console.log('localized!');
+          this.dispatchEvent(new CustomEvent('CeciElementLocalized', {bubbles: true, detail: this}));
         }
       });
     });
