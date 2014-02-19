@@ -139,8 +139,9 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
 
       value = value !== null ? value : '';
 
-      var title = definition.label || Inflector.titleize(Inflector.underscore(attributeName));
-      title = L10n.get(element.localName + "/attributes/" + attributeName + "/label") || title;
+      var title = L10n.get(element.localName + "/attributes/" + attributeName + "/label")
+        || definition.label
+        || Inflector.titleize(Inflector.underscore(attributeName));
 
       var handler = editableTypeHandlers[definition.editable] || editableTypeHandlers.text;
       return handler(element, attributeName, title, value, definition);
