@@ -48,6 +48,7 @@ define([], function () {
 
         var xhr = new XMLHttpRequest();
         xhr.open('GET', url, false);
+        console.log('L10n XHR', url);
         xhr.onreadystatechange = function(){
           _requestCache[url] = {};
           _requestCache[url].status = xhr.status;

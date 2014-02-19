@@ -6,11 +6,10 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
   var urlComponent = window.CustomElements;
   var editableTypeHandlers = {
     'multiple': function (element, attributeName, title, value, definition) {
-      var labelName = L10n.get(element.localName+"/attributes/"+attributeName+"/label") || title;
       var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var options = JSON.parse(value);
       var e = $("<div>" +
-        "<label>"+ labelName + "</label>" +
+        "<label>"+ title + "</label>" +
         "<div class=\"option-list\"></div>" +
         "</div>"
       );
@@ -36,10 +35,9 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       return e[0];
     },
     'select': function (element, attributeName, title, value, definition) {
-      var labelName = L10n.get(element.localName+"/attributes/"+attributeName+"/label") || title;
       var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var e = $("<div><label>" +
-        labelName +
+        title +
         "</label><select type=\"text\" value=\"" +
         eValue +
         "\"> "+
@@ -58,10 +56,9 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       return e[0];
     },
     'text': function (element, attributeName, title, value, definition) {
-      var labelName = L10n.get(element.localName+"/attributes/"+attributeName+"/label") || title;
       var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var e = $("<div><label>" +
-        labelName +
+        title +
         "</label><input type=\"text\" value=\"" +
         eValue +
         "\"></input></div>"
@@ -72,11 +69,10 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       return e[0];
     },
     'number': function (element, attributeName, title, value, definition) {
-      var labelName = L10n.get(element.localName+"/attributes/"+attributeName+"/label") || title;
       var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var e = $(
         "<div><label>" +
-        labelName +
+        title +
         "</label><input type=\"number\" min=\"" +
         definition.min +
         "\" max=\"" +
@@ -90,13 +86,12 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       return e[0];
     },
     'boolean': function (element, attributeName, title, value, definition) {
-      var labelName = L10n.get(element.localName+"/attributes/"+attributeName+"/label") || title;
       var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var e = $(
         "<div><label>" +
         "<input type=\"checkbox\" " +
         (value == "true" ? " checked=\"true\" " : "") + "\" value=\"" +
-        eValue + "\" />" + labelName + " </div>"
+        eValue + "\" />" + title + " </div>"
       );
       e.on("change", function(evt) {
         evt.target.value = evt.target.value == "true" ? "false" : "true";
@@ -105,10 +100,9 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       return e[0];
     },
     'color': function (element, attributeName, title, value, definition) {
-      var labelName = L10n.get(element.localName+"/attributes/"+attributeName+"/label") || title;
       var eValue = L10n.get(element.localName+"/attributes/"+attributeName) || value;
       var e = $(
-        '<div><label>' + labelName + '</label>' +
+        '<div><label>' + title + '</label>' +
         '<input type="text" value="' + eValue + '">' +
         '</div>'
       );
@@ -149,6 +143,8 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       value = value !== null ? value : '';
 
       var title = definition.label || Inflector.titleize(Inflector.underscore(attributeName));
+      title = L10n.get(element.localName + "/attributes/" + attributeName + "/label") || title;
+
       var handler = editableTypeHandlers[definition.editable] || editableTypeHandlers.text;
       return handler(element, attributeName, title, value, definition);
     },
