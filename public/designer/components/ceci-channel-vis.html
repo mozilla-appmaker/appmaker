@@ -12,7 +12,7 @@
         window.addEventListener('channelUpdated', function(data){
           that.updateChannelVis();
         });
-        this.updateChannelVis();
+        this.async(this.updateChannelVis);
       },
       leftView : function(){
         this.component.removeEventListener('channelUpdated');

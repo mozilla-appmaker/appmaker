@@ -113,9 +113,10 @@
 
         return defaultBroadcasts;
       }
-
+console.log('ceci-element-base');
       Polymer('ceci-element-base', {
         ready: function () {
+          console.log('ceci-element-base::ready', this.localName);
           if (this.ceci) return;
 
           var that = this;

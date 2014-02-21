@@ -25,19 +25,25 @@
         enteredView: function () {
           var that = this;
           this.menu = this.shadowRoot.querySelector(".channel-menu");
-          this.component = this.parentNode.host;
-          this.buildMenu();
+
+          this.async(function () {
+            this.component = this.parentNode.host;
+            this.buildMenu(this.component);
+          });
         },
         hideMenu : function() {
           this.menu.style.display = "none";
         },
         showMenu : function() {
-          var items = this.channelType == "listen" ? Object.keys(this.component.ceci.listeners) : Object.keys(this.component.ceci.broadcasts);
-          if (items.length > 0) {
-            this.menu.style.display = "block";
-            var height = this.menu.offsetHeight;
-            this.menu.style.marginTop = -1 * (height/2) + "px";
-          }
+          var that = this;
+          this.component.async(function () {
+            var items = that.channelType == "listen" ? Object.keys(that.component.ceci.listeners) : Object.keys(that.component.ceci.broadcasts);
+            if (items.length > 0) {
+              that.menu.style.display = "block";
+              var height = that.menu.offsetHeight;
+              that.menu.style.marginTop = -1 * (height/2) + "px";
+            }
+          });
         },
         changeChannel : function(handlerType, handler ,color){
           var visEl = this.component.querySelector("ceci-"+this.channelType+"["+handlerType+"=\""+handler+"\"]");
@@ -63,10 +69,12 @@
           var communicators, handlertype;
 
           if(this.channelType == "broadcast") {
+            console.log(2, this.component.ceci);
             communicators = this.component.ceci.broadcasts;
             handlerType = "from";
           }
           else {
+            console.log(3, this.component.ceci);
             communicators = this.component.ceci.listeners;
             handlerType = "for";
           }
