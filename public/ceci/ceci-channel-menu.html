@@ -69,12 +69,10 @@
           var communicators, handlertype;
 
           if(this.channelType == "broadcast") {
-            console.log(2, this.component.ceci);
             communicators = this.component.ceci.broadcasts;
             handlerType = "from";
           }
           else {
-            console.log(3, this.component.ceci);
             communicators = this.component.ceci.listeners;
             handlerType = "for";
           }
