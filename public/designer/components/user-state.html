@@ -146,13 +146,15 @@
             that.user.email = event.detail.email;
 
             var remixName = utils.getQueryStringVariable('remix');
+            var currentApp = application.getCurrentApp();
 
             if (that.user.state == 'signedin') {
               that.refreshUserState();
               if (!user.preventLoadedAppInsertion) {
-                if(application.getCurrentApp()){
-                  application.loadAppByName(application.getCurrentApp());
+                if(currentApp){
+                  application.loadAppByName(currentApp);
                   that.editingmode = "saved";
+                  that.updateAppName(currentApp);
                 } else {
                   setupTempApp();
                 }
@@ -328,7 +330,7 @@
         updateAppName: function(name){
           this.getOrWaitForCeciApp(function(ceciApp){
             if (ceciApp && name) {
-              ceciApp.setAttribute("name", name);
+              ceciApp.name = name;
               document.querySelector(".phone-top .app-name").innerHTML = ceciApp.name;
             }
           });
