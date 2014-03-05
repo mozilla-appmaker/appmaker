@@ -79,6 +79,7 @@ module.exports = {
       try {
         if (fs.existsSync(fullpath)){
           res.sendfile(fullpath);
+          return;
         }
       }
       catch(e) {
@@ -91,15 +92,25 @@ module.exports = {
     // console.log("doing proxy request to", url);
     if (url) {
       try {
-        request.get(url).on('error', function(err) {
+        var newRequest = request.get(url);
+
+        newRequest.on('error', function(err) {
           console.error('error doing cors request for ', url);
           res.json({error: 'No valid url (1).'}, 500);
-        })
-        .pipe(res)
-        .on('error', function(err) {
-          console.error('error doing piped cors request for ', url);
-          res.json({error: 'No valid url (2).'}, 500);
         });
+
+        newRequest.on('response', function (response) {
+          if (response.statusCode >= 400) {
+            res.json({message: 'Remote error.'}, response.statusCode);
+          }
+          else {
+            newRequest.pipe(res).on('error', function(err) {
+              console.error('error doing piped cors request for ', url);
+              res.json({error: 'No valid url (2).'}, 500);
+            });
+          }
+        });
+
       }
       catch(e) {
         console.log("got exception doing the pipe", e);
