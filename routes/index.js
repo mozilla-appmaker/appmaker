@@ -13,15 +13,15 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
 
   return {
     index: function(req, res) {
-      res.render('index.ejs');
+      res.render('index.ejs', { view: "home" });
     },
 
     about: function(req, res) {
-      res.render('about.ejs');
+      res.render('about.ejs', { view: "about" });
     },
 
     contribute: function(req, res) {
-      res.render('contribute.ejs');
+      res.render('contribute.ejs', { view: "contribute" });
     },
 
     designer: function (req, res) {

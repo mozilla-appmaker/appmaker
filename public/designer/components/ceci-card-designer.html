@@ -47,13 +47,15 @@
                 ui.item[0].parentNode.removeChild(ui.item[0]);
               }
             },
-            out: function (ev, ui) {
-              that.$.garbageLeft.classList.add('open');
-              draggedOff = true;
-            },
-            over: function (ev, ui) {
-              that.$.garbageLeft.classList.remove('open');
-              draggedOff = false;
+            sort : function (ev, ui) {
+              var offset = ui.position.left;
+              if(offset > 150 || offset < -150) {
+                that.$.garbageLeft.classList.add('open');
+                draggedOff = true;
+              } else {
+                that.$.garbageLeft.classList.remove('open');
+                draggedOff = false;
+              }
             }
           });
         }

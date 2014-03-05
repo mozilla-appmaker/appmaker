@@ -21,9 +21,9 @@ define(["jquery", "l10n"], function($, l10n) {
         var parent = app.parentNode;
         parent.removeChild(app);
         parent.appendChild(document.createElement('ceci-app'));
-//        //TODO https://github.com/mozilla-appmaker/appmaker/issues/897
-//        //we have to decouple appidChanged and initFirebase
-        app.appid = "ceci-app-"+uuid();
+//      // TODO https://github.com/mozilla-appmaker/appmaker/issues/897
+//      // we have to decouple appidChanged and initFirebase
+        app.setAttribute("appid", "ceci-app-"+uuid());
       },
       renameApp: function(oldName,newName){
         var userState = document.querySelector('user-state');

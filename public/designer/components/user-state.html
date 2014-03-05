@@ -49,7 +49,8 @@
 
       var user = {
         email: '',
-        state: 'signedout'
+        state: 'signedout',
+        preventLoadedAppInsertion: false
       };
       // this is done via require because it needs persona loaded to
       // be able to call navigator.id stuff
@@ -117,16 +118,19 @@
           function loadRemixContent (remixName) {
             application.loadAppByUrl(decodeURIComponent(remixName));
             that.editingmode = 'draft';
+            that.updateAppName(l10n.get("Unsaved App"));
           }
 
           function setupTempApp() {
-            var phoneBorderElement = document.querySelector(".phone-border");
-            var ca = document.createElement("ceci-app");
-            phoneBorderElement.appendChild(ca);
-            ca.appid = "temp-"+uuid();
-            that.updateAppName(l10n.get("Unsaved App"));
-            that.editingmode = "draft";
-            window.dispatchEvent(new CustomEvent("resetcards"));
+            if(!document.querySelector("ceci-app")) {
+              var phoneBorderElement = document.querySelector(".phone-border");
+              var ca = document.createElement("ceci-app");
+              phoneBorderElement.appendChild(ca);
+              ca.setAttribute("appid","temp-"+uuid());
+              that.updateAppName(l10n.get("Unsaved App"));
+              that.editingmode = "draft";
+              window.dispatchEvent(new CustomEvent("resetcards"));
+            }
           }
 
           document.addEventListener('signInStarted', function (event) {
@@ -142,30 +146,41 @@
             that.user.email = event.detail.email;
 
             var remixName = utils.getQueryStringVariable('remix');
+            var currentApp = application.getCurrentApp();
 
             if (that.user.state == 'signedin') {
               that.refreshUserState();
-              if (remixName) {
-                loadRemixContent(remixName);
-              }
-              else {
-                if(application.getCurrentApp()){
-                  application.loadAppByName(application.getCurrentApp());
+              if (!user.preventLoadedAppInsertion) {
+                if(currentApp){
+                  application.loadAppByName(currentApp);
                   that.editingmode = "saved";
+                  that.updateAppName(currentApp);
                 } else {
                   setupTempApp();
                 }
               }
-            } else if (that.user.state == 'signedout') {
-              if (remixName) {
-                loadRemixContent(remixName);
-              } else {
+            }
+            else if (that.user.state == 'signedout') {
+              if (!user.preventLoadedAppInsertion) {
                 setupTempApp();
               }
               that.signedOut();
             }
-          });
+          }, false);
 
+          // prepare a temp app regardless of what navigator.id is doing so that user can start playing immediately
+          var remixName = utils.getQueryStringVariable('remix');
+          if (remixName) {
+            loadRemixContent(remixName);
+            user.preventLoadedAppInsertion = true;
+          }
+          else {
+            setupTempApp();
+          }
+
+          window.addEventListener('CeciElementAdded', function (e) {
+            user.preventLoadedAppInsertion = true;
+          }, false);
         },
         enteredView : function() {
           var self = this;
@@ -258,8 +273,8 @@
             var name = window.prompt(l10n.get("What do you want to call this app?"));
 
             var ceciApp = document.querySelector('ceci-app');
-            ceciApp.name = name;
-            ceciApp.appid = "ceci-app-"+uuid();
+            ceciApp.setAttribute("name", name);
+            ceciApp.setAttribute("appid", "ceci-app-"+uuid());
 
             var html = ceciApp.outerHTML;
             if(name){
@@ -269,6 +284,7 @@
               application.setCurrentApp(name);
               self.refreshUserState();
               self.editingmode = "saved";
+              window.dispatchEvent(new CustomEvent("CeciAppSaveAs"));
             } else {
               console.log("Please name your app.");
             }
@@ -291,7 +307,7 @@
 
           var phoneBorderElement = document.querySelector(".phone-border");
           var ca = document.createElement("ceci-app");
-          ca.appid = "temp-"+uuid();
+          ca.setAttribute("appid", "temp-"+uuid());
           phoneBorderElement.appendChild(ca);
           this.updateAppName(l10n.get("Unsaved App"));
         },
@@ -300,12 +316,24 @@
           this.refreshUserState();
           this.setAppURL(data['last-published-url']);
         },
-        updateAppName: function(name){
-          var app = document.querySelector('ceci-app');
-          if (app && name) {
-            app.name = name;
-            document.querySelector(".phone-top .app-name").innerHTML = app.name;
+        getOrWaitForCeciApp: function(callback){
+          var ceciApp = document.querySelector("ceci-app");
+          if(!ceciApp){
+            window.addEventListener("CeciAppReady", function(e){
+              var ceciApp = document.querySelector("ceci-app");
+              callback(ceciApp);
+            });
+          } else {
+            callback(ceciApp);
           }
+        },
+        updateAppName: function(name){
+          this.getOrWaitForCeciApp(function(ceciApp){
+            if (ceciApp && name) {
+              ceciApp.name = name;
+              document.querySelector(".phone-top .app-name").innerHTML = ceciApp.name;
+            }
+          });
         },
         appRenameOk: function(name){
           application.setCurrentApp(name);
@@ -557,20 +585,21 @@
           }
         },
         refreshUserState: function() {
+          var currentApp = application.getCurrentApp() || "";
+          if (!user.preventLoadedAppInsertion && currentApp) {
+            this.updateAppName(currentApp || l10n.get("Unsaved App"));
+          }
+
           // go to the server and find out what the user's apps are and then...
           // Build the list of apps
           // Update "current app" in apps menu
-          this.refreshAppList();
+          this.refreshAppList(currentApp);
           this.refreshComponentsList();
         },
-        refreshAppList: function() {
+        refreshAppList: function(currentApp) {
           var self = this;
           var myApps = this.shadowRoot.querySelector("#myapps");
           var noApps = this.shadowRoot.querySelector("#noApps");
-          var currentApp = application.getCurrentApp() || "";
-          if(currentApp){
-            this.updateAppName(currentApp || l10n.get("Unsaved App"));
-          }
 
           myApps.innerHTML = "";
           $.getJSON("/api/myapps", function(data) {

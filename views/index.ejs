@@ -1,41 +1,9 @@
-<!DOCTYPE html>
-<html lang="<%- localeInfo.lang %>" dir="<%- localeInfo.direction %>">
-  <head>
-    <title>Mozilla Appmaker</title>
-    <link rel='stylesheet' href='/stylesheets/site.css' />
-    <link rel='stylesheet' href='/stylesheets/font-awesome.css' />
-    <link href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" rel="stylesheet" />
-    <script type="text/javascript" charset="utf-8" src="/vendor/jquery/jquery.js"></script>
-    <script type="text/javascript" charset="utf-8" src="/vendor/jquery-ui/ui/minified/jquery-ui.min.js"></script>
-    <!-- rss-feed-parser.js taken from http://designshack.net/articles/javascript/build-an-automated-rss-feed-list-with-jquery/ -->
-    <script type="text/javascript" charset="utf-8" src="/javascripts/rss-feed-parser.js"></script>
-    <script type="text/javascript" charset="utf-8" src="/javascripts/tutorial.js"></script>
-  </head>
-  <body>
-    <div id="nav">
-      <div class="wrap">
-        <a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
-        <div>
-          <div id="wordmark" class="left">
-            <a href="/<%- localeInfo.lang %>"><img src="images/appmaker_wordmark.png" />
-            </a>
-          </div>
-          <ul id="nav-page-links">
-            <div class="right">
-              <li id="designer-page" class="right"><a href="/<%- localeInfo.lang %>/designer" class="build-app"><i class="fa fa-mobile"></i><span><%- gettext("Build App") %></span></a></li>
-              <li id="blog-page" class="right"><a href="//appmaking.mozillalabs.com/"><%- gettext("Blog") %></a></li>
-              <li id="contribute-page" class="right"><a href="/<%- localeInfo.lang %>/contribute"><%- gettext("Contribute") %></a></li>
-              <li id="about-page" class="right"><a href="/<%- localeInfo.lang %>/about"><%- gettext("About") %></a></li>
-            </div>
-          </ul>
-        </div>
-      </div>
-    </div>
+<% layout('views-layout') %>
     <div id="banner" class="content-block">
       <div class="wrap">
         <div class="two-column">
           <h1><%- gettext("Let's Build an App") %></h1>
-          <div class="banner-description"><%- gettext("Finally, a simple way to create and share personal mobile apps, even if you don't know code. 100% free and open source.") %></div>
+          <div class="banner-description"><%- gettext("bannerDescription") %></div>
           <button class="button-link white-text-button build-app" onclick="window.location='/<%- localeInfo.lang %>/designer'"><i class="fa fa-mobile"></i><span><%- gettext("Build App") %></span></button>
         </div>
         <div class="two-column">
@@ -47,7 +15,7 @@
     </div>
     <div id="quote" class="content-block">
       <div class="wrap">
-        <span><i><%- gettext("\"Mozilla  Appmaker lets you drag and drop components to easily build fun and  useful apps for your friends, your business, your classroom and your  community.\"") %></i></span>
+        <span><i><%- gettext("indexQuote") %></i></span>
       </div>
     </div>
 
@@ -55,44 +23,35 @@
 
       <div class="wrap">
         <div class="three-column">
-          <h2>Help make Appmaker better!</h2>
-          <!-- <p>We're looking </p> -->
+          <h2><%- gettext("Help make Appmaker better!") %></h2>
         </div>
         <div class="three-column">
-          <h3>Have an Opinion?</h3>
-          <p>
-            Then we'd love your feedback! Fill out our short Usability Survey while <a href="">building an app</a> and
-            we'll use your feedback to improve Appmaker.
-          <p>
+          <h3><%- gettext("Have an Opinion?") %></h3>
+          <p><%- gettext("opinionDesc") %></p>
           <p>
             <a class="button-link-blue" href="https://docs.google.com/forms/d/16Qyz8oHl_RwMV-cdtwxHyVlamg0IDg5s4NOjYdMznv0/viewform">
-              Take the Survey
+              <%- gettext("Take the Survey") %>
             </a>
           </p>
         </div>
         <div class="three-column">
-          <h3>Like to Build Stuff?</h3>
+          <h3><%- gettext("Like to Build Stuff?") %></h3>
           <p>
-            We're looking for <strong>component</strong> contributors. If you're handy with code or want to get better,
-            you can help! Check out our guide to see how to get started.
+            <%- gettext("buildStuffDesc") %></p>
           <p>
-          <p>
-            <a class="button-link-blue" href="http://github.com/mozilla-appmaker/appmaker/wiki/Contributing-a-component">Find out How</a>
+            <a class="button-link-blue" href="http://github.com/mozilla-appmaker/appmaker/wiki/Contributing-a-component"><%- gettext("Find out How") %></a>
           </p>
         </div>
     </div>
   </div>
 
-
-
     <div id="try-demo" class="content-block light-blue-bg">
       <div class="wrap">
         <h1><%- gettext("Try our Demo Apps") %></h1>
-        <!-- <h1><%- gettext("Try our Demo Apps") %></h1> -->
 
         <p>
-          <%- gettext("We've built some demo apps for you to try. We hope you remix them and make  them your own - it's a great way to discover what you can do with Appmaker.") %>
-          </>
+          <%- gettext("demoAppDesc") %>
+          </p>
 
         <div id="demo-preview">
           <div class="three-column">
@@ -126,8 +85,6 @@
         </div>
       </div>
     </div>
-    <% include footer %>
-    </div>
     <script>
       // sample code taken from http://designshack.net/articles/javascript/build-an-automated-rss-feed-list-with-jquery/
       $.ajax({
@@ -141,4 +98,3 @@
         }
       });
     </script>
-  </body>

@@ -7,7 +7,7 @@
     "Cancel remixing this widget.": "উইজেট রিমিক্স বাতিল করুন।",
     "Cancel": "বাতিল ",
     "Click Me": "আমাকে ক্লিক করুন",
-    "Component Description": "কম্পোনেন্ট এর বিবরন",
+    "Component Description": "কম্পোনেন্ট এর বিবরণ",
     "Component Name": "কম্পোনেন্ট এর নাম",
     "Congratulations!": "শুভেচ্ছা!",
     "Continue": "চালিয়ে যাও",
@@ -66,11 +66,11 @@
     "View Source": "উৎস দেখুন",
     "Welcome to Appmaker": "এ্যাপমেকারে স্বাগতম",
     "You completed Level": "আপনি লেভেল <span class=\"level-number\"></span> সম্পন্ন করেছেন",
-    "You win!": "আপনি বিজয়ী!",
+    "You win!": "আপনি জিতেছেন!",
     "You've been promoted to Postmaster!": "আপনাকে পোস্টমাস্টার এ উন্নীত করা হয়েছে...",
     "You've been promoted to...": "আপনাকে উন্নীত করা হয়েছে...",
-    "Your app couldn't be published.  The server said:": "আপনার এ্যাপটি পাবলিশ করা সম্ভব হয়নি। সার্ভার প্রদত্ত কারনঃ",
+    "Your app couldn't be published.  The server said:": "আপনার এ্যাপটি পাবলিশ করা সম্ভব হয়নি। সার্ভার প্রদত্ত কারণঃ",
     "Your app has been published to": "আপনার এ্যাপটি পাবলিশ করা হয়েছে <a class=\"modal-publish-link\" target=\"_blank\"></a>",
-    "Your Appmaker Remix is ready!": "আপনার এ্যাপ-মেকার রিমিক্স তৈরি!",
+    "Your Appmaker Remix is ready!": "আপনার এ্যাপমেকার রিমিক্স তৈরী!",
     "Your Mission": "আপনার লক্ষ্য"
 }
