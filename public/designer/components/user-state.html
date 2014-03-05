@@ -166,8 +166,10 @@
               }
               that.signedOut();
             }
-          });
+          }, false);
 
+          // prepare a temp app regardless of what navigator.id is doing so that user can start playing immediately
+          setupTempApp();
         },
         enteredView : function() {
           var self = this;

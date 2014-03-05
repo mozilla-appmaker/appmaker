@@ -44,7 +44,9 @@ define(
           if (card) {
             var newElement = document.createElement(name);
             card.appendChild(newElement);
-            newElement.applyDefaults();
+
+            // wait until Polymer has prepared the element completely
+            newElement.async(newElement.applyDefaults);
           }
         }, false);
 
@@ -71,10 +73,26 @@ define(
       }
     }
 
-    // Load elements that might exist already, but also wait for WebComponentsReady in case
+    // Load elements that might exist already, but also wait for polymer to be ready in case
     // we load this module early.
-    window.addEventListener("polymer-element-defined", DesignerTray.addComponentsFromRegistry);
+
+    if (Object.observe) {
+      Object.observe(window.CustomElements.registry, DesignerTray.addComponentsFromRegistry);
+    }
+    else {
+      var _oldFn = HTMLElement.register;
+      HTMLElement.register = function() {
+        _oldFn.apply(HTMLElement, arguments);
+        DesignerTray.addComponentsFromRegistry();
+      };
+    }
+
+    window.addEventListener("polymer-ready", function () {
+      DesignerTray.addComponentsFromRegistry();
+    });
+
     DesignerTray.addComponentsFromRegistry();
+
     return DesignerTray;
   }
 );
