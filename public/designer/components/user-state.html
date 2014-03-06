@@ -349,35 +349,24 @@
           navigator.id.logout();
         },
         loadLink: function(name, url, callback) {
-          // see https://gist.github.com/sjmiles/8478807
-          var doc = document.createDocumentFragment();
-          var link = doc.appendChild(document.createElement('link'));
+          var link = document.createElement('link');
           link.rel = "import";
           link.href = url;
 
-          try {
-            HTMLImports.importer.load(doc, function() {
-              try {
-                HTMLImports.parser.parse(link.content);
-                CustomElements.parser.parse(link.content);
-                callback();
-              } catch (e) {
-                console.log("HTMLImports.parser failed for component at", link.href);
-                callback({
-                  error: "HTMLImports.parser failed to load component",
-                  url: url,
-                  name: name
-                });
-              }
-            }.bind(this));
-          } catch (e) {
-            console.log("HTMLImports.importer.load failed for component at", link.href);
+          link.onload = function (e) {
+            callback(null, link);
+          };
+
+          link.onerror = function (e) {
+            console.error('Failed to load component at ' + url);
             callback({
-              error: "HTMLImports.importer.load failed to load component",
+              error: 'Failed to load component',
               url: url,
               name: name
             });
-          }
+          };
+
+          document.head.appendChild(link);
         },
         signalComponentError: function(err) {
           console.error(err);
@@ -507,9 +496,9 @@
         addComponentToUI: function(url, name, cb) {
           var self = this;
           // Add to the menu
-          var menuItem = this.addLinkForComponent(url, name);
+          var menuItem = this.addMenuItemForComponent(url, name);
           // add to polymer, the tray, etc.
-          this.loadLink(name, url, function(err, result) {
+          this.loadLink(name, url, function(err, linkElement) {
             if (err) {
               if(cb) cb(err.error)
               else self.signalComponentError(err.error);
@@ -520,7 +509,7 @@
             if(cb) cb(null, name);
           });
         },
-        addLinkForComponent: function(url, name) {
+        addMenuItemForComponent: function(url, name) {
           var self = this;
 
           var component = document.createElement('li');
@@ -649,10 +638,6 @@
               var userState = document.querySelector("user-state").shadowRoot;
               var li = userState.querySelector("[data-link-name='"+name+"']");
               li.parentNode.removeChild(li);
-              console.log("we've deleted the component");
-              console.log("XXX: Need to tell polymer to forget about this component");
-              // FIXME: it does not appear polymer actually supports "forgetting"
-              //        of elements during the lifetime of a page without reloading.
             },
             error: function (data, err) {
               self.signalComponentError(l10n("Forget failed") + data.url, err);
