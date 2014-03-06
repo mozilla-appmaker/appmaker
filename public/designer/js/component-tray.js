@@ -75,17 +75,10 @@ define(
 
     // Load elements that might exist already, but also wait for polymer to be ready in case
     // we load this module early.
-
-    if (Object.observe) {
-      Object.observe(window.CustomElements.registry, DesignerTray.addComponentsFromRegistry);
-    }
-    else {
-      var _oldFn = HTMLElement.register;
-      HTMLElement.register = function() {
-        _oldFn.apply(HTMLElement, arguments);
-        DesignerTray.addComponentsFromRegistry();
-      };
-    }
+    var observer = new ObjectObserver(window.CustomElements.registry);
+    observer.open(function () {
+      DesignerTray.addComponentsFromRegistry();
+    });
 
     window.addEventListener("polymer-ready", function () {
       DesignerTray.addComponentsFromRegistry();
