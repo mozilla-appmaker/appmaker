@@ -4,8 +4,12 @@
   </template>
   <script>
     var __L10n;
+    var __waitingForL10n = [];
     require(['l10n'], function(L10n) {
       __L10n = L10n;
+      while (__waitingForL10n.length > 0) {
+        __waitingForL10n.pop()();
+      }
     });
 
     var DEFAULT_CHANNEL = 'blue';
@@ -172,7 +176,11 @@
 
         this.ceci.attributes = ceciDefinition.attributes || {};
 
-        that.localized();
+        if (__L10n) {
+          that.localized();
+        } else {
+          __waitingForL10n.push(that.localized.bind(that));
+        }
       },
       broadcast: function (name, data) {
         var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
