@@ -3,15 +3,7 @@
     <content></content>
   </template>
   <script>
-    var __L10n;
-    var __waitingForL10n = [];
-    require(['l10n'], function(L10n) {
-      __L10n = L10n;
-      while (__waitingForL10n.length > 0) {
-        __waitingForL10n.pop()();
-      }
-    });
-
+    var __L10n = require('l10n');
     var DEFAULT_CHANNEL = 'blue';
 
     function processDefinition (element) {
@@ -176,11 +168,7 @@
 
         this.ceci.attributes = ceciDefinition.attributes || {};
 
-        if (__L10n) {
-          that.localized();
-        } else {
-          __waitingForL10n.push(that.localized.bind(that));
-        }
+        that.localized();
       },
       broadcast: function (name, data) {
         var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
@@ -250,12 +238,7 @@
         document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));
       },
       gettext: function (keyname) {
-        if (__L10n) {
-          return __L10n.get(keyname);
-        }
-        else {
-          console.error('FIXME: gettext called before L10n ready.');
-        }
+        return __L10n.get(keyname);
       },
       localized: function () {
         var attributes = this.ceci.attributes;

@@ -13,6 +13,7 @@
     <script src="/vendor/requirejs/require.js"></script>
     <script src="/javascripts/requireConfig.js"></script>
 
+    <script>require(['l10n']);</script>
 
     <% bundles.emit('ceci.html').forEach(function(href) { %>
     <link rel="import" href="/<%= href %>">
