@@ -118,7 +118,7 @@ Foreman explanation: http://blog.daviddollar.org/2011/05/06/introducing-foreman.
 ## How you can help
 
 * Fix issues by [submitting Pull Requests](#submitting-a-pull-request)
-* Submit new components
+* Submit new components (See [Component Docs](./doc/en-US))
 * Add [issues](https://github.com/mozilla-appmaker/appmaker/issues)
 * Build apps
 * Run workshops
