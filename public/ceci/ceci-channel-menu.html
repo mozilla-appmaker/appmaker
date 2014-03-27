@@ -3,16 +3,59 @@
   <div on-mouseenter="{{showMenu}}" on-mouseleave="{{hideMenu}}" class="channel-menu-wrapper" id="channelMenuWrapper">
     <div id="{{channelType}}Menu" class="{{channelType}}-menu channel-menu">
       <div class="hover-helper"></div>
+
       <div class="channel-option subscription-option option-template">
+
         <div class="color-ui">
-          <div name="blue"      color="blue"    class="color" data-channel="blue"></div>
-          <div name="green"     color="green"   class="color" data-channel="green"></div>
-          <div name="yellow"    color="yellow"  class="color" data-channel="yellow"></div>
-          <div name="orange"    color="orange"  class="color" data-channel="orange"></div>
-          <div name="red"       color="red"     class="color" data-channel="red"></div>
-          <div name="pink"      color="pink"    class="color" data-channel="pink"></div>
-          <div name="purple"    color="purple"  class="color" data-channel="purple"></div>
-          <div name="false"     color="false"   class="color" data-channel=""></div>
+
+          <h3>Send <strong>Click</strong> on channel...</h3>
+
+          <div class="color-row">
+            <div name="blue-one"  color="blue"    class="color" data-channel="blue">1</div>
+            <div name="blue-two"  color="blue"    class="color" data-channel="blue-two">2</div>
+            <div name="blue-two"  color="blue"    class="color" data-channel="blue-three">3</div>
+          </div>
+
+          <div class="color-row">
+            <div name="green"     color="green"   class="color" data-channel="green">1</div>
+            <div name="green"     color="green"   class="color" data-channel="green-two">2</div>
+            <div name="green"     color="green"   class="color" data-channel="green-three">3</div>
+          </div>
+
+          <div class="color-row">
+            <div name="yellow"    color="yellow"  class="color" data-channel="yellow">1</div>
+            <div name="yellow"    color="yellow"  class="color" data-channel="yellow-two">2</div>
+            <div name="yellow"    color="yellow"  class="color" data-channel="yellow-three">3</div>
+          </div>
+
+          <div class="color-row">
+            <div name="orange"    color="orange"  class="color" data-channel="orange">1</div>
+            <div name="orange"    color="orange"  class="color" data-channel="orange-two">2</div>
+            <div name="orange"    color="orange"  class="color" data-channel="orange-three">3</div>
+          </div>
+
+          <div class="color-row">
+            <div name="red"       color="red"     class="color" data-channel="red">1</div>
+            <div name="red"       color="red"     class="color" data-channel="red-two">2</div>
+            <div name="red"       color="red"     class="color" data-channel="red-three">3</div>
+          </div>
+
+          <div class="color-row">
+            <div name="pink"      color="pink"    class="color" data-channel="pink">1</div>
+            <div name="pink"      color="pink"    class="color" data-channel="pink-two">2</div>
+            <div name="pink"      color="pink"    class="color" data-channel="pink-three">3</div>
+          </div>
+
+          <div class="color-row">
+            <div name="purple"    color="purple"  class="color" data-channel="purple">1</div>
+            <div name="purple"    color="purple"  class="color" data-channel="purple-two">2</div>
+            <div name="purple"    color="purple"  class="color" data-channel="purple-three">3</div>
+          </div>
+
+          <div class="color-row">
+            <div name="false" color="false" class="color" data-channel="false">OFF</div>
+          </div>
+
         </div>
         <label><span class="channel-name"></span><div color="false" class="chosen-color"></div></label>
       </div>
@@ -25,7 +68,6 @@
         enteredView: function () {
           var that = this;
           this.menu = this.shadowRoot.querySelector(".channel-menu");
-
           this.async(function () {
             this.component = this.parentNode.host;
             this.buildMenu(this.component);
@@ -34,10 +76,15 @@
         hideMenu : function() {
           this.menu.style.display = "none";
         },
+        adjustMenuPosition : function(){
+          var height = this.menu.offsetHeight;
+          this.menu.style.marginTop = -1 * (height/2) + "px";
+        },
         showMenu : function() {
           var that = this;
           this.component.async(function () {
             var items = that.channelType == "listen" ? Object.keys(that.component.ceci.listeners) : Object.keys(that.component.ceci.broadcasts);
+
             if (items.length > 0) {
               that.menu.style.display = "block";
               var height = that.menu.offsetHeight;
@@ -72,11 +119,11 @@
             communicators = this.component.ceci.broadcasts;
             handlerType = "from";
           }
+
           else {
             communicators = this.component.ceci.listeners;
             handlerType = "for";
           }
-
 
           function colorClickHandler(handlerType){
             return function(event) {
@@ -87,33 +134,59 @@
               channelOption.querySelector("label").style.display = "block";
               channelOption.querySelector("label .chosen-color").setAttribute("color",color);
               channelOption.querySelector(".color-ui").style.display = "none";
+              that.adjustMenuPosition();
             };
           }
 
           function colorListClickHandler(handlerType){
             return function(event) {
               if(event.target.classList.contains("color")){
-                var channelOption = event.target.parentNode.parentNode;
-                var color = event.target.getAttribute("color");
+                var channelOption = event.target.parentNode.parentNode.parentNode;
+                var color = event.target.getAttribute("data-channel");
                 var handler = this.parentNode.getAttribute(handlerType);
                 that.changeChannel(handlerType, handler, color);
+
+                //Show all the options again
+                var options = that.menu.querySelectorAll(".channel-option:not(.option-template)");
+                for(var o in options){
+                  if (options.hasOwnProperty(o)) {
+                    options[o].style.display = "block";
+                  }
+                }
                 channelOption.querySelector("label").style.display = "block";
                 channelOption.querySelector("label .chosen-color").setAttribute("color", color);
                 channelOption.querySelector(".color-ui").style.display = "none";
+                that.adjustMenuPosition();
               }
             };
           }
 
           function showColorUI(){
+            //Hides the label for the current option
             this.style.display = "none";
-            var colorMenu = this.parentNode.querySelector(".color-ui");
-            colorMenu.style.display = "block";
+
+            //Hide all the options
+            var options = that.menu.querySelectorAll(".channel-option");
+            for(var o in options){
+              if (options.hasOwnProperty(o)) {
+                options[o].style.display = "none";
+              }
+            }
+
+            // Show this one
+            this.parentNode.style.display = "block";
+            this.parentNode.querySelector(".color-ui").style.display = "block";
+            that.adjustMenuPosition();
           }
 
           for (var key in communicators) {
             if (communicators.hasOwnProperty(key)) {
               var channelTemplate = that.shadowRoot.querySelector(".option-template");
               var channelOption = channelTemplate.cloneNode(true);
+
+              var heading = channelOption.querySelector("h3");
+
+
               var localizedSetter = L10n.get('Set {attribute}') || 'Set {attribute}';
               var matchLabel = key.match(/[^_]*_(.+)/);
 
@@ -121,14 +194,25 @@
 
               if(matchLabel) {
                 channelOption.querySelector(".channel-name").textContent = localizedSetter.replace("{attribute}",
-                  L10n.get(that.component.localName + "/attributes/" + matchLabel[1] + "/label") || communicators[key].label || key);
+                L10n.get(that.component.localName + "/attributes/" + matchLabel[1] + "/label") || communicators[key].label || key);
+                headingText = localizedSetter.replace("{attribute}",
+                L10n.get(that.component.localName + "/attributes/" + matchLabel[1] + "/label") || communicators[key].label || key);
               } else {
                 channelOption.querySelector(".channel-name").textContent = communicators[key].label || key;
+                headingText = communicators[key].label || key;
+              }
+
+
+              if(handlerType == "from") {
+                heading.innerHTML = "Broadcast <strong>" + headingText + "</strong> on channel...";
+              } else {
+                heading.innerHTML = "Trigger <strong>" + headingText + "</strong> by listening on channel...";
+                heading.innerHTML = "<strong>" + headingText + "</strong> when a signal arrives on channel...";
+                heading.innerHTML = "<strong>" + headingText + "</strong> when I hear a signal on channel...";
               }
 
               that.menu.appendChild(channelOption);
               channelOption.setAttribute(handlerType, key);
-
               channelOption.querySelector("label").addEventListener('click', showColorUI);
 
               var colorOptions = channelOption.querySelectorAll(".color-ui .color");

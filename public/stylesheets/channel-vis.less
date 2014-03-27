@@ -23,6 +23,8 @@
     left: -610px;
   }
 
+
+
   .channel {
     margin: 2px 0;
     position: relative;
@@ -32,6 +34,32 @@
     font-size: 11px;
     line-height: 16px;
     .border-radius(4px);
+  }
+
+  .chan-label {
+    position: absolute;
+    font-size: 12px;
+    top: -3px;
+    height: 14px;
+    line-height: 13px;
+    padding: 0px 4px;
+    .border-radius(10px);
+  }
+
+  &.broadcast-channels :nth-of-type(odd) .chan-label {
+    left: 100px;
+  }
+
+  &.broadcast-channels :nth-of-type(even) .chan-label {
+    left: 112px;
+  }
+
+  &.subscription-channels :nth-of-type(odd) .chan-label {
+    right: 100px;
+  }
+
+  &.subscription-channels :nth-of-type(even) .chan-label {
+    right: 112px;
   }
 
   .indicator {
@@ -91,11 +119,28 @@
     display: none;
   }
 
-  .channel[color=blue] {
+  .channel .chan-label:before {
+    content: "1";
+  }
+
+  .channel[color*=two] .chan-label:before {
+    content: "2";
+  }
+
+  .channel[color*=three] .chan-label:before {
+    content: "3";
+  }
+
+
+  .channel[color*=blue] {
     background: @channel-blue-faint;
     .color,
     .indicator {
       background: @channel-blue;
+    }
+    .chan-label {
+      background: @channel-blue-faint;
+      color: @channel-blue;
     }
     .bubblepopup {
       border-color: @channel-blue;
@@ -103,11 +148,15 @@
     }
   }
 
-  .channel[color=red] {
+  .channel[color*=red] {
     background: @channel-red-faint;
     .color,
     .indicator {
       background: @channel-red;
+    }
+    .chan-label {
+      background: @channel-red-faint;
+      color: @channel-red;
     }
     .bubblepopup {
       border-color: @channel-red;
@@ -115,11 +164,15 @@
     }
   }
 
-  .channel[color=pink] {
+  .channel[color*=pink] {
     background: @channel-pink-faint;
     .color,
     .indicator {
       background: @channel-pink;
+    }
+    .chan-label {
+      background: @channel-pink-faint;
+      color: @channel-pink;
     }
     .bubblepopup {
       border-color: @channel-pink;
@@ -127,11 +180,15 @@
     }
   }
 
-  .channel[color=purple] {
+  .channel[color*=purple] {
     background: @channel-purple-faint;
     .color,
     .indicator {
       background: @channel-purple;
+    }
+    .chan-label {
+      background: @channel-purple-faint;
+      color: @channel-purple;
     }
     .bubblepopup {
       border-color: @channel-purple;
@@ -139,11 +196,15 @@
     }
   }
 
-  .channel[color=green] {
+  .channel[color*=green] {
     background: @channel-green-faint;
     .color,
     .indicator {
       background: @channel-green;
+    }
+    .chan-label {
+      background: @channel-green-faint;
+      color: @channel-green;
     }
     .bubblepopup {
       border-color: @channel-green;
@@ -151,24 +212,34 @@
     }
   }
 
-  .channel[color=orange] {
+  .channel[color*=orange] {
     background: @channel-orange-faint;
     .color,
     .indicator {
       background: @channel-orange;
     }
+    .chan-label {
+      background: @channel-orange-faint;
+      color: @channel-orange;
+    }
+
     .bubblepopup {
       border-color: @channel-orange;
       color: @channel-orange;
     }
   }
 
-  .channel[color=yellow] {
+  .channel[color*=yellow] {
     background: @channel-yellow-faint;
     .color,
     .indicator {
       background: @channel-yellow;
     }
+    .chan-label {
+      background: @channel-yellow-faint;
+      color: @channel-yellow;
+    }
+
     .bubblepopup {
       border-color: @channel-yellow;
       color: @channel-yellow;
