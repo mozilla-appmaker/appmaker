@@ -81,6 +81,22 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       });
       return e[0];
     },
+    'range': function (element, attributeName, title, value, definition) {
+      var e = $(
+        "<div><label>" +
+        title +
+        "</label><input type=\"range\" min=\"" +
+        definition.min +
+        "\" max=\"" +
+        definition.max +
+        "\" value=\"" +
+        value + "\" /></div>"
+      );
+      e.on("change", function(evt) {
+        element.setAttribute(attributeName, evt.target.value);
+      });
+      return e[0];
+    },
     'boolean': function (element, attributeName, title, value, definition) {
       var e = $(
         "<div><label>" +
