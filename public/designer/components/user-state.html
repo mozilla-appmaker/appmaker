@@ -550,7 +550,12 @@
         },
         toggleMenu: function(e) {
 
-          var parent = e.target.parentNode;
+          var parent;
+          if(e.target.classList.contains("menu-button")){
+            parent = e.srcElement.parentNode;
+          } else {
+            parent = e.srcElement.parentNode.parentNode;
+          }
 
           var isOpen = false;
           if(parent.classList.contains("menu-open")){
