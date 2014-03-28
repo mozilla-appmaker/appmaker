@@ -204,11 +204,9 @@
 
 
               if(handlerType == "from") {
-                heading.innerHTML = "Broadcast <strong>" + headingText + "</strong> on channel...";
+                heading.innerHTML = (L10n.get('broadcast') || 'Broadcast') + " <strong>" + headingText + "</strong> " + (L10n.get('on channel...') || 'on channel...');
               } else {
-                heading.innerHTML = "Trigger <strong>" + headingText + "</strong> by listening on channel...";
-                heading.innerHTML = "<strong>" + headingText + "</strong> when a signal arrives on channel...";
-                heading.innerHTML = "<strong>" + headingText + "</strong> when I hear a signal on channel...";
+                heading.innerHTML = "<strong>" + headingText + "</strong> " + (L10n.get('when I hear') || 'when I hear a signal on channel...');
               }
 
               that.menu.appendChild(channelOption);
