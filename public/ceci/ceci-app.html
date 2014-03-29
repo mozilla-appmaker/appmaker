@@ -42,8 +42,9 @@
 
     })(this);
 
+  require(['Firebase'], initCeciApp, initCeciApp);
 
-  require(['Firebase'], function() {
+  function initCeciApp() {
     Polymer('ceci-app', {
       ready: function() {
         if (this.querySelectorAll('ceci-card').length > 0) {
@@ -101,6 +102,12 @@
       },
       initFirebase: function(){
         var firebaseHost = "https://flathead.firebaseio.com/";
+
+        if (!window.Firebase) {
+          console.error('Firebase not loaded. Cannot init for ceci-app.');
+          return;
+        }
+
         if(this.appid) {
           this.firebase = new Firebase(firebaseHost+this.appid);
           window.dispatchEvent(new CustomEvent("CeciDataConnectionLoaded"));
@@ -125,6 +132,6 @@
         dataRef.set(data);
       }
     });
-  });
+  }
   </script>
 </polymer-element>
