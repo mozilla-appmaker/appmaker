@@ -24,8 +24,12 @@
           return null;
         }
 
+        // Defaults for safety and efficiency :) !
         definitionJSON.tags = definitionJSON.tags || [];
         definitionJSON.thumbnail = definitionJSON.thumbnail || '';
+        definitionJSON.listeners = definitionJSON.listeners || {};
+        definitionJSON.broadcasts = definitionJSON.broadcasts || {};
+        definitionJSON.attributes = definitionJSON.attributes || {};
 
         return definitionJSON;
       }
