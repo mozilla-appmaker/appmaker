@@ -58,6 +58,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
         }
 
         var requestHTML = inputData.html;
+        var appName = inputData.name
 
         // core appmaker components
         var coreComponents = app.locals.components
@@ -67,7 +68,8 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
 
         var appStr = templates.publish({
           appHTML: requestHTML,
-          appName: folderName,
+          folderName: folderName,
+          appName: appName,
           gettext: req.gettext,
           ceciComponentURL: process.env.ASSET_HOST,
           remixURL: encodeURIComponent(encodeURIComponent(remoteURLs.app)),
