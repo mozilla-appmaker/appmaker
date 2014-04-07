@@ -19,6 +19,7 @@ i18n = require('webmaker-i18n'),
 components = require('./lib/components'),
 localeBuild = require('./lib/localeBuild'),
 bundles = require('./lib/bundles'),
+middleware = require('./lib/middleware'),
 localComponents = [];
 
 try {
@@ -205,7 +206,7 @@ else{
 
 // This is a route that we use for client-side localization to return the JSON
 // when we do the XHR request to this route.
-app.get( "/strings/:lang?", i18n.stringsRoute( "en-US" ) );
+app.get( "/strings/:lang?", middleware.crossOrigin, i18n.stringsRoute( "en-US" ) );
 
 app.post('/api/publish', routes.publish.publish(app));
 
