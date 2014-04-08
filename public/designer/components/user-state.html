@@ -359,6 +359,7 @@
         },
         appRenameOk: function(name){
           application.setCurrentApp(name);
+          this.updateAppName(name);
           this.refreshUserState();
         },
         appRenameFailed: function(){
