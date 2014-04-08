@@ -300,6 +300,7 @@
                 if(!err){
                   application.setCurrentApp(name);
                   self.refreshUserState();
+                  self.updateAppName(name);
                   self.editingmode = "saved";
                   window.dispatchEvent(new CustomEvent("CeciAppSaveAs"));
                 } else {
