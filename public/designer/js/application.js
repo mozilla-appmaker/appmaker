@@ -100,6 +100,7 @@ define(["jquery", "l10n"], function($, l10n) {
           type: 'post',
           success: function (data) {
             console.log("App saved successfully");
+            userState.appRenameOk(newName);
             if(next) { next(false, data); }
           },
           error: function (error) {
