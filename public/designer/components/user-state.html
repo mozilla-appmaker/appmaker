@@ -215,18 +215,14 @@
 
           //New app
           this.$.newApp.addEventListener("click",function() {
-            var log = document.querySelector("design-log");
-            if(log){
-              log.clear();
-              application.clearCurrentApp();
-              application.newApp();
-              self.closeMenus();
-              self.setAppURL(false);
-              self.refreshUserState();
-              self.updateAppName(l10n.get("Unsaved App"));
-              self.editingmode = "draft";
-              window.dispatchEvent(new CustomEvent("resetcards"));
-            }
+            application.clearCurrentApp();
+            application.newApp();
+            self.closeMenus();
+            self.setAppURL(false);
+            self.refreshUserState();
+            self.updateAppName(l10n.get("Unsaved App"));
+            self.editingmode = "draft";
+            window.dispatchEvent(new CustomEvent("resetcards"));
           });
 
           //Rename App
