@@ -174,3 +174,17 @@ git push origin your-feature-branch-name
 
 Submit the pull request at https://github.com/mozilla-appmaker/appmaker. For
 more assistance, see Github's help page on [creating a pull request](https://help.github.com/articles/creating-a-pull-request).
+
+## Localization
+
+Appmaker uses the [Webmaker-i18n](https://github.com/mozilla/node-webmaker-i18n) module for localization of both the designer and (ceci) components.
+
+### Localizating component
+
+If you have created your own component, see: https://github.com/mozilla-appmaker/appmaker/wiki/How-components-are-built#localization
+
+### Help on translation
+
+Spotted any typo or want to help translate appmaker into your own language?
+
+Appmaker uses [Transifex](https://transifex.com) for translation platform. You can check this [how to article](https://support.mozilla.org/en-US/kb/translate-webmaker) if you want to contribute for translation and visit [Appmaker on Transifex](https://www.transifex.com/projects/p/mozilla-appmaker) to start translate.
