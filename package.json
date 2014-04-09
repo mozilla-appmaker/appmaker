@@ -38,6 +38,7 @@
     "mongoose": "~3.8.1",
     "request": "~2.30.0",
     "node-github": "0.0.3",
+    "webmaker-locale-mapping": "latest",
     "express-bundles": "git://github.com/simonwex/express-bundles#master"
   },
   "engines": {
