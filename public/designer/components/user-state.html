@@ -215,8 +215,6 @@
 
           //New app
           this.$.newApp.addEventListener("click",function() {
-            var log = document.querySelector("design-log");
-            log.clear();
             application.clearCurrentApp();
             application.newApp();
             self.closeMenus();
