@@ -24,7 +24,8 @@
     <shadow></shadow>
   </template>
   <script>
-    require(["designer/editable"], function(Editable) {
+    require(['designer/editable', 'analytics'], function(Editable, analytics) {
+
       Polymer('ceci-card', {
         ready: function () {
           this.super();
@@ -47,6 +48,7 @@
                 if (draggedOff) {
                   ui.item[0].parentNode.removeChild(ui.item[0]);
                   Editable.removeAttributes();
+                  analytics.event("Removed Component", { label : ui.item[0].localName});
                 }
               },
               sort : function (ev, ui) {
@@ -78,5 +80,6 @@
         }
       });
     });
+  });
   </script>
 </polymer-element>

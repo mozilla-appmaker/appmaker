@@ -44,16 +44,16 @@
   </template>
   <script>
   (function() {
-    require(['l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'persona'],
-      function(l10n, jquery, application, tray, utils, persona) {
-        init(l10n, jquery, application, tray, utils, persona);
+    require(['l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'analytics', 'persona'],
+      function(l10n, jquery, application, tray, utils, analytics, persona) {
+        init(l10n, jquery, application, tray, utils, analytics, persona);
       },
       function(err) {
         console.log('OH NOES');
-        require(['l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils'], init);
+        require(['l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'analytics'], init);
       });
 
-    function init(l10n, jquery, application, tray, utils, persona) {
+    function init(l10n, jquery, application, tray, utils, analytics, persona) {
 
       var user = {
         email: '',
@@ -130,6 +130,7 @@
             application.loadAppByUrl(decodeURIComponent(remixName));
             that.editingmode = 'draft';
             that.updateAppName(l10n.get("Unsaved App"));
+            analytics.event("Loaded Remix Content");
           }
 
           function setupTempApp() {
@@ -170,12 +171,14 @@
                   setupTempApp();
                 }
               }
+              analytics.event("Signed In");
             }
             else if (that.user.state == 'signedout') {
               if (!user.preventLoadedAppInsertion) {
                 setupTempApp();
               }
               that.signedOut();
+              analytics.event("Signed Out");
             }
           }, false);
 
@@ -211,6 +214,7 @@
             application.deleteAppByName(application.getCurrentApp());
             application.clearCurrentApp();
             self.$.newApp.click();
+            analytics.event("Deleted App");
           });
 
           //New app
@@ -223,6 +227,7 @@
             self.updateAppName(l10n.get("Unsaved App"));
             self.editingmode = "draft";
             window.dispatchEvent(new CustomEvent("resetcards"));
+            analytics.event("New App Started");
           });
 
           //Rename App
@@ -231,6 +236,7 @@
             var newName = window.prompt(l10n.get("What do you want to call this app?"));
             if(newName){
               application.renameApp(oldName, newName);
+              analytics.event("Renamed App");
             } else {
               window.alert(l10n.get("App names can't be blank."));
             }
@@ -245,9 +251,14 @@
               application.updateApp(name,ceciApp.appid,html, function(err,data){
                 if(!err){
                   console.log("App save.");
+                  analytics.event("Saved App");
                 } else {
-                  alert(l10n.get("Your app could not be saved at this time. Please try again.") + "\n" + l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error));
+                  alert(
+                    l10n.get("Your app could not be saved at this time. Please try again.") + "\n" +
+                    l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error)
+                  );
                   console.error("SaveApp ajax error", err.responseJSON.error);
+                  analytics.event("Error Saving App", { nonInteraction: true });
                 }
               });
             }
@@ -273,14 +284,17 @@
               if(err) {
                 if (data) {
                   console.error("app was published, but updating failed");
+                  analytics.event("Error Updating Published App", { nonInteraction: true });
                 } else {
                   console.error("app was not successfully published");
+                  analytics.event("Error Publishing App", { nonInteraction: true });
                 }
                 return;
               }
               application.setCurrentApp(name);
               self.refreshUserState();
               self.editingmode = "saved";
+              analytics.event("Published App");
             });
           });
 
@@ -301,9 +315,14 @@
                   self.updateAppName(name);
                   self.editingmode = "saved";
                   window.dispatchEvent(new CustomEvent("CeciAppSaveAs"));
+                  analytics.event("Saved App As");
                 } else {
-                  alert(l10n.get("Your app could not be saved at this time. Please try again.") + "\n" + l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error));
+                  alert(
+                    l10n.get("Your app could not be saved at this time. Please try again.") + "\n" +
+                    l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error)
+                  );
                   console.error("SaveApp ajax error", err.responseJSON.error);
+                  analytics.event("Error Saving App As", { nonInteraction: true });
                 }
               });
             } else {
@@ -392,7 +411,7 @@
         },
         signalComponentError: function(err) {
           console.error(err);
-          if(arguments.length>1) {
+          if(arguments.length > 1) {
             Array.prototype.slice.call(arguments, 1).forEach(function(data) {
               console.error(data);
             });
@@ -403,7 +422,7 @@
         addComponent: function() {
           var self = this;
           // in a try/except block because called from an onclick handler,
-          // so want to atch exceptions.
+          // so want to catch exceptions.
           try {
             var url = window.prompt(l10n.get("component url?"));
             if (! url) return;
@@ -494,6 +513,7 @@
                 return self.signalComponentError(err);
               }
               window.alert(l10n.get("Successfully added component ") + name);
+              analytics.event("Added Component", { label : name });
             });
           });
         },

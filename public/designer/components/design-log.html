@@ -55,7 +55,7 @@
     </div>
   </template>
   <script>
-  require(['l10n'], function(l10n) {
+  require(['l10n', 'analytics'], function(l10n, analytics) {
     Polymer('design-log', {
       ready: function() {
         this.logs = [];
@@ -65,11 +65,12 @@
           that.logs.push(event.detail);
           setTimeout (function () {
             that.scrollTop = that.scrollHeight;
-          }, 100)
+          }, 100);
         });
       },
       clear: function() {
         this.logs = [];
+        analytics.event("Cleared Logs");
       }
     });
   });

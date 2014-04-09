@@ -6,7 +6,7 @@
     </div>
   </template>
   <script>
-  require(['l10n'], function(l10n) {
+  require(['l10n', 'analytics'], function(l10n, analytics) {
     Polymer('ceci-card-nav', {
       checked : false,
       ready: function() {
@@ -54,6 +54,7 @@
         newthumb.querySelector("a").onclick = function() {
           t.getOrWaitForCeciApp(function(ceciApp){
               ceciApp.removeCard(index-1);
+              analytics.event("Delete Page", { label : "Page number " + index});
           });
         };
         this.$.cardList.appendChild(newthumb);
@@ -93,6 +94,7 @@
       addCard : function() {
         this.getOrWaitForCeciApp(function(ceciApp){
           ceciApp.addCard();
+          analytics.event("Add Page");
         });
       },
       getOrWaitForCeciApp : function(callback){
