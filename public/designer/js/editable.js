@@ -162,6 +162,9 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       var handler = editableTypeHandlers[definition.editable] || editableTypeHandlers.text;
       return handler(element, attributeName, title, value, definition);
     },
+    removeAttributes: function () {
+      $(".editable-attributes").html("");
+    },
     displayAttributes: function (element) {
       var attributeList = $(".editable-attributes");
 
