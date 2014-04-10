@@ -35,12 +35,21 @@ define(
     // Add click handler to new elements
     window.addEventListener('CeciElementAdded', function(e){
       var element = e.detail;
+
       element.addEventListener('click', function(e){
         selectElement(element);
       });
 
       selectElement(element);
     }, false);
+
+    window.addEventListener('CeciElementsSorted', function (e) {
+      selectElement(e.detail);
+    });
+
+    return {
+      selectElement: selectElement
+    };
   }
 );
 

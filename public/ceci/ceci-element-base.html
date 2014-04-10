@@ -238,7 +238,7 @@
             this.removeChild(broadcast);
           }
         },
-        enteredView: function () {
+        attached: function () {
           document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));
         },
         gettext: function (keyname) {
