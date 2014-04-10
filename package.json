@@ -13,13 +13,16 @@
   },
   "dependencies": {
     "async": "0.2.10",
+    "bower": "~1.2.7",
     "connect-fonts": ">=0.0.12",
     "connect-fonts-sourcesanspro": "~0.0.3",
-    "tmp": "~0.0.23",
-    "bower": "~1.2.7",
-    "express": "~3.3.4",
-    "express-persona": "~0.1.0",
+    "cors": "~2.1.0",
+    "ejs": "~0.8.4",
     "ejs-locals": "~1.0.2",
+    "express": "~3.3.4",
+    "express-bundles": "git://github.com/simonwex/express-bundles#master",
+    "express-persona": "~0.1.0",
+    "http-proxy": "~0.10.3",
     "knox": "~0.8.6",
     "less": "~1.5.1",
     "less-middleware": "~0.1.14",
@@ -27,19 +30,17 @@
     "lynx": "~0.0.11",
     "makeapi-client": "https://github.com/mozilla/makeapi-client/tarball/v0.5.17",
     "mkdirp": "0.3.5",
+    "mongoose": "~3.8.1",
     "moniker": "~0.1.2",
+    "node-github": "0.0.3",
     "node-uuid": "~1.4.1",
     "postmark": "0.2.0",
-    "statsd": "0.6.0",
-    "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.3.7.tar.gz",
-    "ejs": "~0.8.4",
-    "http-proxy": "~0.10.3",
-    "cors": "~2.1.0",
-    "mongoose": "~3.8.1",
     "request": "~2.30.0",
-    "node-github": "0.0.3",
-    "webmaker-locale-mapping": "latest",
-    "express-bundles": "git://github.com/simonwex/express-bundles#master"
+    "statsd": "0.6.0",
+    "tmp": "~0.0.23",
+    "webmaker-download-locales": "0.1.0",
+    "webmaker-i18n": "0.3.15",
+    "webmaker-locale-mapping": "latest"
   },
   "engines": {
     "node": "~0.10.21",
@@ -59,6 +60,7 @@
     "grunt-contrib-requirejs": "~0.4.1"
   },
   "scripts": {
-    "test": "grunt"
+    "test": "grunt",
+    "postinstall": "webmaker-download-locales appmaker"
   }
 }
