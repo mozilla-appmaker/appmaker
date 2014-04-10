@@ -166,6 +166,8 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       $(".editable-attributes").html("");
     },
     displayAttributes: function (element) {
+      $(".editable-header > .name").html(element.ceci.name);
+
       var attributeList = $(".editable-attributes");
 
       attributeList.html("");
