@@ -1,5 +1,7 @@
 # Appmaker
 
+[![Build Status](https://travis-ci.org/mozilla-appmaker/appmaker.svg?branch=develop)](https://travis-ci.org/mozilla-appmaker/appmaker) [![Dependency Status](https://david-dm.org/mozilla-appmaker/appmaker.svg)](https://david-dm.org/mozilla-appmaker/appmaker) [![devDependency Status](https://david-dm.org/mozilla-appmaker/appmaker/dev-status.svg)](https://david-dm.org/mozilla-appmaker/appmaker#info=devDependencies)
+
 Welcome to Appmaker (beta).
 
 Appmaker is a tool that helps anyone, not just developers, create mobile applications.
