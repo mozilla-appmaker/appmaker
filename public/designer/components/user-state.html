@@ -246,8 +246,8 @@
                 if(!err){
                   console.log("App save.");
                 } else {
-                  alert(l10n.get("Your app could not be saved at this time. Please try again."));
-                  console.error("SaveApp ajax error", err);
+                  alert(l10n.get("Your app could not be saved at this time. Please try again.") + "\n" + l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error));
+                  console.error("SaveApp ajax error", err.responseJSON.error);
                 }
               });
             }
@@ -302,8 +302,8 @@
                   self.editingmode = "saved";
                   window.dispatchEvent(new CustomEvent("CeciAppSaveAs"));
                 } else {
-                  alert(l10n.get("Your app could not be saved at this time. Please try again."));
-                  console.error("SaveApp ajax error", err);
+                  alert(l10n.get("Your app could not be saved at this time. Please try again.") + "\n" + l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error));
+                  console.error("SaveApp ajax error", err.responseJSON.error);
                 }
               });
             } else {
