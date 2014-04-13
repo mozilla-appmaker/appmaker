@@ -14,6 +14,7 @@ define(
     "designer/keyboard",
     "designer/modes",
     "designer/userstate",
+    "designer/debugger",
     "jquery-ui"
   ],
   function(l10n, Inflector, Utils, Ceci) {
