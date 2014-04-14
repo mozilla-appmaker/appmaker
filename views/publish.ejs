@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Published Flathead Project</title>
+    <title><%- appName %></title>
+    <meta charset="utf-8">
     <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/style.css" />
     <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/remix.css" />
     <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300, 400,600" rel="stylesheet" type="text/css">
@@ -13,6 +14,15 @@
     <script src="/vendor/requirejs/require.js"></script>
     <script src="/javascripts/requireConfig.js"></script>
 
+    <% if (!!process.env.BUNDLE) { %>
+      <script src="/javascripts/designer-build.js"></script>
+    <% } %>
+
+    <script>
+      require(['l10n'], function(localized) {
+        localized.ready({url: "/strings/" + localized.getCurrentLang() });
+      });
+    </script>
 
     <% bundles.emit('ceci.html').forEach(function(href) { %>
     <link rel="import" href="/<%= href %>">

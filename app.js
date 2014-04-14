@@ -19,6 +19,7 @@ i18n = require('webmaker-i18n'),
 components = require('./lib/components'),
 localeBuild = require('./lib/localeBuild'),
 bundles = require('./lib/bundles'),
+middleware = require('./lib/middleware'),
 localComponents = [];
 
 try {
@@ -82,18 +83,9 @@ app.configure(function(){
 
   // Setup locales with i18n
   app.use(i18n.middleware({
-    supported_languages: ["bn-BD", "en-US", "fr", "ru", "pt-BR", "th-TH"],
+    supported_languages: ["*"],
     default_lang: "en-US",
-    mappings: {
-      "en": "en-US",
-      "th": "th-TH",
-      "pt": "pt-BR",
-      "fr-FR": "fr",
-      "fr-CA": "fr",
-      "ru-RU": "ru",
-      "bn": "bn-BD",
-      "bn-IN": "bn-BD"
-     },
+    mappings: require("webmaker-locale-mapping"),
     translation_directory: path.resolve( __dirname, "locale" )
   }));
 
@@ -205,7 +197,7 @@ else{
 
 // This is a route that we use for client-side localization to return the JSON
 // when we do the XHR request to this route.
-app.get( "/strings/:lang?", i18n.stringsRoute( "en-US" ) );
+app.get( "/strings/:lang?", middleware.crossOrigin, i18n.stringsRoute( "en-US" ) );
 
 app.post('/api/publish', routes.publish.publish(app));
 
@@ -234,7 +226,7 @@ if (!module.parent) {
   components.load(function(components) {
     app.locals.components = components;
     localeBuild(components, i18n.getSupportLanguages(), function(map) {
-      i18n.addLocaleObject(map, function(bool) {
+      i18n.addLocaleObject(map, function(err, bool) {
         if(bool) {
           http.createServer(app).listen(app.get('port'), function(){
             console.log("Express server listening on port " + app.get('port'));

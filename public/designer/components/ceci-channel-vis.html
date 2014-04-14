@@ -58,44 +58,47 @@
         var channel = data.detail.channel;
         var handler = data.detail.handler;
 
-        var element;
-        if(this.direction == "in") {
-          element = this.shadowRoot.querySelector(".channel[color='"+channel+"'][for='"+handler+"']");
-        } else {
-          element = this.shadowRoot.querySelector(".channel[color='"+channel+"'][from='"+handler+"']");
-        }
+        // Use async to make sure this component it ready to rock before doing any DOM work on itself.
+        this.async(function () {
+          var element;
+          if(this.direction == "in") {
+            element = this.shadowRoot.querySelector(".channel[color='"+channel+"'][for='"+handler+"']");
+          } else {
+            element = this.shadowRoot.querySelector(".channel[color='"+channel+"'][from='"+handler+"']");
+          }
 
-        // Add a signal indicator dot...
-        var indicator = document.createElement("div");
-        element.appendChild(indicator);
+          // Add a signal indicator dot...
+          var indicator = document.createElement("div");
+          element.appendChild(indicator);
 
-        indicator.classList.add("indicator");
-        indicator.classList.add("indicator-" + this.direction);
-        var signalSpeedCSS = signalSpeed + "s";
-        indicator.style.webkitAnimationDuration = signalSpeedCSS;
-        indicator.style.mozAnimationDuration = signalSpeedCSS;
-
-        // ...and remove it!
-        var removeIndicator = function() {
-          element.removeChild(indicator);
-        };
-
-        setTimeout(removeIndicator, signalSpeed * 1000);
-
-        var timeout = (this.direction === "out" ? 0 : signalSpeed * 1000);
-
-        setTimeout(function() {
-          var bubble = document.createElement("div");
-          bubble.innerHTML = data.detail.data; //data
-          bubble.classList.add("bubblepopup");
-          bubble.classList.add("bubblepop");
-          element.appendChild(bubble);
+          indicator.classList.add("indicator");
+          indicator.classList.add("indicator-" + this.direction);
+          var signalSpeedCSS = signalSpeed + "s";
+          indicator.style.webkitAnimationDuration = signalSpeedCSS;
+          indicator.style.mozAnimationDuration = signalSpeedCSS;
 
           // ...and remove it!
+          var removeIndicator = function() {
+            element.removeChild(indicator);
+          };
+
+          setTimeout(removeIndicator, signalSpeed * 1000);
+
+          var timeout = (this.direction === "out" ? 0 : signalSpeed * 1000);
+
           setTimeout(function() {
-            element.removeChild(bubble);
-          }, bubbleDuration * 1000);
-        }, timeout);
+            var bubble = document.createElement("div");
+            bubble.innerHTML = data.detail.data; //data
+            bubble.classList.add("bubblepopup");
+            bubble.classList.add("bubblepop");
+            element.appendChild(bubble);
+
+            // ...and remove it!
+            setTimeout(function() {
+              element.removeChild(bubble);
+            }, bubbleDuration * 1000);
+          }, timeout);
+        });
       }
     });
     })();

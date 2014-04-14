@@ -90,7 +90,7 @@ define(["jquery", "l10n"], function($, l10n) {
           });
         });
       },
-      saveApp: function(name, appid, html,next){
+      saveApp: function(name, appid, html, next){
         $.ajax('/api/save_app', {
           data: {
             html: html,
@@ -99,12 +99,14 @@ define(["jquery", "l10n"], function($, l10n) {
           },
           type: 'post',
           success: function (data) {
+            var userState = document.querySelector('user-state');
             console.log("App saved successfully");
+            userState.appRenameOk(name);
             if(next) { next(false, data); }
           },
-          error: function (data) {
-            console.error("App was not saved successfully!"), data;
-            if(next) { next(data); }
+          error: function (error) {
+            console.log("App was not saved successfully!", error);
+            if(next) { next(error); }
           }
         });
 
@@ -120,9 +122,9 @@ define(["jquery", "l10n"], function($, l10n) {
             console.log("App updated successfully!");
             if(next) { next(false, data); }
           },
-          error: function (data) {
-            console.log("App was not updated successfully!", data);
-            if(next) { next(data); }
+          error: function (error) {
+            console.log("App was not updated successfully!", error);
+            if(next) { next(error); }
           }
         });
 

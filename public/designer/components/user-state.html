@@ -44,8 +44,16 @@
   </template>
   <script>
   (function() {
-    require(['l10n', 'jquery', 'persona', 'designer/application', 'designer/component-tray', 'designer/utils'],
-      function(l10n, jquery, persona, application, tray, utils) {
+    require(['l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'persona'],
+      function(l10n, jquery, application, tray, utils, persona) {
+        init(l10n, jquery, application, tray, utils, persona);
+      },
+      function(err) {
+        console.log('OH NOES');
+        require(['l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils'], init);
+      });
+
+    function init(l10n, jquery, application, tray, utils, persona) {
 
       var user = {
         email: '',
@@ -54,40 +62,43 @@
       };
       // this is done via require because it needs persona loaded to
       // be able to call navigator.id stuff
-      navigator.id.watch({
-        onlogin: function(assertion) {
-          document.dispatchEvent(new CustomEvent("signInStarted"));
-          //This is where it tries to log in;
-          var xhr = new XMLHttpRequest();
-          xhr.open("POST", "/persona/verify", true);
-          xhr.setRequestHeader("Content-Type", "application/json");
-          xhr.addEventListener("loadend", function(e) {
-            var data = JSON.parse(this.responseText);
-            if (data && data.status === "okay") {
-              document.dispatchEvent(new CustomEvent("signInFinished"));
-              console.log("You have been logged in as: " + data.email);
-              document.dispatchEvent(new CustomEvent('user-state', {
-                detail: {'state': 'signedin', 'email': data.email}
-              }));
-            }
-          }, false);
-          xhr.send(JSON.stringify({
-            assertion: assertion
-          }));
-        },
-        onlogout: function() {
-          var xhr = new XMLHttpRequest();
-          xhr.open("POST", "/persona/logout", true);
-          xhr.addEventListener("loadend", function(e) {
-            document.dispatchEvent(
-              new CustomEvent('user-state', {
-                detail: {'state': 'signedout', 'email': ''}
-              })
-            );
-          });
-          xhr.send();
-        }
-      });
+      if (navigator.id) {
+        navigator.id.watch({
+          onlogin: function(assertion) {
+            document.dispatchEvent(new CustomEvent("signInStarted"));
+            //This is where it tries to log in;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/persona/verify", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.addEventListener("loadend", function(e) {
+              var data = JSON.parse(this.responseText);
+              if (data && data.status === "okay") {
+                document.dispatchEvent(new CustomEvent("signInFinished"));
+                console.log("You have been logged in as: " + data.email);
+                document.dispatchEvent(new CustomEvent('user-state', {
+                  detail: {'state': 'signedin', 'email': data.email}
+                }));
+              }
+            }, false);
+            xhr.send(JSON.stringify({
+              assertion: assertion
+            }));
+          },
+          onlogout: function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/persona/logout", true);
+            xhr.addEventListener("loadend", function(e) {
+              document.dispatchEvent(
+                new CustomEvent('user-state', {
+                  detail: {'state': 'signedout', 'email': ''}
+                })
+              );
+            });
+            xhr.send();
+          }
+        });
+      }
+
       Polymer('user-state', {
         user: user,
         editingmodeChanged : function(oldValue, newValue){
@@ -204,8 +215,6 @@
 
           //New app
           this.$.newApp.addEventListener("click",function() {
-            var log = document.querySelector("design-log");
-            log.clear();
             application.clearCurrentApp();
             application.newApp();
             self.closeMenus();
@@ -233,7 +242,14 @@
             var html = ceciApp.outerHTML;
             var name = application.getCurrentApp();
             if(name){
-              application.updateApp(name,ceciApp.appid,html);
+              application.updateApp(name,ceciApp.appid,html, function(err,data){
+                if(!err){
+                  console.log("App save.");
+                } else {
+                  alert(l10n.get("Your app could not be saved at this time. Please try again.") + "\n" + l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error));
+                  console.error("SaveApp ajax error", err.responseJSON.error);
+                }
+              });
             }
           });
 
@@ -278,13 +294,18 @@
 
             var html = ceciApp.outerHTML;
             if(name){
-              application.saveApp(name,ceciApp.appid,html);
-              // gotta make sure it actually saves though!
-              // add as a callback? or pass in callbacks?
-              application.setCurrentApp(name);
-              self.refreshUserState();
-              self.editingmode = "saved";
-              window.dispatchEvent(new CustomEvent("CeciAppSaveAs"));
+              application.saveApp(name,ceciApp.appid,html, function(err,data){
+                if(!err){
+                  application.setCurrentApp(name);
+                  self.refreshUserState();
+                  self.updateAppName(name);
+                  self.editingmode = "saved";
+                  window.dispatchEvent(new CustomEvent("CeciAppSaveAs"));
+                } else {
+                  alert(l10n.get("Your app could not be saved at this time. Please try again.") + "\n" + l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error));
+                  console.error("SaveApp ajax error", err.responseJSON.error);
+                }
+              });
             } else {
               console.log("Please name your app.");
             }
@@ -337,6 +358,7 @@
         },
         appRenameOk: function(name){
           application.setCurrentApp(name);
+          this.updateAppName(name);
           this.refreshUserState();
         },
         appRenameFailed: function(){
@@ -349,35 +371,24 @@
           navigator.id.logout();
         },
         loadLink: function(name, url, callback) {
-          // see https://gist.github.com/sjmiles/8478807
-          var doc = document.createDocumentFragment();
-          var link = doc.appendChild(document.createElement('link'));
+          var link = document.createElement('link');
           link.rel = "import";
           link.href = url;
 
-          try {
-            HTMLImports.importer.load(doc, function() {
-              try {
-                HTMLImports.parser.parse(link.content);
-                CustomElements.parser.parse(link.content);
-                callback();
-              } catch (e) {
-                console.log("HTMLImports.parser failed for component at", link.href);
-                callback({
-                  error: "HTMLImports.parser failed to load component",
-                  url: url,
-                  name: name
-                });
-              }
-            }.bind(this));
-          } catch (e) {
-            console.log("HTMLImports.importer.load failed for component at", link.href);
+          link.onload = function (e) {
+            callback(null, link);
+          };
+
+          link.onerror = function (e) {
+            console.error('Failed to load component at ' + url);
             callback({
-              error: "HTMLImports.importer.load failed to load component",
+              error: 'Failed to load component',
               url: url,
               name: name
             });
-          }
+          };
+
+          document.head.appendChild(link);
         },
         signalComponentError: function(err) {
           console.error(err);
@@ -507,9 +518,9 @@
         addComponentToUI: function(url, name, cb) {
           var self = this;
           // Add to the menu
-          var menuItem = this.addLinkForComponent(url, name);
+          var menuItem = this.addMenuItemForComponent(url, name);
           // add to polymer, the tray, etc.
-          this.loadLink(name, url, function(err, result) {
+          this.loadLink(name, url, function(err, linkElement) {
             if (err) {
               if(cb) cb(err.error)
               else self.signalComponentError(err.error);
@@ -520,7 +531,7 @@
             if(cb) cb(null, name);
           });
         },
-        addLinkForComponent: function(url, name) {
+        addMenuItemForComponent: function(url, name) {
           var self = this;
 
           var component = document.createElement('li');
@@ -649,10 +660,6 @@
               var userState = document.querySelector("user-state").shadowRoot;
               var li = userState.querySelector("[data-link-name='"+name+"']");
               li.parentNode.removeChild(li);
-              console.log("we've deleted the component");
-              console.log("XXX: Need to tell polymer to forget about this component");
-              // FIXME: it does not appear polymer actually supports "forgetting"
-              //        of elements during the lifetime of a page without reloading.
             },
             error: function (data, err) {
               self.signalComponentError(l10n("Forget failed") + data.url, err);
@@ -687,7 +694,7 @@
           }
         }
       });
-    });
+    }
   })();
   </script>
 </polymer-element>
