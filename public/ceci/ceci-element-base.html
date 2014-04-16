@@ -7,22 +7,7 @@
       var DEFAULT_CHANNEL = 'blue';
 
       function processDefinition (element) {
-        var definitionScriptTag = element.$['ceci-definition'];
-        var definitionJSON;
-
-        if (!definitionScriptTag) {
-          console.error('Ceci definition missing.');
-          return null;
-        }
-
-        try {
-          definitionJSON = JSON.parse(definitionScriptTag.innerText || definitionScriptTag.textContent);
-        }
-        catch (e) {
-          console.error('Invalid ceci definition json.');
-          console.error(e.message);
-          return null;
-        }
+        var definitionJSON = window.CeciDefinitions[element.localName];
 
         // Defaults for safety and efficiency :) !
         definitionJSON.tags = definitionJSON.tags || [];
