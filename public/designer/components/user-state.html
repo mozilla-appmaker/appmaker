@@ -437,22 +437,25 @@
               url = this.mkGitHubURL(parts[0], parts[1]);
             }
             else {
-              // Reject URLs without a protocol (if it's not on http or https, it's not an acceptable URL)
+              // Reject URLs without a protocol
+              // (if it's not on http or https, it's not an acceptable URL)
               if (url.indexOf("http") !== 0) {
                 return self.signalComponentError(l10n("Need qualified url"));
               }
-              // We're going to do pattern detection on Github URLs to map them to the proxy if they're
-              // to github.io, and complain if they're github.com URLs
+              // We're going to do pattern detection on Github URLs to map them to the proxy
               var parser = document.createElement('a');
               parser.href = url;
               var host = parser.host;
+              var pathname = parser.pathname.split('/')
+                                   .map(function(v) { return v.trim(); })
+                                   .filter(function(v) { return v; })
               if (host === 'github.com') {
-                return self.signalComponentError(l10n.get("Need gh-pages branch"));
+                url = this.mkGitHubURL(pathname[0], pathname[1]);
               }
-              if (host.indexOf(".github.io", this.length - ".github.io".length) !== -1) {
+              else if (host.indexOf(".github.io", this.length - ".github.io".length) !== -1) {
                 // it's a GH pages page, yea!
                 var gh_user = host.split('.')[0];
-                var gh_repo = parser.pathname.split('/')[0]
+                var gh_repo = pathname[0];
                 url = this.mkGitHubURL(gh_user, gh_repo);
               }
             }
