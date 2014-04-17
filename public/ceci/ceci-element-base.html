@@ -9,12 +9,17 @@
       function processDefinition (element) {
         var definitionJSON = window.CeciDefinitions[element.localName];
 
-        // Defaults for safety and efficiency :) !
-        definitionJSON.tags = definitionJSON.tags || [];
-        definitionJSON.thumbnail = definitionJSON.thumbnail || '';
-        definitionJSON.listeners = definitionJSON.listeners || {};
-        definitionJSON.broadcasts = definitionJSON.broadcasts || {};
-        definitionJSON.attributes = definitionJSON.attributes || {};
+        if (definitionJSON) {
+          // Defaults for safety and efficiency :) !
+          definitionJSON.tags = definitionJSON.tags || [];
+          definitionJSON.thumbnail = definitionJSON.thumbnail || '';
+          definitionJSON.listeners = definitionJSON.listeners || {};
+          definitionJSON.broadcasts = definitionJSON.broadcasts || {};
+          definitionJSON.attributes = definitionJSON.attributes || {};
+        }
+        else {
+          throw new Error("Couldn't find Ceci definition for " + element.localName + ".");
+        }
 
         return definitionJSON;
       }
