@@ -1,10 +1,11 @@
 @import "variables.less";
 @import "mixins.less";
 
-
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@phoneContainerWidth: 320px;
 
 html {
   min-height: 100%;
@@ -599,14 +600,13 @@ button.done {
 }
 
 .logo {
-  background-image: url(../images/maker.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: @brand-darkblue;
   height: 50px;
   float: left;
   width: 260px;
   z-index: 99;
+  color: #fff;
+  font-size: 20px;
+  line-height: 50px;
 }
 
 .container {
@@ -746,8 +746,8 @@ li.tab {
 
 .right-column {
   top: 50px;
-  right: 0 !important;
-  left: auto !important;
+  right: 0;
+  left: auto;
   bottom: 0;
   position: fixed;
   background-color: #212429;
@@ -755,7 +755,6 @@ li.tab {
   width: 260px;
   min-width: 260px;
 }
-
 
 .right-column .inner-wrapper {
   overflow: auto;
@@ -1557,7 +1556,7 @@ ul.component-actions {
 
 .phone-container {
   float: left;
-  width: 320px;
+  width: @phoneContainerWidth;
   margin-top: 30px;
   position: relative;
   z-index: 1;
@@ -2393,3 +2392,5 @@ button.return-btn {
   padding: 20px;
   background-color: rgb(49, 53, 60);
 }
+
+@import "mobile.less";
