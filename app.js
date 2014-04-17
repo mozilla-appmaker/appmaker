@@ -225,7 +225,7 @@ if (!module.parent) {
   // Load components from various sources
   components.load(function(components) {
     app.locals.components = components;
-    localeBuild(components, i18n.getSupportLanguages(), function(map) {
+    localeBuild(components, ["en-US"], function(map) {
       i18n.addLocaleObject(map, function(err) {
         if(!err) {
           http.createServer(app).listen(app.get('port'), function(){
