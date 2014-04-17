@@ -225,12 +225,15 @@ if (!module.parent) {
   // Load components from various sources
   components.load(function(components) {
     app.locals.components = components;
-    localeBuild(components, ['en-US'], function(map) {
+    localeBuild(components, i18n.getSupportLanguages(), function(map) {
       i18n.addLocaleObject(map, function(err) {
         if(!err) {
           http.createServer(app).listen(app.get('port'), function(){
             console.log("Express server listening on port " + app.get('port'));
           });
+        }
+        else{
+          console.log(err);
         }
       });
     });
