@@ -48,12 +48,11 @@
         var newthumb = document.createElement("div");
         newthumb.innerHTML = "<span class='card-name'>" + l10n.get("Page") + " " + index + "</span><a title='" + l10n.get("Delete this card") + "' href='#' class='delete-card'></a>";
         newthumb.classList.add("card");
-        newthumb.onclick = function() {
-          card.show();
-        };
-        newthumb.querySelector("a").onclick = function() {
+        newthumb.addEventListener("click", card.show);
+        newthumb.querySelector("a").onclick = function(e) {
+          newthumb.removeEventListener("click", card.show);
           t.getOrWaitForCeciApp(function(ceciApp){
-              ceciApp.removeCard(index-1);
+            ceciApp.removeCard(index-1);
           });
         };
         this.$.cardList.appendChild(newthumb);
