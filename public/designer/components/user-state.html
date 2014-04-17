@@ -446,17 +446,17 @@
               var parser = document.createElement('a');
               parser.href = url;
               var host = parser.host;
-              var pathName = parser.pathname.split('/')
+              var pathname = parser.pathname.split('/')
                                    .map(function(v) { return v.trim(); })
                                    .filter(function(v) { return v; })
               if (host === 'github.com') {
-                url = this.mkGitHubURL(pathName[0], pathName[1]);
+                url = this.mkGitHubURL(pathname[0], pathname[1]);
               }
               else if (host.indexOf(".github.io", this.length - ".github.io".length) !== -1) {
                 // it's a GH pages page, yea!
-                var gh_user = host.split('.')[0];
-                var gh_repo = pathName[0];
-                url = this.mkGitHubURL(gh_user, gh_repo);
+                var ghUser = host.split('.')[0];
+                var ghRepo = pathname[0];
+                url = this.mkGitHubURL(ghUser, ghRepo);
               }
             }
             this.getNameForComponentURL(url, function(err, result) {
