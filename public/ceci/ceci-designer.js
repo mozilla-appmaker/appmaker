@@ -44,19 +44,13 @@ define([], function() {
       return this;
     },
     getCeciDefinitionScript: function (elementName) {
-      // Dig into the CustomElements definition to grab the ceci definition script element
-      try {
-        return window.CustomElements.registry[elementName].prototype.element.impl.querySelector('template').content.querySelector('script#ceci-definition');
-      }
-      catch (e) {
-        return null;
-      }
+      return window.CeciDefinitions[elementName];
     },
     getRegisteredComponents: function(){
       var components = [];
-      for (var tagName in window.CustomElements.registry) {
+      for (var tagName in window.CeciDefinitions) {
         if (BUILT_IN_COMPONENTS.indexOf(tagName) === -1) {
-          if (CeciDesigner.getCeciDefinitionScript(tagName)) {
+          if (CeciDesigner.getCeciDefinitionScript(tagName) && window.CustomElements.registry[tagName]) {
             components.push(window.CustomElements.registry[tagName]);
           }
         }

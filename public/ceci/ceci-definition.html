@@ -1,0 +1,33 @@
+<polymer-element name="ceci-definition">
+  <template>
+    <style>
+      :host {
+        display: none;
+      }
+    </style>
+    <content></content>
+  </template>
+  <script>
+    window.CeciDefinitions = window.CeciDefinitions || {};
+
+    Polymer('ceci-definition', {
+      alwaysPrepare: true,
+      ready: function() {
+        this.super();
+
+        var name = this.parentNode.name;
+
+        try {
+          var parsed = JSON.parse(this.innerHTML);
+          window.CeciDefinitions[name] = parsed;
+        }
+        catch (e) {
+          console.error('Trouble parsing Ceci definition "' + name + '": ' + e);
+        }
+      },
+      attached: function () {
+        console.log('attached');
+      }
+    });
+  </script>
+</polymer-element>
