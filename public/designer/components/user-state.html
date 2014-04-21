@@ -118,6 +118,10 @@
         ready: function() {
           var that = this;
 
+          this.addEventListener("click", function(e) {
+            e.stopPropagation();
+          });
+
           that.$.signin.innerHTML = l10n.get("Sign In");
           that.$.myappsheading.innerHTML = l10n.get("My apps");
           that.$.noApps.innerHTML = l10n.get("You don't have any saved apps!");
@@ -599,7 +603,6 @@
           }
         },
         toggleMenu: function(e) {
-
           var parent;
           if(e.target.classList.contains("menu-button")){
             parent = e.target.parentNode;
@@ -612,21 +615,19 @@
             isOpen = true;
           }
 
-          var menus = this.shadowRoot.querySelectorAll(".menu-wrapper");
-          for(var j = 0; j < menus.length ; j++){
-            menus[j].classList.remove("menu-open");
-          }
-          if(isOpen){
-            parent.classList.remove("menu-open");
-          } else {
+          this.closeMenus();
+          if(!isOpen){
             parent.classList.add("menu-open");
+            document.addEventListener("click", this.closeMenus);
           }
         },
         closeMenus: function(){
-          var menus = this.shadowRoot.querySelectorAll(".menu-wrapper");
+          var userState = document.querySelector("user-state");
+          var menus = userState.shadowRoot.querySelectorAll(".menu-wrapper");
           for(var j = 0; j < menus.length ; j++){
             menus[j].classList.remove("menu-open");
           }
+          document.removeEventListener("click", userState.closeMenus);
         },
         refreshUserState: function() {
           var currentApp = application.getCurrentApp() || "";
