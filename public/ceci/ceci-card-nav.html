@@ -46,11 +46,14 @@
       addCardTab : function(index, card){
         var t = this;
         var newthumb = document.createElement("div");
+        function showCard() {
+          card.show();
+        }
         newthumb.innerHTML = "<span class='card-name'>" + l10n.get("Page") + " " + index + "</span><a title='" + l10n.get("Delete this card") + "' href='#' class='delete-card'></a>";
         newthumb.classList.add("card");
-        newthumb.addEventListener("click", card.show);
+        newthumb.addEventListener("click", showCard);
         newthumb.querySelector("a").onclick = function(e) {
-          newthumb.removeEventListener("click", card.show);
+          newthumb.removeEventListener("click", showCard);
           t.getOrWaitForCeciApp(function(ceciApp){
             analytics.event("Delete Page", { label : "Page number " + index});
             ceciApp.removeCard(index-1);
