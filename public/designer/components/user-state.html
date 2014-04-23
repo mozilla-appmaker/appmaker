@@ -451,17 +451,30 @@
               var parser = document.createElement('a');
               parser.href = url;
               var host = parser.host;
-              var pathname = parser.pathname.split('/')
+              var pathParts = parser.pathname.split('/')
                                    .map(function(v) { return v.trim(); })
-                                   .filter(function(v) { return v; })
+                                   .filter(function(v) { return v; });
+
+              // XXXsecretrobotron: mywebmaker.org is makes.org staging server as of writing this.
+              // NEEDS TO CHANGE if mywebmaker goes away.
+              var makesMatch = host.match(/([^\.]+)\.(mywebmaker\.org|makes\.org)/);
+
               if (host === 'github.com') {
-                url = this.mkGitHubURL(pathname[0], pathname[1]);
+                url = this.mkGitHubURL(pathParts[0], pathParts[1]);
               }
               else if (host.indexOf(".github.io", this.length - ".github.io".length) !== -1) {
                 // it's a GH pages page, yea!
                 var ghUser = host.split('.')[0];
-                var ghRepo = pathname[0];
+                var ghRepo = pathParts[0];
                 url = this.mkGitHubURL(ghUser, ghRepo);
+              }
+              else if (makesMatch) {
+                if (pathParts.length > 0) {
+                  if (pathParts[pathParts.length - 1].search(/.+_$/) === -1) {
+                    pathParts[pathParts.length - 1] = pathParts[pathParts.length - 1] + '_';
+                  }
+                  url = ['/', host].concat(pathParts).join('/');
+                }
               }
             }
             this.getNameForComponentURL(url, function(err, result) {
