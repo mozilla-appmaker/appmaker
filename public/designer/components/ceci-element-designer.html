@@ -65,13 +65,12 @@
         message.eventName = eventName;
         this.dispatchEvent(new CustomEvent('log', {bubbles: true, detail: message}));
       },
-      enteredView: function() {
+      attached: function() {
         if(!this.querySelector(".handle")){
           var handle = document.createElement('div');
           handle.className = 'handle';
           this.appendChild(handle);
         }
-        this.super();
       }
     });
   </script>

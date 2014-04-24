@@ -9,7 +9,7 @@ This handles...
 */
 
 define(
-  ["jquery"],function($) {
+  ["jquery", "analytics"],function($, analytics) {
     "use strict";
 
     //Open components modal
@@ -21,6 +21,7 @@ define(
       else {
         changeMode("discovery");
       }
+      analytics.event("Used Expand Handle", {label: "Components Tray"});
     });
 
     $('.right-column .expand-handle').click(function () {
@@ -30,6 +31,7 @@ define(
       else {
         changeMode("viewsource");
       }
+      analytics.event("Used Expand Handle", {label: "View Source"});
     });
 
     function changeMode(mode){

@@ -19,6 +19,8 @@ requirejs.config({
 
     "designer": "../designer/js",
 
+    'analytics': '../vendor/webmaker-analytics/analytics',
+
     "colorpicker.core": "../vendor/colorpicker/jquery.colorpicker",
     "colorpicker.swatches.crayola": "../vendor/colorpicker/swatches/jquery.ui.colorpicker-crayola",
     "colorpicker.swatches.pantone": "../vendor/colorpicker/swatches/jquery.ui.colorpicker-pantone",

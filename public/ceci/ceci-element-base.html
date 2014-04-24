@@ -7,29 +7,19 @@
       var DEFAULT_CHANNEL = 'blue';
 
       function processDefinition (element) {
-        var definitionScriptTag = element.$['ceci-definition'];
-        var definitionJSON;
+        var definitionJSON = window.CeciDefinitions[element.localName];
 
-        if (!definitionScriptTag) {
-          console.error('Ceci definition missing.');
-          return null;
+        if (definitionJSON) {
+          // Defaults for safety and efficiency :) !
+          definitionJSON.tags = definitionJSON.tags || [];
+          definitionJSON.thumbnail = definitionJSON.thumbnail || '';
+          definitionJSON.listeners = definitionJSON.listeners || {};
+          definitionJSON.broadcasts = definitionJSON.broadcasts || {};
+          definitionJSON.attributes = definitionJSON.attributes || {};
         }
-
-        try {
-          definitionJSON = JSON.parse(definitionScriptTag.innerText || definitionScriptTag.textContent);
+        else {
+          throw new Error("Couldn't find Ceci definition for " + element.localName + ".");
         }
-        catch (e) {
-          console.error('Invalid ceci definition json.');
-          console.error(e.message);
-          return null;
-        }
-
-        // Defaults for safety and efficiency :) !
-        definitionJSON.tags = definitionJSON.tags || [];
-        definitionJSON.thumbnail = definitionJSON.thumbnail || '';
-        definitionJSON.listeners = definitionJSON.listeners || {};
-        definitionJSON.broadcasts = definitionJSON.broadcasts || {};
-        definitionJSON.attributes = definitionJSON.attributes || {};
 
         return definitionJSON;
       }
@@ -172,7 +162,7 @@
 
           this.ceci.attributes = ceciDefinition.attributes || {};
 
-          this.ceci.name = this.gettext(this.localName) || this.ceciDefinition.name || this.localName;
+          this.ceci.name = this.gettext(this.localName) || ceciDefinition.name || this.localName;
 
           that.localized();
         },
@@ -240,7 +230,7 @@
             this.removeChild(broadcast);
           }
         },
-        attached: function () {
+        domReady: function () {
           document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));
         },
         gettext: function (keyname) {
