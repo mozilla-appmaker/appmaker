@@ -1,5 +1,9 @@
 <polymer-element name="user-state" attributes="user editingmode">
   <template>
+    <a id="collaborate" class="button" on-click="{{collaborateClick}}">
+      {{ {'Collaborate': !user.collaborating} | tokenList}}
+      {{ {'End Collaboration': !!user.collaborating} | tokenList}}
+    </a>
     <a id="signin" class="button {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">Sign In</a>
     <div id="signInProgress"></div>
 
@@ -44,21 +48,22 @@
   </template>
   <script>
   (function() {
-    require(['l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'analytics', 'persona'],
-      function(l10n, jquery, application, tray, utils, analytics, persona) {
-        init(l10n, jquery, application, tray, utils, analytics, persona);
+    require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'analytics', 'persona'],
+      function(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona) {
+        init(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona);
       },
       function(err) {
         console.log('OH NOES');
-        require(['l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'analytics'], init);
+        require(['togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils'], init);
       });
 
-    function init(l10n, jquery, application, tray, utils, analytics, persona) {
+    function init(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona) {
 
       var user = {
         email: '',
         state: 'signedout',
-        preventLoadedAppInsertion: false
+        preventLoadedAppInsertion: false,
+        collaborating: false
       };
       // this is done via require because it needs persona loaded to
       // be able to call navigator.id stuff
@@ -715,8 +720,13 @@
             viewlink.setAttribute("href", '');
             viewlink.classList.add("hidden");
           }
+        },
+        collaborateClick: function () {
+          TogetherJS(window);
         }
       });
+
+      togetherjs_extension.init(user);
     }
   })();
   </script>
