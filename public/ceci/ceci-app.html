@@ -55,6 +55,9 @@
         else {
           this.addCard();
         }
+        if (this.querySelectorAll('ceci-collections').length === 0) {
+          this.appendChild(document.createElement('ceci-collections'));
+        }
 
         this.dispatchEvent(new CustomEvent('ready', {bubbles: true, detail: this}));
         this.firebase = null;

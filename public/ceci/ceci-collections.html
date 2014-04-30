@@ -1,0 +1,92 @@
+<polymer-element name="ceci-collections">
+  <template>
+    <style>
+      :host {
+        display: none;
+      }
+    </style>
+    <content></content>
+  </template>
+  <script>
+    Polymer('ceci-collections', {
+      attached: function() {
+        var savedData = {};
+        var self = this;
+        if (this.textContent !== "") {
+          try {
+            savedData = JSON.parse(this.textContent);
+          } catch (e) {
+            console.error("Error parsing saved schema data:", e);
+          }
+        } else {
+          this.textContent = "{}";
+        }
+        Object.keys(savedData).forEach(function(collection) {
+          self.collections[collection] = savedData[collection];
+        });
+      },
+      kinds: ["Number", "Toggle", "Text", "Name", "Address", "HttpUrl", "Color", "Image"],
+      collections: {},
+      addCollection: function(name) {
+        if (this.collections[name]) {
+          return;
+        }
+        this.collections[name] = {
+          fields: {},
+          data: []
+        };
+        this.textContent = JSON.stringify(this.collections);
+        var detail = {
+          added: name
+        };
+        var customEvent = new CustomEvent("collectionchange", {detail:detail});
+        this.dispatchEvent(customEvent);
+      },
+      removeCollection: function(name) {
+        if (!this.collections[name]) {
+          return;
+        }
+        delete this.collections[name];
+        this.textContent = JSON.stringify(this.collections);
+        var detail = {
+          removed: name
+        };
+        var customEvent = new CustomEvent("collectionchange", {detail:detail});
+        this.dispatchEvent(customEvent);
+      },
+      addField: function(collection, name, field) {
+        if (!this.collections[collection]) {
+          this.addCollection(collection);
+        }
+        var removed = this.collections[collection].fields[name];
+        this.collections[collection].fields[name] = field || {};
+        this.textContent = JSON.stringify(this.collections);
+        var detail = {
+          collection: collection,
+          field: name,
+          added: this.collections[collection].fields[name]
+        };
+        if (removed) {
+          detail.removed = removed;
+        }
+        var customEvent = new CustomEvent("fieldchange", {detail:detail});
+        this.dispatchEvent(customEvent);
+      },
+      removeField: function(collection, name) {
+        if (!this.collections[collection] || !this.collections[collection].fields[name]) {
+          return;
+        }
+        var removed = this.collections[collection].fields[name];
+        delete this.collections[collection].fields[name];
+        this.textContent = JSON.stringify(this.collections);
+        var detail = {
+          collection: collection,
+          field: name,
+          removed: removed
+        };
+        var customEvent = new CustomEvent("fieldchange", {detail:detail});
+        this.dispatchEvent(customEvent);
+      }
+    });
+  </script>
+</polymer-element>
