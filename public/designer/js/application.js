@@ -90,7 +90,7 @@ define(["jquery", "l10n"], function($, l10n) {
           });
         });
       },
-      saveApp: function(name, appid, html,next){
+      saveApp: function(name, appid, html, next){
         $.ajax('/api/save_app', {
           data: {
             html: html,
@@ -99,7 +99,9 @@ define(["jquery", "l10n"], function($, l10n) {
           },
           type: 'post',
           success: function (data) {
+            var userState = document.querySelector('user-state');
             console.log("App saved successfully");
+            userState.appRenameOk(name);
             if(next) { next(false, data); }
           },
           error: function (error) {

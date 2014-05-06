@@ -2,6 +2,7 @@
 <html lang="<%- localeInfo.lang %>" dir="<%- localeInfo.direction %>">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
     <title><%= (typeof title === "undefined") ? gettext("Welcome to Appmaker") : title %></title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
     <link rel="stylesheet" href="/stylesheets/publishpane.css" />
@@ -24,6 +25,13 @@
     <% } else { %>
       <script src="/javascripts/requireConfig.js"></script>
     <% } %>
+
+    <script src="/vendor/jsonlint/lib/jsonlint.js"></script>
+
+    <script>
+      var TogetherJSConfig_cloneClicks = true;
+    </script>
+    <script src="https://togetherjs.com/togetherjs-min.js"></script>
 
     <script>
     (function () {

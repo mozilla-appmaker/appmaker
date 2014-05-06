@@ -101,7 +101,7 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       var e = $(
         "<div><label>" +
         "<input type=\"checkbox\" " +
-        (value == "true" ? " checked=\"true\" " : "") + "\" value=\"" +
+        (value === true ? " checked=\"true\" " : "") + "\" value=\"" +
         value + "\" />" + title + " </div>"
       );
       e.on("change", function(evt) {
@@ -162,7 +162,12 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       var handler = editableTypeHandlers[definition.editable] || editableTypeHandlers.text;
       return handler(element, attributeName, title, value, definition);
     },
+    removeAttributes: function () {
+      $(".editable-attributes").html("");
+    },
     displayAttributes: function (element) {
+      $(".editable-header > .name").html(element.ceci.name);
+
       var attributeList = $(".editable-attributes");
 
       attributeList.html("");

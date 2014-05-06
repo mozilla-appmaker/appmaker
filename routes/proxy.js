@@ -21,7 +21,7 @@ var request = require('request');
 var path = require('path');
 var fs = require('fs');
 
-var proxy = new httpProxy.RoutingProxy();
+var proxy = new httpProxy.createProxyServer();
 
 module.exports = {
   remix: function (req, res) {

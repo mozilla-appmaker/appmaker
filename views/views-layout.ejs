@@ -36,41 +36,29 @@
     <%- body %>
     <footer id="footer" class="content-block">
       <div class="wrap">
-        <div class="left" id="mozilla-labs"><img src="images/logo.png" alt="logo" /></div>
-        <div id="footer-links" class="right">
-          <div class="four-column">
+        <div id="footer-links" >
+          <div class="three-column">
             <header><%- gettext("About") %></header>
             <ul>
-              <li><a href=""><%- gettext("About Appmaker") %></a></li>
-              <li><a href=""><%- gettext("FAQ") %></a></li>
-              <li><a href=""><%- gettext("Blog") %></a></li>
+              <li><a href="/about"><%- gettext("FAQ") %></a></li>
+              <li><a href="http://appmaking.mozillalabs.com/"><%- gettext("Blog") %></a></li>
             </ul>
           </div>
-          <div class="four-column">
+          <div class="three-column">
             <header><%- gettext("Resources") %></header>
             <ul>
-              <li><a href=""><%- gettext("Contribute") %></a></li>
-              <li><a href=""><%- gettext("Documentation") %></a></li>
-              <li><a href=""><%- gettext("Donate") %></a></li>
+              <li><a href="/contribute"><%- gettext("Contribute") %></a></li>
+              <li><a href="https://github.com/mozilla-appmaker/appmaker/wiki"><%- gettext("Documentation") %></a></li>
             </ul>
           </div>
-          <div class="four-column">
-            <header><%- gettext("Info") %></header>
-            <ul>
-              <li><a href=""><%- gettext("Privacy Policy") %></a></li>
-              <li><a href=""><%- gettext("Legal Notices") %></a></li>
-              <li><a href=""><%- gettext("Feedback") %></a></li>
-            </ul>
-          </div>
-          <div class="four-column">
+          <div class="three-column">
             <header><%- gettext("Contact") %></header>
             <ul>
-              <li><a href=""><%- gettext("E-mailing List") %></a></li>
+              <li><a href="https://mail.mozilla.org/listinfo/appmaker"><%- gettext("E-mailing List") %></a></li>
             </ul>
             <div id="social">
-              <img src="images/icon_twitter.png" alt="Twitter" />
-              <img src="images/icon_youtube.png" alt="Youtube"/>
-              <img src="images/icon_github.png" alt="Github"/>
+              <a href="https://twitter.com/MozillaAppmaker"><img src="images/icon_twitter.png" alt="Twitter" /></a>
+              <a href="https://github.com/mozilla-appmaker/appmaker"><img src="images/icon_github.png" alt="Github"/></a>
             </div>
           </div>
         </div>

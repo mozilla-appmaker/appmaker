@@ -3,8 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(
-  ["designer/utils", "ceci/ceci-designer", "l10n"],
-  function(Util, Ceci, L10n) {
+  ["designer/utils", "ceci/ceci-designer", "l10n", "analytics"],
+  function(Util, Ceci, L10n, analytics) {
     "use strict";
 
     var knownComponents = [];
@@ -17,26 +17,16 @@ define(
         if(knownComponents.indexOf(name) > -1) return;
 
         var item = document.createElement('designer-component-tray-item');
-        var meta;
-
-        // This part is ugly. Reach into CustomElements and pull out a <template>.
-        var ceciDefinitionScript = Ceci.getCeciDefinitionScript(name);
-
-        try {
-          meta = JSON.parse(ceciDefinitionScript.innerHTML);
-        }
-        catch (e) {
-          throw new TypeError("Ceci component, \"" + name + "\" is either lacking ceci definitions or has a JSON error. Likely it shouldn't be returned from ceci-designer.");
-        }
+        var ceciDefinition = Ceci.getCeciDefinitionScript(name);
 
         item.setAttribute('name', name);
-        item.setAttribute('thumbnail', window.CustomElements.registry[name].prototype.resolvePath(meta.thumbnail));
+        item.setAttribute('thumbnail', window.CustomElements.registry[name].prototype.resolvePath(ceciDefinition.thumbnail));
 
-        item.setAttribute('label', meta.name || Util.prettyName(name));
+        item.setAttribute('label', ceciDefinition.name || Util.prettyName(name));
 
-        item.setAttribute('description', L10n.get(name + "/description") || meta.description);
-        item.setAttribute('author', meta.author);
-        item.setAttribute('updatedat', meta.updatedAt);
+        item.setAttribute('description', L10n.get(name + "/description") || ceciDefinition.description);
+        item.setAttribute('author', ceciDefinition.author);
+        item.setAttribute('updatedat', ceciDefinition.updatedAt);
 
         item.addEventListener('click', function (e) {
           var card = document.querySelector('ceci-card[visible]');
@@ -47,6 +37,7 @@ define(
 
             // wait until Polymer has prepared the element completely
             newElement.async(newElement.applyDefaults);
+            analytics.event("Added Component", {label: name});
           }
         }, false);
 
@@ -63,7 +54,7 @@ define(
         return knownComponents.indexOf(name) > -1;
       },
       forgetComponent: function(name) {
-        var pos = knownComponents.indexOf(name)
+        var pos = knownComponents.indexOf(name);
         if (pos > -1) {
           knownComponents.splice(pos, 1);
           var componentTrayContainer = document.getElementById('components');
@@ -71,7 +62,7 @@ define(
           item.parentNode.removeChild(item);
         }
       }
-    }
+    };
 
     // Load elements that might exist already, but also wait for polymer to be ready in case
     // we load this module early.

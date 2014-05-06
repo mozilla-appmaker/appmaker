@@ -24,49 +24,60 @@
     <shadow></shadow>
   </template>
   <script>
-    Polymer('ceci-card', {
-      ready: function () {
-        this.super();
+    require(['designer/editable', 'analytics'], function(Editable, analytics) {
+      Polymer('ceci-card', {
+        ready: function() {
+          this.super();
 
-        var that = this;
+          var that = this;
 
-        function createSortable () {
-          var draggedOff = false;
+          function createSortable() {
+            var draggedOff = false;
 
-          $(that).sortable({
-            distance : 10,
-            handle: '.handle',
-            start: function () {
-              that.$.garbageLeft.hidden = false;
-              that.$.garbageLeft.classList.remove('open');
-              draggedOff = false;
-            },
-            beforeStop: function (ev, ui) {
-              that.$.garbageLeft.hidden = true;
-              if (draggedOff) {
-                ui.item[0].parentNode.removeChild(ui.item[0]);
-              }
-            },
-            sort : function (ev, ui) {
-              var offset = ui.position.left;
-              if(offset > 150 || offset < -150) {
-                that.$.garbageLeft.classList.add('open');
-                draggedOff = true;
-              } else {
+            $(that).sortable({
+              distance : 10,
+              handle: '.handle',
+              start: function() {
+                that.$.garbageLeft.hidden = false;
                 that.$.garbageLeft.classList.remove('open');
                 draggedOff = false;
+              },
+              beforeStop: function(ev, ui) {
+                that.$.garbageLeft.hidden = true;
+                if (draggedOff) {
+                  ui.item[0].parentNode.removeChild(ui.item[0]);
+                  Editable.removeAttributes();
+                  analytics.event("Removed Component", { label : ui.item[0].localName});
+                }
+              },
+              sort : function(ev, ui) {
+                var offset = ui.position.left;
+                if(offset > 150 || offset < -150) {
+                  that.$.garbageLeft.classList.add('open');
+                  draggedOff = true;
+                } else {
+                  that.$.garbageLeft.classList.remove('open');
+                  draggedOff = false;
+                }
+              },
+              stop: function(ev, ui) {
+                if (!draggedOff) {
+                  that.async(function() {
+                    document.dispatchEvent(new CustomEvent('CeciElementsSorted', {bubbles: true, detail: ui.item[0]}));
+                  });
+                }
               }
-            }
-          });
-        }
-
-        var interval = setInterval(function () {
-          if (window.$ && $('<div>').sortable) {
-            clearInterval(interval);
-            createSortable();
+            });
           }
-        }, 100);
-      }
+
+          var interval = setInterval(function() {
+            if (window.$ && $('<div>').sortable) {
+              clearInterval(interval);
+              createSortable();
+            }
+          }, 100);
+        }
+      });
     });
   </script>
 </polymer-element>

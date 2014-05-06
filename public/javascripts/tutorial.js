@@ -25,7 +25,7 @@ $(document).ready(function(){
   });
 
   $('.play-video').click(function(){
-    video = '<iframe src="http://www.youtube.com/embed/RaRIdLgZTPI?autoplay=1" width="960" height="540" frameborder="0"></iframe>';
+    video = '<iframe src="http://www.youtube.com/embed/RaRIdLgZTPI?autoplay=1" width="960" height="540"></iframe>';
     $('.video-splash').replaceWith(video);
   });
 

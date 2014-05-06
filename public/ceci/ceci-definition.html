@@ -1,0 +1,43 @@
+<polymer-element name="ceci-definition">
+  <template>
+    <style>
+      :host {
+        display: none;
+      }
+    </style>
+    <content></content>
+  </template>
+  <script>
+    window.CeciDefinitions = window.CeciDefinitions || {};
+
+    Polymer('ceci-definition', {
+      alwaysPrepare: true,
+      ready: function() {
+        this.super();
+
+        var name = this.parentNode.name;
+        var jsonString = this.innerHTML;
+
+        try {
+          var parsed = JSON.parse(jsonString);
+          window.CeciDefinitions[name] = parsed;
+        }
+        catch (e) {
+          console.error('Trouble parsing Ceci definition "' + name + '": ' + e);
+
+          if (window.jsonlint) {
+            try {
+              jsonlint.parse(jsonString);
+              console.error('Unknown Ceci definition string parsing error for this string: ', jsonString);
+              alert('The definition for the "' + name + '" component could not be used. Please consult its author for more details.');
+            }
+            catch (ex) {
+              console.error('Failed JSON Lint:', ex);
+              alert('The definition for the "' + name + '" component could not be used. Please report this problem to its author.\n\nWhile trying to parse, we found this error:\n\n' + e);
+            }
+          }
+        }
+      }
+    });
+  </script>
+</polymer-element>

@@ -1,25 +1,9 @@
 <html>
 <head>
     <title></title>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </head>
-<body><polymer-element name="ceci-addform" attributes="resetonsubmit dataname datascope" dataname="Items" extends="ceci-element" assetpath="component-addform/">
+<body>
+<polymer-element name="ceci-addform" attributes="resetonsubmit validatecontent dataname datascope" dataname="Items" extends="ceci-element" assetpath="component-addform/">
   <template>
     <style>:host {
   display: block;
@@ -152,189 +136,210 @@
   padding-bottom: 5px;
 }
 </style>
-    <!-- <div id="datascope"></div> -->
+    <div id="datascope"></div>
     <div id="add-input-view" show="no">
-      <h2 on-click="{{toggleInputMenu}}">+ Add Inputs</h2>
+      <h2 on-click="{{toggleInputMenu}}" id="addInputs">+ Add Inputs</h2>
       <div on-click="{{addInputClick}}" class="input-types">
-        <div class="input-type" type="text">Text Input</div>
-        <div class="input-type" type="checkbox">Checkbox</div>
-        <div class="input-type" type="range">Slider</div>
+        <div class="input-type" type="text" id="textInput">Text Input</div>
+        <div class="input-type" type="checkbox" id="checkbox">Checkbox</div>
+        <div class="input-type" type="range" id="slider">Slider</div>
       </div>
     </div>
     <div id="form-wrapper" class="form"></div>
     <shadow></shadow>
-    <script type="text/json" id="ceci-definition">
-      {
-        "thumbnail": "./thumbnail.png",
-        "description": "Create forms and save data to a database.",
-        "broadcasts": {
+  </template>
+  <ceci-definition>
+    {
+      "thumbnail": "./thumbnail.png",
+      "name": "Add Form",
+      "description": "Create forms and save data to a database.",
+      "broadcasts": {
+      },
+      "listeners": {
+        "saveData": {
+          "description": "Submit this form and saves the data a record.",
+          "label": "Submit Form"
         },
-        "listeners": {
-          "saveData": {
-            "description": "Submit this form and saves the data a record.",
-            "label": "Submit Form"
-          },
-          "setScope": {
-            "description": "Specifies what record to save the data to.",
-            "label": "Set Save Scope"
-          }
+        "setScope": {
+          "description": "Specifies what record to save the data to.",
+          "label": "Set Save Scope"
+        }
+      },
+      "attributes": {
+        "dataname": {
+          "description": "This form will create this item, ie.. 'Cats'",
+          "label": "I create...",
+          "editable": "text"
         },
-        "attributes": {
-          "dataname": {
-            "description": "This form will create this item, ie.. 'Cats'",
-            "label": "I create...",
-            "editable": "text"
-          },
-          "resetonsubmit": {
-            "description": "Clear the form fields after submitting",
-            "label": "Reset fields on submit",
-            "editable": "boolean"
-          }
+        "resetonsubmit": {
+          "description": "Clear the form fields after submitting",
+          "label": "Reset fields on submit",
+          "editable": "boolean"
+        },
+        "validatecontent": {
+          "description": "Prevents the form from submitting without data",
+          "label": "Prevent submitting empty form",
+          "editable": "boolean"
         }
       }
-    </script>
-  </template>
-  <description>
-    Create forms and save the data to a database.
-  </description>
-  <tags>data</tags>
-  <thumbnail>
-    <img src="component-addform/thumbnail.png">
-  </thumbnail>
-    <script>
-      Polymer("ceci-addform", {
-        ready: function(){
-          this.super();
-          this.datascope = [];
-          this.buildForm();
-        },
-        toggleInputMenu: function(){
-          //Toggles the menu at the top of the form used for adding iputs
-          var menu = this.shadowRoot.querySelector("#add-input-view");
-          var state = menu.getAttribute("show");
-          if(state == "yes") {
-            menu.setAttribute("show","no");
-          } else {
-            menu.setAttribute("show","yes");
+    }
+  </ceci-definition>
+  <script>
+    Polymer("ceci-addform", {
+      ready: function(){
+        this.super();
+        this.datascope = [];
+        var self = this;
+        window.addEventListener("CeciAppSaveAs", function(){
+          self.saveData();
+        });
+        this.$.addInputs.innerHTML = this.gettext(this.localName + "/addInputs") || this.$.addInputs.innerHTML;
+        this.$.textInput.innerHTML = this.gettext(this.localName + "/textInput") || this.$.textInput.innerHTML;
+        this.$.checkbox.innerHTML = this.gettext(this.localName + "/checkbox") || this.$.checkbox.innerHTML;
+        this.$.slider.innerHTML = this.gettext(this.localName + "/slider") || this.$.slider.innerHTML;
+        this.initialBuildForm = false;
+        this.buildForm();
+      },
+      toggleInputMenu: function(){
+        //Toggles the menu at the top of the form used for adding iputs
+        var menu = this.shadowRoot.querySelector("#add-input-view");
+        var state = menu.getAttribute("show");
+        if(state == "yes") {
+          menu.setAttribute("show","no");
+        } else {
+          menu.setAttribute("show","yes");
+        }
+      },
+      setScope : function(e){
+        this.datascope = e;
+      },
+      datascopeChanged : function(){
+        var scopeEl = this.shadowRoot.querySelector("#datascope");
+        var scopeString = "Adding to ";
+        if(this.datascope.length > 0) {
+          scopeEl.style.display = "block";
+          for(var i = 0; i < this.datascope.length; i++) {
+            scopeString = scopeString + this.datascope[i].dataset;
           }
-        },
-        setScope : function(e){
-          this.datascope = e;
-        },
-        datascopeChanged : function(){
-          //If we want some indicator on the form for where the data is being added to, this is where we'd do it.
-          // var scopeEl = this.shadowRoot.querySelector("#datascope");
-        },
-        addInputClick : function(e){
-          var type = e.target.getAttribute("type");
-          var inputName = window.prompt("Name this input");
-          if(inputName){
-            this.addInput(type,inputName);
+          // scopeEl.innerHTML = scopeString;
+        } else {
+          scopeEl.style.display = "none";
+        }
+        scopeEl.style.display = "none";
+      },
+      addInputClick : function(e){
+        var type = e.target.getAttribute("type");
+        var inputName = window.prompt(this.gettext(this.localName + "/Name this input") || "Name this input");
+        if(inputName){
+          this.addInput(type,inputName);
+        }
+      },
+      datanameChanged : function(){
+        //handle the case where the dataname is in the process of changing or has changed
+        //but doesn't have any input forms yet, so nothing needs to be saved
+        this.updateSchema();
+      },
+      resetForm: function(){
+        var fields = this.shadowRoot.querySelectorAll(".form input");
+        for (var field in fields) {
+          if (fields.hasOwnProperty(field)) {
+            var f = fields[field];
+            f.value = "";
           }
-        },
-        datanameChanged : function(){
-          this.updateSchema();
-        },
-        resetForm: function(){
-          var fields = this.shadowRoot.querySelectorAll(".form input");
-          for (var field in fields) {
-            if (fields.hasOwnProperty(field)) {
-              var f = fields[field];
-              f.value = "";
-            }
-          }
-        },
-        _addInputInit: function(type,inputName){
-          var self = this;
+        }
+      },
+      _addInputInit: function(type,inputName){
+        var self = this;
 
-          var wrapper = document.createElement("div");
-          wrapper.classList.add("input-wrapper");
+        var wrapper = document.createElement("div");
+        wrapper.classList.add("input-wrapper");
 
-          var input = document.createElement("input");
-          input.setAttribute("type",type);
-          input.setAttribute("storeName",inputName);
+        var input = document.createElement("input");
+        input.setAttribute("type",type);
+        input.setAttribute("storeName",inputName);
 
-          var label = document.createElement("label");
+        var label = document.createElement("label");
 
-          var deleteLink = document.createElement("div");
-          deleteLink.innerHTML = "X";
-          deleteLink.classList.add("delete-item");
-          deleteLink.setAttribute("on-click","{{deleteMe}}");
-          deleteLink.addEventListener("click",function(e){
-              self.deleteItem(e);
-          });
+        var deleteLink = document.createElement("div");
+        deleteLink.innerHTML = "X";
+        deleteLink.classList.add("delete-item");
+        deleteLink.setAttribute("on-click","{{deleteMe}}");
+        deleteLink.addEventListener("click",function(e){
+          self.deleteItem(e);
+        });
 
-          wrapper.appendChild(deleteLink);
+        wrapper.appendChild(deleteLink);
 
-          if(type=="checkbox"){
-              var labelWrapper = document.createElement("span");
-              labelWrapper.innerHTML = inputName;
-              label.appendChild(input);
-              label.appendChild(labelWrapper);
-              wrapper.appendChild(label);
-          } else {
-              label.innerHTML = inputName;
-              wrapper.appendChild(label);
-              wrapper.appendChild(input);
-          }
-          this.shadowRoot.querySelector("#form-wrapper").appendChild(wrapper);
-        },
-        addInput: function(type,inputName){
-          this._addInputInit(type,inputName);
-          this.updateSchema();
-        },
-        enteredView : function(){
-          var formWrapper = this.shadowRoot.querySelector("#form-wrapper");
-          this.super();
-        },
+        if(type=="checkbox"){
+            var labelWrapper = document.createElement("span");
+            labelWrapper.innerHTML = inputName;
+            label.appendChild(input);
+            label.appendChild(labelWrapper);
+            wrapper.appendChild(label);
+        } else {
+            label.innerHTML = inputName;
+            wrapper.appendChild(label);
+            wrapper.appendChild(input);
+        }
+        this.shadowRoot.querySelector("#form-wrapper").appendChild(wrapper);
+      },
+      addInput: function(type,inputName){
+        this._addInputInit(type,inputName);
+        this.updateSchema();
+      },
+      enteredView : function(){
+        var formWrapper = this.shadowRoot.querySelector("#form-wrapper");
+        this.super();
+      },
+      deleteItem : function(e){
+        var item = e.target.parentNode;
+        item.parentNode.removeChild(item);
+        this.updateSchema();
+      },
+      buildForm: function(){
+        //Builds out the remembered form fields
+        var self = this;
 
-        deleteItem : function(e){
-          var item = e.target.parentNode;
-          item.parentNode.removeChild(item);
-          this.updateSchema();
-        },
-        buildForm: function(){
-          //Builds out the remembered form fields
-          var self = this;
+        this._checkFirebase(function(ceciApp){
+          ceciApp.getFirebaseObject('form-data',"", function(data){
+            var db = data || {};
 
-          this._checkFirebase(function(ceciApp){
-            ceciApp.getFirebaseObject('form-data',"", function(data){
-              var db = data || {};
-
-              var fields = db[self.dataname + "_formschema"] || [];
-              for (var index in fields) {
-                if (fields.hasOwnProperty(index)) {
-                  var field = fields[index];
-                  self._addInputInit(field["type"],field["name"]);
-                }
+            var fields = db[self.dataname + "_formschema"] || [];
+            for (var index in fields) {
+              if (fields.hasOwnProperty(index)) {
+                var field = fields[index];
+                self._addInputInit(field["type"],field["name"]);
               }
-            });
-          });
-        },
-        _checkFirebase: function(callback){
-          var ca = document.querySelector("ceci-app");
-          if(!ca){
-            var self = this;
-            window.addEventListener("CeciDataConnectionLoaded", function(e){
-              self.ca = document.querySelector("ceci-app");
-              callback(self.ca);
-            });
-          } else {
-            if(ca.firebase){
-              callback(ca);
-            } else {
-              //ceci-app available but firebase not up yet
-              window.addEventListener("CeciDataConnectionLoaded", function(e){
-                var ca = document.querySelector("ceci-app");
-                callback(ca);
-              });
             }
+
+            self.initialBuildForm = true;
+          });
+        });
+      },
+      _checkFirebase: function(callback){
+        var ca = document.querySelector("ceci-app");
+        if(!ca){
+          var self = this;
+          window.addEventListener("CeciDataConnectionLoaded", function(e){
+            self.ca = document.querySelector("ceci-app");
+            callback(self.ca);
+          });
+        } else {
+          if(ca.firebase){
+            callback(ca);
+          } else {
+            //ceci-app available but firebase not up yet
+            window.addEventListener("CeciDataConnectionLoaded", function(e){
+              var ca = document.querySelector("ceci-app");
+              callback(ca);
+            });
           }
-        },
-        updateSchema : function(){
+        }
+      },
+      updateSchema : function(){
+        if(this.initialBuildForm){
           //Check what inputs there are, and build a schema file of them,
           // so that when the component loads next time, it builds out the correct form
-
           var schema = [];
 
           //Builds a schema file based on the fields in the form,
@@ -355,150 +360,271 @@
           // Builds new schema
           var keyname = this.dataname + "_formschema";
 
-          if(schema && schema.length > 0){
-            this._checkFirebase(function(ca){
-              var db = {};
-              db[keyname] = schema;
-              ca.setFirebaseObject('form-data', db);
-              // Event! So that data view components know when the schema has changed.
-              // Right now the schema depends only on the form inputs?
-              var event = new CustomEvent("formChange");
-              window.dispatchEvent(event);
-            });
-          }
-        },
-        saveData : function(){
-          var self = this;
           this._checkFirebase(function(ca){
             var that = self;
+
             ca.getFirebaseObject('form-data',"", function(data){
               var db = data || {};
-
-              var addTo = db;
-
-              for (var i = 0; i < that.datascope.length; i++){
-                var scopeItem = that.datascope[i];
-                addTo = addTo[scopeItem["dataset"]][scopeItem["index"]];
-              }
-
-              if (addTo[that.dataname] === undefined){
-                addTo[that.dataname] = [];
-              }
-
-              var newData = {};
-              var fields = that.shadowRoot.querySelectorAll(".form input");
-
-              for (var field in fields) {
-                if (fields.hasOwnProperty(field)) {
-                  var f = fields[field];
-                  var name = f.getAttribute("storeName");
-                  if(f.getAttribute("type") == "checkbox"){
-                    var value = f.checked;
-                  } else {
-                    var value = f.value;
-                  }
-                  newData[name] = value;
-                }
-              }
-
-              addTo[that.dataname].push(newData);
-
-              if(that.resetonsubmit == "true"){
-                that.resetForm();
-              }
+              db[keyname] = schema;
 
               var ca = document.querySelector("ceci-app")
-              ca.setFirebaseObject('form-data', addTo);
+              ca.setFirebaseObject('form-data', db);
+
               //Stoage event!
               var event = new CustomEvent("storage");
               window.dispatchEvent(event);
             });
+
+            // Event! So that data view components know when the schema has changed.
+            // Right now the schema depends only on the form inputs?
+            // var event = new CustomEvent("formChange");
+            // window.dispatchEvent(event);
           });
         }
-      });
-    </script>
+      },
+      saveData : function(){
+        var self = this;
+        var hasData = true;
+
+        this._checkFirebase(function(ca){
+          var that = self;
+          ca.getFirebaseObject('form-data',"", function(data){
+            var db = data || {};
+
+            var addTo = db;
+
+            for (var i = 0; i < that.datascope.length; i++){
+              var scopeItem = that.datascope[i];
+              addTo = addTo[scopeItem["dataset"]][scopeItem["index"]];
+            }
+
+            if (addTo[that.dataname] === undefined){
+              addTo[that.dataname] = [];
+            }
+
+            var newData = {};
+            var fields = that.shadowRoot.querySelectorAll(".form input");
+
+            for (var field in fields) {
+              if (fields.hasOwnProperty(field)) {
+                var f = fields[field];
+                var name = f.getAttribute("storeName");
+                if(f.getAttribute("type") == "checkbox"){
+                  var value = f.checked;
+                } else {
+                  var value = f.value;
+                  if(value == ""){
+                    hasData = false;
+                  }
+                }
+                newData[name] = value;
+              }
+            }
+
+            addTo[that.dataname].push(newData);
+
+            if(that.resetonsubmit == "true"){
+              that.resetForm();
+            }
+
+            if(that.validatecontent == "true" && hasData == false) {
+
+              //Don't submit if
+            } else {
+              var ca = document.querySelector("ceci-app")
+              ca.setFirebaseObject('form-data', db);
+              //Stoage event!
+              var event = new CustomEvent("storage");
+              window.dispatchEvent(event);
+            }
+
+          });
+        });
+      }
+    });
+  </script>
 </polymer-element>
 
 <polymer-element name="ceci-alternating-gate" attributes="" extends="ceci-element" assetpath="component-alternating-gate/">
   <template>
-    <style>
-      :host {
-        display: block;
-        width: 100%;
-        height: 50px;
-      }
-    </style>
-    <div></div>
+    <style>:host {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: #555;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+:host .output-channel {
+  padding: 5px 10px;
+  background: #999;
+  margin: 0 3px;
+  display: inline-block;
+  border: solid 2px #555;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
+
+:host .next-up {
+  background: white;
+  border: solid 2px white;
+  font-weight: bold;
+}
+</style>
+    <div id="channels"></div>
     <shadow></shadow>
-    <script type="text/json" id="ceci-definition">
-      {
-        "tags": ["alternating-gate", "low-level"],
-        "thumbnail": "./thumbnail.png",
-        "name": "Alternating Gate",
-        "description": "Alternates output between set broadcasts from a single input",
-        "broadcasts": {
-          "A": {
-            "label": "Output A",
-            "description": "The first broadcast in the rotation.",
-            "default": "green"
-          },
-          "B": {
-            "label": "Output B",
-            "description": "The second broadcast in the rotation.",
-            "default": "yellow"
-          },
-          "C": {
-            "label": "Output C",
-            "description": "The third broadcast in the rotation."
-          },
-          "D": {
-            "label": "Output D",
-            "description": "The fourth broadcast in the rotation."
-          },
-          "E": {
-            "label": "Output E",
-            "description": "The fifth broadcast in the rotation."
-          }
-        },
-        "listeners": {
-          "input": {
-            "description": "The input that alternates out the broadcasts.",
-            "label": "Input",
-            "default": true
-          }
-        },
-        "attributes": {
-        }
-      }
-    </script>
   </template>
+  <ceci-definition>
+    {
+      "tags": ["alternating-gate", "low-level"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Alternating Gate",
+      "description": "Alternates output between set broadcasts from a single input",
+      "broadcasts": {
+        "A": {
+          "label": "Output A",
+          "description": "The first broadcast in the rotation.",
+          "default": "green"
+        },
+        "B": {
+          "label": "Output B",
+          "description": "The second broadcast in the rotation.",
+          "default": "yellow"
+        },
+        "C": {
+          "label": "Output C",
+          "description": "The third broadcast in the rotation."
+        },
+        "D": {
+          "label": "Output D",
+          "description": "The fourth broadcast in the rotation."
+        },
+        "E": {
+          "label": "Output E",
+          "description": "The fifth broadcast in the rotation."
+        }
+      },
+      "listeners": {
+        "input": {
+          "description": "The input that alternates out the broadcasts.",
+          "label": "Input",
+          "default": true
+        }
+      },
+      "attributes": {
+      }
+    }
+  </ceci-definition>
   <script>
     Polymer('ceci-alternating-gate', {
+      nextBroadcast : "",
       ready: function() {
         this.super();
         this.lastBroadcast = null;
-
         var self = this;
       },
-      input: function(value) {
-        var activeBroadcasts = [];
-        Array.prototype.forEach.call(this.querySelectorAll("ceci-broadcast"), function(broadcast) {
-          activeBroadcasts.push(broadcast.getAttribute("from"));
+      domReady : function(){
+        var that = this;
+        this.addEventListener("channelUpdated",function(){
+          this.updateChannels();
+          this.updateUI();
         });
-
-        var nextBroadcast = activeBroadcasts.indexOf(this.lastBroadcast) + 1;
-        nextBroadcast %= activeBroadcasts.length;
-
-        nextBroadcast = activeBroadcasts[nextBroadcast];
-
-        this.broadcast(nextBroadcast, value);
-        this.lastBroadcast = nextBroadcast;
+        this.updateChannels();
+        this.nextBroadcast = this.activeBroadcasts[0];
+        this.lastBroadcast = this.activeBroadcasts[0];
+        this.updateUI();
+      },
+      updateUI : function(){
+        Array.prototype.forEach.call(this.$.channels.querySelectorAll(".output-channel"), function(c) {
+          c.classList.remove("next-up");
+        });
+        var selected = this.$.channels.querySelector("." + this.nextBroadcast);
+        if(selected){
+          selected.classList.add("next-up");
+        }
+      },
+      updateChannels: function(){
+        var that = this;
+        this.activeBroadcasts = [];
+        that.$.channels.innerHTML = "";
+        Array.prototype.forEach.call(this.querySelectorAll("ceci-broadcast"), function(broadcast) {
+          that.activeBroadcasts.push(broadcast.getAttribute("from"));
+          var channel = document.createElement("div");
+          channel.classList.add("output-channel");
+          channel.classList.add(broadcast.getAttribute("from"));
+          channel.innerHTML = broadcast.getAttribute("from");
+          that.$.channels.appendChild(channel);
+        });
+      },
+      input: function(value) {
+        this.broadcast(this.nextBroadcast, value);
+        this.nextBroadcast = this.activeBroadcasts.indexOf(this.lastBroadcast) + 1;
+        this.nextBroadcast %= this.activeBroadcasts.length;
+        this.nextBroadcast = this.activeBroadcasts[this.nextBroadcast];
+        this.lastBroadcast = this.nextBroadcast;
+        this.updateUI();
       }
     });
   </script>
 </polymer-element>
 
 <polymer-element name="ceci-button" attributes="textcolor buttoncolor buttonactivecolor label value" value="Click" extends="ceci-element" label="Click Me" textcolor="#ffffff" buttoncolor="#4DB227" buttonactivecolor="#358915" assetpath="component-button/">
+  <ceci-definition>
+    {
+      "tags": ["button", "click", "tap"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Broadcasts a \"click\" when clicked.",
+      "name": "Button",
+      "broadcasts": {
+        "click": {
+          "label": "Click",
+          "description": "Occurs when button is clicked.",
+          "default": true
+        }
+      },
+      "listeners": {
+        "click": {
+          "description": "Causes a fake click event to occur.",
+          "label": "Click"
+        }
+      },
+      "attributes": {
+        "label": {
+          "label": "Label",
+          "description": "Text shown on the button.",
+          "editable": "text",
+          "listener": true
+        },
+        "value": {
+          "label": "Value",
+          "description": "Value sent by the button.",
+          "editable": "text",
+          "listener": true
+        },
+        "textcolor": {
+          "label": "Text Color",
+          "description": "Color of the text on the button's label.",
+          "editable": "color",
+          "listener": true
+        },
+        "buttoncolor": {
+          "label": "Button Color",
+          "description": "Background color of the button.",
+          "editable": "color",
+          "listener": true
+        },
+        "buttonactivecolor": {
+          "label": "Button Active Color",
+          "description": "Background color of the button while it is being clicked or tapped.",
+          "editable": "color",
+          "listener": true
+        }
+      }
+    }
+  </ceci-definition>
   <template>
     <style>:host {
   display: block;
@@ -536,59 +662,6 @@
 </style>
     <button id="button" on-click="{{click}}">{{label}}</button>
     <shadow></shadow>
-    <script type="text/json" id="ceci-definition">
-      {
-        "tags": ["button", "click", "tap"],
-        "thumbnail": "./thumbnail.png",
-        "description": "Broadcasts a \"click\" when clicked.",
-        "name": "Button",
-        "broadcasts": {
-          "click": {
-            "label": "Click",
-            "description": "Occurs when button is clicked.",
-            "default": true
-          }
-        },
-        "listeners": {
-          "click": {
-            "description": "Causes a fake click event to occur.",
-            "label": "Click"
-          }
-        },
-        "attributes": {
-          "label": {
-            "label": "Label",
-            "description": "Text shown on the button.",
-            "editable": "text",
-            "listener": true
-          },
-          "value": {
-            "label": "Value",
-            "description": "Value sent by the button.",
-            "editable": "text",
-            "listener": true
-          },
-          "textcolor": {
-            "label": "Text Color",
-            "description": "Color of the text on the button's label.",
-            "editable": "color",
-            "listener": true
-          },
-          "buttoncolor": {
-            "label": "Button Color",
-            "description": "Background color of the button.",
-            "editable": "color",
-            "listener": true
-          },
-          "buttonactivecolor": {
-            "label": "Button Active Color",
-            "description": "Background color of the button while it is being clicked or tapped.",
-            "editable": "color",
-            "listener": true
-          }
-        }
-      }
-    </script>
   </template>
   <script>
     Polymer('ceci-button', {
@@ -658,70 +731,71 @@
 </style>
     <button id="button" on-click="{{click}}"></button>
     <shadow></shadow>
-    <script type="text/json" id="ceci-definition">
-      {
-        "tags": ["button", "click", "tap"],
-        "thumbnail": "./thumbnail.png",
-        "name": "Button with Confirmation",
-        "description": "A button that asks the user to confirm before broadcasting.",
-        "broadcasts": {
-          "click": {
-            "label": "Click",
-            "description": "Occurs when button is clicked.",
-            "default": true
-          },
-          "cancelClick": {
-            "label": "Cancel Click",
-            "description": "Occurs when button is clicked and the user denies the confirmation message."
-          }
+
+  </template>
+  <ceci-definition>
+    {
+      "tags": ["button", "click", "tap"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Button with Confirmation",
+      "description": "A button that asks the user to confirm before broadcasting.",
+      "broadcasts": {
+        "click": {
+          "label": "Click",
+          "description": "Occurs when button is clicked.",
+          "default": true
         },
-        "listeners": {
-          "click": {
-            "description": "Causes a fake click event to occur.",
-            "label": "Click"
-          }
+        "cancelClick": {
+          "label": "Cancel Click",
+          "description": "Occurs when button is clicked and the user denies the confirmation message."
+        }
+      },
+      "listeners": {
+        "click": {
+          "description": "Causes a fake click event to occur.",
+          "label": "Click"
+        }
+      },
+      "attributes": {
+        "label": {
+          "label": "Label",
+          "description": "Text shown on the button.",
+          "editable": "text",
+          "listener": true
         },
-        "attributes": {
-          "label": {
-            "label": "Label",
-            "description": "Text shown on the button.",
-            "editable": "text",
-            "listener": true
-          },
-           "confirmationmessage": {
-            "label": "Confirmation Message",
-            "description": "Confirmation message that is displayed to the user before executing action.",
-            "editable": "text"
-          },
-          "value": {
-            "label": "Value",
-            "description": "Value sent by the button.",
-            "editable": "text",
-            "listener": true,
-            "defaultListener": true
-          },
-          "textcolor": {
-            "label": "Text Color",
-            "description": "Color of the text on the button's label.",
-            "editable": "color",
-            "listener": true
-          },
-          "buttoncolor": {
-            "label": "Button Color",
-            "description": "Background color of the button.",
-            "editable": "color",
-            "listener": true
-          },
-          "buttonactivecolor": {
-            "label": "Button Active Color",
-            "description": "Background color of the button while it is being clicked or tapped.",
-            "editable": "color",
-            "listener": true
-          }
+         "confirmationmessage": {
+          "label": "Confirmation Message",
+          "description": "Confirmation message that is displayed to the user before executing action.",
+          "editable": "text"
+        },
+        "value": {
+          "label": "Value",
+          "description": "Value sent by the button.",
+          "editable": "text",
+          "listener": true,
+          "defaultListener": true
+        },
+        "textcolor": {
+          "label": "Text Color",
+          "description": "Color of the text on the button's label.",
+          "editable": "color",
+          "listener": true
+        },
+        "buttoncolor": {
+          "label": "Button Color",
+          "description": "Background color of the button.",
+          "editable": "color",
+          "listener": true
+        },
+        "buttonactivecolor": {
+          "label": "Button Active Color",
+          "description": "Background color of the button while it is being clicked or tapped.",
+          "editable": "color",
+          "listener": true
         }
       }
-    </script>
-  </template>
+    }
+  </ceci-definition>
   <script>
     Polymer('ceci-button-with-confirmation', {
       ready: function () {
@@ -765,290 +839,413 @@
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-camera-button" attributes="textcolor buttoncolor buttonactivecolor label value imageheight imagewidth" extends="ceci-element" label="Take Photo" textcolor="#ffffff" buttoncolor="#4DB227" buttonactivecolor="#358915" imageheight="160" imagewidth="160" assetpath="component-camera-button/">
+<polymer-element name="ceci-camera-button" attributes="textcolor buttoncolor buttonactivecolor label value imageheight imagewidth" extends="ceci-element" label="Enable Camera" textcolor="#ffffff" buttoncolor="#4DB227" buttonactivecolor="#358915" imageheight="160" imagewidth="160" assetpath="component-camera-button/">
   <template>
+
+    <div class="mode mode-disabled">
+      <div class="mode-content">
+        <img src="component-camera-button/images/camera-asleep.png">
+        <button id="enable-camera" on-click="{{enableCamera}}">Enable Camera</button>
+      </div>
+      <div class="shutter-bar">
+        <div class="shutter-button"></div>
+      </div>
+    </div>
+
+    <div class="mode mode-pending">
+      <div class="mode-content">
+        <img src="component-camera-button/images/arrow-up.png">
+        <p>Please allow your device to use your camera.</p>
+      </div>
+      <div class="shutter-bar">
+        <div class="shutter-button"></div>
+      </div>
+    </div>
+
+    <div class="mode mode-file">
+      <div class="mode-content">
+        <img src="component-camera-button/images/folder-photo.png">
+        <h2>Oops!</h2>
+        <p>This device doesn't have a camera but you can...</p>
+        <button on-click="{{pickFile}}">Choose an Image File</button>
+      </div>
+    </div>
+
+    <div class="mode mode-enabled">
+      <div class="mode-content">
+        <video id="videoinput"></video>
+      </div>
+      <div class="shutter-bar">
+        <div class="shutter-button" on-click="{{takePhoto}}"></div>
+      </div>
+    </div>
+
     <style>:host {
+  position: relative;
   display: block;
   width: 100%;
-  height: 50px;
+  background: #555;
+}
+
+:host .mode-content img {
+  width: 80px;
+  opacity: .5;
+}
+
+/* Pending Mode */
+
+:host .mode-pending .mode-content {
+  padding-top: 30px;
+}
+
+:host .mode-pending img {
+  width: 120px;
+}
+
+
+/* Disabled Mode */
+
+:host .mode-disabled {
+  background-position: center 10px;
+  background-repeat: no-repeat;
+  background-size: 100px;
+}
+
+:host .mode-disabled img {
+  margin-bottom: 5px;
+}
+
+:host .mode-disabled .mode-content {
+  padding-top: 30px;
+}
+
+:host .mode-disabled img {
+  width: 120px;
+}
+
+/* File Mode */
+
+:host .mode-file .mode-content {
+  padding: 15px 15px 20px 15px;
+  min-height: 0;
+}
+
+:host .mode-content h2 {
+  color: #EEE;
+  font-size: 18px;
+  padding: 0;
+  margin: 0 0 0 0;
+}
+
+:host .mode-content p {
+  color: #CCC;
+  font-size: 16px;
+  padding: 0 40px;
+  margin: 0 0 20px 0;
+}
+
+/* Enabled Mode */
+
+:host .mode-enabled .shutter-bar {
+  opacity: 1;
+}
+
+/* From File Mode */
+
+:host .mode-file p {
+  top: 0;
+}
+
+:host .mode {
+  text-align: center;
+  position: relative;
+}
+
+:host .mode-content {
+  min-height: 180px;
+}
+
+:host  .shutter-bar {
+  background: #333;
+  padding: 10px 0 12px 0px;
+  width: 100%;
+  opacity: .2;
+  border-top: solid 2px #666;
+}
+
+:host .shutter-button {
+  margin: 0 auto;
+  bottom: 0px;
+  background: #DDD;
+  height: 35px;
+  width: 35px;
+  border-radius: 35px;
+  background: #4DB227 -webkit-linear-gradient(#DDD,white);
+  border: solid 3px #777;
+}
+
+:host .mode-enabled .shutter-button {
+  cursor: pointer;
 }
 
 :host button {
+  display: block;
+  margin: 0 auto;
+  padding: 8px 14px;
+  border: 1px solid rgba(0,0,0,.35) ;
+  border-bottom: 2px solid rgba(0,0,0,.35);
+  border-radius: 0.2rem;
+  text-shadow: 0px -1px 0px rgba(0,0,0,.3);
+  background: #4DB227 -webkit-linear-gradient(#58c82d,#4DB227);
+  color: #ffffff;
   font-family: "FiraSans", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  -webkit-border-radius: 3px;
+  text-align: center;
+  text-decoration: none;
+  text-overflow: ellipsis;
   cursor: pointer;
   position: relative;
-  text-decoration: none;
-  outline: none;
-  border-top: 1px solid rgba(255,255,255,.3);
-  border-bottom: 2px solid rgba(0,0,0,.2);
-  background-color: #4DB227;
-  text-align: center;
-  display: block;
-  padding-top: 5px;
-  padding-bottom: 3px;
-  text-overflow: ellipsis;
+  outline: rgba(0,0,0,.2) 5px solid;
   overflow: hidden;
-  border-radius: 0.2rem;
-  font-weight: 600;
-  font-size: 1.8rem;
-  line-height: 3.8rem;
-  color: #ffffff;
-  width: 100%;
-  margin: 0;
+  position: realtive;
 }
 
-:host button {
-  border: none;
+:host button:active {
+  background: #4DB227 -webkit-linear-gradient(#4DB227,#58c82d);
+  background: #4DB227 -moz-linear-gradient(#4DB227,#58c82d);
+  background: #4DB227 linear-gradient(#4DB227,#58c82d);
 }
 
 :host #camerainput {
-    display: none;
-}
-
-:host #hidden {
-    display: none;
+  display: none;
 }
 
 :host #videoinput {
-    width: 100%;
+  width: 100%;
+  display: block;
 }
 
 :host #canvasinput {
-    display: none;
+  display: none;
+  height: 200px;
 }
-
 </style>
-      <video class="hidden" id="videoinput"></video>
-      <button id="button" on-click="{{click}}"></button>
-    <input id="camerainput" type="file" accept="image/*">
     <canvas id="canvasinput"></canvas>
+
+    <input id="camerainput" type="file" accept="image/*">
     <shadow></shadow>
-    <script type="text/json" id="ceci-definition">
-      {
-        "tags": ["button", "click", "tap"],
-        "thumbnail": "./thumbnail.png",
-        "name": "Camera Button",
-        "description": "Takes a picture with your camera.",
-        "broadcasts": {
-          "capture": {
-            "label": "Capture",
-            "description": "Occurs when capture is clicked.",
-            "default": true
-          },
-          "preview": {
-            "label": "Preview",
-            "description": "Occurs preview is clicked."
-          }
-        },
-        "listeners": {
-          "click": {
-            "description": "Causes a fake click event to occur.",
-            "label": "Click"
-          }
-        },
-        "attributes": {
-          "label": {
-            "label": "Label",
-            "description": "Text shown on the button.",
-            "editable": "text",
-            "listener": true
-          },
-          "value": {
-            "label": "Value",
-            "description": "Value sent by the button.",
-            "editable": "text",
-            "listener": true,
-            "defaultListener": true
-          },
-          "imageheight": {
-            "label": "Image Height",
-            "description": "Height of the captured image.",
-            "editable": "number"
-          },
-          "imagewidth": {
-            "label": "Image Width",
-            "description": "Width of the captured image.",
-            "editable": "number"
-          },
-          "textcolor": {
-            "label": "Text Color",
-            "description": "Color of the text on the button's label.",
-            "editable": "color",
-            "listener": true
-          },
-          "buttoncolor": {
-            "label": "Button Color",
-            "description": "Background color of the button.",
-            "editable": "color",
-            "listener": true
-          },
-          "buttonactivecolor": {
-            "label": "Button Active Color",
-            "description": "Background color of the button while it is being clicked or tapped.",
-            "editable": "color",
-            "listener": true
-          }
-        }
-      }
-    </script>
   </template>
+  <ceci-definition>
+    {
+      "tags": ["tap","camera","photo"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Camera",
+      "description": "Takes a picture with your device camera, or uses an image file camera is not available.",
+      "broadcasts": {
+        "photo": {
+          "label": "Photo",
+          "description": "Broadcasts the photo image data.",
+          "default": true
+        }
+      },
+      "listeners": {}
+    }
+  </ceci-definition>
   <script>
     Polymer('ceci-camera-button', {
       ready: function () {
         this.super();
 
-        var that = this;
-        this.$.button.addEventListener('mousedown', function (e) {
-          var valueBefore = that.buttoncolor;
-          if (that.buttonactivecolor) {
-            that.$.button.style.backgroundColor = that.buttonactivecolor;
-            window.addEventListener('mouseup', function (e) {
-              that.$.button.style.backgroundColor = valueBefore;
-            }, false);
-          }
-        }, false);
-
+        // do we have getMedia available?
         navigator.getMedia = (navigator.getUserMedia ||
           navigator.webkitGetUserMedia ||
           navigator.mozGetUserMedia ||
           navigator.msGetUserMedia);
 
-        // WebRTC support
-        if (navigator.getMedia) {
-            // WebRTC supported.
-            var that = this;
-            var streaming = false;
-            var video = this.$.videoinput;
-            var canvas = this.$.canvasinput;
-            var height = this.imageheight;
-            var width = this.imagewidth;
-            var that = this;
-            navigator.getMedia(
-                  {
-                      video: true,
-                      audio: false
-                  },
-                  function(stream) {
-                      if (navigator.mozGetUserMedia) {
-                          video.mozSrcObject = stream;
-                      } else {
-                          var vendorURL = window.URL || window.webkitURL;
-                          video.src = vendorURL.createObjectURL(stream);
-                      }
-                      video.play();
-                  },
-                  function(err) {
-                      console.log("An error occured! " + err);
-                  }
-            );
-
-            video.addEventListener('canplay', function(ev){
-              if (!streaming) {
-                  height = video.videoHeight / (video.videoWidth/width);
-                  video.setAttribute('width', width);
-                  video.setAttribute('height', height);
-                  canvas.setAttribute('width', width);
-                  canvas.setAttribute('height', height);
-                  streaming = true;
-              }
-            }, false);
-        }
       },
-      showingPreview: false,
-      click: function () {
-
-      if (navigator.getMedia && (this.showingPreview === false)) {
-          this.broadcast("preview", 0);
-          this.$.videoinput.classList.remove("hidden");
-          this.showingPreview = true;
-          return;
-      }
-
-      if (navigator.getMedia && (this.showingPreview === true)) {
-            var canvas = this.$.canvasinput;
-            var video = this.$.videoinput;
-            var width = this.imagewidth;
-            var height = this.imageheight;
-            var that = this;
-            this.showingPreview = false;
-            function takepicture() {
-                canvas.width = width;
-                canvas.height = height;
-                canvas.getContext('2d').drawImage(video, 0, 0, width, height);
-                var data = canvas.toDataURL('image/png');
-                console.log("webrtc", data);
-                that.broadcast("preview", this.imageheight);
-                video.classList.add("hidden");
-                that.broadcast('capture', data);
-
-            }
-
-            takepicture();
-        }
-
-        // Firefox OS
-        if ("mozActivity" in navigator) {
-            var activity = new MozActivity({
-              // Ask for the "pick" activity
-              name: "pick",
-
-              // Provide the data required by the filters of the activity
-              data: {
-                  type: ["image/jpeg", "image/png"]
-              }
-            });
-
-            var that = this;
-
-            activity.onsuccess = function() {
-              var data =  window.URL.createObjectURL(this.result.blob);
-              console.log("A picture has been retrieved");
-              that.broadcast("capture", data);
-            };
-
-            activity.onerror = function() {
-              console.log(this.error);
-            };
-        }
-
-        // No WebRTC and no WebActivity
+      attached : function(){
         if (!navigator.getMedia) {
-            // rest of the world
-            var that = this;
-            function selectedPic() {
-                var reader = new FileReader();
-                var file = that.$.camerainput.files[0];
-
-                reader.onloadend = function() {
-                    console.log("File", reader.result);
-                    that.broadcast("capure", reader.result);
-                };
-
-                if (file) {
-                    reader.readAsDataURL(file);
-                }
-
-
-            }
-            this.$.camerainput.addEventListener("change", selectedPic, false);
-            this.$.camerainput.click();
-
+          this.cameraMode("file");
+        } else {
+          this.cameraMode("disabled");
         }
       },
-      labelChanged: function (oldValue, newValue) {
-        this.$.button.innerHTML = newValue;
+      cameraMode : function(mode) {
+        var modes = this.shadowRoot.querySelectorAll(".mode");
+        for(var m in modes){
+          if(modes.hasOwnProperty(m)){
+            modes[m].style.display = "none";
+          }
+        }
+        this.shadowRoot.querySelector(".mode-" + mode).style.display = "block";
       },
-      textcolorChanged: function (oldValue, newValue) {
-          this.$.button.style.color = newValue;
+      enableCamera: function() {
+        if (navigator.getMedia) {
+
+          this.cameraMode("pending");
+
+          this.streaming = false;
+          var that = this;
+
+          var video = this.video = this.$.videoinput;
+          var canvas = this.$.canvasinput;
+          var height = this.imageheight;
+          var width = this.imagewidth;
+
+          var cameraPurpose = {
+            video: true,
+            audio: false
+          };
+
+          var streamHandler = function(stream) {
+            that.videoStream = stream;
+            if (navigator.mozGetUserMedia) {
+              video.mozSrcObject = stream;
+            } else {
+              var vendorURL = window.URL || window.webkitURL;
+              video.src = vendorURL.createObjectURL(stream);
+            }
+            video.play();
+          };
+
+          var errorHandler = function(err) {
+            console.log("An error occured! " + err);
+            that.cameraMode("disabled");
+          };
+
+          navigator.getMedia(cameraPurpose, streamHandler, errorHandler);
+
+          video.addEventListener('canplay', function(ev) {
+
+            if (!that.streaming) {
+              that.cameraMode("enabled");
+              // get aspect-corrected height
+              height = video.videoHeight / (video.videoWidth/width);
+              canvas.setAttribute('width', width);
+              canvas.setAttribute('height', height);
+              that.imagewidth = width;
+              that.imageheight = height;
+              that.streaming = true;
+            }
+          }, false);
+        }
+        // end of ready() code
       },
-      buttoncolorChanged: function (oldValue, newValue) {
-        this.$.button.style.backgroundColor = newValue;
+
+      takePhoto : function(){
+        if ("mozActivity" in navigator) {
+          return this.ffosClick();
+        }
+
+        if (navigator.getMedia) {
+          var canvas = this.$.canvasinput;
+          var video = this.$.videoinput;
+          var width = this.imagewidth;
+          var height = this.imageheight;
+          var that = this;
+
+          canvas.width = width;
+          canvas.height = height;
+          canvas.getContext('2d').drawImage(video, 0, 0, width, height);
+          var data = canvas.toDataURL('image/png');
+          console.log("broadcasting");
+          this.broadcast('photo', data);
+
+          // Stops the video stream and resets camera
+          video.src = "";
+          this.videoStream.stop();
+          this.cameraMode("disabled");
+        }
+      },
+      ffosClick: function() {
+        var activity = new MozActivity({
+          // Ask for the "pick" activity
+          name: "pick",
+
+          // Provide the data required by the filters of the activity
+          data: {
+            type: ["image/jpeg", "image/png"]
+          }
+        });
+
+        var that = this;
+
+        activity.onsuccess = function() {
+          var data =  window.URL.createObjectURL(this.result.blob);
+          console.log("A picture has been retrieved");
+          that.broadcast("photo", data);
+        };
+
+        activity.onerror = function() {
+          console.log(this.error);
+        };
+      },
+      pickFile : function(){
+        var that = this;
+        function selectImageFile() {
+          var reader = new FileReader();
+          var file = that.$.camerainput.files[0];
+
+          reader.onloadend = function() {
+            console.log("File", reader.result);
+            that.broadcast("photo", reader.result);
+          };
+
+          if (file) {
+            reader.readAsDataURL(file);
+          }
+        }
+
+        this.$.camerainput.addEventListener("change", selectImageFile, false);
+        this.$.camerainput.click();
       }
     });
   </script>
 </polymer-element>
 
 <polymer-element name="ceci-chat-window" attributes="username room" extends="ceci-element" username="Anonymous" room="Mozilla" assetpath="component-chat-window/">
+  <ceci-definition>
+    {
+      "tags": ["chat", "social"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Start your own chat room.",
+      "name": "Chat Window",
+      "broadcasts": {
+        "messageposted": {
+          "label": "Message posted",
+          "description": "Occurs when a message is posted in the chatroom.",
+          "default": "green"
+        }
+      },
+      "listeners": {
+        "clear": {
+          "description": "Clear all messages from the chat room",
+          "label": "Clear"
+        },
+        "sendMessage": {
+          "default": true,
+          "description": "Send a message to the chat room",
+          "label": "Send message"
+        }
+      },
+      "attributes": {
+        "username": {
+          "description": "A username to send messages as",
+          "editable": "text",
+          "label": "Username",
+          "listener": true
+        },
+        "room": {
+          "description": "A chat room to send messages to",
+          "editable": "text",
+          "label": "Room",
+          "listener": true
+        }
+      }
+    }
+  </ceci-definition>
   <template>
     <style>:host {
   display: block;
@@ -1105,41 +1302,10 @@
     </header>
     <ul id="messages"></ul>
     <shadow></shadow>
-    <script type="text/json" id="ceci-definition">
-      {
-        "tags": ["chat", "social"],
-        "thumbnail": "./thumbnail.png",
-        "description": "Start your own chat room.",
-        "name": "Chat Window",
-        "listeners": {
-          "clear": {
-            "description": "Clear all messages from the chat room",
-            "label": "Clear"
-          },
-          "sendmessage": {
-            "default": true,
-            "description": "Send a message to the chat room",
-            "label": "Send message"
-          }
-        },
-        "attributes": {
-          "username": {
-            "description": "A username to send messages as",
-            "editable": "text",
-            "label": "Username",
-            "listener": true
-          },
-          "room": {
-            "description": "A chat room to send messages to",
-            "editable": "text",
-            "label": "Room",
-            "listener": true
-          }
-        }
-      }
-    </script>
   </template>
   <script>
+    var defaultAppID = 'appmaker';
+
     Polymer("ceci-chat-window", {
       "chatRoom": "Chat Room",
       "roomName": "Room:",
@@ -1157,52 +1323,116 @@
           return;
         }
 
+        this._db = null;
         this._connect();
       },
+      clear: function () {
+        this._clear();
+      },
       usernameChanged: function(oldValue, newValue) {
-        this._sendmessage(oldValue + " " + this.gettext("ceci-chat-window/is now known as") + " " + newValue);
+        if (oldValue && oldValue != 'null'){
+          this._sendMessage(
+            oldValue + " " +
+            this.gettext("ceci-chat-window/is now known as") + " " +
+            newValue
+          );
+        }
       },
       roomChanged: function(oldValue, newValue) {
         this._connect();
       },
-      sendmessage: function(event) {
-        this._sendmessage(this.getAttribute("username") + ": " + event);
+      sendMessage: function(event) {
+        this._sendMessage(this.username + ": " + event);
+      },
+      _clear: function() {
+        if (!window.Firebase) {
+          return;
+        }
+
+        this._db.remove();
       },
       _connect: function() {
         if (!window.Firebase) {
           return;
         }
+        if(this.__prevQuery) {
+          this.__prevQuery.off("child_added");
+          this.__prevQuery.off("child_removed");
+        }
 
-        var appId = "jbuck";
-        var db = new Firebase("https://appmaker.firebaseio.com/" + appId + "/chat-window/" + this.getAttribute("room"));
+        this._db = new Firebase("https://appmaker.firebaseio.com/" + defaultAppID + "/chat-window/" + this.room);
 
-        var query = db.limit(20);
+        var query = this._db.limit(20);
         query.on("child_added", function(snapshot) {
           var li = document.createElement("li");
           li.textContent = snapshot.val().message;
           li.setAttribute("id", "chat-message-" + snapshot.name().substr(1));
-
           this.$.messages.appendChild(li);
+          this.broadcast('messageposted', snapshot.val().message);
+          this.$.messages.scrollTop = this.$.messages.scrollHeight;
         }.bind(this));
         query.on("child_removed", function(snapshot) {
-          document.getElementById("chat-message-" + snapshot.name().substr(1)).remove();
+          var messageElement = document.getElementById("chat-message-" + snapshot.name().substr(1));
+          if (messageElement) {
+            messageElement.remove();
+            this.$.messages.scrollTop = this.$.messages.scrollHeight;
+          }
         }.bind(this));
+        this.__prevQuery = query;
       },
-      _sendmessage: function(msg) {
+      _sendMessage: function(msg) {
         if (!window.Firebase) {
           return;
         }
 
-        var appId = "jbuck";
-        var db = new Firebase("https://appmaker.firebaseio.com/" + appId + "/chat-window/" + this.getAttribute("room"));
-
-        db.push({message: msg});
+        this._db.push({message: msg});
       }
     });
   </script>
 </polymer-element>
 
 <polymer-element name="ceci-counter" extends="ceci-element" attributes="unit increment value" assetpath="component-counter/">
+  <ceci-definition>
+    {
+      "name": "Counter",
+      "thumbnail": "./thumbnail.png",
+      "description": "Listens for a message and counts",
+      "broadcasts": {
+        "currentCount": {
+          "label": "Current Count",
+          "description": "Broadcasts the current count."
+        }
+      },
+      "listeners": {
+        "countUp": {
+          "description": "Increment the total by the increment value",
+          "label": "Count Up!",
+          "default" : true
+        },
+        "countDown": {
+          "description": "Decrement the total by the increment value",
+          "label": "Count Down"
+        },
+        "resetCount": {
+          "description": "Reset the total to 0.",
+          "label": "Reset Count"
+        }
+      },
+      "attributes": {
+        "unit": {
+          "description": "Name for items which are being counted.",
+          "label": "Unit",
+          "editable": "text"
+        },
+        "increment": {
+          "description": "Count up or down with this number.",
+          "label": "Increment By",
+          "editable": "number",
+          "min" : 1
+        }
+      }
+    }
+  </ceci-definition>
   <template>
     <style>:host {
   display: block;
@@ -1211,7 +1441,7 @@
 
 :host .counter {
   text-align: center;
-  font-size: 1.6rem;
+  font-size: 16px;
   padding: 8px 0px;
   background: #DDD;
   color: #666;
@@ -1222,58 +1452,18 @@
   background: white;
   padding: 5px 12px;
   border-radius: 5px;
+  -webkit-border-radius: 5px;
   border: solid 1px #CCC;
   border-width: 1px 1px 2px 1px;
 }
 </style>
     <div class="counter">
       <div class="count-wrapper">
-        <span id="value" class="count">{{value}}</span>
-        <span id="unit" class="count-label"></span>
+        <span class="count">{{value}}</span>
+        <span class="count-label">{{displayUnit}}</span>
       </div>
     </div>
     <shadow></shadow>
-    <script type="text/json" id="ceci-definition">
-      {
-        "name": "Counter",
-        "thumbnail": "./thumbnail.png",
-        "description": "Listens for a message and counts",
-        "broadcasts": {
-          "currentCount": {
-            "label": "Current Count",
-            "description": "Broadcasts the current count."
-          }
-        },
-        "listeners": {
-          "countUp": {
-            "description": "Increment the total by the increment value",
-            "label": "Count Up",
-            "default" : true
-          },
-          "countDown": {
-            "description": "Decrement the total by the increment value",
-            "label": "Count Down"
-          },
-          "resetCount": {
-            "description": "Reset the total to 0.",
-            "label": "Reset Count"
-          }
-        },
-        "attributes": {
-          "unit": {
-            "description": "Name for items which are being counted.",
-            "label": "Unit",
-            "editable": "text"
-          },
-          "increment": {
-            "description": "Count up or down with this number.",
-            "label": "Increment By",
-            "editable": "number",
-            "min" : 1
-          }
-        }
-      }
-    </script>
   </template>
   <tags>starter,math</tags>
     <script>
@@ -1281,8 +1471,9 @@
         ready: function() {
           this.increment = Number(this.increment) || 1;
           this.value = Number(this.value) || 0;
-          this.updateDisplay();
           this.super();
+          this.displayUnit = this.unit;
+          this.updateUnit();
         },
         value: 0,
         increment: 1,
@@ -1290,27 +1481,29 @@
         incrementChanged: function(oldValue, newValue) {
           this.increment = Number(this.increment) || 0;
         },
-        unitChanged: function(oldValue, newValue) {
-          this.$.value.innerHTML = this.value;
-          this.updateDisplay();
-        },
-        updateDisplay: function() {
+        updateUnit : function(){
           if (this.unit) {
             var unit = this.unit.trim();
-
             if (unit.length > 0) {
-              var pluralChar = Number(this.value) !== 1 && unit[unit.length - 1] !== 's' ? 's' : '';
-              pluralChar = unit[unit.length - 1] === unit[unit.length - 1].toUpperCase() ? pluralChar.toUpperCase() : pluralChar;
-              this.$.unit.innerHTML = " " + unit + pluralChar;
+
+              var pluralChar = "";
+              if((Number(this.value) !== 1) && (unit[unit.length - 1] !== 's')){
+                pluralChar = "s";
+              }
+
+              if(unit[unit.length - 1] === unit[unit.length - 1].toUpperCase()) {
+                pluralChar = pluralChar.toUpperCase()
+              }
+              this.displayUnit = " " + unit + pluralChar;
             }
           }
-          else {
-            this.$.unit.innerHTML = "";
-          }
+        },
+        unitChanged: function() {
+          this.updateUnit();
         },
         valueChanged: function() {
           this.broadcast("currentCount", this.value);
-          this.updateDisplay();
+          this.updateUnit();
         },
         countUp: function() {
           this.value = Number(this.value) + Number(this.increment, 10);
@@ -1325,7 +1518,682 @@
     </script>
 </polymer-element>
 
-<polymer-element name="ceci-fireworks" attributes="fireworkSound" extends="ceci-element" fireworksound="Kaboom!" assetpath="component-fireworks/">
+<polymer-element name="ceci-dataview" showdelete="true" showedit="true" attributes="showaddtoitem listschema showkey dataname datascope showedit showdelete" dataname="Items" extends="ceci-element" assetpath="component-dataview/">
+  <template>
+    <style>:host {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  background: #EFEFEF;
+  border-bottom: solid 3px #BBB;
+}
+
+:host h1 {
+  font-size: 18px;
+  border-bottom: solid 2px #CCC;
+  margin-bottom: 10px;
+  padding-bottom: 4px;
+  text-shadow: 0px 1px 0px white;
+}
+
+:host .counter {
+  line-height: 3.8rem;
+  text-align: center;
+  font-size: 1.6rem;
+  font-family: "FiraSans", sans-serif;
+  padding: .5rem 0rem;
+  background: #0Da;
+  color: #666;
+}
+
+:host #keys-wrapper h2 {
+  color: #777;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: normal;
+  text-align: center;
+  margin: 0;
+}
+
+:host #keys[show=no]{
+  display: none;
+}
+
+:host #keys-wrapper {
+  background: #DDD;
+  -webkit-border-radius: 5px;
+  border-bottom: solid 1px #BBB;
+  padding: 5px 0 3px 0px;
+  font-size: 15px;
+  border-bottom: solid 1px #BBB;
+}
+
+:host #items {
+  margin-top: 10px;
+  text-align: center;
+}
+
+:host .keyConfig {
+  margin: 0 0 2px 0;
+  text-align: center;
+  color: #777;
+  font-size: 15px;
+}
+
+:host input {
+  display: block;
+  padding: 5px;
+}
+
+:host .dataGroup {
+  padding: 5px 0;
+  border: solid 1px #DDD;
+  margin-bottom: 5px;
+  background: white;
+  padding: 5px;
+  -webkit-border-radius: 3px;
+}
+
+:host .dataGroup .dataItem {
+  padding: 5px 0;
+  border-bottom: solid 1px #EFEFEF;
+  font-size: 16px;
+}
+
+:host .dataGroup .dataItem:only-child {
+  border: none;
+}
+
+:host .dataGroup img {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.25);
+}
+
+:host .deleteItem, :host .editItem, :host .addToItem {
+  display: inline-block;
+  padding: 4px 10px !important;
+  background: #BBB;
+  color: white;
+  margin: 8px 0px 3px 0px;
+  margin-right: 5px;
+  cursor: pointer;
+  -webkit-border-radius: 3px;
+}
+
+:host .editItem {
+  background: #358CCE;
+}
+
+:host .deleteItem {
+  background: #999;
+}
+
+:host .addToItem {
+  background: #84c147;
+}
+
+:host #datascope {
+  text-align: center;
+  padding-bottom: 5px;
+}
+</style>
+    <div id="datascope"></div>
+    <div id="keys-wrapper">
+      <h2 on-click="{{toggleKeyConfig}}" id="configureView">Configure View</h2>
+      <div id="keys" show="no"></div>
+    </div>
+    <div id="items"></div>
+    <shadow></shadow>
+    <script type="text/json" id="ceci-definition">
+
+    </script>
+  </template>
+  <ceci-definition>
+    {
+      "thumbnail": "./thumbnail.png",
+      "description": "Display any data you have created using forms made with addform component.",
+      "broadcasts": {
+        "editItem": {
+          "label": "Send Item",
+          "description": "Broadcasts a reference to the record when the 'Edit' button is tapped."
+        },
+        "addToItem": {
+          "description": "Broadcasts a reference to the record when the 'Add to' button is tapped.",
+          "label": "Add to Item"
+        },
+        "sendItem": {
+          "description": "Broadcasts a reference to the record when it is tapped.",
+          "label": "View Item"
+        }
+      },
+      "listeners": {
+        "showItem": {
+          "description": "Shows the data for this record.",
+          "label": "Show item"
+        }
+      },
+      "attributes": {
+        "dataname": {
+          "description": "Will try to show this kind of item in the saved data, i.e. 'Cats'",
+          "label": "I show...",
+          "editable": "text"
+        },
+        "showdelete": {
+          "description": "Hides or shows the delete icon for each record.",
+          "label": "Show Delete Link",
+          "editable": "boolean"
+        },
+        "showedit": {
+          "description": "Show 'Edit' button",
+          "label": "Hides or shows the Edit button for each record.",
+          "editable": "boolean"
+        },
+        "showaddtoitem": {
+          "description": "Show 'Add To' Button",
+          "label": "Hides or shows the 'Add to This' button",
+          "editable": "boolean"
+        }
+      }
+    }
+  </ceci-definition>
+  <tags>data</tags>
+  <script>
+    Polymer("ceci-dataview", {
+      keyConfig: {},
+      storedData: {},
+      dataChangedEvent: new CustomEvent("storage"),
+      ready: function(){
+        this.super();
+        this.datascope = [];
+        this.$.configureView.innerHTML = this.gettext(this.localName + "/configureView") || this.$.configureView.innerHTML;
+      },
+      toggleKeyConfig: function(){
+        var keysEl = this.shadowRoot.querySelector("#keys");
+        if(keysEl.getAttribute("show") == "no") {
+          keysEl.setAttribute("show","yes");
+        } else {
+          keysEl.setAttribute("show","no");
+        }
+      },
+      showdeleteChanged: function(oldValue,newValue){
+        this.showData();
+      },
+      showaddtoitemChanged: function(oldValue,newValue){
+        this.showData();
+      },
+      showeditChanged: function(oldValue,newValue){
+        this.showData();
+      },
+      datanameChanged: function (oldValue, newValue) {
+        this.updateKeyUI();
+        this.showData();
+      },
+      showItem: function(e){
+        this.datascope = e;
+      },
+      datascopeChanged: function(){
+        // If we want to indicate the scope of the data that is shown, there is where we'd do it.
+        // var scopeEl = this.shadowRoot.querySelector("#datascope");
+        this.updateKeyUI();
+        this.showData();
+      },
+      deleteItem: function(id){
+        var self = this;
+        var ca = document.querySelector("ceci-app");
+        if(!ca){
+          window.addEventListener("CeciDataConnectionLoaded", function(){
+            self._deleteItemFirebase(id);
+          });
+        }
+        else {
+          if(ca.firebase){
+            this._deleteItemFirebase(id);
+          }
+        }
+      },
+      _deleteItemFirebase: function(id){
+        var self = this;
+        var ca = document.querySelector("ceci-app")
+        ca.getFirebaseObject('form-data', "", function(data){
+          self.storedData = data || {};
+          for (var i = 0; i < self.datascope.length; i++){
+            var scopeItem = self.datascope[i];
+            self.storedData = self.storedData[scopeItem["dataset"]][scopeItem["index"]];
+          }
+          self.storedData = self.storedData[self.dataname] || [];
+          self.storedData.splice(id, 1);
+          ca.setFirebaseObject('form-data', data);
+          window.dispatchEvent(self.dataChangedEvent);
+        });
+      },
+      updateKeyUI: function(){
+        var self = this;
+        var ca = document.querySelector("ceci-app");
+        if(!ca){
+          window.addEventListener("CeciDataConnectionLoaded", function(){
+            self._updateKeyUIFirebase();
+          })
+        }
+        else {
+          if(ca.firebase){
+            this._updateKeyUIFirebase();
+          }
+          else {
+            window.addEventListener("CeciDataConnectionLoaded", function(){
+              self._updateKeyUIFirebase();
+            });
+          }
+        }
+      },
+      _updateKeyUIFirebase : function(){
+
+        //This builds the UI that lets you choose how each key in the data set is displayed!
+        var self = this;
+
+        document.querySelector("ceci-app").getFirebaseObject('form-data',"", function(data){
+
+          // Clears out the old UI
+          self.shadowRoot.querySelector("#keys").innerHTML = "";
+
+          // Tries to grab the stored Data
+          var db = data || {};
+          self.storedData = db[self.dataname] || [];
+
+          // Tries to grab it's own keyConfig (which tells it how to render each Key field)
+          self.keyConfig = JSON.parse(self.listschema) || {};
+
+          // Grabs the schema from the form
+          var formSchema = db[self.dataname + "_formschema"] || {};
+
+          // Builds a list of all the keys from the form and data set
+          // To know what to display options for.
+          var keylist = [];
+          for (var i = 0; i < self.storedData.length; i++){
+            var item = self.storedData[i];
+            for (var key in item) {
+              if(keylist.indexOf(key) < 0) {
+                keylist.push(key);
+              }
+            }
+          }
+
+          for (var j = 0; j < formSchema.length; j++){
+            var item = formSchema[j];
+            if(keylist.indexOf(item["name"]) < 0 ){
+              keylist.push(item["name"]);
+            }
+          }
+
+          for (var k = 0; k < keylist.length; k++){
+            var key = keylist[k];
+            if(!self.keyConfig[key]) {
+              self.keyConfig[key] = "text";
+            }
+          }
+
+          // CLean up the keyConfig file
+          // Removes everything in the keyConfig that isn't in the keylist anymore.
+          for (var key in self.keyConfig){
+            if(keylist.indexOf(key) < 0) {
+              delete self.keyConfig[key];
+            }
+          }
+
+          // We should also clean up the key config.
+          // we should also get rid of keys that are no longer needed from keyConfig
+          // Like if something is NOT in the keylist, then dump it
+
+          // Have a way to choose how each key is displayed
+
+          for (var j = 0; j < keylist.length; j ++){
+            var keyConfig = document.createElement("div");
+            keyConfig.classList.add("keyConfig");
+            keyConfig.innerHTML = "Show <strong>" + keylist[j] + "</strong> as ";
+
+            var select =  document.createElement("select");
+            keyConfig.appendChild(select);
+
+            select.setAttribute("key",keylist[j]);
+            select.innerHTML = "<option value='text'>text</option><option value='image'>image</option><option value='hide'>hide</option>";
+            select.value = self.keyConfig[keylist[j]];
+
+            select.addEventListener("change",function(e){
+              self.keyConfig[e.target.getAttribute("key")] = e.target.value;
+              self.showData();
+              self.listschema = JSON.stringify(self.keyConfig);
+            });
+            self.shadowRoot.querySelector("#keys").appendChild(keyConfig);
+          }
+
+          //Put the list schema into the db
+          db[self.dataname + "_listSchema"] = self.keyConfig;
+          document.querySelector("ceci-app").setFirebaseObject('form-data', db);
+          self.showData();
+        });
+      },
+      enteredView : function(){
+        var self = this;
+
+        //Listens to updates to the data set
+        window.addEventListener('storage', this.showData.bind(this), false);
+        window.addEventListener('storage', this.updateKeyUI.bind(this), false);
+        window.addEventListener('formChange', this.updateKeyUI.bind(this), false);
+
+        this.updateKeyUI();
+
+        //Show exising data
+        this.showData();
+        this.super();
+      },
+      getOrWaitForCeciApp: function(callback){
+        var ceciApp = document.querySelector("ceci-app");
+        if(!ceciApp){
+          window.addEventListener("CeciDataConnectionLoaded", function(){
+            callback(document.querySelector("ceci-app"));
+          });
+        } else {
+          if(ceciApp && ceciApp.firebase){
+            callback(ceciApp);
+          } else {
+            window.addEventListener("CeciDataConnectionLoaded", function(){
+              callback(document.querySelector("ceci-app"));
+            });
+          }
+        }
+      },
+      showData: function(){
+        var self = this;
+        this.getOrWaitForCeciApp(function(ceciApp){
+          var that = self;
+          ceciApp.getFirebaseObject('form-data', "", function(data){
+          var those = that;
+          those.storedData = data || {};
+
+          //handle case where dataview is just loading and listSchema hasn't been parsed and
+          //stored in keyConfig
+          if(those.keyConfig && Object.getOwnPropertyNames(those.keyConfig).length < 1){
+            those.keyConfig = those.storedData[those.dataname+"_listSchema"];
+          }
+
+          var lastData;
+          for (var i = 0; i < those.datascope.length; i++){
+            var scopeItem = those.datascope[i];
+            self.storedData = those.storedData[scopeItem["dataset"]][scopeItem["index"]];
+            lastData = scopeItem["dataset"];
+          }
+
+          if (lastData == those.dataname){
+            var blam = [];
+            blam.push(those.storedData);
+            those.storedData = blam;
+          }
+          else {
+            those.storedData = those.storedData[those.dataname] || [];
+          }
+
+          var itemList = those.shadowRoot.querySelector("#items");
+          itemList.innerHTML = "";
+
+          for(var i = 0; i < those.storedData.length; i++){
+            var item = those.storedData[i];
+            var itemEl = document.createElement("div");
+            itemEl.classList.add("dataGroup");
+
+            for (var key in item) {
+              var displayType = those.keyConfig[key];
+              var dataItem;
+
+              if (displayType == "text") {
+                dataItem = document.createElement("div");
+
+                if (typeof item[key] == "object"){
+                  dataItem.innerHTML = "List of " + item[key].length + " " + key;
+                }
+                else {
+                  dataItem.innerHTML = item[key];
+                }
+              }
+              else if (displayType == "image") {
+                dataItem = document.createElement("img");
+                dataItem.setAttribute("src", item[key]);
+              }
+              else {
+                dataItem = document.createElement("div");
+              }
+
+              dataItem.classList.add("dataItem");
+
+              var these = those;
+              dataItem.addEventListener("click",function(e){
+                var nodeList = Array.prototype.slice.call(e.currentTarget.parentNode.parentNode.children);
+                var index = nodeList.indexOf(e.currentTarget.parentNode);
+                var sendScope = JSON.parse(JSON.stringify(that.datascope));
+                var scopeItem = {};
+                scopeItem["dataset"] = these.dataname;
+                scopeItem["index"] = index;
+                sendScope.push(scopeItem);
+                these.broadcast('sendItem', sendScope);
+              });
+
+              if(displayType != "hide") {
+                itemEl.appendChild(dataItem);
+              }
+            }
+
+            if(self.showedit == "true"){
+              var editItem = document.createElement("div");
+              editItem.innerHTML = "Edit";
+              editItem.classList.add("editItem");
+              itemEl.appendChild(editItem);
+              editItem.addEventListener("click",function(e){
+                var nodeList = Array.prototype.slice.call(e.currentTarget.parentNode.parentNode.children);
+                var index = nodeList.indexOf( e.currentTarget.parentNode );
+                var sendScope = JSON.parse(JSON.stringify(that.datascope));
+                var scopeItem = {};
+                scopeItem["dataset"] = these.dataname;
+                scopeItem["index"] = index;
+                sendScope.push(scopeItem);
+                these.broadcast('editItem', sendScope);
+              });
+            }
+
+            if(these.showaddtoitem == "true"){
+              var el = document.createElement("div");
+              el.innerHTML = "Add to self";
+              el.classList.add("addToItem");
+              itemEl.appendChild(el);
+              el.addEventListener("click",function(e){
+                var nodeList = Array.prototype.slice.call(e.currentTarget.parentNode.parentNode.children);
+                var index = nodeList.indexOf( e.currentTarget.parentNode );
+                var sendScope = JSON.parse(JSON.stringify(that.datascope));
+                var scopeItem = {};
+                scopeItem["dataset"] = these.dataname;
+                scopeItem["index"] = index;
+                sendScope.push(scopeItem);
+                these.broadcast('addToItem', sendScope);
+              });
+            }
+
+            if(self.showdelete == "true"){
+              var deleteItem = document.createElement("div");
+              deleteItem.innerHTML = "X";
+              deleteItem.classList.add("deleteItem");
+              itemEl.appendChild(deleteItem);
+              deleteItem.addEventListener("click",function(e){
+                var nodeList = Array.prototype.slice.call(e.currentTarget.parentNode.parentNode.children);
+                var index = nodeList.indexOf( e.currentTarget.parentNode );
+                these.deleteItem(index);
+              });
+            }
+
+            itemList.appendChild(itemEl);
+          }
+          });
+        });
+      }
+    });
+  </script>
+</polymer-element>
+
+<polymer-element name="ceci-editform" extends="ceci-element" assetpath="component-editform/">
+  <template>
+    <style>:host {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  background: #EFEFEF;
+}
+
+:host h1 {
+  font-size: 18px;
+  border-bottom: solid 2px #CCC;
+  margin-bottom: 10px;
+  padding-bottom: 4px;
+  text-shadow: 0px 1px 0px white;
+}
+
+:host input {
+  display: block;
+  padding: 5px;
+  width: 100%;
+  font-size: 16px;
+  margin-bottom: 4px;
+  box-sizing: border-box;
+}
+
+:host p {
+  color: white;
+  background: green;
+  cursor: pointer;
+  padding: 5px 10px;
+  display: inline-block;
+}
+</style>
+    <div class="form">
+
+    </div>
+    <shadow></shadow>
+  </template>
+  <ceci-definition>
+    {
+      "thumbnail": "./thumbnail.png",
+      "name": "Edit Form",
+      "description": "Edits an item!",
+      "listeners": {
+        "editItem": {
+          "description": "Set the item to edit with the form.",
+          "label": "Set Edit Item"
+        },
+        "submitForm": {
+          "description": "Submit this form.",
+          "label": "Submit Form"
+        }
+      }
+    }
+  </ceci-definition>
+  <script>
+    Polymer("ceci-editform", {
+      storedData : {},
+      db: {},
+      datascope: {},
+      storedData: {},
+      ready: function(){
+        this.super();
+      },
+      editItem : function(scope){
+        var self = this;
+        var ca = document.querySelector("ceci-app");
+
+        if(!ca){
+          window.addEventListener("CeciDataConnectionLoaded", function(){
+            self.editItemFirebase(scope);
+          });
+        } else {
+          if(ca.firebase){
+            this.editItemFirebase(scope);
+          }
+        }
+
+      },
+      editItemFirebase : function(scope){
+        var self = this;
+
+        document.querySelector("ceci-app").getFirebaseObject('form-data', "", function(data){
+
+          self.db = data;
+          self.datascope = scope;
+          self.storedData = data || {};
+
+          for (var i = 0; i < self.datascope.length; i++){
+            var scopeItem = self.datascope[i];
+            self.storedData = self.storedData[scopeItem["dataset"]][scopeItem["index"]];
+          }
+
+          var form = self.shadowRoot.querySelector(".form");
+          form.innerHTML = "";
+
+          for(key in self.storedData){
+            if(typeof self.storedData[key] != "object"){
+
+              var label = document.createElement("label");
+              label.innerHTML = key;
+              form.appendChild(label);
+
+              var input = document.createElement("input");
+              input.value = self.storedData[key];
+              input.setAttribute("storeName",key);
+              form.appendChild(input);
+            }
+          }
+
+        });
+
+      },
+      submitForm : function(){
+        // This resubmits the entire DB with the updated record
+        var self = this;
+
+        var newData = self.storedData;
+        var fields = self.shadowRoot.querySelectorAll(".form input");
+
+        self.storedData = self.db;
+
+        for (var field in fields) {
+          if (fields.hasOwnProperty(field)) {
+            var f = fields[field];
+            var name = f.getAttribute("storeName");
+            var value = f.value;
+            newData[name] = value;
+          }
+        }
+
+        // Gets a reference to the correct item
+        for (var i = 0; i < self.datascope.length; i++){
+          var scopeItem = self.datascope[i];
+          self.storedData = self.storedData[scopeItem["dataset"]][scopeItem["index"]];
+        }
+
+        // Replaces it with the new item
+        self.storedData = newData;
+
+        // Saves over the entire DB with the new item included
+        var ca = document.querySelector("ceci-app");
+        ca.setFirebaseObject('form-data', self.db);
+
+        var event = new CustomEvent("storage");
+        window.dispatchEvent(event);
+
+      }
+    });
+  </script>
+</polymer-element>
+
+<polymer-element name="ceci-fireworks" attributes="fireworksound" extends="ceci-element" fireworksound="Kaboom!" assetpath="component-fireworks/">
   <template>
     <style>:host {
   display: block;
@@ -1346,7 +2214,8 @@
       <canvas id="canvas" class="fireworks-canvas" on-click="{{click}}">Canvas is not supported in your browser.</canvas>
     </div>
     <shadow></shadow>
-    <script type="text/json" id="ceci-definition">
+  </template>
+  <ceci-definition>
       {
         "tags": ["animated", "starter", "fun"],
         "thumbnail": "./thumbnail.png",
@@ -1370,7 +2239,7 @@
           }
         },
         "attributes": {
-          "fireworkSound": {
+          "fireworksound": {
             "label": "Firework Sound",
             "description": "Tell the fireworks what to broadcast every shot.",
             "editable": "text",
@@ -1378,8 +2247,7 @@
           }
         }
       }
-    </script>
-  </template>
+    </ceci-definition>
   <script>
     Polymer('ceci-fireworks', {
       ready: function () {
@@ -1395,7 +2263,7 @@
                 };
         })();
 
-        this.setAttribute('fireworkSound', this.getAttribute("fireworkSound") || 'Kapow!');
+        this.setAttribute('fireworksound', this.getAttribute("fireworksound") || 'Kapow!');
 
         // now we will setup our basic variables for the demo
         var canvas = this.$.canvas,
@@ -1483,7 +2351,7 @@
 
           // if the distance traveled, including velocities, is greater than the initial distance to the target, then the target has been reached
           if( this.distanceTraveled >= this.distanceToTarget ) {
-            t.broadcast('kaboom', t.getAttribute('fireworkSound'));
+            t.broadcast('kaboom', t.getAttribute('fireworksound'));
             createParticles( this.tx, this.ty, this.hue );
             // remove the firework, use the index passed into the update function to determine which to remove
             fireworks.splice( index, 1 );
@@ -1622,7 +2490,7 @@
           this.launchRocket();
         }
       },
-      enteredView: function() {
+      attached: function() {
         var rect = this.getBoundingClientRect();
         this.$.canvas.width = this.cw = rect.width;
         this.$.canvas.height = this.ch = rect.width;
@@ -1634,18 +2502,40 @@
 
 
 <polymer-element name="ceci-header" attributes="header" extends="ceci-element" header="Header" assetpath="component-header/">
+  <ceci-definition>
+    {
+      "tags": ["starter", "layout", "navigation"],
+      "thumbnail": "./thumbnail.png",
+      "description": "A page header. You can send it a signal to navigate to that page.",
+      "name": "Header",
+      "broadcasts": {},
+      "listeners": {
+        "navigateHere": {
+          "description": "navigateHere",
+          "label": "Navigate Here"
+        }
+      },
+      "attributes": {
+        "header": {
+          "label": "Header Label",
+          "description": "Text for header label",
+          "editable": "text",
+          "listener": true
+        }
+      }
+    }
+  </ceci-definition>
   <template>
     <style>:host {
   display: block;
   width: 100%;
-  height: 50px;
 }
 
 ceci-header header {
   background-color: #212429;
   width: 100%;
   padding: 0;
-  height: 5rem;
+  min-height: 5rem;
   line-height: 5rem;
   color: #FFF;
   font-size: 2.4rem;
@@ -1654,29 +2544,6 @@ ceci-header header {
 </style>
     <header id="headerText"></header>
     <shadow></shadow>
-    <script type="text/json" id="ceci-definition">
-      {
-        "tags": ["starter", "layout", "navigation"],
-        "thumbnail": "./thumbnail.png",
-        "description": "A page header. You can send it a signal to navigate to that page.",
-        "name": "Header",
-        "broadcasts": {},
-        "listeners": {
-          "navigateHere": {
-            "description": "navigateHere",
-            "label": "Navigate Here"
-          }
-        },
-        "attributes": {
-          "header": {
-            "label": "Header Label",
-            "description": "Text for header label",
-            "editable": "text",
-            "listener": true
-          }
-        }
-      }
-    </script>
   </template>
   <script>
     Polymer('ceci-header', {
@@ -1704,47 +2571,53 @@ ceci-header header {
     <style>:host {
   display: block;
   text-align: center;
+  width: 100%;
+}
+
+:host img {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
 }
 
 </style>
-    <img id="image" src="">
-    <shadow></shadow>
-    <script type="text/json" id="ceci-definition">
-      {
-        "tags": ["component-image", "view", "image"],
-        "thumbnail": "./thumbnail.png",
-        "name": "Image",
-        "description": "Shows a simple image.",
-        "broadcasts": {
-          "click": {
-            "label": "Click",
-            "description": "Occurs when the image is clicked.",
-            "default": false
-          }
+    <img id="image"><shadow></shadow>
+  </template>
+  <ceci-definition>
+    {
+      "tags": ["component-image", "view", "image"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Image",
+      "description": "Shows a simple image.",
+      "broadcasts": {
+        "click": {
+          "label": "Click",
+          "description": "Occurs when the image is clicked.",
+          "default": false
+        }
+      },
+      "listeners": {
+        "setImageSource": {
+          "description": "changes the image tags src attribute.",
+          "label": "Set Image Source",
+          "default": true
+        }
+      },
+      "attributes": {
+        "height": {
+          "label": "Image Height",
+          "description": "Image Height",
+          "editable": "number",
+          "listener": true
         },
-        "listeners": {
-          "setImageSource": {
-            "description": "changes the image tags src attribute.",
-            "label": "Set Image Source",
-            "default": true
-          }
-        },
-        "attributes": {
-          "height": {
-            "label": "Image Height",
-            "description": "Image Height",
-            "editable": "number",
-            "listener": true
-          },
-          "source": {
-            "label": "Image Source",
-            "description": "The Image to Show",
-            "editable": "text"
-          }
+        "source": {
+          "label": "Image Source",
+          "description": "The Image to Show",
+          "editable": "text"
         }
       }
-    </script>
-  </template>
+    }
+  </ceci-definition>
   <script>
     Polymer('ceci-image', {
       ready: function () {
@@ -1764,6 +2637,9 @@ ceci-header header {
           that.broadcast("click", this.img.getAttribute( "src" ));
         };
         this.super();
+      },
+      setValue : function(v) {
+        this.setImageSource(v);
       },
       sourceChanged : function(oldValue,newValue){
         console.log(oldValue,newValue);
@@ -1788,83 +2664,80 @@ ceci-header header {
 
 
 <polymer-element name="ceci-metronome" attributes="beatsperminute autostart" beatsperminute="60" autostart="true" extends="ceci-element" label="Click Me" textcolor="#ffffff" buttoncolor="#4DB227" buttonactivecolor="#358915" assetpath="component-metronome/">
-    <template>
-        <style>:host {
-    display: block;
-    position: relative;
+  <template>
+    <style>:host {
+  display: block;
+  position: relative;
+  padding: 10px 0;
 }
+
 :host .metronome-wrapper {
-    margin: 0 auto;
-    position: relative;
+  margin: 0 auto;
+  position: relative;
 }
 
 :host .metronome-body {
-    background: #85560b;
-    border-top: solid 2px #85560b;
-    background: -webkit-linear-gradient(top, #a87018,#85560b);
-    background: -moz-linear-gradient(top, #a87018,#85560b);
-    width: 40px;
-    margin: 0 auto;
-    padding: 8px 0 12px 0;
-    -webkit-border-radius: 15px 15px 5px 5px;
-
-    border-radius: 15px 15px 5px 5px;
-    position: relative;
+  background: #85560b;
+  border-top: solid 2px #85560b;
+  background: -webkit-linear-gradient(top, #a87018,#85560b);
+  background: -moz-linear-gradient(top, #a87018,#85560b);
+  width: 40px;
+  margin: 0 auto;
+  padding: 8px 0 12px 0;
+  -webkit-border-radius: 15px 15px 5px 5px;
+  border-radius: 15px 15px 5px 5px;
+  position: relative;
 }
 
 :host  .metronome-hole {
-    background: white;
-    height: 50px;
-    width: 10px;
-    margin: 0 auto;
-
-    border-radius: 3px 3px 10px  10px;
-    border-top: solid 2px #85560b;
-    border-left: solid 1px #85560b;
-    border-right: solid 1px #85560b;
+  background: white;
+  height: 50px;
+  width: 10px;
+  margin: 0 auto;
+  border-radius: 3px 3px 10px  10px;
+  border-top: solid 2px #85560b;
+  border-left: solid 1px #85560b;
+  border-right: solid 1px #85560b;
 }
 
 :host  .metronome-shadow {
-    background: #DDD;
-    width: 50px;
-    height: 20px;
-    margin: 0 auto;
-    -webkit-border-radius: 12px;
-    -webkit-transform: scaleY(.5);
-    border-radius: 12px;
-    transform: scaleY(.5);
-    border-radius: 12px;
-    position: absolute;
-    left: calc(50% - 25px);
-    top: 62px;
+  background: #DDD;
+  width: 50px;
+  height: 20px;
+  margin: 0 auto;
+  -webkit-border-radius: 12px;
+  -webkit-transform: scaleY(.5);
+  border-radius: 12px;
+  transform: scaleY(.5);
+  border-radius: 12px;
+  position: absolute;
+  left: calc(50% - 25px);
+  top: 62px;
 }
 
 :host .metronome-arrow {
-    background: black;
-    height: 45px;
-    width: 6px;
-    border: solid 2px white;
-    -webkit-transform-origin: center 45px;
-    -webkit-border-radius: 0 0 5px 5px;
-    transform-origin: center 45px;
-    border-radius: 0 0 5px 5px;
-    position: absolute;
-    top: 10px;
-    left: 15px;
-
+  background: black;
+  height: 45px;
+  width: 6px;
+  border: solid 2px white;
+  -webkit-transform-origin: center 45px;
+  -webkit-border-radius: 0 0 5px 5px;
+  transform-origin: center 45px;
+  border-radius: 0 0 5px 5px;
+  position: absolute;
+  top: 10px;
+  left: 15px;
 }
 
 :host .metronome-animation {
-    -webkit-animation-name: metronome;
-    -webkit-animation-timing-function: linear;
-    -webkit-animation-iteration-count: infinite;
-    animation-name: metronome;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-
+  -webkit-animation-name: metronome;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  animation-name: metronome;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
-/*NOTE: don't prefix keyframes / animation stuff with :host*/
 @-webkit-keyframes metronome {
     0% {-webkit-transform: rotate(0deg); }
     25% {-webkit-transform: rotate(-30deg); }
@@ -1879,124 +2752,162 @@ ceci-header header {
     50% {transform: rotate(0deg); }
     75% {transform: rotate(30deg); }
     100% {transform: rotate(0deg); }
-}</style>
-        <div class="metronome-wrapper" on-click="{{click}}">
-            <div class="metronome-shadow"></div>
-            <div class="metronome-body">
-                <div class="metronome-hole"></div>
-                <div class="metronome-arrow"></div>
-            </div>
-        </div>
-        <shadow></shadow>
-        <script type="text/json" id="ceci-definition">
-      {
-        "description": "Outputs ticks measured in Beats Per Minute (BPM)",
-        "tags": ["fun","animated","starter"],
-        "thumbnail": "./thumbnail.png",
-        "name": "Metronome",
-        "broadcasts": {
-          "tick": {
-            "label": "Tick",
-            "description": "A tick of the metronome measured in Beats Per Minute(BPM)",
-            "default": true
-          }
-        },
-        "listeners": {
-            "stop": {
-                "description": "Stops metronome ticking.",
-                "label": "Stop ticking"
-            },
-            "start": {
-                "description": "Starts metronome ticking.",
-                "label": "Start ticking"
-            }
-        },
-        "attributes": {
-          "beatsperminute": {
-            "label": "Beats Per Minute (BPM)",
-            "description": "Metronome ticks measured in beats per minute",
-            "editable": "number",
-            "min" : 0.1,
-            "listener": true
+}
+</style>
+    <div class="metronome-wrapper" on-click="{{click}}">
+      <div class="metronome-shadow"></div>
+      <div class="metronome-body">
+        <div class="metronome-hole"></div>
+        <div class="metronome-arrow"></div>
+      </div>
+    </div>
+    <shadow></shadow>
+    <script type="text/json" id="ceci-definition">
 
-          },
-          "autostart": {
-            "label": "Autostart",
-            "description": "Boolean value that controls if the metronome starts auto-playing when the component loads",
-            "editable": "boolean",
-            "listener": true
-          }
+    </script>
+  </template>
+  <ceci-definition>
+    {
+      "description": "Outputs ticks measured in Beats Per Minute (BPM)",
+      "tags": ["fun","animated","starter"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Metronome",
+      "broadcasts": {
+        "tick": {
+          "label": "Tick",
+          "description": "A tick of the metronome measured in Beats Per Minute(BPM)",
+          "default": true
+        }
+      },
+      "listeners": {
+        "stop": {
+          "description": "Stops metronome ticking.",
+          "label": "Stop ticking"
+        },
+        "start": {
+          "description": "Starts metronome ticking.",
+          "label": "Start ticking"
+        }
+      },
+      "attributes": {
+        "beatsperminute": {
+          "label": "Beats Per Minute (BPM)",
+          "description": "Metronome ticks measured in beats per minute",
+          "editable": "number",
+          "min" : 0.1,
+          "listener": true
+        },
+        "autostart": {
+          "label": "Autostart",
+          "description": "Boolean value that controls if the metronome starts auto-playing when the component loads",
+          "editable": "boolean",
+          "listener": true
         }
       }
-
-
-        </script>
-    </template>
-    <script>
-        Polymer('ceci-metronome', {
-            ready: function () {
-                this.super();
-                var that = this;
-
-                this._count = 0;
-                this._playing = false;
-
-                if (this.autostart !== "false") {
-                    this.start();
-                }
-
-                this.timeout = null;
-            },
-            leftView: function () {
-                clearTimeout(this.timeout);
-            },
-            setArrowSpeed: function (v) {
-                var animDuration = v * 2;
-
-                var metronomeArrow = this.shadowRoot.querySelector('.metronome-arrow');
-                console.log(metronomeArrow)
-                metronomeArrow.classList.remove("metronome-animation");
-                if (v > 0 && this._playing) {
-                    console.log("duration: " + animDuration)
-                    metronomeArrow.offsetWidth = metronomeArrow.offsetWidth;
-                    metronomeArrow.classList.add("metronome-animation");
-                    metronomeArrow.style.webkitAnimationDuration = animDuration + "s";
-                    metronomeArrow.style.animationDuration = animDuration + "s";
-                }
-            },
-            beatsperminuteChanged: function (oldValue, newValue) {
-                if (newValue <= 0) {
-                    this.beatsperminute = 0.1;
-                }
-            },
-            start: function (oldValue, newValue) {
-                this._playing = true;
-                this.setArrowSpeed((60 / this.beatsperminute));
-                this.tick();
-            },
-            stop: function () {
-                this._playing = false;
-                this.setArrowSpeed(0);
-            },
-            tick: function () {
-                if (!this._playing) {
-                    // This stops the setting of the next setTimeout
-                    return;
-                }
-                this._count++;
-                this.broadcast('tick', this._count);
-
-                var t = this;
-                var defer = function () {
-                    t.tick();
-                };
-                this.timeout = setTimeout(defer, (60 / this.beatsperminute) * 1000);
-            }
-        });
-    </script>
+    }
+  </ceci-definition>
+  <script>
+    Polymer('ceci-metronome', {
+      ready: function () {
+        this.super();
+        this._count = 0;
+        this._playing = false;
+        this.timeout = null;
+      },
+      leftView: function () {
+        clearTimeout(this.timeout);
+      },
+      setArrowSpeed: function (v) {
+        var animDuration = v * 2;
+        var metronomeArrow = this.shadowRoot.querySelector('.metronome-arrow');
+        metronomeArrow.classList.remove("metronome-animation");
+        if (v > 0 && this._playing) {
+          metronomeArrow.offsetWidth = metronomeArrow.offsetWidth;
+          metronomeArrow.classList.add("metronome-animation");
+          metronomeArrow.style.webkitAnimationDuration = animDuration + "s";
+          metronomeArrow.style.animationDuration = animDuration + "s";
+        }
+      },
+      autostartChanged : function(){
+        if(this.autostart == "true") {
+          this.start();
+        } else {
+          this.stop();
+        }
+      },
+      beatsperminuteChanged: function (oldValue, newValue) {
+        if (newValue <= 0) {
+          this.beatsperminute = 0.1;
+        }
+        this.setArrowSpeed((60 / this.beatsperminute));
+      },
+      start: function (oldValue, newValue) {
+        this._playing = true;
+        this.setArrowSpeed((60 / this.beatsperminute));
+        this.tick();
+      },
+      stop: function () {
+        this._playing = false;
+        this.setArrowSpeed(0);
+      },
+      tick: function () {
+        if (!this._playing) {
+          return;
+        }
+        this._count++;
+        this.broadcast('tick', this._count);
+        var t = this;
+        var defer = function () {
+          t.tick();
+        };
+        this.timeout = setTimeout(defer, (60 / this.beatsperminute) * 1000);
+      }
+    });
+  </script>
 </polymer-element>
 
 <polymer-element name="ceci-paypal" attributes="amount account currency" extends="ceci-element" currency="BRL" amount="5" account="donate@mozilla.org" button="false" assetpath="component-paypal/">
+  <ceci-definition>
+    {
+      "name": "PayPal",
+      "description": "Add your own PayPal donation buttons, and start raising funds.",
+      "tags": ["paypal", "donate"],
+      "thumbnail": "./thumbnail.png",
+      "broadcasts": {
+        "donate": {
+          "label": "Donate",
+          "description": "Occurs when donation process begins."
+        }
+      },
+      "listeners": {
+        "submit": {
+          "description": "Submits a donation once settings have been chosen.",
+          "label": "Submit",
+          "default": "orange"
+        }
+      },
+      "attributes": {
+        "amount": {
+          "label": "Amount",
+          "description": "Amount of money to donate.",
+          "editable": "number",
+          "listener": true,
+          "max": 3,
+          "min": 50
+        },
+        "account": {
+          "label": "Account",
+          "description": "PayPal account which will receive payment.",
+          "editable": "text"
+        },
+        "currency": {
+          "label": "Currency",
+          "description": "Currency code for donation amount.",
+          "editable": "text"
+        }
+      }
+    }
+  </ceci-definition>
   <template>
     <style>:host {
   display: block;
@@ -2014,7 +2925,7 @@ ceci-header header {
 :host #account {
   text-align: center;
 }</style>
-    <h3>Donation Amount: <span>{{amount}}</span> <span>{{currency}}</span></h3>
+    <h3><span id="donationAmount">Donation Amount:</span> <span>{{amount}}</span> <span>{{currency}}</span></h3>
     <p id="account">{{account}}</p>
     <form id="form" method="post" action="https://www.paypal.com/cgi-bin/webscr">
       <input type="hidden" name="amount" id="pp_amount" value="{{amount}}">
@@ -2028,51 +2939,12 @@ ceci-header header {
     </form>
     <img src="component-paypal/thumbnail.png">
     <shadow></shadow>
-    <script type="text/json" id="ceci-definition">
-      {
-        "name": "PayPal",
-        "tags": ["paypal", "donate"],
-        "thumbnail": "./thumbnail.png",
-        "broadcasts": {
-          "donate": {
-            "label": "Donate",
-            "description": "Occurs when donation process begins."
-          }
-        },
-        "listeners": {
-          "submit": {
-            "description": "Submits a donation once settings have been chosen.",
-            "label": "Submit",
-            "default": "orange"
-          }
-        },
-        "attributes": {
-          "amount": {
-            "label": "Amount",
-            "description": "Amount of money to donate.",
-            "editable": "number",
-            "listener": true,
-            "max": 3,
-            "min": 50
-          },
-          "account": {
-            "label": "Account",
-            "description": "PayPal account which will receive payment.",
-            "editable": "text"
-          },
-          "currency": {
-            "label": "Currency",
-            "description": "Currency code for donation amount.",
-            "editable": "text"
-          }
-        }
-      }
-    </script>
   </template>
   <script>
     Polymer('ceci-paypal', {
       ready: function () {
         this.super();
+        this.$.donationAmount.innerHTML = this.gettext(this.localName + "/donationAmount") || this.$.donationAmount.innerHTML;
       },
       submit: function (value) {
         this.$.form.submit();
@@ -2092,25 +2964,25 @@ ceci-header header {
 </style>
     <div id="spacerDiv"></div>
     <shadow></shadow>
-    <script type="text/json" id="ceci-definition">
-      {
-        "tags": ["starter", "layout", "navigation"],
-        "thumbnail": "./thumbnail.png",
-        "name": "Spacer",
-        "description": "A spacer to put between components.",
-        "broadcasts": {},
-        "listeners": {},
-        "attributes": {
-          "height": {
-            "label": "Height",
-            "description": "The height of the spacer.",
-            "editable": "number",
-            "listener": true
-          }
+  </template>
+  <ceci-definition>
+    {
+      "tags": ["starter", "layout", "navigation"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Spacer",
+      "description": "A spacer to put between components.",
+      "broadcasts": {},
+      "listeners": {},
+      "attributes": {
+        "height": {
+          "label": "Height",
+          "description": "The height of the spacer.",
+          "editable": "number",
+          "listener": true
         }
       }
-    </script>
-  </template>
+    }
+  </ceci-definition>
   <script>
     Polymer('ceci-spacer', {
       ready: function () {
@@ -2139,50 +3011,50 @@ ceci-header header {
     <div class="splitter">
     </div>
     <shadow></shadow>
-    <script type="text/json" id="ceci-definition">
-      {
-        "tags": ["component-splitter", "splitter"],
-        "thumbnail": "./thumbnail.png",
-        "description": "When a message passes through this component, it can send the message to multiple broadcasts.",
-        "name": "Splitter",
-        "broadcasts": {
-          "splitter1": {
-            "label": "splitter1",
-            "description": "repeats input",
-            "default": true
-          },
-          "splitter2": {
-            "label": "splitter2",
-            "description": "repeats input"
-          },
-          "splitter3": {
-            "label": "splitter3",
-            "description": "repeats input"
-          },
-          "splitter4": {
-            "label": "splitter4",
-            "description": "repeats input"
-          },
-          "splitter5": {
-            "label": "splitter5",
-            "description": "repeats input"
-          },
-          "splitter6": {
-            "label": "splitter6",
-            "description": "repeats input"
-          }
-        },
-        "listeners": {
-          "input": {
-            "description": "input 1",
-            "label": "Input",
-            "default": true
-          }
-        },
-        "attributes": {}
-      }
-    </script>
   </template>
+  <ceci-definition>
+    {
+      "tags": ["component-splitter", "splitter"],
+      "thumbnail": "./thumbnail.png",
+      "description": "When a message passes through this component, it can send the message to multiple broadcasts.",
+      "name": "Splitter",
+      "broadcasts": {
+        "splitter1": {
+          "label": "splitter1",
+          "description": "repeats input",
+          "default": true
+        },
+        "splitter2": {
+          "label": "splitter2",
+          "description": "repeats input"
+        },
+        "splitter3": {
+          "label": "splitter3",
+          "description": "repeats input"
+        },
+        "splitter4": {
+          "label": "splitter4",
+          "description": "repeats input"
+        },
+        "splitter5": {
+          "label": "splitter5",
+          "description": "repeats input"
+        },
+        "splitter6": {
+          "label": "splitter6",
+          "description": "repeats input"
+        }
+      },
+      "listeners": {
+        "input": {
+          "description": "input 1",
+          "label": "Input",
+          "default": true
+        }
+      },
+      "attributes": {}
+    }
+  </ceci-definition>
   <script>
     Polymer('ceci-splitter', {
       ready: function () {
@@ -2202,6 +3074,48 @@ ceci-header header {
 
 
 <polymer-element name="ceci-text-input" attributes="inputname placeholdertext emitonchange label" extends="ceci-element" placeholdertext="Placeholder" inputname="Text Input" assetpath="component-text-input/">
+  <ceci-definition>
+    {
+      "tags": ["input", "form"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Text Input",
+      "description": "A text input that broadcasts whatever a user types.",
+      "broadcasts": {
+        "sendData": {
+          "label": "Send Data",
+          "description": "Occurs when button is clicked or Enter key is pressed.",
+          "default": true
+        }
+      },
+      "listeners": {
+        "click": {
+          "description": "Causes a fake click event to occur.",
+          "label": "Send Data"
+        }
+      },
+      "attributes": {
+        "inputname": {
+          "label": "Input Name",
+          "description": "The name of this field, helpful when saving data.",
+          "editable": "text",
+          "listener": true,
+          "defaultListener": false
+        },
+        "placeholdertext": {
+          "label": "Placeholder Text",
+          "description": "The text you want your input field to show by default.",
+          "editable": "text",
+          "listener": true
+        },
+        "emitonchange": {
+          "label": "Emit on change",
+          "description": "Background color of the button while it is being clicked or tapped.",
+          "editable": "boolean",
+          "listener": true
+        }
+      }
+    }
+  </ceci-definition>
   <template>
     <style>:host {
   display: block;
@@ -2262,48 +3176,6 @@ ceci-text-input button:active {
 }</style>
     <input id="inputText" type="text" on-input="{{input}}" on-keypress="{{keypress}}"><button id="button" on-click="{{submit}}"></button>
     <shadow></shadow>
-    <script type="text/json" id="ceci-definition">
-      {
-        "tags": ["input", "form"],
-        "thumbnail": "./thumbnail.png",
-        "name": "Text Input",
-        "description": "A text input that broadcasts whatever a user types.",
-        "broadcasts": {
-          "sendData": {
-            "label": "Send Data",
-            "description": "Occurs when button is clicked or Enter key is pressed.",
-            "default": true
-          }
-        },
-        "listeners": {
-          "click": {
-            "description": "Causes a fake click event to occur.",
-            "label": "Send Data"
-          }
-        },
-        "attributes": {
-          "inputname": {
-            "label": "Input Name",
-            "description": "The name of this field, helpful when saving data.",
-            "editable": "text",
-            "listener": true,
-            "defaultListener": false
-          },
-          "placeholdertext": {
-            "label": "Placeholder Text",
-            "description": "The text you want your input field to show by default.",
-            "editable": "text",
-            "listener": true
-          },
-          "emitonchange": {
-            "label": "Emit on change",
-            "description": "Background color of the button while it is being clicked or tapped.",
-            "editable": "boolean",
-            "listener": true
-          }
-        }
-      }
-    </script>
   </template>
   <script>
     Polymer('ceci-text-input', {
@@ -2350,24 +3222,44 @@ ceci-text-input button:active {
 
 
 <polymer-element name="ceci-textbox" attributes="text" extends="ceci-element" text="I&apos;m a textbox!" assetpath="component-textbox/">
+  <ceci-definition>
+    {
+      "tags": ["form", "input", "text"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Listen for a message and updates text",
+      "name": "Text",
+      "broadcasts": {},
+      "listeners": {
+        "setValue": {
+          "description": "Set value text box",
+          "label": "Set Value"
+        }
+      },
+      "attributes": {
+        "text": {
+          "label": "Text",
+          "description": "A text for your label to show up in your app.",
+          "editable": "text",
+          "listener": true
+        }
+      }
+    }
+  </ceci-definition>
   <template>
     <style>:host {
   display: block;
-  width: 90%;
-  height: auto;
-  margin: 2px 0;
+  width: 100%;
+  padding: 10px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+:host p {
   word-wrap: break-word;
-}
-
-ceci-textbox {
-  padding: .5rem 1.5rem;
-}
-
-ceci-textbox p {
   overflow: hidden;
   padding: 0;
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 15px;
   font-family: "FiraSans", sans-serif;
   font-weight: 500;
   line-height: auto;
@@ -2375,34 +3267,14 @@ ceci-textbox p {
 </style>
     <p id="textBox"></p>
     <shadow></shadow>
-    <script type="text/json" id="ceci-definition">
-      {
-        "tags": ["form", "input", "text"],
-        "thumbnail": "./thumbnail.png",
-        "description": "Listen for a message and updates text",
-        "name": "Text",
-        "broadcasts": {},
-        "listeners": {
-          "setValue": {
-            "description": "Set value text box",
-            "label": "Set Value"
-          }
-        },
-        "attributes": {
-          "text": {
-            "label": "Text",
-            "description": "A text for your label to show up in your app.",
-            "editable": "text",
-            "listener": true
-          }
-        }
-      }
-    </script>
   </template>
   <script>
     Polymer('ceci-textbox', {
       ready: function () {
         this.super();
+      },
+      setValue: function(e) {
+        this.text = e;
       },
       textChanged: function (oldValue, newValue) {
         this.$.textBox.innerHTML = newValue;
