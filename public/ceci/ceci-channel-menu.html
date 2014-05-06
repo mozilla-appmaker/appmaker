@@ -78,7 +78,7 @@
         },
         adjustMenuPosition : function(){
           var height = this.menu.offsetHeight;
-          this.menu.style.marginTop = -1 * (height/2) + "px";
+          this.menu.style.marginTop = "-" + (height/2) + "px";
         },
         showMenu : function() {
           var that = this;
@@ -148,11 +148,11 @@
 
                 //Show all the options again
                 var options = that.menu.querySelectorAll(".channel-option:not(.option-template)");
-                for(var o in options){
-                  if (options.hasOwnProperty(o)) {
-                    options[o].style.display = "block";
-                  }
-                }
+
+                Object.keys(options).forEach(function(o){
+                  options[o].style.display = "block";
+                });
+
                 channelOption.querySelector("label").style.display = "block";
                 channelOption.querySelector("label .chosen-color").setAttribute("color", color);
                 channelOption.querySelector(".color-ui").style.display = "none";
@@ -167,11 +167,10 @@
 
             //Hide all the options
             var options = that.menu.querySelectorAll(".channel-option");
-            for(var o in options){
-              if (options.hasOwnProperty(o)) {
-                options[o].style.display = "none";
-              }
-            }
+
+            Object.keys(options).forEach(function(o){
+              options[o].style.display = "none";
+            });
 
             // Show this one
             this.parentNode.style.display = "block";
@@ -185,7 +184,6 @@
               var channelOption = channelTemplate.cloneNode(true);
 
               var heading = channelOption.querySelector("h3");
-
 
               var localizedSetter = L10n.get('Set {attribute}') || 'Set {attribute}';
               var matchLabel = key.match(/[^_]*_(.+)/);
@@ -202,8 +200,7 @@
                 headingText = communicators[key].label || key;
               }
 
-
-              if(handlerType == "from") {
+              if(handlerType === "from") {
                 heading.innerHTML = (L10n.get('broadcast') || 'Broadcast') + " <strong>" + headingText + "</strong> " + (L10n.get('on channel...') || 'on channel...');
               } else {
                 heading.innerHTML = "<strong>" + headingText + "</strong> " + (L10n.get('when I hear') || 'when I hear a signal on channel...');
