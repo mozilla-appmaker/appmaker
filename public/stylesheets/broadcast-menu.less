@@ -59,12 +59,18 @@
     }
 
     label {
-      padding: 4px 28px 4px 6px;
+      text-align: right;
+      padding: 5px 28px 5px 6px;
     }
+
   }
 
   &.broadcast-menu {
     left: -3px;
+
+    label {
+      text-align: left;
+    }
 
     .hover-helper {
       left: -40px;
@@ -75,20 +81,20 @@
      }
 
      label {
-       padding: 4px 6px  4px 28px;
+       padding: 5px 6px  5px 28px;
      }
   }
 
   label .chosen-color {
     display: block;
-    height: 16px;
-    width: 16px;
+    color: rgba(255,255,255,1);
+    padding: 0px 6px 1px 6px;
     position: absolute;
     top: 5px;
-    .border-radius(2px);
+    .border-radius(20px);
 
     &:hover {
-      text-decoration: underline;
+      text-decoration: none;
     }
   }
 
@@ -104,64 +110,126 @@
   label {
     color: #555;
     display: block;
-    text-align: right;
     font-size: 1.3rem;
+    border-bottom: solid 1px white;
+    .border-radius(10px);
+
+    cursor: pointer;
 
     &:hover {
-      background: #F6F6F6;
-      .border-radius(3px);
-      cursor: pointer;
+      background: #F7F7F7;
+      border-bottom: solid 1px #DDD;
     }
+
+    &:active {
+      background: #F7F7F7;
+      border-bottom: none;
+      border-top: solid 1px #DDD;
+    }
+
+  }
+
+  .color-row {
+    float: left;
   }
 
   .color-ui {
+
+    h3 {
+      font-size: 13px;
+      padding: 0 0 3px 0;
+      margin: 0 0 6px 0;
+      font-weight: normal;
+      color: #999;
+      position: relative;
+      top: -1px;
+      text-align: center;
+      border-bottom: solid 2px #EFEFEF;
+      max-width: 200px;
+
+      strong {
+        color: #666;
+        font-size: inherit;
+      }
+
+    }
+
     .border-radius(3px);
     display: none;
-    text-align: right;
+    text-align: left;
     padding: 3px 5px 2px 5px;
     cursor: default;
+    overflow: auto;
 
     .color {
-      display: inline-block;
-      height: 16px;
-      width: 16px;
-      margin-right: 0px;
-      position: relative;
-      top: 2px;
-      .border-radius(2px);
+      padding: 0px 6px 1px 6px;
+      margin: 0 2px 2px 0px;
+      color: rgba(255,255,255,.75);
       cursor: pointer;
       opacity: 1;
+      .border-radius(20px);
 
       &:hover {
         opacity: .7;
+        text-decoration: none;
+        border: none;
       }
+
+      &[color=false] {
+        padding: 9px 7px 10px 7px;
+        color: #777;
+        margin-left: 5px;
+        position: relative;
+        top: 11px;
+        border-top: solid 1px #CCC;
+        .border-radius(20px);
+      }
+
     }
   }
 
+  //These are the selected color labels in the menu
+
+  .channel-option .chosen-color[color=false]:before {
+    content: "X";
+    color:#999;
+  }
+
+  .channel-option .chosen-color:before {
+    content: "1";
+  }
+
+  .channel-option [color*=two]:before {
+    content: "2";
+  }
+
+  .channel-option [color*=three]:before {
+    content: "3";
+  }
+
   .channel-option {
-    [color=blue] {
+    [color*=blue] {
       background: @channel-blue;
     }
-    [color=red] {
+    [color*=red] {
       background: @channel-red;
     }
-    [color=pink] {
+    [color*=pink] {
       background: @channel-pink;
     }
-    [color=purple] {
+    [color*=purple] {
       background: @channel-purple;
     }
-    [color=green] {
+    [color*=green] {
       background: @channel-green;
     }
-    [color=orange] {
+    [color*=orange] {
       background: @channel-orange;
     }
-    [color=yellow] {
+    [color*=yellow] {
       background: @channel-yellow;
     }
     [color='false'] {
-      background-image: url(../images/disabled-channel-dash.png);
       background-color: #DDD;
       background-position: center;
       background-size: contain;

@@ -38,12 +38,9 @@
           el.addEventListener('signalFired', function(data){
             that.fire(data);
           });
-
           var channel = document.createElement("div");
-
-          channel.innerHTML = "<div class='dot color'></div>";
+          channel.innerHTML = "<div class='dot color'></div><div class='chan-label'></label>";
           channel.setAttribute("color",el.getAttribute("on"));
-
           if(that.direction == "in") {
             channel.setAttribute("for",el.getAttribute("for"));
           } else {
