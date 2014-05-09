@@ -101,7 +101,7 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       var e = $(
         "<div><label>" +
         "<input type=\"checkbox\" " +
-        (value === true ? " checked=\"true\" " : "") + "\" value=\"" +
+        (value === true || value === "true" ? " checked=\"true\" " : "") + "\" value=\"" +
         value + "\" />" + title + " </div>"
       );
       e.on("change", function(evt) {
