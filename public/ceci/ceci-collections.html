@@ -11,81 +11,112 @@
     Polymer('ceci-collections', {
       attached: function() {
         var savedData = {};
+        var savedSchema = {};
         var self = this;
         if (this.textContent !== "") {
           try {
-            savedData = JSON.parse(this.textContent);
+            savedSchema = JSON.parse(this.textContent);
           } catch (e) {
-            console.error("Error parsing saved schema data:", e);
+            console.error("Error parsing saved schema:", e);
           }
         } else {
           this.textContent = "{}";
         }
-        Object.keys(savedData).forEach(function(collection) {
-          self.collections[collection] = savedData[collection];
-        });
+        self.schema = savedSchema;
+        try {
+          savedData = JSON.parse(sessionStorage.getItem("ceci-collections"));
+        } catch (e) {
+          console.error("Error parsing saved data:", e);
+        }
+        self.data = savedData || {};
       },
       kinds: ["Number", "Toggle", "Text", "Name", "Address", "HttpUrl", "Color", "Image"],
-      collections: {},
+      schema: {},
+      data: {},
       addCollection: function(name) {
-        if (this.collections[name]) {
+        if (this.schema[name]) {
           return;
         }
-        this.collections[name] = {
-          fields: {},
-          data: []
-        };
-        this.textContent = JSON.stringify(this.collections);
+        this.schema[name] = {};
+        this.textContent = JSON.stringify(this.schema);
         var detail = {
           added: name
         };
-        var customEvent = new CustomEvent("collectionchange", {detail:detail});
-        this.dispatchEvent(customEvent);
+        this.fire("collectionchange", detail);
       },
       removeCollection: function(name) {
-        if (!this.collections[name]) {
+        if (!this.schema[name]) {
           return;
         }
-        delete this.collections[name];
-        this.textContent = JSON.stringify(this.collections);
+        delete this.schema[name];
+        this.textContent = JSON.stringify(this.schema);
         var detail = {
           removed: name
         };
-        var customEvent = new CustomEvent("collectionchange", {detail:detail});
-        this.dispatchEvent(customEvent);
+        this.fire("collectionchange", detail);
       },
       addField: function(collection, name, field) {
-        if (!this.collections[collection]) {
+        if (!this.schema[collection]) {
           this.addCollection(collection);
         }
-        var removed = this.collections[collection].fields[name];
-        this.collections[collection].fields[name] = field || {};
-        this.textContent = JSON.stringify(this.collections);
+        var removed = this.schema[collection][name];
+        this.schema[collection][name] = field || {};
+        this.textContent = JSON.stringify(this.schema);
         var detail = {
           collection: collection,
           field: name,
-          added: this.collections[collection].fields[name]
+          added: this.schema[collection][name]
         };
         if (removed) {
           detail.removed = removed;
         }
-        var customEvent = new CustomEvent("fieldchange", {detail:detail});
-        this.dispatchEvent(customEvent);
+        this.fire("fieldchange", detail);
       },
       removeField: function(collection, name) {
-        if (!this.collections[collection] || !this.collections[collection].fields[name]) {
+        if (!this.schema[collection] || !this.schema[collection][name]) {
           return;
         }
-        var removed = this.collections[collection].fields[name];
-        delete this.collections[collection].fields[name];
-        this.textContent = JSON.stringify(this.collections);
+        var removed = this.schema[collection][name];
+        delete this.schema[collection][name];
+        this.textContent = JSON.stringify(this.schema);
         var detail = {
           collection: collection,
           field: name,
           removed: removed
         };
-        var customEvent = new CustomEvent("fieldchange", {detail:detail});
-        this.dispatchEvent(customEvent);
+        this.fire("fieldchange", detail);
+      },
+      addItem: function(collection, item) {
+        if (!this.schema[collection]) {
+          this.addCollection(collection);
+        }
+        if (!this.data[collection]) {
+          this.data[collection] = [];
+        }
+        this.data[collection].push(item);
+        var detail = {
+          collection: collection,
+          added: item
+        };
+        this.fire("itemchanged", detail);
+      },
+      removeItem: function(collection, index) {
+        if (!this.data[collection] || !this.data[collection][index]) {
+          return;
+        }
+        var removed = this.data[collection][index];
+        if (!removed) {
+          return;
+        }
+        this.data[collection].splice(index, 1);
+        var detail = {
+          collection: collection,
+          removed: removed
+        };
+        this.fire("itemchanged", detail);
+      },
+      saveData: function() {
+        sessionStorage.setItem("ceci-collections", JSON.stringify(this.data));
       }
     });
   </script>
