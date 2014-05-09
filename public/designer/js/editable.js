@@ -113,7 +113,7 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
     'color': function (element, attributeName, title, value, definition) {
       var e = $(
         '<div><label>' + title + '</label>' +
-        '<input type='text' value='' + value + ''>' +
+        '<input type="text" value="' + value + '">' +
         '</div>'
       );
 
