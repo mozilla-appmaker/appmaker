@@ -2,7 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-define(["jquery", "l10n"], function($, l10n) {
+define(["jquery", "l10n", "reporter"], function($, l10n, reporter) {
+
     return {
       getCurrentApp: function(){
         var currentApp = localStorage.currentApp;
@@ -47,7 +48,9 @@ define(["jquery", "l10n"], function($, l10n) {
         var op = alreadySaved ? this.updateApp : this.saveApp;
         op(name, appid, html, function callAPIPublish(err) {
           if(err) {
-            return console.error("publish failed in save step", err);
+            errorReport("publish failed in save step!", err);
+            if(next) { next(err); }
+            return;
           }
           $.ajax('/api/publish', {
             data: {
@@ -57,7 +60,7 @@ define(["jquery", "l10n"], function($, l10n) {
             type: 'post',
             success: function (data) {
               setTimeout(function() {
-                // FIXME: This should not be on window
+                // FIXME: This should not be on window?
                 window.showPublishPane(name, data);
               },10);
 
@@ -74,17 +77,17 @@ define(["jquery", "l10n"], function($, l10n) {
                 },
                 type: 'post',
                 success: function (updateData) {
-                  console.log("app update (for publish url) succeeded");
-                if(afterPublish) { afterPublish(false, data); }
+                  reporter.consoleReport("app update (for publish url) succeeded");
+                  if(afterPublish) { afterPublish(false, data); }
                 },
                 error: function (data) {
-                  console.error("app update (for publish url) failed", updateData);
+                  reporter.errorReport("app update (for publish url) failed", updateData);
                   if(afterPublish) { afterPublish(updateData, data); }
                 }
               });
             },
             error: function (data) {
-              console.error(data);
+              reporter.errorReport(data);
               if(afterPublish) { afterPublish(data); }
             }
           });
@@ -100,12 +103,12 @@ define(["jquery", "l10n"], function($, l10n) {
           type: 'post',
           success: function (data) {
             var userState = document.querySelector('user-state');
-            console.log("App saved successfully");
+            reporter.consoleReport("App saved successfully");
             userState.appRenameOk(name);
             if(next) { next(false, data); }
           },
           error: function (error) {
-            console.log("App was not saved successfully!", error);
+            reporter.errorReport("App was not saved successfully!", error);
             if(next) { next(error); }
           }
         });
@@ -119,11 +122,11 @@ define(["jquery", "l10n"], function($, l10n) {
           },
           type: 'post',
           success: function (data) {
-            console.log("App updated successfully!");
+            reporter.consoleReport("App updated successfully!");
             if(next) { next(false, data); }
           },
           error: function (error) {
-            console.log("App was not updated successfully!", error);
+            reporter.errorReport("App was not updated successfully!", error);
             if(next) { next(error); }
           }
         });
@@ -186,15 +189,14 @@ define(["jquery", "l10n"], function($, l10n) {
               newApp.setAttribute("appid", "ceci-app-"+uuid());
             }
             else {
-              console.error('Error while parsing loaded app.');
+              reporter.errorReport('Error while parsing loaded app.');
               userState.failedAppLoad();
             }
 
             document.querySelector('ceci-card-nav').buildTabs();
           },
           error: function (data) {
-            console.error('Error while loading app:');
-            console.error(data);
+            reporter.errorReport('Error while loading app', data);
             userState.failedAppLoad();
           }
         });
@@ -215,8 +217,7 @@ define(["jquery", "l10n"], function($, l10n) {
               var err = l10n.get("Malformed app HTML");
               err += " (appid: "+data.appid+")\n";
               err += l10n.get("This app will not be loaded");
-              console.error(err);
-              alert(err);
+              reporter.errorReport(err);
               return;
             }
             app.outerHTML = html;
@@ -227,8 +228,7 @@ define(["jquery", "l10n"], function($, l10n) {
             cardNav.buildTabs();
           },
           error: function (data) {
-            console.error('Error while loading app:');
-            console.error(data);
+            reporter.errorReport('Error while loading app', data);
             userState.failedAppLoad();
           }
         });
@@ -240,11 +240,10 @@ define(["jquery", "l10n"], function($, l10n) {
           },
           type: 'delete',
           success: function (data) {
-
+            reporter.consoleReport("App deleted successfully.");
           },
           error: function (data) {
-            console.log("Something went wrong!");
-            console.error("Error while deleting app: " + data);
+            reporter.errorReport("Error while deleting app: ", data);
           }
         });
       }

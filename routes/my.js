@@ -67,34 +67,6 @@ module.exports = function (mongoose, dbconn) {
         }
       });
     },
-    updateApp: function(request, response) {
-      if (!checkAuthorised(request, response)) return;
-
-      var name = request.body.name;
-      //TODO query by appid instead of name https://github.com/mozilla-appmaker/appmaker/issues/898
-      var html = request.body.html || false;
-      var url = request.body.url || false;
-
-      if(html === false) {
-          return response.json(409, {error: 'App was not updated as no data was sent with the request'});
-      }
-
-      var setObj = {};
-      if(html) setObj.html = html;
-      if(url) setObj['last-published-url'] = url;
-      App.update(
-        {author:request.session.email, name: name},
-        { $set: setObj },
-        {},
-        function(err,obj){
-          if(err){
-            return response.json(500, {error: 'App was not updated due to ' + err});
-          } else {
-            return response.json(200, {message: 'App was updated successfully'});
-          }
-        });
-    },
-
     renameApp: function(request, response) {
       if (!checkAuthorised(request, response)) return;
 
@@ -149,6 +121,33 @@ module.exports = function (mongoose, dbconn) {
           response.json(200);
         }
       });
+    },
+    updateApp: function(request, response) {
+      if (!checkAuthorised(request, response)) return;
+
+      var name = request.body.name;
+      //TODO query by appid instead of name https://github.com/mozilla-appmaker/appmaker/issues/898
+      var html = request.body.html || false;
+      var url = request.body.url || false;
+
+      if(html === false) {
+          return response.json(409, {error: 'App was not updated as no data was sent with the request'});
+      }
+
+      var setObj = {};
+      if(html) setObj.html = html;
+      if(url) setObj['last-published-url'] = url;
+      App.update(
+        {author:request.session.email, name: name},
+        { $set: setObj },
+        {},
+        function(err,obj){
+          if(err){
+            return response.json(500, {error: 'App was not updated due to ' + err});
+          } else {
+            return response.json(200, {message: 'App was updated successfully'});
+          }
+        });
     },
     components: function(request, response) {
       if (!checkAuthorised(request, response)) return;

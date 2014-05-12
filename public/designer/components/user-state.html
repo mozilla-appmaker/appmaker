@@ -51,7 +51,7 @@
   <script>
   (function() {
 
-    function init(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona, WebmakerAuthClient) {
+    function init(togetherjs_extension, l10n, jquery, application, tray, utils, reporter, analytics, persona, WebmakerAuthClient) {
 
       var user = {
         email: '',
@@ -67,7 +67,7 @@
           return;
         }
         document.dispatchEvent(new CustomEvent("signInFinished"));
-        console.log("You have been logged in as: " + data.email);
+        reporter.consoleReport("You have been logged in as: " + data.email);
         document.dispatchEvent(new CustomEvent('user-state', {
           detail: {'state': 'signedin', 'email': data.email}
         }));
@@ -226,64 +226,8 @@
               application.renameApp(oldName, newName);
               analytics.event("Renamed App");
             } else {
-              window.alert(l10n.get("App names can't be blank."));
+              reporter.errorReport(l10n.get("App names can't be blank."));
             }
-          });
-
-          //Update App
-          this.$.saveApp.addEventListener("click", function() {
-            var ceciApp = document.querySelector('ceci-app');
-            var html = ceciApp.outerHTML;
-            var name = application.getCurrentApp();
-            if(name){
-              application.updateApp(name,ceciApp.appid,html, function(err,data){
-                if(!err){
-                  console.log("App save.");
-                  analytics.event("Saved App");
-                } else {
-                  alert(
-                    l10n.get("Your app could not be saved at this time. Please try again.") + "\n" +
-                    l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error)
-                  );
-                  console.error("SaveApp ajax error", err.responseJSON.error);
-                  analytics.event("Error Saving App", { nonInteraction: true });
-                }
-              });
-            }
-          });
-
-          //Publish!
-          this.$.publishApp.addEventListener("click", function() {
-            var app = document.querySelector('ceci-app');
-            var name = app.name;
-            var html = app.outerHTML;
-            // This might need to be made its own thing so it can be called
-            // in various places:
-            while (!name || name === l10n.get("Unsaved App")) {
-              name = prompt("Please name your app first:");
-              if(name === null) break;
-            }
-            if(!name) {
-              return console.error("Save was cancelled.");
-            }
-            // we have a name: publish!
-            var alreadySaved = self.editingmode === "saved";
-            application.publishApp(name, app.appid, html, alreadySaved, function resulthandler(err,data) {
-              if(err) {
-                if (data) {
-                  console.error("app was published, but updating failed");
-                  analytics.event("Error Updating Published App", { nonInteraction: true });
-                } else {
-                  console.error("app was not successfully published");
-                  analytics.event("Error Publishing App", { nonInteraction: true });
-                }
-                return;
-              }
-              application.setCurrentApp(name);
-              self.refreshUserState();
-              self.editingmode = "saved";
-              analytics.event("Published App");
-            });
           });
 
           //Save App As
@@ -305,20 +249,73 @@
                   window.dispatchEvent(new CustomEvent("CeciAppSaveAs"));
                   analytics.event("Saved App As");
                 } else {
-                  alert(
-                    l10n.get("Your app could not be saved at this time. Please try again.") + "\n" +
-                    l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error)
+                  reporter.errorReport(
+                    l10n.get("Your app couldn't be saved."),
+                    (err.responseJSON ? l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error) : '')
                   );
-                  console.error("SaveApp ajax error", err.responseJSON.error);
                   analytics.event("Error Saving App As", { nonInteraction: true });
                 }
               });
             } else {
-              console.log("Please name your app.");
+              reporter.consoleReport("Please name your app.");
             }
           });
 
+          //Update App
+          this.$.saveApp.addEventListener("click", function() {
+            var ceciApp = document.querySelector('ceci-app');
+            var html = ceciApp.outerHTML;
+            var name = application.getCurrentApp();
+            if(name){
+              application.updateApp(name,ceciApp.appid,html, function(err,data){
+                if(!err){
+                  reporter.consoleReport("App save.");
+                  analytics.event("Saved App");
+                } else {
+                  reporter.errorReport(
+                    l10n.get("Your app could not be saved at this time. Please try again."),
+                    (err.responseJSON ? l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error) : '')
+                  );
+                  analytics.event("Error Saving App", { nonInteraction: true });
+                }
+              });
+            }
+          });
 
+          //Publish!
+          this.$.publishApp.addEventListener("click", function() {
+            var app = document.querySelector('ceci-app');
+            var name = app.name;
+            var html = app.outerHTML;
+            // This might need to be made its own thing so it can be called
+            // in various places:
+            while (!name || name === l10n.get("Unsaved App")) {
+              name = prompt("Please name your app first:");
+              if(name === null) break;
+            }
+            if(!name) {
+              return reporter.errorReport("Save was cancelled.");
+            }
+            // we have a name: publish!
+            var alreadySaved = self.editingmode === "saved";
+            application.publishApp(name, app.appid, html, alreadySaved, function resulthandler(err,data) {
+              if(err) {
+                if (data) {
+                  // FIXME: will this route ever fire? The combination of an error + data seems unlikely
+                  reporter.errorReport("app was published, but updating failed");
+                  analytics.event("Error Updating Published App", { nonInteraction: true });
+                } else {
+                  reporter.errorReport((alreadySaved? "updated " : '') + "app was not successfully published");
+                  analytics.event("Error Publishing App", { nonInteraction: true });
+                }
+                return;
+              }
+              application.setCurrentApp(name);
+              self.refreshUserState();
+              self.editingmode = "saved";
+              analytics.event("Published App");
+            });
+          });
         },
         signInStarted: function(){
           this.$.signInProgress.style.display = "block";
@@ -369,7 +366,7 @@
           this.refreshUserState();
         },
         appRenameFailed: function(){
-          window.alert(l10n.get("app rename failed"));
+          reporter.errorReport(l10n.get("app rename failed"));
         },
         signinClick: function() {
           auth.login();
@@ -387,7 +384,7 @@
           };
 
           link.onerror = function (e) {
-            console.error('Failed to load component at ' + url);
+            reporter.errorReport('Failed to load component at ' + url);
             callback({
               error: 'Failed to load component',
               url: url,
@@ -398,13 +395,13 @@
           document.head.appendChild(link);
         },
         signalComponentError: function(err) {
-          console.error(err);
+          reporter.errorReport(err);
           if(arguments.length > 1) {
             Array.prototype.slice.call(arguments, 1).forEach(function(data) {
-              console.error(data);
+              reporter.errorReport(data);
             });
           }
-          window.alert(err);
+          reporter.errorReport(err);
           return;
         },
         addComponentByURL: function (url) {
@@ -464,7 +461,7 @@
             });
           }
           catch (e) {
-            console.error(e);
+            reporter.errorReport(e);
           }
         },
         addComponent: function() {
@@ -522,7 +519,7 @@
               if(err) {
                 return self.signalComponentError(err);
               }
-              window.alert(l10n.get("Successfully added component ") + name);
+              reporter.notify(l10n.get("Successfully added component ") + name);
               analytics.event("Added Component", { label : name });
             });
           });
@@ -675,7 +672,7 @@
                 noApps.style.display = "none";
               }
             } catch (e) {
-              console.log(e);
+              reporter.errorReport(e);
             }
           });
         },
@@ -710,7 +707,7 @@
                 self.addComponentToUI(val.url, val.name);
               });
             } catch (e) {
-              console.log(e);
+              reporter.errorReport(e);
             }
           });
         },
@@ -733,13 +730,13 @@
       togetherjs_extension.init(user);
     }
 
-   require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'analytics', 'persona', 'webmaker-auth-client'],
-      function(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona, WebmakerAuthClient) {
-        init(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona, WebmakerAuthClient);
+   require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'reporter', 'analytics', 'persona', 'webmaker-auth-client'],
+      function(togetherjs_extension, l10n, jquery, application, tray, utils, reporter, analytics, persona, WebmakerAuthClient) {
+        init(togetherjs_extension, l10n, jquery, application, tray, utils, reporter, analytics, persona, WebmakerAuthClient);
       },
       function(err) {
-        console.log('OH NOES', err);
-        require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils'], init);
+        reporter.errorReport('Failed to load a required module (analytics and/or persona and/or webmaker-auth-client)', err);
+        require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'reporter'], init);
       }
     );
 
