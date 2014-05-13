@@ -602,9 +602,9 @@
 
           var parent;
           if(e.target.classList.contains("menu-button")){
-            parent = e.srcElement.parentNode;
+            parent = e.target.parentNode;
           } else {
-            parent = e.srcElement.parentNode.parentNode;
+            parent = e.target.parentNode.parentNode;
           }
 
           var isOpen = false;
