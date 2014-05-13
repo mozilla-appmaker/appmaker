@@ -10,6 +10,7 @@
   <script>
     function bindSchema(collection) {
       collection.textContent = JSON.stringify(collection.schema);
+      collection.collections = Object.keys(collection.schema);
     }
     Polymer('ceci-collections', {
       attached: function() {

@@ -1,0 +1,174 @@
+<polymer-element name="data-manager" attributes="user editingmode">
+  <template>
+    <style>
+      :host ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      :host ul li {
+        margin-top: 10px;
+      }
+
+      :host table {
+        margin-top: 10px;
+        width: 100%;
+        border: 1px solid #c0c0c0;
+      }
+
+      :host table tr:nth-child(even) {
+        background: #545A66;
+      }
+
+      :host table td {
+        padding: 3px;
+      }
+
+      :host table tr:nth-child(odd) {
+        background: #737A85;
+      }
+
+      :host table tr:first-child {
+        color: #212429;
+        background: #fff;
+      }
+
+      :host #data-table .table-input {
+        height: inherit;
+        background: transparent;
+        text-indent: 0;
+      }
+
+      :host #data-table .add-remove-column {
+        text-align: center;
+        cursor: pointer;
+      }
+
+      :host #data-table .add-remove-column:hover {
+        color: #212429;
+        background: #fff;
+      }
+    </style>
+    <select hidden?="{{ collections.length == 0 }}" id="collectionSelect" on-change="{{collectionSelectChanged}}" value="{{currentCollectionIndex}}">
+      <template repeat="{{collection, index in collections}}">
+        <option value="{{index}}">{{collection}}</option>
+      </template>
+    </select>
+    <button on-click="{{removeCollection}}" hidden?="{{ currentCollection == undefined }}">-</button>
+    <button on-click="{{addCollection}}">+</button>
+    <div hidden?="{{ currentCollection == undefined }}">
+      <h3>Name</h3>
+      <template if="{{currentCollection != undefined}}" bind="{{currentCollection}}">
+        <input type="text" value="{{name}}">
+        <h3>Keys</h3>
+        <ul style="list-style: none;">
+          <template repeat="{{item, index in model}}">
+            <li>
+              <input type="text" value="{{item.name}}">
+              <select value="{{item.type}}" on-change="{{onItemTypeChange}}">
+                <option value="text">Text</option>
+                <option value="number">Number</option>
+                <option value="boolean">Boolean</option>
+                <option value="object">Object</option>
+                <option value="array">Array</option>
+              </select>
+              <button value="{{index}}" on-click="{{removeKey}}">-</button>
+            </li>
+          </template>
+        </ul>
+        <button on-click="{{addKey}}">+</button>
+
+        <table id="data-table">
+          <tr>
+            <template repeat="{{item in model}}">
+              <td>{{item.name}}</td>
+            </template>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          </tr>
+          <template repeat="{{row, index in data}}">
+            <tr>
+              <template repeat="{{item in model}}">
+                <td><input class="table-input" type="text" value="{{row[item.name]}}"></td>
+              </template>
+              <td data-index="{{index}}" on-click="{{removeDataRow}}" class="add-remove-column">-</td>
+            </tr>
+          </template>
+          <tr>
+            <template repeat="{{item in model}}">
+              <td><input data-key="{{item.name}}" class="table-input" type="text" value=""></td>
+            </template>
+            <td on-click="{{addDataRow}}" class="add-remove-column">+</td>
+          </tr>
+        </table>
+      </template>
+    </div>
+  </template>
+  <script>
+
+    Polymer('data-manager', {
+      currentCollection: undefined,
+      collections: [],
+      currentCollectionIndex: 0,
+      ready: function () {
+        this.collectionsElement = document.querySelector("ceci-app");
+console.log(this.collectionsElement, "direct");
+        //var self = this;
+        if (!this.collectionsElement) {
+          window.addEventListener("CeciAppAttached", function() {
+console.log(document.querySelector("ceci-app"), "in callback");
+            //self.collectionsElement = document.querySelector("ceci-collections");
+            //self.collections = self.collectionsElement.collections;
+          });
+        } else {
+          this.collections = this.collectionsElement.collections;
+        }
+        /*this.collections = window.CeciData.collections;
+        this.currentCollection = this.collections[this.currentCollectionIndex];*/
+      },
+      addCollection: function () {
+        this.collectionsElement.addCollection('Collection ' + (this.collections.length + 1));
+        this.collections = this.collectionsElement.collections;
+
+        this.async(function () {
+          this.currentCollectionIndex = this.collections.length - 1;
+          //this.currentCollection = this.collections[this.currentCollectionIndex];
+        });
+      },
+      removeCollection: function () {
+        this.collectionsElement.removeCollection(this.collections[this.currentCollectionIndex]);
+        this.collections = this.collectionsElement.collections;
+
+        this.async(function () {
+          // selectedIndex will automatically jump to something sane. Use it for index.
+          this.currentCollectionIndex = this.$.collectionSelect.selectedIndex;
+          //this.currentCollection = this.collections[this.currentCollectionIndex];
+        });
+      },
+      addKey: function () {
+        //this.currentCollection.model.push({name: 'Item ' + (this.currentCollection.model.length + 1), type: 'text'});
+      },
+      removeKey: function (event, detail, sender) {
+        //this.currentCollection.model.splice(parseInt(sender.value), 1);
+      },
+      collectionSelectChanged: function (event, detail, sender) {
+        /*this.async(function () {
+          this.currentCollection = this.collections[this.currentCollectionIndex];
+        });*/
+      },
+      addDataRow: function (event, detail, sender) {
+        /*var newRow = {};
+        var dummyRow = sender.parentNode;
+        this.currentCollection.model.forEach(function (item) {
+          var inputElement = dummyRow.querySelector('*[data-key="'+ item.name + '"]');
+          newRow[item.name] = inputElement.value;
+          inputElement.value = '';
+        });
+        this.currentCollection.data.push(newRow);*/
+      },
+      removeDataRow: function (event, detail, sender) {
+        //this.currentCollection.data.splice(parseInt(sender.getAttribute('data-index')), 1);
+      }
+    });
+  </script>
+</polymer-element>
