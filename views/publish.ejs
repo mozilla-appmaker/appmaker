@@ -36,6 +36,10 @@
       <link rel="import" href="<%= href %>">
       <% }) %>
     <% } %>
+
+    <% userComponents.forEach(function(href) { %>
+      <link rel="import" href="<%= href %>">
+    <% }) %>
   </head>
   <body>
     <%- appHTML %>

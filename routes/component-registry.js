@@ -6,11 +6,10 @@
 * Serve JSON to our AngularJS client
 */
 
-
+var dbModels = require('../lib/db-models');
 
 module.exports = function (mongoose, dbconn) {
-  var componentSchema = dbconn.Schema({author: 'string', name: 'string', url: 'string'});
-  var Component = dbconn.model('Component', componentSchema);
+  var Component = dbModels.get('Component');
 
   return {
     // GET

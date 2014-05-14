@@ -9,8 +9,11 @@ var fs = require('fs');
 var path = require('path');
 var lynx = require('lynx');
 var metrics = new lynx('localhost', 8125);
+var dbModels = require('../lib/db-models');
 
-module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
+module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbconn) {
+  var Component = dbModels.get('Component');
+
   var templates = {
     publish: null,
     install: null
@@ -30,9 +33,28 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
     });
   });
 
+  function getUserComponents (req, callback) {
+    if (! req.session.email) {
+      console.error('Need to be signed in to retrieve components.');
+      callback([]);
+      return;
+    }
+    Component.find({author: req.session.email}, function (err, components) {
+      if (err){
+        console.error('Unable to retrieve components.');
+        callback([]);
+        return;
+      }
+      callback(components.map(function (c) {
+        return c.url;
+      }));
+    });
+  }
+
   return {
     publish: function(app) {
       return function(req, res) {
+
         var folderName = moniker.choose() + '-' + Math.round(Math.random() * 1000);
         var installHTMLFilename =  'install.html';
         var appHTMLFilename = 'index.html';
@@ -58,89 +80,93 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher) {
         }
 
         var requestHTML = inputData.html;
-        var appName = inputData.name
+        var appName = inputData.name;
 
         // core appmaker components
-        var coreComponents = app.locals.components
+        var coreComponents = app.locals.components;
         var appComponents = [
           //... mine the requestHTML for these? ...
         ];
 
-        var appStr = templates.publish({
-          appHTML: requestHTML,
-          folderName: folderName,
-          appName: appName,
-          gettext: req.gettext,
-          ceciComponentURL: process.env.ASSET_HOST,
-          remixURL: encodeURIComponent(encodeURIComponent(remoteURLs.app)),
-          bundles: app.locals.bundles,
-          components: coreComponents.concat(appComponents)
+        getUserComponents(req, function (userComponents) {
+
+          var appStr = templates.publish({
+            appHTML: requestHTML,
+            folderName: folderName,
+            appName: appName,
+            gettext: req.gettext,
+            ceciComponentURL: process.env.ASSET_HOST,
+            remixURL: encodeURIComponent(encodeURIComponent(remoteURLs.app)),
+            bundles: app.locals.bundles,
+            components: coreComponents.concat(appComponents),
+            userComponents: userComponents
+          });
+
+          var installStr = templates.install({
+            iframeSrc: remoteURLs.app,
+            manifestUrl: remoteURLs.manifest,
+            gettext: req.gettext
+          });
+
+          var manifestJSON = {
+            "name": 'My App - ' + folderName,
+            "description": 'My App - ' + folderName,
+            "launch_path": '/index.html',
+            "developer": {
+              "name": "Flathead",
+              "url": "https://appmaker.mozillalabs.com/"
+            },
+            "icons": {
+              "60": "/style/icons/icon-60.png",
+              "79": "/style/icons/icon-79.png"
+            },
+            "default_locale": "en"
+          };
+
+          var outputFiles = [
+            {filename: urlManager.objectPrefix + '/' + folderName + '/' + manifestFilename,
+              data: JSON.stringify(manifestJSON),
+              // According to https://developer.mozilla.org/en-US/docs/Web/Apps/Manifest#Serving_manifests
+              contentType: 'application/x-web-app-manifest+json'},
+            {filename: urlManager.objectPrefix + '/' + folderName + '/' + appHTMLFilename,
+              data: appStr},
+            {filename: urlManager.objectPrefix + '/' + folderName + '/' + installHTMLFilename,
+              data: installStr}
+          ];
+
+          var filesDone = 0;
+
+          outputFiles.forEach(function (description) {
+            store.write(description.filename, description.data, function (result) {
+              if (200 !== result.statusCode) {
+                console.error('Trouble writing ' + description.filename + ' to S3 (' + result.statusCode + ').');
+              }
+              if (++filesDone === outputFiles.length) {
+                res.json({error: null,
+                  app: remoteURLs.app,
+                  install: remoteURLs.install,
+                  manifest: remoteURLs.manifest
+                }, 200);
+
+                // Don't wait for the MakeAPI to deliver url to user
+                makeAPIPublisher.publish({
+                  url: remoteURLs.install,
+                  remix: remoteURLs.app,
+                  thumbnail: 'http://appmaker.mozillalabs.com/images/mail-man.png',
+                  tags: ['appmaker'],
+                  description: 'Appmaker ' + folderName,
+                  title: 'Appmaker ' + folderName,
+                  email: req.session.email
+                }, function (err, make) {
+                  if (err) {
+                    console.error(err);
+                  }
+                });
+              }
+            }, description.contentType);
+          });
+          metrics.increment('appmaker.live.app_published');
         });
-
-        var installStr = templates.install({
-          iframeSrc: remoteURLs.app,
-          manifestUrl: remoteURLs.manifest,
-          gettext: req.gettext
-        });
-
-        var manifestJSON = {
-          "name": 'My App - ' + folderName,
-          "description": 'My App - ' + folderName,
-          "launch_path": '/index.html',
-          "developer": {
-            "name": "Flathead",
-            "url": "https://appmaker.mozillalabs.com/"
-          },
-          "icons": {
-            "60": "/style/icons/icon-60.png",
-            "79": "/style/icons/icon-79.png"
-          },
-          "default_locale": "en"
-        };
-
-        var outputFiles = [
-          {filename: urlManager.objectPrefix + '/' + folderName + '/' + manifestFilename,
-            data: JSON.stringify(manifestJSON),
-            // According to https://developer.mozilla.org/en-US/docs/Web/Apps/Manifest#Serving_manifests
-            contentType: 'application/x-web-app-manifest+json'},
-          {filename: urlManager.objectPrefix + '/' + folderName + '/' + appHTMLFilename,
-            data: appStr},
-          {filename: urlManager.objectPrefix + '/' + folderName + '/' + installHTMLFilename,
-            data: installStr}
-        ];
-
-        var filesDone = 0;
-
-        outputFiles.forEach(function (description) {
-          store.write(description.filename, description.data, function (result) {
-            if (200 !== result.statusCode) {
-              console.error('Trouble writing ' + description.filename + ' to S3 (' + result.statusCode + ').');
-            }
-            if (++filesDone === outputFiles.length) {
-              res.json({error: null,
-                app: remoteURLs.app,
-                install: remoteURLs.install,
-                manifest: remoteURLs.manifest
-              }, 200);
-
-              // Don't wait for the MakeAPI to deliver url to user
-              makeAPIPublisher.publish({
-                url: remoteURLs.install,
-                remix: remoteURLs.app,
-                thumbnail: 'http://appmaker.mozillalabs.com/images/mail-man.png',
-                tags: ['appmaker'],
-                description: 'Appmaker ' + folderName,
-                title: 'Appmaker ' + folderName,
-                email: req.session.email
-              }, function (err, make) {
-                if (err) {
-                  console.error(err);
-                }
-              });
-            }
-          }, description.contentType);
-        });
-        metrics.increment('appmaker.live.app_published');
       };
     }
   };

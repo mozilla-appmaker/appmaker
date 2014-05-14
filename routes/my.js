@@ -28,20 +28,11 @@ function uuid(){
 }
 
 var request = require('request');
+var dbModels = require('../lib/db-models');
 
 module.exports = function (mongoose, dbconn) {
-  var componentSchema = mongoose.Schema({author:'string', url: 'string', name: 'string'});
-  var Component = mongoose.model('LearnedComponent', componentSchema, 'components');
-
-  var appSchema = mongoose.Schema({
-    'appid': 'string',
-    'author': 'string',
-    'name': 'string',
-    'html': 'string',
-    'last-published-url': 'string'
-  });
-
-  var App = mongoose.model('App', appSchema, 'apps');
+  var Component = dbModels.get('Component');
+  var App = dbModels.get('App');
 
   var checkAuthorised = function(request, response, next) {
     if (! request.session.email) {

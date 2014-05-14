@@ -4,12 +4,15 @@
 
 var fs = require('fs');
 var urls = require('../lib/urls');
+var dbModels = require('../lib/db-models');
 
 module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPublisher) {
   var mongoose = require('mongoose');
   var dbconn = mongoose.connect(process.env.MONGOLAB_URI || process.env.MONGO_URI || 'mongodb://localhost/appmakerdev',function(err) {
       if (err) throw new Error("Problem connecting to mongodb. Is mongod running? Is your database name correct?");
   });
+
+  dbModels.init(dbconn);
 
   return {
     index: function(req, res) {
@@ -79,7 +82,7 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
       res.render('testapp');
     },
 
-    publish: require('./publish')(store, viewsPath, urlManager, makeAPIPublisher),
+    publish: require('./publish')(store, viewsPath, urlManager, makeAPIPublisher, dbconn),
 
     componentRegistry: require('./component-registry')(mongoose, dbconn),
 
