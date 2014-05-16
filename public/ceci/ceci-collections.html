@@ -8,11 +8,13 @@
     <content></content>
   </template>
   <script>
+    function bindSchema(collection) {
+      collection.textContent = JSON.stringify(collection.schema);
+    }
     Polymer('ceci-collections', {
       attached: function() {
         var savedData = {};
         var savedSchema = {};
-        var self = this;
         if (this.textContent !== "") {
           try {
             savedSchema = JSON.parse(this.textContent);
@@ -22,23 +24,24 @@
         } else {
           this.textContent = "{}";
         }
-        self.schema = savedSchema;
-        try {
-          savedData = JSON.parse(sessionStorage.getItem("ceci-collections"));
-        } catch (e) {
-          console.error("Error parsing saved data:", e);
+        this.schema = savedSchema;
+        var dataString = sessionStorage.getItem("ceci-collections");
+        if (dataString) {
+          try {
+            savedData = JSON.parse(dataString);
+          } catch (e) {
+            console.error("Error parsing saved data:", e);
+          }
         }
-        self.data = savedData || {};
+        this.data = savedData || {};
       },
-      kinds: ["Number", "Toggle", "Text", "Name", "Address", "HttpUrl", "Color", "Image"],
-      schema: {},
-      data: {},
+      kinds: ["Number", "Toggle", "Text", "Name", "Address", "URL", "Color", "Image"],
       addCollection: function(name) {
         if (this.schema[name]) {
           return;
         }
         this.schema[name] = {};
-        this.textContent = JSON.stringify(this.schema);
+        bindSchema(this);
         var detail = {
           added: name
         };
@@ -48,8 +51,8 @@
         if (!this.schema[name]) {
           return;
         }
-        delete this.schema[name];
-        this.textContent = JSON.stringify(this.schema);
+        this.schema[name] = undefined;
+        bindSchema(this);
         var detail = {
           removed: name
         };
@@ -59,16 +62,16 @@
         if (!this.schema[collection]) {
           this.addCollection(collection);
         }
-        var removed = this.schema[collection][name];
+        var item = this.schema[collection][name];
         this.schema[collection][name] = field || {};
-        this.textContent = JSON.stringify(this.schema);
+        bindSchema(this);
         var detail = {
           collection: collection,
           field: name,
           added: this.schema[collection][name]
         };
-        if (removed) {
-          detail.removed = removed;
+        if (item) {
+          detail.removed = item;
         }
         this.fire("fieldchange", detail);
       },
@@ -76,13 +79,13 @@
         if (!this.schema[collection] || !this.schema[collection][name]) {
           return;
         }
-        var removed = this.schema[collection][name];
-        delete this.schema[collection][name];
-        this.textContent = JSON.stringify(this.schema);
+        var item = this.schema[collection][name];
+        this.schema[collection][name] = undefined;
+        bindSchema(this);
         var detail = {
           collection: collection,
           field: name,
-          removed: removed
+          removed: item
         };
         this.fire("fieldchange", detail);
       },
@@ -104,14 +107,11 @@
         if (!this.data[collection] || !this.data[collection][index]) {
           return;
         }
-        var removed = this.data[collection][index];
-        if (!removed) {
-          return;
-        }
+        var item = this.data[collection][index];
         this.data[collection].splice(index, 1);
         var detail = {
           collection: collection,
-          removed: removed
+          removed: item
         };
         this.fire("itemchanged", detail);
       },
