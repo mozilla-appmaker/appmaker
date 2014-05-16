@@ -149,9 +149,27 @@ define(["jquery", "l10n"], function($, l10n) {
           url = '/api/remix-proxy?url=' + encodeURIComponent(encodeURIComponent(url));
         }
 
+        function findUserComponentLinkTags (data) {
+          var match;
+          var urls = [];
+
+          while (match = data.match(/<link rel="import" href="([^"]+)" data-user-component>/)) {
+            urls.push(match[1]);
+            data = data.substr(match.index + match[0].length);
+          }
+
+          return urls;
+        }
+
         $.ajax(url, {
           type: 'get',
           success: function (data) {
+            var userComponentUrls = findUserComponentLinkTags(data);
+
+            userComponentUrls.forEach(function (url) {
+              userState.addComponentByURL(url);
+            });
+
             var openingTag = '<ceci-app';
             var closingTag = '</ceci-app>';
             var indexOfOpeningTag = data.indexOf(openingTag);
