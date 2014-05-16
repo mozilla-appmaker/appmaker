@@ -58,11 +58,32 @@
         };
         this.fire("collectionchange", detail);
       },
+      updateCollection: function(oldName, newName) {
+        if (this.schema[newName]) {
+          this.removeCollection(oldName);
+          return;
+        }
+        if (!this.schema[oldName]) {
+          this.addCollection(newName);
+          return;
+        }
+        this.schema[oldName] = undefined;
+        this.schema[newName] = {};
+        bindSchema(this);
+        var detail = {
+          added: newName,
+          removed: oldName
+        };
+        this.fire("collectionchange", detail);
+      },
       addField: function(collection, name, field) {
         if (!this.schema[collection]) {
           this.addCollection(collection);
         }
-        var item = this.schema[collection][name];
+        if (this.schema[collection][name]) {
+          this.updateField(collection, name, field);
+          return;
+        }
         this.schema[collection][name] = field || {};
         bindSchema(this);
         var detail = {
@@ -70,9 +91,6 @@
           field: name,
           added: this.schema[collection][name]
         };
-        if (item) {
-          detail.removed = item;
-        }
         this.fire("fieldchange", detail);
       },
       removeField: function(collection, name) {
@@ -85,6 +103,25 @@
         var detail = {
           collection: collection,
           field: name,
+          removed: item
+        };
+        this.fire("fieldchange", detail);
+      },
+      updateField: function(collection, name, field) {
+        if (!this.schema[collection]) {
+          this.addCollection(collection);
+        }
+        if (!this.schema[collection][name]) {
+          this.addField(collection, name, field);
+          return;
+        }
+        var item = this.schema[collection][name];
+        this.schema[collection][name] = field || {};
+        bindSchema(this);
+        var detail = {
+          collection: collection,
+          field: name,
+          added: this.schema[collection][name],
           removed: item
         };
         this.fire("fieldchange", detail);
@@ -112,6 +149,22 @@
         var detail = {
           collection: collection,
           removed: item
+        };
+        this.fire("itemchanged", detail);
+      },
+      updateItem: function(collection, index, item) {
+        if (!this.schema[collection]) {
+          this.addCollection(collection);
+        }
+        if (!this.data[collection]) {
+          this.data[collection] = [];
+        }
+        var oldItem = this.data[collection][index];
+        this.data[collection][index] = item;
+        var detail = {
+          collection: collection,
+          added: item,
+          removed: oldItem
         };
         this.fire("itemchanged", detail);
       },
