@@ -1,0 +1,27 @@
+{
+  "name": "list.fuzzysearch.js",
+  "repo": "javve/list.fuzzysearch.js",
+  "description": "A fuzzy search plugin for list.js",
+  "version": "0.1.0",
+  "keywords": [],
+  "dependencies": {
+    "component/classes": "*",
+    "segmentio/extend": "*",
+    "javve/events": "*",
+    "javve/get-by-class": "*",
+    "javve/to-string": "*"
+  },
+  "development": {
+    "visionmedia/mocha": "*",
+    "techjacker/expect.js": "*",
+    "component/jquery": "1.9.1",
+    "javve/list.js": "*"
+  },
+  "license": "Apache License",
+  "main": "index.js",
+  "scripts": [
+    "index.js",
+    "src/fuzzy.js"
+  ],
+  "twitter": "@javve"
+}

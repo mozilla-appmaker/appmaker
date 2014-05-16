@@ -1,0 +1,9 @@
+{
+  "name": "cookie-js",
+  "main": "cookie.js",
+  "version": "0.0.1",
+  "authors": [
+    "Chris De Cairos <cade@mozillafoundation.org>"
+  ],
+  "license": "MIT"
+}
