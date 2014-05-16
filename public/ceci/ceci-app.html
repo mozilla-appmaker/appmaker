@@ -64,6 +64,9 @@
 
         window.dispatchEvent(new CustomEvent("CeciAppReady"));
       },
+      attached: function() {
+        window.dispatchEvent(new CustomEvent("CeciAppAttached"));
+      },
       addCard: function() {
         var newCard = document.createElement('ceci-card');
         this.appendChild(newCard);

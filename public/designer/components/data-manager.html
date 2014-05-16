@@ -52,7 +52,7 @@
     </style>
     <select hidden?="{{ collections.length == 0 }}" id="collectionSelect" on-change="{{collectionSelectChanged}}" value="{{currentCollectionIndex}}">
       <template repeat="{{collection, index in collections}}">
-        <option value="{{index}}">{{collection}}</option>
+        <option value="{{index}}">{{collection.name}}</option>
       </template>
     </select>
     <button on-click="{{removeCollection}}" hidden?="{{ currentCollection == undefined }}">-</button>
@@ -111,39 +111,39 @@
       collections: [],
       currentCollectionIndex: 0,
       ready: function () {
-        this.collectionsElement = document.querySelector("ceci-app");
-console.log(this.collectionsElement, "direct");
-        //var self = this;
-        if (!this.collectionsElement) {
-          window.addEventListener("CeciAppAttached", function() {
-console.log(document.querySelector("ceci-app"), "in callback");
-            //self.collectionsElement = document.querySelector("ceci-collections");
-            //self.collections = self.collectionsElement.collections;
+        var self = this;
+        function onCeciAppAttached() {
+          window.removeEventListener("CeciAppAttached", onCeciAppAttached);
+          self.collectionsElement = document.querySelector("ceci-collections");
+
+          self.collectionsElement.addEventListener("collectionchange", function(e) {
+            var detail = e.detail;
+            if (detail.added) {
+              self.collections.push({
+                name: detail.added
+              });
+            }
+            if (detail.removed) {
+              self.collections.splice(self.currentCollectionIndex, 1);
+            }
+            self.async(function () {
+              self.currentCollectionIndex = self.collections.length - 1;
+              self.currentCollection = self.collections[self.currentCollectionIndex];
+            });
           });
-        } else {
-          this.collections = this.collectionsElement.collections;
         }
-        /*this.collections = window.CeciData.collections;
-        this.currentCollection = this.collections[this.currentCollectionIndex];*/
+        this.collectionsElement = document.querySelector("ceci-collections");
+        if (this.collectionsElement) {
+          onCeciAppAttached();
+        } else {
+          window.addEventListener("CeciAppAttached", onCeciAppAttached);
+        }
       },
       addCollection: function () {
         this.collectionsElement.addCollection('Collection ' + (this.collections.length + 1));
-        this.collections = this.collectionsElement.collections;
-
-        this.async(function () {
-          this.currentCollectionIndex = this.collections.length - 1;
-          //this.currentCollection = this.collections[this.currentCollectionIndex];
-        });
       },
       removeCollection: function () {
-        this.collectionsElement.removeCollection(this.collections[this.currentCollectionIndex]);
-        this.collections = this.collectionsElement.collections;
-
-        this.async(function () {
-          // selectedIndex will automatically jump to something sane. Use it for index.
-          this.currentCollectionIndex = this.$.collectionSelect.selectedIndex;
-          //this.currentCollection = this.collections[this.currentCollectionIndex];
-        });
+        this.collectionsElement.removeCollection(this.collections[this.currentCollectionIndex].name);
       },
       addKey: function () {
         //this.currentCollection.model.push({name: 'Item ' + (this.currentCollection.model.length + 1), type: 'text'});
@@ -152,9 +152,9 @@ console.log(document.querySelector("ceci-app"), "in callback");
         //this.currentCollection.model.splice(parseInt(sender.value), 1);
       },
       collectionSelectChanged: function (event, detail, sender) {
-        /*this.async(function () {
+        this.async(function () {
           this.currentCollection = this.collections[this.currentCollectionIndex];
-        });*/
+        });
       },
       addDataRow: function (event, detail, sender) {
         /*var newRow = {};
