@@ -67,8 +67,8 @@
           this.addCollection(newName);
           return;
         }
+        this.schema[newName] = this.schema[oldName];
         this.schema[oldName] = undefined;
-        this.schema[newName] = {};
         bindSchema(this);
         var detail = {
           added: newName,
