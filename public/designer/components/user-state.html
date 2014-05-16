@@ -48,16 +48,16 @@
   </template>
   <script>
   (function() {
-    require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'analytics', 'persona'],
-      function(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona) {
-        init(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona);
+    require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'analytics', 'persona', 'webmaker-auth-client'],
+      function(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona, WebmakerAuthClient) {
+        init(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona, WebmakerAuthClient);
       },
       function(err) {
         console.log('OH NOES');
         require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils'], init);
       });
 
-    function init(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona) {
+    function init(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona, WebmakerAuthClient) {
 
       var user = {
         email: '',
@@ -65,44 +65,26 @@
         preventLoadedAppInsertion: false,
         collaborating: false
       };
-      // this is done via require because it needs persona loaded to
-      // be able to call navigator.id stuff
-      if (navigator.id) {
-        navigator.id.watch({
-          onlogin: function(assertion) {
-            document.dispatchEvent(new CustomEvent("signInStarted"));
-            //This is where it tries to log in;
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/persona/verify", true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.addEventListener("loadend", function(e) {
-              var data = JSON.parse(this.responseText);
-              if (data && data.status === "okay") {
-                document.dispatchEvent(new CustomEvent("signInFinished"));
-                console.log("You have been logged in as: " + data.email);
-                document.dispatchEvent(new CustomEvent('user-state', {
-                  detail: {'state': 'signedin', 'email': data.email}
-                }));
-              }
-            }, false);
-            xhr.send(JSON.stringify({
-              assertion: assertion
-            }));
-          },
-          onlogout: function() {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/persona/logout", true);
-            xhr.addEventListener("loadend", function(e) {
-              document.dispatchEvent(
-                new CustomEvent('user-state', {
-                  detail: {'state': 'signedout', 'email': ''}
-                })
-              );
-            });
-            xhr.send();
-          }
-        });
-      }
+
+      var auth = new WebmakerAuthClient();
+
+      auth.on('login', function(data, reason) {
+        if (reason === 'verified') {
+          document.dispatchEvent(new CustomEvent("signInFinished"));
+          console.log("You have been logged in as: " + data.email);
+          document.dispatchEvent(new CustomEvent('user-state', {
+            detail: {'state': 'signedin', 'email': data.email}
+          }));
+        }
+      });
+
+      auth.on('logout', function() {
+        document.dispatchEvent(
+          new CustomEvent('user-state', {
+            detail: {'state': 'signedout', 'email': ''}
+          })
+        );
+      });
 
       Polymer('user-state', {
         user: user,
@@ -200,6 +182,8 @@
           window.addEventListener('CeciElementAdded', function (e) {
             user.preventLoadedAppInsertion = true;
           }, false);
+
+          auth.verify();
         },
         enteredView : function() {
           var self = this;
@@ -338,11 +322,11 @@
 
         },
         signInStarted: function(){
-          this.$.signin.style.display = "none";
           this.$.signInProgress.style.display = "block";
         },
         signInFinished: function(){
           this.$.signInProgress.style.display = "none";
+          this.$.signin.style.display = "none";
         },
         signedOut: function(){
           this.$.signin.style.display = "block";
@@ -389,10 +373,10 @@
           window.alert(l10n.get("app rename failed"));
         },
         signinClick: function() {
-          navigator.id.request();
+          auth.login();
         },
         signoutClick: function() {
-          navigator.id.logout();
+          auth.logout();
         },
         loadLink: function(name, url, callback) {
           var link = document.createElement('link');
@@ -651,8 +635,8 @@
           var myApps = this.shadowRoot.querySelector("#myapps");
           var noApps = this.shadowRoot.querySelector("#noApps");
 
-          myApps.innerHTML = "";
           $.getJSON("/api/myapps", function(data) {
+            myApps.innerHTML = "";
 
             try {
               var count = 0;
