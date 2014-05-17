@@ -1,0 +1,60 @@
+<polymer-element name="ceci-schema" attributes="schemaid name" name="New Schema">
+  <template>
+    <style>
+      :host {
+        display: none;
+      }
+    </style>
+    <content></content>
+  </template>
+  <script>
+    Polymer('ceci-schema', {
+      attached: function() {
+        var dataString = sessionStorage.getItem("ceci-collections-" + this.schemaid);
+        var savedData = [];
+        var self = this;
+        if (dataString) {
+          try {
+            savedData = JSON.parse(dataString);
+          } catch (e) {
+            console.error("Error parsing saved data:", e);
+          }
+        }
+        this.data = savedData || [];
+        this.observer = new ArrayObserver(this.data);
+        observer.open(function(splices) {
+          splices.forEach(function(splice) {
+            var detail = {
+              change: splice
+            };
+            self.fire("itemchanged", detail);
+          });
+        });
+      },
+      addField: function(name) {
+        var field = document.createElement("ceci-field");
+        this.appendChild(field);
+        var detail = {
+          added: field
+        };
+        this.fire("fieldadded", detail);
+      },
+      removeField: function(field) {
+        this.removeChild(field);
+        var detail = {
+          removed: field
+        };
+        this.fire("fieldremoved", detail);
+      },
+      nameChanged: function() {
+        var detail = {
+          changed: "kind"
+        };
+        this.fire("namechange");
+      },
+      saveData: function() {
+        sessionStorage.setItem("ceci-collections-" + this.schemaid, JSON.stringify(this.data));
+      }
+    });
+  </script>
+</polymer-element>

@@ -8,162 +8,23 @@
     <content></content>
   </template>
   <script>
-    function bindSchema(collection) {
-      collection.textContent = JSON.stringify(collection.schema);
-    }
     Polymer('ceci-collections', {
-      attached: function() {
-        var savedData = [];
-        var savedSchema = [];
-        if (this.textContent !== "") {
-          try {
-            savedSchema = JSON.parse(this.textContent);
-          } catch (e) {
-            console.error("Error parsing saved schema:", e);
-          }
-        } else {
-          this.textContent = "[]";
-        }
-        this.schema = savedSchema;
-        var dataString = sessionStorage.getItem("ceci-collections");
-        if (dataString) {
-          try {
-            savedData = JSON.parse(dataString);
-          } catch (e) {
-            console.error("Error parsing saved data:", e);
-          }
-        }
-        this.data = savedData || [];
-      },
-      kinds: ["Number", "Toggle", "Text", "Name", "Address", "URL", "Color", "Image"],
-      addCollection: function(name) {
-        var schema = {
-          name: name,
-          fields: []
-        };
-        this.schema.push(schema);
-        bindSchema(this);
+      addSchema: function(name) {
+        var schema = document.createElement("ceci-schema");
+        this.appendChild(schema);
+        schema.name = name || "New Schema";
+        schema.schemaid = uuid();
         var detail = {
           added: schema
         };
-        this.fire("collectionchange", detail);
+        this.fire("schemaadded", detail);
       },
-      removeCollection: function(index) {
-        if (!this.schema[index]) {
-          return;
-        }
+      removeSchema: function(schema) {
+        this.removeChild(schema);
         var detail = {
-          removed: this.schema[index]
+          removed: schema
         };
-        this.schema.splice(index, 1);
-        bindSchema(this);
-        this.fire("collectionchange", detail);
-      },
-      updateCollection: function(index, name) {
-        if (!this.schema[index]) {
-          return;
-        }
-        var old = {
-          name: this.schema[index].name,
-          fields: this.schema[index].fields
-        };
-        this.schema[index].name = name;
-        bindSchema(this);
-        var detail = {
-          added: this.schema[index],
-          removed: old
-        };
-        this.fire("collectionchange", detail);
-      },
-      addField: function(index, name, data) {
-        if (!this.schema[index]) {
-          return;
-        }
-        var field = {
-          name: name,
-          data: data || {}
-        }
-        this.schema[index].fields.push(field);
-        bindSchema(this);
-        var detail = {
-          collection: index,
-          added: field
-        };
-        this.fire("fieldchange", detail);
-      },
-      removeField: function(collection, index) {
-        if (!this.schema[collection] || !this.schema[collection].fields[index]) {
-          return;
-        }
-        var detail = {
-          collection: collection,
-          removed: this.schema[collection].fields[index]
-        };
-        this.schema[collection].fields.splice(index, 1);
-        bindSchema(this);
-        this.fire("fieldchange", detail);
-      },
-      updateField: function(collection, index, field) {
-        if (!this.schema[collection] || !this.schema[collection].fields[index]) {
-          return;
-        }
-        field = field || {};
-        var detail = {
-          collection: collection,
-          added: field,
-          removed: this.schema[collection].fields[index]
-        };
-        this.schema[collection].fields.splice(index, 1, field);
-        bindSchema(this);
-        this.fire("fieldchange", detail);
-      },
-      addItem: function(collection, item) {
-        if (!this.schema[collection]) {
-          return;
-        }
-        if (!this.data[collection]) {
-          this.data[collection] = {
-            name: this.schema[collection],
-            data: []
-          };
-        }
-        this.data[collection].data.push(item);
-        var detail = {
-          collection: collection,
-          added: item
-        };
-        this.fire("itemchanged", detail);
-      },
-      removeItem: function(collection, index) {
-        if (!this.data[collection] || !this.data[collection].data[index]) {
-          return;
-        }
-        var item = this.data[collection].data[index];
-        this.data[collection].data.splice(index, 1);
-        var detail = {
-          collection: collection,
-          removed: item
-        };
-        this.fire("itemchanged", detail);
-      },
-      updateItem: function(collection, index, item) {
-        if (!this.schema[collection]) {
-          return;
-        }
-        if (!this.data[collection]) {
-          return;
-        }
-        var oldItem = this.data[collection].data[index];
-        this.data[collection].data[index] = item;
-        var detail = {
-          collection: collection,
-          added: item,
-          removed: oldItem
-        };
-        this.fire("itemchanged", detail);
-      },
-      saveData: function() {
-        sessionStorage.setItem("ceci-collections", JSON.stringify(this.data));
+        this.fire("schemaremoved", detail);
       }
     });
   </script>

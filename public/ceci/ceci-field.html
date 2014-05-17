@@ -1,0 +1,27 @@
+<polymer-element name="ceci-field" attributes="name kind">
+  <template>
+    <style>
+      :host {
+        display: none;
+      }
+    </style>
+    <content></content>
+  </template>
+  <script>
+    Polymer('ceci-field', {
+      nameChanged: function() {
+        var detail = {
+          changed: "name"
+        };
+        this.fire("namechange", detail);
+      },
+      kinds: ["Number", "Toggle", "Text", "Name", "Address", "URL", "Color", "Image"],
+      kindChanged: function() {
+        var detail = {
+          changed: "kind"
+        };
+        this.fire("kindchange", detail);
+      }
+    });
+  </script>
+</polymer-element>
