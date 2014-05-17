@@ -10,12 +10,11 @@
   <script>
     function bindSchema(collection) {
       collection.textContent = JSON.stringify(collection.schema);
-      collection.collections = Object.keys(collection.schema);
     }
     Polymer('ceci-collections', {
       attached: function() {
-        var savedData = {};
-        var savedSchema = {};
+        var savedData = [];
+        var savedSchema = [];
         if (this.textContent !== "") {
           try {
             savedSchema = JSON.parse(this.textContent);
@@ -23,7 +22,7 @@
             console.error("Error parsing saved schema:", e);
           }
         } else {
-          this.textContent = "{}";
+          this.textContent = "[]";
         }
         this.schema = savedSchema;
         var dataString = sessionStorage.getItem("ceci-collections");
@@ -34,107 +33,101 @@
             console.error("Error parsing saved data:", e);
           }
         }
-        this.data = savedData || {};
+        this.data = savedData || [];
       },
       kinds: ["Number", "Toggle", "Text", "Name", "Address", "URL", "Color", "Image"],
       addCollection: function(name) {
-        if (this.schema[name]) {
-          return;
-        }
-        this.schema[name] = {};
+        var schema = {
+          name: name,
+          fields: []
+        };
+        this.schema.push(schema);
         bindSchema(this);
         var detail = {
-          added: name
+          added: schema
         };
         this.fire("collectionchange", detail);
       },
-      removeCollection: function(name) {
-        if (!this.schema[name]) {
+      removeCollection: function(index) {
+        if (!this.schema[index]) {
           return;
         }
-        this.schema[name] = undefined;
+        var detail = {
+          removed: this.schema[index]
+        };
+        this.schema.splice(index, 1);
+        bindSchema(this);
+        this.fire("collectionchange", detail);
+      },
+      updateCollection: function(index, name) {
+        if (!this.schema[index]) {
+          return;
+        }
+        var old = {
+          name: this.schema[index].name,
+          fields: this.schema[index].fields
+        };
+        this.schema[index].name = name;
         bindSchema(this);
         var detail = {
-          removed: name
+          added: this.schema[index],
+          removed: old
         };
         this.fire("collectionchange", detail);
       },
-      updateCollection: function(oldName, newName) {
-        if (this.schema[newName]) {
-          this.removeCollection(oldName);
+      addField: function(index, name, data) {
+        if (!this.schema[index]) {
           return;
         }
-        if (!this.schema[oldName]) {
-          this.addCollection(newName);
-          return;
+        var field = {
+          name: name,
+          data: data || {}
         }
-        this.schema[newName] = this.schema[oldName];
-        this.schema[oldName] = undefined;
+        this.schema[index].fields.push(field);
         bindSchema(this);
         var detail = {
-          added: newName,
-          removed: oldName
-        };
-        this.fire("collectionchange", detail);
-      },
-      addField: function(collection, name, field) {
-        if (!this.schema[collection]) {
-          this.addCollection(collection);
-        }
-        if (this.schema[collection][name]) {
-          this.updateField(collection, name, field);
-          return;
-        }
-        this.schema[collection][name] = field || {};
-        bindSchema(this);
-        var detail = {
-          collection: collection,
-          field: name,
-          added: this.schema[collection][name]
+          collection: index,
+          added: field
         };
         this.fire("fieldchange", detail);
       },
-      removeField: function(collection, name) {
-        if (!this.schema[collection] || !this.schema[collection][name]) {
+      removeField: function(collection, index) {
+        if (!this.schema[collection] || !this.schema[collection].fields[index]) {
           return;
         }
-        var item = this.schema[collection][name];
-        this.schema[collection][name] = undefined;
-        bindSchema(this);
         var detail = {
           collection: collection,
-          field: name,
-          removed: item
+          removed: this.schema[collection].fields[index]
         };
+        this.schema[collection].fields.splice(index, 1);
+        bindSchema(this);
         this.fire("fieldchange", detail);
       },
-      updateField: function(collection, name, field) {
-        if (!this.schema[collection]) {
-          this.addCollection(collection);
-        }
-        if (!this.schema[collection][name]) {
-          this.addField(collection, name, field);
+      updateField: function(collection, index, field) {
+        if (!this.schema[collection] || !this.schema[collection].fields[index]) {
           return;
         }
-        var item = this.schema[collection][name];
-        this.schema[collection][name] = field || {};
-        bindSchema(this);
+        field = field || {};
         var detail = {
           collection: collection,
-          field: name,
-          added: this.schema[collection][name],
-          removed: item
+          added: field,
+          removed: this.schema[collection].fields[index]
         };
+        this.schema[collection].fields.splice(index, 1, field);
+        bindSchema(this);
         this.fire("fieldchange", detail);
       },
       addItem: function(collection, item) {
         if (!this.schema[collection]) {
-          this.addCollection(collection);
+          return;
         }
         if (!this.data[collection]) {
-          this.data[collection] = [];
+          this.data[collection] = {
+            name: this.schema[collection],
+            data: []
+          };
         }
-        this.data[collection].push(item);
+        this.data[collection].data.push(item);
         var detail = {
           collection: collection,
           added: item
@@ -142,11 +135,11 @@
         this.fire("itemchanged", detail);
       },
       removeItem: function(collection, index) {
-        if (!this.data[collection] || !this.data[collection][index]) {
+        if (!this.data[collection] || !this.data[collection].data[index]) {
           return;
         }
-        var item = this.data[collection][index];
-        this.data[collection].splice(index, 1);
+        var item = this.data[collection].data[index];
+        this.data[collection].data.splice(index, 1);
         var detail = {
           collection: collection,
           removed: item
@@ -155,13 +148,13 @@
       },
       updateItem: function(collection, index, item) {
         if (!this.schema[collection]) {
-          this.addCollection(collection);
+          return;
         }
         if (!this.data[collection]) {
-          this.data[collection] = [];
+          return;
         }
-        var oldItem = this.data[collection][index];
-        this.data[collection][index] = item;
+        var oldItem = this.data[collection].data[index];
+        this.data[collection].data[index] = item;
         var detail = {
           collection: collection,
           added: item,
