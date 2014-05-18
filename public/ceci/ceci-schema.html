@@ -22,29 +22,30 @@
         }
         this.data = savedData || [];
         this.observer = new ArrayObserver(this.data);
-        observer.open(function(splices) {
+        this.observer.open(function(splices) {
           splices.forEach(function(splice) {
             var detail = {
               change: splice
             };
-            self.fire("itemchanged", detail);
+            self.fire("itemchange", detail);
           });
         });
       },
       addField: function(name) {
         var field = document.createElement("ceci-field");
         this.appendChild(field);
+        field.name = name || "New Field";
         var detail = {
           added: field
         };
-        this.fire("fieldadded", detail);
+        this.fire("fieldchange", detail);
       },
       removeField: function(field) {
         this.removeChild(field);
         var detail = {
           removed: field
         };
-        this.fire("fieldremoved", detail);
+        this.fire("fieldchange", detail);
       },
       nameChanged: function() {
         var detail = {

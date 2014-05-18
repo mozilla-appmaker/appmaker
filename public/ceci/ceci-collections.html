@@ -17,14 +17,14 @@
         var detail = {
           added: schema
         };
-        this.fire("schemaadded", detail);
+        this.fire("schemachange", detail);
       },
       removeSchema: function(schema) {
         this.removeChild(schema);
         var detail = {
           removed: schema
         };
-        this.fire("schemaremoved", detail);
+        this.fire("schemachange", detail);
       }
     });
   </script>

@@ -62,8 +62,9 @@
       <template if="{{currentCollection != undefined}}" bind="{{currentCollection}}">
         <input type="text" value="{{name}}">
         <h3>Keys</h3>
+      </template>
         <ul style="list-style: none;">
-          <template repeat="{{item, index in model}}">
+          <template repeat="{{item, index in fields}}">
             <li>
               <input type="text" value="{{item.name}}">
               <select value="{{item.type}}" on-change="{{onItemTypeChange}}">
@@ -81,27 +82,26 @@
 
         <table id="data-table">
           <tr>
-            <template repeat="{{item in model}}">
+            <template repeat="{{item in fields}}">
               <td>{{item.name}}</td>
             </template>
             <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
           </tr>
           <template repeat="{{row, index in data}}">
             <tr>
-              <template repeat="{{item in model}}">
+              <template repeat="{{item, i in fields}}">
                 <td><input class="table-input" type="text" value="{{row[item.name]}}"></td>
               </template>
               <td data-index="{{index}}" on-click="{{removeDataRow}}" class="add-remove-column">-</td>
             </tr>
           </template>
           <tr>
-            <template repeat="{{item in model}}">
-              <td><input data-key="{{item.name}}" class="table-input" type="text" value=""></td>
+            <template repeat="{{item, index in fields}}">
+              <td><input data-key="{{index}}" class="table-input" type="text" value=""></td>
             </template>
             <td on-click="{{addDataRow}}" class="add-remove-column">+</td>
           </tr>
         </table>
-      </template>
     </div>
   </template>
   <script>
@@ -109,65 +109,91 @@
     Polymer('data-manager', {
       currentCollection: undefined,
       collections: [],
+      fields: [],
+      data: [],
       currentCollectionIndex: 0,
       ready: function () {
         var self = this;
-        function onCeciAppAttached() {
-          window.removeEventListener("CeciAppAttached", onCeciAppAttached);
-          self.collectionsElement = document.querySelector("ceci-collections");
-
-          self.collectionsElement.addEventListener("collectionchange", function(e) {
-            var detail = e.detail;
-            if (detail.added) {
-              self.collections.push({
-                name: detail.added
-              });
+        function onFieldChange(e) {
+          var fieldNodeList = self.currentCollection.querySelectorAll("ceci-field");
+          self.fields = Array.prototype.slice.call(fieldNodeList, 0);
+          self.data = self.currentCollection.data;
+        }
+        function onSchemaChange(e) {
+          var detail = e.detail;
+          if (detail.added) {
+            self.collections.push(detail.added);
+            detail.added.addEventListener("fieldchange", onFieldChange);
+          }
+          if (detail.removed) {
+            self.collections.splice(self.currentCollectionIndex, 1);
+            detail.removed.removeEventListener("fieldchange", onFieldChange);
+          }
+          self.async(function () {
+            self.currentCollectionIndex = self.collections.length - 1;
+            self.currentCollection = self.collections[self.currentCollectionIndex];
+            if (self.currentCollection) {
+              var fieldNodeList = self.currentCollection.querySelectorAll("ceci-field");
+              self.fields = Array.prototype.slice.call(fieldNodeList, 0);
+              self.data = self.currentCollection.data;
+            } else {
+              self.fields = [];
+              self.data = [];
             }
-            if (detail.removed) {
-              self.collections.splice(self.currentCollectionIndex, 1);
-            }
-            self.async(function () {
-              self.currentCollectionIndex = self.collections.length - 1;
-              self.currentCollection = self.collections[self.currentCollectionIndex];
-            });
           });
         }
+        function onCeciAppAttached() {
+          self.collectionsElement = document.querySelector("ceci-collections");
+          var schemaNodeList = self.collectionsElement.querySelectorAll("ceci-schema");
+          self.collections = Array.prototype.slice.call(schemaNodeList, 0);
+          if (self.collections.length) {
+            self.currentCollection = self.collections[self.currentCollectionIndex];
+            var fieldNodeList = self.currentCollection.querySelectorAll("ceci-field");
+            self.fields = Array.prototype.slice.call(fieldNodeList, 0);
+            self.data = self.currentCollection.data;
+            self.collections.forEach(function (item) {
+              item.addEventListener("fieldchange", onFieldChange);
+            });
+          }
+          self.collectionsElement.addEventListener("schemachange", onSchemaChange);
+        }
         this.collectionsElement = document.querySelector("ceci-collections");
+        window.addEventListener("CeciAppAttached", onCeciAppAttached);
         if (this.collectionsElement) {
           onCeciAppAttached();
-        } else {
-          window.addEventListener("CeciAppAttached", onCeciAppAttached);
         }
       },
       addCollection: function () {
-        this.collectionsElement.addCollection('Collection ' + (this.collections.length + 1));
+        this.collectionsElement.addSchema("New Schema " + (this.collections.length + 1));
       },
       removeCollection: function () {
-        this.collectionsElement.removeCollection(this.collections[this.currentCollectionIndex].name);
+        this.collectionsElement.removeSchema(this.collections[this.currentCollectionIndex]);
       },
       addKey: function () {
-        //this.currentCollection.model.push({name: 'Item ' + (this.currentCollection.model.length + 1), type: 'text'});
+        this.currentCollection.addField();
       },
       removeKey: function (event, detail, sender) {
-        //this.currentCollection.model.splice(parseInt(sender.value), 1);
+        this.currentCollection.removeField(this.fields[parseInt(sender.value)]);
       },
       collectionSelectChanged: function (event, detail, sender) {
         this.async(function () {
           this.currentCollection = this.collections[this.currentCollectionIndex];
+          this.fields = Array.prototype.slice.call(this.currentCollection.querySelectorAll("ceci-field"), 0);
+          this.data = this.currentCollection.data;
         });
       },
       addDataRow: function (event, detail, sender) {
-        /*var newRow = {};
+        var newRow = {};
         var dummyRow = sender.parentNode;
-        this.currentCollection.model.forEach(function (item) {
-          var inputElement = dummyRow.querySelector('*[data-key="'+ item.name + '"]');
-          newRow[item.name] = inputElement.value;
+        this.fields.forEach(function (item, index) {
+          var inputElement = dummyRow.querySelector('*[data-key="'+ index + '"]');
+          newRow[item.name] = newRow[item.name] || inputElement.value;
           inputElement.value = '';
         });
-        this.currentCollection.data.push(newRow);*/
+        this.currentCollection.data.push(newRow);
       },
       removeDataRow: function (event, detail, sender) {
-        //this.currentCollection.data.splice(parseInt(sender.getAttribute('data-index')), 1);
+        this.currentCollection.data.splice(parseInt(sender.getAttribute('data-index')), 1);
       }
     });
   </script>
