@@ -1,8 +1,6 @@
 @import "variables.less";
 @import "mixins.less";
 
-// Leaving in some of the subscription styles for now, since I might duplicate this, or reuse somehow
-
 [channelType=broadcast] .channel-menu-wrapper {
   position: absolute;
   left: 320px;
@@ -10,7 +8,6 @@
   width: 600px;
   height: 100%
 }
-
 
 [channelType=listen] .channel-menu-wrapper {
   position: absolute;
@@ -22,12 +19,13 @@
 
 .channel-menu {
   padding: 4px 4px 5px 4px;
-  background: white;
   position: absolute;
-  display: none;
   top: 50%;
+  display: none;
   .border-radius(5px);
   border: solid 1px #BBB;
+  background: -webkit-linear-gradient(top, #FFF, #FFF 70%, #EEE);
+  background: -moz-linear-gradient(top, #FFF, #FFF 70%, #EEE);
   border-bottom: solid 2px #BBB;
   z-index: 999999;
 
@@ -42,9 +40,24 @@
   .hover-helper {
     width: 40px;
     height: 100%;
-    opacity: 0;
+    opacity: 1;
     position: absolute;
     top: 0;
+    overflow: hidden;
+
+    .arrow {
+      height: 15px;
+      width: 15px;
+      background: white;
+      position: absolute;
+      top: ~"calc(50% - 8px)";
+      border: solid 1px #BBB;
+      -webkit-transform-origin: center;
+      -webkit-transform: rotate(45deg);
+      transform-origin: center;
+      transform: rotate(45deg);
+    }
+
   }
 
   &.listen-menu {
@@ -52,6 +65,11 @@
 
     .hover-helper {
       right: -40px;
+
+			.arrow {
+				left: -10px;
+			}
+
     }
 
     .chosen-color {
@@ -74,7 +92,11 @@
 
     .hover-helper {
       left: -40px;
-    }
+    	
+			.arrow {
+				right: -10px;
+			}
+		}
 
     .chosen-color {
        left: 5px;
@@ -111,14 +133,12 @@
     color: #555;
     display: block;
     font-size: 1.3rem;
-    border-bottom: solid 1px white;
-    .border-radius(10px);
+    .border-radius(5px);
 
     cursor: pointer;
 
     &:hover {
-      background: #F7F7F7;
-      border-bottom: solid 1px #DDD;
+      background: rgba(0,0,0,.05);
     }
 
     &:active {
@@ -134,6 +154,13 @@
   }
 
   .color-ui {
+
+    .border-radius(3px);
+    display: none;
+    text-align: left;
+    padding: 3px 5px 2px 5px;
+    cursor: default;
+    overflow: auto;
 
     h3 {
       font-size: 13px;
@@ -151,28 +178,21 @@
         color: #666;
         font-size: inherit;
       }
-
     }
 
-    .border-radius(3px);
-    display: none;
-    text-align: left;
-    padding: 3px 5px 2px 5px;
-    cursor: default;
-    overflow: auto;
-
     .color {
-      padding: 0px 6px 1px 6px;
       margin: 0 2px 2px 0px;
       color: rgba(255,255,255,.75);
       cursor: pointer;
-      opacity: 1;
+			position: relative;
+			overflow:hidden;
+			padding: 0px 6px 1px 6px;
+			opacity: .4;
       .border-radius(20px);
 
       &:hover {
-        opacity: .7;
+        opacity: 1;
         text-decoration: none;
-        border: none;
       }
 
       &[color=false] {
@@ -187,30 +207,38 @@
 
     }
   }
+	
+/*  These are the selected color labels in the menu*/
 
-  //These are the selected color labels in the menu
-
-  .channel-option .chosen-color[color=false]:before {
+  .channel-option .chosen-color[color=false]:after {
     content: "X";
     color:#999;
   }
 
-  .channel-option .chosen-color:before {
+  .channel-option .chosen-color:after {
+		position: relative;
     content: "1";
+		z-index: 999;
   }
 
-  .channel-option [color*=two]:before {
+  .channel-option [color*=two]:after {
+		position: relative;
     content: "2";
+		z-index: 999;		
   }
 
-  .channel-option [color*=three]:before {
+  .channel-option [color*=three]:after {
+		position: relative;
     content: "3";
+		z-index: 999;		
   }
 
   .channel-option {
-    [color*=blue] {
-      background: @channel-blue;
+    
+		[color*=blue] {
+			background: @channel-blue;
     }
+
     [color*=red] {
       background: @channel-red;
     }
@@ -237,4 +265,41 @@
     }
   }
 
+}
+
+.broadcast-menu .color-ui {
+	.haslistener {
+		-webkit-animation: strobe .3s linear infinite;
+		animation: strobe .3s linear infinite;
+	}
+	.hasbroadcast,
+	.hasbroadcast.haslistener {
+		-webkit-animation: none;
+		animation: none;
+		opacity: 1;
+	}
+}
+
+.listen-menu .color-ui {
+	.hasbroadcast {
+		-webkit-animation: strobe .25s linear infinite;
+		animation: strobe .25s linear infinite;
+	}
+	.haslistener,
+	.hasbroadcast.haslistener {
+		-webkit-animation: none;
+		animation: none;
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes strobe {
+  0% { -webkit-transform: scale(1); }
+  50% { -webkit-transform: scale(.8);}
+  100% { -webkit-transform: scale(1); }	
+}
+@keyframes strobe {
+  0% { transform: scale(1); }
+  50% { transform: scale(.8);}
+  100% { transform: scale(1); }	
 }

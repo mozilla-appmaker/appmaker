@@ -1,0 +1,68 @@
+<polymer-element name="ceci-channel-map" attributes="broadcastchannels listenerchannels">
+  <template>
+    <content></content>
+  </template>
+  <script>
+    Polymer('ceci-channel-map', {
+      ready : function(){
+        this.app = document.querySelector("ceci-app");
+        var that = this;
+        window.addEventListener("channelUpdate",function(e){
+          that.getChannels();
+        },false);
+      },
+      getChannels : function(){
+        this.map = {};
+
+        var app = document.querySelector("ceci-app");
+        var els = app.querySelectorAll("ceci-listen,ceci-broadcast");
+
+        for(var i = 0; i < els.length; i++) {
+          var el = els[i];
+          var channel = el.on;
+          var type;
+
+          var type = el.hasAttribute("for") ? "listener" : "broadcast";
+          var method = el.getAttribute("for") || el.getAttribute("from");
+
+          if(!this.map[channel]) {
+            this.map[channel] = {};
+          }
+
+          if(!this.map[channel][type]){
+            this.map[channel][type] = [];
+          }
+
+          this.map[channel][type].push(method);
+
+        }
+
+        this.showChannels();
+      },
+      showChannels : function(){
+        var channelStatus;
+        var broadcastChannels = [];
+        var listenerChannels = [];
+
+        for(var key in this.map) {
+          if(this.map.hasOwnProperty(key)){
+            var channel = this.map[key];
+
+            if(channel.broadcast) {
+              broadcastChannels.push(key);
+            } 
+
+            if(channel.listener) {
+              listenerChannels.push(key);
+            }
+          }
+        }
+        this.broadcastchannels = broadcastChannels;
+        this.listenerchannels = listenerChannels;
+      },
+      attached : function(){
+        this.app = document.querySelector("ceci-app");
+      }
+    });
+  </script>
+</polymer-element>

@@ -14,7 +14,20 @@
         }});
         document.dispatchEvent(e);
       },
-      enteredView: function () {
+      onChanged : function(){
+      	this.updated();
+      },
+      fromChanged: function(){
+      	this.updated();
+      },
+      detached: function(){
+      	this.updated();
+      },
+      updated: function(){
+      window.dispatchEvent(new CustomEvent('channelUpdate'));
+      },
+      attached: function () {
+				  this.updated();
         while (true) {
           this._element = this.parentNode;
           if (!this._element) break;

@@ -37,18 +37,22 @@
         if (this.parentNode) {
           document.addEventListener(this._channel, this._eventListener, false);
         }
+
+        window.dispatchEvent(new CustomEvent('channelUpdate'));
+
         this.dispatchEvent(new CustomEvent('listenerUpdated', {
           name: name, bubbles: true, detail: this
         }));
       },
-      enteredView: function () {
+      attached: function () {
         this.update();
       },
-      leftView: function () {
+      detached: function () {
         if (this._channel && this._eventListener) {
           document.removeEventListener(this._channel, this._eventListener, false);
         }
         this.dispatchEvent(new CustomEvent('listenerUpdated', {name: name, bubbles: true, detail: this}));
+        this.update();
       },
       updateContainerElement: function () {
         while (true) {

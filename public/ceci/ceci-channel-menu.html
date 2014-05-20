@@ -1,8 +1,11 @@
-<polymer-element name="ceci-channel-menu" attributes="channelType">
+<polymer-element name="ceci-channel-menu" attributes="channelType mode">
 <template>
-  <div on-mouseenter="{{showMenu}}" on-mouseleave="{{hideMenu}}" class="channel-menu-wrapper" id="channelMenuWrapper">
+<content>
+  <div class="channel-menu-wrapper"  on-mouseover="{{showMenu}}" on-mouseout="{{hideMenu}}" id="channelMenuWrapper">
     <div id="{{channelType}}Menu" class="{{channelType}}-menu channel-menu">
-      <div class="hover-helper"></div>
+      <div class="hover-helper">
+      	<div class="arrow"></div>
+      </div>
 
       <div class="channel-option subscription-option option-template">
 
@@ -61,36 +64,74 @@
       </div>
     </div>
   </div>
+</content>
 </template>
   <script>
     require(['l10n'], function(L10n) {
       Polymer('ceci-channel-menu', {
-        enteredView: function () {
+        attached: function () {
           var that = this;
           this.menu = this.shadowRoot.querySelector(".channel-menu");
           this.async(function () {
             this.component = this.parentNode.host;
             this.buildMenu(this.component);
+            this.adjustMenuPosition();
           });
-        },
-        hideMenu : function() {
-          this.menu.style.display = "none";
-        },
-        adjustMenuPosition : function(){
-          var height = this.menu.offsetHeight;
-          this.menu.style.marginTop = "-" + (height/2) + "px";
         },
         showMenu : function() {
           var that = this;
+          this.addhelperClasses();
           this.component.async(function () {
             var items = that.channelType == "listen" ? Object.keys(that.component.ceci.listeners) : Object.keys(that.component.ceci.broadcasts);
-
             if (items.length > 0) {
               that.menu.style.display = "block";
               var height = that.menu.offsetHeight;
               that.menu.style.marginTop = -1 * (height/2) + "px";
             }
           });
+        },
+        hideMenu : function() {
+          if(this.mode != "channelpick") {
+            this.menu.style.display = "none";
+          }
+        },
+        adjustMenuPosition : function(){
+          this.menu = this.shadowRoot.querySelector(".channel-menu");
+          var height = this.menu.offsetHeight;
+          this.menu.style.marginTop = "-" + (height/2) + "px";
+        },
+				addhelperClasses : function(){
+
+          //Adds hasbroadcast or haslistener classes to the color dots
+
+          var channelMap = document.querySelector("ceci-channel-map");
+          var bchans = channelMap.broadcastchannels;
+          var lchans = channelMap.listenerchannels;
+
+          var channels = this.shadowRoot.querySelectorAll(".channel-option:not(.option-template) .color-ui .color");
+
+          for(var i = 0; i < channels.length; i++) {
+            var channelDot = channels[i];
+            channelDot.classList.remove("hasbroadcast");
+            channelDot.classList.remove("haslistener");
+
+            var thisChannel = channelDot.getAttribute("data-channel");
+
+            for(var j = 0; j < bchans.length; j++){
+              var bchannel = bchans[j];
+              if(thisChannel == bchannel){
+                channelDot.classList.add("hasbroadcast");
+              }
+            }
+
+            for(var j = 0; j < lchans.length; j++){
+              var lchannel = lchans[j];
+              if(thisChannel == lchannel){
+                channelDot.classList.add("haslistener");
+              }
+            }
+
+          }
         },
         changeChannel : function(handlerType, handler ,color){
           var visEl = this.component.querySelector("ceci-"+this.channelType+"["+handlerType+"=\""+handler+"\"]");
@@ -157,6 +198,7 @@
                 channelOption.querySelector("label .chosen-color").setAttribute("color", color);
                 channelOption.querySelector(".color-ui").style.display = "none";
                 that.adjustMenuPosition();
+                that.mode = "";
               }
             };
           }
@@ -167,6 +209,8 @@
 
             //Hide all the options
             var options = that.menu.querySelectorAll(".channel-option");
+
+            that.mode = "channelpick";
 
             Object.keys(options).forEach(function(o){
               options[o].style.display = "none";
