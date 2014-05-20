@@ -105,7 +105,6 @@
     </div>
   </template>
   <script>
-
     Polymer('data-manager', {
       currentCollection: undefined,
       collections: [],
@@ -117,16 +116,21 @@
         function onFieldChange(e) {
           var fieldNodeList = self.currentCollection.querySelectorAll("ceci-field");
           self.fields = Array.prototype.slice.call(fieldNodeList, 0);
-          self.data = self.currentCollection.data;
+          self.data = self.currentCollection.data.slice(0);
+        }
+        function onItemChange(e) {
+          self.data = self.currentCollection.data.slice(0);
         }
         function onSchemaChange(e) {
           var detail = e.detail;
           if (detail.added) {
             self.collections.push(detail.added);
+            detail.added.addEventListener("itemchange", onItemChange);
             detail.added.addEventListener("fieldchange", onFieldChange);
           }
           if (detail.removed) {
             self.collections.splice(self.currentCollectionIndex, 1);
+            detail.removed.removeEventListener("itemchange", onItemChange);
             detail.removed.removeEventListener("fieldchange", onFieldChange);
           }
           self.async(function () {
@@ -135,7 +139,7 @@
             if (self.currentCollection) {
               var fieldNodeList = self.currentCollection.querySelectorAll("ceci-field");
               self.fields = Array.prototype.slice.call(fieldNodeList, 0);
-              self.data = self.currentCollection.data;
+              self.data = self.currentCollection.data.slice(0);
             } else {
               self.fields = [];
               self.data = [];
@@ -150,9 +154,10 @@
             self.currentCollection = self.collections[self.currentCollectionIndex];
             var fieldNodeList = self.currentCollection.querySelectorAll("ceci-field");
             self.fields = Array.prototype.slice.call(fieldNodeList, 0);
-            self.data = self.currentCollection.data;
             self.collections.forEach(function (item) {
               item.addEventListener("fieldchange", onFieldChange);
+              item.addEventListener("itemchange", onItemChange);
+              item.addEventListener("dataloaded", onItemChange);
             });
           }
           self.collectionsElement.addEventListener("schemachange", onSchemaChange);
@@ -179,7 +184,7 @@
         this.async(function () {
           this.currentCollection = this.collections[this.currentCollectionIndex];
           this.fields = Array.prototype.slice.call(this.currentCollection.querySelectorAll("ceci-field"), 0);
-          this.data = this.currentCollection.data;
+          this.data = this.currentCollection.data.slice(0);
         });
       },
       addDataRow: function (event, detail, sender) {
@@ -190,10 +195,10 @@
           newRow[item.name] = newRow[item.name] || inputElement.value;
           inputElement.value = '';
         });
-        this.currentCollection.data.push(newRow);
+        this.currentCollection.addItem(newRow);
       },
       removeDataRow: function (event, detail, sender) {
-        this.currentCollection.data.splice(parseInt(sender.getAttribute('data-index')), 1);
+        this.currentCollection.removeItem(parseInt(sender.getAttribute('data-index')), 1);
       }
     });
   </script>

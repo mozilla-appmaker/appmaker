@@ -21,6 +21,7 @@
           }
         }
         this.data = savedData || [];
+        this.fire("dataloaded");
         this.observer = new ArrayObserver(this.data);
         this.observer.open(function(splices) {
           splices.forEach(function(splice) {
@@ -52,6 +53,29 @@
           changed: "kind"
         };
         this.fire("namechange");
+      },
+      addItem: function(item) {
+        this.data.push(item);
+        var detail = {
+          added: item,
+          index: this.data.length - 1
+        };
+        this.fire("itemchange", detail);
+      },
+      removeItem: function(index) {
+        var detail = {
+          removed: this.data.splice(index, 1)[0],
+          index: index
+        };
+        this.fire("itemchange", detail);
+      },
+      updateItem: function(index, item) {
+        var detail = {
+          removed: this.data.splice(index, 1, item)[0],
+          added: item,
+          index: index
+        };
+        this.fire("itemchange", detail);
       },
       saveData: function() {
         sessionStorage.setItem("ceci-collections-" + this.schemaid, JSON.stringify(this.data));
