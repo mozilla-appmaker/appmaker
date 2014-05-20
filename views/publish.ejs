@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/style.css" />
     <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/remix.css" />
     <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300, 400,600" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <base href="<%- ceciComponentURL %>">
 
     <script src="/vendor/platform/platform.js"></script>
@@ -36,6 +37,10 @@
       <link rel="import" href="<%= href %>">
       <% }) %>
     <% } %>
+
+    <% userComponents.forEach(function(href) { %>
+      <link rel="import" href="<%= href %>">
+    <% }) %>
   </head>
   <body>
     <%- appHTML %>

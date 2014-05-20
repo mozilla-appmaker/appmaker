@@ -54,7 +54,7 @@
       },
       function(err) {
         console.log('OH NOES');
-        require(['togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils'], init);
+        require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils'], init);
       });
 
     function init(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona) {
@@ -424,14 +424,10 @@
           window.alert(err);
           return;
         },
-        addComponent: function() {
+        addComponentByURL: function (url) {
           var self = this;
-          // in a try/except block because called from an onclick handler,
-          // so want to catch exceptions.
+
           try {
-            var url = window.prompt(l10n.get("component url?"));
-            if (! url) return;
-            url = url.trim();
             // first, detect github moniker and turn those into known URL structures
             // (we don't know that there is a component at that URL though (in particular if
             // they don't have GH pages setup)
@@ -470,9 +466,19 @@
               }
               self.learnComponent(url, result)
             });
-          } catch (e) {
-            console.log(e);
           }
+          catch (e) {
+            console.error(e);
+          }
+        },
+        addComponent: function() {
+          var self = this;
+          // in a try/except block because called from an onclick handler,
+          // so want to catch exceptions.
+          var url = window.prompt(l10n.get("component url?"));
+          if (! url) return;
+          url = url.trim();
+          self.addComponentByURL(url);
         },
         mkGitHubURL: function(repo, user) {
           // use the DOM to create the right URL.
