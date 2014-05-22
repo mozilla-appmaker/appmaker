@@ -39,12 +39,6 @@
       }
     </style>
     <content></content>
-
-    <ceci-listen-vis></ceci-listen-vis>
-    <ceci-channel-menu channelType="listen"></ceci-channel-menu>
-
-    <ceci-broadcast-vis></ceci-broadcast-vis>
-    <ceci-channel-menu channelType="broadcast"></ceci-channel-menu>
   </template>
   <script>
     Polymer('ceci-element', {
@@ -66,6 +60,25 @@
         this.dispatchEvent(new CustomEvent('log', {bubbles: true, detail: message}));
       },
       attached: function() {
+
+        if(!this.querySelector('ceci-channel-menu')) {
+
+          var broadcastVis  = document.createElement("ceci-broadcast-vis");
+          this.appendChild(broadcastVis);
+
+          var listenVis  = document.createElement("ceci-listen-vis");
+          this.appendChild(listenVis);
+
+          var broadcastMenu  = document.createElement("ceci-channel-menu");
+          broadcastMenu.setAttribute("channeltype","broadcast");
+          this.appendChild(broadcastMenu);
+
+          var listenMenu  = document.createElement("ceci-channel-menu");
+          listenMenu.setAttribute("channeltype","listen");
+          this.appendChild(listenMenu);
+
+        }
+
         if(!this.querySelector(".handle")){
           var handle = document.createElement('div');
           handle.className = 'handle';

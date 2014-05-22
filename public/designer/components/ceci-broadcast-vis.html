@@ -4,12 +4,11 @@
   </template>
   <script>
   (function(){
-    //Animation speeds, In seconds
     Polymer('ceci-broadcast-vis', {
       direction : "out",
       enteredView: function () {
         var that = this;
-        this.component = this.parentNode.host;
+        this.component = this.parentNode;
         this.component.addEventListener('broadcastFired', function(data){
           that.fire(data);
         });

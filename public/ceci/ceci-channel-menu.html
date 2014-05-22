@@ -1,10 +1,16 @@
-<polymer-element name="ceci-channel-menu" attributes="channelType mode">
+<polymer-element name="ceci-channel-menu" attributes="channeltype mode">
 <template>
 <content>
-  <div class="channel-menu-wrapper"  on-mouseover="{{showMenu}}" on-mouseout="{{hideMenu}}" id="channelMenuWrapper">
-    <div id="{{channelType}}Menu" class="{{channelType}}-menu channel-menu">
-      <div class="hover-helper">
-      	<div class="arrow"></div>
+  <div class="channel-menu-wrapper {{channeltype}}"  id="channelMenuWrapper">
+
+    <div class="hover-helper" on-click="{{toggleMenu}}">
+    	<div class="arrow"></div>
+    </div>
+
+    <div id="{{channeltype}}Menu" class="{{channeltype}}-menu channel-menu">
+
+      <div class="arrow-container">
+        <div class="arrow"></div>
       </div>
 
       <div class="channel-option subscription-option option-template">
@@ -71,34 +77,69 @@
       Polymer('ceci-channel-menu', {
         attached: function () {
           var that = this;
+
+          this.menuWrapper = this.shadowRoot.querySelector(".channel-menu-wrapper");
+
           this.menu = this.shadowRoot.querySelector(".channel-menu");
+          this.hideMenu();
+
           this.async(function () {
-            this.component = this.parentNode.host;
+            this.component = this.parentNode;
             this.buildMenu(this.component);
             this.adjustMenuPosition();
           });
+
+          window.addEventListener("menuOpen",function(){
+            that.hideMenu();
+          });
+
+          document.addEventListener("click",function(e){
+
+            var srcEl = e.target;
+            var menuclick = false;
+
+            //only do this if not the hover helper was clicked
+            if(!srcEl.classList.contains("hover-helper")){
+              while(srcEl && srcEl.parentNode){
+               if(srcEl == that.menu) {
+                  menuclick = true;
+                }
+                srcEl = srcEl.parentNode;
+              }
+              if(menuclick == false) {
+                that.hideMenu();
+              }
+            }
+          });
+
+        },
+        toggleMenu : function(){
+          this.menuWrapper.classList.toggle("open");
+          if(this.menuWrapper.classList.contains("open")){
+            window.dispatchEvent(new CustomEvent('menuOpen'));
+            this.menuWrapper.classList.add("open");
+            this.addhelperClasses();
+            this.adjustMenuPosition();
+          }
         },
         showMenu : function() {
           var that = this;
-          this.addhelperClasses();
           this.component.async(function () {
-            var items = that.channelType == "listen" ? Object.keys(that.component.ceci.listeners) : Object.keys(that.component.ceci.broadcasts);
+            var items = that.channeltype == "listen" ? Object.keys(that.component.ceci.listeners) : Object.keys(that.component.ceci.broadcasts);
             if (items.length > 0) {
-              that.menu.style.display = "block";
+              that.menuWrapper.classList.add("open");
               var height = that.menu.offsetHeight;
               that.menu.style.marginTop = -1 * (height/2) + "px";
             }
           });
         },
         hideMenu : function() {
-          if(this.mode != "channelpick") {
-            this.menu.style.display = "none";
-          }
+          this.menuWrapper.classList.remove("open");
         },
         adjustMenuPosition : function(){
           this.menu = this.shadowRoot.querySelector(".channel-menu");
           var height = this.menu.offsetHeight;
-          this.menu.style.marginTop = "-" + (height/2) + "px";
+          this.menu.style.marginTop = "-" + (height/2 + 1) + "px";
         },
 				addhelperClasses : function(){
 
@@ -134,17 +175,18 @@
           }
         },
         changeChannel : function(handlerType, handler ,color){
-          var visEl = this.component.querySelector("ceci-"+this.channelType+"["+handlerType+"=\""+handler+"\"]");
+          var visEl = this.component.querySelector("ceci-"+this.channeltype+"["+handlerType+"=\""+handler+"\"]");
+
           if (color == "false"){
-             if (visEl){
-               visEl.parentNode.removeChild(visEl);
-             }
+            if (visEl){
+              visEl.parentNode.removeChild(visEl);
+            }
           } else {
             // If it exists
             if (visEl){
               visEl.setAttribute("on",color);
             } else {
-              var newEl = document.createElement("ceci-" + this.channelType);
+              var newEl = document.createElement("ceci-" + this.channeltype);
               newEl.setAttribute("on",color);
               newEl.setAttribute(handlerType,handler);
               this.component.appendChild(newEl);
@@ -156,7 +198,7 @@
           var that = this;
           var communicators, handlertype;
 
-          if(this.channelType == "broadcast") {
+          if(this.channeltype == "broadcast") {
             communicators = this.component.ceci.broadcasts;
             handlerType = "from";
           }
@@ -199,6 +241,7 @@
                 channelOption.querySelector(".color-ui").style.display = "none";
                 that.adjustMenuPosition();
                 that.mode = "";
+                that.hideMenu();
               }
             };
           }
@@ -209,8 +252,6 @@
 
             //Hide all the options
             var options = that.menu.querySelectorAll(".channel-option");
-
-            that.mode = "channelpick";
 
             Object.keys(options).forEach(function(o){
               options[o].style.display = "none";
@@ -257,7 +298,7 @@
               var colorOptions = channelOption.querySelectorAll(".color-ui .color");
 
               //Check if there's a listener for that element already and set the appropriate color.
-              var existingEl = that.component.querySelector("ceci-" + this.channelType + "["+handlerType+"="+key+"]");
+              var existingEl = that.component.querySelector("ceci-" + this.channeltype + "["+handlerType+"="+key+"]");
 
               if(existingEl){
                 var color = existingEl.getAttribute("on");

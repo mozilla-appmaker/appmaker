@@ -11,66 +11,108 @@
 
 [channelType=listen] .channel-menu-wrapper {
   position: absolute;
-  left: -600px;
+  left: -610px;
   top: 0px;
   width: 600px;
   height: 100%
 }
 
+.hover-helper {
+  width: 30px;
+  height: 30px;  opacity: 1;
+  color: white;
+  background: url(/images/menu-arrow.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 54px;
+  position: absolute;
+  opacity: .15;
+  top: ~"calc(50% - 15px)";
+  cursor: pointer;
+
+  &:hover {
+    opacity: .25;
+  }
+
+}
+
+.open .hover-helper {
+  opacity: .25;
+}
+
+.broadcast .hover-helper {
+  left: 0px;
+}
+.listen .hover-helper {
+  right: 0px;
+}
+
+.open .channel-menu {
+  display: block;
+}
+
+/*Arrow Container*/
+
+.arrow-container {
+  height: 40px;
+  position: absolute;
+  top: ~"calc(50% - 20px)";
+  overflow: hidden;
+  width: 12px;
+
+  .arrow {
+    height: 15px;
+    width: 15px;
+    background: white;
+    position: absolute;
+    top: ~"calc(50% - 10px)";
+    border: solid 4px #BBB;
+    -webkit-transform-origin: center;
+    -webkit-transform: rotate(45deg);
+    transform-origin: center;
+    transform: rotate(45deg);
+  }
+
+}
+
+.broadcast-menu {
+  .arrow-container {
+    left: -12px;
+    .arrow {
+      left: 6px;
+    }
+  }
+}
+
+.listen-menu {
+  .arrow-container {
+    right: -12px;
+    .arrow {
+      right: 6px;
+    }
+  }
+}
+
 .channel-menu {
   padding: 4px 4px 5px 4px;
   position: absolute;
-  top: 50%;
   display: none;
-  .border-radius(5px);
+  top: 50%;
+  .border-radius(6px);
   border: solid 1px #BBB;
   background: -webkit-linear-gradient(top, #FFF, #FFF 70%, #EEE);
   background: -moz-linear-gradient(top, #FFF, #FFF 70%, #EEE);
-  border-bottom: solid 2px #BBB;
   z-index: 999999;
+  border: solid 4px rgba(0,0,0,.20);
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
 
   .option-template {
     display: none;
   }
 
-  &.broadcast-menu {
-    left: 0px;
-  }
-
-  .hover-helper {
-    width: 40px;
-    height: 100%;
-    opacity: 1;
-    position: absolute;
-    top: 0;
-    overflow: hidden;
-
-    .arrow {
-      height: 15px;
-      width: 15px;
-      background: white;
-      position: absolute;
-      top: ~"calc(50% - 8px)";
-      border: solid 1px #BBB;
-      -webkit-transform-origin: center;
-      -webkit-transform: rotate(45deg);
-      transform-origin: center;
-      transform: rotate(45deg);
-    }
-
-  }
-
   &.listen-menu {
-    right: 10px;
-
-    .hover-helper {
-      right: -40px;
-
-			.arrow {
-				left: -10px;
-			}
-
-    }
+    right: 40px;
 
     .chosen-color {
       right: 5px;
@@ -84,19 +126,11 @@
   }
 
   &.broadcast-menu {
-    left: -3px;
+    left: 40px;
 
     label {
       text-align: left;
     }
-
-    .hover-helper {
-      left: -40px;
-    	
-			.arrow {
-				right: -10px;
-			}
-		}
 
     .chosen-color {
        left: 5px;
