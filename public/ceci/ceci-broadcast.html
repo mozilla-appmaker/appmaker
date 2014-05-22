@@ -15,19 +15,19 @@
         document.dispatchEvent(e);
       },
       onChanged : function(){
-      	this.updated();
+        this.updated();
       },
       fromChanged: function(){
-      	this.updated();
+        this.updated();
       },
       detached: function(){
-      	this.updated();
+        this.updated();
       },
       updated: function(){
-      window.dispatchEvent(new CustomEvent('channelUpdate'));
+        window.dispatchEvent(new CustomEvent('channelUpdate'));
       },
       attached: function () {
-				  this.updated();
+        this.updated();
         while (true) {
           this._element = this.parentNode;
           if (!this._element) break;

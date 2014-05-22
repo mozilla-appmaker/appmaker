@@ -106,7 +106,7 @@
                 }
                 srcEl = srcEl.parentNode;
               }
-              if(menuclick == false) {
+              if(menuclick === false) {
                 that.hideMenu();
               }
             }
@@ -165,8 +165,8 @@
               }
             }
 
-            for(var j = 0; j < lchans.length; j++){
-              var lchannel = lchans[j];
+            for(var k = 0; k < lchans.length; k++){
+              var lchannel = lchans[k];
               if(thisChannel == lchannel){
                 channelDot.classList.add("haslistener");
               }
