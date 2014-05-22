@@ -1,4 +1,4 @@
-<polymer-element name="ceci-channel-menu" attributes="channeltype mode">
+<polymer-element name="ceci-channel-menu" attributes="channeltype">
 <template>
 <content>
   <div class="channel-menu-wrapper {{channeltype}}"  id="channelMenuWrapper">
@@ -135,6 +135,16 @@
         },
         hideMenu : function() {
           this.menuWrapper.classList.remove("open");
+
+          //Revert the menu to the list of listeners or subscribers
+          var colorUis = this.menuWrapper.querySelectorAll(".color-ui");
+          for(var i = 0; i < colorUis.length; i++){
+            colorUis[i].style.display = "none";
+          }
+          var labels = this.menuWrapper.querySelectorAll("label");
+          for(var j = 0; j < labels.length; j++){
+            labels[j].style.display = "block";
+          }
         },
         adjustMenuPosition : function(){
           this.menu = this.shadowRoot.querySelector(".channel-menu");
@@ -150,6 +160,8 @@
           var lchans = channelMap.listenerchannels;
 
           var channels = this.shadowRoot.querySelectorAll(".channel-option:not(.option-template) .color-ui .color");
+
+          // loops through all the channel dots
 
           for(var i = 0; i < channels.length; i++) {
             var channelDot = channels[i];
@@ -214,10 +226,13 @@
               var color = this.getAttribute("color");
               var handler = channelOption.getAttribute(handlerType);
               that.changeChannel(handlerType, handler, color);
-              channelOption.querySelector("label").style.display = "block";
               channelOption.querySelector("label .chosen-color").setAttribute("color",color);
+              // This block basically closes the specific color chooser
+              channelOption.querySelector("label").style.display = "block";
               channelOption.querySelector(".color-ui").style.display = "none";
               that.adjustMenuPosition();
+              //
+
             };
           }
 
@@ -240,7 +255,6 @@
                 channelOption.querySelector("label .chosen-color").setAttribute("color", color);
                 channelOption.querySelector(".color-ui").style.display = "none";
                 that.adjustMenuPosition();
-                that.mode = "";
                 that.hideMenu();
               }
             };
