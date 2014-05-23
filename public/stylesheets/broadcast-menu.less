@@ -1,8 +1,6 @@
 @import "variables.less";
 @import "mixins.less";
 
-// Leaving in some of the subscription styles for now, since I might duplicate this, or reuse somehow
-
 [channelType=broadcast] .channel-menu-wrapper {
   position: absolute;
   left: 320px;
@@ -11,48 +9,110 @@
   height: 100%
 }
 
-
 [channelType=listen] .channel-menu-wrapper {
   position: absolute;
-  left: -600px;
+  left: -610px;
   top: 0px;
   width: 600px;
   height: 100%
 }
 
+.hover-helper {
+  width: 30px;
+  height: 30px;  opacity: 1;
+  color: white;
+  background: url(/images/menu-arrow.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 54px;
+  position: absolute;
+  opacity: .15;
+  top: ~"calc(50% - 15px)";
+  cursor: pointer;
+
+  &:hover {
+    opacity: .25;
+  }
+
+}
+
+.open .hover-helper {
+  opacity: .25;
+}
+
+.broadcast .hover-helper {
+  left: 0px;
+}
+.listen .hover-helper {
+  right: 0px;
+}
+
+.open .channel-menu {
+  display: block;
+}
+
+/*Arrow Container*/
+
+.arrow-container {
+  height: 40px;
+  position: absolute;
+  top: ~"calc(50% - 20px)";
+  overflow: hidden;
+  width: 12px;
+
+  .arrow {
+    height: 15px;
+    width: 15px;
+    background: white;
+    position: absolute;
+    top: ~"calc(50% - 10px)";
+    border: solid 4px #BBB;
+    -webkit-transform-origin: center;
+    -webkit-transform: rotate(45deg);
+    transform-origin: center;
+    transform: rotate(45deg);
+  }
+
+}
+
+.broadcast-menu {
+  .arrow-container {
+    left: -12px;
+    .arrow {
+      left: 6px;
+    }
+  }
+}
+
+.listen-menu {
+  .arrow-container {
+    right: -12px;
+    .arrow {
+      right: 6px;
+    }
+  }
+}
+
 .channel-menu {
   padding: 4px 4px 5px 4px;
-  background: white;
   position: absolute;
   display: none;
   top: 50%;
-  .border-radius(5px);
+  .border-radius(6px);
   border: solid 1px #BBB;
-  border-bottom: solid 2px #BBB;
+  background: -webkit-linear-gradient(top, #FFF, #FFF 70%, #EEE);
+  background: -moz-linear-gradient(top, #FFF, #FFF 70%, #EEE);
   z-index: 999999;
+  border: solid 4px rgba(0,0,0,.20);
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
 
   .option-template {
     display: none;
   }
 
-  &.broadcast-menu {
-    left: 0px;
-  }
-
-  .hover-helper {
-    width: 40px;
-    height: 100%;
-    opacity: 0;
-    position: absolute;
-    top: 0;
-  }
-
   &.listen-menu {
-    right: 10px;
-
-    .hover-helper {
-      right: -40px;
-    }
+    right: 40px;
 
     .chosen-color {
       right: 5px;
@@ -66,14 +126,10 @@
   }
 
   &.broadcast-menu {
-    left: -3px;
+    left: 40px;
 
     label {
       text-align: left;
-    }
-
-    .hover-helper {
-      left: -40px;
     }
 
     .chosen-color {
@@ -111,14 +167,12 @@
     color: #555;
     display: block;
     font-size: 1.3rem;
-    border-bottom: solid 1px white;
-    .border-radius(10px);
+    .border-radius(5px);
 
     cursor: pointer;
 
     &:hover {
-      background: #F7F7F7;
-      border-bottom: solid 1px #DDD;
+      background: rgba(0,0,0,.05);
     }
 
     &:active {
@@ -134,6 +188,13 @@
   }
 
   .color-ui {
+
+    .border-radius(3px);
+    display: none;
+    text-align: left;
+    padding: 3px 5px 2px 5px;
+    cursor: default;
+    overflow: auto;
 
     h3 {
       font-size: 13px;
@@ -151,28 +212,21 @@
         color: #666;
         font-size: inherit;
       }
-
     }
 
-    .border-radius(3px);
-    display: none;
-    text-align: left;
-    padding: 3px 5px 2px 5px;
-    cursor: default;
-    overflow: auto;
-
     .color {
-      padding: 0px 6px 1px 6px;
       margin: 0 2px 2px 0px;
       color: rgba(255,255,255,.75);
       cursor: pointer;
-      opacity: 1;
+      position: relative;
+      overflow:hidden;
+      padding: 0px 6px 1px 6px;
+      opacity: .4;
       .border-radius(20px);
 
       &:hover {
-        opacity: .7;
+        opacity: 1;
         text-decoration: none;
-        border: none;
       }
 
       &[color=false] {
@@ -187,24 +241,30 @@
 
     }
   }
+	
+/*  These are the selected color labels in the menu*/
 
-  //These are the selected color labels in the menu
-
-  .channel-option .chosen-color[color=false]:before {
+  .channel-option .chosen-color[color=false]:after {
     content: "X";
     color:#999;
   }
 
-  .channel-option .chosen-color:before {
+  .channel-option .chosen-color:after {
+    position: relative;
     content: "1";
+    z-index: 999;
   }
 
-  .channel-option [color*=two]:before {
+  .channel-option [color*=two]:after {
+		position: relative;
     content: "2";
+		z-index: 999;		
   }
 
-  .channel-option [color*=three]:before {
+  .channel-option [color*=three]:after {
+    position: relative;
     content: "3";
+    z-index: 999;
   }
 
   .channel-option {
@@ -237,4 +297,41 @@
     }
   }
 
+}
+
+.broadcast-menu .color-ui {
+  .haslistener {
+    -webkit-animation: strobe .3s linear infinite;
+    animation: strobe .3s linear infinite;
+  }
+  .hasbroadcast,
+  .hasbroadcast.haslistener {
+    -webkit-animation: none;
+    animation: none;
+    opacity: 1;
+  }
+}
+
+.listen-menu .color-ui {
+  .hasbroadcast {
+    -webkit-animation: strobe .25s linear infinite;
+    animation: strobe .25s linear infinite;
+  }
+  .haslistener,
+  .hasbroadcast.haslistener {
+    -webkit-animation: none;
+    animation: none;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes strobe {
+  0% { -webkit-transform: scale(1); }
+  50% { -webkit-transform: scale(.8);}
+  100% { -webkit-transform: scale(1); }	
+}
+@keyframes strobe {
+  0% { transform: scale(1); }
+  50% { transform: scale(.8);}
+  100% { transform: scale(1); }	
 }

@@ -1,8 +1,17 @@
-<polymer-element name="ceci-channel-menu" attributes="channelType">
+<polymer-element name="ceci-channel-menu" attributes="channeltype">
 <template>
-  <div on-mouseenter="{{showMenu}}" on-mouseleave="{{hideMenu}}" class="channel-menu-wrapper" id="channelMenuWrapper">
-    <div id="{{channelType}}Menu" class="{{channelType}}-menu channel-menu">
-      <div class="hover-helper"></div>
+<content>
+  <div class="channel-menu-wrapper {{channeltype}}"  id="channelMenuWrapper">
+
+    <div class="hover-helper" on-click="{{toggleMenu}}">
+    	<div class="arrow"></div>
+    </div>
+
+    <div id="{{channeltype}}Menu" class="{{channeltype}}-menu channel-menu">
+
+      <div class="arrow-container">
+        <div class="arrow"></div>
+      </div>
 
       <div class="channel-option subscription-option option-template">
 
@@ -61,49 +70,135 @@
       </div>
     </div>
   </div>
+</content>
 </template>
   <script>
     require(['l10n'], function(L10n) {
       Polymer('ceci-channel-menu', {
-        enteredView: function () {
+        attached: function () {
           var that = this;
+
+          this.menuWrapper = this.shadowRoot.querySelector(".channel-menu-wrapper");
+
           this.menu = this.shadowRoot.querySelector(".channel-menu");
+          this.hideMenu();
+
           this.async(function () {
-            this.component = this.parentNode.host;
+            this.component = this.parentNode;
             this.buildMenu(this.component);
+            this.adjustMenuPosition();
           });
+
+          window.addEventListener("menuOpen",function(){
+            that.hideMenu();
+          });
+
+          document.addEventListener("click",function(e){
+
+            var srcEl = e.target;
+            var menuclick = false;
+
+            //only do this if not the hover helper was clicked
+            if(!srcEl.classList.contains("hover-helper")){
+              while(srcEl && srcEl.parentNode){
+                if(srcEl == that.menu) {
+                  menuclick = true;
+                }
+                srcEl = srcEl.parentNode;
+              }
+              if(menuclick === false) {
+                that.hideMenu();
+              }
+            }
+          });
+
         },
-        hideMenu : function() {
-          this.menu.style.display = "none";
-        },
-        adjustMenuPosition : function(){
-          var height = this.menu.offsetHeight;
-          this.menu.style.marginTop = "-" + (height/2) + "px";
+        toggleMenu : function(){
+          this.menuWrapper.classList.toggle("open");
+          if(this.menuWrapper.classList.contains("open")){
+            window.dispatchEvent(new CustomEvent('menuOpen'));
+            this.menuWrapper.classList.add("open");
+            this.addhelperClasses();
+            this.adjustMenuPosition();
+          }
         },
         showMenu : function() {
           var that = this;
           this.component.async(function () {
-            var items = that.channelType == "listen" ? Object.keys(that.component.ceci.listeners) : Object.keys(that.component.ceci.broadcasts);
-
+            var items = that.channeltype == "listen" ? Object.keys(that.component.ceci.listeners) : Object.keys(that.component.ceci.broadcasts);
             if (items.length > 0) {
-              that.menu.style.display = "block";
+              that.menuWrapper.classList.add("open");
               var height = that.menu.offsetHeight;
               that.menu.style.marginTop = -1 * (height/2) + "px";
             }
           });
         },
+        hideMenu : function() {
+          this.menuWrapper.classList.remove("open");
+
+          //Revert the menu to the list of listeners or subscribers
+          var colorUis = this.menuWrapper.querySelectorAll(".color-ui");
+          for(var i = 0; i < colorUis.length; i++){
+            colorUis[i].style.display = "none";
+          }
+          var labels = this.menuWrapper.querySelectorAll("label");
+          for(var j = 0; j < labels.length; j++){
+            labels[j].style.display = "block";
+          }
+        },
+        adjustMenuPosition : function(){
+          this.menu = this.shadowRoot.querySelector(".channel-menu");
+          var height = this.menu.offsetHeight;
+          this.menu.style.marginTop = "-" + (height/2 + 1) + "px";
+        },
+        addhelperClasses : function(){
+
+          //Adds hasbroadcast or haslistener classes to the color dots
+
+          var channelMap = document.querySelector("ceci-channel-map");
+          var bchans = channelMap.broadcastchannels;
+          var lchans = channelMap.listenerchannels;
+
+          var channels = this.shadowRoot.querySelectorAll(".channel-option:not(.option-template) .color-ui .color");
+
+          // loops through all the channel dots
+
+          for(var i = 0; i < channels.length; i++) {
+            var channelDot = channels[i];
+            channelDot.classList.remove("hasbroadcast");
+            channelDot.classList.remove("haslistener");
+
+            var thisChannel = channelDot.getAttribute("data-channel");
+
+            for(var j = 0; j < bchans.length; j++){
+              var bchannel = bchans[j];
+              if(thisChannel == bchannel){
+                channelDot.classList.add("hasbroadcast");
+              }
+            }
+
+            for(var k = 0; k < lchans.length; k++){
+              var lchannel = lchans[k];
+              if(thisChannel == lchannel){
+                channelDot.classList.add("haslistener");
+              }
+            }
+
+          }
+        },
         changeChannel : function(handlerType, handler ,color){
-          var visEl = this.component.querySelector("ceci-"+this.channelType+"["+handlerType+"=\""+handler+"\"]");
+          var visEl = this.component.querySelector("ceci-"+this.channeltype+"["+handlerType+"=\""+handler+"\"]");
+
           if (color == "false"){
-             if (visEl){
-               visEl.parentNode.removeChild(visEl);
-             }
+            if (visEl){
+              visEl.parentNode.removeChild(visEl);
+            }
           } else {
             // If it exists
             if (visEl){
               visEl.setAttribute("on",color);
             } else {
-              var newEl = document.createElement("ceci-" + this.channelType);
+              var newEl = document.createElement("ceci-" + this.channeltype);
               newEl.setAttribute("on",color);
               newEl.setAttribute(handlerType,handler);
               this.component.appendChild(newEl);
@@ -115,7 +210,7 @@
           var that = this;
           var communicators, handlertype;
 
-          if(this.channelType == "broadcast") {
+          if(this.channeltype == "broadcast") {
             communicators = this.component.ceci.broadcasts;
             handlerType = "from";
           }
@@ -131,8 +226,8 @@
               var color = this.getAttribute("color");
               var handler = channelOption.getAttribute(handlerType);
               that.changeChannel(handlerType, handler, color);
-              channelOption.querySelector("label").style.display = "block";
               channelOption.querySelector("label .chosen-color").setAttribute("color",color);
+              channelOption.querySelector("label").style.display = "block";
               channelOption.querySelector(".color-ui").style.display = "none";
               that.adjustMenuPosition();
             };
@@ -157,6 +252,7 @@
                 channelOption.querySelector("label .chosen-color").setAttribute("color", color);
                 channelOption.querySelector(".color-ui").style.display = "none";
                 that.adjustMenuPosition();
+                that.hideMenu();
               }
             };
           }
@@ -213,7 +309,7 @@
               var colorOptions = channelOption.querySelectorAll(".color-ui .color");
 
               //Check if there's a listener for that element already and set the appropriate color.
-              var existingEl = that.component.querySelector("ceci-" + this.channelType + "["+handlerType+"="+key+"]");
+              var existingEl = that.component.querySelector("ceci-" + this.channeltype + "["+handlerType+"="+key+"]");
 
               if(existingEl){
                 var color = existingEl.getAttribute("on");

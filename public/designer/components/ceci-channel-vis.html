@@ -7,7 +7,7 @@
     Polymer('ceci-channel-vis', {
       enteredView: function () {
         var that = this;
-        this.component = this.parentNode.host;
+        this.component = this.parentNode;
         // TODO: This shouldn't be done on the window
         window.addEventListener('channelUpdated', function(data){
           that.updateChannelVis();
