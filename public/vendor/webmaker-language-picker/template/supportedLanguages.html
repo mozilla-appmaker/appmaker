@@ -1,0 +1,5 @@
+<select name="supportedLocales" id="supportedLocales">
+  {% for locale in languages %}<option value="{{ locale }}"{%
+  if locale == localeInfo.lang %} selected="selected"{% endif
+  %}>{{ languageEnglishName(locale) }} - {{ languageNameFor(locale) }}</option>{% endfor %}
+ </select>

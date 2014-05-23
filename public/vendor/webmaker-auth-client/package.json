@@ -1,0 +1,31 @@
+{
+  "name": "webmaker-auth-client",
+  "version": "0.1.0",
+  "main": "webmaker-auth-client.js",
+  "scripts": {
+    "postinstall": "./node_modules/.bin/bower install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/k88hudson/webmaker-auth-client.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "webmaker-auth": "0.0.14",
+    "bower": "~1.2.8"
+  },
+  "devDependencies": {
+    "express": "~3.4.8",
+    "grunt": "0.4.2",
+    "grunt-contrib-jshint": "0.7.2",
+    "grunt-contrib-requirejs": "^0.4.3",
+    "grunt-jsbeautifier": "0.2.6",
+    "grunt-shell": "0.6.1",
+    "grunt-contrib-watch": "0.5.3",
+    "grunt-shell-spawn": "0.3.0",
+    "habitat": "~1.1.0",
+    "grunt-contrib-compress": "~0.6.1",
+    "grunt-contrib-concat": "~0.3.0"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "webmaker-language-picker",
+  "version": "0.0.22",
+  "main": "js/languages.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mozilla/webmaker-language-picker.git"
+  },
+  "author": "Ali Al Dallal <ali@alicoding.com>",
+  "license": "Mozilla Public License, version 2.0",
+  "dependencies": {
+    "bower": "~1.2.8"
+  }
+}
