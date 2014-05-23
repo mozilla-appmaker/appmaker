@@ -20,8 +20,6 @@
         for(var i = 0; i < els.length; i++) {
           var el = els[i];
           var channel = el.on;
-          var type;
-
           var type = el.hasAttribute("for") ? "listener" : "broadcast";
           var method = el.getAttribute("for") || el.getAttribute("from");
 
@@ -34,7 +32,6 @@
           }
 
           this.map[channel][type].push(method);
-
         }
 
         this.showChannels();
