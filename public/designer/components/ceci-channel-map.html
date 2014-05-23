@@ -40,20 +40,18 @@
         var channelStatus;
         var broadcastChannels = [];
         var listenerChannels = [];
+        var that = this;
 
-        for(var key in this.map) {
-          if(this.map.hasOwnProperty(key)){
-            var channel = this.map[key];
-
-            if(channel.broadcast) {
-              broadcastChannels.push(key);
-            } 
-
-            if(channel.listener) {
-              listenerChannels.push(key);
-            }
+        Object.keys(this.map).forEach(function(key){
+          var channel = that.map[key];
+          if(channel.broadcast) {
+            broadcastChannels.push(key);
           }
-        }
+          if(channel.listener) {
+            listenerChannels.push(key);
+          }
+        });
+
         this.broadcastchannels = broadcastChannels;
         this.listenerchannels = listenerChannels;
       },

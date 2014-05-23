@@ -101,7 +101,7 @@
             //only do this if not the hover helper was clicked
             if(!srcEl.classList.contains("hover-helper")){
               while(srcEl && srcEl.parentNode){
-               if(srcEl == that.menu) {
+                if(srcEl == that.menu) {
                   menuclick = true;
                 }
                 srcEl = srcEl.parentNode;
@@ -227,12 +227,9 @@
               var handler = channelOption.getAttribute(handlerType);
               that.changeChannel(handlerType, handler, color);
               channelOption.querySelector("label .chosen-color").setAttribute("color",color);
-              // This block basically closes the specific color chooser
               channelOption.querySelector("label").style.display = "block";
               channelOption.querySelector(".color-ui").style.display = "none";
               that.adjustMenuPosition();
-              //
-
             };
           }
 
