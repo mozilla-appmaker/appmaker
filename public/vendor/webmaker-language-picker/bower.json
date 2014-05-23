@@ -1,0 +1,23 @@
+{
+  "name": "webmaker-language-picker",
+  "dependencies": {
+    "font-awesome": "3.2.1",
+    "requirejs": "2.1.8",
+    "hint.css": "~1.3.1",
+    "list.fuzzysearch.js": "~0.1.0",
+    "listjs": "git://github.com/javve/list.js.git#~1.0.0",
+    "selectize": "0.9.0"
+  },
+  "version": "0.0.23",
+  "homepage": "https://github.com/mozilla/webmaker-language-picker",
+  "authors": [
+    "Ali Al Dallal <ali@alicoding.com>"
+  ],
+  "description": "Webmaker Language Picker",
+  "main": "js/languages.js",
+  "keywords": [
+    "Language",
+    "Picker"
+  ],
+  "license": "Mozilla Public License, version 2.0"
+}

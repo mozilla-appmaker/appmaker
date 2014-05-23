@@ -34,7 +34,11 @@ requirejs.config({
     "colorpicker.i18n.fr": "../vendor/colorpicker/i18n/jquery.ui.colorpicker-fr",
     "colorpicker.i18n.nl": "../vendor/colorpicker/i18n/jquery.ui.colorpicker-nl",
     "colorpicker.i18n.pt-br": "../vendor/colorpicker/i18n/jquery.ui.colorpicker-pt-br",
-    "Firebase": "https://cdn.firebase.com/v0/firebase"
+    "Firebase": "https://cdn.firebase.com/v0/firebase",
+
+    "webmaker-auth-client": "../vendor/webmaker-auth-client/dist/webmaker-auth-client.min",
+
+    "selectize": "../vendor/selectize/dist/js/standalone/selectize.min"
   },
   shim: {
     "jquery-ui": {

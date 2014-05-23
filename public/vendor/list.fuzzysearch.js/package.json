@@ -1,0 +1,21 @@
+{
+  "name": "list.fuzzysearch.js",
+  "version": "0.1.0",
+  "description": "A fuzzy search plugin for List.js",
+  "keywords": [],
+  "author": "Jonny Strömberg <jonny.stromberg@gmail.com>",
+  "repository": "git://github.com/javve/list.fuzzysearch.js.git",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-shell": "~0.5.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-uglify": "~0.2.7",
+    "grunt-contrib-jshint": "~0.7.1",
+    "grunt-mocha": "~0.4.1"
+  },
+  "main": "index",
+  "engines": {
+    "node": ">= 0.10.21"
+  }
+}

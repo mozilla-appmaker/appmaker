@@ -1,0 +1,19 @@
+{
+  "name": "cookie-js",
+  "main": "cookie.js",
+  "version": "0.0.1",
+  "authors": [
+    "Chris De Cairos <cade@mozillafoundation.org>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/cadecairos/cookie-js",
+  "_release": "0.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.1",
+    "commit": "62b9eb4e97f3f3c4d652bd29700cf06251c1048b"
+  },
+  "_source": "git://github.com/cadecairos/cookie-js.git",
+  "_target": "~0.0.1",
+  "_originalSource": "cookie-js"
+}

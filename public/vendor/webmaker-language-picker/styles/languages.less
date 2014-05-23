@@ -1,0 +1,234 @@
+@import '@{colors-path}/colors';
+@import (less) "@{language-bower-path}/hint.css/hint.css";
+@import (less) "@{language-bower-path}/selectize/dist/css/selectize.default.css";
+
+#list-of-languages > p > a {
+  text-decoration: underline;
+  color: #27aae1;
+}
+
+.language-picker {
+  position: relative;
+
+  > a {
+    opacity: 0.4;
+    margin-right: 0.5em;
+    border-bottom: none;
+  }
+  .fa-globe {
+    margin-right: 0.2em;
+  }
+  .selected {
+    opacity: 1;
+  }
+}
+
+.language-picker-box[dir="rtl"] {
+  &.topLeft:before {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+  }
+  &.bottomRight:before {
+    -webkit-transform: rotate(135deg);
+    -moz-transform: rotate(135deg);
+    transform: rotate(135deg);
+  }
+}
+
+.language-picker-box {
+  display: none;
+  position: absolute;
+  width: 360px;
+  font-size: 14px;
+  border: 1px solid @yellow;
+  background: white;
+  padding: 1em;
+  z-index: 9999;
+  &:before {
+    display: block;
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 1px solid @yellow;
+    border-right: none;
+    border-top: none;
+    background: white;
+  }
+  &.topLeft:before {
+    right: 100%;
+    bottom: 24px;
+    margin-right: -7px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  &.bottomRight:before {
+    left: 100%;
+    top: 24px;
+    margin-left: -7px;
+    -webkit-transform: rotate(-135deg);
+    -moz-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+  }
+  &.bottomTop:before {
+    left: 50%;
+    top: -8px;
+    margin-left: -7px;
+    -webkit-transform: rotate(135deg);
+    -moz-transform: rotate(135deg);
+    transform: rotate(135deg);
+  }
+  .list a {
+    border: none;
+    background: none;
+    padding: 5px;
+    border-radius: 3px;
+    &.selected {
+      background: @yellow;
+      color: darken(@yellow, 30%);
+    }
+  }
+  .input-wrapper {
+    display: block;
+    margin-bottom: 10px;
+    width: 320px;
+  }
+  .language-search {
+    display: block;
+    width: 100%;
+  }
+  .english-name {
+    display: none;
+  }
+  .list {
+    padding: 0;
+    list-style: none;
+    li {
+      line-height: 1.6em;
+    }
+  }
+}
+
+.col {
+  -moz-column-count: 3;
+  -webkit-column-count: 3;
+  column-count: 3;
+}
+
+.col-width {
+  -moz-column-width: 240px;
+  -webkit-column-width: 240px;
+  column-width: 240px;
+  -moz-column-gap: 20px;
+  -webkit-column-gap: 20px;
+  column-gap: 20px;
+}
+
+.col-spacing {
+  text-align: center;
+  width: 375px;
+}
+
+#language {
+  text-align: center;
+}
+.list-of-languages .list {
+  padding: 2em 0;
+  list-style: none;
+  .clearfix();
+  text-align: center;
+  vertical-align: middle;
+
+  li {
+    margin-bottom: 0.5em;
+    line-height: 2.0em;
+    text-align: left;
+  }
+
+  a {
+    background: none;
+    transition: all 0.2s ease-in-out;
+  }
+
+  // Only show localized language names
+  .english-name {
+    display: none;
+  }
+
+}
+
+.input-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.language-search {
+  width: 200px;
+  border: 1px solid #DDD;
+  padding: 0.5em 0.5em 0.5em 1.8em;
+  font-family: inherit;
+  font-size: 1em;
+  transition: all 0.2s ease-in;
+  &:focus {
+    outline: none;
+    border-color: darken(@yellow, 10%);
+    box-shadow: 0 1px 4px -2px @yellow;
+  }
+}
+
+.empty-message {
+  display: none;
+}
+
+label[for="language-search"] {
+  position: absolute;
+  left: 0.6em;
+  top: 0.5em;
+  color: #CCC;
+}
+
+@media (min-width:320px) and (max-width:540px) {
+
+  .col-width {
+    -moz-column-width: 0;
+    -webkit-column-width: 0;
+    column-width: 0;
+  }
+
+  .col {
+    -moz-column-count: 1;
+    -webkit-column-count: 1;
+    column-count: 1;
+  }
+}
+
+/***********************************************************
+ * HINT
+ */
+.hintCustom(@bg, @shadow) {
+ &:after {
+   background-color: @bg;
+   text-shadow: 0 -1px 0px @shadow; }
+ &.hint--top:before {
+   border-top-color: @bg; }
+ &.hint--bottom:before {
+   border-bottom-color: @bg; }
+ &.hint--left:before {
+   border-left-color: @bg; }
+ &.hint--right:before {
+   border-right-color: @bg; }
+}
+
+// Mods, most hints need to be block
+.hint,[data-hint] {
+ display: block;
+}
+.hint--inline, .hint--inline[data-hint] {
+ display: inline-block;
+}
+// Custom hint style
+.hint--red {
+ .hintCustom(@red, darken(@red, 10%));
+}
