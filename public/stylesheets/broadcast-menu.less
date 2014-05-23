@@ -218,10 +218,10 @@
       margin: 0 2px 2px 0px;
       color: rgba(255,255,255,.75);
       cursor: pointer;
-			position: relative;
-			overflow:hidden;
-			padding: 0px 6px 1px 6px;
-			opacity: .4;
+      position: relative;
+      overflow:hidden;
+      padding: 0px 6px 1px 6px;
+      opacity: .4;
       .border-radius(20px);
 
       &:hover {
@@ -250,9 +250,9 @@
   }
 
   .channel-option .chosen-color:after {
-		position: relative;
+    position: relative;
     content: "1";
-		z-index: 999;
+    z-index: 999;
   }
 
   .channel-option [color*=two]:after {
@@ -262,17 +262,15 @@
   }
 
   .channel-option [color*=three]:after {
-		position: relative;
+    position: relative;
     content: "3";
-		z-index: 999;		
+    z-index: 999;
   }
 
   .channel-option {
-    
-		[color*=blue] {
-			background: @channel-blue;
+    [color*=blue] {
+      background: @channel-blue;
     }
-
     [color*=red] {
       background: @channel-red;
     }
@@ -302,29 +300,29 @@
 }
 
 .broadcast-menu .color-ui {
-	.haslistener {
-		-webkit-animation: strobe .3s linear infinite;
-		animation: strobe .3s linear infinite;
-	}
-	.hasbroadcast,
-	.hasbroadcast.haslistener {
-		-webkit-animation: none;
-		animation: none;
-		opacity: 1;
-	}
+  .haslistener {
+    -webkit-animation: strobe .3s linear infinite;
+    animation: strobe .3s linear infinite;
+  }
+  .hasbroadcast,
+  .hasbroadcast.haslistener {
+    -webkit-animation: none;
+    animation: none;
+    opacity: 1;
+  }
 }
 
 .listen-menu .color-ui {
-	.hasbroadcast {
-		-webkit-animation: strobe .25s linear infinite;
-		animation: strobe .25s linear infinite;
-	}
-	.haslistener,
-	.hasbroadcast.haslistener {
-		-webkit-animation: none;
-		animation: none;
-		opacity: 1;
-	}
+  .hasbroadcast {
+    -webkit-animation: strobe .25s linear infinite;
+    animation: strobe .25s linear infinite;
+  }
+  .haslistener,
+  .hasbroadcast.haslistener {
+    -webkit-animation: none;
+    animation: none;
+    opacity: 1;
+  }
 }
 
 @-webkit-keyframes strobe {
