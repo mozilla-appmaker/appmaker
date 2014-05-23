@@ -65,11 +65,15 @@
       </div>
       <div class="tray-tabs">
         <a class="selected-tab" tab="customize" href="#"><%- gettext("Customize") %></a>
+        <a class="" tab="manage-data" href="#"><%- gettext("Manage Data") %></a>
         <!-- <a tab="view-source" href="#"><%- gettext("View Source") %></a> -->
       </div>
       <div class="tab-sections">
         <div class="section section-customize">
           <div class="editable-attributes"></div>
+        </div>
+        <div class="section section-manage-data">
+          <data-manager></data-manager>
         </div>
         <div class="section section-view-source">
           <div class="view-source-menu">

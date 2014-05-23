@@ -20,6 +20,7 @@ components = require('./lib/components'),
 localeBuild = require('./lib/localeBuild'),
 bundles = require('./lib/bundles'),
 middleware = require('./lib/middleware'),
+WebmakerAuth = require('webmaker-auth'),
 localComponents = [];
 
 try {
@@ -47,6 +48,13 @@ var MAX_FONT_AGE_MS = 1000 * 60 * 60 * 24 * 180;
 
 var LOCAL_STORE_BASE_PATH = __dirname + '/' + 'store';
 
+var webmakerAuth = new WebmakerAuth({
+  loginURL: process.env.LOGINAPI,
+  secretKey: process.env.COOKIE_SECRET,
+  forceSSL: process.env.FORCE_SSL,
+  domain: process.env.COOKIE_DOMAIN
+});
+
 // .env files aren't great at empty values.
 process.env.ASSET_HOST = typeof process.env.ASSET_HOST === 'undefined' ? '' : process.env.ASSET_HOST;
 
@@ -67,17 +75,9 @@ app.configure(function(){
   }));
 
   app.use(express.bodyParser());
-  app.use(express.cookieParser());
+  app.use(webmakerAuth.cookieParser());
 
-  app.use(express.cookieSession({
-    key: "appmaker.sid",
-    secret: process.env.COOKIE_SECRET,
-    cookie: {
-      maxAge: 60 * 60 * 24 * 31, // 31 days. Persona saves session data for 1 month
-      secure: !!process.env.FORCE_SSL
-    },
-    proxy: true
-  }));
+  app.use(webmakerAuth.cookieSession());
 
   bundles.configure(app);
 
@@ -88,6 +88,11 @@ app.configure(function(){
     mappings: require("webmaker-locale-mapping"),
     translation_directory: path.resolve( __dirname, "locale" )
   }));
+
+  var authLocaleJSON = require("./public/vendor/webmaker-auth-client/locale/en_US/create-user-form.json");
+  i18n.addLocaleObject({
+    "en-US": authLocaleJSON
+  }, function (result) {});
 
   app.use(express.favicon());
 
@@ -163,6 +168,19 @@ routes = require('./routes')(
   require('./lib/mailer')(postmark),
   makeAPIPublisher
 );
+var langmap = i18n.getAllLocaleCodes();
+
+app.locals({
+  languages: i18n.getSupportLanguages(),
+  locales: Object.keys(langmap),
+  langmap: langmap
+});
+
+app.post('/verify', webmakerAuth.handlers.verify);
+app.post('/authenticate', webmakerAuth.handlers.authenticate);
+app.post('/create', webmakerAuth.handlers.create);
+app.post('/logout', webmakerAuth.handlers.logout);
+app.post('/check-username', webmakerAuth.handlers.exists);
 
 app.get('/', routes.index);
 

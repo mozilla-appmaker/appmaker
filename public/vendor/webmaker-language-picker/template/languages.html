@@ -1,0 +1,22 @@
+<h2>Webmaker.org is offered in <strong>{{languages.length}}</strong> languages.</h2>
+
+<p>
+  <div class="input-wrapper">
+    <label for="language-search"><i class="icon-search"></i></label>
+    <input id="language-search" class="language-search">
+  </div>
+</p>
+
+<div id="list-of-languages" class="list-of-languages">
+  <div class="empty-message">No languages found.</div>
+  <ul class="list col col-width" data-supported="{{languages}}">
+    {% for language in languages %}
+    <li data-sort="{% if language == 'en-US' %}1{% endif %}"><a href="/{{language}}{{returnPath}}">
+      <span class="localized-name hint--bottom hint--inline" data-hint="{{languageEnglishName(language)}}" >{{ languageNameFor(language) }}</span>
+      <span class="english-name">{{ languageEnglishName(language) }}</span>
+    </a></li>
+    {% endfor %}
+  </ul>
+</div>
+
+<p>Is your language missing? <a href="/translate">Go here to translate into your language</a></p>

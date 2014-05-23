@@ -13,6 +13,11 @@
     "jquery": "~2.0.3",
     "jqueryui-amd": "~0.0.2",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.3.5.tar.gz",
-    "webmaker-analytics": "~0.0.5"
+    "webmaker-analytics": "~0.0.5",
+    "webmaker-auth-client": "0.1.2",
+    "webmaker-language-picker": "0.0.23"
+  },
+  "resolutions": {
+    "jquery": "~2.0.3"
   }
 }

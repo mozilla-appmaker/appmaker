@@ -32,6 +32,8 @@ run `sudo npm install -g grunt-cli`.
 We manage client-side dependencies using [bower](http://bower.io/). In order to add/remove these dependencies, you need to have `bower` installed globally on your machine, which can be done on unix and OS X via
 `sudo npm install bower -g`.
 
+[Webmaker Login](https://github.com/mozilla/login.webmaker.org) is required to log into the app. [Follow these instructions exactly](https://github.com/mozilla/login.webmaker.org#getting-the-server-up-and-running-locally) to run it locally
+
 ### Forking And Cloning The Repository
 
 Create a root `mozilla-appmaker` directory:

@@ -1,0 +1,269 @@
+<polymer-element name="data-manager" attributes="user editingmode">
+  <template>
+    <style>
+      :host ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      :host ul li {
+        margin-top: 10px;
+      }
+
+      :host table {
+        margin-top: 10px;
+        width: 100%;
+        border: 1px solid #c0c0c0;
+      }
+
+      :host table tr:nth-child(even) {
+        background: #545A66;
+      }
+
+      :host table td {
+        padding: 3px;
+      }
+
+      :host table tr:nth-child(odd) {
+        background: #737A85;
+      }
+
+      :host table tr:first-child {
+        color: #212429;
+        background: #fff;
+      }
+
+      :host .hidden {
+        display: none;
+      }
+
+      :host #data-table .table-input {
+        height: inherit;
+        background: transparent;
+        text-indent: 0;
+      }
+
+      :host #data-table .add-remove-column {
+        text-align: center;
+        cursor: pointer;
+      }
+
+      :host #data-table .add-remove-column:hover {
+        color: #212429;
+        background: #fff;
+      }
+    </style>
+    <select hidden?="{{ collections.length == 0 }}" value="{{currentCollectionIndex}}">
+      <template repeat="{{collection, index in collections}}">
+        <option value="{{index}}">{{collection.name}}</option>
+      </template>
+    </select>
+    <button on-click="{{removeCollection}}" hidden?="{{ collections.length == 0 }}">-</button>
+    <button on-click="{{addCollection}}">+</button>
+    <div hidden?="{{ collections.length == 0 }}">
+      <h3>Name</h3>
+      <template repeat="{{collection, collectionIndex in collections}}">
+        <div id="{{collection.schemaid}}" data-index="{{collectionIndex}}" hidden?="{{currentCollectionIndex != collectionIndex}}">
+          <input type="text" value="{{collection.name}}" on-change="{{onSchemaNameChange}}">
+          <h3>Keys</h3>
+          <ul style="list-style: none;">
+            <template repeat="{{item, fieldIndex in collection.fields}}">
+              <li id="{{item.fieldid}}" data-index="{{fieldIndex}}" >
+                <input data-index="{{fieldIndex}}" type="text" value="{{item.name}}" on-change="{{onFieldNameChange}}">
+                <select data-index="{{fieldIndex}}" value="{{item.kind}}" on-change="{{onItemTypeChange}}">
+                  <option value="number">Number</option>
+                  <option value="toggle">Toggle</option>
+                  <option value="text">Text</option>
+                  <option value="name">Name</option>
+                  <option value="address">Address</option>
+                  <option value="url">URL</option>
+                  <option value="color">Color</option>
+                  <option value="image">Image</option>
+                </select>
+                <button value="{{fieldIndex}}" on-click="{{removeKey}}">-</button>
+              </li>
+            </template>
+          </ul>
+          <button on-click="{{addKey}}">+</button>
+          <table id="data-table">
+            <tr>
+              <template repeat="{{item in collection.fields}}">
+                <td>{{item.name}}</td>
+              </template>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            </tr>
+            <template repeat="{{row, dataIndex in collection.data}}">
+              <tr>
+                <template repeat="{{item, fieldIndex in collection.fields}}">
+                  <td><input class="table-input" type="text" value="{{row[item.name]}}"></td>
+                </template>
+                <td data-index="{{dataIndex}}" on-click="{{removeDataRow}}" class="add-remove-column">-</td>
+              </tr>
+            </template>
+            <tr>
+              <template repeat="{{item, fieldIndex in collection.fields}}">
+                <td><input data-key="{{fieldIndex}}" class="table-input" type="text" value=""></td>
+              </template>
+              <td on-click="{{addDataRow}}" class="add-remove-column">+</td>
+            </tr>
+          </table>
+        </div>
+      </template>
+    </div>
+  </template>
+  <script>
+    Polymer('data-manager', {
+      collections: [],
+      currentCollectionIndex: 0,
+      createFieldManager: function(field) {
+        return {
+          name: field.name,
+          type: field.type,
+          fieldid: field.fieldid,
+          kind: field.kind
+        };
+      },
+      createSchemaManager: function(schema) {
+        return {
+          name: schema.name,
+          schemaid: schema.schemaid,
+          fields: [],
+          data: schema.data.slice(0)
+        };
+      },
+      ready: function () {
+        var self = this;
+        function onFieldChange(e) {
+          var detail = e.detail;
+          var collectionIndex = document.getElementById(this.schemaid).getAttribute("data-index");
+          if (detail.added) {
+            var obj = self.createFieldManager(detail.added);
+            self.collections[collectionIndex].fields.push(obj);
+            detail.added.addEventListener("propertychange", onFieldPropertyChange);
+          } else if (detail.removed) {
+            var fieldIndex = document.getElementById(detail.removed.fieldid).getAttribute("data-index");
+            self.collections[collectionIndex].fields.splice(fieldIndex, 1);
+            detail.removed.removeEventListener("propertychange", onFieldPropertyChange);
+          }
+        }
+        function onItemChange(e) {
+          var detail = e.detail;
+          var collectionIndex = document.getElementById(this.schemaid).getAttribute("data-index");
+          if (detail.added) {
+            self.collections[collectionIndex].data.push(detail.added);
+          } else if (detail.removed) {
+            self.collections[collectionIndex].data.splice(detail.index, 1);
+          }
+        }
+        function onFieldPropertyChange(e) {
+          var detail = e.detail;
+          if (detail.changed) {
+            this.async(function() {
+              var collectionIndex = document.getElementById(this.getSchemaId()).getAttribute("data-index");
+              var fieldIndex = document.getElementById(this.fieldid).getAttribute("data-index");
+              self.collections[collectionIndex].fields[fieldIndex][detail.changed] = this[detail.changed];
+            });
+          }
+        }
+        function onSchemaPropertyChange(e) {
+          var detail = e.detail;
+          if (detail.changed) {
+            this.async(function() {
+              var collectionIndex = document.getElementById(this.schemaid).getAttribute("data-index");
+              self.collections[collectionIndex][detail.changed] = this[detail.changed];
+            });
+          }
+        }
+        function onSchemaChange(e) {
+          var detail = e.detail;
+          if (detail.added) {
+            var obj = self.createSchemaManager(detail.added);
+            self.collections.push(obj);
+            detail.added.addEventListener("itemchange", onItemChange);
+            detail.added.addEventListener("fieldchange", onFieldChange);
+            detail.added.addEventListener("propertychange", onSchemaPropertyChange);
+          }
+          if (detail.removed) {
+            var collectionIndex = document.getElementById(detail.removed.schemaid).getAttribute("data-index");
+            self.collections.splice(collectionIndex, 1);
+            detail.removed.removeEventListener("itemchange", onItemChange);
+            detail.removed.removeEventListener("fieldchange", onFieldChange);
+            detail.removed.removeEventListener("propertychange", onSchemaPropertyChange);
+          }
+        }
+        function onCeciAppAttached() {
+          self.collectionsElement = document.querySelector("ceci-collections");
+          var schemas = self.collectionsElement.getSchemas();
+          if (schemas.length) {
+            schemas.forEach(function(collection) {
+              var collectionObj = self.createSchemaManager(collection);
+              var fields = collection.getFields();
+              self.collections.push(collectionObj);
+              fields.forEach(function(field) {
+                var fieldObj = self.createFieldManager(field);
+                collectionObj.fields.push(fieldObj);
+                field.addEventListener("propertychange", onFieldPropertyChange);
+              });
+              collection.addEventListener("fieldchange", onFieldChange);
+              collection.addEventListener("itemchange", onItemChange);
+              collection.addEventListener("propertychange", onSchemaPropertyChange);
+            });
+          }
+          self.collectionsElement.addEventListener("schemachange", onSchemaChange);
+        }
+        window.addEventListener("CeciAppAttached", onCeciAppAttached);
+      },
+      addCollection: function () {
+        this.collectionsElement.addSchema("New Collection " + (this.collections.length + 1));
+        this.async(function () {
+          this.currentCollectionIndex = this.collections.length - 1;
+        });
+      },
+      removeCollection: function () {
+        this.collectionsElement.removeSchema(this.collections[this.currentCollectionIndex].schemaid);
+        this.async(function () {
+          this.currentCollectionIndex = this.collections.length - 1;
+        });
+      },
+      addKey: function () {
+        var schema = this.collections[this.currentCollectionIndex];
+        this.collectionsElement.getSchema(schema.schemaid).addField("New Field " + (schema.fields.length + 1));
+      },
+      removeKey: function (event, detail, sender) {
+        var schema = this.collections[this.currentCollectionIndex];
+        var field = schema.fields[parseInt(sender.value)];
+        this.collectionsElement.getSchema(schema.schemaid).removeField(field.fieldid);
+      },
+      addDataRow: function (event, detail, sender) {
+        var newRow = {};
+        var dummyRow = sender.parentNode;
+        this.collections[this.currentCollectionIndex].fields.forEach(function (item, index) {
+          var inputElement = dummyRow.querySelector('*[data-key="'+ index + '"]');
+          newRow[item.name] = newRow[item.name] || inputElement.value;
+          inputElement.value = '';
+        });
+        var schema = this.collections[this.currentCollectionIndex];
+        this.collectionsElement.getSchema(schema.schemaid).addItem(newRow);
+      },
+      removeDataRow: function (event, detail, sender) {
+        var schema = this.collections[this.currentCollectionIndex];
+        this.collectionsElement.getSchema(schema.schemaid).removeItem(parseInt(sender.getAttribute('data-index')), 1);
+      },
+      onItemTypeChange: function(event, detail, sender) {
+        var schema = this.collections[this.currentCollectionIndex];
+        var field = schema.fields[parseInt(sender.getAttribute('data-index'))];
+        this.collectionsElement.getField(schema.schemaid, field.fieldid).kind = sender.value;
+      },
+      onSchemaNameChange: function(event, detail, sender) {
+        var schema = this.collections[this.currentCollectionIndex];
+        this.collectionsElement.getSchema(schema.schemaid).name = sender.value;
+      },
+      onFieldNameChange: function(event, detail, sender) {
+        var schema = this.collections[this.currentCollectionIndex];
+        var field = schema.fields[parseInt(sender.getAttribute('data-index'))];
+        this.collectionsElement.getField(schema.schemaid, field.fieldid).name = sender.value;
+      }
+    });
+  </script>
+</polymer-element>

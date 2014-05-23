@@ -1,0 +1,26 @@
+{
+  "author": "Christopher De Cairos <cade@mozillafoundation.org>",
+  "name": "cookie-js",
+  "description": "cookie parsing and serialization for the browser",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cadecairos/cookie-js.git"
+  },
+  "keywords": [
+    "cookie",
+    "cookies"
+  ],
+  "main": "cookie.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "1.x.x"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}

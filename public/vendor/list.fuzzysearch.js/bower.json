@@ -1,0 +1,25 @@
+{
+  "name": "list.fuzzysearch.js",
+  "main": "dist/list.fuzzysearch.js",
+  "version": "0.1.0",
+  "authors": [
+    "Jonny Strömberg <jonny.stromberg@gmail.com>"
+  ],
+  "description": "A fuzzy search plugin for List.js",
+  "keywords": [
+    "fuzzy",
+    "search",
+    "list.js",
+    "list"
+  ],
+  "license": "Apache License",
+  "homepage": "http://listjs.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "components",
+    "test",
+    "tests"
+  ]
+}

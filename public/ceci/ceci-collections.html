@@ -1,0 +1,44 @@
+<polymer-element name="ceci-collections">
+  <template>
+    <style>
+      :host {
+        display: none;
+      }
+    </style>
+    <content></content>
+  </template>
+  <script>
+    Polymer('ceci-collections', {
+      addSchema: function(name) {
+        var schema = document.createElement("ceci-schema");
+        this.appendChild(schema);
+        schema.name = name || "New Schema";
+        schema.schemaid = uuid();
+        var detail = {
+          added: schema
+        };
+        this.fire("schemachange", detail);
+      },
+      removeSchema: function(id) {
+        var schema = this.querySelector('*[schemaid="'+ id + '"]');
+        this.removeChild(schema);
+        var detail = {
+          removed: schema
+        };
+        this.fire("schemachange", detail);
+      },
+      getSchema: function(id) {
+        return this.querySelector('*[schemaid="'+ id + '"]');
+      },
+      getSchemas: function() {
+        return Array.prototype.slice.call(this.querySelectorAll("ceci-schema"), 0);
+      },
+      getField: function(schemaid, fieldid) {
+        return this.querySelector('*[schemaid="'+ schemaid + '"]').getField(fieldid);
+      },
+      getFields: function(id) {
+        return this.querySelector('*[schemaid="'+ id + '"]').getFields();
+      }
+    });
+  </script>
+</polymer-element>
