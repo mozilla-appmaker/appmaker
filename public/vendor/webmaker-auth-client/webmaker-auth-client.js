@@ -67,6 +67,12 @@
       // Create New User Modal
       self.handleNewUserUI = options.handleNewUserUI === false ? false : true;
 
+      // This is a separate function because Angular apps use their own modal
+      self.analytics = {};
+      self.analytics.webmakerNewUserCancelled = function () {
+        analytics.event('Webmaker New User Cancelled');
+      };
+
       // You can override any of these if necessary
       self.modal = {};
       self.modal.element = document.getElementById('webmaker-login-new-user');
@@ -210,8 +216,11 @@
         self.modal.element.setAttribute('aria-hidden', false);
       };
 
-      self.modal.close = function () {
-        analytics.event('Webmaker New User Cancelled');
+      self.modal.close = function (event) {
+        // If close is called by the user via addEventListener we'll get the event object
+        if (event) {
+          self.analytics.webmakerNewUserCancelled();
+        }
 
         self.modal.element.classList.remove('in');
         self.modal.element.style.display = 'none';

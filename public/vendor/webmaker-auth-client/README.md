@@ -5,16 +5,11 @@ This is the client-side library that adds support for Webmaker Login to your app
 * [express](https://github.com/visionmedia/express)
 * [webmaker-auth](https://github.com/mozilla/webmaker-auth), the sister node module for this library
 
-If you choose to use the create user form assets included in this package, you will also need [node-webmaker-l18n](https://github.com/mozilla/node-webmaker-i18n) for localization and [nunjucks](https://github.com/jlongster/nunjucks) for server-side rendering.
+If you choose to use the create user form assets included in this package, you will also need [node-webmaker-l18n](https://github.com/mozilla/node-webmaker-i18n) for localization and [nunjucks](https://github.com/mozilla/nunjucks) for server-side rendering.
 
 ## Install
 
-This package has one dependency, [EventEmitter](https://github.com/Wolfy87/EventEmitter). This will also be added to your bower.json if you choose to install webmaker-auth-client.
-
-```
-bower install webmaker-auth-client --save
-```
-
+`bower install webmaker-auth-client --save`
 
 ## What's included?
 
@@ -33,13 +28,15 @@ locale/
     en_US/
         create-user-form.json
 
-# Minified file (~11kb) packaged with eventEmitter.
+# Minified file (~11kb) packaged with dependencies.
 dist/
     webmaker-auth-client.min.js
 ```
 
 
 ## Example
+
+There is a fully-featured example in the [examples directory](example/) that you can run locally. It uses server-side rendering with nunjucks and webmaker-i18n, so you may need to modify the example to get it to work in your environment.
 
 ```html
 <html>
@@ -48,19 +45,15 @@ dist/
 
     <button id="login"></button>
     <button id="logout"></button>
-    
-     <!--
-      If you are using the unminified version, you must also include EventEmitter.js
-      It will be automatically installed by bower.
-     -->
-    <script src="bower_components/webmaker-auth-client/webmaker-auth-client.js"></script>
-    <script src="bower_components/eventEmitter/EventEmitter.js"></script>
+
+    <script src="https://login.persona.org/include.js"></script>
+    <script src="bower_components/webmaker-auth-client/dist/webmaker-auth-client.min.js"></script>
     <script>
       var loginEl = document.querySelector('#login');
       var logoutEl = document.querySelector('#logout');
-      
+
       var auth = new WebmakerAuthClient();
-    
+
       // Attach event listeners!
       auth.on('login', function(user, debuggingInfo) {
         console.log('login', user, debuggingInfo);
@@ -68,14 +61,14 @@ dist/
       auth.on('logout', function() {
         console.log('logout');
       });
-    
+
       // Run this function to automatically log-in users with a session set.
       auth.verify();
-      
+
       // Use auth.login and auth.logout to login and out!
       loginEl.addEventListener('click', auth.login, false);
       logoutEl.addEventListener('click', auth.logout, false);
-    
+
     </script>
   </body>
 </html>
@@ -86,6 +79,7 @@ dist/
 ```js
 requirejs.config({
   paths: {
+    'analytics': '/bower/webmaker-analytics',
     'eventEmitter': '/bower/eventEmitter',
     'webmaker-auth-client': '/bower/webmaker-auth-client'
   }
