@@ -1,0 +1,86 @@
+<polymer-element name="ceci-schema" attributes="schemaid name" name="New Schema">
+  <template>
+    <style>
+      :host {
+        display: none;
+      }
+    </style>
+    <content></content>
+  </template>
+  <script>
+    Polymer('ceci-schema', {
+      ready: function() {
+        this.data = [];
+      },
+      attached: function() {
+        var dataString = sessionStorage.getItem("ceci-collections-" + this.schemaid);
+        var savedData = [];
+        var self = this;
+        if (dataString) {
+          try {
+            savedData = JSON.parse(dataString);
+          } catch (e) {
+            console.error("Error parsing saved data:", e);
+          }
+        }
+        this.data = savedData || [];
+      },
+      addField: function(name) {
+        var field = document.createElement("ceci-field");
+        this.appendChild(field);
+        field.name = name || "New Field";
+        field.fieldid = uuid();
+        var detail = {
+          added: field
+        };
+        this.fire("fieldchange", detail);
+      },
+      removeField: function(id) {
+        var field = this.querySelector('*[fieldid="'+ id + '"]');
+        this.removeChild(field);
+        var detail = {
+          removed: field
+        };
+        this.fire("fieldchange", detail);
+      },
+      getField: function(id) {
+        return this.querySelector('*[fieldid="'+ id + '"]');
+      },
+      getFields: function() {
+        return Array.prototype.slice.call(this.querySelectorAll("ceci-field"), 0);
+      },
+      nameChanged: function() {
+        var detail = {
+          changed: "name"
+        };
+        this.fire("propertychange", detail);
+      },
+      addItem: function(item) {
+        this.data.push(item);
+        var detail = {
+          added: item,
+          index: this.data.length - 1
+        };
+        this.fire("itemchange", detail);
+      },
+      removeItem: function(index) {
+        var detail = {
+          removed: this.data.splice(index, 1)[0],
+          index: index
+        };
+        this.fire("itemchange", detail);
+      },
+      updateItem: function(index, item) {
+        var detail = {
+          removed: this.data.splice(index, 1, item)[0],
+          added: item,
+          index: index
+        };
+        this.fire("itemchange", detail);
+      },
+      saveData: function() {
+        sessionStorage.setItem("ceci-collections-" + this.schemaid, JSON.stringify(this.data));
+      }
+    });
+  </script>
+</polymer-element>
