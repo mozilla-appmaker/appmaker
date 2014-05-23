@@ -25,6 +25,6 @@ appmaker.sublime-workspace
 store
 tmp.env
 
-locale/
-!locale/en_US/*
-!locale/localeinfo.json
+/locale/
+!/locale/en_US/*
+!/locale/localeinfo.json

@@ -69,13 +69,14 @@
       var auth = new WebmakerAuthClient();
 
       auth.on('login', function(data, reason) {
-        if (reason === 'verified') {
-          document.dispatchEvent(new CustomEvent("signInFinished"));
-          console.log("You have been logged in as: " + data.email);
-          document.dispatchEvent(new CustomEvent('user-state', {
-            detail: {'state': 'signedin', 'email': data.email}
-          }));
+        if (reason === 'restored') {
+          return;
         }
+        document.dispatchEvent(new CustomEvent("signInFinished"));
+        console.log("You have been logged in as: " + data.email);
+        document.dispatchEvent(new CustomEvent('user-state', {
+          detail: {'state': 'signedin', 'email': data.email}
+        }));
       });
 
       auth.on('logout', function() {
