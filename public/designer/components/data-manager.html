@@ -159,16 +159,20 @@
         function onFieldPropertyChange(e) {
           var detail = e.detail;
           if (detail.changed) {
-            var collectionIndex = document.getElementById(this.getSchemaId()).getAttribute("data-index");
-            var fieldIndex = document.getElementById(this.fieldid).getAttribute("data-index");
-            self.collections[collectionIndex].fields[fieldIndex][detail.changed] = this[detail.changed];
+            this.async(function() {
+              var collectionIndex = document.getElementById(this.getSchemaId()).getAttribute("data-index");
+              var fieldIndex = document.getElementById(this.fieldid).getAttribute("data-index");
+              self.collections[collectionIndex].fields[fieldIndex][detail.changed] = this[detail.changed];
+            });
           }
         }
         function onSchemaPropertyChange(e) {
           var detail = e.detail;
           if (detail.changed) {
-            var collectionIndex = document.getElementById(this.schemaid).getAttribute("data-index");
-            self.collections[collectionIndex][detail.changed] = this[detail.changed];
+            this.async(function() {
+              var collectionIndex = document.getElementById(this.schemaid).getAttribute("data-index");
+              self.collections[collectionIndex][detail.changed] = this[detail.changed];
+            });
           }
         }
         function onSchemaChange(e) {
@@ -194,16 +198,16 @@
           if (schemas.length) {
             schemas.forEach(function(collection) {
               var collectionObj = self.createSchemaManager(collection);
+              var fields = collection.getFields();
+              self.collections.push(collectionObj);
+              fields.forEach(function(field) {
+                var fieldObj = self.createFieldManager(field);
+                collectionObj.fields.push(fieldObj);
+                field.addEventListener("propertychange", onFieldPropertyChange);
+              });
               collection.addEventListener("fieldchange", onFieldChange);
               collection.addEventListener("itemchange", onItemChange);
               collection.addEventListener("propertychange", onSchemaPropertyChange);
-              var fields = collection.getFields();
-              fields.forEach(function(field) {
-                var fieldObj = self.createFieldManager(field);
-                field.addEventListener("propertychange", onFieldPropertyChange);
-                collectionObj.fields.push(fieldObj)
-              });
-              self.collections.push(collectionObj);
             });
           }
           self.collectionsElement.addEventListener("schemachange", onSchemaChange);
