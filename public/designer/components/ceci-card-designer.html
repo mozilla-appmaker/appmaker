@@ -24,13 +24,13 @@
     <shadow></shadow>
   </template>
   <script>
-    require(['designer/editable', 'analytics'], function(Editable, analytics) {
-      Polymer('ceci-card', {
-        ready: function() {
-          this.super();
+    Polymer('ceci-card', {
+      ready: function() {
+        this.super();
 
-          var that = this;
+        var that = this;
 
+        require(['designer/editable', 'analytics'], function(Editable, analytics) {
           function createSortable() {
             var draggedOff = false;
 
@@ -76,8 +76,8 @@
               createSortable();
             }
           }, 100);
-        }
-      });
+        });
+      }
     });
   </script>
 </polymer-element>
