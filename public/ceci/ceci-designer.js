@@ -22,6 +22,8 @@ define([], function() {
     "ceci-channel-map"
   ];
 
+  var knownComponents = [];
+
   // Because of the way requirejs works, this is a singleton.
   var CeciDesigner = {
     // It's expected that the channel object being sent has a .id to uniquely identify it.
@@ -51,8 +53,9 @@ define([], function() {
       var components = [];
       for (var tagName in window.CeciDefinitions) {
         if (BUILT_IN_COMPONENTS.indexOf(tagName) === -1) {
-          if (CeciDesigner.getCeciDefinitionScript(tagName) && window.CustomElements.registry[tagName]) {
-            components.push(window.CustomElements.registry[tagName]);
+          if (CeciDesigner.getCeciDefinitionScript(tagName) && knownComponents.indexOf(tagName) === -1) {
+            components.push(tagName);
+            knownComponents.push(tagName);
           }
         }
       }
@@ -60,9 +63,9 @@ define([], function() {
     },
     forEachComponent: function(fn){
       var components = this.getRegisteredComponents();
-      for (var x in components){
-        fn(components[x].tag, components[x]);
-      }
+      components.forEach(function(component) {
+        fn(component);
+      })
       return this;
     }
   };
