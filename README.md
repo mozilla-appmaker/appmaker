@@ -74,6 +74,7 @@ cp sample.env .env
 ```
 
 A short explanation of a complete `.env` file:
+
 ```
 MONGO_URL: REQUIRED - the URI for your mongod instance and database, for example mongodb://localhost/appmakerdev (or whatever your database is named)
 COOKIE_SECRET: A long, complex string for cookie encryption (NOTE: You define this for your local use, the string can be anything).
