@@ -65,7 +65,7 @@ define([], function() {
       var components = this.getRegisteredComponents();
       components.forEach(function(component) {
         fn(component);
-      })
+      });
       return this;
     }
   };
