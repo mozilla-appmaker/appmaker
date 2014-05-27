@@ -1,5 +1,7 @@
 <polymer-element name="user-state" attributes="user editingmode">
   <template>
+    <link rel="stylesheet" href="/stylesheets/user-state.css">
+
     <a id="collaborate" class="button" on-click="{{collaborateClick}}">
       {{ {'Collaborate': !user.collaborating} | tokenList}}
       {{ {'End Collaboration': !!user.collaborating} | tokenList}}
@@ -48,14 +50,6 @@
   </template>
   <script>
   (function() {
-    require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'analytics', 'persona', 'webmaker-auth-client'],
-      function(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona, WebmakerAuthClient) {
-        init(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona, WebmakerAuthClient);
-      },
-      function(err) {
-        console.log('OH NOES');
-        require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils'], init);
-      });
 
     function init(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona, WebmakerAuthClient) {
 
@@ -724,6 +718,17 @@
 
       togetherjs_extension.init(user);
     }
+
+   require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'analytics', 'persona', 'webmaker-auth-client'],
+      function(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona, WebmakerAuthClient) {
+        init(togetherjs_extension, l10n, jquery, application, tray, utils, analytics, persona, WebmakerAuthClient);
+      },
+      function(err) {
+        console.log('OH NOES', err);
+        require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils'], init);
+      }
+    );
+
   })();
   </script>
 </polymer-element>
