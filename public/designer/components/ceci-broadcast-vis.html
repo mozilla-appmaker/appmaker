@@ -6,7 +6,7 @@
   (function(){
     Polymer('ceci-broadcast-vis', {
       direction : "out",
-      enteredView: function () {
+      attached: function () {
         var that = this;
         this.component = this.parentNode;
         this.component.addEventListener('broadcastFired', function(data){
@@ -14,7 +14,7 @@
         });
         this.super();
       },
-      leftView : function(){
+      detached : function(){
         this.super();
         this.component.removeEventListener('broadcastFired');
       }
