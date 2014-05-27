@@ -68,8 +68,6 @@ define(
       DesignerTray.addComponentsFromRegistry();
     });
 
-    DesignerTray.addComponentsFromRegistry();
-
     return DesignerTray;
   }
 );
