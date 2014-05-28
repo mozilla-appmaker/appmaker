@@ -1,15 +1,15 @@
 @import "variables.less";
 @import "mixins.less";
 
-[channelType=broadcast] .channel-menu-wrapper {
+.channel-menu-wrapper.broadcast {
   position: absolute;
-  left: 320px;
-  top: 0px;
+  left: ~"calc(100% + 12px)";
+  top: 0;
   width: 600px;
   height: 100%
 }
 
-[channelType=listen] .channel-menu-wrapper {
+ .channel-menu-wrapper.listen {
   position: absolute;
   left: -610px;
   top: 0px;
@@ -256,9 +256,9 @@
   }
 
   .channel-option [color*=two]:after {
-		position: relative;
+    position: relative;
     content: "2";
-		z-index: 999;
+    z-index: 999;
   }
 
   .channel-option [color*=three]:after {

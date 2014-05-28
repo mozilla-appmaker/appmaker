@@ -1,4 +1,9 @@
 <polymer-element name="ceci-channel-vis">
+  <template>
+    <link rel="stylesheet" href="/stylesheets/channel-vis.css" >
+    <link rel="stylesheet" href="/stylesheets/animations.css" >
+  </template>
+
   <script>
   (function(){
     //Animation speeds, In seconds
@@ -19,6 +24,7 @@
       },
       updateChannelVis: function() {
         var that = this;
+
         // Remove all existing channel lines
         var existingLines = this.$.visLines.querySelectorAll(".channel");
 
