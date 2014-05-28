@@ -1,11 +1,19 @@
 <polymer-element name="ceci-broadcast-vis" extends="ceci-channel-vis">
   <template>
+    <link rel="stylesheet" href="/stylesheets/channel-vis.css" >
+    <link rel="stylesheet" href="/stylesheets/animations.css" >
+
     <div id="visLines" class="channel-visualisation broadcast-channels"></div>
   </template>
   <script>
-  (function(){
+
     Polymer('ceci-broadcast-vis', {
-      direction : "out",
+      ready: function() {
+        this.lines = this.shadowRoot.querySelector(".channel-visualisation");
+        this.direction = "out";
+        this.super();
+      },
+      // broadcasts can cause data sending:
       attached: function () {
         var that = this;
         this.component = this.parentNode;
@@ -15,10 +23,10 @@
         this.super();
       },
       detached : function(){
-        this.super();
         this.component.removeEventListener('broadcastFired');
+        this.super();
       }
     });
-    })();
+
   </script>
 </polymer-element>

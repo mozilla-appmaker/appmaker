@@ -1,13 +1,20 @@
 <polymer-element name="ceci-listen-vis" extends="ceci-channel-vis">
   <template>
+    <link rel="stylesheet" href="/stylesheets/channel-vis.css" >
+    <link rel="stylesheet" href="/stylesheets/animations.css" >
+
     <div id="visLines" class="channel-visualisation subscription-channels"></div>
   </template>
   <script>
-  (function(){
+
     //Animation speeds, In seconds
     Polymer('ceci-listen-vis', {
-      direction : "in"
+      ready: function() {
+        this.lines = this.shadowRoot.querySelector(".channel-visualisation");
+        this.direction = "in";
+        this.super();
+      }
     });
-    })();
+
   </script>
 </polymer-element>

@@ -76,41 +76,25 @@
   <script>
     require(['l10n'], function(L10n) {
       Polymer('ceci-channel-menu', {
+        ready: function() {
+          this.super();
+          this.menuStructure = this.shadowRoot.querySelector("content");
+        },
         attached: function () {
           var that = this;
 
-          this.menuWrapper = this.shadowRoot.querySelector(".channel-menu-wrapper");
-
-          this.menu = this.shadowRoot.querySelector(".channel-menu");
+          this.menuWrapper = this.menuStructure.querySelector(".channel-menu-wrapper");
+          this.menu = this.menuWrapper.querySelector(".channel-menu");
           this.hideMenu();
-
-          this.async(function () {
-            this.component = this.parentNode;
-            this.buildMenu(this.component);
-            this.adjustMenuPosition();
-          });
 
           window.addEventListener("menuOpen",function(){
             that.hideMenu();
           });
 
-          document.addEventListener("click",function(e){
-
-            var srcEl = e.target;
-            var menuclick = false;
-
-            //only do this if not the hover helper was clicked
-            if(!srcEl.classList.contains("hover-helper")){
-              while(srcEl && srcEl.parentNode){
-                if(srcEl == that.menu) {
-                  menuclick = true;
-                }
-                srcEl = srcEl.parentNode;
-              }
-              if(menuclick === false) {
-                that.hideMenu();
-              }
-            }
+          this.async(function () {
+            this.component = this.parentNode;
+            this.buildMenu(this.component);
+            this.adjustMenuPosition();
           });
 
         },
@@ -125,14 +109,15 @@
         },
         showMenu : function() {
           var that = this;
-          this.component.async(function () {
-            var items = that.channeltype == "listen" ? Object.keys(that.component.ceci.listeners) : Object.keys(that.component.ceci.broadcasts);
-            if (items.length > 0) {
-              that.menuWrapper.classList.add("open");
+          var ceci = this.component.ceci;
+          var items = (that.channeltype == "listen") ? Object.keys(ceci.listeners) : Object.keys(ceci.broadcasts);
+          if (items.length > 0) {
+            that.menuWrapper.classList.add("open");
+            this.component.async(function () {
               var height = that.menu.offsetHeight;
               that.menu.style.marginTop = -1 * (height/2) + "px";
-            }
-          });
+            });
+          }
         },
         hideMenu : function() {
           this.menuWrapper.classList.remove("open");
@@ -154,7 +139,7 @@
         },
         addhelperClasses : function(){
 
-          //Adds hasbroadcast or haslistener classes to the color dots
+          // Adds hasbroadcast or haslistener classes to the color dots
 
           var channelMap = document.querySelector("ceci-channel-map");
           var bchans = channelMap.broadcastchannels;
@@ -244,10 +229,9 @@
 
                 //Show all the options again
                 var options = that.menu.querySelectorAll(".channel-option:not(.option-template)");
-
-                Object.keys(options).forEach(function(o){
-                  options[o].style.display = "block";
-                });
+                for(var i=0, last=options.length; i<last; i++) {
+                  options[i].style.display = "block";
+                }
 
                 channelOption.querySelector("label").style.display = "block";
                 channelOption.querySelector("label .chosen-color").setAttribute("color", color);
@@ -264,10 +248,9 @@
 
             //Hide all the options
             var options = that.menu.querySelectorAll(".channel-option");
-
-            Object.keys(options).forEach(function(o){
-              options[o].style.display = "none";
-            });
+            for(var i=0, last=options.length; i<last; i++) {
+              options[i].style.display = "none";
+            }
 
             // Show this one
             this.parentNode.style.display = "block";

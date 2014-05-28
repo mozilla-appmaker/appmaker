@@ -1,44 +1,31 @@
 <polymer-element name="ceci-channel-vis">
-  <template>
-    <link rel="stylesheet" href="/stylesheets/channel-vis.css" >
-    <link rel="stylesheet" href="/stylesheets/animations.css" >
-  </template>
-
   <script>
   (function(){
     //Animation speeds, In seconds
     var signalSpeed = 1;
     var bubbleDuration = 1;
     Polymer('ceci-channel-vis', {
-      enteredView: function () {
+      attached: function () {
         var that = this;
         this.component = this.parentNode;
-        // TODO: This shouldn't be done on the window
         window.addEventListener('channelUpdated', function(data){
           that.updateChannelVis();
         });
-        this.async(this.updateChannelVis);
       },
-      leftView : function(){
-        this.component.removeEventListener('channelUpdated');
-      },
-      updateChannelVis: function() {
+      updateChannelVis: function(elements) {
         var that = this;
 
-        // Remove all existing channel lines
-        var existingLines = this.$.visLines.querySelectorAll(".channel");
-
-        Array.prototype.forEach.call(existingLines, function(el,index){
-          el.parentNode.removeChild(el);
-        });
-
-        //Add new ones based on all the ceci-elements in the component
-        var elements;
-        if(this.direction == "in") {
-          elements = this.component.querySelectorAll("ceci-listen");
-        } else {
-          elements = this.component.querySelectorAll("ceci-broadcast");
+        if(!elements) {
+          if(this.direction === "in") {
+            elements = this.parentNode.querySelectorAll("ceci-listen");
+          } else {
+            elements = this.parentNode.querySelectorAll("ceci-broadcast");
+          }
         }
+
+        // Remove all existing channel lines
+        var existingLines = this.lines;
+        existingLines.innerHTML = "";
 
         Array.prototype.forEach.call(elements, function(el,index){
           el.addEventListener('signalFired', function(data){
