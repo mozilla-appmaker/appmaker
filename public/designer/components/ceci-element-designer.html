@@ -42,6 +42,9 @@
   </template>
   <script>
     Polymer('ceci-element', {
+      ready: function() {
+        this.super();
+      },
       broadcast: function(name, data) {
         this.super(arguments);
         var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
@@ -60,6 +63,7 @@
         this.dispatchEvent(new CustomEvent('log', {bubbles: true, detail: message}));
       },
       attached: function() {
+        var that = this;
 
         if(!this.querySelector('ceci-channel-menu')) {
 
@@ -84,6 +88,13 @@
           handle.className = 'handle';
           this.appendChild(handle);
         }
+
+        // ensure correct channel visualisation
+        ["broadcast", "listen"].forEach(function(type) {
+          var vis = that.querySelector("ceci-"+type+"-vis");
+          var elements = that.querySelectorAll("ceci-"+type);
+          vis.updateChannelVis(elements);
+        });
       }
     });
   </script>
