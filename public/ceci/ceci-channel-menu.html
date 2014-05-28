@@ -21,49 +21,49 @@
               <h3>Send <strong>Click</strong> on channel...</h3>
 
               <div class="color-row">
-                <div name="blue-one"  color="blue"    class="color" data-channel="blue">1</div>
-                <div name="blue-two"  color="blue"    class="color" data-channel="blue-two">2</div>
-                <div name="blue-two"  color="blue"    class="color" data-channel="blue-three">3</div>
+                <div data-color="blue" class="color" data-channel="blue">1</div>
+                <div data-color="blue" class="color" data-channel="blue-two">2</div>
+                <div data-color="blue" class="color" data-channel="blue-three">3</div>
               </div>
 
               <div class="color-row">
-                <div name="green"     color="green"   class="color" data-channel="green">1</div>
-                <div name="green"     color="green"   class="color" data-channel="green-two">2</div>
-                <div name="green"     color="green"   class="color" data-channel="green-three">3</div>
+                <div data-color="green" class="color" data-channel="green">1</div>
+                <div data-color="green" class="color" data-channel="green-two">2</div>
+                <div data-color="green" class="color" data-channel="green-three">3</div>
               </div>
 
               <div class="color-row">
-                <div name="yellow"    color="yellow"  class="color" data-channel="yellow">1</div>
-                <div name="yellow"    color="yellow"  class="color" data-channel="yellow-two">2</div>
-                <div name="yellow"    color="yellow"  class="color" data-channel="yellow-three">3</div>
+                <div data-color="yellow" class="color" data-channel="yellow">1</div>
+                <div data-color="yellow" class="color" data-channel="yellow-two">2</div>
+                <div data-color="yellow" class="color" data-channel="yellow-three">3</div>
               </div>
 
               <div class="color-row">
-                <div name="orange"    color="orange"  class="color" data-channel="orange">1</div>
-                <div name="orange"    color="orange"  class="color" data-channel="orange-two">2</div>
-                <div name="orange"    color="orange"  class="color" data-channel="orange-three">3</div>
+                <div data-color="orange" class="color" data-channel="orange">1</div>
+                <div data-color="orange" class="color" data-channel="orange-two">2</div>
+                <div data-color="orange" class="color" data-channel="orange-three">3</div>
               </div>
 
               <div class="color-row">
-                <div name="red"       color="red"     class="color" data-channel="red">1</div>
-                <div name="red"       color="red"     class="color" data-channel="red-two">2</div>
-                <div name="red"       color="red"     class="color" data-channel="red-three">3</div>
+                <div data-color="red" class="color" data-channel="red">1</div>
+                <div data-color="red" class="color" data-channel="red-two">2</div>
+                <div data-color="red" class="color" data-channel="red-three">3</div>
               </div>
 
               <div class="color-row">
-                <div name="pink"      color="pink"    class="color" data-channel="pink">1</div>
-                <div name="pink"      color="pink"    class="color" data-channel="pink-two">2</div>
-                <div name="pink"      color="pink"    class="color" data-channel="pink-three">3</div>
+                <div data-color="pink" class="color" data-channel="pink">1</div>
+                <div data-color="pink" class="color" data-channel="pink-two">2</div>
+                <div data-color="pink" class="color" data-channel="pink-three">3</div>
               </div>
 
               <div class="color-row">
-                <div name="purple"    color="purple"  class="color" data-channel="purple">1</div>
-                <div name="purple"    color="purple"  class="color" data-channel="purple-two">2</div>
-                <div name="purple"    color="purple"  class="color" data-channel="purple-three">3</div>
+                <div data-color="purple" class="color" data-channel="purple">1</div>
+                <div data-color="purple" class="color" data-channel="purple-two">2</div>
+                <div data-color="purple" class="color" data-channel="purple-three">3</div>
               </div>
 
               <div class="color-row">
-                <div name="false" color="false" class="color" data-channel="false">OFF</div>
+                <div data-color="false" class="color" data-channel="false">OFF</div>
               </div>
 
             </div>
@@ -209,10 +209,10 @@
           function colorClickHandler(handlerType){
             return function(event) {
               var channelOption = event.target.parentNode.parentNode;
-              var color = this.getAttribute("color");
+              var color = this.getAttribute("data-color");
               var handler = channelOption.getAttribute(handlerType);
               that.changeChannel(handlerType, handler, color);
-              channelOption.querySelector("label .chosen-color").setAttribute("color",color);
+              channelOption.querySelector("label .chosen-color").setAttribute("data-color",color);
               channelOption.querySelector("label").style.display = "block";
               channelOption.querySelector(".color-ui").style.display = "none";
               that.adjustMenuPosition();
@@ -234,7 +234,7 @@
                 }
 
                 channelOption.querySelector("label").style.display = "block";
-                channelOption.querySelector("label .chosen-color").setAttribute("color", color);
+                channelOption.querySelector("label .chosen-color").setAttribute("data-color", color);
                 channelOption.querySelector(".color-ui").style.display = "none";
                 that.adjustMenuPosition();
                 that.hideMenu();
@@ -297,7 +297,7 @@
 
               if(existingEl){
                 var color = existingEl.getAttribute("on");
-                channelOption.querySelector(".chosen-color").setAttribute("color",color);
+                channelOption.querySelector(".chosen-color").setAttribute("data-color",color);
               }
 
               //Set up all of the click stuff for color options

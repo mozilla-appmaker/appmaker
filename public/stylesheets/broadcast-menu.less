@@ -229,7 +229,7 @@
         text-decoration: none;
       }
 
-      &[color=false] {
+      &[data-color=false] {
         padding: 9px 7px 10px 7px;
         color: #777;
         margin-left: 5px;
@@ -244,7 +244,7 @@
 
 /*  These are the selected color labels in the menu*/
 
-  .channel-option .chosen-color[color=false]:after {
+  .channel-option .chosen-color[data-color=false]:after {
     content: "X";
     color:#999;
   }
@@ -255,41 +255,41 @@
     z-index: 999;
   }
 
-  .channel-option [color*=two]:after {
+  .channel-option [data-color*=two]:after {
     position: relative;
     content: "2";
     z-index: 999;
   }
 
-  .channel-option [color*=three]:after {
+  .channel-option [data-color*=three]:after {
     position: relative;
     content: "3";
     z-index: 999;
   }
 
   .channel-option {
-    [color*=blue] {
+    [data-color*=blue] {
       background: @channel-blue;
     }
-    [color*=red] {
+    [data-color*=red] {
       background: @channel-red;
     }
-    [color*=pink] {
+    [data-color*=pink] {
       background: @channel-pink;
     }
-    [color*=purple] {
+    [data-color*=purple] {
       background: @channel-purple;
     }
-    [color*=green] {
+    [data-color*=green] {
       background: @channel-green;
     }
-    [color*=orange] {
+    [data-color*=orange] {
       background: @channel-orange;
     }
-    [color*=yellow] {
+    [data-color*=yellow] {
       background: @channel-yellow;
     }
-    [color='false'] {
+    [data-color='false'] {
       background-color: #DDD;
       background-position: center;
       background-size: contain;
