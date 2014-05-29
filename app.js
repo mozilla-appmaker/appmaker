@@ -13,6 +13,7 @@ uuid = require('node-uuid'),
 cors = require('cors'),
 connectFonts = require('connect-fonts'),
 postmark = require("postmark")(process.env.POSTMARK_API_KEY),
+helmet = require('helmet'),
 lessMiddleware = require('less-middleware'),
 enableRedirects = require('./routes/redirects'),
 i18n = require('webmaker-i18n'),
@@ -95,6 +96,21 @@ app.configure(function(){
   }, function (result) {});
 
   app.use(express.favicon());
+
+  if (process.env.HSTS_ENABLED === 'true') {
+    // Use HSTS
+    app.use(helmet.hsts());
+  }
+
+  if (process.env.XFO_HEADERS_DENY === 'true') {
+    // No xframes allowed
+    app.use(helmet.xframe('deny'));
+  }
+
+  if (process.env.IEXSS_PROTECTION_ENABLED === 'true') {
+  // Use XSS protection
+    app.use(helmet.iexss());
+  }
 
   app.use(function(req, res, next) {
     res.removeHeader("x-powered-by");
