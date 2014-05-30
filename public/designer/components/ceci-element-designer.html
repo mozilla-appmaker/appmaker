@@ -1,41 +1,10 @@
+<!-- this applies to Light DOM elements, so lives outside the template -->
+<link rel="stylesheet" href="/stylesheets/designer-element.css">
 <polymer-element name="ceci-element" extends="ceci-element-base">
   <template id="ceci-element">
     <style>
       :host {
         position: relative;
-        width: 100%;
-        top: 0;
-      }
-
-      :host .handle {
-        position: absolute;
-        right: 0;
-        top: 0;
-        opacity: .6;
-        border-radius: 2px;
-        background-color: white;
-        border: solid 1px #BBB;
-        width: 16px;
-        height: 16px;
-        padding: 3px;
-        cursor: move;
-        /* TODO: Move this to designer-specific folder */
-        /* https://github.com/mozilla-appmaker/appmaker/issues/685 */
-        background-image: url('/designer/images/move.png');
-        background-repeat: no-repeat;
-        background-position: 5px 5px;
-        margin: 3px;
-        z-index: 9999;
-        visibility: hidden;
-        display: block;
-      }
-
-      :host:hover .handle {
-        visibility: visible;
-      }
-
-      :host .handle:hover {
-        opacity: 1;
       }
     </style>
     <content></content>
@@ -85,7 +54,7 @@
 
         if(!this.querySelector(".handle")){
           var handle = document.createElement('div');
-          handle.className = 'handle';
+          handle.className = 'handle cecidesigner';
           this.appendChild(handle);
         }
 
