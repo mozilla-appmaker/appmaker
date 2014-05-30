@@ -71,6 +71,9 @@ npm install
 Configure your env:
 ```
 cp sample.env .env
+
+Note that the default .env settings turn security headers and HSTS on.  If you are not forcing SSL,
+you should turn disable HSTS by setting HSTS_DISABLED='true' in the .env.
 ```
 
 A short explanation of a complete `.env` file:
