@@ -3,10 +3,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 module.exports = function(app){
-  // Redirect to PERSONA_AUDIENCE if user came in on different proto/host
-  // and PERSONA_AUDIENCE is set.
-  if (process.env.PERSONA_AUDIENCE){
-    var split = process.env.PERSONA_AUDIENCE.split("://");
+  // Redirect to REDIRECT_URL if user came in on different proto/host
+  // and REDIRECT_URL is set.
+  if (process.env.REDIRECT_URL){
+    var split = process.env.REDIRECT_URL.split("://");
     var target = {
       protocol: split[0],
       host: split[1]
@@ -19,7 +19,7 @@ module.exports = function(app){
       };
 
       if (src.protocol !== target.protocol || src.host != target.host){
-        var url = process.env.PERSONA_AUDIENCE + req.url;
+        var url = process.env.REDIRECT_URL + req.url;
         console.log("Redirecting user to: " + url);
         res.redirect(url);
       }
