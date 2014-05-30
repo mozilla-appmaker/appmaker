@@ -3,6 +3,11 @@
     <content></content>
   </template>
   <script>
+    var L10n = {
+      get: function(v) { return v; }
+    };
+
+    require(['l10n'], function (lib) { L10n = lib; });
 
     var DEFAULT_CHANNEL = 'blue';
 
@@ -109,17 +114,10 @@
     }
 
     Polymer('ceci-element-base', {
-      L10n: {
-        get: function(v) { return v; }
-      },
       ready: function () {
         if (this.ceci) return;
+
         var that = this;
-
-        require(['l10n'], function (lib) {
-          that.L10n = lib;
-        });
-
         this.ceci = {
           broadcasts: {},
           listeners: {},
@@ -241,7 +239,7 @@
         document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));
       },
       gettext: function (keyname) {
-        return this.L10n.get(keyname);
+        return L10n.get(keyname);
       },
       localized: function () {
         var attributes = this.ceci.attributes;
@@ -256,6 +254,5 @@
         }
       }
     });
-
   </script>
 </polymer-element>
