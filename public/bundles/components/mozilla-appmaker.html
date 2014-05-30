@@ -646,12 +646,12 @@
           this.super();
         },
         incomingMessage : function(e){
-          if(e == this.checkif) {
+          if (e.toLowerCase === this.checkif.toLowerCase) {
             this.broadcast("true", "true");
-          } else {
+          }
+          else {
             this.broadcast("false", "false");
           }
-
         }
       });
     </script>
@@ -2652,7 +2652,7 @@ ceci-header header {
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-image" source="http://www.placekitten.com/150/150" attributes="height source" extends="ceci-element" height="160" assetpath="component-image/">
+<polymer-element name="ceci-image" source="https://www.placekitten.com/150/150" attributes="height source" extends="ceci-element" height="160" assetpath="component-image/">
   <template>
     <style>:host {
   display: block;
@@ -2728,7 +2728,6 @@ ceci-header header {
         this.setImageSource(v);
       },
       sourceChanged : function(oldValue,newValue){
-        console.log(oldValue,newValue);
         this.setImageSource(this.source);
       },
       setImageSource : function (val) {
