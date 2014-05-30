@@ -86,7 +86,7 @@ S3_KEY: An access key for the S3 bucket listed above.
 S3_SECRET: The secret corresponding to the specified S3 access key.
 S3_OBJECT_PREFIX: String to prepend S3 objects. Useful for storing objects in folders. E.g. "level1/level2" => <bucket>/level1/level2/<filename>.
 PUBLISH_URL_PREFIX: String to prepend to filenames that are saved when publishing. Try use the URL that matches the protocol from which assets are hosted to avoid mixed content blockage.
-PERSONA_AUDIENCE: The hostname and port of Appmaker used by Persona for authentication
+REDIRECT_URL: The hostname and port that we want to redirect to for Appmaker
 PORT: The port that the web process listens on for incomming connections
 GITHUB_TOKEN: A personal Github token used for loading lists of components from the mozilla-appmaker org during development (https://github.com/blog/1509-personal-api-tokens)
 EXCLUDED_COMPONENTS: A comma-delimited list of component repositories to exclude from the mozilla-appmaker org. The name is the repo name rather than the component name, though this is usually the same.
