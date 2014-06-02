@@ -3,252 +3,256 @@
     <content></content>
   </template>
   <script>
-    require(['l10n'], function (L10n) {
-      var DEFAULT_CHANNEL = 'blue';
+    var L10n = {
+      get: function(v) { return v; }
+    };
 
-      function processDefinition (element) {
-        var definitionJSON = window.CeciDefinitions[element.localName];
+    require(['l10n'], function (lib) { L10n = lib; });
 
-        if (definitionJSON) {
-          // Defaults for safety and efficiency :) !
-          definitionJSON.tags = definitionJSON.tags || [];
-          definitionJSON.thumbnail = definitionJSON.thumbnail || '';
-          definitionJSON.listeners = definitionJSON.listeners || {};
-          definitionJSON.broadcasts = definitionJSON.broadcasts || {};
-          definitionJSON.attributes = definitionJSON.attributes || {};
-        }
-        else {
-          throw new Error("Couldn't find Ceci definition for " + element.localName + ".");
-        }
+    var DEFAULT_CHANNEL = 'blue';
 
-        return definitionJSON;
+    function processDefinition (element) {
+      var definitionJSON = window.CeciDefinitions[element.localName];
+
+      if (definitionJSON) {
+        // Defaults for safety and efficiency :) !
+        definitionJSON.tags = definitionJSON.tags || [];
+        definitionJSON.thumbnail = definitionJSON.thumbnail || '';
+        definitionJSON.listeners = definitionJSON.listeners || {};
+        definitionJSON.broadcasts = definitionJSON.broadcasts || {};
+        definitionJSON.attributes = definitionJSON.attributes || {};
+      }
+      else {
+        throw new Error("Couldn't find Ceci definition for " + element.localName + ".");
       }
 
-      function processAttributes (ceciDefinition, attributesDefinitionObject) {
-        var result;
+      return definitionJSON;
+    }
 
-        if (!attributesDefinitionObject) return;
+    function processAttributes (ceciDefinition, attributesDefinitionObject) {
+      var result;
 
-        result = {
-          listeners: {},
-          attributeListeners: {}
-        };
+      if (!attributesDefinitionObject) return;
 
-        Object.keys(attributesDefinitionObject).forEach(function (attributeName) {
-          var attributeDefinition = attributesDefinitionObject[attributeName];
+      result = {
+        listeners: {},
+        attributeListeners: {}
+      };
 
-          if (attributeDefinition.listener) {
-            var listenerName;
+      Object.keys(attributesDefinitionObject).forEach(function (attributeName) {
+        var attributeDefinition = attributesDefinitionObject[attributeName];
 
-            if (typeof attributeDefinition.listener === 'string') {
-              listenerName = attributeDefinition.listener;
-            }
-            else {
-              listenerName = 'set_' + attributeName;
-              result.attributeListeners[attributeName] = listenerName;
-            }
+        if (attributeDefinition.listener) {
+          var listenerName;
 
-            result.listeners[listenerName] = {
-              description: '(Setter) ' + attributeDefinition.description,
-              label: attributeDefinition.label,
-              'default': attributeDefinition.defaultListener,
-              attribute: attributeName
-            };
-          }
-
-          if (attributeDefinition.editable) {
-            ceciDefinition[attributeName] = {
-              description: attributeDefinition.description,
-              label: attributeDefinition.label,
-              type: attributeDefinition.editable
-            };
-          }
-        });
-
-        return result;
-      }
-
-      function processListeners (ceciDefinition, listenersDefinitionObject) {
-        var defaultListeners = [];
-
-        if (!listenersDefinitionObject) return defaultListeners;
-
-        Object.keys(listenersDefinitionObject).forEach(function (listenerName) {
-          var listenerDefinition = listenersDefinitionObject[listenerName];
-          var channel = DEFAULT_CHANNEL;
-          ceciDefinition[listenerName] = listenerDefinition;
-          if (!!listenerDefinition['default']) {
-            if (listenerDefinition['default'] !== true) {
-              channel = listenerDefinition['default'];
-            }
-            defaultListeners.push({name: listenerName, channel: channel });
-          }
-        });
-
-        return defaultListeners;
-      }
-
-      function processBroadcasts (ceciDefinition, broadcastsDefinitionObject) {
-        var defaultBroadcasts = [];
-
-        if (!broadcastsDefinitionObject) return defaultBroadcasts;
-
-        Object.keys(broadcastsDefinitionObject).forEach(function (broadcastName) {
-          var broadcastDefinition = broadcastsDefinitionObject[broadcastName];
-          var channel = DEFAULT_CHANNEL;
-          ceciDefinition[broadcastName] = broadcastDefinition;
-          if (!!broadcastDefinition['default']) {
-            if (broadcastDefinition['default'] !== true) {
-              channel = broadcastDefinition['default'];
-            }
-            defaultBroadcasts.push({name: broadcastName, channel: channel });
-          }
-        });
-
-        return defaultBroadcasts;
-      }
-
-      Polymer('ceci-element-base', {
-        ready: function () {
-          if (this.ceci) return;
-
-          var that = this;
-          this.ceci = {
-            broadcasts: {},
-            listeners: {},
-            editables: {},
-            attributes: {}
-          };
-
-          var ceciDefinition = processDefinition(this);
-
-          if (!ceciDefinition) {
-            console.error('Ceci definition required for ' + this.localName);
-            return;
-          }
-
-          var attributeResults = processAttributes(this.ceci.editables, ceciDefinition.attributes || {});
-
-          Object.keys(attributeResults.attributeListeners).forEach(function (attributeName) {
-            var listenerName = attributeResults.attributeListeners[attributeName];
-            that[listenerName] = function (value) {
-              that[attributeName] = value;
-            };
-          });
-
-          Object.keys(ceciDefinition.listeners).forEach(function (listenerDefinitionName) {
-            attributeResults.listeners[listenerDefinitionName] = ceciDefinition.listeners[listenerDefinitionName];
-          });
-
-          var defaultListeners = processListeners(this.ceci.listeners, attributeResults.listeners);
-          var defaultBroadcasts = processBroadcasts(this.ceci.broadcasts, ceciDefinition.broadcasts);
-
-          this.applyDefaults = function () {
-            defaultListeners.forEach(function (d) {
-              if (!that.querySelector('ceci-listen[for="' + d.name + '"]')) {
-                that.setListener(d.name, d.channel);
-              }
-            });
-
-            defaultBroadcasts.forEach(function (d) {
-              if (!that.querySelector('ceci-broadcast[from="' + d.name + '"]')) {
-                that.setBroadcast(d.name, d.channel);
-              }
-            });
-          };
-
-          this.ceci.thumbnail = ceciDefinition.thumbnail;
-          this.ceci.tags = ceciDefinition.tags || [];
-
-          this.ceci.attributes = ceciDefinition.attributes || {};
-
-          this.ceci.name = this.gettext(this.localName) || ceciDefinition.name || this.localName;
-
-          that.localized();
-        },
-        broadcast: function (name, data) {
-          var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
-          if (broadcastElement) {
-            var broadcastDetails = { channelName : broadcastElement.on, from : name};
-            broadcastElement.fire(data);
-          }
-        },
-        showContainingCard: function () {
-          var potentialCard = this.parentNode;
-
-          while (potentialCard && potentialCard.localName !== 'ceci-card') {
-            potentialCard = potentialCard.parentNode;
-          }
-
-          if (potentialCard) {
-            potentialCard.show();
-          }
-        },
-        setListener: function (name, channel) {
-          var entry = this.ceci.listeners[name];
-
-          if (entry) {
-            var listener = this.querySelector('ceci-listen[for="' + name + '"]');
-            if (!listener) {
-              listener = document.createElement('ceci-listen');
-              this.appendChild(listener);
-            }
-
-            listener.setAttribute('on', channel);
-            listener.setAttribute('for', name);
+          if (typeof attributeDefinition.listener === 'string') {
+            listenerName = attributeDefinition.listener;
           }
           else {
-            console.error('No listener definition found for "' + name + '".');
+            listenerName = 'set_' + attributeName;
+            result.attributeListeners[attributeName] = listenerName;
           }
-        },
-        setBroadcast: function (name, channel) {
-          var entry = this.ceci.broadcasts[name];
 
-          if (entry) {
-            var broadcast = this.querySelector('ceci-broadcast[from="' + name + '"]');
-            if (!broadcast) {
-              broadcast = document.createElement('ceci-broadcast');
-              this.appendChild(broadcast);
-            }
+          result.listeners[listenerName] = {
+            description: '(Setter) ' + attributeDefinition.description,
+            label: attributeDefinition.label,
+            'default': attributeDefinition.defaultListener,
+            attribute: attributeName
+          };
+        }
 
-            broadcast.setAttribute('on', channel);
-            broadcast.setAttribute('from', name);
-          }
-          else {
-            console.error('No broadcast definition found for "' + name + '".');
-          }
-        },
-        removeListener: function (name) {
-          var listen = this.querySelector('ceci-listen[for="' + name + '"]');
-          if (listen) {
-            this.removeChild(listen);
-          }
-        },
-        removeBroadcast: function (name) {
-          var broadcast = this.querySelector('ceci-broadcast[from="' + name + '"]');
-          if (broadcast) {
-            this.removeChild(broadcast);
-          }
-        },
-        domReady: function () {
-          document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));
-        },
-        gettext: function (keyname) {
-          return L10n.get(keyname);
-        },
-        localized: function () {
-          var attributes = this.ceci.attributes;
-          for(var attribute in attributes) {
-            if (attributes.hasOwnProperty(attribute)) {
-
-              // Check to see if attribute is still default value. Otherwise, skip localization.
-              if (this[attribute] === this._instanceAttributes[attribute]) {
-                this[attribute] = this.gettext(this.localName + "/attributes/" + attribute) || this[attribute];
-              }
-            }
-          }
+        if (attributeDefinition.editable) {
+          ceciDefinition[attributeName] = {
+            description: attributeDefinition.description,
+            label: attributeDefinition.label,
+            type: attributeDefinition.editable
+          };
         }
       });
+
+      return result;
+    }
+
+    function processListeners (ceciDefinition, listenersDefinitionObject) {
+      var defaultListeners = [];
+
+      if (!listenersDefinitionObject) return defaultListeners;
+
+      Object.keys(listenersDefinitionObject).forEach(function (listenerName) {
+        var listenerDefinition = listenersDefinitionObject[listenerName];
+        var channel = DEFAULT_CHANNEL;
+        ceciDefinition[listenerName] = listenerDefinition;
+        if (!!listenerDefinition['default']) {
+          if (listenerDefinition['default'] !== true) {
+            channel = listenerDefinition['default'];
+          }
+          defaultListeners.push({name: listenerName, channel: channel });
+        }
+      });
+
+      return defaultListeners;
+    }
+
+    function processBroadcasts (ceciDefinition, broadcastsDefinitionObject) {
+      var defaultBroadcasts = [];
+
+      if (!broadcastsDefinitionObject) return defaultBroadcasts;
+
+      Object.keys(broadcastsDefinitionObject).forEach(function (broadcastName) {
+        var broadcastDefinition = broadcastsDefinitionObject[broadcastName];
+        var channel = DEFAULT_CHANNEL;
+        ceciDefinition[broadcastName] = broadcastDefinition;
+        if (!!broadcastDefinition['default']) {
+          if (broadcastDefinition['default'] !== true) {
+            channel = broadcastDefinition['default'];
+          }
+          defaultBroadcasts.push({name: broadcastName, channel: channel });
+        }
+      });
+
+      return defaultBroadcasts;
+    }
+
+    Polymer('ceci-element-base', {
+      ready: function () {
+        if (this.ceci) return;
+
+        var that = this;
+        this.ceci = {
+          broadcasts: {},
+          listeners: {},
+          editables: {},
+          attributes: {}
+        };
+
+        var ceciDefinition = processDefinition(this);
+
+        if (!ceciDefinition) {
+          console.error('Ceci definition required for ' + this.localName);
+          return;
+        }
+
+        var attributeResults = processAttributes(this.ceci.editables, ceciDefinition.attributes || {});
+
+        Object.keys(attributeResults.attributeListeners).forEach(function (attributeName) {
+          var listenerName = attributeResults.attributeListeners[attributeName];
+          that[listenerName] = function (value) {
+            that[attributeName] = value;
+          };
+        });
+
+        Object.keys(ceciDefinition.listeners).forEach(function (listenerDefinitionName) {
+          attributeResults.listeners[listenerDefinitionName] = ceciDefinition.listeners[listenerDefinitionName];
+        });
+
+        var defaultListeners = processListeners(this.ceci.listeners, attributeResults.listeners);
+        var defaultBroadcasts = processBroadcasts(this.ceci.broadcasts, ceciDefinition.broadcasts);
+
+        this.applyDefaults = function () {
+          defaultListeners.forEach(function (d) {
+            if (!that.querySelector('ceci-listen[for="' + d.name + '"]')) {
+              that.setListener(d.name, d.channel);
+            }
+          });
+
+          defaultBroadcasts.forEach(function (d) {
+            if (!that.querySelector('ceci-broadcast[from="' + d.name + '"]')) {
+              that.setBroadcast(d.name, d.channel);
+            }
+          });
+        };
+
+        this.ceci.thumbnail = ceciDefinition.thumbnail;
+        this.ceci.tags = ceciDefinition.tags || [];
+
+        this.ceci.attributes = ceciDefinition.attributes || {};
+
+        this.ceci.name = this.gettext(this.localName) || ceciDefinition.name || this.localName;
+
+        that.localized();
+      },
+      broadcast: function (name, data) {
+        var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
+        if (broadcastElement) {
+          var broadcastDetails = { channelName : broadcastElement.on, from : name};
+          broadcastElement.fire(data);
+        }
+      },
+      showContainingCard: function () {
+        var potentialCard = this.parentNode;
+
+        while (potentialCard && potentialCard.localName !== 'ceci-card') {
+          potentialCard = potentialCard.parentNode;
+        }
+
+        if (potentialCard) {
+          potentialCard.show();
+        }
+      },
+      setListener: function (name, channel) {
+        var entry = this.ceci.listeners[name];
+
+        if (entry) {
+          var listener = this.querySelector('ceci-listen[for="' + name + '"]');
+          if (!listener) {
+            listener = document.createElement('ceci-listen');
+            this.appendChild(listener);
+          }
+
+          listener.setAttribute('on', channel);
+          listener.setAttribute('for', name);
+        }
+        else {
+          console.error('No listener definition found for "' + name + '".');
+        }
+      },
+      setBroadcast: function (name, channel) {
+        var entry = this.ceci.broadcasts[name];
+
+        if (entry) {
+          var broadcast = this.querySelector('ceci-broadcast[from="' + name + '"]');
+          if (!broadcast) {
+            broadcast = document.createElement('ceci-broadcast');
+            this.appendChild(broadcast);
+          }
+
+          broadcast.setAttribute('on', channel);
+          broadcast.setAttribute('from', name);
+        }
+        else {
+          console.error('No broadcast definition found for "' + name + '".');
+        }
+      },
+      removeListener: function (name) {
+        var listen = this.querySelector('ceci-listen[for="' + name + '"]');
+        if (listen) {
+          this.removeChild(listen);
+        }
+      },
+      removeBroadcast: function (name) {
+        var broadcast = this.querySelector('ceci-broadcast[from="' + name + '"]');
+        if (broadcast) {
+          this.removeChild(broadcast);
+        }
+      },
+      domReady: function () {
+        document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));
+      },
+      gettext: function (keyname) {
+        return L10n.get(keyname);
+      },
+      localized: function () {
+        var attributes = this.ceci.attributes;
+        for(var attribute in attributes) {
+          if (attributes.hasOwnProperty(attribute)) {
+
+            // Check to see if attribute is still default value. Otherwise, skip localization.
+            if (this[attribute] === this._instanceAttributes[attribute]) {
+              this[attribute] = this.gettext(this.localName + "/attributes/" + attribute) || this[attribute];
+            }
+          }
+        }
+      }
     });
   </script>
 </polymer-element>
