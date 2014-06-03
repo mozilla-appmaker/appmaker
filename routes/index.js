@@ -28,12 +28,7 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
     },
 
     designer: function (req, res) {
-      var publishUrl = urlManager.createURLPrefix('{remixName}');
-
-      res.render('designer', {
-        htmlInjection: '',
-        publishUrl: publishUrl
-      });
+      res.render('designer');
     },
 
     remix: function (req, res) {
