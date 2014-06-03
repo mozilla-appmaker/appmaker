@@ -57,11 +57,12 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
 
         var folderName = moniker.choose() + '-' + Math.round(Math.random() * 1000);
         var userName = req.session.user.username;
-        var installHTMLFilename =  'install.html';
-        var appHTMLFilename = 'index.html';
+        var installHTMLFilename =  'install';
+        var appHTMLFilename = 'app';
         var manifestFilename = 'manifest.webapp';
 
         var remoteURLPrefix = urlManager.createURLPrefix(folderName);
+        var launchPath = urlManager.createLaunchPath(folderName);
 
         var remoteURLs = {
           install: remoteURLPrefix + installHTMLFilename,
@@ -112,7 +113,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
           var manifestJSON = {
             "name": 'My App - ' + folderName,
             "description": 'My App - ' + folderName,
-            "launch_path": '/index.html',
+            "launch_path": launchPath,
             "developer": {
               "name": "App Maker",
               "url": "https://appmaker.mozillalabs.com/"
@@ -138,6 +139,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
           var filesDone = 0;
 
           outputFiles.forEach(function (description) {
+
             store.write(description.filename, description.data, function (result) {
               if (200 !== result.statusCode) {
                 console.error('Trouble writing ' + description.filename + ' to S3 (' + result.statusCode + ').');
