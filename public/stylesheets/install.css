@@ -43,9 +43,7 @@ body {
 
 .install-spinner.spinning {
   display: inline-block;
-  -webkit-animation: 1s gearspin;
-  -webkit-animation-iteration-count: infinite;
-  -moz-animation: linear 1s gearspin;
+  -moz-animation: linear 2s gearspin;
   -moz-animation-iteration-count: infinite;
 }
 
