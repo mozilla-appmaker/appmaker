@@ -3,9 +3,6 @@
   attributes="name description label author updatedat thumbnail">
   <script>
     Polymer('designer-component-tray-item', {
-      attached: function () {
-        var img = this.shadowRoot.querySelector("img");
-      },
       imageError : function(){
         this.thumbnail = "/images/component-thumbnail-fallback.gif";
       }
