@@ -1,12 +1,20 @@
 <polymer-element
   name="designer-component-tray-item"
-  attributes="name description label author updatedat thumbnail" noscript>
+  attributes="name description label author updatedat thumbnail">
+  <script>
+    Polymer('designer-component-tray-item', {
+      imageError : function(){
+        this.thumbnail = "/images/component-thumbnail-fallback.gif";
+      }
+    });
+  </script>
   <template>
+
     <link rel="stylesheet" href="/stylesheets/designer-component-tray-item.css">
     <div class="add-component component-card" name="{{name}}" show="true">
       <div class="add-tooltip">+</div>
       <div class="component-preview">
-        <div class="image-wrapper"><img src="{{thumbnail}}"></div>
+        <div class="image-wrapper"><img on-error="{{imageError}}" src="{{thumbnail}}"></div>
         <div class="add-component-overlay"></div>
       </div>
       <div class="component-description">
