@@ -28,7 +28,7 @@
     "less-middleware": "0.1.15",
     "lodash": "2.4.1",
     "lynx": "0.1.1",
-    "makeapi-client": "0.5.21",
+    "makeapi-client": "0.5.26",
     "mkdirp": "0.3.5",
     "mongoose": "3.8.8",
     "moniker": "0.1.2",
