@@ -753,17 +753,16 @@
     Polymer('ceci-button', {
       ready: function () {
         this.super();
-
         var that = this;
-        this.$.button.addEventListener('mousedown', function (e) {
-          var valueBefore = that.buttoncolor;
-          if (that.buttonactivecolor) {
-            that.$.button.style.backgroundColor = that.buttonactivecolor;
-            window.addEventListener('mouseup', function (e) {
-              that.$.button.style.backgroundColor = valueBefore;
-            }, false);
-          }
-        }, false);
+        var mouseUpHandler = function(evt) {
+          window.removeEventListener("mouseup", mouseUpHandler);
+          that.$.button.style.backgroundColor = that.buttoncolor;
+        };
+        var mouseDownHandler = function(evt) {
+          window.addEventListener("mouseup", mouseUpHandler);
+          that.$.button.style.backgroundColor = that.buttonactivecolor;
+        };
+        this.$.button.addEventListener("mousedown", mouseDownHandler);
       },
       click: function () {
         this.broadcast('click', this.getAttribute('value'));
