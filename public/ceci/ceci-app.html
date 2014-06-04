@@ -78,20 +78,16 @@
         newCard.show();
       },
       removeCard: function(index) {
-        index += 1;
-
-        var card = this.querySelector('ceci-card:nth-child(' + index + ')');
-        var nextCard = this.querySelector('ceci-card:nth-child(' + (index + 1) + ')') ||
-          this.querySelector('ceci-card:nth-child(' + (index - 1) + ')');
+        var cards = this.querySelectorAll('ceci-card');
+        var card = cards[index];
+        var nextCard = cards[index + 1] || cards[index - 1];
 
         if (card) {
           this.removeChild(card);
           this.dispatchEvent(new CustomEvent('cardRemoved', {bubbles: true, detail: card}));
-
           if (card.getAttribute('visible') && nextCard) {
             nextCard.show();
           }
-
           return card;
         }
 

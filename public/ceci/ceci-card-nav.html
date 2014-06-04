@@ -1,5 +1,6 @@
 <polymer-element name="ceci-card-nav">
   <template>
+    <link rel="stylesheet" href="/stylesheets/cards.css" >
     <div class="cards" id="cards">
       <div class="card-list" id="cardList"></div>
       <div on-click="{{addCard}}" class="add-card"></div>
@@ -73,6 +74,7 @@
         }
         //Add tabs for all pages
         var existingCards = document.querySelectorAll('ceci-card');
+
         if(!existingCards){
           var self = this;
           document.getElementsByTagName('ceci-card')[0].addEventListener('WebComponentReady', function(){
