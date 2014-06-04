@@ -67,7 +67,7 @@
               </div>
 
             </div>
-            <label><span class="channel-name"></span><div color="false" class="chosen-color"></div></label>
+            <label><span class="channel-name"></span><div data-color="false" class="chosen-color"></div></label>
           </div>
         </div>
       </div>
@@ -204,19 +204,6 @@
           else {
             communicators = this.component.ceci.listeners;
             handlerType = "for";
-          }
-
-          function colorClickHandler(handlerType){
-            return function(event) {
-              var channelOption = event.target.parentNode.parentNode;
-              var color = this.getAttribute("data-color");
-              var handler = channelOption.getAttribute(handlerType);
-              that.changeChannel(handlerType, handler, color);
-              channelOption.querySelector("label .chosen-color").setAttribute("data-color",color);
-              channelOption.querySelector("label").style.display = "block";
-              channelOption.querySelector(".color-ui").style.display = "none";
-              that.adjustMenuPosition();
-            };
           }
 
           function colorListClickHandler(handlerType){
