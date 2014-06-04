@@ -1,6 +1,6 @@
 <% layout('layout') -%>
 
-<div id="flathead-app">
+<div id="appmaker-app">
   <div class="ceci-card">
     <app-button>
       <broadcast on="blue"></broadcast>
@@ -24,7 +24,7 @@
     delete _;
 
     var app = new Ceci.App({
-      container: $('#flathead-app')[0],
+      container: $('#appmaker-app')[0],
       onComponentAdded: function (component) {
       },
       onload: function (components) {

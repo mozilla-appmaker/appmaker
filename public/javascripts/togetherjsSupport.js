@@ -12,7 +12,7 @@ define(
 
     // Ceci.registerCeciPlugin("onChange", function () {
     //   if (TogetherJS.running) {
-    //     var html = $("#flathead-app").html();
+    //     var html = $("#appmaker-app").html();
     //     if (receivedHtml && html == receivedHtml) {
     //       // We're just seeing a remote change
     //       return;
@@ -29,13 +29,13 @@ define(
         return;
       }
       receivedHtml = msg.html;
-      $("#flathead-app").html(msg.html);
+      $("#appmaker-app").html(msg.html);
     });
 
     TogetherJS.hub.on("togetherjs.hello", function (msg) {
       TogetherJS.send({
         type: "resync",
-        html: $("#flathead-app").html()
+        html: $("#appmaker-app").html()
       });
     });
   },

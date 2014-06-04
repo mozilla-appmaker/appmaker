@@ -113,7 +113,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
             "description": 'My App - ' + folderName,
             "launch_path": '/index.html',
             "developer": {
-              "name": "Flathead",
+              "name": "App Maker",
               "url": "https://appmaker.mozillalabs.com/"
             },
             "icons": {
