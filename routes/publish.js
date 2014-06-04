@@ -56,6 +56,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
       return function(req, res) {
 
         var folderName = moniker.choose() + '-' + Math.round(Math.random() * 1000);
+        var userName = req.session.user.username;
         var installHTMLFilename =  'install.html';
         var appHTMLFilename = 'index.html';
         var manifestFilename = 'manifest.webapp';
@@ -147,7 +148,6 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                   install: remoteURLs.install,
                   manifest: remoteURLs.manifest
                 }, 200);
-
                 // Don't wait for the MakeAPI to deliver url to user
                 makeAPIPublisher.publish({
                   url: remoteURLs.install,
@@ -156,7 +156,8 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                   tags: ['appmaker'],
                   description: 'Appmaker ' + folderName,
                   title: 'Appmaker ' + folderName,
-                  email: req.session.email
+                  email: req.session.email,
+                  author: userName
                 }, function (err, make) {
                   if (err) {
                     console.error(err);
