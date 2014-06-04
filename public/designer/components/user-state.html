@@ -222,6 +222,7 @@
           this.$.renameApp.addEventListener("click", function() {
             var oldName = application.getCurrentApp();
             var newName = window.prompt(l10n.get("What do you want to call this app?"));
+            if(typeof newName !== "string") return;
             if(newName){
               application.renameApp(oldName, newName);
               analytics.event("Renamed App");
