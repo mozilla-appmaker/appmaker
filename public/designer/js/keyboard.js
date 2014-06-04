@@ -8,9 +8,19 @@ define(
     "use strict";
 
     $(window).keydown(function(e) {
+      switch (e.keyCode){
+        case 8: // Backspace
+          // Disable backspace if we're not in an input or textarea
+          // Where else could we be editing?
+          if (!$(e.target).is("input, textarea")) {
+            e.preventDefault();
+            console.log('Backspace disabled in keyboard.js');
+          }
+      }
+
       // Meta key shortcuts:
       if (e.metaKey) {
-        switch(e.keyCode){
+        switch (e.keyCode){
           case 186: // meta + ;
             $('input.component-search').val('').focus();
             break;
@@ -22,4 +32,3 @@ define(
     });
   }
 );
-
