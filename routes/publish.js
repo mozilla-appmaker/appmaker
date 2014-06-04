@@ -157,7 +157,8 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                   description: 'Appmaker ' + folderName,
                   title: 'Appmaker ' + folderName,
                   email: req.session.email,
-                  author: userName
+                  author: userName,
+                  locale: req.localeInfo.lang
                 }, function (err, make) {
                   if (err) {
                     console.error(err);
