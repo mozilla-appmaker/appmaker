@@ -34,22 +34,24 @@
       attached: function() {
         var that = this;
 
+        var hasBroadcasts = Object.keys(this.ceci.broadcasts).length > 0 ? true : false;
+        var hasListners = Object.keys(this.ceci.listeners).length > 0 ? true : false;
+
         if(!this.querySelector('ceci-channel-menu')) {
-
-          var broadcastVis  = document.createElement("ceci-broadcast-vis");
-          this.appendChild(broadcastVis);
-
-          var listenVis  = document.createElement("ceci-listen-vis");
-          this.appendChild(listenVis);
-
-          var broadcastMenu  = document.createElement("ceci-channel-menu");
-          broadcastMenu.setAttribute("channeltype","broadcast");
-          this.appendChild(broadcastMenu);
-
-          var listenMenu  = document.createElement("ceci-channel-menu");
-          listenMenu.setAttribute("channeltype","listen");
-          this.appendChild(listenMenu);
-
+          if(hasListners) {
+            var listenMenu  = document.createElement("ceci-channel-menu");
+            listenMenu.setAttribute("channeltype","listen");
+            this.appendChild(listenMenu);
+            var listenVis  = document.createElement("ceci-listen-vis");
+            this.appendChild(listenVis);
+          }
+          if(hasBroadcasts) {
+            var broadcastVis  = document.createElement("ceci-broadcast-vis");
+            this.appendChild(broadcastVis);
+            var broadcastMenu  = document.createElement("ceci-channel-menu");
+            broadcastMenu.setAttribute("channeltype","broadcast");
+            this.appendChild(broadcastMenu);
+          }
         }
 
         if(!this.querySelector(".handle")){
@@ -62,7 +64,9 @@
         ["broadcast", "listen"].forEach(function(type) {
           var vis = that.querySelector("ceci-"+type+"-vis");
           var elements = that.querySelectorAll("ceci-"+type);
-          vis.updateChannelVis(elements);
+          if(elements.length > 0) {
+            vis.updateChannelVis(elements);
+          }
         });
       }
     });
