@@ -1,5 +1,54 @@
 /*publish pane*/
 
+#publish-pane .qrcodes-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+#publish-pane .qrcodes-container ul li {
+  display: inline-block;
+  font-size: 1.5em;
+  width: 50%;
+  text-align: center;
+}
+
+#publish-pane .qrcodes-container ul li a {
+  color: #358CCE;
+  cursor: pointer;
+}
+
+#publish-pane .qrcodes-container ul li a.on {
+  color: #aeb1b5;
+  cursor: default;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: .5em .75em;
+}
+
+#publish-pane .qrcodes-container {
+  margin: 3em auto;
+  width: 600px;
+  position: relative;
+  height: 350px;
+}
+
+#publish-pane .qrcodes-container .qrcode-wrapper {
+  position: absolute;
+  top: 4em;
+  left: 50%;
+  margin-left: -128px;
+  visibility: hidden;
+}
+
+#publish-pane .qrcodes-container .qrcode-wrapper.on {
+  visibility: visible;
+}
+
+#publish-pane .qrcodes-container .qrcode {
+  width: 256px;
+  border: 14px solid white;
+  margin-left: -14px;
+}
+
 #publish-pane-panel {
   position: fixed;
   right: 0px;
@@ -87,7 +136,6 @@ button#close-publish-pane-panel:active {
 
 input#publish-pane-panel-email {
   width: 100%;
-  margin-top: 50px;
   -webkit-appearance: none;
   -moz-appearance: none;
   border: 3px solid #0f1113;
@@ -140,7 +188,7 @@ input#publish-pane-panel-email {
 
 p.app-link {
   display: block;
-  font-size: 130%;
+  font-size: 140%;
   margin-top: 1em;
 }
 
@@ -173,12 +221,22 @@ p.app-link a {
 }
 
 #publish-pane .mail-link { opacity: 1; }
-#publish-pane .mail-link.toggled { opacity: 0; }
+#publish-pane .mail-link.faded { opacity: 0; }
 
-#publish-pane .mail-notice {
+#publish-pane .mail-notice, #publish-pane .mail-error {
   -webkit-transition: opacity 0.5s linear;
           transition: opacity 0.5s linear;
+  position: relative;
+  opacity: 0;
+  text-align: center;
 }
 
-#publish-pane .mail-notice { position:relative; opacity: 0; text-align:center; }
-#publish-pane .mail-notice.toggled { opacity: 1; top: -10em; }
+#publish-pane .mail-notice.toggled {
+  opacity: 1;
+  top: -10em;
+}
+
+#publish-pane .mail-error.toggled {
+  opacity: 1;
+  top: -18em;
+}
