@@ -10,20 +10,6 @@ define(
     TogetherJS.config("enableShortcut", true);
     var receivedHtml = null;
 
-    // Ceci.registerCeciPlugin("onChange", function () {
-    //   if (TogetherJS.running) {
-    //     var html = $("#appmaker-app").html();
-    //     if (receivedHtml && html == receivedHtml) {
-    //       // We're just seeing a remote change
-    //       return;
-    //     }
-    //     TogetherJS.send({
-    //       type: "resync",
-    //       html: html
-    //     });
-    //   }
-    // });
-
     TogetherJS.hub.on("resync", function (msg) {
       if (! msg.sameUrl) {
         return;
