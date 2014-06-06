@@ -232,7 +232,7 @@
           });
 
           //Save App As
-          this.$.saveAppAs.addEventListener("click", function() {
+          var saveAsHandler = function() {
             var name = window.prompt(l10n.get("What do you want to call this app?"));
 
             var ceciApp = document.querySelector('ceci-app');
@@ -260,7 +260,10 @@
             } else {
               reporter.consoleReport("Please name your app.");
             }
-          });
+          };
+
+          this.$.saveAppAs.addEventListener("click", saveAsHandler);
+          document.querySelector(".app-name").addEventListener("click", saveAsHandler);
 
           //Update App
           this.$.saveApp.addEventListener("click", function() {
