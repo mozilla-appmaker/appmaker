@@ -9,6 +9,7 @@ bundles = require('./lib/bundles'),
 cors = require('cors'),
 components = require('./lib/components'),
 connectFonts = require('connect-fonts'),
+helmet = require('helmet'),
 enableRedirects = require('./routes/redirects'),
 engine = require('ejs-locals'),
 express = require('express'),
@@ -96,6 +97,21 @@ app.configure(function(){
   }, function (result) {});
 
   app.use(express.favicon());
+
+  if (process.env.HSTS_DISABLED != 'true') {
+    // Use HSTS
+    app.use(helmet.hsts());
+  }
+
+  if (process.env.DISABLE_XFO_HEADERS_DENY != 'true') {
+    // No xframes allowed
+    app.use(helmet.xframe('deny'));
+  }
+
+  if (process.env.IEXSS_PROTECTION_DISABLED != 'true') {
+  // Use XSS protection
+    app.use(helmet.iexss());
+  }
 
   app.use(function(req, res, next) {
     res.removeHeader("x-powered-by");

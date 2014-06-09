@@ -71,6 +71,7 @@ npm install
 Configure your env:
 ```
 cp sample.env .env
+
 ```
 
 A short explanation of a complete `.env` file:
@@ -92,6 +93,11 @@ GITHUB_TOKEN: A personal Github token used for loading lists of components from 
 EXCLUDED_COMPONENTS: A comma-delimited list of component repositories to exclude from the mozilla-appmaker org. The name is the repo name rather than the component name, though this is usually the same.
 BUNDLE: Any non-null value will cause the application to bundle as many resources as possible
 LOAD_FROM_GITHUB: if omitted, or "false", instructs appmaker to load components from repositories hosted on github.com
+HSTS_DISABLED: if set to "true", [HSTS](http://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security) is disabled.  **(If you are not forcing SSL, you should turn disable HSTS by setting HSTS_DISABLED='true' in the .env)**
+DISABLE_XFO_HEADERS_DENY: If set to "true", [X-Frame-Options Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/X-Frame-Options) are not set.  If not set to "true" / left unset, XFO headers are set to DENY.
+IEXSS_PROTECTION_DISABLED: If set to "true", iexss vulnerability headers are not set.  If set to false or left unset, iexss protection for IE8 will be enabled.
+
+
 ```
 
 ### Install and run MongoDB

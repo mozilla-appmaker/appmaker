@@ -22,6 +22,7 @@
     "express": "3.3.4",
     "express-bundles": "git://github.com/simonwex/express-bundles#master",
     "express-persona": "0.1.1",
+    "helmet": "0.2.1",
     "http-proxy": "1.1.1",
     "knox": "0.8.9",
     "less": "1.7.0",
