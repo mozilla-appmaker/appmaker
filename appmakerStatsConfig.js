@@ -102,7 +102,7 @@ Optional Variables:
   graphitePort: 2003
 , graphiteHost: "162.243.75.232"
 , legacyNamespace: false
-, globalPrefix: "appmaker"
+, globalPrefix: "flathead"
 , port: 8125
 , backends: [ "./backends/graphite" ]
 }
