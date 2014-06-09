@@ -5,23 +5,24 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 var
+bundles = require('./lib/bundles'),
+cors = require('cors'),
+components = require('./lib/components'),
+connectFonts = require('connect-fonts'),
+enableRedirects = require('./routes/redirects'),
+engine = require('ejs-locals'),
 express = require('express'),
 http = require('http'),
-engine = require('ejs-locals'),
-path = require('path'),
-uuid = require('node-uuid'),
-cors = require('cors'),
-connectFonts = require('connect-fonts'),
-postmark = require("postmark")(process.env.POSTMARK_API_KEY),
-lessMiddleware = require('less-middleware'),
-enableRedirects = require('./routes/redirects'),
 i18n = require('webmaker-i18n'),
-components = require('./lib/components'),
+lessMiddleware = require('less-middleware'),
 localeBuild = require('./lib/localeBuild'),
-bundles = require('./lib/bundles'),
+localComponents = [],
 middleware = require('./lib/middleware'),
-WebmakerAuth = require('webmaker-auth'),
-localComponents = [];
+path = require('path'),
+postmark = require("postmark")(process.env.POSTMARK_API_KEY),
+uuid = require('node-uuid'),
+version = require('./package').version,
+WebmakerAuth = require('webmaker-auth');
 
 try {
   // This does a pretty great job at figuring out booleans.
@@ -234,6 +235,15 @@ app.post('/api/update_app', routes.my.updateApp);
 app.get('/api/componentlinks', routes.my.components);
 app.post('/api/componentlinks', routes.my.learnComponent);
 app.delete('/api/componentlinks', routes.my.forgetComponent);
+
+// DEVOPS - Healthcheck
+app.get('/healthcheck', function( req, res ) {
+  var healthcheckObject = {
+    http: 'okay',
+    version: version
+  };
+  res.json(healthcheckObject);
+});
 
 app.get('/api/remix-proxy', routes.proxy.remix);
 
