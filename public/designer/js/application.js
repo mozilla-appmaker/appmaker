@@ -48,7 +48,7 @@ define(["jquery", "l10n", "reporter"], function($, l10n, reporter) {
         var op = alreadySaved ? this.updateApp : this.saveApp;
         op(name, appid, html, function callAPIPublish(err) {
           if(err) {
-            errorReport("publish failed in save step!", err);
+            reporter.errorReport("publish failed in save step!", err);
             if(next) { next(err); }
             return;
           }
