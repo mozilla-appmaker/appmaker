@@ -10,9 +10,8 @@ define(
     $(window).keydown(function(e) {
       switch (e.keyCode){
         case 8: // Backspace
-          // Disable backspace if we're not in an input or textarea
-          // Where else could we be editing?
-          if (!$(e.target).is("input, textarea")) {
+          // Disable backspace if the target ends at the window
+          if ($(e.target).is('body')) {
             e.preventDefault();
             console.log('Backspace disabled in keyboard.js');
           }
