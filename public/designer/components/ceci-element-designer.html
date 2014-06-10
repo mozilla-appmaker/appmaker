@@ -59,15 +59,6 @@
           handle.className = 'handle cecidesigner';
           this.appendChild(handle);
         }
-
-        // ensure correct channel visualisation
-        ["broadcast", "listen"].forEach(function(type) {
-          var vis = that.querySelector("ceci-"+type+"-vis");
-          var elements = that.querySelectorAll("ceci-"+type);
-          if(elements.length > 0) {
-            vis.updateChannelVis(elements);
-          }
-        });
       }
     });
   </script>
