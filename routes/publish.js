@@ -156,8 +156,8 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                   remix: remoteURLs.app,
                   thumbnail: 'http://appmaker.mozillalabs.com/images/mail-man.png',
                   tags: ['appmaker'],
-                  description: 'Appmaker ' + folderName,
-                  title: 'Appmaker ' + folderName,
+                  description: 'Appmaker ' + appName,
+                  title: appName,
                   email: req.session.email,
                   author: userName,
                   locale: req.localeInfo.lang
