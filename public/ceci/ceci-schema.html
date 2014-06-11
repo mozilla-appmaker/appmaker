@@ -25,10 +25,11 @@
         }
         this.data = savedData || [];
       },
-      addField: function(name) {
+      addField: function(name, kind) {
         var field = document.createElement("ceci-field");
         this.appendChild(field);
         field.name = name || "New Field";
+        field.kind = kind || "Number";
         field.fieldid = uuid();
         var detail = {
           added: field
