@@ -77,3 +77,30 @@ button#install:hover {
 button#install:active {
   background-color: #2a70a6;
 }
+
+#qrcode-container {
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: 'Lucida Grande';
+}
+
+#qrcode-container p {
+  color: rgb(174, 177, 181);
+  font-size: 20px;
+  line-height: 140%;
+}
+
+#qrcode-container h1 {
+  color: #ec6334;
+}
+
+#qrcode-container a {
+  color: rgb(53, 140, 206);
+  text-decoration: none;
+}
+
+#qrcode {
+  margin: 0 auto;
+  width: 256px;
+  border: 20px solid white;
+}

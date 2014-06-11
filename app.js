@@ -17,7 +17,6 @@ http = require('http'),
 i18n = require('webmaker-i18n'),
 lessMiddleware = require('less-middleware'),
 localeBuild = require('./lib/localeBuild'),
-localComponents = [],
 middleware = require('./lib/middleware'),
 path = require('path'),
 postmark = require("postmark")(process.env.POSTMARK_API_KEY),
@@ -244,6 +243,28 @@ app.get('/healthcheck', function( req, res ) {
 });
 
 app.get('/api/remix-proxy', routes.proxy.remix);
+
+if (process.env.MAKEAPI_URL) {
+  var makeapiSearch = new require('makeapi-client')({
+    apiURL: process.env.MAKEAPI_URL
+  });
+
+  app.get('/apps/:user', function (req, res) {
+    makeapiSearch
+      .contentType('Appmaker')
+      .user(req.params.user)
+      .limit(50)
+      .then(function(err, makes) {
+        if (err) {
+          res.json({error: err, makes: makes}, 500);
+        }
+        else {
+          res.json({error: null, makes: makes}, 200);
+        }
+      });
+
+  });
+}
 
 module.exports = app;
 

@@ -67,6 +67,7 @@
           return;
         }
         document.dispatchEvent(new CustomEvent("signInFinished"));
+        document.querySelector("#publish-pane-panel-email").setAttribute('placeholder', data.email);
         reporter.consoleReport("You have been logged in as: " + data.email);
         document.dispatchEvent(new CustomEvent('user-state', {
           detail: {'state': 'signedin', 'email': data.email}
@@ -74,6 +75,7 @@
       });
 
       auth.on('logout', function() {
+        document.querySelector("#publish-pane-panel-email").setAttribute('placeholder', 'Your Email');
         document.dispatchEvent(
           new CustomEvent('user-state', {
             detail: {'state': 'signedout', 'email': ''}
