@@ -65,7 +65,7 @@
       <h3>Name</h3>
       <template repeat="{{collection, collectionIndex in collections}}">
         <div id="{{collection.name}}" data-index="{{collectionIndex}}" hidden?="{{currentCollectionIndex != collectionIndex}}">
-          <input type="text" value="{{collection.name}}" on-change="{{onSchemaNameChange}}">
+          <input type="text" value="{{collection.name}}" on-change="{{onCollectionNameChange}}">
           <h3>Keys</h3>
           <ul style="list-style: none;">
             <template repeat="{{item, fieldIndex in collection.fields}}">
@@ -128,12 +128,12 @@
           kind: field.kind
         };
       },
-      createSchemaManager: function(schema) {
+      createCollectionManager: function(collection) {
         return {
-          name: schema.name,
-          oldName: schema.name,
+          name: collection.name,
+          oldName: collection.name,
           fields: [],
-          data: schema.data.slice(0)
+          data: collection.data.slice(0)
         };
       },
       ready: function () {
@@ -165,13 +165,13 @@
           var detail = e.detail;
           if (detail.changed) {
             this.async(function() {
-              var collectionIndex = document.getElementById(this.getSchemaName()).getAttribute("data-index");
+              var collectionIndex = document.getElementById(this.getCollectionName()).getAttribute("data-index");
               var fieldIndex = document.getElementById(this.name).getAttribute("data-index");
               self.collections[collectionIndex].fields[fieldIndex][detail.changed] = this[detail.changed];
             });
           }
         }
-        function onSchemaPropertyChange(e) {
+        function onCollectionPropertyChange(e) {
           var detail = e.detail;
           if (detail.changed) {
             this.async(function() {
@@ -180,29 +180,29 @@
             });
           }
         }
-        function onSchemaChange(e) {
+        function onCollectionChange(e) {
           var detail = e.detail;
           if (detail.added) {
-            var obj = self.createSchemaManager(detail.added);
+            var obj = self.createCollectionManager(detail.added);
             self.collections.push(obj);
             detail.added.addEventListener("itemchange", onItemChange);
             detail.added.addEventListener("fieldchange", onFieldChange);
-            detail.added.addEventListener("propertychange", onSchemaPropertyChange);
+            detail.added.addEventListener("propertychange", onCollectionPropertyChange);
           }
           if (detail.removed) {
             var collectionIndex = document.getElementById(detail.removed.name).getAttribute("data-index");
             self.collections.splice(collectionIndex, 1);
             detail.removed.removeEventListener("itemchange", onItemChange);
             detail.removed.removeEventListener("fieldchange", onFieldChange);
-            detail.removed.removeEventListener("propertychange", onSchemaPropertyChange);
+            detail.removed.removeEventListener("propertychange", onCollectionPropertyChange);
           }
         }
         function onCeciAppAttached() {
           self.collectionsElement = document.querySelector("ceci-collections");
-          var schemas = self.collectionsElement.getSchemas();
-          if (schemas.length) {
-            schemas.forEach(function(collection) {
-              var collectionObj = self.createSchemaManager(collection);
+          var collections = self.collectionsElement.getCollections();
+          if (collections.length) {
+            collections.forEach(function(collection) {
+              var collectionObj = self.createCollectionManager(collection);
               var fields = collection.getFields();
               self.collections.push(collectionObj);
               fields.forEach(function(field) {
@@ -212,33 +212,33 @@
               });
               collection.addEventListener("fieldchange", onFieldChange);
               collection.addEventListener("itemchange", onItemChange);
-              collection.addEventListener("propertychange", onSchemaPropertyChange);
+              collection.addEventListener("propertychange", onCollectionPropertyChange);
             });
           }
-          self.collectionsElement.addEventListener("schemachange", onSchemaChange);
+          self.collectionsElement.addEventListener("collectionchange", onCollectionChange);
         }
         window.addEventListener("CeciAppAttached", onCeciAppAttached);
       },
       addCollection: function () {
-        this.collectionsElement.addSchema("New Collection " + (this.collections.length + 1));
+        this.collectionsElement.addCollection("New Collection " + (this.collections.length + 1));
         this.async(function () {
           this.currentCollectionIndex = this.collections.length - 1;
         });
       },
       removeCollection: function () {
-        this.collectionsElement.removeSchema(this.collections[this.currentCollectionIndex].name);
+        this.collectionsElement.removeCollection(this.collections[this.currentCollectionIndex].name);
         this.async(function () {
           this.currentCollectionIndex = this.collections.length - 1;
         });
       },
       addKey: function () {
-        var schema = this.collections[this.currentCollectionIndex];
-        this.collectionsElement.getSchema(schema.name).addField("New Field " + (schema.fields.length + 1));
+        var collection = this.collections[this.currentCollectionIndex];
+        this.collectionsElement.getCollection(collection.name).addField("New Field " + (collection.fields.length + 1));
       },
       removeKey: function (event, detail, sender) {
-        var schema = this.collections[this.currentCollectionIndex];
-        var field = schema.fields[parseInt(sender.value)];
-        this.collectionsElement.getSchema(schema.name).removeField(field.name);
+        var collection = this.collections[this.currentCollectionIndex];
+        var field = collection.fields[parseInt(sender.value)];
+        this.collectionsElement.getCollection(collection.name).removeField(field.name);
       },
       addDataRow: function (event, detail, sender) {
         var newRow = {};
@@ -253,30 +253,30 @@
             inputElement.value = '';
           }
         });
-        var schema = this.collections[this.currentCollectionIndex];
-        this.collectionsElement.getSchema(schema.name).addItem(newRow);
+        var collection = this.collections[this.currentCollectionIndex];
+        this.collectionsElement.getCollection(collection.name).addItem(newRow);
       },
       removeDataRow: function (event, detail, sender) {
-        var schema = this.collections[this.currentCollectionIndex];
-        this.collectionsElement.getSchema(schema.name).removeItem(parseInt(sender.getAttribute('data-index')), 1);
+        var collection = this.collections[this.currentCollectionIndex];
+        this.collectionsElement.getCollection(collection.name).removeItem(parseInt(sender.getAttribute('data-index')), 1);
       },
       onItemTypeChange: function(event, detail, sender) {
-        var schema = this.collections[this.currentCollectionIndex];
-        var field = schema.fields[parseInt(sender.getAttribute('data-index'))];
-        this.collectionsElement.getField(schema.name, field.name).kind = sender.value;
+        var collection = this.collections[this.currentCollectionIndex];
+        var field = collection.fields[parseInt(sender.getAttribute('data-index'))];
+        this.collectionsElement.getField(collection.name, field.name).kind = sender.value;
       },
       onSchemaNameChange: function(event, detail, sender) {
-        var schema = this.collections[this.currentCollectionIndex];
-        var oldName = schema.oldName;
-        schema.oldName = schema.name;
-        this.collectionsElement.getSchema(oldName).name = sender.value;
+        var collection = this.collections[this.currentCollectionIndex];
+        var oldName = collection.oldName;
+        collection.oldName = collection.name;
+        this.collectionsElement.getCollection(oldName).name = sender.value;
       },
       onFieldNameChange: function(event, detail, sender) {
-        var schema = this.collections[this.currentCollectionIndex];
-        var field = schema.fields[parseInt(sender.getAttribute('data-index'))];
+        var collection = this.collections[this.currentCollectionIndex];
+        var field = collection.fields[parseInt(sender.getAttribute('data-index'))];
         var oldName = field.oldName;
         field.oldName = field.name;
-        this.collectionsElement.getField(schema.name, oldName).name = sender.value;
+        this.collectionsElement.getField(collection.name, oldName).name = sender.value;
       }
     });
   </script>

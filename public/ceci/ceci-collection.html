@@ -1,4 +1,4 @@
-<polymer-element name="ceci-schema" attributes="name" name="New Schema">
+<polymer-element name="ceci-collection" attributes="name" name="New Collection">
   <template>
     <style>
       :host {
@@ -8,12 +8,12 @@
     <content></content>
   </template>
   <script>
-    Polymer('ceci-schema', {
+    Polymer('ceci-collection', {
       ready: function() {
         this.data = [];
       },
       attached: function() {
-        var dataString = sessionStorage.getItem("ceci-collections-" + this.name);
+        var dataString = localStorage.getItem("ceci-collections-" + this.name);
         var savedData = [];
         var self = this;
         if (dataString) {
@@ -82,7 +82,7 @@
         this.fire("itemchange", detail);
       },
       saveData: function() {
-        sessionStorage.setItem("ceci-collections-" + this.name, JSON.stringify(this.data));
+        localStorage.setItem("ceci-collections-" + this.name, JSON.stringify(this.data));
       }
     });
   </script>
