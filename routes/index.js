@@ -57,8 +57,8 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
 
       if (appURL) {
         if (email) {
-          remixMailer.sendPublishMail(req, email, appURL, function () {
-            res.json({error: null}, 200);
+          remixMailer.sendPublishMail(req, email, appURL, function (error, result) {
+            res.json({error: error, result: result}, result ? result.status : 500);
           });
         }
         else {

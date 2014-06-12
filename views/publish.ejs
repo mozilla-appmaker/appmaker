@@ -15,10 +15,6 @@
     <script src="/vendor/requirejs/require.js"></script>
     <script src="/javascripts/requireConfig.js"></script>
 
-    <% if (!!process.env.BUNDLE) { %>
-      <script src="/javascripts/designer-build.js"></script>
-    <% } %>
-
     <script>
       require(['l10n'], function(localized) {
         localized.ready({url: "/strings/" + localized.getCurrentLang() });

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600">
   <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/install.css" />
+  <script src="<%= process.env.ASSET_HOST %>/vendor/qrcodejs/qrcode.js"></script>
   <title>My Appmaker App</title>
 </head>
 <body>
@@ -22,6 +23,10 @@
       <span><%- gettext('Install App') %></span>
       <span class="install-spinner"></span>
     </button>
+  </div>
+  <div id="qrcode-container">
+    <p><%- gettext("QR code install explanation") %></p>
+    <div id="qrcode"></div>
   </div>
   <script>
     document.addEventListener('DOMContentLoaded', function (e) {
@@ -54,6 +59,8 @@
         var a = container.querySelector("a");
         a.href = window.location.toString().replace("install", "app");
       }
+
+      new QRCode(document.querySelector("#qrcode"), '<%- iframeSrc %>');
     }, false);
   </script>
 </body>

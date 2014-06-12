@@ -4,7 +4,6 @@
         <div id="publish-pane-panel-content" class="hidden">
           <div id="publish-pane-panel-inner">
             <div id="publish-pane-logo">
-              <img src="<%= process.env.ASSET_HOST %>/images/chef-man.png">
               <p class="publish-guide-text">
                 <%- gettext("Your app was successfully published!") %>
                 <%- gettext("It's ready for use at:") %>
@@ -13,6 +12,15 @@
                 <a id="applink" href=''></a>
               </p>
             </div>
+            <div class="qrcodes-container">
+              <ul><li><a data-qrcode-for="install"><%- gettext("Install this app") %></a></li><li><a data-qrcode-for="app"><%- gettext("Use this app") %></a></li></ul>
+              <div class="qrcode-wrapper" data-qrcode-for="install">
+                <div class="qrcode" data-qrcode-for="install"></div>
+              </div>
+              <div class="qrcode-wrapper" data-qrcode-for="app">
+                <div class="qrcode" data-qrcode-for="app"></div>
+              </div>
+            </div>
             <div class="mail-link">
               <input type="email" id="publish-pane-panel-email" placeholder="Your Email">
               <button id="publish-pane-button"><%- gettext("Mail me my app URL") %></button>
@@ -20,12 +28,37 @@
             <div class="mail-notice">
               <p class="publish-guide-text"><%- gettext("We have mailed you your app URL!") %></p>
             </div>
+            <div class="mail-error">
+              <p class="publish-guide-text"><%- gettext("There was a problem mailing you your app URL. Please try again.") %></p>
+            </div>
           </div>
         </div>
       </div>
 
       <script>
         (function(){
+          function showQRCode (kind) {
+            var qrCodeTaggedElements = document.querySelectorAll('[data-qrcode-for]');
+
+            Array.prototype.forEach.call(qrCodeTaggedElements, function (qrCode) {
+              if (qrCode.getAttribute('data-qrcode-for') === kind) {
+                qrCode.classList.add('on');
+              }
+              else {
+                qrCode.classList.remove('on');
+              }
+            });
+          }
+
+          var qrCodeLinks = document.querySelectorAll('a[data-qrcode-for]');
+          Array.prototype.forEach.call(qrCodeLinks, function (a) {
+            a.onclick = function (e) {
+              showQRCode(a.getAttribute('data-qrcode-for'));
+            };
+          });
+
+          showQRCode('install');
+
           var master = document.getElementById('publish-pane');
           var panel = document.getElementById('publish-pane-panel');
           var content = document.getElementById('publish-pane-panel-content');
@@ -33,6 +66,11 @@
           var email = document.getElementById('publish-pane-panel-email');
           var appurl = document.getElementById('applink');
           var mailButton = document.querySelector('#publish-pane-button');
+          var mailNotice = document.querySelector('.mail-notice');
+          var mailError = document.querySelector('.mail-error');
+          var mailLink = document.querySelector('.mail-link');
+          var appQRCode = document.querySelector('.qrcode[data-qrcode-for="app"]');
+          var instsallQRCode = document.querySelector('.qrcode[data-qrcode-for="install"]');
 
           function closePublishPanel (e) {
             panel.classList.remove('expanded');
@@ -42,8 +80,27 @@
 
           close.onclick = closePublishPanel;
 
+          function hideEmailInput() {
+            mailButton.disabled = true;
+            email.disabled = true;
+            mailLink.classList.add('faded');
+          }
+
+          function showEmailInput() {
+            mailButton.disabled = false;
+            email.disabled = false;
+            mailLink.classList.remove('faded');
+          }
+
+          function onError() {
+            mailError.classList.add('toggled');
+            showEmailInput();
+          }
+
           window.showPublishPane = showPublishPane = function(name, data) {
             master.classList.remove('hidden');
+            showEmailInput();
+
             setTimeout(function() {
               panel.classList.add('expanded');
               content.classList.remove('hidden');
@@ -55,28 +112,43 @@
               appurl.setAttribute('href', data.install);
               appurl.innerHTML = data.install;
 
+              instsallQRCode.innerHTML = '';
+              appQRCode.innerHTML = '';
+
+              new QRCode(instsallQRCode, data.install);
+              new QRCode(appQRCode, data.app);
+
+              mailNotice.classList.remove("toggled");
+
               (function() {
                 var mailButton = document.querySelector('#publish-pane-button');
                 mailButton.onclick = function (e) {
-                  mailButton.disabled = true;
-                  email.disabled = true;
+                  var address = email.value.trim();
 
-                  document.querySelector(".mail-link").classList.add("toggled");
+                  // If the address is blank, use the address specified by webmaker auth.
+                  // See user-state.html for more.
+                  if (address.length === 0) {
+                    address = email.getAttribute('placeholder');
+                  }
+
+                  hideEmailInput();
+                  mailError.classList.remove('toggled');
 
                   var xhr = new XMLHttpRequest();
-                  xhr.open('GET', '<%= process.env.ASSET_HOST %>/notify?appURL=' + encodeURIComponent(data.install) + '&email=' + email.value, true);
+                  xhr.open('GET', '<%= process.env.ASSET_HOST %>/notify?appURL=' + encodeURIComponent(data.install) + '&email=' + address, true);
                   xhr.onerror = function (e) {
                     console.error(e);
-                    mailButton.removeAttribute("disabled");
-                    email.removeAttribute("disabled");
-                    document.querySelector(".mail-link").classList.remove("faded");
-                  };
-                  xhr.onload = function (e) {
-                    console.log(e);
+                    onError();
                   };
                   xhr.onreadystatechange = function (e) {
-                    if(xhr.readyState === 4 && xhr.status === 200 ) {
-                      document.querySelector(".mail-notice").classList.add("toggled");
+                    if (xhr.readyState === 4) {
+                      if (xhr.status === 200) {
+                        mailNotice.classList.add('toggled');
+                      }
+                      else {
+                        console.error(e);
+                        onError();
+                      }
                     }
                   };
                   xhr.send(null);
