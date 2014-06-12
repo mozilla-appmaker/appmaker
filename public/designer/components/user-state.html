@@ -147,6 +147,11 @@
 
             var remixName = utils.getQueryStringVariable('remix');
             var currentApp = application.getCurrentApp();
+            var editName = utils.getQueryStringVariable('edit');
+            if (editName) {
+              application.setCurrentApp(decodeURIComponent(editName));
+              var currentApp = editName;
+            }
 
             if (that.user.state == 'signedin') {
               that.refreshUserState();
