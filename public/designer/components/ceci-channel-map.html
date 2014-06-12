@@ -7,6 +7,9 @@
       ready : function(){
         this.app = document.querySelector("ceci-app");
         var that = this;
+
+        this.broadcastchannels = this.broadcastchannels || [];
+        this.listenerchannels = this.listenerchannels || [];
         window.addEventListener("channelUpdate",function(e){
           that.getChannels();
         },false);
