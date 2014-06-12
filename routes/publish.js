@@ -122,7 +122,15 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
               "60": "/style/icons/icon-60.png",
               "79": "/style/icons/icon-79.png"
             },
-            "default_locale": "en"
+            "default_locale": "en",
+            "permissions": {
+              "audio-capture": {
+                "description": "We'd like to use your microphone"
+              },
+              "video-capture": {
+                "description": "We'd like to use your camera"
+              }
+            }
           };
 
           var outputFiles = [
