@@ -49,8 +49,23 @@ define(
         componentTrayContainer.appendChild(item);
         item.label = L10n.get(name) || item.label;
       },
+      sortComponents: function () {
+        var container = document.querySelector('#components');
+        var components = container.querySelectorAll('designer-component-tray-item').array();
+
+        components = components.sort(function (a, b) {
+          if (a.label > b.label) return 1;
+          if (a.label < b.label) return -1;
+          return 0;
+        });
+
+        components.forEach(function (c) {
+          container.appendChild(c);
+        });
+      },
       addComponentsFromRegistry: function() {
         CeciDesigner.forEachComponent(this.addComponentWithName);
+        DesignerTray.sortComponents();
       },
       isKnownComponent: function(name) {
         return knownComponents.indexOf(name) > -1;
