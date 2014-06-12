@@ -1,0 +1,11 @@
+{
+    "ceci-chat-window": "Fenêtre de discussion",
+    "ceci-chat-window/chatRoom": "Salon de discussion",
+    "ceci-chat-window/roomName": "Salon :",
+    "ceci-chat-window/is now known as": "est maintenant identifié comme",
+    "ceci-chat-window/attributes/username": "Anonyme",
+    "ceci-chat-window/attributes/username/label": "Nom d'utilisateur",
+    "ceci-chat-window/attributes/username/description": "Un nom d'utilisateur auquel envoyer des messages en tant que",
+    "ceci-chat-window/attributes/room/label": "Salon",
+    "ceci-chat-window/attributes/room/description": "Un salon de discussion auquel envoyer des messages en tant que"
+}

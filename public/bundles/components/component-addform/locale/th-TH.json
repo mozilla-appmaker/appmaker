@@ -1,0 +1,7 @@
+{
+    "ceci-addform": "เพิ่มฟอร์ม",
+    "ceci-addform/description": "สร้างฟอร์มและบันทึกข้อมูลเข้าฐานข้อมูล",
+    "ceci-addform/attributes/dataname": "ไอเทม",
+    "ceci-addform/attributes/dataname/label": "ฉันสร้าง...",
+    "ceci-addform/attributes/resetonsubmit/label": "เริ่มใหม่เมื่อส่งแล้ว"
+}

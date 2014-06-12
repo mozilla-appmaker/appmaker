@@ -1,0 +1,7 @@
+{
+    "ceci-textbox": "Texto",
+    "ceci-textbox/description": "Escuta por mensagens e atualiza o texto",
+    "ceci-textbox/attributes/text": "Eu sou uma caixa de texto!",
+    "ceci-textbox/attributes/text/label": "Texto",
+    "ceci-textbox/attributes/text/description": "Um texto para o rótulo que ira aparecer no seu aplicativo."
+}

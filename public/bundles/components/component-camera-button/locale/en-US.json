@@ -1,0 +1,19 @@
+{
+	"ceci-camera-button": "Camera Button",
+	"ceci-camera-button/description": "Takes a picture with your camera.",
+	"ceci-camera-button/attributes/label": "Enable Camera",
+	"ceci-camera-button/attributes/label/label": "Label",
+	"ceci-camera-button/attributes/label/description": "Text shown on the button.",
+	"ceci-camera-button/attributes/value/label": "Value",
+	"ceci-camera-button/attributes/value/description": "Value sent by the button.",
+	"ceci-camera-button/attributes/imageheight/label": "Image Height",
+	"ceci-camera-button/attributes/imageheight/description": "Height of the captured image.",
+	"ceci-camera-button/attributes/imagewidth/label": "Image Width",
+	"ceci-camera-button/attributes/imagewidth/description": "Width of the captured image.",
+	"ceci-camera-button/attributes/textcolor/label": "Text Color",
+	"ceci-camera-button/attributes/textcolor/description": "Color of the text on the button's label.",
+	"ceci-camera-button/attributes/buttoncolor/label": "Button Color",
+	"ceci-camera-button/attributes/buttoncolor/description": "Background color of the button.",
+	"ceci-camera-button/attributes/buttonactivecolor/label": "Button Active Color",
+	"ceci-camera-button/attributes/buttonactivecolor/description": "Background color of the button while it is being clicked or tapped."
+}

@@ -1,0 +1,16 @@
+{
+	"ceci-audio": "Audio",
+	"ceci-audio/description": "Broadcasts a \"click\" when clicked.",
+	"ceci-audio/attributes/label": "Play",
+	"ceci-audio/attributes/label/label": "Label",
+	"ceci-audio/attributes/label/description": "Text shown on the button.",
+	"ceci-audio/attributes/value": "Play",
+	"ceci-audio/attributes/value/label": "Value",
+	"ceci-audio/attributes/value/description": "Value sent by the button.",
+	"ceci-audio/attributes/textcolor/label": "Text Color",
+	"ceci-audio/attributes/textcolor/description": "Color of the text on the button's label.",
+	"ceci-audio/attributes/buttoncolor/label": "Button Color",
+	"ceci-audio/attributes/buttoncolor/description": "Background color of the button.",
+	"ceci-audio/attributes/buttonactivecolor/label": "Button Active Color",
+	"ceci-audio/attributes/buttonactivecolor/description": "Background color of the button while it is being clicked or tapped."
+}

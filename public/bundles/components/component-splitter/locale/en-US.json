@@ -1,0 +1,4 @@
+{
+	"ceci-splitter": "Splitter",
+	"ceci-splitter/description": "When a message passes through this component, it can send the message to multiple broadcasts"
+}

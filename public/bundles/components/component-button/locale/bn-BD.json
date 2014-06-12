@@ -1,0 +1,14 @@
+{
+    "ceci-button": "বোতাম",
+    "ceci-button/attributes/label": "আমাকে ক্লিক করুন",
+    "ceci-button/attributes/label/label": "লেবেল",
+    "ceci-button/attributes/label/description": "বোতামে যে লেখা প্রদর্শিত হবে।",
+    "ceci-button/attributes/value/label": "মান",
+    "ceci-button/attributes/value/description": "বোতাম কর্তৃক প্রেরিত মান।",
+    "ceci-button/attributes/textcolor/label": "লেখার রং",
+    "ceci-button/attributes/textcolor/description": "বোতামের লেবেলের লেখার রং।",
+    "ceci-button/attributes/buttoncolor/label": "বোতামের রং",
+    "ceci-button/attributes/buttoncolor/description": "বোতামের পেছনের রং।",
+    "ceci-button/attributes/buttonactivecolor/label": "বোতামের সক্রিয় অবস্থার রং",
+    "ceci-button/attributes/buttonactivecolor/description": "বোতামে যখন ক্লিক কিংবা ট্যাপ করা হবে, তখন বোতামের পেছনের রং।"
+}

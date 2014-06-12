@@ -1,0 +1,7 @@
+{
+    "ceci-counter": "Compteur",
+    "ceci-counter/attributes/unit/label": "Unité",
+    "ceci-counter/attributes/unit/description": "Nom des éléments qui sont comptés.",
+    "ceci-counter/attributes/increment/label": "Incrémenter de",
+    "ceci-counter/attributes/increment/description": "Additionner ou soustraire ce nombre."
+}

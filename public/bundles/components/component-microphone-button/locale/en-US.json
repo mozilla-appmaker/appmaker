@@ -1,0 +1,16 @@
+{
+	"ceci-microphone-button": "Microphone Button",
+	"ceci-microphone-button/description": "Broadcasts a \"click\" when clicked.",
+	"ceci-microphone-button/attributes/label": "Press to record",
+	"ceci-microphone-button/attributes/label/label": "Label",
+	"ceci-microphone-button/attributes/label/description": "Text shown on the button.",
+	"ceci-microphone-button/attributes/value": "Click",
+	"ceci-microphone-button/attributes/value/label": "Value",
+	"ceci-microphone-button/attributes/value/description": "Value sent by the button.",
+	"ceci-microphone-button/attributes/textcolor/label": "Text Color",
+	"ceci-microphone-button/attributes/textcolor/description": "Color of the text on the button's label.",
+	"ceci-microphone-button/attributes/buttoncolor/label": "Button Color",
+	"ceci-microphone-button/attributes/buttoncolor/description": "Background color of the button.",
+	"ceci-microphone-button/attributes/buttonactivecolor/label": "Button Active Color",
+	"ceci-microphone-button/attributes/buttonactivecolor/description": "Background color of the button while it is being clicked or tapped."
+}

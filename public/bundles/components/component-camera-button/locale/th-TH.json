@@ -1,0 +1,19 @@
+{
+    "ceci-camera-button": "ปุ่มกล้อง",
+    "ceci-camera-button/description": "ถ่ายรูปด้วยกล้องของคุณ",
+    "ceci-camera-button/attributes/label": "ถ่ายรูป",
+    "ceci-camera-button/attributes/label/label": "ฉลาก",
+    "ceci-camera-button/attributes/label/description": "ข้อความแสดงบนปุ่ม",
+    "ceci-camera-button/attributes/value/label": "ค่า",
+    "ceci-camera-button/attributes/value/description": "ค่าที่ส่งโดยปุ่ม",
+    "ceci-camera-button/attributes/imageheight/label": "ความสูงของรูปภาพ",
+    "ceci-camera-button/attributes/imageheight/description": "ความสูงของรูปที่ถ่าย",
+    "ceci-camera-button/attributes/imagewidth/label": "ความกว้างของรูป",
+    "ceci-camera-button/attributes/imagewidth/description": "ความกว้างของรูปที่ถ่าย",
+    "ceci-camera-button/attributes/textcolor/label": "สีของตัวหนังสือ",
+    "ceci-camera-button/attributes/textcolor/description": "สีของตัวหนังสือบนฉลากของปุ่ม",
+    "ceci-camera-button/attributes/buttoncolor/label": "สีของปุ่ม",
+    "ceci-camera-button/attributes/buttoncolor/description": "สีพื้นหลังของปุ่ม",
+    "ceci-camera-button/attributes/buttonactivecolor/label": "สีปุ่มที่กำลังถูกใช้",
+    "ceci-camera-button/attributes/buttonactivecolor/description": "สีพื้นหลังของปุ่มในระหว่างที่กำลังถูกใช้หรือกด"
+}

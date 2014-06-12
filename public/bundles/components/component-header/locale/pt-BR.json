@@ -1,0 +1,7 @@
+{
+    "ceci-header": "Cabeçalho",
+    "ceci-header/description": "Um cabeçalho de página. Você pode enviar um sinal para navegar para outra página.",
+    "ceci-header/attributes/header": "Cabeçalho",
+    "ceci-header/attributes/header/label": "Rótulo do cabeçalho",
+    "ceci-header/attributes/header/description": "Texto para o rótulo do cabeçalho"
+}

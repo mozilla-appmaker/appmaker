@@ -1,0 +1,11 @@
+{
+    "ceci-chat-window": "চ্যাট উইন্ডো",
+    "ceci-chat-window/chatRoom": "চ্যাট রুম",
+    "ceci-chat-window/roomName": "রুম",
+    "ceci-chat-window/is now known as": "এখন তার পরিচয়",
+    "ceci-chat-window/attributes/username": "অ্যানোনিমাস",
+    "ceci-chat-window/attributes/username/label": "ব্যবহারকারী নাম",
+    "ceci-chat-window/attributes/username/description": "বার্তা পাঠানো হবে যে নামে",
+    "ceci-chat-window/attributes/room/label": "রুম",
+    "ceci-chat-window/attributes/room/description": "একটি চ্যাট রুম যেখানে বার্তা পাঠানো হবে"
+}

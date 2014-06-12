@@ -1,0 +1,7 @@
+{
+	"ceci-textbox": "Text",
+	"ceci-textbox/description": "Listen for a message and updates text",
+	"ceci-textbox/attributes/text": "I'm a textbox!",
+	"ceci-textbox/attributes/text/label": "Text",
+	"ceci-textbox/attributes/text/description": "A text for your label to show up in your app."
+}

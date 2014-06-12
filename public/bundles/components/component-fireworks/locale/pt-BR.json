@@ -1,0 +1,6 @@
+{
+    "ceci-fireworks": "Fogos de artifício",
+    "ceci-fireworks/description": "Exibe um show de fogos de artifício",
+    "ceci-fireworks/attributes/fireworksound/label": "Som de fogos de artifício",
+    "ceci-fireworks/attributes/fireworksound/description": "Diga para os fogos de artifício o que difundir em cada disparo."
+}

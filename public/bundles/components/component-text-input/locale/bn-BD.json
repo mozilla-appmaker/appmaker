@@ -1,0 +1,12 @@
+{
+    "ceci-text-input": "লেখা ইনপুট",
+    "ceci-text-input/button": "জমাদান",
+    "ceci-text-input/attributes/inputname": "লেখা ইনপুট",
+    "ceci-text-input/attributes/inputname/label": "ইনপুট নাম",
+    "ceci-text-input/attributes/inputname/description": "এই ফিল্ডের নাম, উপাত্ত সংরক্ষণের সময় কাজে লাগবে।",
+    "ceci-text-input/attributes/placeholdertext": "স্থানদখলদার",
+    "ceci-text-input/attributes/placeholdertext/label": "স্থানদখলদার লেখা",
+    "ceci-text-input/attributes/placeholdertext/description": "আপনার ইনপুট ফিল্ডে আপনি যে লেখা ডিফল্ট হিসেবে দেখতে চান।",
+    "ceci-text-input/attributes/emitonchange/label": "পরিবর্তনে প্রজ্ব্বলিত হও",
+    "ceci-text-input/attributes/emitonchange/description": "বোতাম ক্লিক কিংবা ট্যাপ করার সময় এটির পশ্চাতের রং।"
+}

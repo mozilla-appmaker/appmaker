@@ -1,0 +1,12 @@
+{
+    "ceci-chat-window": "หน้าต่างแชท",
+    "ceci-chat-window/description": "เริ่มห้องแชทของคุณเอง",
+    "ceci-chat-window/chatRoom": "ห้องแชท",
+    "ceci-chat-window/roomName": "ห้อง:",
+    "ceci-chat-window/is now known as": "รูปจักในนาม",
+    "ceci-chat-window/attributes/username": "นิรนาม",
+    "ceci-chat-window/attributes/username/label": "ชื่อผู้ใช้",
+    "ceci-chat-window/attributes/username/description": "ชื่อผู้ใช้ที่จะใช้ส่งข้อความ",
+    "ceci-chat-window/attributes/room/label": "ห้อง",
+    "ceci-chat-window/attributes/room/description": "ห้องแชทที่จะส่งข้อความไปยัง"
+}

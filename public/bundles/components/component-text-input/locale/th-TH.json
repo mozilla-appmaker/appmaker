@@ -1,0 +1,13 @@
+{
+    "ceci-text-input": "กรอกข้อความ",
+    "ceci-text-input/description": "กล่องรับข้อความที่สามารถเผยแพร่สิ่งที่ผู้ใช้พิมพ์",
+    "ceci-text-input/button": "ส่ง",
+    "ceci-text-input/attributes/inputname": "กรอกข้อความ",
+    "ceci-text-input/attributes/inputname/label": "ชื่อใช้กรอก",
+    "ceci-text-input/attributes/inputname/description": "ชื่อของแบบกรอกข้อความ มีประโยชน์เมื่อต้องการเก็บข้อมูล",
+    "ceci-text-input/attributes/placeholdertext": "ที่รอง",
+    "ceci-text-input/attributes/placeholdertext/label": "ที่รองข้อความ",
+    "ceci-text-input/attributes/placeholdertext/description": "ข้อความที่อยากให้แสดงในที่กรอกโดยเริ่มต้น",
+    "ceci-text-input/attributes/emitonchange/label": "ส่งเมื่อมีการเปลี่ยนแปลง",
+    "ceci-text-input/attributes/emitonchange/description": "สีพื้นหลังของปุ่มในระหว่างที่กำลังถูกใช้หรือกด"
+}

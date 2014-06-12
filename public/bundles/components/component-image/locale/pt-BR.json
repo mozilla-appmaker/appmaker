@@ -1,0 +1,6 @@
+{
+    "ceci-image": "Imagem",
+    "ceci-image/description": "Exibe uma imagem simples.",
+    "ceci-image/attributes/height/label": "Altura da imagem",
+    "ceci-image/attributes/height/description": "Altura da imagem"
+}

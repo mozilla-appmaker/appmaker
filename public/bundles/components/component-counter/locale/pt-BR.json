@@ -1,0 +1,8 @@
+{
+    "ceci-counter": "Contador",
+    "ceci-counter/description": "Escuta por uma mensagem e contabiliza essas mensagens",
+    "ceci-counter/attributes/unit/label": "Unidade",
+    "ceci-counter/attributes/unit/description": "Nome para os itens que estão sendo contados.",
+    "ceci-counter/attributes/increment/label": "Incrementar por",
+    "ceci-counter/attributes/increment/description": "Contar para cima ou para baixo esse número."
+}

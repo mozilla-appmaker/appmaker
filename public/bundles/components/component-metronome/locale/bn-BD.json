@@ -1,0 +1,8 @@
+{
+    "ceci-metronome": "মাত্রাপরিমাপক",
+    "ceci-metronome/description": "আউটপুট হওয়া টিক্‌ প্রতি মিনেটে বিট (BPM) দিয়ে পরিমাপ করা হয়",
+    "ceci-metronome/attributes/beatsperminute/label": "বিট প্রতি মিনিটে (BPM)",
+    "ceci-metronome/attributes/beatsperminute/description": "প্রতি মিনিটে বিটের সংখ্যা থেকে মাত্রাপরিমাপকের টিক্স পরিমাপ করা হয়",
+    "ceci-metronome/attributes/autostart/label": "স্বয়ংক্রিয় ভাবে চালু",
+    "ceci-metronome/attributes/autostart/description": "বুলিয়ান মান নিয়ন্ত্রন করবে, মাত্রাপরিমাপক স্বয়ংক্রিয় চালানো আরম্ভ করবে কিনা যখন কম্পোনেন্ট লোড হয়"
+}

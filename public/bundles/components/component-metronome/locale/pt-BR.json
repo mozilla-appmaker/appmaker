@@ -1,0 +1,8 @@
+{
+    "ceci-metronome": "Metrônomo",
+    "ceci-metronome/description": "Emite tiques medidos em Batidas Por Minuto (BPM)",
+    "ceci-metronome/attributes/beatsperminute/label": "Batidas Por Minuto (BPM)",
+    "ceci-metronome/attributes/beatsperminute/description": "Tiquetaques do metrônomo medido em batidas por minuto",
+    "ceci-metronome/attributes/autostart/label": "Iniciar automaticamente",
+    "ceci-metronome/attributes/autostart/description": "Valor booleano que controla se o metrônomo inicia automaticamente quando o componente é carregado"
+}

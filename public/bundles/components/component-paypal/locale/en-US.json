@@ -1,0 +1,12 @@
+{
+	"ceci-paypal": "Paypal",
+	"ceci-paypal/donationAmount": "Donation Amount:",
+	"ceci-paypal/description": "Add your own PayPal donation buttons, and start raising funds.",
+	"ceci-paypal/attributes/amount/label": "Amount",
+	"ceci-paypal/attributes/amount/description": "Amount of money to donate.",
+	"ceci-paypal/attributes/account/label": "Account",
+	"ceci-paypal/attributes/account/description": "PayPal account which will receive payment.",
+	"ceci-paypal/attributes/currency": "USD",
+	"ceci-paypal/attributes/currency/label": "Currency",
+	"ceci-paypal/attributes/currency/description": "Currency code for donation amount."
+}

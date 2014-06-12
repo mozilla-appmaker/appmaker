@@ -1,0 +1,7 @@
+{
+    "ceci-addform": "Adicionar formulário",
+    "ceci-addform/description": "Criar formulários e salvar dados em um banco de dados.",
+    "ceci-addform/attributes/dataname": "Itens",
+    "ceci-addform/attributes/dataname/label": "Eu criei...",
+    "ceci-addform/attributes/resetonsubmit/label": "Redefinir campos ao enviar"
+}

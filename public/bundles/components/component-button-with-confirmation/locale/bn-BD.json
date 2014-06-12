@@ -1,0 +1,18 @@
+{
+    "ceci-button-with-confirmation": "নিশ্চিতকরণ বোতাম",
+    "ceci-button-with-confirmation/description": "একটা বোতাম যা সম্প্রচারের পূর্বে গ্রাহককে নিশ্চিতকরণের জন্য জিজ্ঞেস করে ।",
+    "ceci-button-with-confirmation/attributes/label": "ক্লিক করুন এবং নিশ্চিত করুন",
+    "ceci-button-with-confirmation/attributes/label/label": "লেবেল",
+    "ceci-button-with-confirmation/attributes/label/description": "বোতামে প্রদর্শিত লেখা ।",
+    "ceci-button-with-confirmation/attributes/value/label": "মান",
+    "ceci-button-with-confirmation/attributes/value/description": "বোতাম কর্তৃক প্রেরিত মান।",
+    "ceci-button-with-confirmation/attributes/confirmationmessage": "আপনি কি নিশ্চিত?",
+    "ceci-button-with-confirmation/attributes/confirmationmessage/label": "নিশ্চিতকরণ বার্তা",
+    "ceci-button-with-confirmation/attributes/confirmationmessage/description": "কার্যসম্পাদনের পূর্বে গ্রাহকের কাছে প্রর্দশিত নিশ্চিতকরণ বার্তা",
+    "ceci-button-with-confirmation/attributes/textcolor/label": "লেখার রং",
+    "ceci-button-with-confirmation/attributes/textcolor/description": "বোতাম লেবেলের লেখার রং।",
+    "ceci-button-with-confirmation/attributes/buttoncolor/label": "বোতামের রং",
+    "ceci-button-with-confirmation/attributes/buttoncolor/description": "বোতামের পেছনের রং।",
+    "ceci-button-with-confirmation/attributes/buttonactivecolor/label": "বোতামের সক্রিয় অবস্থার রং",
+    "ceci-button-with-confirmation/attributes/buttonactivecolor/description": "বোতামে যখন ক্লিক কিংবা ট্যাপ করা হবে, তখন বোতামের পেছনের রং।"
+}

@@ -1,0 +1,12 @@
+{
+	"ceci-paypal": "เพย์แพล",
+	"ceci-paypal/donationAmount": "จำนวนบริจาค:",
+  "ceci-paypal/description": "เพิ่มปุ่มเพย์แพลของคุณและเริ่มต้นการระดมเงินทุน",
+	"ceci-paypal/attributes/amount/label": "จำนวน",
+	"ceci-paypal/attributes/amount/description": "จำนวนเงินที่จะบริจาค",
+	"ceci-paypal/attributes/account/label": "บัญชี",
+	"ceci-paypal/attributes/account/description": "บัญชีเพยแพลที่จะได้รับเงิน",
+	"ceci-paypal/attributes/currency": "THB",
+	"ceci-paypal/attributes/currency/label": "ค่าเงิน",
+	"ceci-paypal/attributes/currency/description": "ค่าเงินสำหรับการโอน"
+}

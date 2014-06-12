@@ -1,0 +1,7 @@
+{
+    "ceci-header": "ส่วนหัว",
+    "ceci-header/description": "ส่วนหัวของเพจ คุณสามารถส่งข้อความเพื่อเปลี่ยนหน้าไปยังเพจนั้นๆได้",
+    "ceci-header/attributes/header": "ส่วนหัว",
+    "ceci-header/attributes/header/label": "ฉลากส่วนหัว",
+    "ceci-header/attributes/header/description": "ข้อความของฉลากส่วนหัว"
+}

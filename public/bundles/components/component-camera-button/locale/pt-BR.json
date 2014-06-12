@@ -1,0 +1,19 @@
+{
+    "ceci-camera-button": "Botão da câmera",
+    "ceci-camera-button/description": "Tira uma foto com sua câmera.",
+    "ceci-camera-button/attributes/label": "Tirar photo",
+    "ceci-camera-button/attributes/label/label": "Rótulo",
+    "ceci-camera-button/attributes/label/description": "Texto exibido no botão.",
+    "ceci-camera-button/attributes/value/label": "Valor",
+    "ceci-camera-button/attributes/value/description": "Valor enviado pelo botão.",
+    "ceci-camera-button/attributes/imageheight/label": "Altura da imagem",
+    "ceci-camera-button/attributes/imageheight/description": "Altura da imagem capturada.",
+    "ceci-camera-button/attributes/imagewidth/label": "Largura da imagem",
+    "ceci-camera-button/attributes/imagewidth/description": "Largura da imagem capturada.",
+    "ceci-camera-button/attributes/textcolor/label": "Cor do texto",
+    "ceci-camera-button/attributes/textcolor/description": "Cor do texto no rótulo do botão.",
+    "ceci-camera-button/attributes/buttoncolor/label": "Cor do botão",
+    "ceci-camera-button/attributes/buttoncolor/description": "Cor de fundo do botão.",
+    "ceci-camera-button/attributes/buttonactivecolor/label": "Cor ativa do botão",
+    "ceci-camera-button/attributes/buttonactivecolor/description": "Cor de fundo do botão enquanto está sendo clicado ou tocado."
+}

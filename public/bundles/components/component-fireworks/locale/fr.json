@@ -1,0 +1,5 @@
+{
+    "ceci-fireworks": "Feux d'artifices",
+    "ceci-fireworks/attributes/fireworksound/label": "Fond sonore de feu d'artifice",
+    "ceci-fireworks/attributes/fireworksound/description": "indiquer ce que le feu d'artifice doit déployer à chaque coup."
+}

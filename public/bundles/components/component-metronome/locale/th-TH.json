@@ -1,0 +1,8 @@
+{
+    "ceci-metronome": "เครื่องเมตรอนอม",
+    "ceci-metronome/description": "เผยแพร่การวัดการเต้นในปริมาณการเต้นต่อหนึ่งนาที (BPM)",
+    "ceci-metronome/attributes/beatsperminute/label": "การเต้นต่อนาที (BPM)",
+    "ceci-metronome/attributes/beatsperminute/description": "เครื่องเมตรอนอมวัดการเต้นต่อหนึ่งนาที",
+    "ceci-metronome/attributes/autostart/label": "เริ่มต้นทันที",
+    "ceci-metronome/attributes/autostart/description": "ค่า Boolean ที่บังคับเครื่องเมตรอนอมถ้าตั้งให้เริ่มทันทีเมื่อเพจโหลดแล้ว"
+}

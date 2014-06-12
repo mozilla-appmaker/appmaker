@@ -1,0 +1,5 @@
+{
+    "ceci-spacer": "Espacement",
+    "ceci-spacer/attributes/height/label": "Hauteur",
+    "ceci-spacer/attributes/height/description": "La hauteur de votre espacement"
+}

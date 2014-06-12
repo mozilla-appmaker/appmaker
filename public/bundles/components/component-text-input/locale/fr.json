@@ -1,0 +1,12 @@
+{
+    "ceci-text-input": "Saisie de texte",
+    "ceci-text-input/button": "Soumettre",
+    "ceci-text-input/attributes/inputname": "Saisie de texte",
+    "ceci-text-input/attributes/inputname/label": "Saisir un nom",
+    "ceci-text-input/attributes/inputname/description": "Le nom de ce champ, utile quand on enregistre des données.",
+    "ceci-text-input/attributes/placeholdertext": "Substitut",
+    "ceci-text-input/attributes/placeholdertext/label": "Texte de substitution",
+    "ceci-text-input/attributes/placeholdertext/description": "Le texte que vous voulez que votre champ de saisie affiche par défaut.",
+    "ceci-text-input/attributes/emitonchange/label": "Envoi dès modification",
+    "ceci-text-input/attributes/emitonchange/description": "Couleur du bouton lorsqu'il est cliqué ou touché."
+}

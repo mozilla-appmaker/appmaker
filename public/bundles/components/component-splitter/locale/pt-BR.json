@@ -1,0 +1,4 @@
+{
+    "ceci-splitter": "Divisor",
+    "ceci-splitter/description": "Quando uma mensagem passa por este componente, ele pode enviar a mensagem para múltiplos difusores."
+}

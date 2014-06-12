@@ -1,0 +1,5 @@
+{
+    "ceci-fireworks": "আতশবাজী",
+    "ceci-fireworks/attributes/fireworksound/label": "আতশবাজির শব্দ",
+    "ceci-fireworks/attributes/fireworksound/description": "আতশবাজী কে বলুন প্রতিবার বিস্ফোরিত হবার সময় কি সম্প্রচার করা হবে।"
+}

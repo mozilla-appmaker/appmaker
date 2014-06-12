@@ -1,0 +1,12 @@
+{
+    "ceci-text-input": "Ввод текста",
+    "ceci-text-input/button": "Послать",
+    "ceci-text-input/attributes/inputname": "Ввод текста",
+    "ceci-text-input/attributes/inputname/label": "Имя ввода",
+    "ceci-text-input/attributes/inputname/description": "Имя этого поля, помогает при сохранении данных.",
+    "ceci-text-input/attributes/placeholdertext": "Заполнитель",
+    "ceci-text-input/attributes/placeholdertext/label": "Текст заполнителя",
+    "ceci-text-input/attributes/placeholdertext/description": "Текст, который должно показывать ваше поле ввода по умолчанию.",
+    "ceci-text-input/attributes/emitonchange/label": "Издавать при изменениях",
+    "ceci-text-input/attributes/emitonchange/description": "Фоновый цвет кнопки когда её кликают или нажимают"
+}

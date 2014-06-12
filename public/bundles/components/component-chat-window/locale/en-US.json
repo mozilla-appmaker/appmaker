@@ -1,0 +1,12 @@
+{
+	"ceci-chat-window": "Chat Window",
+	"ceci-chat-window/description": "Start your own chat room.",
+	"ceci-chat-window/chatRoom": "Chat Room",
+	"ceci-chat-window/roomName": "Room:",
+	"ceci-chat-window/is now known as": "is now known as",
+	"ceci-chat-window/attributes/username": "Anonymous",
+	"ceci-chat-window/attributes/username/label": "Username",
+	"ceci-chat-window/attributes/username/description": "A username to send messages as",
+	"ceci-chat-window/attributes/room/label": "Room",
+	"ceci-chat-window/attributes/room/description": "A chat room to send messages to"
+}

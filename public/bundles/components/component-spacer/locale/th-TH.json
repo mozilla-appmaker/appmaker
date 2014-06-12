@@ -1,0 +1,6 @@
+{
+    "ceci-spacer": "เนื้อที่ว่าง",
+    "ceci-spacer/description": "ช่องว่างระหว่างแอพ",
+    "ceci-spacer/attributes/height/label": "ความสูง",
+    "ceci-spacer/attributes/height/description": "ความสูงของเนื้อที่ว่าง"
+}

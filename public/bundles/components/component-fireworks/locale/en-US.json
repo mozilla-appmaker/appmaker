@@ -1,0 +1,6 @@
+{
+	"ceci-fireworks": "Fireworks",
+	"ceci-fireworks/description": "Shows firework show",
+	"ceci-fireworks/attributes/fireworksound/label": "Firework Sound",
+	"ceci-fireworks/attributes/fireworksound/description": "Tell the fireworks what to broadcast every shot."
+}

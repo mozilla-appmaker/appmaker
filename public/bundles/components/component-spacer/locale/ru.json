@@ -1,0 +1,5 @@
+{
+    "ceci-spacer": "Разделитель",
+    "ceci-spacer/attributes/height/label": "Высота",
+    "ceci-spacer/attributes/height/description": "Высота разделителя."
+}

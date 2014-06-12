@@ -1,0 +1,6 @@
+{
+    "ceci-header": "Заголовок",
+    "ceci-header/attributes/header": "Заголовок",
+    "ceci-header/attributes/header/label": "Ярлык заголовка",
+    "ceci-header/attributes/header/description": "Текст для ярлыка заголовка"
+}

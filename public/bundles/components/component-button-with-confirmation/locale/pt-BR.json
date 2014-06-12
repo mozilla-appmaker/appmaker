@@ -1,0 +1,18 @@
+{
+    "ceci-button-with-confirmation": "Botão com confirmação",
+    "ceci-button-with-confirmation/description": "Um botão que pergunta ao usuário antes de difundir.",
+    "ceci-button-with-confirmation/attributes/label": "Clique e me confirme",
+    "ceci-button-with-confirmation/attributes/label/label": "Rótulo",
+    "ceci-button-with-confirmation/attributes/label/description": "Texto mostrado no botão.",
+    "ceci-button-with-confirmation/attributes/value/label": "Valor",
+    "ceci-button-with-confirmation/attributes/value/description": "Valor enviado pelo botão.",
+    "ceci-button-with-confirmation/attributes/confirmationmessage": "Você tem certeza?",
+    "ceci-button-with-confirmation/attributes/confirmationmessage/label": "Mensagem de confirmação",
+    "ceci-button-with-confirmation/attributes/confirmationmessage/description": "Mensagem de confirmação exibida ao usuário antes de executar a ação.",
+    "ceci-button-with-confirmation/attributes/textcolor/label": "Cor do texto",
+    "ceci-button-with-confirmation/attributes/textcolor/description": "Cor do texto no rótulo do botão.",
+    "ceci-button-with-confirmation/attributes/buttoncolor/label": "Cor do botão",
+    "ceci-button-with-confirmation/attributes/buttoncolor/description": "Cor de fundo do botão.",
+    "ceci-button-with-confirmation/attributes/buttonactivecolor/label": "Cor do botão quando ativo",
+    "ceci-button-with-confirmation/attributes/buttonactivecolor/description": "Cor de fundo do botão enquanto está sendo clicado ou tocado."
+}

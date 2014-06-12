@@ -1,0 +1,6 @@
+{
+    "ceci-image": "รูปภาพ",
+    "ceci-image/description": "แสดงรูปภาพทั่วไป",
+    "ceci-image/attributes/height/label": "ความสูงของรูปภาพ",
+    "ceci-image/attributes/height/description": "ความสูงของรูปภาพ"
+}

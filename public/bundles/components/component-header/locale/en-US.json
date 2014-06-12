@@ -1,0 +1,7 @@
+{
+	"ceci-header": "Header",
+	"ceci-header/description": "A page header. You can send it a signal to navigate to that page.",
+	"ceci-header/attributes/header" : "Header",
+	"ceci-header/attributes/header/label" : "Header Label",
+	"ceci-header/attributes/header/description" : "Text for header label"
+}

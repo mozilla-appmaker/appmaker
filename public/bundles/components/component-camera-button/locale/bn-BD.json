@@ -1,0 +1,19 @@
+{
+    "ceci-camera-button": "ক্যামেরা বাটন",
+    "ceci-camera-button/description": "আপনার ক্যামেরা দিয়ে একটি ছবি তুলুন।",
+    "ceci-camera-button/attributes/label": "ছবি তুলুন",
+    "ceci-camera-button/attributes/label/label": "লেবেল",
+    "ceci-camera-button/attributes/label/description": "বাটনে প্রদর্শিত লেখা।",
+    "ceci-camera-button/attributes/value/label": "মান",
+    "ceci-camera-button/attributes/value/description": "বাটন কর্তৃক প্রেরিত মান।",
+    "ceci-camera-button/attributes/imageheight/label": "ছবির উচ্চতা",
+    "ceci-camera-button/attributes/imageheight/description": "যে ছবি তোলা হয়েছে তার উচ্চতা।",
+    "ceci-camera-button/attributes/imagewidth/label": "ছবির প্রস্থ",
+    "ceci-camera-button/attributes/imagewidth/description": "যে ছবি তোলা হয়েছে তার প্রস্থ।",
+    "ceci-camera-button/attributes/textcolor/label": "লেখার রঙ",
+    "ceci-camera-button/attributes/textcolor/description": "বানের লেবেলের লেখার রঙ।",
+    "ceci-camera-button/attributes/buttoncolor/label": "বাটনের রঙ",
+    "ceci-camera-button/attributes/buttoncolor/description": "বাটন পটভুমির রঙ।",
+    "ceci-camera-button/attributes/buttonactivecolor/label": "বোতাম সক্রিয় রং",
+    "ceci-camera-button/attributes/buttonactivecolor/description": "ক্লিক অথবা ট্যাপ করার জন্য বাটন পটভুমির রঙ।"
+}

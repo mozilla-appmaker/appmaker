@@ -1,0 +1,18 @@
+{
+	"ceci-button-with-confirmation": "Button with Confirmation",
+	"ceci-button-with-confirmation/description": "A button that asks the user to confirm before broadcasting.",
+	"ceci-button-with-confirmation/attributes/label": "Click and Confirm Me",
+	"ceci-button-with-confirmation/attributes/label/label": "Label",
+	"ceci-button-with-confirmation/attributes/label/description": "Text shown on the button.",
+	"ceci-button-with-confirmation/attributes/value/label": "Value",
+	"ceci-button-with-confirmation/attributes/value/description": "Value sent by the button.",
+	"ceci-button-with-confirmation/attributes/confirmationmessage": "Are you sure?",
+	"ceci-button-with-confirmation/attributes/confirmationmessage/label": "Confirmation Message",
+	"ceci-button-with-confirmation/attributes/confirmationmessage/description": "Confirmation message that is displayed to the user before executing action.",
+	"ceci-button-with-confirmation/attributes/textcolor/label": "Text Color",
+	"ceci-button-with-confirmation/attributes/textcolor/description": "Color of the text on the button's label.",
+	"ceci-button-with-confirmation/attributes/buttoncolor/label": "Button Color",
+	"ceci-button-with-confirmation/attributes/buttoncolor/description": "Background color of the button.",
+	"ceci-button-with-confirmation/attributes/buttonactivecolor/label": "Button Active Color",
+	"ceci-button-with-confirmation/attributes/buttonactivecolor/description": "Background color of the button while it is being clicked or tapped."
+}

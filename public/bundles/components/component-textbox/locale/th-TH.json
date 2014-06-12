@@ -1,0 +1,7 @@
+{
+    "ceci-textbox": "ข้อความ",
+    "ceci-textbox/description": "รับฟังข้อความและเปลี่ยนข้อความตามที่ส่งมา",
+    "ceci-textbox/attributes/text": "ฉันเป็นกล่องข้อความ!",
+    "ceci-textbox/attributes/text/label": "ข้อความ",
+    "ceci-textbox/attributes/text/description": "ข้อความของฉลากของคุณที่จะแสดงในแอพของคุณ"
+}

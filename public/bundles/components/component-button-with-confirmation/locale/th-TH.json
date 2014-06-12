@@ -1,0 +1,18 @@
+{
+    "ceci-button-with-confirmation": "ปุ่มกดพร้อมการยืนยัน",
+    "ceci-button-with-confirmation/description": "ปุ่มถามการยืนยันจากผู้ใช้ก่อนเผยแพร่",
+    "ceci-button-with-confirmation/attributes/label": "กดและยืนยันฉัน",
+    "ceci-button-with-confirmation/attributes/label/label": "ฉลาก",
+    "ceci-button-with-confirmation/attributes/label/description": "ข้อความแสดงบนปุ่ม",
+    "ceci-button-with-confirmation/attributes/value/label": "ค่า",
+    "ceci-button-with-confirmation/attributes/value/description": "ค่าที่ส่งโดยปุ่ม",
+    "ceci-button-with-confirmation/attributes/confirmationmessage": "คุณแน่ใจแล้วหรือ?",
+    "ceci-button-with-confirmation/attributes/confirmationmessage/label": "ข้อความการยืนยัน",
+    "ceci-button-with-confirmation/attributes/confirmationmessage/description": "ข้อความการยืนยันที่ถูกแสดงให้กับผู้ใช้ก่อนการเริ่มทำการ",
+    "ceci-button-with-confirmation/attributes/textcolor/label": "สีของตัวหนังสือ",
+    "ceci-button-with-confirmation/attributes/textcolor/description": "สีของตัวหนังสือบนฉลากของปุ่ม",
+    "ceci-button-with-confirmation/attributes/buttoncolor/label": "สีของปุ่ม",
+    "ceci-button-with-confirmation/attributes/buttoncolor/description": "สีพื้นหลังของปุ่ม",
+    "ceci-button-with-confirmation/attributes/buttonactivecolor/label": "สีปุ่มที่กำลังถูกใช้",
+    "ceci-button-with-confirmation/attributes/buttonactivecolor/description": "สีพื้นหลังของปุ่มในระหว่างที่กำลังถูกใช้หรือกด"
+}

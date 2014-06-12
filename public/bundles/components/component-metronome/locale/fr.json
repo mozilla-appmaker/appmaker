@@ -1,0 +1,8 @@
+{
+    "ceci-metronome": "Métronome",
+    "ceci-metronome/description": "Battements de sortie mesurés en battement par minute (BPM)",
+    "ceci-metronome/attributes/beatsperminute/label": "Battement par minute (BPM)",
+    "ceci-metronome/attributes/beatsperminute/description": "Battements du métronome mesurés en battement par minute",
+    "ceci-metronome/attributes/autostart/label": "Démarrage automatique",
+    "ceci-metronome/attributes/autostart/description": "Valeur booléenne vérifiant que le métronome s'est bien lancé automatique aux chargements des composants "
+}

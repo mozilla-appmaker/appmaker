@@ -1,0 +1,8 @@
+{
+    "ceci-counter": "ตัวนับ",
+    "ceci-counter/description": "รับฟังข้อความและนับ",
+    "ceci-counter/attributes/unit/label": "หน่วย",
+    "ceci-counter/attributes/unit/description": "ชื่อของๆที่กำลังถูกนับ",
+    "ceci-counter/attributes/increment/label": "เพิ่มขึ้นโดย",
+    "ceci-counter/attributes/increment/description": "นับขึ้นหรือลงโดยเลขนี้"
+}

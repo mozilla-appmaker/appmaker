@@ -1,0 +1,6 @@
+{
+    "ceci-textbox": "Texte",
+    "ceci-textbox/attributes/text": "Je suis une boite de dialogue !",
+    "ceci-textbox/attributes/text/label": "Texte",
+    "ceci-textbox/attributes/text/description": "Un texte pour votre étiquette qui sera affichée dans votre application."
+}

@@ -1,0 +1,12 @@
+{
+    "ceci-chat-window": "Janela de chat",
+    "ceci-chat-window/description": "Inicie sua própria sala de chat.",
+    "ceci-chat-window/chatRoom": "Sala de chat",
+    "ceci-chat-window/roomName": "Sala:",
+    "ceci-chat-window/is now known as": "agora é conhecido como",
+    "ceci-chat-window/attributes/username": "Anônimo",
+    "ceci-chat-window/attributes/username/label": "Nome de usuário",
+    "ceci-chat-window/attributes/username/description": "Nome de usuário para enviar mensagens como",
+    "ceci-chat-window/attributes/room/label": "Sala",
+    "ceci-chat-window/attributes/room/description": "Sala de chat para enviar mensagens para"
+}

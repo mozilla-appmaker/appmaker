@@ -1,0 +1,6 @@
+{
+    "ceci-spacer": "Espaçador",
+    "ceci-spacer/description": "Um espaçador para colocar entre componentes.",
+    "ceci-spacer/attributes/height/label": "Altura",
+    "ceci-spacer/attributes/height/description": "A altura do espaçador."
+}

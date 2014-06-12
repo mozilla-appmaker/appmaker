@@ -1,0 +1,8 @@
+{
+	"ceci-image": "Image",
+	"ceci-image/description": "Shows a simple image.",
+	"ceci-image/attributes/height/label": "Image Height",
+	"ceci-image/attributes/height/description": "Image Height",
+	"ceci-image/attributes/source/label": "Image Source",
+	"ceci-image/attributes/source/description": "The Image to Show"
+}

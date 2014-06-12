@@ -1,0 +1,13 @@
+{
+	"ceci-text-input": "Text Input",
+	"ceci-text-input/description": "A text input that broadcasts whatever a user types.",
+	"ceci-text-input/button": "Submit",
+	"ceci-text-input/attributes/inputname" : "Text Input",
+	"ceci-text-input/attributes/inputname/label" : "Input Name",
+	"ceci-text-input/attributes/inputname/description" : "The name of this field, helpful when saving data.",
+	"ceci-text-input/attributes/placeholdertext" : "Placeholder",
+	"ceci-text-input/attributes/placeholdertext/label" : "Placeholder Text",
+	"ceci-text-input/attributes/placeholdertext/description" : "The text you want your input field to show by default.",
+	"ceci-text-input/attributes/emitonchange/label" : "Emit on change",
+	"ceci-text-input/attributes/emitonchange/description" : "Background color of the button while it is being clicked or tapped."
+}

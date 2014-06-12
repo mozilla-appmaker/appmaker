@@ -1,0 +1,6 @@
+{
+    "ceci-textbox": "লেখা",
+    "ceci-textbox/attributes/text": "আমি লেখার বাক্স",
+    "ceci-textbox/attributes/text/label": "লেখা",
+    "ceci-textbox/attributes/text/description": "আপনার এ্যাপের লেবেলে প্রদর্শিত হবার জন্যে একটি লেখা।"
+}

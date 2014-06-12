@@ -1,0 +1,7 @@
+{
+	"ceci-header": "Cabecera",
+	"ceci-header/description": "Cabecera de página. Puedes enviar una señal para navegar hasta esta página.",
+	"ceci-header/attributes/header" : "Cabecera",
+	"ceci-header/attributes/header/label" : "Etiqueta de la cabecera",
+	"ceci-header/attributes/header/description" : "Texto para la etiqueta de la cabecera"
+}

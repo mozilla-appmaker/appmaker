@@ -1,0 +1,6 @@
+{
+    "ceci-textbox": "Текст",
+    "ceci-textbox/attributes/text": "Я - текстовое окно!",
+    "ceci-textbox/attributes/text/label": "Текст",
+    "ceci-textbox/attributes/text/description": "Текст для вашего ярлыка для показа в Вашем приложении."
+}

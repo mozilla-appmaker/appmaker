@@ -1,0 +1,6 @@
+{
+    "ceci-fireworks": "ดอกไม้ไฟ",
+    "ceci-fireworks/description": "แสดงดอกไม้ไฟ",
+    "ceci-fireworks/attributes/fireworksound/label": "เสียงดอกไม้ไฟ",
+    "ceci-fireworks/attributes/fireworksound/description": "บอกดอกไม้ไฟว่าจะให้ส่งข้อความอะไรทุกครั้งที่ยิง"
+}

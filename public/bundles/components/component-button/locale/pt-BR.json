@@ -1,0 +1,16 @@
+{
+    "ceci-button": "Botão",
+    "ceci-button/description": "Transmite um \"clique\" quando clicado.",
+    "ceci-button/attributes/label": "Clique em mim",
+    "ceci-button/attributes/label/label": "Rótulo",
+    "ceci-button/attributes/label/description": "Texto exibido na parte de baixo.",
+    "ceci-button/attributes/value": "Clicar",
+    "ceci-button/attributes/value/label": "Valor",
+    "ceci-button/attributes/value/description": "Valor enviado pelo botão.",
+    "ceci-button/attributes/textcolor/label": "Cor do texto",
+    "ceci-button/attributes/textcolor/description": "Cor do texto no rótulo do botão.",
+    "ceci-button/attributes/buttoncolor/label": "Cor do botão",
+    "ceci-button/attributes/buttoncolor/description": "Cor de fundo do botão.",
+    "ceci-button/attributes/buttonactivecolor/label": "Cor do botão quando ativo",
+    "ceci-button/attributes/buttonactivecolor/description": "Cor de fundo do botão enquanto está sendo clicado ou tocado."
+}

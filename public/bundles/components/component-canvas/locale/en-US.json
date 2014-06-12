@@ -1,0 +1,6 @@
+{
+  "ceci-component-canvas": "Canvas",
+  "ceci-component-canvas/description": "A canvas for drawing and sharing",
+  "ceci-component-canvas/attributes/image/label": "Image",
+  "ceci-component-canvas/attributes/image/description": "URL for displayed image"
+}

@@ -1,0 +1,7 @@
+{
+    "ceci-counter": "কাউন্টার",
+    "ceci-counter/attributes/unit/label": "একক",
+    "ceci-counter/attributes/unit/description": "পদের নাম, যা গণনা করা হবে।",
+    "ceci-counter/attributes/increment/label": "বৃদ্ধির হার",
+    "ceci-counter/attributes/increment/description": "এই সংখ্যার হিসেবে উপরের দিকে কিংবা নিচের দিকে গণনা করুন।"
+}

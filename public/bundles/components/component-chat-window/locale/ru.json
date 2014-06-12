@@ -1,0 +1,11 @@
+{
+    "ceci-chat-window": "Окно чата",
+    "ceci-chat-window/chatRoom": "Комната чата",
+    "ceci-chat-window/roomName": "Комната:",
+    "ceci-chat-window/is now known as": "теперь будет называться",
+    "ceci-chat-window/attributes/username": "Анонимный",
+    "ceci-chat-window/attributes/username/label": "Имя пользователя",
+    "ceci-chat-window/attributes/username/description": "Имя пользователя как имя отправителя в сообщениях",
+    "ceci-chat-window/attributes/room/label": "Комната",
+    "ceci-chat-window/attributes/room/description": "Комната чата, в которую будут отправляться сообщения"
+}
