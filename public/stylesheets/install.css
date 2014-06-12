@@ -57,7 +57,7 @@ body {
   100%  { -webkit-transform: rotate(360deg)}
 }
 
-button#install {
+button {
   font-family: 'Source Sans Pro', arial;
   width: 100%;
   -webkit-appearance: none;
@@ -68,13 +68,14 @@ button#install {
   background-color: #358CCE;
   color: #FFF;
   margin: 40px 0px;
+  cursor: pointer;
 }
 
-button#install:hover {
+button:hover {
   background-color: #3999e3;
 }
 
-button#install:active {
+button:active {
   background-color: #2a70a6;
 }
 
