@@ -808,7 +808,7 @@
     </script>
 </polymer-element>
 
-<polymer-element name="ceci-button" attributes="textcolor buttoncolor buttonactivecolor label value" value="Click" extends="ceci-element" label="Click Me" textcolor="#ffffff" buttoncolor="#4DB227" buttonactivecolor="#358915" assetpath="component-button/">
+<polymer-element name="ceci-button" attributes="textcolor buttoncolor label value" value="Click" extends="ceci-element" label="Click Me" textcolor="#ffffff" buttoncolor="#4DB227" assetpath="component-button/">
   <ceci-definition>
     {
       "tags": ["button", "click", "tap"],
@@ -822,12 +822,7 @@
           "default": true
         }
       },
-      "listeners": {
-        "click": {
-          "description": "Causes a fake click event to occur.",
-          "label": "Click"
-        }
-      },
+      "listeners": {},
       "attributes": {
         "label": {
           "label": "Label",
@@ -838,24 +833,16 @@
         "value": {
           "label": "Value",
           "description": "Value sent by the button.",
-          "editable": "text",
-          "listener": true
+          "editable": "text"
         },
         "textcolor": {
           "label": "Text Color",
           "description": "Color of the text on the button's label.",
-          "editable": "color",
-          "listener": true
+          "editable": "color"
         },
         "buttoncolor": {
           "label": "Button Color",
           "description": "Background color of the button.",
-          "editable": "color",
-          "listener": true
-        },
-        "buttonactivecolor": {
-          "label": "Button Active Color",
-          "description": "Background color of the button while it is being clicked or tapped.",
           "editable": "color",
           "listener": true
         }
@@ -868,28 +855,59 @@
   width: 100%;
 }
 
-:host button {
+:host .button-wrapper {
+  position: relative;
+}
+
+:host #button {
   font-family: "FiraSans", sans-serif;
   cursor: pointer;
-  position: relative;
-  text-decoration: none;
-  outline: none;
-  border-top: 1px solid rgba(255,255,255,.3);
-  border-bottom: 2px solid rgba(0,0,0,.2);
-  background-color: #4DB227;
-  text-align: center;
+  border-bottom: 2px solid rgba(0,0,0,.1);
   display: block;
-  padding-top: 5px;
-  padding-bottom: 3px;
+  text-align: center;
+  padding: 12px 0 10px 0;
   text-overflow: ellipsis;
   overflow: hidden;
-  border-radius: 0.2rem;
   font-weight: 600;
   font-size: 1.8rem;
-  line-height: 3.8rem;
-  color: #ffffff;
-  width: 100%;
-  margin: 0;
+  line-height: 1.8rem;
+
+}
+
+:host .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+}
+
+:host .active-overlay {
+  background: black;
+}
+
+:host .hover-overlay {
+  background: white;
+}
+
+:host .button-wrapper:hover .hover-overlay {
+  opacity: .1;
+}
+
+:host .button-wrapper:active .active-overlay {
+  opacity: .1;
+}
+:host .button-wrapper:active .hover-overlay {
+  opacity: 0;
+}
+
+
+
+
+:host .button-wrapper:active #button {
+  border-top: solid 2px rgba(0,0,0,.1);
+  border-bottom: none;
 }
 
 :host button {
@@ -897,7 +915,11 @@
 }
 
 </style>
-    <button id="button" on-click="{{click}}">{{label}}</button>
+    <div class="button-wrapper" on-click="{{click}}">
+      <div id="button">{{label}}</div>
+      <div class="overlay active-overlay"></div>
+      <div class="overlay hover-overlay"></div>
+    </div>
     <shadow></shadow>
   </template>
   <script>
@@ -905,15 +927,6 @@
       ready: function () {
         this.super();
         var that = this;
-        var mouseUpHandler = function(evt) {
-          window.removeEventListener("mouseup", mouseUpHandler);
-          that.$.button.style.backgroundColor = that.buttoncolor;
-        };
-        var mouseDownHandler = function(evt) {
-          window.addEventListener("mouseup", mouseUpHandler);
-          that.$.button.style.backgroundColor = that.buttonactivecolor;
-        };
-        this.$.button.addEventListener("mousedown", mouseDownHandler);
       },
       click: function () {
         this.broadcast('click', this.getAttribute('value'));
@@ -1429,7 +1442,7 @@
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-component-canvas" extends="ceci-element" attributes="pensize readonly imageurl" assetpath="component-canvas/">
+<polymer-element name="ceci-component-canvas" extends="ceci-element" attributes="height pensize readonly imageurl generateonchange" assetpath="component-canvas/">
   <ceci-definition>
     {
       "name": "Canvas",
@@ -1439,7 +1452,8 @@
       "broadcasts": {
         "imageGenerated": {
           "label": "Image Generated",
-          "description": "A portable image URL was generated"
+          "description": "A portable image URL was generated",
+          "default": "green"
         }
       },
       "listeners": {
@@ -1453,6 +1467,11 @@
         }
       },
       "attributes": {
+        "generateonchange": {
+          "label": "Generate on Change",
+          "description": "Generate image when canvas is changed",
+          "editable": "boolean"
+        },
         "pensize": {
           "label": "Pen Size",
           "description": "Width of pen used for drawing",
@@ -1463,6 +1482,11 @@
           "label": "Read Only",
           "description": "Locks/unlocks drawn content",
           "editable": "boolean"
+        },
+        "height": {
+          "label": "Height",
+          "description": "Height of canvas",
+          "editable": "number"
         }
       }
     }
@@ -1471,8 +1495,10 @@
     <style>:host {
   display: block;
   width: 100%;
-  height: 400px;
   position: relative;
+  background-color: #fff;
+  background-image: linear-gradient(rgba(201, 210, 248, 0.4) .1em, transparent .1em);
+  background-size: 100% 1.2em;
 }
 
 :host canvas {
@@ -1494,12 +1520,16 @@
   </template>
     <script>
       function getMousePositionOffset(e, canvas) {
-        if (e.offsetX) {
+        var rect = canvas.getBoundingClientRect();
+
+        if (e.touches) {
+          return [e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top];
+        }
+        else if (e.offsetX) {
           return [e.offsetX, e.offsetY];
         }
         else {
           // recover from PointerEvents bug... :/
-          var rect = canvas.getBoundingClientRect();
           return [e.clientX - rect.left, e.clientY - rect.top];
         }
       }
@@ -1511,6 +1541,8 @@
           var canvas = eMouseDown.target;
           var ctx = canvas.getContext('2d');
 
+          var moved = false;
+
           var canvasRect = canvas.getBoundingClientRect();
           var startPos = getMousePositionOffset(eMouseDown, canvas);
 
@@ -1521,23 +1553,44 @@
             var movedPos = getMousePositionOffset(eMouseMove, canvas);
             ctx.lineTo(movedPos[0], movedPos[1]);
             ctx.stroke();
+            moved = true;
+            eMouseMove.preventDefault();
           }
 
           function onCanvasMouseUp (eMouseUp) {
             canvas.removeEventListener('mousemove', onCanvasMouseMove, false);
             window.removeEventListener('mouseup', onCanvasMouseUp, false);
+            canvas.removeEventListener('touchmove', onCanvasMouseMove, false);
+            window.removeEventListener('touchend', onCanvasMouseUp, false);
+
+            if (!moved) {
+              ctx.lineTo(startPos[0] + ctx.lineWidth, startPos[1] + ctx.lineWidth);
+              ctx.stroke();
+            }
             ctx.closePath();
             changedCallback();
           }
 
           canvas.addEventListener('mousemove', onCanvasMouseMove, false);
           window.addEventListener('mouseup', onCanvasMouseUp, false);
+          canvas.addEventListener('touchmove', onCanvasMouseMove, false);
+          window.addEventListener('touchend', onCanvasMouseUp, false);
         }
       }
 
       Polymer("ceci-component-canvas", {
         readonly: 'false',
         pensize: 5,
+        height: 100,
+        generateonchange: 'false',
+        heightChanged: function () {
+          this.style.height = this.height + 'px';
+          this.async(function () {
+            var rect = this.getBoundingClientRect();
+            this.$.canvas.width = rect.width;
+            this.$.canvas.height = rect.height;
+          });
+        },
         ready: function() {
           this.super();
 
@@ -1574,12 +1627,17 @@
           if (this.readonly === 'false') {
             this._onCanvasMouseDown = enableCanvas(this.$.canvas, function () {
               that.imageurl = that.$.canvas.toDataURL();
+              if (that.generateonchange === 'true') {
+                that.broadcast('imageGenerated', that.$.canvas.toDataURL());
+              }
             });
             this.$.canvas.addEventListener('mousedown', this._onCanvasMouseDown, false);
+            this.$.canvas.addEventListener('touchstart', this._onCanvasMouseDown, false);
           }
           else {
             if (this._onCanvasMouseDown) {
               this.$.canvas.removeEventListener('mousedown', this._onCanvasMouseDown, false);
+              this.$.canvas.removeEventListener('touchdown', this._onCanvasMouseDown, false);
             }
           }
         },
@@ -1592,13 +1650,13 @@
           this.$.cursor.style.marginLeft = -(size/2) + 'px';
         },
         generateImage: function () {
-          var url = this.$.canvas.toDataURL();
-          this.broadcast('imageGenerated', url);
+          this.broadcast('imageGenerated', this.$.canvas.toDataURL());
         },
         attached: function () {
           var rect = this.getBoundingClientRect();
           this.$.canvas.width = rect.width;
           this.$.canvas.height = rect.height;
+          this.super();
         },
         reset: function() {
           var c = this.$.canvas;
@@ -1607,6 +1665,93 @@
         }
       });
     </script>
+</polymer-element>
+
+<polymer-element name="ceci-chart" collectionname="times" extends="ceci-element" attributes="unit increment value collectionname" assetpath="component-chart/">
+  <script src="component-chart/vendor/chartjs/Chart.min.js"></script>
+  <ceci-definition>
+    {
+      "name": "Chart",
+      "thumbnail": "./thumbnail.png",
+      "description": "Charts a collection",
+      "tags": ["asdf"],
+      "broadcasts": {
+      },
+      "listeners": {
+        "graph": {
+          "description": "Graphs available data.",
+          "label": "Graph",
+          "default": true
+        }
+      },
+      "attributes": {
+        "collectionname": {
+          "description": "The name of the collection to store the value",
+          "label": "Collection Name",
+          "editable": "text"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <style>:host {
+  display: block;
+  width: 100%;
+}
+
+:host .wrapper {
+  width: 100%;
+  min-height: 400px;
+}
+
+:host canvas {
+  height: 400px;
+  width: 100%;
+}
+</style>
+    <div class="wrapper">
+      <canvas id="canvas" width="310" height="400"></canvas>
+    </div>
+    <shadow></shadow>
+  </template>
+  <tags></tags>
+  <script>
+    Polymer("ceci-chart", {
+      ready: function() {
+        this.super();
+        var canvas = this.$.canvas;
+        var ctx = canvas.getContext('2d');
+        this.chart = new Chart(ctx);
+      },
+      getData: function() {
+        var data = JSON.parse(localStorage['hack-collection-' + this.collectionname]);
+
+        var values = [];
+        var keys = Object.keys(data);
+
+        for (var i in keys){
+          values.push(data[keys[i]]);
+        }
+
+        return {
+          labels: keys,
+          datasets: [
+            {
+              fillColor: "rgba(220,220,220,0.5)",
+              strokeColor: "rgba(220,220,220,1)",
+              data: values
+            }
+          ]
+        };
+      },
+      graph: function() {
+        // console.log(this.getData());
+        this.chart.Line(this.getData(), {
+          animation: false
+        });
+      }
+    });
+  </script>
 </polymer-element>
 
 <polymer-element name="ceci-chat-window" attributes="username room" extends="ceci-element" username="Anonymous" room="Mozilla" assetpath="component-chat-window/">
@@ -1795,6 +1940,82 @@
   </script>
 </polymer-element>
 
+<polymer-element name="ceci-combiner" extends="ceci-element" assetpath="component-combiner/">
+  <template>
+    <style>:host, :host .combiner {
+  display: block;
+  width: 100%;
+  height: 50px;
+}
+
+:host .combiner {
+  background-color: black;
+}
+</style>
+    <div class="combiner"></div>
+    <shadow></shadow>
+  </template>
+  <ceci-definition>
+    {
+      "tags": ["component-combiner", "combiner"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Messages of any colour sent to this brick .",
+      "name": "Combiner",
+      "broadcasts": {
+        "output": {
+          "label": "Output",
+          "description": "Repeats input",
+          "default": true
+        }
+      },
+      "listeners": {
+        "input1": {
+          "description": "Input 1",
+          "label": "Input 1",
+          "default": "green"
+        },
+        "input2": {
+          "description": "Input 2",
+          "label": "Input 2",
+          "default": "red"
+        },
+        "input3": {
+          "description": "Input 3",
+          "label": "Input 3"
+        },
+        "input4": {
+          "description": "Input 4",
+          "label": "Input 4"
+        },
+        "input5": {
+          "description": "Input 5",
+          "label": "Input 5"
+        },
+        "input6": {
+          "description": "Input 6",
+          "label": "Input 6"
+        }
+      }
+    }
+  </ceci-definition>
+  <script>
+    Polymer('ceci-combiner', {
+      ready: function () {
+        this.super();
+
+        var i = 0;
+        while (i++ < Object.keys(this.ceci.listeners).length) {
+          this['input' + i] = this.input;
+        }
+      },
+      input: function(val) {
+        this.broadcast('output', val);
+      }
+    });
+  </script>
+</polymer-element>
+
+
 <polymer-element name="ceci-counter" extends="ceci-element" attributes="unit increment value" assetpath="component-counter/">
   <ceci-definition>
     {
@@ -1922,51 +2143,28 @@
     </script>
 </polymer-element>
 
-<polymer-element name="ceci-cowbell" attributes="source speed label value drumcolor backgroundcolor stickcolor" drumcolor="#FFFFFF" stickcolor="#000000" backgroundcolor="#81ac2d" value="Click" extends="ceci-element" speed="1.0" assetpath="component-cowbell/">
+<polymer-element name="ceci-cowbell" attributes="bellcolor backgroundcolor" bellcolor="#FFFFFF" backgroundcolor="#4DB227" extends="ceci-element" assetpath="component-cowbell/">
   <ceci-definition>
     {
       "tags": ["button", "click", "tap"],
       "thumbnail": "./thumbnail.png",
       "description": "Broadcasts a \"click\" when clicked.",
       "name": "Cowbell",
-      "broadcasts": {
-        "click": {
-          "label": "Click",
-          "description": "Occurs when button is clicked."
-        }
-      },
+      "broadcasts": {},
       "listeners": {
         "kick": {
-          "description": "Causes a fake click event to occur.",
-          "label": "Kick",
+          "description": "Hits the cowbell!",
+          "label": "More",
           "default": true
-        },
-        "speed": {
-          "description": "Sets the playback rate for the audio clip.",
-          "label": "setSpeed"
         }
       },
       "attributes": {
-        "speed": {
-          "label": "Audio playback rate.",
-          "description": "1 for normal speed, 2 for twice speed, -1 for reverse, etc.",
-          "editable": "number"
-        },
-        "value": {
-          "label": "Value",
-          "description": "Value sent by the button.",
-          "editable": "text"
-        },
-        "stickcolor": {
-          "label": "Stick Color",
-          "editable": "color"
-        },
         "backgroundcolor": {
           "label": "Background Color",
           "editable": "color"
         },
-        "drumcolor": {
-          "label": "Drum Color",
+        "bellcolor": {
+          "label": "Cowbell Color",
           "description": "Color of the drum.",
           "editable": "color"
         }
@@ -2001,26 +2199,8 @@
 
 :host .hit #bell {
   -webkit-transform: scale(1.2);
-}
-
-:host #stick {
-  height: 8px;
-  width: 120px;
-  background: black;
-  position: absolute;
-  left: 40px;
-  top: 20px;
-  border-radius: 100px;
-  -webkit-transform-origin: left;
-}
-
-:host .hit #stick {
-  top: 25px;
-  -webkit-transform: rotate(15deg);
-}
-
-:host .hit #drum {
-  top: -15px;
+  -moz-transform: scale(1.2);
+  transform: scale(1.2);
 }
 
 :host audio {
@@ -2029,7 +2209,6 @@
 </style>
     <div id="wrapper" class="off" on-mousedown="{{kickon}}" on-mouseup="{{kickoff}}">
       <div id="bell"></div>
-      <!-- <div id="stick"></div> -->
     </div>
     <audio id="kicksound" src="component-cowbell/sounds/sound.mp3" preload="preload"></audio>
     <shadow></shadow>
@@ -2061,31 +2240,263 @@
         this.$.snare.currentTime = 0;
         this.$.snare.play();
       },
-      sourceChanged: function(oldValue, newValue) {
-        this.$.clip.src = newValue;
-      },
-      setSpeed: function(channel, value) {
-        this.speedChanged(this.$.snare.playbackRate || 1, value);
-        this.speedChanged(this.$.kick.playbackRate || 1, value);
-      },
-      speedChanged: function(oldValue, newValue) {
-        try  {
-          var f = parseFloat(newValue);
-          if (f) {
-            this.$.kick.playbackRate = parseFloat(newValue);
-            this.$.snare.playbackRate = parseFloat(newValue);
-          }
-        } catch (e) {}
-      },
-      stickcolorChanged: function (oldValue, newValue) {
-        // this.$.stick.style.background = newValue;
-      },
-      drumcolorChanged: function (oldValue, newValue) {
-        // this.$.drum.style.background = newValue;
-      },
       backgroundcolorChanged: function (oldValue, newValue) {
-        console.log("background change to " + newValue);
         this.$.wrapper.style.background = newValue;
+      },
+      bellcolorChanged: function (oldValue, newValue) {
+        this.$.bell.style.borderBottom = "solid 100px " + newValue;
+      }
+    });
+  </script>
+</polymer-element>
+
+<polymer-element name="ceci-daily-counter" collectionname="times" extends="ceci-element" attributes="unit increment collectionname" assetpath="component-daily-counter/">
+  <ceci-definition>
+    {
+      "name": "Daily Counter",
+      "thumbnail": "./thumbnail.png",
+      "description": "Listens for a message and counts",
+      "broadcasts": {
+        "currentCount": {
+          "label": "Current Count",
+          "description": "Broadcasts the current count."
+        }
+      },
+      "listeners": {
+        "countUp": {
+          "description": "Increment the total by the increment value",
+          "label": "Count Up!",
+          "default" : false
+        },
+        "countDown": {
+          "description": "Decrement the total by the increment value",
+          "label": "Count Down"
+        },
+        "resetCount": {
+          "description": "Reset the total to 0.",
+          "label": "Reset Count"
+        }
+      },
+      "attributes": {
+        "unit": {
+          "description": "Name for items which are being counted.",
+          "label": "Unit",
+          "editable": "text"
+        },
+        "collectionname": {
+          "description": "The name of the collection to store the value",
+          "label": "Collection Name",
+          "editable": "text"
+        },
+        "increment": {
+          "description": "Count up or down with this number.",
+          "label": "Increment By",
+          "editable": "number",
+          "min" : 1
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <div class="wrapper">
+      <div class="timer">
+        <span>T-{{dayCountDown}}</span>
+        <span class="label">Until Tomorrow</span>
+      </div>
+    </div>
+    <style>:host {
+  display: block;
+  width: 100%;
+}
+
+
+:host .wrapper {
+  width: 100%;
+  margin: 1em auto;
+  height: 80px;
+}
+
+:host .counter {
+  font-size: 16px;
+  background: #DDD;
+  color: #666;
+  margin: 5px auto;
+  display: table;
+  padding: 10px 12px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border: 1px #CCC solid;
+  border-bottom-width: 2px;
+}
+
+:host .counter-control {
+  height: 50px;
+  width: 50px;
+  background: #63a6cc;
+  position: absolute;
+  border-radius: 30px;
+  -webkit-border-radius: 30px;
+  bottom: 10px;
+  cursor: pointer;
+  opacity: .8;
+}
+
+:host .up {
+  right: 40px;
+}
+
+:host .down {
+  left: 40px;
+}
+
+:host .counter-control:hover {
+  opacity: 1;
+}
+
+:host .counter-control .icon {
+  position: absolute;
+  font-size: 40px;
+  color: white;
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  text-shadow: 0px -1px 0px rgba(0,0,0,.25);
+}
+
+:host .down .icon {
+  top: -4px;
+}
+
+
+:host .counter
+</style>
+    <div class="wrapper">
+
+      <div class="counter-control up" on-click="{{countUp}}">
+        <span class="icon">+</span>
+      </div>
+
+      <div class="counter">
+        <span>{{value}}</span>
+        <span class="label">{{displayUnit}}</span>
+      </div>
+
+      <div class="counter-control down" on-click="{{countDown}}">
+        <span class="icon">-</span>
+      </div>
+
+    </div>
+
+    <shadow></shadow>
+  </template>
+  <tags></tags>
+  <script>
+    Polymer("ceci-daily-counter", {
+      ready: function() {
+        this.dayCountDown = '00:00';
+        this.increment = Number(this.increment) || 1;
+        this.value = this.getTodaysValue() || 0;
+        this.displayUnit = this.unit;
+        this.updateUnit();
+        var t = this;
+        this.countdownInterval = setInterval(function(){
+          t.updateCountdown();
+        }, 2000);
+
+        this.super();
+      },
+      value: 0,
+      increment: 1,
+      unit: 'Times',
+      updateCountdown: function(){
+        function minutesUntilMidnight() {
+          var midnight = new Date();
+          midnight.setHours(24);
+          midnight.setMinutes(0);
+          midnight.setSeconds(0);
+
+          var hours = Math.floor(
+            (midnight.getTime() - new Date().getTime()) / 1000 / 60 / 60
+          );
+
+          if (hours < 10) {
+            hours = "0" + hours;
+          }
+
+          var minutes = Math.ceil(
+            (midnight.getTime() - new Date().getTime()) / 1000 / 60 % 60
+          );
+
+          if (minutes < 10) {
+            minutes = "0" + minutes;
+          }
+
+          return [hours, minutes].join(":");
+        }
+
+        this.dayCountDown = minutesUntilMidnight();
+      },
+      incrementChanged: function(oldValue, newValue) {
+        this.increment = Number(this.increment) || 0;
+      },
+      updateUnit : function(){
+        if (this.unit) {
+          var unit = this.unit.trim();
+          if (unit.length > 0) {
+
+            var pluralChar = "";
+            if((Number(this.value) !== 1) && (unit[unit.length - 1] !== 's')){
+              pluralChar = "s";
+            }
+
+            if(unit[unit.length - 1] === unit[unit.length - 1].toUpperCase()) {
+              pluralChar = pluralChar.toUpperCase()
+            }
+            this.displayUnit = " " + unit + pluralChar;
+          }
+        }
+      },
+      unitChanged: function() {
+        this.updateUnit();
+      },
+      getTodaysValue: function(){
+        var collection = localStorage['hack-collection-' + this.collectionname];
+
+        // This will go away when collections are redone
+        if (!collection){
+          localStorage['hack-collection-' + this.collectionname] = JSON.stringify({});
+        }
+
+        var data = JSON.parse(localStorage['hack-collection-' + this.collectionname]);
+
+        return data[new Date().toLocaleDateString()];
+      },
+      storeValue: function(val) {
+        var collection = localStorage['hack-collection-' + this.collectionname];
+
+        // This will go away when collections are redone
+        if (!collection){
+          localStorage['hack-collection-' + this.collectionname] = JSON.stringify({});
+        }
+
+        var data = JSON.parse(localStorage['hack-collection-' + this.collectionname]);
+
+        data[new Date().toLocaleDateString()] = val;
+        localStorage['hack-collection-' + this.collectionname] = JSON.stringify(data);
+      },
+      valueChanged: function() {
+        this.broadcast("currentCount", this.value);
+        this.storeValue(this.value);
+        this.updateUnit();
+      },
+      countUp: function() {
+        this.value = Number(this.value) + Number(this.increment, 10);
+      },
+      countDown: function() {
+        this.value = Number(this.value) - Number(this.increment, 10);
+      },
+      resetCount: function() {
+        this.value = 0;
       }
     });
   </script>
@@ -3332,52 +3743,32 @@ header {
 </polymer-element>
 
 
-<polymer-element name="ceci-snaredrum" attributes="source speed label value drumcolor backgroundcolor stickcolor" drumcolor="#FFFFFF" stickcolor="#000000" backgroundcolor="#ff9900" value="Click" extends="ceci-element" speed="1.0" assetpath="component-kickdrum/">
+<polymer-element name="ceci-jazzhands" attributes="backgroundcolor" backgroundcolor="#ff9900" extends="ceci-element" assetpath="component-jazzhands/">
   <ceci-definition>
     {
-      "tags": ["button", "click", "tap"],
+      "tags": ["music", "instrument", "tap"],
       "thumbnail": "./thumbnail.png",
       "description": "Broadcasts a \"click\" when clicked.",
-      "name": "Snare Drum",
-      "broadcasts": {
-        "click": {
-          "label": "Click",
-          "description": "Occurs when button is clicked."
-        }
-      },
+      "name": "Jazz Hands",
+      "broadcasts": {},
       "listeners": {
-        "kick": {
-          "description": "Causes a fake click event to occur.",
-          "label": "Kick",
+        "both": {
+          "description": "Jazz both hands",
+          "label": "Both Hands",
           "default": true
         },
-        "speed": {
-          "description": "Sets the playback rate for the audio clip.",
-          "label": "setSpeed"
+        "left": {
+          "description": "Jazz the left hand",
+          "label": "Left Hand"
+        },
+        "right": {
+          "description": "Jazz the right hand",
+          "label": "Right Hand"
         }
       },
       "attributes": {
-        "speed": {
-          "label": "Audio playback rate.",
-          "description": "1 for normal speed, 2 for twice speed, -1 for reverse, etc.",
-          "editable": "number"
-        },
-        "value": {
-          "label": "Value",
-          "description": "Value sent by the button.",
-          "editable": "text"
-        },
-        "stickcolor": {
-          "label": "Stick Color",
-          "editable": "color"
-        },
         "backgroundcolor": {
           "label": "Background Color",
-          "editable": "color"
-        },
-        "drumcolor": {
-          "label": "Drum Color",
-          "description": "Color of the drum.",
           "editable": "color"
         }
       }
@@ -3403,71 +3794,278 @@ header {
 
 }
 
-:host #drum {
-  height: 200px;
-  width: 200px;
-  background: white;
+:host .hand {
+  height: 100px;
+  width: 100px;
+  background-size: 100px;
   position: absolute;
-  left: calc(50% - 100px);
-  border-radius: 150px;
-  top: -20px;
-  -webkit-transform: scaleY(.4);
+
+}
+
+:host .one {
+  left: 40px;
+  top: -15px;
+  background-image: url(images/handone.png);
+}
+
+:host .two {
+  right: 40px;
+  background-image: url(images/handtwo.png);
+}
+
+:host .both .one {
+  -webkit-animation: waveone .6s linear;
+  -moz-animation: waveone .6s linear;
+}
+:host .both .two {
+  -webkit-animation: wavetwo .6s linear;
+  -moz-animation: waveone .6s linear;
+}
+
+
+
+:host .left .one {
+  -webkit-animation: waveone .6s linear;
+  -moz-animation: wavetwo .6s linear;
+}
+
+:host .right .two {
+  -webkit-animation: wavetwo .6s linear;
+  -moz-animation: wavetwo .6s linear;
+}
+
+
+
+@-moz-keyframes waveone {
+  0% {   -moz-transform: rotate(0deg);}
+  10% {  -moz-transform: rotate(-12deg) scaleX(.9);}
+  20% {  -moz-transform: rotate(0deg);}
+  30% {  -moz-transform: rotate(-12deg) scaleX(.9);}
+  40% {  -moz-transform: rotate(0deg);}
+  50% {  -moz-transform: rotate(-12deg) scaleX(.9);}
+  60% {  -moz-transform: rotate(0deg);}
+  70% {  -moz-transform: rotate(-12deg) scaleX(.9);}
+  80% {  -moz-transform: rotate(0deg);}
+  90% {  -moz-transform: rotate(-12deg) scaleX(.9) ;}
+  100% { -moz-transform: rotate(0deg);}
+}
+
+@-moz-keyframes wavetwo {
+  0% {   -moz-transform: rotate(12deg) scaleX(.9);}
+  10% {  -moz-transform: rotate(0deg);}
+  20% {  -moz-transform: rotate(12deg) scaleX(.9);}
+  30% {  -moz-transform: rotate(0deg);}
+  40% {  -moz-transform: rotate(12deg) scaleX(.9);}
+  50% {  -moz-transform: rotate(0deg);}
+  60% {  -moz-transform: rotate(12deg) scaleX(.9);}
+  70% {  -moz-transform: rotate(0deg);}
+  80% {  -moz-transform: rotate(12deg) scaleX(.9);}
+  90% {  -moz-transform: rotate(0deg);}
+  100% { -moz-transform: rotate(12deg) scaleX(.9) ;}
+}
+
+@-webkit-keyframes waveone {
+  0% { -webkit-transform: rotate(0deg);}
+  10% { -webkit-transform: rotate(-12deg) scaleX(.9);}
+  20% { -webkit-transform: rotate(0deg);}
+  30% { -webkit-transform: rotate(-12deg) scaleX(.9);}
+  40% { -webkit-transform: rotate(0deg);}
+  50% { -webkit-transform: rotate(-12deg) scaleX(.9);}
+  60% { -webkit-transform: rotate(0deg);}
+  70% { -webkit-transform: rotate(-12deg) scaleX(.9);}
+  80% { -webkit-transform: rotate(0deg);}
+  90% { -webkit-transform: rotate(-12deg) scaleX(.9) ;}
+  100% { -webkit-transform: rotate(0deg);}
+}
+
+@-webkit-keyframes wavetwo {
+  0% { -webkit-transform: rotate(12deg) scaleX(.9);}
+  10% { -webkit-transform: rotate(0deg);}
+  20% { -webkit-transform: rotate(12deg) scaleX(.9);}
+  30% { -webkit-transform: rotate(0deg);}
+  40% { -webkit-transform: rotate(12deg) scaleX(.9);}
+  50% { -webkit-transform: rotate(0deg);}
+  60% { -webkit-transform: rotate(12deg) scaleX(.9);}
+  70% { -webkit-transform: rotate(0deg);}
+  80% { -webkit-transform: rotate(12deg) scaleX(.9);}
+  90% { -webkit-transform: rotate(0deg);}
+  100% { -webkit-transform: rotate(12deg) scaleX(.9) ;}
+}
+
+
+:host audio {
+  display: none;
+}
+</style>
+    <div id="kick" on-mousedown="{{both}}">
+      <div id="two" class="hand two"></div>
+      <div id="one" class="hand one"></div>
+    </div>
+    <!-- <audio id="kicksound" src="sounds/snare.mp3" preload=preload></audio> -->
+    <shadow></shadow>
+  </template>
+  <script>
+    Polymer('ceci-jazzhands', {
+      ready: function () {
+        this.super();
+        var that = this;
+      },
+      both : function(){
+        this.kickoff();
+        this.$.kick.classList.add("both");
+      },
+      left : function(){
+        this.kickoff();
+        this.$.kick.classList.add("left");
+      },
+      right : function(){
+        this.kickoff();
+        this.$.kick.classList.add("right");
+      },
+      kickoff : function(){
+        this.$.kick.classList.remove("both");
+        this.$.kick.classList.remove("right");
+        this.$.kick.classList.remove("left");
+        this.$.one.offsetWidth = this.$.one.offsetWidth;
+        this.$.two.offsetWidth = this.$.two.offsetWidth;
+      },
+      backgroundcolorChanged: function (oldValue, newValue) {
+        this.$.kick.style.background = newValue;
+      }
+    });
+  </script>
+</polymer-element>
+
+<polymer-element name="ceci-kickdrum" attributes="stickcolor backgroundcolor drumcolor" drumcolor="#d60e0e" stickcolor="#000000" backgroundcolor="#FFFFFF" extends="ceci-element" assetpath="component-kickdrum/">
+  <ceci-definition>
+    {
+      "tags": ["button", "click", "tap"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Broadcasts a \"click\" when clicked.",
+      "name": "Kick Drum",
+      "broadcasts": {},
+      "listeners": {
+        "kick": {
+          "description": "Hits the kick drum!",
+          "label": "Kick",
+          "default": true
+        }
+      },
+      "attributes": {
+        "stickcolor": {
+          "label": "Stick Color",
+          "editable": "color"
+        },
+        "backgroundcolor": {
+          "label": "Background Color",
+          "editable": "color"
+        },
+        "drumcolor": {
+          "label": "Drum Color",
+          "description": "Color of the drum.",
+          "editable": "color"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <style>:host {
+  display: block;
+  width: 100%;
+}
+
+:host #kick {
+  overflow: hidden;
+  height: 75px;
+  display: block;
+  cursor: pointer;
+  width: 100%;
+  position: relative;
+}
+
+:host #drum {
+  position: absolute;
+  background: red;
+  left: 0;
+  top:0;
+  height: 100%;
+  width: 50%;
+}
+
+:host #face {
+  position: absolute;
+  background: white;
+  width: 200px;
+  height: 200px;
+  top: calc(50% - 100px);
+  -webkit-border-radius: 200px;
+     -moz-border-radius: 200px;
+          border-radius: 200px;
+  right: -100px;
+  -webkit-transform: scaleX(.5);
+  -moz-transform: scaleX(.5);
+  transform: scaleX(.5);
+  border: solid 25px red;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 :host #stick {
-  height: 8px;
-  width: 120px;
+  position: absolute;
+  width: 8px;
+  background: black;
+  height: 50px;
+  bottom: -4px;
+  left: calc(50% + 5px);
+  -webkit-transform-origin: bottom;
+  -moz-transform-origin: bottom;
+  transform-origin: bottom;
+  -webkit-transform: rotate(15deg);
+  -moz-transform: rotate(15deg);
+  transform: rotate(15deg);
+}
+
+:host #ball {
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  width: 20px;
+  height: 20px;
   background: black;
   position: absolute;
-  left: 40px;
-  top: 20px;
-  border-radius: 100px;
-  -webkit-transform-origin: left;
+  top: -4px;
+  left: calc(50% - 10px);
 }
 
-:host .hit #stick {
-/*  -webkit-animation: stickhit .2s linear;*/
-  top: 25px;
-  -webkit-transform: rotate(15deg);
+:host .on #face {
+  right: -95px;
 }
 
-:host .hit #drum {
-  top: -15px;
-/*  -webkit-animation: drumhit .2s linear;*/
-}
-
-@-webkit-keyframes drumhit {
-  0% { top: -20px;}
-  20% { top: -20px;}
-  30% { top: -15px;}
-  100% { top: -20px;}
-}
-
-
-
-@-webkit-keyframes stickhit {
-  0% { -webkit-transform: rotate(0deg);}
-  20% { -webkit-transform: rotate(20deg);}
-  100% { -webkit-transform: rotate(00deg);}
-}
-
-:host #kick.on {
-
+:host .on #stick {
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  transform: rotate(0deg);
+  left: 50%;
 }
 
 :host audio {
   display: none;
 }
 </style>
-    <div id="kick" class="off" on-mousedown="{{kickon}}" on-mouseup="{{kickoff}}">
-      <div id="drum"></div>
-      <div id="stick"></div>
+    <div id="kick" on-mousedown="{{kickon}}" on-mouseup="{{kickoff}}">
+      <div id="drum">
+        <div id="face"></div>
+      </div>
+      <div id="stick">
+        <div id="ball"></div>
+      </div>
     </div>
-    <audio id="kicksound" src="component-kickdrum/sounds/snare.mp3" preload="preload"></audio>
+    <audio id="kicksound" src="component-kickdrum/sounds/kick.mp3" preload="preload"></audio>
     <shadow></shadow>
   </template>
   <script>
-    Polymer('ceci-snaredrum', {
+    Polymer('ceci-kickdrum', {
       ready: function () {
         this.super();
         var that = this;
@@ -3476,7 +4074,7 @@ header {
         this.$.kicksound.pause();
         this.$.kicksound.currentTime = 0;
         this.$.kicksound.play();
-        this.$.kick.classList.add("hit");
+        this.$.kick.classList.add("on");
       },
       kick : function(){
         this.kickon();
@@ -3486,34 +4084,15 @@ header {
         },100)
       },
       kickoff : function(){
-        this.$.kick.classList.remove("hit");
-      },
-      snare: function () {
-        this.$.snare.pause();
-        this.$.snare.currentTime = 0;
-        this.$.snare.play();
-      },
-      sourceChanged: function(oldValue, newValue) {
-        this.$.clip.src = newValue;
-      },
-      setSpeed: function(channel, value) {
-        this.speedChanged(this.$.snare.playbackRate || 1, value);
-        this.speedChanged(this.$.kick.playbackRate || 1, value);
-      },
-      speedChanged: function(oldValue, newValue) {
-        try  {
-          var f = parseFloat(newValue);
-          if (f) {
-            this.$.kick.playbackRate = parseFloat(newValue);
-            this.$.snare.playbackRate = parseFloat(newValue);
-          }
-        } catch (e) {}
+        this.$.kick.classList.remove("on");
       },
       stickcolorChanged: function (oldValue, newValue) {
         this.$.stick.style.background = newValue;
+        this.$.ball.style.background = newValue;
       },
       drumcolorChanged: function (oldValue, newValue) {
         this.$.drum.style.background = newValue;
+        this.$.face.style.borderColor = newValue;
       },
       backgroundcolorChanged: function (oldValue, newValue) {
         this.$.kick.style.background = newValue;
@@ -3653,13 +4232,182 @@ header {
   </script>
 </polymer-element>
 
+<polymer-element name="ceci-meatspaces-messages" attributes="server mode height" extends="ceci-element" assetpath="component-meatspaces-messages/">
+  <script src="component-meatspaces-messages/vendor/socketio.js"></script>
+  <ceci-definition>
+    {
+      "tags": ["meatspaces", "chat"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Meat Chat Window",
+      "description": "Displays Meatspaces chat messages",
+      "attributes": {
+        "server": {
+          "label": "Meatspaces Server",
+          "description": "Meatspaces server to which this app should connect to receive messages.",
+          "editable": "text"
+        },
+        "height": {
+          "label": "Height",
+          "description": "Height of this brick.",
+          "editable": "number"
+        },
+        "mode": {
+          "label": "Message Mode",
+          "description": "What to display for each message",
+          "editable": "select",
+          "options": ["both", "text only", "image only"]
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <style>
+      :host {
+        display: block;
+        width: 100%;
+      }
+
+      :host #container {
+        overflow: scroll;
+      }
+
+      :host #container .message {
+        font-size: 1em;
+        clear: both;
+        width: 100%;
+        min-height: 60px;
+        padding: .2em 0;
+      }
+
+      :host #container .message:nth-child(odd) {
+        background: rgba(0, 0, 0, 0.1);
+      }
+
+      :host #container .message img {
+        float: left;
+        height: 50px;
+        margin-right: .25em;
+      }
+
+      :host #status {
+        text-align: center;
+        padding: .25em 0;
+      }
+
+      :host #container[data-mode="text only"] {
+        margin-left: 3%;
+      }
+
+      :host #container[data-mode="text only"] .message img {
+        display: none;
+      }
+
+      :host #container[data-mode="text only"] .message .text {
+      }
+
+      :host #container[data-mode="image only"] {
+        margin-left: 3%;
+      }
+
+      :host #container[data-mode="image only"] .message img {
+        width: 100%;
+        height: auto;
+        float: none;
+      }
+
+      :host #container[data-mode="image only"] .message .text {
+        display: none;
+      }
+
+      :host #container[data-mode="image only"] .message {
+        display: inline-block;
+        width: 48%;
+        background: rgba(0, 0, 0, 0.1);
+        padding: 0;
+        margin-top: .25em;
+      }
+    </style>
+
+    <div id="status">{{status}}</div>
+    <div id="container" data-mode="{{mode}}">
+      <template repeat="{{message in _messages}}">
+        <div class="message"><img src="{{message.media}}"><span class="text">{{message.message}}</span></div>
+      </template>
+    </div>
+
+    <shadow></shadow>
+  </template>
+  <script>
+    Polymer('ceci-meatspaces-messages', {
+      server: 'https://chat.meatspac.es:443',
+      status: 'Connecting...',
+      mode: 'both',
+      height: 300,
+      _messages: [],
+      _boundMessageReceived: null,
+      _messageReceived: function (data) {
+        this._messages.push(data.chat.value);
+        this.async(function () {
+          this.$.container.scrollTop = this.$.container.scrollHeight + 1000;
+        });
+      },
+      _connect: function () {
+        var that = this;
+
+        if (this._socket) { return; }
+
+        var socket = this._socket = io.connect(this.server);
+        socket.on('connect', function () {
+          socket.emit('join');
+          that.status = 'Connected';
+        });
+
+        this._boundMessageReceived = this._messageReceived.bind(this);
+        socket.on('message', this._boundMessageReceived);
+      },
+      _disconnect: function () {
+        this._socket.removeAllListeners('message');
+        window.s = this._socket;
+        if (this._socket.socket.connected) {
+          this._socket.disconnect();
+        }
+        this.status = 'Disconnected';
+        this._boundMessageReceived = null;
+        this._socket = null;
+      },
+      ready: function () {
+        this.super();
+        this.heightChanged();
+      },
+      attached: function (e) {
+        this._connect();
+        this.super();
+      },
+      detached: function (e) {
+        this._disconnect();
+        this.super();
+      },
+      serverChanged: function (oldValue, newValue) {
+        this._disconnect();
+        this._messages = [];
+        this.async(function () {
+          this._connect();
+        });
+      },
+      heightChanged: function () {
+        this.$.container.style.height = this.height + 'px';
+      }
+    });
+  </script>
+</polymer-element>
+
 <!--TODO-->
 <!--1. stop event-->
 <!--2. Does this evaluate true / false  this.getAttribute('autostart')-->
 <!--3. support tap / touch event? touchend-->
 <!--4. cancel-->
 
-<polymer-element name="ceci-metronome" attributes="changeby beatsperminute autostart" beatsperminute="60" autostart="true" extends="ceci-element" label="Click Me" textcolor="#ffffff" changeby="1" buttoncolor="#4DB227" buttonactivecolor="#358915" assetpath="component-metronome/">
+<polymer-element name="ceci-metronome" attributes="changeby beatsperminute autostart" beatsperminute="60" autostart="true" extends="ceci-element" changeby="10" assetpath="component-metronome/">
   <template>
     <style>:host {
   display: block;
@@ -3927,7 +4675,7 @@ header {
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-microphone-button" attributes="textcolor buttoncolor buttonactivecolor label" extends="ceci-element" label="Record" textcolor="#ffffff" buttoncolor="#4DB227" buttonactivecolor="#358915" assetpath="component-microphone-button/">
+<polymer-element name="ceci-microphone-button" attributes="textcolor buttoncolor buttonactivecolor record done" extends="ceci-element" record="Record" done="Done" textcolor="#ffffff" buttoncolor="#4DB227" buttonactivecolor="#FF0000" assetpath="component-microphone-button/">
   <ceci-definition>
     {
       "tags": ["microphone", "button", "audio", "clip"],
@@ -3952,29 +4700,30 @@ header {
         }
       },
       "attributes": {
-        "label": {
-          "label": "Label",
+        "record": {
+          "label": "Record",
           "description": "Text shown on the button.",
-          "editable": "text",
-          "listener": true
+          "editable": "text"
+        },
+        "done": {
+          "label": "Done",
+          "description": "Text shown on the button.",
+          "editable": "text"
         },
         "textcolor": {
           "label": "Text Color",
           "description": "Color of the text on the button's label.",
-          "editable": "color",
-          "listener": true
+          "editable": "color"
         },
         "buttoncolor": {
           "label": "Button Color",
           "description": "Background color of the button.",
-          "editable": "color",
-          "listener": true
+          "editable": "color"
         },
         "buttonactivecolor": {
           "label": "Button Active Color",
           "description": "Background color of the button while it is being clicked or tapped.",
-          "editable": "color",
-          "listener": true
+          "editable": "color"
         }
       }
     }
@@ -4007,39 +4756,50 @@ header {
   color: #ffffff;
   width: 100%;
   margin: 0;
-}
-
-:host button {
   border: none;
+  background: inherit;
 }
 
+:host #startButton {
+  display: block;
+}
+:host #stopButton {
+  display: none;
+}
 </style>
-    <button id="button" on-click="{{click}}">{{label}}</button>
+    <div class="button">
+      <button id="startButton">{{ record }}</button>
+      <button id="stopButton">{{ done }}</button>
+    </div>
     <shadow></shadow>
   </template>
   <script>
     Polymer('ceci-microphone-button', {
       ready: function () {
         this.super();
-        var that = this;
-        var mouseUpHandler = function(evt) {
-          window.removeEventListener("mouseup", mouseUpHandler);
-          that.$.button.style.backgroundColor = that.buttoncolor;
-        };
-        var mouseDownHandler = function(evt) {
-          window.addEventListener("mouseup", mouseUpHandler);
-          that.$.button.style.backgroundColor = that.buttonactivecolor;
-        };
-        this.$.button.addEventListener("mousedown", mouseDownHandler);
-      },
-      attached: function() {
-        this.super();
+        this.startButton = this.shadowRoot.querySelector("#startButton");
+        this.stopButton = this.shadowRoot.querySelector("#stopButton");
+        this.bg = this.shadowRoot.querySelector(".button");
+        this.bg.style.background = this.buttoncolor;
         navigator.getMedia = ( navigator.getUserMedia ||
                                navigator.webkitGetUserMedia ||
                                navigator.mozGetUserMedia ||
                                navigator.msGetUserMedia );
+      },
+      attached: function() {
+        if(!window.MediaRecorder) {
+          alert(this.gettext("your browser does not support recording"));;
+          window.MediaRecorder = function() {
+            var noop = function(){};
+            this.start = noop;
+            this.stop = noop;
+            this.ondataavailable = false
+          };
+        }
+
+        this.super();
+        console.log(this);
         var that = this;
-        var button = this.$.button;
 
         if (navigator.getMedia) {
           var audioCtx = new AudioContext();
@@ -4052,14 +4812,20 @@ header {
 
               var mediaRecorder = new MediaRecorder(stream);
 
-              button.onmousedown = function() {
+              that.startButton.onclick = function() {
                 console.log("starting recorder");
                 mediaRecorder.start();
+                that.bg.style.background = that.buttonactivecolor;
+                that.startButton.style.display = "none";
+                that.stopButton.style.display = "block";
               };
 
-              button.onmouseup = function() {
+              that.stopButton.onclick = function() {
                 console.log("stopping recorder");
                 mediaRecorder.stop();
+                that.bg.style.background = that.buttoncolor;
+                that.stopButton.style.display = "none";
+                that.startButton.style.display = "block";
               };
 
               var processData = function(e) {
@@ -4071,17 +4837,12 @@ header {
               };
 
               mediaRecorder.ondataavailable = processData;
+              that.startButton.style.display = "block";
             },
 
             function(err) { console.log('The following gUM error occured: ' + err); }
           );
         }
-      },
-      textcolorChanged: function (oldValue, newValue) {
-        this.$.button.style.color = newValue;
-      },
-      buttoncolorChanged: function (oldValue, newValue) {
-        this.$.button.style.backgroundColor = newValue;
       }
     });
   </script>
@@ -4294,6 +5055,7 @@ header {
   text-align: center;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 :host .output-channel {
@@ -4341,12 +5103,6 @@ header {
   content: "1";
 }
 
-:host .channel .label {
-  background: white;
-  -webkit-border-radius: 30px;
-  margin-right: 10px;
-}
-
 :host .channel .beat {
   background: #DDD;
   margin: 0;
@@ -4355,6 +5111,8 @@ header {
   opacity: .2;
   margin: 0 4px 0px 0;
   -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
   position: relative;
 }
 
@@ -4403,6 +5161,8 @@ header {
   opacity: .4;
   -webkit-transform: scaleX(.2);
   -webkit-transform-origin: center;
+  -moz-transform: scaleX(.2);
+  -moz-transform-origin: center;
 }
 
 :host .indicator.bottom {
@@ -4467,38 +5227,36 @@ header {
       "description": "Alternates output between set broadcasts from a single input",
       "broadcasts": {
         "A": {
-          "label": "Output A",
+          "label": "Beat A",
           "description": "The first broadcast in the rotation.",
           "default": "green"
         },
         "B": {
-          "label": "Output B",
+          "label": "Beat B",
           "description": "The second broadcast in the rotation.",
           "default": "yellow"
         },
         "C": {
-          "label": "Output C",
+          "label": "Beat C",
           "description": "The third broadcast in the rotation."
         },
         "D": {
-          "label": "Output D",
+          "label": "Beat D",
           "description": "The fourth broadcast in the rotation."
         },
         "E": {
-          "label": "Output E",
+          "label": "Beat E",
           "description": "The fifth broadcast in the rotation."
         }
       },
       "listeners": {
         "input": {
-          "description": "The input that alternates out the broadcasts.",
-          "label": "Input",
+          "description": "Plays the next beat in the sequence.",
+          "label": "Play Beat",
           "default": true
         }
       },
-      "attributes": {
-
-      }
+      "attributes": {}
     }
   </ceci-definition>
   <script>
@@ -4506,7 +5264,7 @@ header {
       nextBroadcast : "",
       beattap : function(e){
         var that = this;
-        var beatEl = e.toElement;
+        var beatEl = e.target;
 
         if(beatEl.classList.contains("on")){
           beatEl.classList.remove("on");
@@ -4533,7 +5291,7 @@ header {
         this.super();
         this.lastBroadcast = null;
         var self = this;
-        this.playbeats = JSON.parse(this.getAttribute("playbeats")) || [[],[],[],[]];
+        this.playbeats = JSON.parse(this.getAttribute("playbeats")) || [["A"],["B"],["A"],["B"]];
       },
       colorSquares : function(){
         var that = this;
@@ -4586,22 +5344,35 @@ header {
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-kickdrum" attributes="source speed label value textcolor buttoncolor buttonactivecolor" value="Click" extends="ceci-element" textcolor="#ffffff" buttoncolor="#4DB227" buttonactivecolor="#358915" speed="1.0" assetpath="component-snaredrum/">
+<polymer-element name="ceci-snaredrum" attributes="drumcolor backgroundcolor stickcolor" drumcolor="#FFFFFF" stickcolor="#000000" backgroundcolor="#ff9900" extends="ceci-element" speed="1.0" assetpath="component-snaredrum/">
   <ceci-definition>
     {
-      "tags": ["button", "click", "tap"],
+      "tags": ["music", "instrument", "tap"],
       "thumbnail": "./thumbnail.png",
       "description": "Broadcasts a \"click\" when clicked.",
-      "name": "Kick Drum",
+      "name": "Snare Drum",
       "broadcasts": {},
       "listeners": {
         "kick": {
           "description": "Causes a fake click event to occur.",
-          "label": "Kick",
+          "label": "Hit",
           "default": true
         }
       },
       "attributes": {
+        "stickcolor": {
+          "label": "Stick Color",
+          "editable": "color"
+        },
+        "backgroundcolor": {
+          "label": "Background Color",
+          "editable": "color"
+        },
+        "drumcolor": {
+          "label": "Drum Color",
+          "description": "Color of the drum.",
+          "editable": "color"
+        }
       }
     }
   </ceci-definition>
@@ -4609,28 +5380,72 @@ header {
     <style>:host {
   display: block;
   width: 100%;
+  background: orange;
 }
 
 :host #kick {
-  background: url(images/kick-off.png);
   height: 75px;
   display: block;
   cursor: pointer;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
 }
-:host #kick.on {
-  background: url(images/kick-on.png);
+
+:host #kick, :host #kick * {
+
+}
+
+:host #drum {
+  height: 200px;
+  width: 200px;
+  background: white;
+  position: absolute;
+  left: calc(50% - 100px);
+  border-radius: 150px;
+  top: -20px;
+  -webkit-transform: scaleY(.4);
+  -moz-transform: scaleY(.4);
+  transform: scaleY(.4);
+}
+
+:host #stick {
+  height: 8px;
+  width: 120px;
+  background: black;
+  position: absolute;
+  left: 40px;
+  top: 20px;
+  border-radius: 100px;
+  -webkit-transform-origin: left;
+  -moz-transform-origin: left;
+  transform-origin: left;
+}
+
+:host .hit #stick {
+  top: 25px;
+  -webkit-transform: rotate(15deg);
+  -moz-transform: rotate(15deg);
+  transform: rotate(15deg);
+}
+
+:host .hit #drum {
+  top: -15px;
 }
 
 :host audio {
   display: none;
 }
 </style>
-    <div id="kick" class="off" on-mousedown="{{kickon}}" on-mouseup="{{kickoff}}"></div>
-    <audio id="kicksound" src="component-snaredrum/sounds/kick.mp3" preload="preload"></audio>
+    <div id="kick" class="off" on-mousedown="{{kickon}}" on-mouseup="{{kickoff}}">
+      <div id="drum"></div>
+      <div id="stick"></div>
+    </div>
+    <audio id="kicksound" src="component-snaredrum/sounds/snare.mp3" preload="preload"></audio>
     <shadow></shadow>
   </template>
   <script>
-    Polymer('ceci-kickdrum', {
+    Polymer('ceci-snaredrum', {
       ready: function () {
         this.super();
         var that = this;
@@ -4639,7 +5454,7 @@ header {
         this.$.kicksound.pause();
         this.$.kicksound.currentTime = 0;
         this.$.kicksound.play();
-        this.$.kick.classList.add("on");
+        this.$.kick.classList.add("hit");
       },
       kick : function(){
         this.kickon();
@@ -4649,7 +5464,7 @@ header {
         },100)
       },
       kickoff : function(){
-        this.$.kick.classList.remove("on");
+        this.$.kick.classList.remove("hit");
       },
       snare: function () {
         this.$.snare.pause();
@@ -4672,17 +5487,20 @@ header {
           }
         } catch (e) {}
       },
-      textcolorChanged: function (oldValue, newValue) {
-        this.$.button.style.color = newValue;
+      stickcolorChanged: function (oldValue, newValue) {
+        this.$.stick.style.background = newValue;
       },
-      buttoncolorChanged: function (oldValue, newValue) {
-        this.$.button.style.backgroundColor = newValue;
+      drumcolorChanged: function (oldValue, newValue) {
+        this.$.drum.style.background = newValue;
+      },
+      backgroundcolorChanged: function (oldValue, newValue) {
+        this.$.kick.style.background = newValue;
       }
     });
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-spacer" attributes="height" extends="ceci-element" height="30" assetpath="component-spacer/">
+<polymer-element name="ceci-spacer" attributes="height color" extends="ceci-element" assetpath="component-spacer/">
   <template>
     <style>:host {
   display: block;
@@ -4701,6 +5519,11 @@ header {
       "broadcasts": {},
       "listeners": {},
       "attributes": {
+        "color": {
+          "label": "Color",
+          "description": "Color of the occupied space.",
+          "editable": "color"
+        },
         "height": {
           "label": "Height",
           "description": "The height of the spacer.",
@@ -4712,9 +5535,14 @@ header {
   </ceci-definition>
   <script>
     Polymer('ceci-spacer', {
+      height: 30,
+      color: '#fff',
       ready: function () {
         this.super();
-        this.setAttribute("height", this.height );
+        this.setAttribute('height', this.height);
+      },
+      colorChanged: function (oldValue, newValue) {
+        this.style.backgroundColor = this.color;
       },
       heightChanged: function (oldValue, newValue) {
         this.$.spacerDiv.style.height = newValue + "px";

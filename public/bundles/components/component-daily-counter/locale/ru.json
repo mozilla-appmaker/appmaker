@@ -1,0 +1,7 @@
+{
+    "ceci-counter": "Счётчик",
+    "ceci-counter/attributes/unit/label": "Блок",
+    "ceci-counter/attributes/unit/description": "Название пересчитываемых предметов.",
+    "ceci-counter/attributes/increment/label": "Прирастить на",
+    "ceci-counter/attributes/increment/description": "Использовать это число для прямого или обратного отсчёта."
+}
