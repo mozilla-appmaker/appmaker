@@ -3,10 +3,17 @@
   <head>
     <title><%- appName %></title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/style.css" />
+    <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/app.css" />
     <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/remix.css" />
     <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300, 400,600" rel="stylesheet" type="text/css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <meta name="viewport" content="width=320, user-scalable=no">
+    <script>
+      if(screen.width > 600) {
+        var mvp = document.querySelector('meta[name=viewport]');
+        mvp.setAttribute('content','width=device-width');
+      }
+    </script>
     <base href="<%- ceciComponentURL %>">
 
     <script src="/vendor/platform/platform.js"></script>
@@ -39,7 +46,9 @@
     <% }) %>
   </head>
   <body>
-    <%- appHTML %>
-    <% include remixpane %>
+    <div class="app">
+      <%- appHTML %>
+      <% include remixpane %>
+    </div>
   </body>
 </html>

@@ -1,4 +1,4 @@
-<polymer-element name="ceci-field" attributes="name kind fieldid">
+<polymer-element name="ceci-field" attributes="name kind">
   <template>
     <style>
       :host {
@@ -22,8 +22,8 @@
         };
         this.fire("propertychange", detail);
       },
-      getSchemaId: function() {
-        return this.parentNode.schemaid;
+      getSchemaName: function() {
+        return this.parentNode.name;
       }
     });
   </script>

@@ -19,9 +19,12 @@
     </p>
   </script>
   <div class="install-container">
-    <button id="install">
+    <button class="install">
       <span><%- gettext('Install App') %></span>
       <span class="install-spinner"></span>
+    </button>
+    <button class="run-in-browser">
+      <span><%- gettext('Run in Browser') %></span>
     </button>
   </div>
   <div id="qrcode-container">
@@ -32,10 +35,12 @@
     document.addEventListener('DOMContentLoaded', function (e) {
 
       var container = document.querySelector(".install-container");
+      var appUrl = window.location.toString().replace("install", "app");
 
       // add install button if we're in FF, otherwise give user handy links
       if(navigator.mozApps && navigator.mozApps.install) {
-        var installButton = container.querySelector('#install');
+        var installButton = container.querySelector('.install');
+        var runButton = container.querySelector('.run-in-browser');
         var spinner = container.querySelector('.install-spinner');
         installButton.addEventListener('click', function (e) {
           var installRequest = navigator.mozApps.install('<%- manifestUrl %>');
@@ -51,15 +56,18 @@
             console.error(':(', this.error);
           };
         }, false);
+        runButton.addEventListener('click', function (e) {
+          window.location.href = appUrl;
+        }, false);
       }
 
       else {
         var scr = document.querySelector("script[type='template/html']");
+        container.classList.add("fall-back");
         container.innerHTML = scr.textContent;
         var a = container.querySelector("a");
-        a.href = window.location.toString().replace("install", "app");
+        a.href = appUrl;
       }
-
       new QRCode(document.querySelector("#qrcode"), '<%- iframeSrc %>');
     }, false);
   </script>

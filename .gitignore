@@ -30,6 +30,13 @@ tmp.env
 !/locale/en_US/*
 !/locale/localeinfo.json
 
+public/stylesheets/broadcast-menu.css
+public/stylesheets/cards.css
+public/stylesheets/channel-vis.css
+public/stylesheets/designer-element.css
+public/stylesheets/site.css
+public/stylesheets/variables.css
 public/stylesheets/designer-component-tray-item.css
 public/stylesheets/user-state.css
 public/stylesheets/style.css
+

@@ -64,16 +64,16 @@
     <div hidden?="{{ collections.length == 0 }}">
       <h3>Name</h3>
       <template repeat="{{collection, collectionIndex in collections}}">
-        <div id="{{collection.schemaid}}" data-index="{{collectionIndex}}" hidden?="{{currentCollectionIndex != collectionIndex}}">
+        <div id="{{collection.name}}" data-index="{{collectionIndex}}" hidden?="{{currentCollectionIndex != collectionIndex}}">
           <input type="text" value="{{collection.name}}" on-change="{{onSchemaNameChange}}">
           <h3>Keys</h3>
           <ul style="list-style: none;">
             <template repeat="{{item, fieldIndex in collection.fields}}">
-              <li id="{{item.fieldid}}" data-index="{{fieldIndex}}" >
+              <li id="{{item.name}}" data-index="{{fieldIndex}}" >
                 <input data-index="{{fieldIndex}}" type="text" value="{{item.name}}" on-change="{{onFieldNameChange}}">
                 <select data-index="{{fieldIndex}}" value="{{item.kind}}" on-change="{{onItemTypeChange}}">
                   <option value="number">Number</option>
-                  <option value="toggle">Toggle</option>
+                  <option value="checkbox">Checkbox</option>
                   <option value="text">Text</option>
                   <option value="name">Name</option>
                   <option value="address">Address</option>
@@ -96,14 +96,19 @@
             <template repeat="{{row, dataIndex in collection.data}}">
               <tr>
                 <template repeat="{{item, fieldIndex in collection.fields}}">
-                  <td><input class="table-input" type="text" value="{{row[item.name]}}"></td>
+                  <template if="{{item.kind == 'checkbox'}}">
+                    <td><input class="table-input" type="{{item.kind}}" checked="{{row[item.name]}}"></td>
+                  </template>
+                  <template if="{{item.kind != 'checkbox'}}">
+                    <td><input class="table-input" type="{{item.kind}}" value="{{row[item.name]}}"></td>
+                  </template>
                 </template>
                 <td data-index="{{dataIndex}}" on-click="{{removeDataRow}}" class="add-remove-column">-</td>
               </tr>
             </template>
             <tr>
               <template repeat="{{item, fieldIndex in collection.fields}}">
-                <td><input data-key="{{fieldIndex}}" class="table-input" type="text" value=""></td>
+                <td><input data-key="{{fieldIndex}}" class="table-input" type="{{item.kind}}" value=""></td>
               </template>
               <td on-click="{{addDataRow}}" class="add-remove-column">+</td>
             </tr>
@@ -119,15 +124,14 @@
       createFieldManager: function(field) {
         return {
           name: field.name,
-          type: field.type,
-          fieldid: field.fieldid,
+          oldName: field.name,
           kind: field.kind
         };
       },
       createSchemaManager: function(schema) {
         return {
           name: schema.name,
-          schemaid: schema.schemaid,
+          oldName: schema.name,
           fields: [],
           data: schema.data.slice(0)
         };
@@ -136,32 +140,33 @@
         var self = this;
         function onFieldChange(e) {
           var detail = e.detail;
-          var collectionIndex = document.getElementById(this.schemaid).getAttribute("data-index");
+          var collectionIndex = document.getElementById(this.name).getAttribute("data-index");
           if (detail.added) {
             var obj = self.createFieldManager(detail.added);
             self.collections[collectionIndex].fields.push(obj);
             detail.added.addEventListener("propertychange", onFieldPropertyChange);
           } else if (detail.removed) {
-            var fieldIndex = document.getElementById(detail.removed.fieldid).getAttribute("data-index");
+            var fieldIndex = document.getElementById(detail.removed.name).getAttribute("data-index");
             self.collections[collectionIndex].fields.splice(fieldIndex, 1);
             detail.removed.removeEventListener("propertychange", onFieldPropertyChange);
           }
         }
         function onItemChange(e) {
           var detail = e.detail;
-          var collectionIndex = document.getElementById(this.schemaid).getAttribute("data-index");
-          if (detail.added) {
-            self.collections[collectionIndex].data.push(detail.added);
-          } else if (detail.removed) {
+          var collectionIndex = document.getElementById(this.name).getAttribute("data-index");
+          if (detail.removed) {
             self.collections[collectionIndex].data.splice(detail.index, 1);
+          }
+          if (detail.added) {
+            self.collections[collectionIndex].data.splice(detail.index, 0, detail.added);
           }
         }
         function onFieldPropertyChange(e) {
           var detail = e.detail;
           if (detail.changed) {
             this.async(function() {
-              var collectionIndex = document.getElementById(this.getSchemaId()).getAttribute("data-index");
-              var fieldIndex = document.getElementById(this.fieldid).getAttribute("data-index");
+              var collectionIndex = document.getElementById(this.getSchemaName()).getAttribute("data-index");
+              var fieldIndex = document.getElementById(this.name).getAttribute("data-index");
               self.collections[collectionIndex].fields[fieldIndex][detail.changed] = this[detail.changed];
             });
           }
@@ -170,7 +175,7 @@
           var detail = e.detail;
           if (detail.changed) {
             this.async(function() {
-              var collectionIndex = document.getElementById(this.schemaid).getAttribute("data-index");
+              var collectionIndex = document.getElementById(this.name).getAttribute("data-index");
               self.collections[collectionIndex][detail.changed] = this[detail.changed];
             });
           }
@@ -185,7 +190,7 @@
             detail.added.addEventListener("propertychange", onSchemaPropertyChange);
           }
           if (detail.removed) {
-            var collectionIndex = document.getElementById(detail.removed.schemaid).getAttribute("data-index");
+            var collectionIndex = document.getElementById(detail.removed.name).getAttribute("data-index");
             self.collections.splice(collectionIndex, 1);
             detail.removed.removeEventListener("itemchange", onItemChange);
             detail.removed.removeEventListener("fieldchange", onFieldChange);
@@ -221,48 +226,57 @@
         });
       },
       removeCollection: function () {
-        this.collectionsElement.removeSchema(this.collections[this.currentCollectionIndex].schemaid);
+        this.collectionsElement.removeSchema(this.collections[this.currentCollectionIndex].name);
         this.async(function () {
           this.currentCollectionIndex = this.collections.length - 1;
         });
       },
       addKey: function () {
         var schema = this.collections[this.currentCollectionIndex];
-        this.collectionsElement.getSchema(schema.schemaid).addField("New Field " + (schema.fields.length + 1));
+        this.collectionsElement.getSchema(schema.name).addField("New Field " + (schema.fields.length + 1));
       },
       removeKey: function (event, detail, sender) {
         var schema = this.collections[this.currentCollectionIndex];
         var field = schema.fields[parseInt(sender.value)];
-        this.collectionsElement.getSchema(schema.schemaid).removeField(field.fieldid);
+        this.collectionsElement.getSchema(schema.name).removeField(field.name);
       },
       addDataRow: function (event, detail, sender) {
         var newRow = {};
         var dummyRow = sender.parentNode;
         this.collections[this.currentCollectionIndex].fields.forEach(function (item, index) {
           var inputElement = dummyRow.querySelector('*[data-key="'+ index + '"]');
-          newRow[item.name] = newRow[item.name] || inputElement.value;
-          inputElement.value = '';
+          if (item.kind === 'checkbox') {
+            newRow[item.name] = newRow[item.name] || inputElement.checked;
+            inputElement.checked = '';
+          } else {
+            newRow[item.name] = newRow[item.name] || inputElement.value;
+            inputElement.value = '';
+          }
         });
         var schema = this.collections[this.currentCollectionIndex];
-        this.collectionsElement.getSchema(schema.schemaid).addItem(newRow);
+        this.collectionsElement.getSchema(schema.name).addItem(newRow);
       },
       removeDataRow: function (event, detail, sender) {
         var schema = this.collections[this.currentCollectionIndex];
-        this.collectionsElement.getSchema(schema.schemaid).removeItem(parseInt(sender.getAttribute('data-index')), 1);
+        this.collectionsElement.getSchema(schema.name).removeItem(parseInt(sender.getAttribute('data-index')), 1);
       },
       onItemTypeChange: function(event, detail, sender) {
         var schema = this.collections[this.currentCollectionIndex];
         var field = schema.fields[parseInt(sender.getAttribute('data-index'))];
-        this.collectionsElement.getField(schema.schemaid, field.fieldid).kind = sender.value;
+        this.collectionsElement.getField(schema.name, field.name).kind = sender.value;
       },
       onSchemaNameChange: function(event, detail, sender) {
         var schema = this.collections[this.currentCollectionIndex];
-        this.collectionsElement.getSchema(schema.schemaid).name = sender.value;
+        var oldName = schema.oldName;
+        schema.oldName = schema.name;
+        this.collectionsElement.getSchema(oldName).name = sender.value;
       },
       onFieldNameChange: function(event, detail, sender) {
         var schema = this.collections[this.currentCollectionIndex];
         var field = schema.fields[parseInt(sender.getAttribute('data-index'))];
-        this.collectionsElement.getField(schema.schemaid, field.fieldid).name = sender.value;
+        var oldName = field.oldName;
+        field.oldName = field.name;
+        this.collectionsElement.getField(schema.name, oldName).name = sender.value;
       }
     });
   </script>

@@ -1,4 +1,4 @@
-<polymer-element name="ceci-schema" attributes="schemaid name" name="New Schema">
+<polymer-element name="ceci-schema" attributes="name" name="New Schema">
   <template>
     <style>
       :host {
@@ -13,7 +13,7 @@
         this.data = [];
       },
       attached: function() {
-        var dataString = sessionStorage.getItem("ceci-collections-" + this.schemaid);
+        var dataString = sessionStorage.getItem("ceci-collections-" + this.name);
         var savedData = [];
         var self = this;
         if (dataString) {
@@ -25,26 +25,26 @@
         }
         this.data = savedData || [];
       },
-      addField: function(name) {
+      addField: function(name, kind) {
         var field = document.createElement("ceci-field");
         this.appendChild(field);
-        field.name = name || "New Field";
-        field.fieldid = uuid();
+        field.name = name;
+        field.kind = kind || "text";
         var detail = {
           added: field
         };
         this.fire("fieldchange", detail);
       },
-      removeField: function(id) {
-        var field = this.querySelector('*[fieldid="'+ id + '"]');
+      removeField: function(name) {
+        var field = this.querySelector('*[name="'+ name + '"]');
         this.removeChild(field);
         var detail = {
           removed: field
         };
         this.fire("fieldchange", detail);
       },
-      getField: function(id) {
-        return this.querySelector('*[fieldid="'+ id + '"]');
+      getField: function(name) {
+        return this.querySelector('*[name="'+ name + '"]');
       },
       getFields: function() {
         return Array.prototype.slice.call(this.querySelectorAll("ceci-field"), 0);
@@ -61,6 +61,7 @@
           added: item,
           index: this.data.length - 1
         };
+        this.saveData();
         this.fire("itemchange", detail);
       },
       removeItem: function(index) {
@@ -68,6 +69,7 @@
           removed: this.data.splice(index, 1)[0],
           index: index
         };
+        this.saveData();
         this.fire("itemchange", detail);
       },
       updateItem: function(index, item) {
@@ -76,10 +78,11 @@
           added: item,
           index: index
         };
+        this.saveData();
         this.fire("itemchange", detail);
       },
       saveData: function() {
-        sessionStorage.setItem("ceci-collections-" + this.schemaid, JSON.stringify(this.data));
+        sessionStorage.setItem("ceci-collections-" + this.name, JSON.stringify(this.data));
       }
     });
   </script>
