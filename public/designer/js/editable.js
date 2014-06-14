@@ -60,7 +60,7 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
         value +
         '"></input></div>'
       );
-      e.on('keyup', function(evt) {
+      e.on('change', function(evt) {
         element.setAttribute(attributeName, evt.target.value);
       });
       return e[0];
