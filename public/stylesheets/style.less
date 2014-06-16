@@ -444,12 +444,17 @@ button.done {
   z-index: 3;
 }
 
-.ui-sortable-helper .channel-visualisation,
-.ui-sortable-helper .editables-section,
-.ui-sortable-helper .customize-btn {
-  display: none !important;
+.ui-sortable-helper ceci-listen-vis,
+.ui-sortable-helper ceci-broadcast-vis,
+.ui-sortable-helper ceci-channel-menu {
+  display: none;
 }
 
+.sortable-placeholder {
+  height: 1.5em;
+  background: #3999e3;
+  opacity: .5;
+}
 .customize-btn {
   background-image: url(../images/customize.png);
 }
@@ -683,8 +688,8 @@ li.tab {
   position: fixed;
   background-color: #212429;
   z-index: 99;
-  width: 260px;
-  min-width: 260px;
+  width: 350px;
+  min-width: 340px;
 }
 
 .right-column .inner-wrapper {
@@ -723,15 +728,9 @@ li.tab {
 }
 
 .right-column input[type=text] {
-  width: 100%;
   height: 30px;
   padding: 0px;
   text-indent: 10px;
-  background-color: #181b1f;
-  border: none;
-  border-radius: 1px;
-  color: #fff;
-  outline: none;
 }
 
 .right-column input[type=checkbox] {
@@ -874,12 +873,9 @@ li.tab {
 }
 
 .editable-section .tab-sections textarea {
-  width: 100%;
-  height: 300px;
-  padding: 5px;
-  border: none;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
+  height: 100px;
+  box-sizing: border-box;
+  padding: 5px 10px;
 }
 
 .remix-ui .remix-wrapper {
@@ -1079,16 +1075,6 @@ li.tab {
   display: block;
   padding: 0;
   margin: 0;
-}
-
-.ui-sortable-placeholder {
-  height: 1.5em; line-height: 1.2em;
-  background: #3999e3;
-  opacity: .5;
-  display: block;
-  padding: 0;
-  margin: 0;
-  visibility: visible !important;
 }
 
 .thumb {
@@ -1611,8 +1597,15 @@ ul.component-actions {
   color: #999;
 }
 
-.editable-section input {
-  font-size: 14px;
+.editable-section input,
+.editable-section textarea {
+  font-size: 15px;
+  width: 100%;
+  background-color: #181b1f;
+  border: none;
+  border-radius: 1px;
+  color: #fff;
+  outline: none;
 }
 
 .editable-attributes div {
@@ -2132,7 +2125,6 @@ button.return-btn {
 }
 
 .editable-section input {
-  font-size: 15px;
 }
 
 .editable-section .tray-tabs [tab=code],

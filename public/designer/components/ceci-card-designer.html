@@ -37,6 +37,14 @@
             $(that).sortable({
               distance : 10,
               handle: '.handle',
+              placeholder: {
+                element: function(clone, ui) {
+                  return $("<div class='sortable-placeholder'></div>");
+                },
+                update: function() {
+                  return;
+                }
+              },
               start: function() {
                 that.$.garbageLeft.hidden = false;
                 that.$.garbageLeft.classList.remove('open');

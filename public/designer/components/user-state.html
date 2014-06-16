@@ -229,13 +229,7 @@
           this.$.renameApp.addEventListener("click", function() {
             var oldName = application.getCurrentApp();
             var newName = window.prompt(l10n.get("What do you want to call this app?"));
-            if(typeof newName !== "string") return;
-            if(newName){
-              application.renameApp(oldName, newName);
-              analytics.event("Renamed App");
-            } else {
-              reporter.errorReport(l10n.get("App names can't be blank."));
-            }
+            self.renameApp(oldName, newName);
           });
 
           //Save App As
@@ -297,7 +291,6 @@
           this.$.publishApp.addEventListener("click", function() {
             var app = document.querySelector('ceci-app');
             var name = app.name;
-            var html = app.outerHTML;
             // This might need to be made its own thing so it can be called
             // in various places:
             while (!name || name === l10n.get("Unsaved App")) {
@@ -309,7 +302,7 @@
             }
             // we have a name: publish!
             var alreadySaved = self.editingmode === "saved";
-            application.publishApp(name, app.appid, html, alreadySaved, function resulthandler(err,data) {
+            function afterPublish(err,data) {
               if(err) {
                 if (data) {
                   // FIXME: will this route ever fire? The combination of an error + data seems unlikely
@@ -325,8 +318,27 @@
               self.refreshUserState();
               self.editingmode = "saved";
               analytics.event("Published App");
-            });
+            }
+            var options = {
+              name: name,
+              appDescription: app.appdescription,
+              appTags: app.apptags,
+              appid: app.appid,
+              html: app.outerHTML,
+              alreadySaved: alreadySaved,
+              afterPublish: afterPublish
+            };
+            application.publishApp(options);
           });
+        },
+        renameApp: function(oldName, newName) {
+          if(typeof newName !== "string") return;
+          if(newName.trim()){
+            application.renameApp(oldName, newName);
+            analytics.event("Renamed App");
+          } else {
+            reporter.errorReport(l10n.get("App names can't be blank."));
+          }
         },
         signInStarted: function(){
           this.$.signInProgress.style.display = "block";

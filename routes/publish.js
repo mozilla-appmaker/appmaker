@@ -81,9 +81,6 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
           return str;
         }
 
-        var requestHTML = inputData.html;
-        var appName = inputData.name;
-
         // core appmaker components
         var coreComponents = app.locals.components;
         var appComponents = [
@@ -93,9 +90,9 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
         getUserComponents(req, function (userComponents) {
 
           var appStr = templates.publish({
-            appHTML: requestHTML,
+            appHTML: inputData.html,
             folderName: folderName,
-            appName: appName,
+            appName: inputData.name,
             gettext: req.gettext,
             ceciComponentURL: process.env.ASSET_HOST,
             remixURL: encodeURIComponent(encodeURIComponent(remoteURLs.app)),
@@ -163,9 +160,10 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                   url: remoteURLs.install,
                   remix: remoteURLs.app,
                   thumbnail: 'http://appmaker.mozillalabs.com/images/mail-man.png',
-                  tags: ['appmaker'],
-                  description: 'Appmaker ' + appName,
-                  title: appName,
+                  description: 'Appmaker ' + folderName,
+                  title: 'Appmaker ' + folderName,
+                  appDescription: inputData.appDescription,
+                  appTags: inputData.appTags || "",
                   email: req.session.email,
                   author: userName,
                   locale: req.localeInfo.lang

@@ -31,7 +31,7 @@
     <div class="expand-handle"></div>
     <div class="component-filtering">
       <div class="modal-header">
-        <input type="text" class="component-search" placeholder="<%- gettext("Search by name or tag...") %>" />
+        <input type="text" class="component-search" placeholder="<%- gettext("Search by name, tag, or description...") %>" />
       </div>
       <div class="component-tags-wrapper">
         <span class="component-tags"></span>
@@ -66,6 +66,7 @@
       <div class="tray-tabs">
         <a class="selected-tab" tab="customize" href="#"><%- gettext("Customize") %></a>
         <a class="" tab="manage-data" href="#"><%- gettext("Manage Data") %></a>
+        <a class="" tab="project-settings" href="#"><%- gettext("Project Settings") %></a>
         <!-- <a tab="view-source" href="#"><%- gettext("View Source") %></a> -->
       </div>
       <div class="tab-sections">
@@ -74,6 +75,9 @@
         </div>
         <div class="section section-manage-data">
           <data-manager></data-manager>
+        </div>
+        <div class="section section-project-settings">
+          <project-settings></project-settings>
         </div>
         <div class="section section-view-source">
           <div class="view-source-menu">
