@@ -1,0 +1,125 @@
+@import "webfonts.less";
+
+html {
+  padding: 0;
+  margin: 0;
+  background: url(/images/background.gif);
+  background-size: 100px;
+  font-size: 14pt;
+}
+
+body {
+  font-family: 'Source Sans Pro', arial;
+  color: white;
+}
+
+p.centered {
+  text-align: center;
+  margin: 1em 3em;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+h1 { font-size: 2em; }
+h2 { font-size: 1.25em; }
+
+header, section, footer {
+  width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  clear: both;
+}
+
+section {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+@media (max-width: 900px) {
+  header, section, footer {
+    width: 800px;
+  }
+}
+
+header {
+  margin: 3em auto;
+}
+
+footer {
+  margin: 3em auto;
+}
+
+header .menu {
+  list-style: none;
+  position: absolute;
+  right: 35px;
+  bottom: 0;
+
+  li {
+    display: inline-block;
+    margin-left: 4em;
+  }
+}
+
+.app-gallery {
+  list-style: none;
+  margin: 3em 0;
+  padding: 0;
+  text-align: center;
+
+  li {
+    margin: 10px 5px;
+    width: 350px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
+
+    h2 {
+      margin: 0;
+    }
+
+    .links {
+      margin: 5px 0;
+      text-align: center;
+
+      a {
+        &:last-child {
+          margin-left: 10px;
+        }
+      }
+    }
+
+    .app {
+      box-shadow: 0px 5px 10px rgba(0,0,0,.3);
+      border: solid 15px rgba(0,0,0,.4);
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+      background-color: black;
+
+      iframe {
+        border: none;
+        margin: 0;
+        padding: 0;
+        width: 320px;
+        height: 480px;
+        background-color: black;
+      }
+    }
+  }
+}
+
+.contribute-image {
+  width: 100%;
+}
+
+section.contribute a {
+  color: rgb(112, 146, 255);
+}
