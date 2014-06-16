@@ -43,7 +43,15 @@ define(["jquery", "l10n", "reporter"], function($, l10n, reporter) {
           }
         });
       },
-      publishApp: function(name, appid, html, alreadySaved, afterPublish) {
+      publishApp: function(options) {
+        var name = options.name,
+            appDescription = options.appDescription,
+            appTags = options.appTags,
+            appid = options.appid,
+            html = options.html,
+            alreadySaved = options.alreadySaved,
+            afterPublish = options.afterPublish;
+
         // make sure to save first; If that succeeds, perform a publish
         var op = alreadySaved ? this.updateApp : this.saveApp;
         op(name, appid, html, function callAPIPublish(err) {
@@ -55,7 +63,9 @@ define(["jquery", "l10n", "reporter"], function($, l10n, reporter) {
           $.ajax('/api/publish', {
             data: {
               name: name,
-              html: html
+              html: html,
+              appDescription: appDescription,
+              appTags: appTags
             },
             type: 'post',
             success: function (data) {
