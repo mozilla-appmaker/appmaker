@@ -3,9 +3,14 @@
 @import "webfonts.less";
 
 :host {
-    font-family: "Source Sans Pro", arial;
-    font-size: 14px;
-    color: #31353C;
+  font-family: "Source Sans Pro", arial;
+  font-size: 14px;
+  color: #31353C;
+  display: block;
+}
+
+:host(.hide) {
+  display: none;
 }
 
 .component-card {
