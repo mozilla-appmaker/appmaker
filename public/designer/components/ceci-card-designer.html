@@ -1,7 +1,13 @@
 <polymer-element name="ceci-card" extends="ceci-card-base">
   <template>
     <shadow></shadow>
+    <style>
+      :host {
+        min-height: 50px;
+      }
+    </style>
   </template>
+
   <script>
     Polymer('ceci-card', {
       ready: function() {
