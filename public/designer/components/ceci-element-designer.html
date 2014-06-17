@@ -13,6 +13,7 @@
     Polymer('ceci-element', {
       ready: function() {
         this.super();
+        this.classList.add("brick");
       },
       broadcast: function(name, data) {
         this.super(arguments);
@@ -59,6 +60,19 @@
           handle.className = 'handle cecidesigner';
           this.appendChild(handle);
         }
+
+        if(!this.querySelector(".garbage")){
+          var garbage = document.createElement('div');
+          garbage.className = 'garbage cecidesigner';
+          this.appendChild(garbage);
+          garbage.addEventListener("click",function(){
+            this.parentNode.parentNode.removeChild(this.parentNode);
+            Editable.removeAttributes();
+            analytics.event("Removed Component", { label : this.parentNode.localName});
+          });
+        }
+
+
       }
     });
   </script>

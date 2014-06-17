@@ -1,26 +1,37 @@
-.handle.cecidesigner {
+.handle, .garbage {
   position: absolute;
-  right: 0;
-  top: 0;
+  top: 3px;
   opacity: .6;
   border-radius: 2px;
   background-color: white;
-  border: solid 1px #BBB;
   width: 16px;
   height: 16px;
   padding: 3px;
-  cursor: move;
-  /* TODO: Move this to designer-specific folder */
-  /* https://github.com/mozilla-appmaker/appmaker/issues/685 */
-  background-image: url('/designer/images/move.png');
   background-repeat: no-repeat;
   background-position: 3px 3px;
-  margin: 3px;
   z-index: 9999;
-  visibility: visible;
   display: block;
+  opacity: 0;
 }
 
-.handle.cecidesigner:hover {
+.handle {
+  cursor: move;
+  right: 3px;
+  background-image: url('/designer/images/move.png');
+}
+
+.garbage {
+  right: 30px;
+  background-image: url('/images/trash.png');
+  cursor: pointer;
+}
+
+.brick:hover .handle.cecidesigner,
+.brick:hover .garbage.cecidesigner {
+  opacity: .5;
+}
+
+.brick:hover .handle.cecidesigner:hover,
+.brick:hover .garbage.cecidesigner:hover {
   opacity: 1;
 }

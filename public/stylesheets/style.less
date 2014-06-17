@@ -423,20 +423,11 @@ button.done {
  display: block;
 }
 
-.component:hover .handle,
-.component:hover .component-menu {
-  display: block;
-}
-
-.component:hover {
-
-}
-
-.component {
+.brick {
   z-index: 1;
 }
 
-.component.selected {
+.brick.selected {
   z-index: 2;
 }
 
@@ -450,15 +441,19 @@ button.done {
   display: none;
 }
 
+.ui-sortable-helper .handle {
+  opacity: 1;
+}
+
 .sortable-placeholder {
   height: 1.5em;
   background: #3999e3;
   opacity: .5;
 }
+
 .customize-btn {
   background-image: url(../images/customize.png);
 }
-
 
 .delete-btn {
   background-image: url(../images/delete.png);

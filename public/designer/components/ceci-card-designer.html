@@ -1,34 +1,13 @@
 <polymer-element name="ceci-card" extends="ceci-card-base">
   <template>
-    <style>
-      :host #garbageLeft {
-        background-image: url('/designer/images/garbage-icon-closed.png');
-        background-color: transparent;
-        background-size: contain;
-        background-repeat: no-repeat;
-        width: 100px;
-        height: 100px;
-        position: absolute;
-        right: -200px;
-        top: 50px;
-        border-radius: 20px;
-        border: dotted 3px rgba(0,0,0,.3)
-      }
-
-      :host #garbageLeft.open {
-        background-image: url('/designer/images/garbage-icon-open.png');
-        background-color: #dddddd;
-      }
-    </style>
-    <div id="garbageLeft" hidden="true"></div>
     <shadow></shadow>
   </template>
   <script>
     Polymer('ceci-card', {
       ready: function() {
-        this.super();
-
         var that = this;
+        this.super();
+        this.classList.add("ceci-card");
 
         require(['designer/editable', 'analytics'], function(Editable, analytics) {
           function createSortable() {
@@ -37,6 +16,9 @@
             $(that).sortable({
               distance : 10,
               handle: '.handle',
+              appendTo : "body",
+              helper : 'clone',
+              connectWith : ".ceci-card",
               placeholder: {
                 element: function(clone, ui) {
                   return $("<div class='sortable-placeholder'></div>");
@@ -45,39 +27,13 @@
                   return;
                 }
               },
-              start: function() {
-                that.$.garbageLeft.hidden = false;
-                that.$.garbageLeft.classList.remove('open');
-                draggedOff = false;
-              },
-              beforeStop: function(ev, ui) {
-                that.$.garbageLeft.hidden = true;
-                if (draggedOff) {
-                  ui.item[0].parentNode.removeChild(ui.item[0]);
-                  Editable.removeAttributes();
-                  analytics.event("Removed Component", { label : ui.item[0].localName});
-                }
-              },
-              sort : function(ev, ui) {
-                var offset = ui.position.left;
-                if(offset > 150 || offset < -150) {
-                  that.$.garbageLeft.classList.add('open');
-                  draggedOff = true;
-                } else {
-                  that.$.garbageLeft.classList.remove('open');
-                  draggedOff = false;
-                }
-              },
               stop: function(ev, ui) {
-                if (!draggedOff) {
-                  that.async(function() {
-                    document.dispatchEvent(new CustomEvent('CeciElementsSorted', {bubbles: true, detail: ui.item[0]}));
-                  });
-                }
+                that.async(function() {
+                  document.dispatchEvent(new CustomEvent('CeciElementsSorted', {bubbles: true, detail: ui.item[0]}));
+                });
               }
             });
           }
-
           var interval = setInterval(function() {
             if (window.$ && $('<div>').sortable) {
               clearInterval(interval);
