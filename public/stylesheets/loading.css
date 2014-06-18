@@ -7,10 +7,11 @@
   background-color: #31353C;
   position: absolute;
   text-align: center;
-  transition: opacity .30s ease-in;
+  transition: opacity .30s linear, z-index .0s linear .30s;
   z-index: 1;
 }
 
 .loading-pane.fade {
   opacity: 0;
+  z-index: 0;
 }
