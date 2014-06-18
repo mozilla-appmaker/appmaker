@@ -1,0 +1,34 @@
+<polymer-element name="project-settings" attributes="appName appTags appDescription">
+  <template>
+    <div class="editable-attributes">
+      <div>
+        <label>Title</label>
+        <input type="text" on-change="{{onAppNameChange}}" value="{{appName}}"></label>
+      </div>
+      <div>
+        <label>Description</label>
+        <textarea class="project-settings-description" placeholder="My app..." maxlength="200" value={{app.appdescription}}></textarea>
+      </div>
+      <div>
+        <label>Tags</label>
+        <input type="text" value="{{app.apptags}}"></label>
+      </div>
+    </div>
+  </template>
+  <script>
+    Polymer('project-settings', {
+      ready: function() {
+        var that = this;
+        function onCeciAppAttached () {
+          that.app = document.querySelector("ceci-app");
+          that.appName = that.app.name;
+        }
+        window.addEventListener("CeciAppAttached", onCeciAppAttached);
+      },
+      onAppNameChange: function(event, detail, sender) {
+        var userState = document.querySelector('user-state');
+        userState.renameApp(this.app.name, sender.value);
+      }
+    });
+  </script>
+</polymer-element>
