@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-define(["jquery", "l10n", "reporter"], function($, l10n, reporter) {
+define(["jquery", "l10n", "reporter","designer/editable"], function($, l10n, reporter, Editable) {
 
     return {
       getCurrentApp: function(){
@@ -16,6 +16,7 @@ define(["jquery", "l10n", "reporter"], function($, l10n, reporter) {
       },
       clearCurrentApp: function(){
         localStorage.removeItem("currentApp");
+        Editable.removeAttributes();
       },
       newApp: function(){
         var app = document.querySelector("ceci-app");
