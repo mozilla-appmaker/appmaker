@@ -11,6 +11,7 @@
   </template>
   <script>
     Polymer('ceci-element', {
+
       ready: function() {
         this.super();
         this.classList.add("brick");
@@ -67,13 +68,20 @@
           this.appendChild(garbage);
           garbage.addEventListener("click",function(){
             this.parentNode.parentNode.removeChild(this.parentNode);
-            Editable.removeAttributes();
-            analytics.event("Removed Component", { label : this.parentNode.localName});
+            var that = this;
+            require(['designer/editable','analytics'], function(Editable,analytics){
+              Editable.removeAttributes();
+              analytics.event("Removed Component", { label : that.parentNode.localName});
+            });
           });
         }
 
-
       }
-    });
+
+
+  });
+
+
+
   </script>
 </polymer-element>

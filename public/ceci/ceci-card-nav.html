@@ -16,29 +16,30 @@
           t.buildTabs();
         }
 
-        window.addEventListener('cardShown', resetTabs);
-        window.addEventListener('ready', resetTabs);
+        window.addEventListener('cardShown', function(){t.highlightTab()});
         window.addEventListener('resetcards', resetTabs);
+        window.addEventListener('CeciElementSortStarted',function(){t.sortHelper()});
+        window.addEventListener('CeciElementsSorted',function(){t.sortHelper()});
 
+        // Add card markup to light dom
         var cards = document.createElement("div");
         cards.classList.add("cards");
         var cardlist = document.createElement("div");
         cardlist.classList.add("card-list");
         var addcard = document.createElement("div");
         addcard.classList.add("add-card");
-
         cards.appendChild(cardlist);
         cards.appendChild(addcard);
-
         document.querySelector(".top-nav").appendChild(cards);
 
         $(".add-card").on("click",function(){
           t.addCard();
-
         });
       },
+      sortHelper : function(){
+        $(".card-list").toggleClass("bounce");
+      },
       highlightTab : function(){
-        //Figure out that index of the visible card
         var highlightIndex;
         var list = document.querySelectorAll("ceci-card") || [];
         Array.prototype.forEach.call(list, function(el,index){
@@ -53,7 +54,6 @@
         }
       },
       addCardTab : function(index, card){
-
         var t = this;
         var newthumb = document.createElement("div");
         function showCard() {
@@ -69,9 +69,7 @@
             ceciApp.removeCard(index-1);
           });
         };
-
         $(".card-list").append(newthumb);
-
         $(newthumb).droppable({
           tolerance : "pointer",
           over : function(){
@@ -99,7 +97,6 @@
             this.highlightTab();
           });
         } else {
-
           if(existingCards.length > 0){
             Array.prototype.forEach.call(existingCards, function(el,index){
               t.addCardTab(index+1,existingCards[index]);
@@ -108,6 +105,7 @@
           this.highlightTab();
         }
       },
+
       addCard : function() {
         this.getOrWaitForCeciApp(function(ceciApp){
           ceciApp.addCard();

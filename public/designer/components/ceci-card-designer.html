@@ -33,6 +33,11 @@
                   return;
                 }
               },
+              start : function(){
+                that.async(function() {
+                  window.dispatchEvent(new CustomEvent('CeciElementSortStarted', {bubbles: true}));
+                });
+              },
               stop: function(ev, ui) {
                 that.async(function() {
                   document.dispatchEvent(new CustomEvent('CeciElementsSorted', {bubbles: true, detail: ui.item[0]}));
