@@ -91,6 +91,12 @@
             that.hideMenu();
           });
 
+          window.addEventListener("designerClick",function(e){
+            if(that != e.detail) {
+              that.hideMenu();
+            }
+          });
+
           this.async(function () {
             this.component = this.parentNode;
             this.buildMenu(this.component);
