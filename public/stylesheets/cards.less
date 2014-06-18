@@ -54,6 +54,9 @@
  .bounce .card:not(.selected) {
    -webkit-animation: tabdance infinite .25s;
    -webkit-transform-origin: bottom;
+   animation: tabdance infinite .25s;
+   transform-origin: bottom;
+
  }
 
  .card {
@@ -108,6 +111,12 @@
 }
 
 @-webkit-keyframes tabdance {
+  0% { padding-bottom: 0px; top: 0px; }
+  50% { padding-bottom: 2px; top: -2px; color: #AAA;}
+  100% { padding-bottom: 0px; top: 0px; }
+}
+
+@keyframes tabdance {
   0% { padding-bottom: 0px; top: 0px; }
   50% { padding-bottom: 2px; top: -2px; color: #AAA;}
   100% { padding-bottom: 0px; top: 0px; }
