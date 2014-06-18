@@ -17,6 +17,8 @@
         }
 
         window.addEventListener('cardShown', function(){t.highlightTab();});
+        window.addEventListener('cardAdded', resetTabs);
+        window.addEventListener('cardRemoved', resetTabs);
         window.addEventListener('resetcards', resetTabs);
         window.addEventListener('CeciElementSortStarted',function(){t.sortHelper();});
         window.addEventListener('CeciElementsSorted',function(){t.sortHelper();});
@@ -105,7 +107,6 @@
           this.highlightTab();
         }
       },
-
       addCard : function() {
         this.getOrWaitForCeciApp(function(ceciApp){
           ceciApp.addCard();
