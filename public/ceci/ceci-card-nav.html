@@ -16,10 +16,10 @@
           t.buildTabs();
         }
 
-        window.addEventListener('cardShown', function(){t.highlightTab()});
+        window.addEventListener('cardShown', function(){t.highlightTab();});
         window.addEventListener('resetcards', resetTabs);
-        window.addEventListener('CeciElementSortStarted',function(){t.sortHelper()});
-        window.addEventListener('CeciElementsSorted',function(){t.sortHelper()});
+        window.addEventListener('CeciElementSortStarted',function(){t.sortHelper();});
+        window.addEventListener('CeciElementsSorted',function(){t.sortHelper();});
 
         // Add card markup to light dom
         var cards = document.createElement("div");
