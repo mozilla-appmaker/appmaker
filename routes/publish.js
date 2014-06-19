@@ -107,7 +107,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
             gettext: req.gettext,
             appname: appName,
             username: userName,
-            webmakerurl: process.env.WEBMAKER_URL
+            webmakerurl: process.env.WEBMAKER_URL || ""
           });
 
           var manifestJSON = {
