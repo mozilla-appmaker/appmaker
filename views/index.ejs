@@ -1,100 +1,183 @@
-<% layout('views-layout') %>
-    <div id="banner" class="content-block">
-      <div class="wrap">
-        <div class="two-column">
-          <h1><%- gettext("Let's Build an App") %></h1>
-          <div class="banner-description"><%- gettext("bannerDescription") %></div>
-          <button class="button-link white-text-button build-app" onclick="window.location='/<%- localeInfo.lang %>/designer'"><i class="fa fa-mobile"></i><span><%- gettext("Build App") %></span></button>
+<!DOCTYPE html>
+<html lang="<%- localeInfo.lang %>" dir="<%- localeInfo.direction %>">
+  <head>
+    <title>Mozilla Appmaker</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Patrick+Hand' rel='stylesheet' type='text/css'>
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="/vendor/makerstrap/dist/makerstrap.min.css" rel="stylesheet">
+    <link rel='stylesheet' href='/vendor/owlcarousel/owl-carousel/owl.carousel.css' />
+    <link rel='stylesheet' href='/vendor/owlcarousel/owl-carousel/owl.theme.css' />
+    <link rel='stylesheet' href='/vendor/owlcarousel/owl-carousel/owl.transitions.css' />
+    <link rel='stylesheet' href='/stylesheets/index.css' />
+    <script type="text/javascript" charset="utf-8" src="/vendor/jquery/jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/vendor/owlcarousel/owl-carousel/owl.carousel.min.js"></script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-35433268-12']);
+      _gaq.push(['_setDomainName', 'webmaker.org']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <div id="wordmark" class="left">
+            <a href="/<%- localeInfo.lang %>"><img src="images/appmaker_logo.png" alt="logo"></a>
+          </div>
         </div>
-        <div class="two-column">
-          <div class="video-splash">
-            <iframe src="//www.youtube.com/embed/eyh4ayEZEJY?html5=1" width="960" height="540"></iframe>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="banner">
+      <div id="header-slides" class="owl-carousel">
+        <div class="item"><img class="lazyOwl" data-bkg="#22a9cd" src="/images/student.png" /></div>
+        <div class="item"><img class="lazyOwl" data-bkg="#f37a62" data-src="/images/work.png" /></div>
+        <div class="item"><img class="lazyOwl" data-bkg="#fad665" data-src="/images/friends.png" /></div>
+      </div>
+      <div class="phone-container">
+        <div class="phone-screen">
+          <div id="phone-slides" class="owl-carousel">
+            <div class="item"><img class="lazyOwl" src="/images/student_phone.png"></div>
+            <div class="item"><img class="lazyOwl" data-src="/images/work_phone.png"></div>
+            <div class="item"><img class="lazyOwl" data-src="/images/friends_phone.png"></div>
+          </div>
+        </div>
+        <div class="phone-hand">
+        </div>
+      </div>
+    </div>
+    <div class="jumbotron">
+      <h1>
+        <%- gettext("Make an app for your") %>
+        <div id="fill-in-the-blank">
+          <span id="word-slides" class="owl-carousel">
+            <span class="item"><%- gettext("students") %></span>
+            <span class="item"><%- gettext("business") %></span>
+            <span class="item"><%- gettext("friends") %></span>
+          </span>
+        </div>
+      </h1>
+      <p class="lead text-muted">
+        Slow-carb brunch plaid 3 wolf moon food truck keffiyeh.  Chia trust fund roof party, hoodie pickled Truffaut master cleanse locavore pork belly.  Keytar irony Bushwick shabby chic, normcore slow-carb iPhone.
+      </p>
+      <button type="button" class="btn btn-primary btn-lg" href="#">Let's Do It</button>
+    </div>
+    <div class="linkout">
+      <div class="container">
+        <div class="row">
+          <div id="learn" class="feature col-md-4">
+            <h2><%- gettext('Learn') %></h2>
+            <p>
+              You probably haven't heard of them literally stumptown dreamcatcher letterpress small batch.
+            </p>
+            <a href="#">Link to action</a>
+          </div>
+          <div id="contribute" class="feature col-md-4">
+            <h2><%- gettext('Contribute') %></h2>
+            <p>
+              You probably haven't heard of them literally stumptown dreamcatcher letterpress small batch.
+            </p>
+            <a href="#">Link to action</a>
+          </div>
+          <div id="imagine" class="feature col-md-4">
+            <h2><%- gettext('Imagine') %></h2>
+            <p>
+              You probably haven't heard of them literally stumptown dreamcatcher letterpress small batch.
+            </p>
+            <a href="#">Link to action</a>
           </div>
         </div>
       </div>
     </div>
-    <div id="quote" class="content-block">
-      <div class="wrap">
-        <span><i><%- gettext("indexQuote") %></i></span>
+    <footer class="wm-footer">
+      <div class="container text-center">
+        <p>The footer</p>
       </div>
-    </div>
-
-    <div id="contribute-block" class="content-block">
-
-      <div class="wrap">
-        <div class="three-column">
-          <h2><%- gettext("Help make Appmaker better!") %></h2>
-        </div>
-        <div class="three-column">
-          <h3><%- gettext("Have an Opinion?") %></h3>
-          <p><%- gettext("opinionDesc") %></p>
-          <p>
-            <a class="button-link-blue" href="https://docs.google.com/forms/d/16Qyz8oHl_RwMV-cdtwxHyVlamg0IDg5s4NOjYdMznv0/viewform">
-              <%- gettext("Take the Survey") %>
-            </a>
-          </p>
-        </div>
-        <div class="three-column">
-          <h3><%- gettext("Like to Build Stuff?") %></h3>
-          <p>
-            <%- gettext("buildStuffDesc") %></p>
-          <p>
-            <a class="button-link-blue" href="http://github.com/mozilla-appmaker/appmaker/wiki/Contributing-a-component"><%- gettext("Find out How") %></a>
-          </p>
-        </div>
-    </div>
-  </div>
-
-    <div id="try-demo" class="content-block light-blue-bg">
-      <div class="wrap">
-        <h1><%- gettext("Try our Demo Apps") %></h1>
-
-        <p>
-          <%- gettext("demoAppDesc") %>
-          </p>
-
-        <div id="demo-preview">
-          <div class="three-column">
-            <a class="demo-app demo-app-fireworks" title="Remix the Fireworks App" href="https://appmaker.mozillalabs.com/designer?remix=http%253A%252F%252Froomy-tin-222.appalot.me%252Findex.html"></a>
-          </div>
-          <div class="three-column">
-            <a title="Remix the Chatroom App" href="https://appmaker.mozillalabs.com/designer?remix=http%253A%252F%252Fsecond-shade-263.appalot.me%252Findex.html" class="demo-app demo-app-chatroom"></a>
-          </div>
-          <div class="three-column">
-            <a class="demo-app demo-app-catgrower" title="Remix the Cat Grower app" href="https://appmaker.mozillalabs.com/designer?remix=http%253A%252F%252Fsame-earthquake-20.appalot.me%252Findex.html"></a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="widgets" class="content-block">
-      <div class="wrap">
-        <div class="three-column">
-          <h3>Twitter</h3>
-          <a class="twitter-timeline"  href="https://twitter.com/MozillaAppmaker" height="250"  data-widget-id="425786940290371584" data-chrome="noheader nofooter">Tweets by @MozillaAppmaker</a>
-          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-        </div>
-        <div class="three-column">
-          <h3><%- gettext("Recent Blog Posts") %></h3>
-          <div id="recent-blog"></div>
-        </div>
-        <div class="three-column">
-          <h3><%- gettext("Get Appmaker Updates") %></h3>
-          <div id="sign-up-mailing-list"></div>
-          <button class="button-link blue-bg-button full-width-button" onclick="window.location='//mail.mozilla.org/listinfo/appmaker-announce'"><%- gettext("Sign me up!") %></button>
-        </div>
-      </div>
-    </div>
+    </footer>
     <script>
-      // sample code taken from http://designshack.net/articles/javascript/build-an-automated-rss-feed-list-with-jquery/
-      $.ajax({
-        url: document.location.protocol + '//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=' + encodeURIComponent("http://appmaking.mozillalabs.com/feed/"),
-        dataType: 'json',
-        success: function(data) {
-          $.each(data.responseData.feed.entries.slice(0,10), function(key, value){
-              var thehtml = '<a href="'+value.link+'" target="_blank">'+value.title+'</a><br />';
-              $("#recent-blog").append(thehtml);
-          });
-        }
+      $(document).ready(function() {
+        $("#header-slides").owlCarousel({
+          singleItem: true,
+          lazyLoad : true,
+          navigation : false,
+          pagination: false,
+          responsiveBaseWidth: $("#header-slides"),
+          slideSpeed: 1000,
+          paginationSpeed: 1000,
+          rewindSpeed: 1000,
+          mouseDrag: false,
+          touchDrag: false,
+          transitionStyle: "fade",
+          afterAction: function(){
+            var color = $('img', this.$userItems[this.currentItem]).data('bkg');
+            var curtain = $('<div class="curtain"></div>');
+            curtain.css('background-color', color);
+            var old = $('.curtain');
+            if (old.length) {
+              var animEnd = 'webkitAnimationEnd oAnimationEnd MSAnimationEnd animationend';
+              old.addClass('owl-fade-out').on(animEnd, function(){
+                old.remove();
+              });
+              old.after(curtain);
+              curtain.addClass('owl-fade-in').on(animEnd, function(){
+                curtain.removeClass('owl-fade-in');
+              });
+            }
+            else {
+              $('#header-slides').before(curtain);
+            }
+          }
+        });
+        $("#word-slides").owlCarousel({
+          singleItem: true,
+          navigation: false,
+          pagination: false,
+          responsiveBaseWidth: $("#word-slides"),
+          slideSpeed: 1000,
+          paginationSpeed: 1000,
+          rewindSpeed: 1000,
+          mouseDrag: false,
+          touchDrag: false,
+          transitionStyle: "fade",
+          afterInit: function(){
+            this.$elem.find('.item').css('visibility', 'visible');
+          }
+        });
+        var header = $("#header-slides").data("owlCarousel");
+        var words = $("#word-slides").data("owlCarousel");
+        $("#phone-slides").owlCarousel({
+          singleItem: true,
+          lazyLoad: true,
+          navigation: false,
+          responsiveBaseWidth: $("#phone-slides"),
+          slideSpeed: 1000,
+          paginationSpeed: 1000,
+          rewindSpeed: 1000,
+          autoPlay: 5000,
+          mouseDrag: false,
+          touchDrag: false,
+          transitionStyle: "fade",
+          afterMove: function() {
+            header.goTo(this.currentItem);
+            words.goTo(this.currentItem);
+          }
+        });
+        var phone = $("#phone-slides").data("owlCarousel");
+        $("#phone-slides .owl-page").one("click", function(){
+          phone.stop();
+        });
       });
     </script>
+  </body>
+</html>
