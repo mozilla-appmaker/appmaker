@@ -1,15 +1,14 @@
 <polymer-element name="ceci-card-nav">
   <template>
     <link rel="stylesheet" href="/stylesheets/cards.css" >
-    <div class="cards" id="cards">
-      <div class="card-list" id="cardList"></div>
-      <div on-click="{{addCard}}" class="add-card"></div>
-    </div>
   </template>
   <script>
   require(['l10n', 'analytics'], function(l10n, analytics) {
     Polymer('ceci-card-nav', {
       checked : false,
+      attached : function(){
+        this.buildTabs();
+      },
       ready: function() {
         var t = this;
 
@@ -17,32 +16,44 @@
           t.buildTabs();
         }
 
-        window.addEventListener('cardShown', resetTabs);
-        window.addEventListener('ready', resetTabs);
+        window.addEventListener('cardShown', function(){t.highlightTab();});
+        window.addEventListener('cardAdded', resetTabs);
+        window.addEventListener('cardRemoved', resetTabs);
         window.addEventListener('resetcards', resetTabs);
+        window.addEventListener('CeciElementSortStarted',function(){t.sortHelper();});
+        window.addEventListener('CeciElementsSorted',function(){t.sortHelper();});
 
-        resetTabs();
+        // Add card markup to light dom
+        var cards = document.createElement("div");
+        cards.classList.add("cards");
+        var cardlist = document.createElement("div");
+        cardlist.classList.add("card-list");
+        var addcard = document.createElement("div");
+        addcard.classList.add("add-card");
+        cards.appendChild(cardlist);
+        cards.appendChild(addcard);
+        document.querySelector(".top-nav").appendChild(cards);
+
+        $(".add-card").on("click",function(){
+          t.addCard();
+        });
+      },
+      sortHelper : function(){
+        $(".card-list").toggleClass("bounce");
       },
       highlightTab : function(){
-        //Figure out that index of the visible card
         var highlightIndex;
         var list = document.querySelectorAll("ceci-card") || [];
-
         Array.prototype.forEach.call(list, function(el,index){
           if(el.getAttribute("visible") == "true"){
             highlightIndex = index;
           }
         });
-
-        //Highlight the corresponding tab
-        var tabList = this.shadowRoot.querySelectorAll('.card') || [];
-        Array.prototype.forEach.call(tabList, function(el,index){
-          el.classList.remove("selected");
-          if(index == (highlightIndex)){
-            el.classList.add("selected");
-          }
-        });
-
+        if(highlightIndex > -1) {
+          highlightIndex = highlightIndex + 1;
+          $(".card").removeClass("selected");
+          $(".card:nth-child("+highlightIndex+")").addClass("selected");
+        }
       },
       addCardTab : function(index, card){
         var t = this;
@@ -60,18 +71,19 @@
             ceciApp.removeCard(index-1);
           });
         };
-        this.$.cardList.appendChild(newthumb);
+        $(".card-list").append(newthumb);
+        $(newthumb).droppable({
+          tolerance : "pointer",
+          over : function(){
+            card.show();
+          }
+        });
+
       },
       buildTabs : function() {
-        //Nuke all existing tabs
-        var tabList = this.shadowRoot.querySelectorAll(".card");
-
         var t = this;
-        if(tabList.length > 0){
-          Array.prototype.forEach.call(tabList, function(el,index){
-            t.$.cardList.removeChild(tabList[index]);
-          });
-        }
+        $(".card-list .card").remove();
+
         //Add tabs for all pages
         var existingCards = document.querySelectorAll('ceci-card');
 

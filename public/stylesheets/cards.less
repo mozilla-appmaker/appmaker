@@ -3,15 +3,12 @@
 @import (reference) "mixins.less";
 
 /* Styles for the card tabs */
-
 .cards {
   padding-top: 20px;
   text-align: left;
   width: ~"calc(100% - 330px)"; /* ~is an escaped value which won't get processed by less */
   margin: 0 auto;
   position: relative;
-  left: -17px;
-  display: inline-block;
 
   .add-card {
     font-size: 1.6rem;
@@ -54,6 +51,14 @@
    display: none;
  }
 
+ .bounce .card:not(.selected) {
+   -webkit-animation: tabdance infinite .25s;
+   -webkit-transform-origin: bottom;
+   animation: tabdance infinite .25s;
+   transform-origin: bottom;
+
+ }
+
  .card {
    margin-right: 5px;
    font-size: 1.6rem;
@@ -68,6 +73,8 @@
    padding: 0px 10px;
    height: 30px;
    line-height: 30px;
+   position: relative;
+
 
    &.selected:only-child {
      padding: 0px 10px 0px 10px;
@@ -101,4 +108,16 @@
    }
  }
 
+}
+
+@-webkit-keyframes tabdance {
+  0% { padding-bottom: 0px; top: 0px; }
+  50% { padding-bottom: 2px; top: -2px; color: #AAA;}
+  100% { padding-bottom: 0px; top: 0px; }
+}
+
+@keyframes tabdance {
+  0% { padding-bottom: 0px; top: 0px; }
+  50% { padding-bottom: 2px; top: -2px; color: #AAA;}
+  100% { padding-bottom: 0px; top: 0px; }
 }
