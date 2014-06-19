@@ -59,21 +59,22 @@
     <% } %>
 
     <script src="/vendor/qrcodejs/qrcode.js"></script>
+    <% if (process.env.GA_ACCOUNT){ %>
+      <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(["_setAccount", "<%- process.env.GA_ACCOUNT %>"]);
+        _gaq.push(["_setDomainName", "<%- process.env.GA_DOMAIN %>"]);
+        _gaq.push(["_trackPageview"]);
 
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(["_setAccount", "UA-35433268-12"]);
-      _gaq.push(["_setDomainName", "webmaker.org"]);
-      _gaq.push(["_trackPageview"]);
-
-      (function() {
-        var ga = document.createElement("script"); ga.type = "text/javascript";
-        ga.async = true;
-        ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
+        (function() {
+          var ga = document.createElement("script"); ga.type = "text/javascript";
+          ga.async = true;
+          ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(ga, s);
+        })();
+      </script>
+    <% } %>
 
   </head>
   <body>
