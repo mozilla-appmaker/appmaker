@@ -1,6 +1,29 @@
 <polymer-element name="data-manager">
   <template>
     <style>
+      :host input,
+      :host textarea {
+        font-size: 15px;
+        width: 100%;
+        background-color: #181b1f;
+        border: none;
+        border-radius: 1px;
+        color: #fff;
+        outline: none;
+        font-family: 'Source Sans Pro', arial;
+      }
+      :host input {
+        height: 30px;
+        padding: 0px;
+        text-indent: 10px;
+      }
+      :host h3 {
+        color: #b5bac2;
+        margin-bottom: 2px;
+      }
+      :host .editable-attributes div {
+        padding-bottom: 10px;
+      }
       :host ul {
         list-style: none;
         margin: 0;

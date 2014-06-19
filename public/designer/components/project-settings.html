@@ -1,5 +1,37 @@
 <polymer-element name="project-settings" attributes="appName appTags appDescription">
   <template>
+    <style>
+      :host input,
+      :host textarea {
+        font-size: 15px;
+        width: 100%;
+        background-color: #181b1f;
+        border: none;
+        border-radius: 1px;
+        color: #fff;
+        outline: none;
+        font-family: 'Source Sans Pro', arial;
+      }
+      :host textarea {
+        height: 100px;
+        box-sizing: border-box;
+        padding: 5px 10px;
+      }
+      :host input {
+        height: 30px;
+        padding: 0px;
+        text-indent: 10px;
+      }
+      :host label {
+        color: #b5bac2;
+        margin-bottom: 2px;
+        display: block;
+        font-size: 14px;
+      }
+      :host .editable-attributes div {
+        margin-bottom: 10px;
+      }
+    </style>
     <div class="editable-attributes">
       <div>
         <label>Title</label>
