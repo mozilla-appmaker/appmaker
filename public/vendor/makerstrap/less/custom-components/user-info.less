@@ -1,0 +1,23 @@
+/*********************************************************
+* User info
+*/
+.user-info-avatar {
+  width: @user-info-avatar-size;
+  height: @user-info-avatar-size;
+  border-radius: @user-info-avatar-size;
+}
+
+.nav > li > .navbar-user-info {
+  @media (min-width: @grid-float-breakpoint) {
+    height: @navbar-height;
+    line-height: @user-info-avatar-size;
+    padding: ((@navbar-height - @user-info-avatar-size)/2);
+  }
+
+  .user-info-avatar {
+    display: none;
+    @media (min-width: @grid-float-breakpoint) {
+      display: inline;
+    }
+  }
+}

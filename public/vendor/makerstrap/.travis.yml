@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+- '0.10'
+branches:
+  only:
+  - master
+before_script:
+- npm install -g grunt-cli
+before_deploy:
+- echo "Deploying commit $TRAVIS_COMMIT"
+- grunt deploy
+deploy:
+  provider: s3
+  access_key_id:
+    secure: NPdvsjLekBIL+6npACOW6P/3s5sPn0L4Is6Nfis+2yquqvMBFcxonOCq1gZ/tE1NdGmajuFs42jLvhlQfVUDh4XWaB4Do020HDbMbl3Opre9A2w99eA07M0WuJXfc7pnN8PH8l68/FL0iDhf9BPS1812Eo08b8uKt2Jo7eYJWXk=
+  secret_access_key:
+    secure: T9acA19ScUZOWrS4dyiS8VLp9vYFnRgVXoL2J3QYEIZgC6/WFQ2tQKRhlLZaZVqfBN+ghs4H4FolmXTyB7vgISy8+KNoh/900//H1SBe1SZxh+X+IQCwt4U/Ail2ex/l7e25o4pHQ9PbHXb2QmXw0/ntd85OY8M4zTKgn0ChtjI=
+  bucket: stuff.webmaker.org
+  skip_cleanup: true
+  upload-dir: makerstrap
+  local-dir: deploy
+  on:
+    repo: mozilla/makerstrap
+    tags: true

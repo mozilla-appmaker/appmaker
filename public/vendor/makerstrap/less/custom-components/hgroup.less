@@ -1,0 +1,18 @@
+/*********************************************************
+* Header Group
+*/
+
+// Bootstrap doesn't have hgroups -_-
+// This is like when you have an h1 and h3 together and want padding around them,
+// But not between them.
+
+hgroup {
+  margin-top: @line-height-computed;
+  margin-bottom: @line-height-computed;
+
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    margin-top: 0;
+    margin-bottom: (@line-height-computed / 2);
+  }
+}
