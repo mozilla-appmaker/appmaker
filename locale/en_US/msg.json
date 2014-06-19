@@ -115,6 +115,7 @@
   "Loading...": "Loading...",
   "login": "login",
   "logout": "logout",
+  "Made by": "Made by",
   "Malformed app HTML": "Malformed HTML detected for your app: missing <ceci-app> wrapper element!",
   "My apps": "My apps",
   "Need gh-pages branch": "When using Github to host the component, you need to make a gh-page branch",
