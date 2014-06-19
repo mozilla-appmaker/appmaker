@@ -22,6 +22,10 @@ h1 {
   text-align: center;
 }
 
+.app-title {
+  font-weight: bold;
+}
+
 .install-container img {
   height: 10em;
   float: left;
