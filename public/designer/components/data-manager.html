@@ -64,12 +64,12 @@
     <div hidden?="{{ collections.length == 0 }}">
       <h3>Name</h3>
       <template repeat="{{collection, collectionIndex in collections}}">
-        <div id="{{collection.name}}" data-index="{{collectionIndex}}" hidden?="{{currentCollectionIndex != collectionIndex}}">
+        <div data-name="{{collection.name}}" data-index="{{collectionIndex}}" hidden?="{{currentCollectionIndex != collectionIndex}}">
           <input type="text" value="{{collection.name}}" on-change="{{onCollectionNameChange}}">
           <h3>Keys</h3>
           <ul style="list-style: none;">
             <template repeat="{{item, fieldIndex in collection.fields}}">
-              <li id="{{item.name}}" data-index="{{fieldIndex}}" >
+              <li data-name="{{item.name}}" data-index="{{fieldIndex}}" >
                 <input data-index="{{fieldIndex}}" type="text" value="{{item.name}}" on-change="{{onFieldNameChange}}">
                 <select data-index="{{fieldIndex}}" value="{{item.kind}}" on-change="{{onItemTypeChange}}">
                   <option value="number">Number</option>
@@ -140,20 +140,20 @@
         var self = this;
         function onFieldChange(e) {
           var detail = e.detail;
-          var collectionIndex = document.getElementById(this.name).getAttribute("data-index");
+          var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ this.name + '"]').getAttribute("data-index");//document.getElementById(this.name).getAttribute("data-index");
           if (detail.added) {
             var obj = self.createFieldManager(detail.added);
             self.collections[collectionIndex].fields.push(obj);
             detail.added.addEventListener("propertychange", onFieldPropertyChange);
           } else if (detail.removed) {
-            var fieldIndex = document.getElementById(detail.removed.name).getAttribute("data-index");
+            var fieldIndex = self.shadowRoot.querySelector('*[data-name="'+ detail.removed.name + '"]').getAttribute("data-index");
             self.collections[collectionIndex].fields.splice(fieldIndex, 1);
             detail.removed.removeEventListener("propertychange", onFieldPropertyChange);
           }
         }
         function onItemChange(e) {
           var detail = e.detail;
-          var collectionIndex = document.getElementById(this.name).getAttribute("data-index");
+          var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ this.name + '"]').getAttribute("data-index");
           if (detail.removed) {
             self.collections[collectionIndex].data.splice(detail.index, 1);
           }
@@ -165,8 +165,8 @@
           var detail = e.detail;
           if (detail.changed) {
             this.async(function() {
-              var collectionIndex = document.getElementById(this.getCollectionName()).getAttribute("data-index");
-              var fieldIndex = document.getElementById(this.name).getAttribute("data-index");
+              var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ this.getCollectionName() + '"]').getAttribute("data-index");
+              var fieldIndex = self.shadowRoot.querySelector('*[data-name="'+ this.name + '"]').getAttribute("data-index");
               self.collections[collectionIndex].fields[fieldIndex][detail.changed] = this[detail.changed];
             });
           }
@@ -175,7 +175,7 @@
           var detail = e.detail;
           if (detail.changed) {
             this.async(function() {
-              var collectionIndex = document.getElementById(this.name).getAttribute("data-index");
+              var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ this.name + '"]').getAttribute("data-index");
               self.collections[collectionIndex][detail.changed] = this[detail.changed];
             });
           }
@@ -190,7 +190,7 @@
             detail.added.addEventListener("propertychange", onCollectionPropertyChange);
           }
           if (detail.removed) {
-            var collectionIndex = document.getElementById(detail.removed.name).getAttribute("data-index");
+            var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ detail.removed.name + '"]').getAttribute("data-index");
             self.collections.splice(collectionIndex, 1);
             detail.removed.removeEventListener("itemchange", onItemChange);
             detail.removed.removeEventListener("fieldchange", onFieldChange);
@@ -265,7 +265,7 @@
         var field = collection.fields[parseInt(sender.getAttribute('data-index'))];
         this.collectionsElement.getField(collection.name, field.name).kind = sender.value;
       },
-      onSchemaNameChange: function(event, detail, sender) {
+      onCollectionNameChange: function(event, detail, sender) {
         var collection = this.collections[this.currentCollectionIndex];
         var oldName = collection.oldName;
         collection.oldName = collection.name;
