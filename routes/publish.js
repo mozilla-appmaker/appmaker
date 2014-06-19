@@ -107,12 +107,13 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
             gettext: req.gettext,
             appname: appName,
             username: userName,
+            description: appDescription,
             webmakerurl: process.env.WEBMAKER_URL || ""
           });
 
           var manifestJSON = {
             "name": 'My App - ' + folderName,
-            "description": 'My App - ' + folderName,
+            "description": appDescription,
             "launch_path": launchPath,
             "developer": {
               "name": "App Maker",
