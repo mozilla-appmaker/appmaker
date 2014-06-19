@@ -97,10 +97,10 @@
               <tr>
                 <template repeat="{{item, fieldIndex in collection.fields}}">
                   <template if="{{item.kind == 'checkbox'}}">
-                    <td><input class="table-input" type="{{item.kind}}" checked="{{row[item.name]}}"></td>
+                    <td><input on-change="{{updateDataRow}}" data-index="{{dataIndex}}" class="table-input" type="{{item.kind}}" checked="{{row[item.name]}}"></td>
                   </template>
                   <template if="{{item.kind != 'checkbox'}}">
-                    <td><input class="table-input" type="{{item.kind}}" value="{{row[item.name]}}"></td>
+                    <td><input on-change="{{updateDataRow}}" data-index="{{dataIndex}}" class="table-input" type="{{item.kind}}" value="{{row[item.name]}}"></td>
                   </template>
                 </template>
                 <td data-index="{{dataIndex}}" on-click="{{removeDataRow}}" class="add-remove-column">-</td>
@@ -237,7 +237,7 @@
       },
       removeKey: function (event, detail, sender) {
         var collection = this.collections[this.currentCollectionIndex];
-        var field = collection.fields[parseInt(sender.value)];
+        var field = collection.fields[parseInt(sender.value, 10)];
         this.collectionsElement.getCollection(collection.name).removeField(field.name);
       },
       addDataRow: function (event, detail, sender) {
@@ -258,11 +258,18 @@
       },
       removeDataRow: function (event, detail, sender) {
         var collection = this.collections[this.currentCollectionIndex];
-        this.collectionsElement.getCollection(collection.name).removeItem(parseInt(sender.getAttribute('data-index')), 1);
+        this.collectionsElement.getCollection(collection.name).removeItem(parseInt(sender.getAttribute('data-index'), 10));
+      },
+      updateDataRow: function (event, detail, sender) {
+        var collectionName = this.collections[this.currentCollectionIndex].name;
+        var collection = this.collectionsElement.getCollection(collectionName)
+        var index = parseInt(sender.getAttribute('data-index'), 10);
+        var item = collection.data[index]
+        collection.updateItem(index, item);
       },
       onItemTypeChange: function(event, detail, sender) {
         var collection = this.collections[this.currentCollectionIndex];
-        var field = collection.fields[parseInt(sender.getAttribute('data-index'))];
+        var field = collection.fields[parseInt(sender.getAttribute('data-index'), 10)];
         this.collectionsElement.getField(collection.name, field.name).kind = sender.value;
       },
       onSchemaNameChange: function(event, detail, sender) {
@@ -273,7 +280,7 @@
       },
       onFieldNameChange: function(event, detail, sender) {
         var collection = this.collections[this.currentCollectionIndex];
-        var field = collection.fields[parseInt(sender.getAttribute('data-index'))];
+        var field = collection.fields[parseInt(sender.getAttribute('data-index'), 10)];
         var oldName = field.oldName;
         field.oldName = field.name;
         this.collectionsElement.getField(collection.name, oldName).name = sender.value;
