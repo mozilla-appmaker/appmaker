@@ -104,7 +104,10 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
           var installStr = templates.install({
             iframeSrc: remoteURLs.app,
             manifestUrl: remoteURLs.manifest,
-            gettext: req.gettext
+            gettext: req.gettext,
+            appname: appName,
+            username: userName,
+            webmakerurl: process.env.WEBMAKER_URL
           });
 
           var manifestJSON = {
