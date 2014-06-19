@@ -9,31 +9,31 @@
   </template>
   <script>
     Polymer('ceci-collections', {
-      addSchema: function(name) {
-        var schema = document.createElement("ceci-schema");
-        this.appendChild(schema);
-        schema.name = name;
+      addCollection: function(name) {
+        var collection = document.createElement("ceci-collection");
+        this.appendChild(collection);
+        collection.name = name;
         var detail = {
-          added: schema
+          added: collection
         };
-        this.fire("schemachange", detail);
+        this.fire("collectionchange", detail);
       },
-      removeSchema: function(name) {
-        var schema = this.querySelector('*[name="'+ name + '"]');
-        this.removeChild(schema);
+      removeCollection: function(name) {
+        var collection = this.querySelector('*[name="'+ name + '"]');
+        this.removeChild(collection);
         var detail = {
-          removed: schema
+          removed: collection
         };
-        this.fire("schemachange", detail);
+        this.fire("collectionchange", detail);
       },
-      getSchema: function(name) {
+      getCollection: function(name) {
         return this.querySelector('*[name="'+ name + '"]');
       },
-      getSchemas: function() {
-        return Array.prototype.slice.call(this.querySelectorAll("ceci-schema"), 0);
+      getCollections: function() {
+        return Array.prototype.slice.call(this.querySelectorAll("ceci-collection"), 0);
       },
-      getField: function(schemaname, fieldname) {
-        return this.querySelector('*[name="'+ schemaname + '"]').getField(fieldname);
+      getField: function(collectionname, fieldname) {
+        return this.querySelector('*[name="'+ collectionname + '"]').getField(fieldname);
       },
       getFields: function(name) {
         return this.querySelector('*[name="'+ name + '"]').getFields();
