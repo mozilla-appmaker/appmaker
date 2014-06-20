@@ -52,7 +52,9 @@ module.exports = function (mongoose, dbconn) {
         return editComponent(req, res);
       }
       // console.log('add component: %j', req.body);
-      var newComponent = new Component(req.body);
+      var compObj = JSON.parse(JSON.stringify(req.body)) // make a copy
+      compObj['created-date'] = compObj['modified-date'] = new Date();
+      var newComponent = new Component(compObj);
       newComponent.save(function(err, component){
         if (err){
           console.error('saving new component failed');
@@ -68,8 +70,14 @@ module.exports = function (mongoose, dbconn) {
         response.json(401, {error: 'need to be signed in'});
         return;
       }
+      var compObj = {
+        'name': req.body.name,
+        'url': req.body.url,
+        'modified-date': new Date()
+      };
+      var newComponent = new Component(compObj);
       Component.findByIdAndUpdate(req.params.id || req.body._id, {
-        $set: { name: req.body.name, url: req.body.url }}, {upsert:true}, function (err, user) {
+        $set: compObj}, {upsert:true}, function (err, user) {
           if (err){
             console.error('saving modified component failed: ' + err);
             return res.json(500, {error: 'Component was not updated due to ' + err});
