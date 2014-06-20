@@ -8,7 +8,13 @@ define(
     "use strict";
 
     var resolvePath = function(tag, url) {
-      return document.createElement(tag).resolvePath(url);
+      try {
+        return document.createElement(tag).resolvePath(url);
+      }
+      catch (e) {
+        console.error('resolvePath failed for component ' + tag + '.');
+        return url;
+      }
     };
 
     var knownComponents = [];
