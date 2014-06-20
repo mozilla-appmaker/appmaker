@@ -67,6 +67,10 @@
       },
       attached: function() {
         this.async( function() {
+          var loadingPane = document.querySelector(".loading-pane");
+          if (loadingPane) {
+            loadingPane.classList.add("fade");
+          }
           window.dispatchEvent(new CustomEvent("CeciAppAttached"));
         });
       },
