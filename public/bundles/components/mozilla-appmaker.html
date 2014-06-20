@@ -445,7 +445,7 @@
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-alternating-gate" attributes="" extends="ceci-element" assetpath="component-alternating-gate/">
+<polymer-element name="ceci-alternating-gate" attributes="countbeforeswitch" extends="ceci-element" assetpath="component-alternating-gate/">
   <template>
     <style>:host {
   display: block;
@@ -515,6 +515,12 @@
         }
       },
       "attributes": {
+        "countbeforeswitch": {
+          "label": "Count Before Switch",
+          "description": "How many events to send on each channel before switching",
+          "editable": "number",
+          "min" : 1
+        }
       }
     }
   </ceci-definition>
@@ -522,10 +528,13 @@
     Polymer('ceci-alternating-gate', {
       nextBroadcast : "",
       ready: function() {
-        this.super();
+        this.countbeforeswitch = Number(this.countbeforeswitch) || 1;
         this.lastBroadcast = null;
-        var self = this;
+        this.count = 0;
+        this.super();
+
       },
+      countbeforeswitch: 1,
       domReady : function(){
         var that = this;
         this.addEventListener("channelUpdated",function(){
@@ -561,11 +570,17 @@
       },
       input: function(value) {
         this.broadcast(this.nextBroadcast, value);
-        this.nextBroadcast = this.activeBroadcasts.indexOf(this.lastBroadcast) + 1;
-        this.nextBroadcast %= this.activeBroadcasts.length;
-        this.nextBroadcast = this.activeBroadcasts[this.nextBroadcast];
-        this.lastBroadcast = this.nextBroadcast;
-        this.updateUI();
+        this.count += 1;
+        this.count = this.count % this.countbeforeswitch || 0;
+
+        // Only switch broadcaster if we've hit this one {{this.countbeforeswitch}} times
+        if (this.count == 0) {
+          this.nextBroadcast = this.activeBroadcasts.indexOf(this.lastBroadcast) + 1;
+          this.nextBroadcast %= this.activeBroadcasts.length;
+          this.nextBroadcast = this.activeBroadcasts[this.nextBroadcast];
+          this.lastBroadcast = this.nextBroadcast;
+          this.updateUI();
+        }
       }
     });
   </script>
@@ -664,7 +679,7 @@
 }
 
 :host .circle {
-  background-image: url(images/circle.png);
+  background-image: url(/bundles/components/component-audio/images/circle.png);
   background-size: 50px;
   background-repeat: no-repeat;
   background-position: center;
