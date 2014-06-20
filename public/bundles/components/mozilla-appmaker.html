@@ -571,72 +571,42 @@
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-audio" attributes="source speed label value textcolor buttoncolor buttonactivecolor" value="Click" extends="ceci-element" label="Play" textcolor="#ffffff" buttoncolor="#4DB227" buttonactivecolor="#358915" speed="1.0" assetpath="component-audio/">
+<polymer-element name="ceci-audio" attributes="source speed label value tapecolor" extends="ceci-element" label="dogs.wav" source="http://soundjax.com/reddo/21812%5Edog_bark_x.mp3" tapecolor="#2181cb" speed="1.0" assetpath="component-audio/">
   <ceci-definition>
     {
-      "tags": ["button", "click", "tap"],
+      "tags": ["sound", "audio", "music"],
       "thumbnail": "./thumbnail.png",
-      "description": "Broadcasts a \"click\" when clicked.",
-      "name": "Audio",
-      "broadcasts": {
-        "click": {
-          "label": "Click",
-          "description": "Occurs when button is clicked.",
-          "default": true
-        }
-      },
+      "description": "Plays a sound.",
+      "name": "Audio Clip",
+      "broadcasts": {},
       "listeners": {
-        "click": {
-          "description": "Causes a fake click event to occur.",
-          "label": "Click"
-        },
-        "speed": {
-          "description": "Sets the playback rate for the audio clip.",
-          "label": "setSpeed"
+        "play": {
+          "description": "Plays the audio clip.",
+          "label": "Play",
+          "default": true
         }
       },
       "attributes": {
         "source": {
-          "label": "Audio source URL.",
+          "label": "Audio source URL",
           "description": "The URL for the sound clip you want to play",
           "editable": "text",
           "listener": true
         },
         "speed": {
-          "label": "Audio playback rate.",
+          "label": "Audio playback rate",
           "description": "1 for normal speed, 2 for twice speed, -1 for reverse, etc.",
-          "editable": "number",
-          "listener": true
+          "editable": "number"
         },
         "label": {
           "label": "Label",
           "description": "Text shown on the button.",
-          "editable": "text",
-          "listener": true
+          "editable": "text"
         },
-        "value": {
+        "tapecolor": {
           "label": "Value",
-          "description": "Value sent by the button.",
-          "editable": "text",
-          "listener": true
-        },
-        "textcolor": {
-          "label": "Text Color",
-          "description": "Color of the text on the button's label.",
-          "editable": "color",
-          "listener": true
-        },
-        "buttoncolor": {
-          "label": "Button Color",
-          "description": "Background color of the button.",
-          "editable": "color",
-          "listener": true
-        },
-        "buttonactivecolor": {
-          "label": "Button Active Color",
-          "description": "Background color of the button while it is being clicked or tapped.",
-          "editable": "color",
-          "listener": true
+          "description": "Color of the tape",
+          "editable": "color"
         }
       }
     }
@@ -647,76 +617,148 @@
   width: 100%;
 }
 
-:host button {
-  font-family: "FiraSans", sans-serif;
+:host .wrapper {
   cursor: pointer;
+  background: orange;
+  height: 75px;
   position: relative;
-  text-decoration: none;
-  outline: none;
-  border-top: 1px solid rgba(255,255,255,.3);
-  border-bottom: 2px solid rgba(0,0,0,.2);
-  background-color: #4DB227;
-  text-align: center;
-  display: block;
-  padding-top: 5px;
-  padding-bottom: 3px;
-  text-overflow: ellipsis;
   overflow: hidden;
-  border-radius: 0.2rem;
-  font-weight: 600;
-  font-size: 1.8rem;
-  line-height: 3.8rem;
-  color: #ffffff;
+}
+
+:host .wrapper .label {
+  background: white;
+  position: absolute;
+  top: 8px;
+  width: 218px;
+  height: 30px;
+  left: 45px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+}
+
+:host .wrapper .text {
+  position: absolute;
+  top: 3px;
   width: 100%;
-  margin: 0;
+  height: 30px;
+  text-align:center;
+  font-size: 18px;
+}
+
+:host .wrapper .circles {
+  position: absolute;
+  bottom: -40px;
+  height: 70px;
+  width: 230px;
+  -webkit-border-radius: 60px;
+  border-radius: 60px;
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+  left: 40px;
+  overflow: hidden;
+  background-color: white;
+  border-top: solid 5px black;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+:host .circle {
+  background-image: url(images/circle.png);
+  background-size: 50px;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: 5px;
+  background-color: black;
+  -webkit-border-radius: 100px;
+  border-radius: 100px;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg);}
+  100% { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+:host .left {
+  left: -40px;
+  top: -45px;
+  height: 150px;
+  width: 150px;
+
+}
+
+:host .playing .left {
+  -webkit-animation: spin linear 1.5s infinite;
+  animation: spin linear 1.5s infinite;
+}
+
+:host .right {
+  right: -20px;
+  top: -25px;
+  height: 110px;
+  width: 110px;
+}
+
+:host .playing .right {
+    -webkit-animation: spin linear 1.3s infinite;
+    animation: spin linear 1.3s infinite;
 }
 
 :host audio {
   display: none;
 }
 </style>
-    <button id="button" on-click="{{click}}">{{label}}</button>
-    <audio id="clip" src="{{source}}" preload="preload"></audio>
+    <div id="wrapper" on-click="{{play}}" class="wrapper">
+      <div class="label">
+        <div class="text">{{label}}</div>
+      </div>
+      <div class="circles">
+        <div class="circle left"></div>
+        <div class="circle right"></div>
+      </div>
+    </div>
+    <audio id="sound" src="component-audio/sounds/snare.mp3" preload="preload"></audio>
     <shadow></shadow>
   </template>
   <script>
     Polymer('ceci-audio', {
-      ready: function () {
+      ready: function() {
         this.super();
         var that = this;
-        var mouseUpHandler = function(evt) {
-          window.removeEventListener("mouseup", mouseUpHandler);
-          that.$.button.style.backgroundColor = that.buttoncolor;
-        };
-        var mouseDownHandler = function(evt) {
-          window.addEventListener("mouseup", mouseUpHandler);
-          that.$.button.style.backgroundColor = that.buttonactivecolor;
-        };
-        this.$.button.addEventListener("mousedown", mouseDownHandler);
+        this.$.sound.addEventListener("ended",function(){
+          that.stopSound();
+        });
       },
-      click: function () {
-        this.$.clip.play();
-        this.broadcast('click', this.getAttribute('value'));
+      stopSound : function(){
+        this.$.wrapper.classList.remove("playing");
+      },
+      play: function() {
+        this.$.wrapper.classList.add("playing");
+        this.$.sound.pause();
+        this.$.sound.currentTime = 0;
+        this.$.sound.play();
       },
       sourceChanged: function(oldValue, newValue) {
-        this.$.clip.src = newValue;
+        this.$.sound.src = newValue;
       },
       setSpeed: function(channel, value) {
-        this.speedChanged(this.$.clip.playbackRate || 1, value);
+        this.speedChanged(this.$.sound.playbackRate || 1, value);
+      },
+      tapecolorChanged: function (oldValue, newValue) {
+        this.$.wrapper.style.background = newValue;
       },
       speedChanged: function(oldValue, newValue) {
         try  {
           var f = parseFloat(newValue);
           if (f) {
-            this.$.clip.playbackRate = parseFloat(newValue);
+            this.$.sound.playbackRate = parseFloat(newValue);
           }
         } catch (e) {}
-      },
-      textcolorChanged: function (oldValue, newValue) {
-        this.$.button.style.color = newValue;
-      },
-      buttoncolorChanged: function (oldValue, newValue) {
-        this.$.button.style.backgroundColor = newValue;
       }
     });
   </script>
@@ -868,7 +910,7 @@
   padding: 12px 0 10px 0;
   text-overflow: ellipsis;
   overflow: hidden;
-  font-weight: 600;
+  font-weight: 300;
   font-size: 1.8rem;
   line-height: 1.8rem;
 
@@ -1667,6 +1709,138 @@
     </script>
 </polymer-element>
 
+<polymer-element name="ceci-channel-gate" attributes="" extends="ceci-element" assetpath="component-channel-gate/">
+  <template>
+    <style>:host {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: #555;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+:host .output-channel {
+  padding: 5px 10px;
+  background: #999;
+  margin: 0 3px;
+  display: inline-block;
+  border: solid 2px #555;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+:host .output-channel:not(.next-up):hover {
+  background: #AAA;
+}
+
+:host .next-up {
+  background: white;
+  border: solid 2px white;
+  font-weight: bold;
+}
+</style>
+    <div id="channels"></div>
+    <shadow></shadow>
+  </template>
+  <ceci-definition>
+    {
+      "tags": ["alternating-gate", "low-level"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Channel Gate",
+      "description": "Chooose which channel to send a signal through.",
+      "broadcasts": {
+        "A": {
+          "label": "Output A",
+          "description": "The first broadcast in the rotation.",
+          "default": "green"
+        },
+        "B": {
+          "label": "Output B",
+          "description": "The second broadcast in the rotation.",
+          "default": "yellow"
+        },
+        "C": {
+          "label": "Output C",
+          "description": "The third broadcast in the rotation."
+        },
+        "D": {
+          "label": "Output D",
+          "description": "The fourth broadcast in the rotation."
+        },
+        "E": {
+          "label": "Output E",
+          "description": "The fifth broadcast in the rotation."
+        }
+      },
+      "listeners": {
+        "input": {
+          "description": "The input that alternates out the broadcasts.",
+          "label": "Input",
+          "default": true
+        }
+      },
+      "attributes": {}
+    }
+  </ceci-definition>
+  <script>
+    Polymer('ceci-channel-gate', {
+      nextBroadcast : "",
+      ready: function() {
+        this.super();
+        this.lastBroadcast = null;
+      },
+      attached : function(){
+        var that = this;
+        this.addEventListener("channelUpdated",function(){
+          this.updateChannels();
+          this.updateUI();
+        });
+        this.updateChannels();
+        this.nextBroadcast = this.activeBroadcasts[0];
+        this.updateUI();
+        this.super();
+      },
+      updateUI : function(){
+        Array.prototype.forEach.call(this.$.channels.querySelectorAll(".output-channel"), function(c) {
+          c.classList.remove("next-up");
+        });
+        var selected = this.$.channels.querySelector("." + this.nextBroadcast);
+        if(selected){
+          selected.classList.add("next-up");
+        }
+      },
+      channelClick : function(from){
+        this.nextBroadcast = from;
+        this.updateUI();
+      },
+      updateChannels: function(){
+        var that = this;
+        this.activeBroadcasts = [];
+        that.$.channels.innerHTML = "";
+        Array.prototype.forEach.call(this.querySelectorAll("ceci-broadcast"), function(broadcast) {
+          that.activeBroadcasts.push(broadcast.getAttribute("from"));
+          var channel = document.createElement("div");
+          channel.classList.add("output-channel");
+          channel.classList.add(broadcast.getAttribute("from"));
+          channel.innerHTML = broadcast.getAttribute("from");
+          var from = broadcast.getAttribute("from");
+          channel.addEventListener("click",function(){
+            that.channelClick(from);
+          });
+          that.$.channels.appendChild(channel);
+        });
+      },
+      input: function(value) {
+        this.broadcast(this.nextBroadcast, value);
+      }
+    });
+  </script>
+</polymer-element>
+
 <polymer-element name="ceci-chart" collectionname="times" extends="ceci-element" attributes="unit increment value collectionname" assetpath="component-chart/">
   <script src="component-chart/vendor/chartjs/Chart.min.js"></script>
   <ceci-definition>
@@ -1755,18 +1929,31 @@
           labels: keys,
           datasets: [
             {
-              fillColor: "rgba(220,220,220,0.5)",
-              strokeColor: "rgba(220,220,220,1)",
+              fillColor: "rgba(54, 171, 42, .6)",
+              strokeColor: "rgba(30, 151, 29, 1.0000)",
               data: values
             }
           ]
         };
       },
+      getIntegerScaleParameters: function(data) {
+        var maxValue = false;
+        for (datasetIndex = 0; datasetIndex < data.datasets.length; ++datasetIndex) {
+           var setMax = Math.max.apply(null, data.datasets[datasetIndex].data);
+           if (maxValue === false || setMax > maxValue) maxValue = setMax;
+        }
+
+        var steps = new Number(maxValue);
+        var stepWidth = new Number(1);
+        if (maxValue > 10) {
+           stepWidth = Math.floor(maxValue / 10);
+           steps = Math.ceil(maxValue / stepWidth);
+        }
+        return { animation: false, scaleOverride: true, scaleSteps: steps, scaleStepWidth: stepWidth, scaleStartValue: 0 };
+      },
       graph: function() {
-        // console.log(this.getData());
-        this.chart.Line(this.getData(), {
-          animation: false
-        });
+        var data = this.getData();
+        this.chart.Line(data, this.getIntegerScaleParameters(data));
       }
     });
   </script>
@@ -2316,95 +2503,46 @@
     }
   </ceci-definition>
   <template>
-    <div class="wrapper">
-      <div class="timer">
-        <span>T-{{dayCountDown}}</span>
-        <span class="label">Until Tomorrow</span>
-      </div>
-    </div>
     <style>:host {
   display: block;
   width: 100%;
+  background: #DDD;
+  text-align: center;
+  padding: 5px ;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-
-:host .wrapper {
-  width: 100%;
-  margin: 1em auto;
-  height: 80px;
+:host .timer {
+  text-align: center;
+  font-size: 16px;
+  padding: 5px 0;
 }
 
 :host .counter {
   font-size: 16px;
-  background: #DDD;
   color: #666;
   margin: 5px auto;
-  display: table;
+  text-align: center;
   padding: 10px 12px;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   border: 1px #CCC solid;
   border-bottom-width: 2px;
-}
-
-:host .counter-control {
-  height: 50px;
-  width: 50px;
-  background: #63a6cc;
-  position: absolute;
-  border-radius: 30px;
-  -webkit-border-radius: 30px;
-  bottom: 10px;
-  cursor: pointer;
-  opacity: .8;
-}
-
-:host .up {
-  right: 40px;
-}
-
-:host .down {
-  left: 40px;
-}
-
-:host .counter-control:hover {
-  opacity: 1;
-}
-
-:host .counter-control .icon {
-  position: absolute;
-  font-size: 40px;
-  color: white;
+  background: white;
+  display: inline-block;
   font-weight: bold;
-  width: 100%;
-  text-align: center;
-  text-shadow: 0px -1px 0px rgba(0,0,0,.25);
 }
-
-:host .down .icon {
-  top: -4px;
-}
-
-
-:host .counter
 </style>
-    <div class="wrapper">
-
-      <div class="counter-control up" on-click="{{countUp}}">
-        <span class="icon">+</span>
+      <div class="timer">
+        <span>{{dayCountDown}}</span>
+        <span class="label">left Today</span>
       </div>
-
       <div class="counter">
         <span>{{value}}</span>
         <span class="label">{{displayUnit}}</span>
       </div>
-
-      <div class="counter-control down" on-click="{{countDown}}">
-        <span class="icon">-</span>
-      </div>
-
-    </div>
-
     <shadow></shadow>
   </template>
   <tags></tags>
@@ -2420,7 +2558,7 @@
         this.countdownInterval = setInterval(function(){
           t.updateCountdown();
         }, 2000);
-
+        t.updateCountdown();
         this.super();
       },
       value: 0,
@@ -3037,6 +3175,169 @@
           });
         });
       }
+    });
+  </script>
+</polymer-element>
+
+<polymer-element name="ceci-double-button" attributes="textcolor rightbuttoncolor leftbuttoncolor leftlabel rightlabel value" value="Click" extends="ceci-element" leftlabel="OK" rightlabel="Cancel" textcolor="#ffffff" leftbuttoncolor="#4DB227" rightbuttoncolor="#bd400a" assetpath="component-double-button/">
+  <ceci-definition>
+    {
+      "tags": ["button", "click", "tap"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Broadcasts a \"click\" when clicked.",
+      "name": "Double Button",
+      "broadcasts": {
+        "clickleft": {
+          "label": "Left Button",
+          "description": "Occurs when left button is clicked.",
+          "default": "blue"
+        },
+        "clickright": {
+          "label": "Right Button",
+          "description": "Occurs when right button is clicked.",
+          "default": "blue-two"
+        }
+      },
+      "listeners": {},
+      "attributes": {
+        "leftlabel": {
+          "label": "Left Button Label",
+          "description": "Text shown on the left button.",
+          "editable": "text"
+        },
+        "leftbuttoncolor": {
+          "label": "Left Button Color",
+          "description": "Background color of the left button.",
+          "editable": "color"
+        },
+        "rightlabel": {
+          "label": "Right Button Label",
+          "description": "Text shown on the right button.",
+          "editable": "text"
+        },
+        "rightbuttoncolor": {
+          "label": "Right Button Color",
+          "description": "Background color of the right button.",
+          "editable": "color"
+        },
+        "textcolor": {
+          "label": "Text Color",
+          "description": "Color of the text on the button's label.",
+          "editable": "color"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <style>:host {
+  display: block;
+  width: 100%;
+  font-size: 0px;
+  word-spacing: -1;
+}
+
+:host .button-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 50%;
+}
+
+:host .button {
+  font-family: "FiraSans", sans-serif;
+  cursor: pointer;
+  border-bottom: 2px solid rgba(0,0,0,.1);
+  display: block;
+  text-align: center;
+  padding: 12px 0 10px 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-weight: 600;
+  font-size: 1.8rem;
+  line-height: 1.8rem;
+  width: 100%;
+  display: inline-block;
+  -webkit-box-sizing: border-box;
+}
+
+:host #leftbutton {
+ border-right: 2px solid rgba(0,0,0,.1);
+}
+
+:host #rightbutton {
+  border-left: 2px solid rgba(255,255,255,.1);
+}
+
+:host .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+}
+
+:host .active-overlay {
+  background: black;
+}
+
+:host .hover-overlay {
+  background: white;
+}
+
+:host .button-wrapper:hover .hover-overlay {
+  opacity: .1;
+}
+
+:host .button-wrapper:active .active-overlay {
+  opacity: .1;
+}
+:host .button-wrapper:active .hover-overlay {
+  opacity: 0;
+}
+
+:host .button-wrapper:active .button {
+  border-top: solid 2px rgba(0,0,0,.1);
+  border-bottom: none;
+}
+
+:host button {
+  border: none;
+}
+</style>
+    <div class="button-wrapper" on-click="{{clickleft}}">
+      <div class="button" id="leftbutton">{{leftlabel}}</div>
+      <div class="overlay active-overlay"></div>
+      <div class="overlay hover-overlay"></div>
+    </div>
+    <div class="button-wrapper" on-click="{{clickright}}">
+      <div class="button" id="rightbutton">{{rightlabel}}</div>
+      <div class="overlay active-overlay"></div>
+      <div class="overlay hover-overlay"></div>
+    </div>
+    <shadow></shadow></template>
+  <script>
+    Polymer('ceci-double-button', {
+      ready: function () {
+        this.super();
+        var that = this;
+      },
+      clickleft: function () {
+        this.broadcast('clickleft', this.getAttribute('value'));
+      },
+      clickright: function () {
+        this.broadcast('clickright', this.getAttribute('value'));
+      },
+      textcolorChanged: function (oldValue, newValue) {
+        this.$.leftbutton.style.color = newValue;
+        this.$.rightbutton.style.color = newValue;
+      },
+      leftbuttoncolorChanged: function (oldValue, newValue) {
+        this.$.leftbutton.style.backgroundColor = newValue;
+      },
+      rightbuttoncolorChanged: function (oldValue, newValue) {
+        this.$.rightbutton.style.backgroundColor = newValue;
+      }
+
     });
   </script>
 </polymer-element>
@@ -7511,7 +7812,7 @@ header {
 }
 </style>
     <div class="counter">
-        Random bewteen {{min}} and {{max}} &rarr;
+        Random between {{min}} and {{max}} &rarr;
       <div class="count-wrapper">
  {{value}}
       </div>
@@ -8003,14 +8304,14 @@ header {
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-spacer" attributes="height color" extends="ceci-element" assetpath="component-spacer/">
+<polymer-element name="ceci-spacer" attributes="height" height="30" extends="ceci-element" assetpath="component-spacer/">
   <template>
     <style>:host {
   display: block;
   width: 100%;
 }
 </style>
-    <div id="spacerDiv"></div>
+    <div id="spacer"></div>
     <shadow></shadow>
   </template>
   <ceci-definition>
@@ -8022,33 +8323,22 @@ header {
       "broadcasts": {},
       "listeners": {},
       "attributes": {
-        "color": {
-          "label": "Color",
-          "description": "Color of the occupied space.",
-          "editable": "color"
-        },
         "height": {
           "label": "Height",
           "description": "The height of the spacer.",
           "editable": "number",
-          "listener": true
+          "min" : 5
         }
       }
     }
   </ceci-definition>
   <script>
     Polymer('ceci-spacer', {
-      height: 30,
-      color: '#fff',
       ready: function () {
         this.super();
-        this.setAttribute('height', this.height);
-      },
-      colorChanged: function (oldValue, newValue) {
-        this.style.backgroundColor = this.color;
       },
       heightChanged: function (oldValue, newValue) {
-        this.$.spacerDiv.style.height = newValue + "px";
+        this.$.spacer.style.height = newValue + "px";
       }
     });
   </script>

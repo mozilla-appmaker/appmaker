@@ -1,0 +1,16 @@
+{
+    "ceci-button": "ปุ่ม",
+    "ceci-button/description": "เผ่ยแพร่การ \"กด\" เมื่อกดปุ่ม",
+    "ceci-button/attributes/label": "กดฉัน",
+    "ceci-button/attributes/label/label": "ฉลาก",
+    "ceci-button/attributes/label/description": "ข้อความแสดงบนปุ่ม",
+    "ceci-button/attributes/value": "กด",
+    "ceci-button/attributes/value/label": "ค่า",
+    "ceci-button/attributes/value/description": "ค่าที่ส่งโดยปุ่ม",
+    "ceci-button/attributes/textcolor/label": "สีของตัวหนังสือ",
+    "ceci-button/attributes/textcolor/description": "สีของตัวหนังสือบนฉลากของปุ่ม",
+    "ceci-button/attributes/buttoncolor/label": "สีของปุ่ม",
+    "ceci-button/attributes/buttoncolor/description": "สีพื้นหลังของปุ่ม",
+    "ceci-button/attributes/buttonactivecolor/label": "สีปุ่มที่กำลังถูกใช้",
+    "ceci-button/attributes/buttonactivecolor/description": "สีพื้นหลังของปุ่มในระหว่างที่กำลังถูกใช้หรือกด"
+}

@@ -1,0 +1,14 @@
+{
+    "ceci-button": "Кнопка",
+    "ceci-button/attributes/label": "Кликни меня",
+    "ceci-button/attributes/label/label": "Подпись",
+    "ceci-button/attributes/label/description": "Текст, отображаемый на кнопке.",
+    "ceci-button/attributes/value/label": "Значение",
+    "ceci-button/attributes/value/description": "Значение, посланное кнопкой.",
+    "ceci-button/attributes/textcolor/label": "Цвет текста",
+    "ceci-button/attributes/textcolor/description": "Цвет текста на подписи кнопки.",
+    "ceci-button/attributes/buttoncolor/label": "Цвет кнопки",
+    "ceci-button/attributes/buttoncolor/description": "Фоновый цвет кнопки.",
+    "ceci-button/attributes/buttonactivecolor/label": "Цвет активной кнопки",
+    "ceci-button/attributes/buttonactivecolor/description": "Фоновый цвет кнопки когда её кликают или нажимают."
+}

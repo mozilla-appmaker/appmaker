@@ -1,0 +1,14 @@
+{
+    "ceci-button": "Boutton",
+    "ceci-button/attributes/label": "Cliquez moi",
+    "ceci-button/attributes/label/label": "Légende",
+    "ceci-button/attributes/label/description": "Texte affiché sur le bouton.",
+    "ceci-button/attributes/value/label": "Valeur",
+    "ceci-button/attributes/value/description": "Valeur retournée par le bouton.",
+    "ceci-button/attributes/textcolor/label": "Couleur du texte",
+    "ceci-button/attributes/textcolor/description": "Couleur du texte sur le bouton.",
+    "ceci-button/attributes/buttoncolor/label": "Couleur du bouton",
+    "ceci-button/attributes/buttoncolor/description": "Couleur d'arrière plan du bouton.",
+    "ceci-button/attributes/buttonactivecolor/label": "Couleur de bouton activé",
+    "ceci-button/attributes/buttonactivecolor/description": "Couleur du bouton lorsqu'il est cliqué ou touché."
+}
