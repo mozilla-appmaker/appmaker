@@ -88,6 +88,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
           //... mine the requestHTML for these? ...
         ];
 
+        var remixUrl = encodeURIComponent(encodeURIComponent(remoteURLs.app));
         getUserComponents(req, function (userComponents) {
 
           var appDescription = inputData.appDescription || "";
@@ -98,7 +99,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
             appName: appName,
             gettext: req.gettext,
             ceciComponentURL: process.env.ASSET_HOST,
-            remixURL: encodeURIComponent(encodeURIComponent(remoteURLs.app)),
+            remixURL: remixUrl,
             bundles: app.locals.bundles,
             components: coreComponents.concat(appComponents),
             userComponents: userComponents
@@ -181,7 +182,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                 // Don't wait for the MakeAPI to deliver url to user
                 makeAPIPublisher.publish({
                   url: remoteURLs.install,
-                  remix: remoteURLs.app,
+                  remix: remixUrl,
                   thumbnail: 'http://appmaker.mozillalabs.com/images/mail-man.png',
                   title: appName,
                   appDescription: appDescription,
