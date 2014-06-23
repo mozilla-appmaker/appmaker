@@ -4,14 +4,11 @@
         <button id="close-remix-panel"></button>
         <div id="remix-panel-content" class="hidden">
           <div id="remix-panel-inner">
-            <div id="remix-logo">
-              <img src="<%= process.env.ASSET_HOST %>/images/chef-man.png">
-            </div>
             <input type="email" id="remix-panel-email" placeholder="Your Email">
             <button id="remix-button" class="remix-button"><%- gettext("Mail me the remix link") %></button>
-            <div class="remix-explanation centered"><%- gettext("or") %></p>
+            <div class="centered"><%- gettext("or") %></div>
             <button id="remix-now-button" class="remix-button"><%- gettext("Remix now") %></button>
-            <div id="remix-explanation">
+            <div class="remix-explanation">
               <%- gettext("remixExplaination") %>
             </div>
           </div>
