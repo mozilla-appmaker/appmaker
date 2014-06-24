@@ -63,18 +63,20 @@
         }
 
         if(!this.querySelector(".garbage")){
-          var garbage = document.createElement('div');
+          garbage = document.createElement('div');
           garbage.className = 'garbage cecidesigner';
           this.appendChild(garbage);
-          garbage.addEventListener("click",function(){
-            this.parentNode.parentNode.removeChild(this.parentNode);
-            var that = this;
-            require(['designer/editable','analytics'], function(Editable,analytics){
-              Editable.removeAttributes();
-              analytics.event("Removed Component", { label : that.parentNode.localName});
-            });
-          });
         }
+
+        this.querySelector(".garbage").addEventListener("click",function(){
+          this.parentNode.parentNode.removeChild(this.parentNode);
+          var that = this;
+          require(['designer/editable','analytics'], function(Editable,analytics){
+            Editable.removeAttributes();
+            analytics.event("Removed Component", { label : that.parentNode.localName});
+          });
+        });
+
 
       }
 
