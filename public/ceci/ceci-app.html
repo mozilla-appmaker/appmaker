@@ -66,11 +66,15 @@
         window.dispatchEvent(new CustomEvent("CeciAppReady"));
       },
       attached: function() {
+        var loadingPane = document.querySelector(".loading-pane");
+        function onPolymerReady() {
+          loadingPane.classList.add("fade");
+          window.removeEventListener('polymer-ready', onPolymerReady);
+        }
+        if (loadingPane) {
+          window.addEventListener('polymer-ready', onPolymerReady);
+        }
         this.async( function() {
-          var loadingPane = document.querySelector(".loading-pane");
-          if (loadingPane) {
-            loadingPane.classList.add("fade");
-          }
           window.dispatchEvent(new CustomEvent("CeciAppAttached"));
         });
       },
