@@ -47,6 +47,10 @@ define(
       selectElement(e.detail);
     });
 
+    window.addEventListener('SelectElement', function (e) {
+      selectElement(e.detail);
+    });
+
     return {
       selectElement: selectElement
     };

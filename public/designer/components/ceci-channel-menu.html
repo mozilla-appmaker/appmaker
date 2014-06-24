@@ -80,6 +80,7 @@
           this.super();
           this.menuStructure = this.shadowRoot.querySelector("content");
           this.addEventListener("click", function(e) {
+            window.dispatchEvent(new CustomEvent("SelectElement", { detail :  this.component }));
             e.stopPropagation();
           });
         },
