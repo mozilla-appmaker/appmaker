@@ -53,10 +53,10 @@
 }
 
 .component-card .more-info {
-  display: none;
   border-top: solid 1px #DDD;
   margin-top: 15px;
   padding-top: 10px;
+  display: none;
 }
 
 .component-card .more-info h3 {
@@ -138,6 +138,7 @@
 
 .component-card .add-tooltip {
   border-radius: 20px;
+  display: none;
   -moz-border-radius: 20px;
   font-size: 2rem;
   background:  rgba(94,193,37,1);
@@ -149,10 +150,6 @@
   position: absolute;
   z-index: 9999;
   overflow: hidden;
-  -webkit-transform: scale(0);
-  -webkit-transition: all .05s linear;
-  -moz-transform: scale(0);
-  -moz-transition: all .05s linear;
   right: 5px;
   bottom: 6px;
 }
@@ -181,6 +178,7 @@
 .component-description h1 {
   float: none;
   font-size: 1.4rem;
+  font-weight: normal;
 }
 
 :host-context(.mode-discovery) .component-description h1 {
