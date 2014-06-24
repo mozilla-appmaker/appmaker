@@ -70,13 +70,16 @@ module.exports = function (mongoose, dbconn) {
     renameApp: function(request, response) {
       if (!checkAuthorised(request, response)) return;
 
+      var setObj = {};
       var oldName = request.body.oldName;
       var newName = request.body.newName;
+      setObj.name = newName;
+      setObj['modified-date'] = new Date();
 
       App.update(
         {author:request.session.email, name: oldName},
         {
-          $set: {name: newName}
+          $set: setObj
         },
         {},
         function(err,obj){
@@ -111,6 +114,7 @@ module.exports = function (mongoose, dbconn) {
           var appObj = JSON.parse(JSON.stringify(request.body)) // make a copy
           appObj.author = request.session.email;
           appObj.appid = request.body.appid;
+          appObj['created-date'] = appObj['modified-date'] = new Date();
           var newApp = new App(appObj);
           newApp.save(function(err, app){
             if (err){
@@ -137,6 +141,7 @@ module.exports = function (mongoose, dbconn) {
       var setObj = {};
       if(html) setObj.html = html;
       if(url) setObj['last-published-url'] = url;
+      setObj['modified-date'] = new Date();
       App.update(
         {author:request.session.email, name: name},
         { $set: setObj },
@@ -170,6 +175,7 @@ module.exports = function (mongoose, dbconn) {
         }
         var compObj = JSON.parse(JSON.stringify(request.body)) // make a copy
         compObj.author = request.session.email;
+        compObj['created-date'] = compObj['modified-date'] = new Date();
         var newComponent = new Component(compObj);
         newComponent.save(function(err, component){
           if (err) {

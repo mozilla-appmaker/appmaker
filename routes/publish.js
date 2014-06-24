@@ -13,6 +13,7 @@ var dbModels = require('../lib/db-models');
 
 module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbconn) {
   var Component = dbModels.get('Component');
+  var App = dbModels.get('App');
 
   var templates = {
     publish: null,
@@ -149,6 +150,22 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
 
           var filesDone = 0;
 
+          var setObj = {
+            'published-date': new Date()
+          };
+
+          App.update({
+              author: req.session.email,
+              name: inputData.name
+            }, {
+              $set: setObj
+            }, {},
+            function(err,obj){
+              if(err){
+                console.error('Error saving published date to database: ' + err);
+              }
+            }
+          );
           outputFiles.forEach(function (description) {
 
             store.write(description.filename, description.data, function (result) {
