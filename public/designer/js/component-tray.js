@@ -18,14 +18,21 @@ define(
     };
 
     var knownComponents = [];
+    var tags = [];
+    var categories = {};
+
+    // Component Categories
+    categories.names = ["Basic","Layout","Connectors","Audio","Logic","Media","Other"];
+    categories.basic = ["ceci-button","ceci-header","ceci-counter","ceci-metronome","ceci-image"];
+    categories.layout = ["ceci-button-with-confirmation","ceci-button","ceci-double-button","ceci-image","ceci-textbox","ceci-spacer","ceci-header"];
+    categories.navigation = ["ceci-button","ceci-header"];
+    categories.connectors = ["ceci-transformer","ceci-channel-gate","ceci-alternating-gate","ceci-splitter","ceci-combiner"];
+    categories.audio = ["ceci-snaredrum","ceci-audio","ceci-metronome","ceci-cowbell","ceci-kickdrum","ceci-sequencer","ceci-microphone-button"];
+    categories.logic = ["ceci-daily-counter","ceci-counter","ceci-random","ceci-bool"];
+    categories.media = ["ceci-meatspaces-messages","ceci-meatspaces-input","ceci-hot-potato","ceci-text-input","ceci-notebook","ceci-todo-list","ceci-component-canvas","ceci-camera-button","ceci-chat-window","ceci-fireworks","ceci-jazzhands","ceci-pad-grid","ceci-chart"];
 
     var DesignerTray = {
-      addComponentWithName: function(name) {
-        var componentTrayContainer = document.getElementById('components');
-
-        // Avoid adding components that are already in the tray
-        if(knownComponents.indexOf(name) > -1) return;
-
+      buildItem : function(name){
         var item = document.createElement('designer-component-tray-item');
         var ceciDefinition = CeciDesigner.getCeciDefinitionScript(name);
 
@@ -36,12 +43,19 @@ define(
         item.setAttribute('author', ceciDefinition.author);
         item.setAttribute('updatedat', ceciDefinition.updatedAt);
 
+        var bricktags = ceciDefinition.tags;
+
+        for(var k = 0; k < bricktags.length; k++){
+          var tag = bricktags[k];
+          if(tags.indexOf(tag) == -1) {
+            tags.push(tag);
+          }
+        }
+
         item.addEventListener('click', function (e) {
           var card = document.querySelector('ceci-card[visible]');
-
           if (card) {
             var newElement = document.createElement(name);
-
             // wait until Polymer has prepared the element completely
             newElement.async(function() {
               newElement.applyDefaults();
@@ -50,28 +64,107 @@ define(
             });
           }
         }, false);
-
-        knownComponents.push(name);
-        componentTrayContainer.appendChild(item);
         item.label = L10n.get(name) || item.label;
+        return item;
       },
-      sortComponents: function () {
-        var container = document.querySelector('#components');
-        var components = container.querySelectorAll('designer-component-tray-item').array();
+      addComponentWithName: function(name) {
+        var added = false;
+        for(var i = 0; i < categories.names.length; i++){
+          var category = categories.names[i];
+          var components = categories[category.toLowerCase()] || [];
+          for(var j = 0; j < components.length; j++){
+            if(name == components[j]){
+              var item = DesignerTray.buildItem(name)
+              var containerCount = document.querySelectorAll(".category-container." + category.toLowerCase()).length;
+              if(containerCount == 0) {
+                DesignerTray.buildCategory(category.toLowerCase());
+              }
+              document.querySelector(".category-container." + category.toLowerCase()).appendChild(item);
+              added = true;
+            }
+          }
+        }
+        if(!added){
+          var item = DesignerTray.buildItem(name)
+          var containerCount = document.querySelectorAll(".category-container.other").length;
+          if(containerCount == 0) {
+            DesignerTray.buildCategory("other");
+          }
+          document.querySelector(".category-container.other").appendChild(item);
+        }
+      },
+      sortComponents: function (container) {
+        // Sorts components in each category container
+        var containers = document.querySelectorAll('.category-container');
+        for(var i = 0; i < containers.length; i++){
+          var container = containers[i];
+          var components = container.querySelectorAll('designer-component-tray-item').array();
+          components = components.sort(function (a, b) {
+            if (a.label > b.label) return 1;
+            if (a.label < b.label) return -1;
+            return 0;
+          });
+          components.forEach(function (c) {
+            container.appendChild(c);
+          });
+        }
+      },
+      buildCategory : function(category){
+        var that = this;
 
-        components = components.sort(function (a, b) {
-          if (a.label > b.label) return 1;
-          if (a.label < b.label) return -1;
-          return 0;
-        });
+        if(category != "all") {
+          //Build Category Container
+          var container = document.createElement("div");
+          var title = document.createElement("h2");
+          title.innerHTML = category.charAt(0).toUpperCase() + category.slice(1) + " Bricks";
+          container.appendChild(title);
+          container.classList.add("category-container");
+          container.classList.add(category.toLowerCase());
+          document.querySelector("#components").appendChild(container);
+        }
 
-        components.forEach(function (c) {
-          container.appendChild(c);
+        //Build tag
+        var tagContainer = document.querySelector(".brick-category");
+        var option = document.createElement("a");
+        if(category == "all") {
+          option.innerHTML = "All Bricks"
+        } else {
+          option.innerHTML = category.charAt(0).toUpperCase() + category.slice(1);
+        }
+
+        option.setAttribute("data-category",category.toLowerCase());
+        tagContainer.appendChild(option);
+
+        option.addEventListener("click",function(e){
+          that.filterCategory(e.target.getAttribute("data-category"));
         });
       },
       addComponentsFromRegistry: function() {
+        DesignerTray.buildCategory("all");
         CeciDesigner.forEachComponent(this.addComponentWithName);
+        DesignerTray.filterCategory("basic");
         DesignerTray.sortComponents();
+      },
+      filterCategory : function(category){
+        var categoryLinks = document.querySelectorAll(".brick-category a");
+        Array.prototype.forEach.call(categoryLinks, function(el, i){
+          el.classList.remove("selected-category");
+        });
+
+        document.querySelector(".brick-category a[data-category="+category+"]").classList.add("selected-category");
+        document.querySelector("#components").setAttribute("data-category",category);
+
+        var categoryEls = document.querySelectorAll(".category-container");
+        if(category == "all"){
+          Array.prototype.forEach.call(categoryEls, function(el, i){
+            el.style.display = "";
+          });
+        } else {
+          Array.prototype.forEach.call(categoryEls, function(el, i){
+            el.style.display = "none";
+          });
+          document.querySelector(".category-container." + category).style.display = "";
+        }
       },
       isKnownComponent: function(name) {
         return knownComponents.indexOf(name) > -1;
@@ -89,12 +182,11 @@ define(
 
     window.addEventListener("polymer-ready", function () {
       DesignerTray.addComponentsFromRegistry();
-
+      var categoryContainers = document.querySelectorAll(".category-container");
       var searchBox = document.querySelector('.component-search');
       searchBox.addEventListener('keyup', function (e) {
         var searchValue = searchBox.value.trim().toLowerCase();
         var componentsContainer = document.querySelector('#components');
-
         if (searchValue.length > 0) {
           CeciDesigner.forEachComponent(function (componentTag) {
             var menuElement = componentsContainer.querySelector('designer-component-tray-item[name="' + componentTag + '"]');
@@ -120,8 +212,20 @@ define(
               }
             }
           });
+
+          Array.prototype.forEach.call(categoryContainers, function(el, i){
+            if(el.querySelectorAll("designer-component-tray-item:not(.hide)").length == 0) {
+              el.classList.add("no-results");
+            } else {
+              el.classList.remove("no-results");
+            }
+          });
+
         }
         else {
+          Array.prototype.forEach.call(categoryContainers, function(el, i){
+            el.classList.remove("no-results");
+          });
           Array.prototype.forEach.call(componentsContainer.querySelectorAll('designer-component-tray-item'), function (e) {
             e.classList.remove('hide');
           });
@@ -132,5 +236,3 @@ define(
     return DesignerTray;
   }
 );
-
-
