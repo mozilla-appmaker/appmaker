@@ -1,3 +1,10 @@
 {
-	"ceci-meatspaces-messages": "Meat Chat Window"
+  "ceci-meatspaces-messages/name": "Meat Chat Window",
+  "ceci-meatspaces-messages/description": "Displays Meatspaces chat messages",
+  "ceci-meatspaces-messages/server/label": "Meatspaces Server",
+  "ceci-meatspaces-messages/server/description": "Meatspaces server to which this app should connect to receive messages.",
+  "ceci-meatspaces-messages/height/label": "Height",
+  "ceci-meatspaces-messages/height/description": "Height of this brick.",
+  "ceci-meatspaces-messages/mode/label": "Message Mode",
+  "ceci-meatspaces-messages/mode/description": "What to display for each message"
 }

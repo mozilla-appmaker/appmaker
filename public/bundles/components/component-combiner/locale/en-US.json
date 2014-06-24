@@ -1,3 +1,18 @@
 {
-  "ceci-combiner": "Combiner"
+  "ceci-combiner/description": "Messages of any colour sent to this brick .",
+  "ceci-combiner/name": "Combiner",
+  "ceci-combiner/output/label": "Output",
+  "ceci-combiner/output/description": "Repeats input",
+  "ceci-combiner/input1/description": "Input 1",
+  "ceci-combiner/input1/label": "Input 1",
+  "ceci-combiner/input2/description": "Input 2",
+  "ceci-combiner/input2/label": "Input 2",
+  "ceci-combiner/input3/description": "Input 3",
+  "ceci-combiner/input3/label": "Input 3",
+  "ceci-combiner/input4/description": "Input 4",
+  "ceci-combiner/input4/label": "Input 4",
+  "ceci-combiner/input5/description": "Input 5",
+  "ceci-combiner/input5/label": "Input 5",
+  "ceci-combiner/input6/description": "Input 6",
+  "ceci-combiner/input6/label": "Input 6"
 }

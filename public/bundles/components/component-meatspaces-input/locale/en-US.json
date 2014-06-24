@@ -1,3 +1,14 @@
 {
-	"ceci-meatspaces-input": "Meat Chat Input"
+  "ceci-meatspaces-input/description": "Sends Meatspaces chat messages",
+  "ceci-meatspaces-input/name": "Meat Chat Input",
+  "ceci-meatspaces-input/send/label": "Send",
+  "ceci-meatspaces-input/send/description": "Send message to chat server",
+  "ceci-meatspaces-input/sent/label": "Message Sent",
+  "ceci-meatspaces-input/sent/description": "Message was sent to chat server",
+  "ceci-meatspaces-input/image/label": "Image",
+  "ceci-meatspaces-input/image/description": "Data-URL for image to be used",
+  "ceci-meatspaces-input/server/label": "Server",
+  "ceci-meatspaces-input/server/description": "URL for Appmaker Meatspaces Chat Server",
+  "ceci-meatspaces-input/mode/label": "Message Mode",
+  "ceci-meatspaces-input/mode/description": "What kind of messages will be sent."
 }

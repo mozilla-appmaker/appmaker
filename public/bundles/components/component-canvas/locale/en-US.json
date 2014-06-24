@@ -1,6 +1,18 @@
 {
-  "ceci-component-canvas": "Canvas",
+  "ceci-component-canvas/name": "Canvas",
   "ceci-component-canvas/description": "A canvas for drawing and sharing",
-  "ceci-component-canvas/attributes/image/label": "Image",
-  "ceci-component-canvas/attributes/image/description": "URL for displayed image"
+  "ceci-component-canvas/imageGenerated/label": "Image Generated",
+  "ceci-component-canvas/imageGenerated/description": "A portable image URL was generated",
+  "ceci-component-canvas/generateImage/label": "Generate Image",
+  "ceci-component-canvas/generateImage/description": "Generates a portable image URL from the drawing",
+  "ceci-component-canvas/reset/label": "Reset",
+  "ceci-component-canvas/reset/description": "Description for reset",
+  "ceci-component-canvas/generateonchange/label": "Generate on Change",
+  "ceci-component-canvas/generateonchange/description": "Generate image when canvas is changed",
+  "ceci-component-canvas/pensize/label": "Pen Size",
+  "ceci-component-canvas/pensize/description": "Width of pen used for drawing",
+  "ceci-component-canvas/readonly/label": "Read Only",
+  "ceci-component-canvas/readonly/description": "Locks/unlocks drawn content",
+  "ceci-component-canvas/height/label": "Height",
+  "ceci-component-canvas/height/description": "Height of canvas"
 }

@@ -1,8 +1,18 @@
 {
-	"ceci-counter": "Counter",
-	"ceci-counter/description": "Listens for a message and counts",
-	"ceci-counter/attributes/unit/label": "Unit",
-	"ceci-counter/attributes/unit/description": "Name for items which are being counted.",
-	"ceci-counter/attributes/increment/label": "Increment By",
-	"ceci-counter/attributes/increment/description": "Count up or down with this number."
+  "ceci-daily-counter/name": "Daily Counter",
+  "ceci-daily-counter/description": "Listens for a message and counts",
+  "ceci-daily-counter/currentCount/label": "Current Count",
+  "ceci-daily-counter/currentCount/description": "Broadcasts the current count.",
+  "ceci-daily-counter/countUp/description": "Increment the total by the increment value",
+  "ceci-daily-counter/countUp/label": "Count Up!",
+  "ceci-daily-counter/countDown/description": "Decrement the total by the increment value",
+  "ceci-daily-counter/countDown/label": "Count Down",
+  "ceci-daily-counter/resetCount/description": "Reset the total to 0.",
+  "ceci-daily-counter/resetCount/label": "Reset Count",
+  "ceci-daily-counter/unit/description": "Name for items which are being counted.",
+  "ceci-daily-counter/unit/label": "Unit",
+  "ceci-daily-counter/collectionname/description": "The name of the collection to store the value",
+  "ceci-daily-counter/collectionname/label": "Collection Name",
+  "ceci-daily-counter/increment/description": "Count up or down with this number.",
+  "ceci-daily-counter/increment/label": "Increment By"
 }

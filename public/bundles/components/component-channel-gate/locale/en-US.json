@@ -1,4 +1,16 @@
 {
-	"ceci-alternating-gate": "Alternating Gate",
-	"ceci-alternating-gate/description": "Alternates output between set broadcasts from a single input"
+  "ceci-channel-gate/name": "Channel Gate",
+  "ceci-channel-gate/description": "Chooose which channel to send a signal through.",
+  "ceci-channel-gate/A/label": "Output A",
+  "ceci-channel-gate/A/description": "The first broadcast in the rotation.",
+  "ceci-channel-gate/B/label": "Output B",
+  "ceci-channel-gate/B/description": "The second broadcast in the rotation.",
+  "ceci-channel-gate/C/label": "Output C",
+  "ceci-channel-gate/C/description": "The third broadcast in the rotation.",
+  "ceci-channel-gate/D/label": "Output D",
+  "ceci-channel-gate/D/description": "The fourth broadcast in the rotation.",
+  "ceci-channel-gate/E/label": "Output E",
+  "ceci-channel-gate/E/description": "The fifth broadcast in the rotation.",
+  "ceci-channel-gate/input/description": "The input that alternates out the broadcasts.",
+  "ceci-channel-gate/input/label": "Input"
 }

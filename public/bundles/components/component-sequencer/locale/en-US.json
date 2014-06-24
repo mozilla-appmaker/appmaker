@@ -1,4 +1,16 @@
 {
-	"ceci-alternating-gate": "Alternating Gate",
-	"ceci-alternating-gate/description": "Alternates output between set broadcasts from a single input"
+  "ceci-sequencer/name": "Sequencer",
+  "ceci-sequencer/description": "Alternates output between set broadcasts from a single input",
+  "ceci-sequencer/A/label": "Beat A",
+  "ceci-sequencer/A/description": "The first broadcast in the rotation.",
+  "ceci-sequencer/B/label": "Beat B",
+  "ceci-sequencer/B/description": "The second broadcast in the rotation.",
+  "ceci-sequencer/C/label": "Beat C",
+  "ceci-sequencer/C/description": "The third broadcast in the rotation.",
+  "ceci-sequencer/D/label": "Beat D",
+  "ceci-sequencer/D/description": "The fourth broadcast in the rotation.",
+  "ceci-sequencer/E/label": "Beat E",
+  "ceci-sequencer/E/description": "The fifth broadcast in the rotation.",
+  "ceci-sequencer/input/description": "Plays the next beat in the sequence.",
+  "ceci-sequencer/input/label": "Play Beat"
 }
