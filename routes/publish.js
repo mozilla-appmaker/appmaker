@@ -89,10 +89,12 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
 
         getUserComponents(req, function (userComponents) {
 
+          var appDescription = inputData.appDescription || "";
+          var appName = inputData.name || req.gettext('My App') + ' - ' + folderName;
           var appStr = templates.publish({
             appHTML: inputData.html,
             folderName: folderName,
-            appName: inputData.name,
+            appName: appName,
             gettext: req.gettext,
             ceciComponentURL: process.env.ASSET_HOST,
             remixURL: encodeURIComponent(encodeURIComponent(remoteURLs.app)),
@@ -104,12 +106,16 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
           var installStr = templates.install({
             iframeSrc: remoteURLs.app,
             manifestUrl: remoteURLs.manifest,
-            gettext: req.gettext
+            gettext: req.gettext,
+            appname: appName,
+            username: userName,
+            description: appDescription,
+            webmakerurl: process.env.WEBMAKER_URL || ""
           });
 
           var manifestJSON = {
-            "name": 'My App - ' + folderName,
-            "description": 'My App - ' + folderName,
+            "name": appName,
+            "description": appDescription,
             "launch_path": launchPath,
             "developer": {
               "name": "App Maker",
@@ -160,9 +166,8 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                   url: remoteURLs.install,
                   remix: remoteURLs.app,
                   thumbnail: 'http://appmaker.mozillalabs.com/images/mail-man.png',
-                  description: 'Appmaker ' + folderName,
-                  title: 'Appmaker ' + folderName,
-                  appDescription: inputData.appDescription,
+                  title: appName,
+                  appDescription: appDescription,
                   appTags: inputData.appTags || "",
                   email: req.session.email,
                   author: userName,

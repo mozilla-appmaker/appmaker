@@ -18,6 +18,10 @@
       <a href=""><%- gettext("click here")%></a>
     </p>
   </script>
+  <p class="app-details">
+    <span class="app-title"><%- appname %> - <%- gettext("Made by") %> <a href="<%- webmakerurl %>/u/<%- username %>">@<%- username %></a></span><br>
+    <span><%- description %></span>
+  </p>
   <div class="install-container">
     <button class="install">
       <span><%- gettext('Install App') %></span>
@@ -27,10 +31,8 @@
       <span><%- gettext('Run in Browser') %></span>
     </button>
   </div>
-  <div id="qrcode-container">
-    <p><%- gettext("QR code install explanation") %></p>
-    <div id="qrcode"></div>
-  </div>
+  <p><%- gettext("QR code install explanation") %></p>
+  <div id="qrcode"></div>
   <script>
     document.addEventListener('DOMContentLoaded', function (e) {
 
