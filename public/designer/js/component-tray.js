@@ -19,17 +19,70 @@ define(
 
     var knownComponents = [];
     var tags = [];
-    var categories = {};
 
-    // Component Categories
-    categories.names = ["Basic","Layout","Connectors","Audio","Logic","Media","Other"];
-    categories.basic = ["ceci-button","ceci-header","ceci-counter","ceci-metronome","ceci-image"];
-    categories.layout = ["ceci-button-with-confirmation","ceci-button","ceci-double-button","ceci-image","ceci-textbox","ceci-spacer","ceci-header"];
-    categories.navigation = ["ceci-button","ceci-header"];
-    categories.connectors = ["ceci-transformer","ceci-channel-gate","ceci-alternating-gate","ceci-splitter","ceci-combiner"];
-    categories.audio = ["ceci-snaredrum","ceci-audio","ceci-metronome","ceci-cowbell","ceci-kickdrum","ceci-sequencer","ceci-microphone-button"];
-    categories.logic = ["ceci-daily-counter","ceci-counter","ceci-random","ceci-bool"];
-    categories.media = ["ceci-meatspaces-messages","ceci-meatspaces-input","ceci-hot-potato","ceci-text-input","ceci-notebook","ceci-todo-list","ceci-component-canvas","ceci-camera-button","ceci-chat-window","ceci-fireworks","ceci-jazzhands","ceci-pad-grid","ceci-chart"];
+    var categories = {
+      "basic" : [
+         "ceci-button",
+         "ceci-counter",
+         "ceci-image",
+         "ceci-header",
+         "ceci-metronome"
+      ],
+      "layout" : [
+        "ceci-button",
+        "ceci-button-with-confirmation",
+        "ceci-double-button",
+        "ceci-header",
+        "ceci-image",
+        "ceci-spacer",
+        "ceci-textbox"
+      ],
+      "connectors" : [
+        "ceci-transformer",
+        "ceci-channel-gate",
+        "ceci-alternating-gate",
+        "ceci-splitter",
+        "ceci-combiner"
+      ],
+      "audio" : [
+        "ceci-audio",
+        "ceci-cowbell",
+        "ceci-snaredrum",
+        "ceci-kickdrum",
+        "ceci-metronome",
+        "ceci-microphone-button",
+        "ceci-sequencer"
+      ],
+      "logic" : [
+        "ceci-bool",
+        "ceci-counter",
+        "ceci-daily-counter",
+        "ceci-random"
+      ],
+      "media" : [
+        "ceci-chart",
+        "ceci-component-canvas",
+        "ceci-camera-button",
+        "ceci-chat-window",
+        "ceci-fireworks",
+        "ceci-hot-potato",
+        "ceci-jazzhands",
+        "ceci-meatspaces-messages",
+        "ceci-meatspaces-input",
+        "ceci-notebook",
+        "ceci-pad-grid",
+        "ceci-text-input",
+        "ceci-todo-list"
+      ]
+    }
+
+    categories.names = [];
+
+    for (var key in categories) {
+      if (categories.hasOwnProperty(key)) {
+        categories.names.push(key);
+      }
+    }
 
     var DesignerTray = {
       buildItem : function(name){
