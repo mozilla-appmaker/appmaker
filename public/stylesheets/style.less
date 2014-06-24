@@ -604,9 +604,6 @@ button.done {
   flex-direction: column;
 }
 
-#components-wrapper {
-  flex: 1;
-}
 
 ul.tabs {
   display: none;
@@ -1096,7 +1093,7 @@ li.tab {
 /* flip the pane when hovered */
 .preview:hover .flipper {
   transform: rotateY(180deg);
-    -webkit-transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
 }
 
 .preview, .front, .back, .draggable {
@@ -1285,127 +1282,6 @@ ul.component-actions {
   }
 }
 
-.component-card .show-more {
-  display: inline-block;
-  background: #DDD;
-  margin-left: 15px;
-  color: #777;
-  padding: 5px 10px;
-  display: none;
-}
-
-.component-card .tags,
-.component-card .author {
-  display: none;
-}
-
-.component-card .show-more:hover {
-  background: #CCC;
-}
-
-.component-card .more-info {
-  display: none;
-  border-top: solid 1px #DDD;
-  margin-top: 15px;
-  padding-top: 10px;
-}
-
-.component-card .more-info h3 {
-  font-size: 1.4rem;
-  color: #444;
-  padding: 0;
-  margin: 0;
-}
-
-.component-preview {
-  display: none;
-}
-
-.mode-discovery .component-preview {
-  display: block;
-  text-align: center;
-  padding: 10px;
-  border-bottom: solid 1px #CCC;
-  position: relative;
-  background: white;
-  height: 150px;
-  display: table;
-  table-layout: fixed;
-  width: ~"calc(100% - 20px)";
-}
-
-.component-preview .image-wrapper {
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
-  height: 115px;
-  width: 100%;
-  position: relative;
-}
-
-.component-preview img {
-  display: block;
-  max-width: 90%;
-  max-height: 150px;
-  margin: auto;
-}
-
-.component-preview:hover .add-component-overlay {
-  display: block;
-}
-
-.component-card:hover {
-  border: solid 1px rgba(94,193,37,.7);
-}
-
-.component-preview .add-component-overlay {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  bottom: 0px;
-  width: ~"calc(100% - 4px)";
-  background:  rgba(94,193,37,0);
-  background-position: bottom right;
-  background-repeat: no-repeat;
-  background-size: 75px;
-  -webkit-transition: linear all .05s;
-  -moz-transition: linear all .05s;
-  overflow: hidden;
-}
-
-.component-card:hover .add-component-overlay {
-  background:  rgba(94,193,37,.05);
-}
-
-.component-card:hover .component-description {
-  background:  rgba(94,193,37,.08);
-}
-
-.component-card .add-tooltip {
-  border-radius: 20px;
-  -moz-border-radius: 20px;
-  font-size: 2rem;
-  background:  rgba(94,193,37,1);
-  color: white;
-  opacity: .7;
-  padding: 0px 7px 0 7px;
-  text-align: center;
-  font-weight: bold;
-  position: absolute;
-  z-index: 9999;
-  overflow: hidden;
-  -webkit-transform: scale(0);
-  -webkit-transition: all .05s linear;
-  -moz-transform: scale(0);
-  -moz-transition: all .05s linear;
-  right: 5px;
-  bottom: 6px;
-}
-
-.component-card:hover .add-tooltip {
-  -webkit-transform: scale(1);
-  -moz-transform: scale(1);
-}
 
 .mode-discovery .component-card .add-tooltip {
   right: 5px;
@@ -1822,10 +1698,18 @@ span.channel {
 .modal-header .component-search {
   font-size: 1.3rem;
   position: relative;
-  padding: 4px 6px;
+  padding: 4px 0;
   width: 100%;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
+  background: transparent;
+  border: none;
+  border-bottom: solid 1px #BBB;
+  outline: none;
+}
+
+#components-wrapper {
+  flex: 1;
 }
 
 #components-wrapper {
@@ -1834,7 +1718,6 @@ span.channel {
 }
 
 #components {
-  overflow: hidden;
   padding: 0px 10px 10px 10px;
 }
 
@@ -2317,3 +2200,190 @@ button.return-btn {
 }
 
 @import "mobile.less";
+
+.addbrick {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  background: rgba(0,0,0,.6);
+  z-index: 9999999;
+
+
+ .modalwindow {
+
+    background: white;
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    bottom: 40px;
+    right: 40px;
+    border-radius: 10px;
+    padding: 20px;
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+  }
+
+  .brick-column {
+    float: left;
+    width: 300px;
+  }
+
+  .preview-column {
+    float: right;
+    width: 250px;
+    border-left: solid 1px #DDD;
+    height: 90%;
+    padding-left: 20px;
+
+    h1 {
+      font-size: 22px;
+      padding: 0;
+      margin: 0 0 10px 0;
+      border: none;
+    }
+
+    .preview-image {
+      display: block;
+      height: 150px;
+      background: #DDD;
+    }
+
+    .tags {
+      margin-bottom: 20px;
+    }
+
+    .description {
+      margin: 0 0 15px 0;
+    }
+
+    .buttons a {
+      display: inline-block;
+      padding: 5px 10px;
+      background: green;
+      color: white;
+    }
+
+    .methods {
+      overflow: auto;
+
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    .broadcasts {
+      float: right;
+    }
+
+    .listeners {
+      float:left;
+    }
+  }
+
+  h1 {
+    margin-bottom: 15px;
+    border-bottom: solid 1px #DDD;
+    padding-bottom: 5px;
+  }
+
+  .search-brick {
+    float: right;
+    padding-right: 80px;
+    color: #999;
+    border-bottom: solid 1px #DDD;
+    font-size: 16px;
+    border: none;
+    border-bottom: solid 1px #DDD;
+  }
+
+  .category {
+    float: left;
+    width: 150px;
+    margin-right: 30px;
+  }
+
+  .category-title {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+  }
+
+  .category ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+
+  .bricks .brick {
+    padding: 5px 10px;
+    color: #2181cb;
+    cursor: pointer;
+    margin-bottom: 3px;
+    background: #EEE;
+  }
+
+}
+
+.brick-category {
+  padding: 0 10px;
+  margin: 0 0 10px 0;
+  overflow: hidden;
+
+  a {
+    display: block;
+    cursor: pointer;
+    margin: 0px 5px 5px 0;
+    float: left;
+    -webkit-border-radius: 3px;
+
+    background: #BBB;
+    padding: 5px 10px 5px 10px;
+    -webkit-box-sizing: border-box;
+
+    &:hover {
+      background: #a2bbcd;
+    }
+
+    &.selected-category {
+      background: #457496;
+      color: white;
+    }
+  }
+
+}
+
+.category-container {
+  clear: both;
+  margin-bottom: 15px;
+
+  h2 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    line-height: 15px;
+    color: #999;
+    font-weight: normal;
+  }
+}
+
+.no-results {
+  h2 {
+    display: none;
+  }
+
+  &:after {
+    content: "No bricks found...";
+    color: #999;
+  }
+}
+
+[data-category=all] .no-results {
+  display: none !important;
+}
