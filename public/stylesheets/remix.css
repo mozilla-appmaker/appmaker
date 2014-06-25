@@ -15,6 +15,8 @@
      -moz-transition: top 0.2s, height 0.2s;
           transition: top 0.2s, height 0.2s;
   overflow: hidden;
+  color: #AEB1B5;
+  font-size: 20px;
 }
 
 #remix-panel.expanded {
@@ -33,8 +35,13 @@
 }
 
 #remix-panel-inner {
-  width: 60%;
+  max-width: 800px;
   margin: 0 auto;
+  padding: 0 10px;
+}
+
+.remix-explanation {
+  margin: 10px 0;
 }
 
 button.remix-button {
@@ -50,7 +57,7 @@ button.remix-button {
   border-top: 1px solid #74b3e3;
   border-bottom: 1px solid #0f1113;
   height: 50px;
-  margin: 10px 0px 50px 0px;
+  margin-top: 6px;
   color: #FFF;
   font-size: 24px;
 }
@@ -87,7 +94,7 @@ button#close-remix-panel:active {
 
 input#remix-panel-email {
   width: 100%;
-  margin-top: 50px;
+  margin-top: 10px;
   -webkit-appearance: none;
   -moz-appearance: none;
   border: 3px solid #0f1113;
@@ -95,6 +102,8 @@ input#remix-panel-email {
   font-size: 18px;
   outline: none;
   text-indent: 10px;
+  box-sizing: border-box;
+  -moz-box-sizing:border-box; /* Firefox */
 }
 
 #remix-icon {
@@ -127,13 +136,6 @@ input#remix-panel-email {
 
 .centered {
   text-align: center;
-}
-
-.remix-explanation {
-  width: 100%;
-  color: #aeb1b5;
-  font-size: 20px;
-  line-height: 140%;
 }
 
 #remix-logo {
