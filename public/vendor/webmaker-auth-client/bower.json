@@ -1,7 +1,7 @@
 {
   "name": "webmaker-auth-client",
   "main": "webmaker-auth-client.js",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "authors": [
     "Kate Hudson <k88hudson@gmail.com>"
   ],
@@ -9,7 +9,7 @@
   "dependencies": {
     "cookie-js": "~0.0.1",
     "eventEmitter": "~4.2.7",
-    "webmaker-analytics": "~0.0.5"
+    "webmaker-analytics": "~0.1.0"
   },
   "devDependencies": {
     "webmaker-language-picker": "~0.0.23"
