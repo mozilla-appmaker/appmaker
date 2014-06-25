@@ -76,6 +76,7 @@
   <script>
     require(['l10n'], function(L10n) {
       Polymer('ceci-channel-menu', {
+        menubuilt : false,
         ready: function() {
           this.super();
           this.menuStructure = this.shadowRoot.querySelector("content");
@@ -84,7 +85,6 @@
             e.stopPropagation();
           });
         },
-
         attached: function () {
           var that = this;
 
@@ -102,8 +102,10 @@
 
           this.async(function () {
             this.component = this.parentNode;
-            this.buildMenu(this.component);
-            this.adjustMenuPosition();
+            if(!this.menubuilt){
+              this.buildMenu(this.component);
+              this.adjustMenuPosition();
+            }
           });
 
         },
@@ -202,6 +204,7 @@
           this.dispatchEvent(new CustomEvent('channelUpdated', {name: name, bubbles: true, detail: this}));
         },
         buildMenu: function() {
+          this.menubuilt = true;
           var that = this;
           var communicators, handlertype;
 
