@@ -11,6 +11,11 @@
     this._gaq = [];
   }
 
+  // Make sure optimizely is on the global so we don't die trying to access it
+  if(!this.optimizely) {
+    this.optimizely = [];
+  }
+
   // Use hostname for GA Category
   var _category = location.hostname,
       _redacted = "REDACTED (Potential Email Address)";
@@ -61,9 +66,9 @@
   // Support both types of Google Analytics Event Tracking, see:
   // ga.js - https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide
   // analytics.js - https://developers.google.com/analytics/devguides/collection/analyticsjs/events
-  function _ga(options) {
+  function _gaEvent(options) {
     // If the new analytics.js API is present, fire this event using ga().
-    if(typeof this.ga === "function") {
+    if(typeof ga === "function") {
       // Transform the argument array to match the expected call signature for ga(), see:
       // https://developers.google.com/analytics/devguides/collection/analyticsjs/events#overview
       var fieldObject = {
@@ -80,7 +85,7 @@
       if(options.nonInteraction === true) {
         fieldObject['nonInteraction'] = 1;
       }
-      this.ga('send', fieldObject);
+      ga('send', fieldObject);
     }
 
     // Also support the old API. Google suggests firing data at both to be the right thing.
@@ -149,11 +154,95 @@
       }
     }
 
-    _ga(eventOptions);
+    _gaEvent(eventOptions);
+  }
+
+  // Use a consistent prefix and check if arg starts with a forward slash
+  function prefixVirtualPageview(s) {
+    // Bail if s is already prefixed.
+    if(/^\/virtual\//.test(s)) {
+      return s;
+    }
+    // Make sure s has a leading / then add prefix and return
+    s = s.replace(/^[/]?/, '/');
+    return '/virtual' + s;
+  }
+
+  // Support both types of Google Analytics Tracking, see:
+  // ga.js - https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiBasicConfiguration#_gat.GA_Tracker_._trackPageview
+  // analytics.js - https://developers.google.com/analytics/devguides/collection/analyticsjs/pages
+  function _gaVirtualPageView(options) {
+    // If the new analytics.js API is present, fire this event using ga().
+    if(typeof ga === "function") {
+      // Transform the argument array to match the expected call signature for ga():
+      // https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference
+      var fieldObject = {
+        'hitType': 'pageview',
+        'page': options.virtualPagePath
+      };
+      ga('send', fieldObject);
+    }
+
+    // Also support the old API. Google suggests firing data at both to be the right thing.
+    var eventArgs = ['_trackPageview', options.virtualPagePath];
+    _gaq.push(eventArgs);
+  }
+
+  function virtualPageview(virtualPagePath) {
+    if(!virtualPagePath) {
+      warn("Expected `virtualPagePath` arg.");
+      return;
+    }
+    virtualPagePath = trim(virtualPagePath);
+
+    var eventOptions = {};
+    eventOptions.virtualPagePath = prefixVirtualPageview(virtualPagePath);
+
+    _gaVirtualPageView(eventOptions);
+  }
+
+
+  function _optimizely(options) {
+    var eventArgs = ['_trackEvent', options.action];
+
+    // check if we are giving this conversion financial value
+    if (options.revenue) {
+      var args = {
+        revenue: options.revenue
+      };
+      eventArgs[2] = args;
+    }
+
+    optimizely.push(eventArgs);
+  }
+
+  function conversionGoal(action, options) {
+    options = options || {};
+    var eventOptions = {},
+        valueInCents = options.valueInCents;
+
+    if(!action) {
+      warn("Expected `action` arg.");
+      return;
+    }
+    eventOptions.action = trim(action);
+
+    // valueInCents: An optional integer to track revenue - for example from fundraising appeal.
+    if(valueInCents) {
+      if((typeof valueInCents === 'number') && (valueInCents % 1 === 0)) {
+        eventOptions.revenue = valueInCents;
+      } else {
+        warn("Expected `valueInCents` arg to be an integer.");
+      }
+    }
+
+    _optimizely(eventOptions);
   }
 
   return {
-    event: event
+    event: event,
+    virtualPageview: virtualPageview,
+    conversionGoal: conversionGoal
   };
 
 }));

@@ -21,7 +21,7 @@
         // expire in one week
         expires: new Date((Date.now() + 60 * 1000 * 60 * 24 * 7))
       };
-      var refValue = /ref=(\w+)/.exec(window.location.search);
+      var refValue = /ref=((?:\w|-)+)/.exec(window.location.search);
       var cookieRefValue = cookiejs.parse(document.cookie).webmakerReferral;
 
       if (refValue) {
@@ -306,6 +306,7 @@
               analytics.event('Webmaker New User Created', {
                 nonInteraction: true
               });
+              analytics.conversionGoal('WebmakerNewUserCreated');
               callback(null, data.user);
             } else {
               self.emitter.emitEvent('error', [http.responseText]);

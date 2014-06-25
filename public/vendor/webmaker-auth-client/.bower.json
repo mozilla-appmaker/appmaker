@@ -1,7 +1,7 @@
 {
   "name": "webmaker-auth-client",
   "main": "webmaker-auth-client.js",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "authors": [
     "Kate Hudson <k88hudson@gmail.com>"
   ],
@@ -9,19 +9,19 @@
   "dependencies": {
     "cookie-js": "~0.0.1",
     "eventEmitter": "~4.2.7",
-    "webmaker-analytics": "~0.0.5"
+    "webmaker-analytics": "~0.1.0"
   },
   "devDependencies": {
     "webmaker-language-picker": "~0.0.23"
   },
   "homepage": "https://github.com/mozilla/webmaker-auth-client",
-  "_release": "0.1.5",
+  "_release": "0.1.7",
   "_resolution": {
     "type": "version",
-    "tag": "v0.1.5",
-    "commit": "c60414b618fe9c3d674bbc93de2f36106889b313"
+    "tag": "v0.1.7",
+    "commit": "a5b7cf330f9ff7ee27c90f81b05d577e83e288c0"
   },
   "_source": "git://github.com/mozilla/webmaker-auth-client.git",
-  "_target": "0.1.5",
+  "_target": "0.1.7",
   "_originalSource": "webmaker-auth-client"
 }
