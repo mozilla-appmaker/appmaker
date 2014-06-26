@@ -1,8 +1,8 @@
-<polymer-element name="ceci-channel-vis">
+s<polymer-element name="ceci-channel-vis">
   <script>
   (function(){
     //Animation speeds, In seconds
-    var signalSpeed = 1;
+    var signalSpeed = 0.25;
     var bubbleDuration = 1;
     Polymer('ceci-channel-vis', {
       attached: function () {
@@ -64,9 +64,6 @@
 
           indicator.classList.add("indicator");
           indicator.classList.add("indicator-" + this.direction);
-          var signalSpeedCSS = signalSpeed + "s";
-          indicator.style.webkitAnimationDuration = signalSpeedCSS;
-          indicator.style.mozAnimationDuration = signalSpeedCSS;
 
           // ...and remove it!
           var removeIndicator = function() {
@@ -75,7 +72,7 @@
 
           setTimeout(removeIndicator, signalSpeed * 1000);
 
-          var timeout = (this.direction === "out" ? 0 : signalSpeed * 1000);
+          var timeout = 0;
 
           setTimeout(function() {
             var bubble = document.createElement("div");

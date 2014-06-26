@@ -1,68 +1,66 @@
 .menu-in {
-  -webkit-animation: menupop linear .5s;  
-  -moz-animation: menupop linear .5s;  
+  -webkit-animation: menupop linear .5s;
+  -moz-animation: menupop linear .5s;
 }
+
 @-webkit-keyframes menupop {
   0% { opacity: 0;}
   2% { opacity: 1; -webkit-transform: scale(.5);}
-  4% { opacity: 1; -webkit-transform: scale(1.1);}  
-  14% { opacity: 1; -webkit-transform: scale(1);}  
-  100% { opacity: 1; -webkit-transform: scale(1);}  
+  4% { opacity: 1; -webkit-transform: scale(1.1);}
+  14% { opacity: 1; -webkit-transform: scale(1);}
+  100% { opacity: 1; -webkit-transform: scale(1);}
 }
 @-moz-keyframes menupop {
   0% { opacity: 0;}
   2% { opacity: 1; -moz-transform: scale(.5);}
-  4% { opacity: 1; -moz-transform: scale(1.1);}  
-  14% { opacity: 1; -moz-transform: scale(1);}  
-  100% { opacity: 1; -moz-transform: scale(1);}  
+  4% { opacity: 1; -moz-transform: scale(1.1);}
+  14% { opacity: 1; -moz-transform: scale(1);}
+  100% { opacity: 1; -moz-transform: scale(1);}
 }
 
 .channel-visualisation .indicator-out {
-  -webkit-animation: indicatorOut 1s linear;
-  -moz-animation: indicatorOut 1s linear;
+  -webkit-animation: indicatorOut .25s linear;
+  -moz-animation: indicatorOut .25s linear;
 }
 
 .channel-visualisation .indicator-in {
-  -webkit-animation: indicatorIn 1s linear;
-  -moz-animation: indicatorIn 1s linear;
+  -webkit-animation: indicatorIn .25s linear;
+  -moz-animation: indicatorIn .25s linear;
 }
 
+
 @-webkit-keyframes indicatorOut {
-  0% { opacity: .8;}  
-  50% { 
-    left: 305px; 
-    opacity: 0;
+  0% {
+    left: 0px;
+    opacity: 1;
   }
-  100% { 
-    left: 305px; 
+  100% {
+    left: calc(100% - 8px);
     opacity: 0;
   }
 }
 @-moz-keyframes indicatorOut {
-  0% { opacity: .8;}  
-  50% { 
-    left: 305px; 
-    opacity: 0;
+  0% {
+    left: 0px;
+    opacity: 1;
   }
-  100% { 
-    left: 305px; 
+  100% {
+    left: calc(100% - 8px);
     opacity: 0;
   }
 }
 
 @-webkit-keyframes indicatorIn {
-  0% { opacity: 0;}  
-  50% { opacity: 0; left: 305px;}  
+  0% { opacity: 0; left: 0px;}
   100% {
-    left: 602px;
+    left: calc(100% - 8px);
     opacity: .8;
   }
 }
 @-moz-keyframes indicatorIn {
-  0% { opacity: 0;}  
-  50% { opacity: 0; left: 305px;}  
+  0% { opacity: 0; left: 0px;}
   100% {
-    left: 602px;
+    left: calc(100% - 8px);
     opacity: .8;
   }
 }

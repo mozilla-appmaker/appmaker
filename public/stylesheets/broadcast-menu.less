@@ -5,15 +5,13 @@
   position: absolute;
   left: ~"calc(100% + 12px)";
   top: 0;
-  width: 600px;
   height: 100%
 }
 
  .channel-menu-wrapper.listen {
   position: absolute;
-  left: -610px;
+  right: ~"calc(100% + 12px)";
   top: 0px;
-  width: 600px;
   height: 100%
 }
 
@@ -107,8 +105,16 @@
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
 
+  &.picking-colors {
+    width: 200px;
+  }
+
   .option-template {
     display: none;
+  }
+
+  label span {
+      white-space: nowrap;
   }
 
   &.listen-menu {
@@ -188,7 +194,6 @@
   }
 
   .color-ui {
-
     .border-radius(3px);
     display: none;
     text-align: left;

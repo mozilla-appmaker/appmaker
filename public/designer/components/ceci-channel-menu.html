@@ -113,9 +113,12 @@
           this.menuWrapper.classList.toggle("open");
           if(this.menuWrapper.classList.contains("open")){
             window.dispatchEvent(new CustomEvent('menuOpen'));
+            this.menu.classList.remove("picking-colors");
             this.menuWrapper.classList.add("open");
             this.addhelperClasses();
             this.adjustMenuPosition();
+          } else {
+            window.dispatchEvent(new CustomEvent('menuClosed'));
           }
         },
         showMenu : function() {
@@ -142,6 +145,8 @@
           for(var j = 0; j < labels.length; j++){
             labels[j].style.display = "block";
           }
+          window.dispatchEvent(new CustomEvent('menuClosed'));
+
         },
         adjustMenuPosition : function(){
           this.menu = this.shadowRoot.querySelector(".channel-menu");
@@ -221,6 +226,7 @@
           function colorListClickHandler(handlerType){
             return function(event) {
               if(event.target.classList.contains("color")){
+                that.menu.classList.remove("picking-colors");
                 var channelOption = event.target.parentNode.parentNode.parentNode;
                 var color = event.target.getAttribute("data-channel");
                 var handler = this.parentNode.getAttribute(handlerType);
@@ -244,6 +250,8 @@
           function showColorUI(){
             //Hides the label for the current option
             this.style.display = "none";
+
+            that.menu.classList.add("picking-colors");
 
             //Hide all the options
             var options = that.menu.querySelectorAll(".channel-option");

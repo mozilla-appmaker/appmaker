@@ -11,16 +11,16 @@
   flex-direction: column;
   justify-content: center;
   margin-bottom: 0px;
-  width: 600px;
-  -webkit-transition: all linear .1s;
-  -moz-transition: all linear .1s;
+  width: 100px;
+  -webkit-transition: all linear .2s;
+  -moz-transition: all linear .2s;
 
   &.broadcast-channels {
-    right: -647px;
+    right: -150px;
   }
 
   &.subscription-channels {
-    left: -647px;
+    left: -150px;
   }
 
   .channel {
@@ -100,6 +100,10 @@
 
   /* Dot inside the channel line*/
 
+  &.subscription-channels .color {
+    display: none;
+  }
+
   .color {
     .border-radius(25px);
     position: absolute;
@@ -107,6 +111,7 @@
     margin:0;
     height: 8px;
     width: 8px;
+    display: none;
   }
 
   .broadcast-channels .color {
@@ -129,8 +134,20 @@
     content: "3";
   }
 
+  &.subscription-channels {
+    .channel[color*=blue] {
+      .linear-gradient(rgba(255,255,255,0), @channel-blue-faint);
+    }
+  }
+
+  &.broadcast-channels {
+    .channel[color*=blue] {
+      .linear-gradient(@channel-blue-faint, rgba(255,255,255,0));
+    }
+  }
+
   .channel[color*=blue] {
-    background: @channel-blue-faint;
+
     .color,
     .indicator {
       background: @channel-blue;
@@ -145,8 +162,20 @@
     }
   }
 
+  &.subscription-channels {
+    .channel[color*=red] {
+      .linear-gradient(rgba(255,255,255,0),@channel-red-faint);
+    }
+  }
+  &.broadcast-channels {
+    .channel[color*=red] {
+      .linear-gradient(@channel-red-faint, rgba(255,255,255,0));
+    }
+  }
+
+
   .channel[color*=red] {
-    background: @channel-red-faint;
+
     .color,
     .indicator {
       background: @channel-red;
@@ -161,8 +190,19 @@
     }
   }
 
+  &.subscription-channels {
+    .channel[color*=pink] {
+      .linear-gradient(rgba(255,255,255,0),@channel-pink-faint);
+    }
+  }
+  &.broadcast-channels {
+    .channel[color*=pink] {
+      .linear-gradient(@channel-pink-faint, rgba(255,255,255,0));
+    }
+  }
+
+
   .channel[color*=pink] {
-    background: @channel-pink-faint;
     .color,
     .indicator {
       background: @channel-pink;
@@ -177,8 +217,19 @@
     }
   }
 
+
+  &.subscription-channels {
+    .channel[color*=purple] {
+      .linear-gradient(rgba(255,255,255,0),@channel-purple-faint);
+    }
+  }
+  &.broadcast-channels {
+    .channel[color*=purple] {
+      .linear-gradient(@channel-purple-faint, rgba(255,255,255,0));
+    }
+  }
+
   .channel[color*=purple] {
-    background: @channel-purple-faint;
     .color,
     .indicator {
       background: @channel-purple;
@@ -193,8 +244,18 @@
     }
   }
 
+  &.subscription-channels {
+    .channel[color*=green] {
+      .linear-gradient(rgba(255,255,255,0),@channel-green-faint);
+    }
+  }
+  &.broadcast-channels {
+    .channel[color*=green] {
+      .linear-gradient(@channel-green-faint, rgba(255,255,255,0));
+    }
+  }
+
   .channel[color*=green] {
-    background: @channel-green-faint;
     .color,
     .indicator {
       background: @channel-green;
@@ -209,8 +270,18 @@
     }
   }
 
+  &.subscription-channels {
+    .channel[color*=orange] {
+      .linear-gradient(rgba(255,255,255,0),@channel-orange-faint);
+    }
+  }
+  &.broadcast-channels {
+    .channel[color*=orange] {
+      .linear-gradient(@channel-orange-faint, rgba(255,255,255,0));
+    }
+  }
+
   .channel[color*=orange] {
-    background: @channel-orange-faint;
     .color,
     .indicator {
       background: @channel-orange;
@@ -226,8 +297,18 @@
     }
   }
 
+  &.subscription-channels {
+    .channel[color*=yellow] {
+      .linear-gradient(rgba(255,255,255,0),@channel-yellow-faint);
+    }
+  }
+  &.broadcast-channels {
+    .channel[color*=yellow] {
+      .linear-gradient(@channel-yellow-faint, rgba(255,255,255,0));
+    }
+  }
+
   .channel[color*=yellow] {
-    background: @channel-yellow-faint;
     .color,
     .indicator {
       background: @channel-yellow;
