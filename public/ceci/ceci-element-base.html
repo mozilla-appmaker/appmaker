@@ -86,7 +86,7 @@
           if (listenerDefinition['default'] !== true) {
             channel = listenerDefinition['default'];
           }
-          defaultListeners.push({name: listenerName, channel: channel });
+          defaultListeners.push({name: listenerName, channel: "a" });
         }
       });
 
@@ -106,7 +106,7 @@
           if (broadcastDefinition['default'] !== true) {
             channel = broadcastDefinition['default'];
           }
-          defaultBroadcasts.push({name: broadcastName, channel: channel });
+          defaultBroadcasts.push({name: broadcastName, channel: "a" });
         }
       });
 
@@ -164,11 +164,8 @@
 
         this.ceci.thumbnail = ceciDefinition.thumbnail;
         this.ceci.tags = ceciDefinition.tags || [];
-
         this.ceci.attributes = ceciDefinition.attributes || {};
-
         this.ceci.name = this.gettext(this.localName) || ceciDefinition.name || this.localName;
-
         that.localized();
       },
       broadcast: function (name, data) {
