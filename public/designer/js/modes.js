@@ -13,31 +13,15 @@ define(
     "use strict";
 
     //Open components modal
-    $('.tray .expand-handle').click(function () {
-      $(".component-search").focus();
-      if ($(".page-wrapper").hasClass("mode-discovery")) {
-        changeMode("normal");
-      }
-      else {
-        changeMode("discovery");
-      }
+    $('.expand-handle.expand-left').click(function () {
+      $(".page-wrapper").toggleClass("left-closed");
       analytics.event("Used Expand Handle", {label: "Components Tray"});
     });
 
-    $('.right-column .expand-handle').click(function () {
-      if ($(".page-wrapper").hasClass("mode-viewsource")) {
-        changeMode("normal");
-      }
-      else {
-        changeMode("viewsource");
-      }
-      analytics.event("Used Expand Handle", {label: "View Source"});
+    $('.expand-handle.expand-right').click(function () {
+      $(".page-wrapper").toggleClass("right-closed");
+      analytics.event("Used Expand Handle", {label: "Options Tray"});
     });
-
-    function changeMode(mode){
-      $(".page-wrapper").removeClass("mode-discovery").removeClass("mode-normal").removeClass("mode-viewsource");
-      $(".page-wrapper").addClass("mode-" + mode);
-    }
 
     /* Customize vs View Source Toggle */
 

@@ -6,6 +6,12 @@
   border-radius: @radius;
 }
 
+.linear-gradient (@from,@to) {
+  background-image: -webkit-linear-gradient(left,@from, @to);
+  background-image: -moz-linear-gradient(left,@from, @to);
+  background-image: linear-gradient(left,@from, @to);
+}
+
 .green-button {
   background: @green;
   &:hover {

@@ -9,6 +9,11 @@
 @phoneContainerWidth: 320px;
 
 html {
+  font-size: 62.5%; /* so rem-based font sizes look right */
+}
+
+body,html {
+  height: 100%;
   min-height: 100%;
 }
 
@@ -33,22 +38,8 @@ textarea {
   font-family: 'Source Sans Pro', arial;
 }
 
-.page-wrapper {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0px;
-  left: 0px;
-  bottom: 0px;
-  min-width: 1024px;
-}
-
 .phone-container body {
   background-color: #e8ebed;
-}
-
-html {
-  font-size: 62.5%; /* so rem-based font sizes look right */
 }
 
 .clear {
@@ -349,39 +340,7 @@ button.btn-done {
   margin-top: 10px;
 }
 
-button.log-toggle {
-  background: none;
-  background-image: url(../images/expand.png);
-  border: none;
-  height: 8px;
-  width: 30px;
-  position: absolute;
-  top: -15px;
-  left: 110px;
-}
 
-
-.add-components {
-  display: block;
-  border-radius: 3px;
-  padding: 15px 30px;
-  width: 180px;
-  font-size: 1.8rem;
-  font-weight: 400;
-  background: green;
-  text-align: center;
-  background-repeat: no-repeat;
-  text-shadow: 0px -1px 0px rgba(0,0,0,.2);
-  background-image: -webkit-linear-gradient(#68a32e, #588e23);
-  background-image: -moz-linear-gradient(#68a32e, #588e23);
-  border-bottom: solid 2px #3e6a13;
-  margin: 20px 0px 0px 0px;
-  position: fixed;
-  left: 10px;
-  top: 40px;
-  z-index: 9998;
-  color: white;
-}
 
 button.create-component {
   border-radius: 3px;
@@ -533,9 +492,8 @@ button.done {
 .logo {
   height: 50px;
   float: left;
-  width: 260px;
+  width: 250px;
   z-index: 99;
-  color: #fff;
   font-size: 20px;
   line-height: 50px;
   background: url(/images/appmaker-logo-header.png);
@@ -544,24 +502,6 @@ button.done {
   background-size: 160px;
 }
 
-.container {
-  height: auto;
-  top: 0px;
-  bottom: 0px;
-  height: 100%;
-  overflow: hidden;
-  z-index: 1;
-  overflow-y: scroll;
-  min-width: 700;
-  margin: 0 260px 0 260px;
-}
-
-.inner-container {
-  width: 100%;
-  position: relative;
-  top: 50px;
-  padding-bottom: 20px;
-}
 
 
 .container .garbage-bin {
@@ -591,18 +531,6 @@ button.done {
 }
 
 
-.tray {
-  position: fixed;
-  left: 0px;
-  top: 50px;
-  bottom: 0px;
-  width: 260px;
-  background: #DDD;
-  box-shadow: 0px 0px 10px rgba(0,0,0,.5);
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-}
 
 
 ul.tabs {
@@ -676,51 +604,9 @@ li.tab {
   -moz-transition: linear all .1s;
 }
 
-.right-column {
-  top: 50px;
-  right: 0;
-  left: auto;
-  bottom: 0;
-  position: fixed;
-  background-color: #212429;
-  z-index: 99;
-  width: 350px;
-  min-width: 340px;
-}
-
 .right-column .inner-wrapper {
   overflow: auto;
   height: 100%;
-}
-
-.expand-handle {
-  background-color: #212429;
-  position: absolute;
-  color: #888;
-  cursor: pointer;
-  width: 30px;
-  height: 61px;
-  top: 8px;
-  background-color: rgba(0,0,0,.25);
-  background-size: 15px;
-  background-position: 7px center;
-  background-repeat: no-repeat;
-}
-
-.right-column .expand-handle {
-  border-radius: 6px 0 0 6px;
-  left: -30px;
-  background-image: url(../images/arrow-left.png);
-}
-
-.mode-viewsource .right-column .expand-handle {
-  background-image: url(../images/arrow-right.png);
-}
-
-.tray .expand-handle {
-  border-radius: 0px 6px 6px 0px;
-  right: -30px;
-  background-image: url(../images/arrow-right.png);
 }
 
 .right-column input[type=text] {
@@ -739,18 +625,10 @@ li.tab {
   display: block;
 }
 
-.editable-section .name {
-  font-size: 18px;
-  color: #fff;
-  font-weight: 400;
-  line-height: 30px;
-  margin: 20px 0px 10px 0px;
-  text-align: left;
-}
-
 .editable-section .tray-tabs {
   overflow: auto;
-  padding: 0 10px;
+
+  margin-top: 10px;
 }
 
 .editable-section .tray-tabs a {
@@ -759,7 +637,6 @@ li.tab {
   float: left;
   padding: 5px 10px;
   color: #999;
-  margin-right: 5px;
 }
 
 .editable-section .tray-tabs a:hover {
@@ -785,7 +662,13 @@ li.tab {
 }
 
 .editable-section .editable-header {
-  padding: 10px 15px;
+  font-size: 18px;
+  color: #fff;
+  font-weight: 400;
+  line-height: 30px;
+  text-align: left;
+  margin-bottom: 10px
+
 }
 
 .editable-section .remix-ui {
@@ -1346,15 +1229,6 @@ ul.component-actions {
   margin-left: 0px;
 }
 
-.phone-container {
-  float: left;
-  width: @phoneContainerWidth;
-  margin-top: 30px;
-  position: relative;
-  z-index: 1;
-  background-color: #181b1f;
-  border-radius: 6px;
-}
 
 .phone-inner {
   width: 310px;
@@ -1686,8 +1560,8 @@ span.channel {
   cursor: pointer;
 }
 
-.modal-header {
-  padding: 10px 10px 8px 10px;
+.brick-search {
+  padding: 6px 10px 8px 10px;
   width: ~"calc(100% - 20px)";
   z-index: 99;
   font-size: 1.6rem;
@@ -1695,7 +1569,7 @@ span.channel {
   color: #888;
 }
 
-.modal-header .component-search {
+.brick-search input {
   font-size: 1.3rem;
   position: relative;
   padding: 4px 0;
@@ -1896,18 +1770,6 @@ button.return-btn {
   outline: none;
 }
 
-.moz-input-form button {
-  width: 30%;
-  height: 3.8rem;
-  background: #555;
-  border: none;
-  color: #FFF;
-  font-size: 16px;
-  padding: 0px;
-  display: inline-block;
-  margin: 0px;
-}
-
 .note {
   display: none;
   position: absolute;
@@ -1925,25 +1787,6 @@ button.return-btn {
   background-repeat: no-repeat;
   background-position: left;
 }
-
-.saving {
-  color: #fff;
-  background-image: none;
-}
-
-.blue {
-/*  background-image: url(../images/bluemoon.png);*/
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.pink {
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-
-
 
 .section {
   border-bottom: 1px solid #31353C;
@@ -1969,44 +1812,8 @@ button.return-btn {
   margin-right: 10px;
 }
 
-.false {
-  background-color: #31353C;
-}
-
-.blue {
-  background-color: #358CCE;
-}
-
-.green {
-  background-color: #71b806;
-}
-
-.red {
-  background-color: #e81e1e;
-}
-
-.orange {
-  background-color: #ff7b00;
-}
-
-.pink {
-  background-color: #e3197b;
-}
-
-.yellow {
-  background-color: #e8d71e;
-}
-
-.purple {
-  background-color: #9f27cf;
-}
-
-
 .remix-mode .nonremix-ui {
   display: none;
-}
-
-.editable-section input {
 }
 
 .editable-section .tray-tabs [tab=code],
@@ -2024,69 +1831,11 @@ button.return-btn {
   display: block;
 }
 
-.right-column.hidden .inner-wrapper {
-  display: none;
-}
-
-.tray.hidden .inner-wrapper {
-  display: none;
-}
-
-.tray.hidden {
-  width: 0px;
-  display: block;
-  padding: 0px;
-}
-
-.game-status {
-  display: none;
-}
-
 .hidden {
   display: none;
 }
 
 /* Styles for Modes */
-
-.mode-discovery .tray {
-  width: ~"calc(100% - 700px)";
-}
-
-.mode-discovery .container {
-  margin-right: 0px;
-  margin-left: ~"calc(100% - 700px)";
-}
-
-.mode-discovery .tray .expand-handle {
-  background-image: url(../images/arrow-left.png);
-}
-
-.mode-discovery .right-column .expand-handle {
-  display: none;
-}
-
-.mode-discovery .right-column {
-  width: 0px;
-  min-width: 0px;
-}
-
-.mode-viewsource .right-column {
-  width: ~"calc(100% - 700px)";
-}
-
-.mode-viewsource .tray {
-  width: 0px;
-  overflow: hidden;
-}
-
-.mode-viewsource .container {
-  margin-left: 0px;
-  margin-right: ~"calc(100% - 700px)";
-}
-
-.mode-viewsource .tray .expand-handle {
-  display: none;
-}
 
 .tray-preview {
   position: absolute;
@@ -2113,75 +1862,6 @@ button.return-btn {
   margin-bottom: 10px;
 }
 
-.component-tags-wrapper {
-  padding: 0px 10px 5px 10px;
-  font-size: 13px;
-  color: #666;
-}
-
-.component-tags {
-  overflow: auto;
-}
-
-.component-tags-wrapper .see-fewer,
-.component-tags-wrapper .see-all {
-  color: #2478b8;
-  display: none;
-}
-
-.component-tags-wrapper .see-fewer {
-  display: none;
-}
-
-.component-tags-wrapper .see-fewer:hover,
-.component-tags-wrapper .see-all:hover {
-  text-decoration: underline;
-}
-.component-tags .too-many {
-  display: none;
-}
-
-.component-tags div {
-  cursor: pointer;
-  display: inline-block;
-  background: #358CCE;
-  color: white;
-  margin: 0 4px 4px 0;
-  padding: 4px 6px;
-  border-radius: 2px;
-  -moz-border-radius: 2px;
-  opacity: .5;
-  font-size: 13px;
-}
-
-.component-tags div span {
-  opacity: .4;
-  padding-left: 3px;
-  display: none;
-}
-
-.component-tags .active-tag {
-  opacity: 1;
-}
-
-/*Channel Menu*/
-
-.selected .channel-visualisation .channel-menu-toggle,
-.channel-visualisation:hover .channel-menu-toggle {
-  display: block;
-  -webkit-transform: scale(1);
-  -moz-transform: scale(1);
-}
-
-.channel-visualisation:hover .channel-menu {
-  display: block;
-}
-
-/*.channel-menu .color-ui .color.ui-chosen-color,*/
-.channel-menu .color-ui .color:hover {
-  opacity: .7;
-}
-
 .persona {
   display: none;
 }
@@ -2198,8 +1878,6 @@ button.return-btn {
   padding: 20px;
   background-color: rgb(49, 53, 60);
 }
-
-@import "mobile.less";
 
 .addbrick {
   position: fixed;
@@ -2342,7 +2020,7 @@ button.return-btn {
     cursor: pointer;
     margin: 0px 5px 5px 0;
     float: left;
-    -webkit-border-radius: 3px;
+    .border-radius(3px);
 
     background: #BBB;
     padding: 5px 10px 5px 10px;
@@ -2386,4 +2064,255 @@ button.return-btn {
 
 [data-category=all] .no-results {
   display: none !important;
+}
+
+
+// Basic Page Layout
+
+.page-wrapper {
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  position: relative;
+  min-height:100%;
+}
+
+.container {
+  padding: 80px 0 30px 0;
+  position: relative;
+
+  width: ~"calc(100% - 560px)";
+  z-index: 3;
+  margin: 0 auto;
+
+  .phone-container {
+    margin: 0 auto;
+    width: @phoneContainerWidth;
+    position: relative;
+    z-index: 1;
+    background-color: #181b1f;
+    border-radius: 6px;
+  }
+
+
+}
+
+.right-column,
+.tray {
+  width: 250px;
+}
+
+
+.right-column {
+  top: 50px;
+  right: 0;
+  bottom: 0;
+  height: ~"calc(100% - 50px)";
+  position: fixed;
+  background-color: #212429;
+
+  z-index: 1;
+}
+
+.tray {
+  .tray-header {
+    padding: 10px 10px 0px 10px;
+    font-size: 20px;
+    color: #666;
+    position: relative;
+  }
+
+  position: fixed;
+  left: 0px;
+  top: 50px;
+  bottom: 0px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  background: #DDD;
+}
+
+
+.expand-handle {
+  background-color: #999;
+  position: fixed;
+  color: #888;
+  cursor: pointer;
+  width: 30px;
+  height: 60px;
+  top: 8px;
+  background-color: rgba(0,0,0,.25);
+  background-size: 15px;
+  background-position: 7px center;
+  background-repeat: no-repeat;
+  top: 60px;
+  background-size: 12px;
+  z-index: 0;
+}
+
+.expand-left {
+  left: 250px;
+  border-radius: 0px 6px 6px 0px;
+  background-image: url(../images/arrow-left.png);
+}
+
+
+.left-closed {
+  .tray {
+    width: 0;
+    overflow: hidden;
+  }
+  .expand-left {
+    left: 0px;
+    border-radius: 0px 6px 6px 0px;
+    background-image: url(../images/arrow-right.png);
+  }
+}
+
+.expand-right {
+  border-radius: 6px 0 0 6px;
+  right: 250px;
+  background-image: url(../images/arrow-right.png);
+  background-position: 12px center;
+}
+
+.right-closed {
+  .right-column {
+    width: 0;
+  }
+  .expand-right {
+    right: 0px;
+    border-radius: 6px 0 0 6px;
+    background-position: 8px center;
+    background-image: url(../images/arrow-left.png);
+  }
+
+}
+
+.left-closed {
+  .container {
+    width: ~"calc(100% - 310px)";
+    margin: 0 0 0 30px;
+  }
+
+}
+ .right-closed {
+   .container {
+     width: ~"calc(100% - 310px)";
+     margin: 0 30px 0 280px;
+   }
+ }
+
+.left-closed.right-closed {
+  .container {
+    width: ~"calc(100% - 60px)";
+    margin: 0 auto;
+  }
+}
+
+// Wider Screens with one column open
+
+@media (min-width: 1100px) {
+
+  .left-closed:not(.right-closed) {
+    .expand-right {
+      right: 25%;
+    }
+    .container {
+      width: ~"calc(75% - 60px)";
+      margin: 0 30px 0 30px;
+    }
+    .right-column {
+      width: 25%;
+    }
+  }
+
+  .right-closed:not(.left-closed) {
+    .expand-left {
+      left: 25%;
+    }
+    .container {
+      width: ~"calc(75% - 60px)";
+      margin-left: ~"calc(25% + 30px)";
+    }
+    .left-column {
+      width: 25%;
+    }
+  }
+
+}
+
+// No columns and wide screen
+
+@media (min-width: 1400px) {
+  .container {
+    width: ~"calc(60% - 60px)";
+  }
+  .left-column {
+    width: 20%;
+  }
+  .right-column {
+    width: 20%;
+  }
+  .expand-right {
+    right: 20%;
+  }
+  .expand-left {
+    left: 20%;
+  }
+}
+
+// Signal Widths depending on screen size and column configuration
+
+@media (min-width:1300px) {
+
+  ceci-listen-vis .channel-visualisation,
+  ceci-listen-vis::shadow .channel-visualisation {
+    width: 200px;
+    &.subscription-channels {
+       left: -250px;
+    }
+    &.broadcast-channels {
+       right: -250px;
+    }
+  }
+
+  ceci-broadcast-vis .channel-visualisation,
+  ceci-broadcast-vis::shadow .channel-visualisation {
+    width: 200px;
+    &.subscription-channels {
+       left: -250px;
+    }
+    &.broadcast-channels {
+       right: -250px;
+    }
+  }
+}
+
+@media (min-width:1050px) {
+
+  .left-closed,
+  .right-closed {
+    ceci-listen-vis .channel-visualisation,
+    ceci-listen-vis::shadow .channel-visualisation {
+      width: 200px;
+      &.subscription-channels {
+         left: -250px;
+      }
+      &.broadcast-channels {
+         right: -250px;
+      }
+    }
+    ceci-broadcast-vis .channel-visualisation,
+    ceci-broadcast-vis::shadow .channel-visualisation {
+      width: 200px;
+      &.subscription-channels {
+         left: -250px;
+      }
+      &.broadcast-channels {
+         right: -250px;
+      }
+    }
+  }
 }

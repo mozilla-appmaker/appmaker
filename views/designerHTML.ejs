@@ -1,75 +1,41 @@
 <div class="page-wrapper">
+
   <nav class="top-nav clearfix">
     <div class="logo"></div>
     <ceci-card-nav></ceci-card-nav>
     <div class="nav-ui">
       <user-state></user-state>
-      <!-- <button class="btn-std btn-md publish btn-critical"><%- gettext("Publish") %></button> -->
     </div>
   </nav>
-  <div class="container animate-me">
-    <div class="inner-container clearfix">
-      <div class="listen-column"></div>
-      <div class="phone-container">
-        <div class="phone-inner">
-          <div class="phone-top">
-            <div class="app-name"></div>
-          </div>
-          <div class="phone-border">
-          </div>
-          <div class="phone-shadow"></div>
-          <div class="phone-bottom"></div>
-          <div class="garbage-bin"></div>
-        </div>
-      </div>
-      <div class="broadcast-column">
-      </div>
-    </div>
-  </div>
 
-  <div class="tray app-column animate-me">
-
-    <div class="expand-handle"></div>
+  <div class="expand-handle expand-left"></div>
+  <div class="tray left-column">
+    <div class="tray-header">Add Bricks</div>
     <div class="component-filtering">
-      <div class="modal-header">
+      <div class="brick-search">
         <input type="text" class="component-search" placeholder="<%- gettext("Search by name, tag, or description...") %>" />
       </div>
     </div>
-
     <div class="brick-category"></div>
-
     <div id="components-wrapper">
       <div id="components"></div>
     </div>
-
   </div>
 
-  <div class="right-column app-column animate-me">
-    <div class="expand-handle"></div>
-    <div class="inner-wrapper">
-      <div class="editable-section">
-        <div class="remix-ui">
-          <h3>
-            <%- gettext("Remixing") %>
-            <a class="cancel-remix" title="<%- gettext("Cancel remixing this widget.") %>" href="#"><%- gettext("Cancel") %></a>
-            <a class="finish-remix" title="<%- gettext("Refresh the widget to see your changes.") %>" href="#"><%- gettext("Done") %></a>
-            <a class="save-remix" title="<%- gettext("Refresh the widget to see your changes.") %>" href="#"><%- gettext("Save") %></a>
-          </h3>
-          <div class="remix-wrapper">
-            <input class="component-name" type="text" placeholder="<%- gettext("Component Name") %>" value="my-remixed-widget"/>
-          </div>
-        </div>
-      <div class="editable-header nonremix-ui">
-        <span class="name"></span>
-      </div>
+  <div class="expand-handle expand-right"></div>
+
+  <div class="right-column">
+    <div class="editable-section">
       <div class="tray-tabs">
-        <a class="selected-tab" tab="customize" href="#"><%- gettext("Customize") %></a>
-        <a class="" tab="manage-data" href="#"><%- gettext("Manage Data") %></a>
-        <a class="" tab="project-settings" href="#"><%- gettext("Project Settings") %></a>
-        <!-- <a tab="view-source" href="#"><%- gettext("View Source") %></a> -->
+        <a class="selected-tab" tab="customize" href="#"><%- gettext("Brick") %></a>
+        <a tab="manage-data" href="#"><%- gettext("App Data") %></a>
+        <a tab="project-settings" href="#"><%- gettext("Project") %></a>
       </div>
       <div class="tab-sections">
         <div class="section section-customize">
+          <div class="editable-header nonremix-ui">
+            <span class="name"></span>
+          </div>
           <div class="editable-attributes"></div>
         </div>
         <div class="section section-manage-data">
@@ -78,76 +44,24 @@
         <div class="section section-project-settings">
           <project-settings></project-settings>
         </div>
-        <div class="section section-view-source">
-          <div class="view-source-menu">
-            <a source="HTML" class="selected" href="#"><%- gettext("HTML") %></a>
-            <a source="JS" href="#"><%- gettext("JS") %></a>
-            <a source="CSS" href="#"><%- gettext("CSS") %></a>
-            <a source="info" href="#"><%- gettext("Info") %></a>
-          </div>
-          <div class="view-source-items">
-            <p class="remix-helper">
-              <%- gettext("Edit the source to Remix this component!") %>
-              - <a class="dismiss-note" href="#"><%- gettext("OK!") %></a>
-            </p>
-            <div class="source-type" source="HTML">
-              <textarea><p><%- gettext("Here is some HTML to edit") %></p></textarea>
-            </div>
-            <div class="source-type" source="JS">
-              <textarea source="JS">widget.load();</textarea>
-            </div>
-            <div class="source-type" source="CSS">
-              <textarea>.widget { display: awesome:}</textarea>
-            </div>
-            <div class="source-type" source="info">
-              <label><%- gettext("Component Description") %></label>
-              <input type="text" value="<%- gettext("This is the component description") %>" />
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
-</div>
 
-  <div class="modal-wrapper hidden flex">
-    <div class="modal" id="component-discovery-modal">
-      <div class="modal-header">
-        <%- gettext("Search") %> <input type="text" class="component-search" placehodler="<%- gettext("Search for a component") %>" />
-        <button class="done"><%- gettext("Done") %></button>
-      </div>
-      <div id="components-wrapper">
-        <div id="components"></div>
-      </div>
-
-    </div>
-    <div class="modal publishdialog">
-      <div class="modal-inner">
-        <div class="spinner hidden">
-          <h2><%- gettext("Loading...") %></h2>
-          <div class="clearfix">
-            <%- gettext("Publishing your app on the internets.") %>
+  <div class="container">
+      <div class="phone-container">
+        <div class="phone-inner">
+          <div class="phone-top">
+            <div class="app-name"></div>
           </div>
+          <div class="phone-border"></div>
+          <div class="phone-shadow"></div>
+          <div class="phone-bottom"></div>
+          <div class="garbage-bin"></div>
         </div>
-        <div class="failure hidden">
-          <h2><%- gettext("Uh-oh...") %></h2>
-          <div class="clearfix">
-            <%- gettext("Your app couldn't be published.  The server said:") %>
-            <pre class="message"></pre>
-          </div>
-        </div>
-        <div class="success hidden">
-          <h2><%- gettext("Success!") %></h2>
-          <div class="clearfix">
-            <%- gettext("Your app has been published to") %>
-          </div>
-        </div>
-        <button class="btn-std return-btn">
-          <%- gettext("Return to app") %>
-        </button>
       </div>
-    </div>
   </div>
+
 </div>
 
 <ceci-channel-map/>
