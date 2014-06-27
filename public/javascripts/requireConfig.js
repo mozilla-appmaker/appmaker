@@ -19,6 +19,8 @@ requirejs.config({
 
     "designer": "../designer/js",
 
+    "publishPane": "publishPane",
+
     'analytics': '../vendor/webmaker-analytics/analytics',
 
     "colorpicker.core": "../vendor/colorpicker/jquery.colorpicker",
