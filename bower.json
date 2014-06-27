@@ -10,6 +10,7 @@
     "tests"
   ],
   "dependencies": {
+    "font-awesome": "3.2.1",
     "jquery": "~2.0.3",
     "jqueryui-amd": "~0.0.2",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.3.5.tar.gz",

@@ -14,39 +14,39 @@
 
   #signin {
     background: #358CCE;
-    float: right;
     margin-left: 8px;
   }
 
   #collaborate {
     background: #750CCE;
-    float: right;
     margin-left: 8px;
   }
 
   .button {
-    display: inline-block;
     cursor: pointer;
     font-size: 16px;
     text-align: left;
-    .border-radius(2px);
-    padding: 3px 12px 5px 12px;
+    padding: 4px 12px;
   }
 
   .menu-button {
-    padding: 3px 50px 5px 28px;
-    background-color: @brand-brightblue;
+    display: block;
+    padding: 4px 8px;
+  }
+
+  .icon-reorder {
+    font-size: 14px;
+  }
+
+  .button .user-menu-button {
+    min-width: 50px;
+    padding-left: 28px;
+    padding-right: 50px;
     background-image: url(/images/arrow-down.png);
     background-size: 24px;
     background-repeat: no-repeat;
     background-position: right 10px center;
     color:rgba(255,255,255,.9);
-
-    &:hover {
-      text-decoration: none;
-      background-color: @brand-brightblue-hover;
-    }
-
   }
 
   #signout {
@@ -67,10 +67,6 @@
     display: block;
     color: black;
     size: large;
-  }
-
-  .app-menu .menu-button {
-    min-width: 50px;
   }
 
   .icon {
@@ -97,29 +93,23 @@
     background-image: url(/images/icon_user_lookdown.png);
   }
 
-  .menu-open .menu-button {
+  .menu-open .user-menu-button {
     background-image: url(/images/arrow-up.png);
-    .border-radius(2px 2px 0 0);
-  }
-
-  .menubutton {
-    display: inline-block;
   }
 
   .menu {
+    max-width: 300px;
     z-index: 12000;
-    padding: 5px;
+    padding: 10px 5px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     position: absolute;
     left: 0;
     top: 28px;
-    width: 100%;
     background: #DDD;
     text-align: left;
     // border-top: solid 2px #117b84;
     border: solid 2px @brand-brightblue;
-    border-radius: 0 0 2px 2px;
     display: none;
   }
 
@@ -130,23 +120,6 @@
     .menu {
       display: block;
     }
-  }
-
-  .app-menu.menu-open .icon {
-    -webkit-animation: 1s gearspin;
-    -webkit-animation-timing-function: ease-out;
-    -moz-animation: linear 1s gearspin;
-    -moz-animation-timing-function: ease-out;
-  }
-
-  @-moz-keyframes gearspin {
-    0% { -moz-transform: rotate(0deg)}
-    100% { -moz-transform: rotate(360deg)}
-  }
-
-  @-webkit-keyframes gearspin {
-    0%    { -webkit-transform: rotate(0deg)}
-    100%  { -webkit-transform: rotate(360deg)}
   }
 
   .menu h3 {
@@ -161,10 +134,16 @@
     display: inline-block;
     position: relative;
     margin-right: 8px;
-  }
+    background-color: @brand-brightblue;
 
-  .hidden {
-    display: none;
+    &.button {
+      padding: 0;
+    }
+
+    &:hover {
+      text-decoration: none;
+      background-color: @brand-brightblue-hover;
+    }
   }
 
   #myapps,#mycomponents {
@@ -223,6 +202,7 @@
   }
 
   .menu-options a {
+    white-space: nowrap;
     text-align: left;
     border: 0;
     background-color: transparent;
@@ -231,7 +211,6 @@
     margin: 0;
     padding: 3px 6px;
     display: block;
-    .border-radius(2px);
     font-size: 16px;
     border-top: solid 1px #DDD;
     border-bottom: solid 1px #DDD;
@@ -303,6 +282,9 @@
     -moz-animation: linear 1s spin infinite;
     float: right;
     margin: 0 20px;
+    &.show {
+      display: block;
+    }
   }
 
   @-webkit-keyframes spin {
