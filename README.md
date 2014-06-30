@@ -141,7 +141,13 @@ Foreman explanation: http://blog.daviddollar.org/2011/05/06/introducing-foreman.
 * Join our weekly call
 
 ## Component Development
-Required reading:
+
+So you want to make a component? That's great, we want to work with you! <a href="https://github.com/mozilla-appmaker/appmaker/wiki/Contributing-a-component">Here's a guide</a> where you can learn what components are, how they are built, how to make your own and finally how to submit your finished component to Appmaker.
+
+<a href="https://github.com/mozilla-appmaker/appmaker/wiki/Contributing-a-component">Guide to Contributing a Component</a>
+
+
+Technical reading:
 https://github.com/mozilla-appmaker/appmaker/blob/develop/public/ceci/README.md
 
 Ceci is a set of foundational elements used in a AppMaker app, implemented as a set of [Polymer](http://polymer-project.org/) components.
