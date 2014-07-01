@@ -532,10 +532,9 @@
         this.lastBroadcast = null;
         this.count = 0;
         this.super();
-
       },
       countbeforeswitch: 1,
-      domReady : function(){
+      attached : function(){
         var that = this;
         this.addEventListener("channelUpdated",function(){
           this.updateChannels();
@@ -545,6 +544,7 @@
         this.nextBroadcast = this.activeBroadcasts[0];
         this.lastBroadcast = this.activeBroadcasts[0];
         this.updateUI();
+        this.super();
       },
       updateUI : function(){
         Array.prototype.forEach.call(this.$.channels.querySelectorAll(".output-channel"), function(c) {
@@ -8436,17 +8436,17 @@ header {
 </polymer-element>
 
 
-<polymer-element name="ceci-text-input" attributes="inputname placeholdertext emitonchange label" extends="ceci-element" placeholdertext="Placeholder" inputname="Text Input" assetpath="component-text-input/">
+<polymer-element name="ceci-text-input" attributes="buttonlabel inputname placeholdertext emitonchange label" extends="ceci-element" placeholdertext="Placeholder" buttonlabel="Submit" inputname="Text Input" assetpath="component-text-input/">
   <ceci-definition>
     {
-      "tags": ["input", "form"],
+      "tags": ["input", "form", "button"],
       "thumbnail": "./thumbnail.png",
       "name": "Text Input",
       "description": "A text input that broadcasts whatever a user types.",
       "broadcasts": {
         "sendData": {
           "label": "Send Data",
-          "description": "Occurs when button is clicked or Enter key is pressed.",
+          "description": "Sends the current value of the input field.",
           "default": true
         }
       },
@@ -8454,27 +8454,32 @@ header {
         "click": {
           "description": "Causes a fake click event to occur.",
           "label": "Send Data"
+        },
+        "setvalue": {
+          "description": "Set the value of the field.",
+          "label": "Set Value"
         }
       },
       "attributes": {
         "inputname": {
           "label": "Input Name",
           "description": "The name of this field, helpful when saving data.",
-          "editable": "text",
-          "listener": true,
-          "defaultListener": false
+          "editable": "text"
+        },
+        "buttonlabel": {
+          "label": "Button Label",
+          "description": "The label on the button.",
+          "editable": "text"
         },
         "placeholdertext": {
           "label": "Placeholder Text",
           "description": "The text you want your input field to show by default.",
-          "editable": "text",
-          "listener": true
+          "editable": "text"
         },
         "emitonchange": {
           "label": "Emit on change",
           "description": "Background color of the button while it is being clicked or tapped.",
-          "editable": "boolean",
-          "listener": true
+          "editable": "boolean"
         }
       }
     }
@@ -8483,13 +8488,10 @@ header {
     <style>:host {
   display: block;
   width: 100%;
-  height: 50px;
-  padding: 0;
-  height: 3.8rem;
 }
 
 :host input[type=text]{
-  padding: 0;
+  padding: 10px 5px;
   height: 100%;
   border: none;
   color: #000;
@@ -8500,7 +8502,6 @@ header {
   width: 70%;
   border-radius: 0;
   margin: 0;
-  float: left;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   border: 0.1rem solid rgb(204, 204, 204);
@@ -8512,8 +8513,16 @@ header {
   font-family: "FiraSans", sans-serif;
 }
 
-:host.onchange input[type=text]{
+:host .onchange input[type=text]{
   width: 100%;
+}
+
+:host .onchange button {
+  display: none;
+}
+
+:host #wrapper {
+  position: relative;
 }
 
 :host button {
@@ -8521,20 +8530,25 @@ header {
   background: -webkit-linear-gradient(top, #f8f8f8, #ddd);
   border: 0.1rem solid #a6a6a6;
   border-radius: 0 0.2rem 0.2rem 0;
-  float: left;
+  right: 0px;
+
   width: 30%;
   padding: 0;
   height: 100%;
   font-weight: 500;
   font-size: 1.6rem;
   font-family: "FiraSans", sans-serif;
+  position: absolute;
 }
 
 :host button:active {
   background: linear-gradient(to top, #ddd, #ddd);
   background: -webkit-linear-gradient(top, #ddd, #ddd);
 }</style>
-    <input id="inputText" type="text" on-input="{{input}}" on-keypress="{{keypress}}"><button id="button" on-click="{{submit}}"></button>
+    <div id="wrapper">
+      <input id="inputText" type="text" on-input="{{input}}" on-keypress="{{keypress}}">
+      <button id="button" on-click="{{submit}}">{{buttonlabel}}</button>
+    </div>
     <shadow></shadow>
   </template>
   <script>
@@ -8542,13 +8556,15 @@ header {
       emitonchange:false,
       ready: function () {
         this.super();
-
         var that = this;
         this.$.button.innerHTML = this.gettext("ceci-text-input/button") || this.$.button.innerHTML;
       },
       submit: function () {
         this.broadcast('sendData', this.$.inputText.value);
         this.$.inputText.value = "";
+      },
+      click : function(){
+        this.submit();
       },
       input: function (e) {
         if (!this.emitonchange) {
@@ -8564,9 +8580,11 @@ header {
           }
         }
       },
+      setvalue: function(v) {
+        this.$.inputText.value = v;
+      },
       emitonchangeChanged: function(oldValue, newValue) {
-        this.classList.toggle('onchange');
-        this.$.button.classList.toggle('hidden');
+        this.$.wrapper.classList.toggle('onchange');
       },
       placeholdertextChanged: function(oldValue, newValue) {
         if (this.$.inputText.hasAttribute('placeholder')) {
@@ -8579,7 +8597,6 @@ header {
     });
   </script>
 </polymer-element>
-
 
 <polymer-element name="ceci-textbox" attributes="text" extends="ceci-element" text="I&apos;m a textbox!" assetpath="component-textbox/">
   <ceci-definition>
