@@ -17,10 +17,9 @@
 }
 
 .loading-content {
-  bottom: 0px;
   left: 40px;
   right: 40px;
-  top: 0px;
+  height: 100%;
   position: absolute;
   background: url('/images/appmaker-logo-header.png') no-repeat;
   background-size: 98%;
