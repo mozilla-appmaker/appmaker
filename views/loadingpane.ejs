@@ -5,23 +5,4 @@
         </div>
       </div>
     </div>
-    <script>
-      (function() {
-        var loadingCover = document.querySelector(".loading-cover");
-        function onCeciAppReady() {
-          window.removeEventListener("CeciAppReady", onCeciAppReady);
-          loadingCover.style.width = "66%";
-        }
-        function onCeciAppAttached() {
-          window.removeEventListener("CeciAppAttached", onCeciAppAttached);
-          loadingCover.style.width = "33%";
-        }
-        function onPolymerReady() {
-          window.removeEventListener("polymer-ready", onPolymerReady);
-          loadingCover.style.width = "0%";
-        }
-        window.addEventListener("CeciAppReady", onCeciAppReady);
-        window.addEventListener("CeciAppAttached", onCeciAppAttached);
-        window.addEventListener("polymer-ready", onPolymerReady);
-      }());
-    </script>
+    <script src="<%= process.env.ASSET_HOST %>/javascripts/loading.js"></script>
