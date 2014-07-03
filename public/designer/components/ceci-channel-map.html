@@ -10,9 +10,13 @@
 
         this.broadcastchannels = this.broadcastchannels || [];
         this.listenerchannels = this.listenerchannels || [];
-        window.addEventListener("channelUpdate",function(e){
+        this.onChannelUpdate = function() {
           that.getChannels();
-        },false);
+        };
+        window.addEventListener('channelUpdate', this.onChannelUpdate);
+      },
+      detached: function() {
+        window.removeEventListener('channelUpdate', this.onChannelUpdate);
       },
       getChannels : function(){
         this.map = {};

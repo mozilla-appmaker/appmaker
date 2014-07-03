@@ -7,10 +7,14 @@
     Polymer('ceci-channel-vis', {
       attached: function () {
         var that = this;
-        window.addEventListener('channelUpdated', function(data){
+        this.onChannelUpdated = function() {
           that.updateChannelVis();
-        });
+        };
+        window.addEventListener('channelUpdated', this.onChannelUpdated);
         that.updateChannelVis();
+      },
+      detached: function() {
+        window.removeEventListener('channelUpdated', this.onChannelUpdated);
       },
       updateChannelVis: function(elements) {
         var that = this;
