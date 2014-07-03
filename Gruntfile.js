@@ -59,6 +59,28 @@ module.exports = function( grunt ) {
       compile: {
         //purposely blank. see require-designer and require-ceci tasks below
       }
+    },
+    gettext_finder: {
+      files: [
+        "views/*.html",
+        "views/**/*.html",
+        "views/*.ejs",
+        "views/**/*.ejs",
+        "public/ceci/**/*.html",
+        "public/ceci/**/*.js",
+        "public/designer/**/*.html",
+        "public/designer/**/*.js",
+        "public/templates/**/*.html",
+        "public/templates/**/*.js",
+        "public/samples/**/*.html",
+        "public/samples/**/*.js"
+      ],
+      options: {
+        pathToJSON: [ "locale/en_US/msg.json" ],
+        extraSearchRegexp: [
+          /[lL]10n(\.get)?\(["'][^)]+["']\)/g
+        ]
+      }
     }
   });
 
@@ -67,6 +89,7 @@ module.exports = function( grunt ) {
   grunt.loadNpmTasks("grunt-lint-inline");
   grunt.loadNpmTasks("grunt-simple-mocha");
   grunt.loadNpmTasks("grunt-contrib-requirejs");
+  grunt.loadNpmTasks('grunt-gettext-finder');
 
   grunt.registerTask("require-designer", function () {
     grunt.config('requirejs.compile', {
@@ -131,6 +154,7 @@ module.exports = function( grunt ) {
   //       of warnings is staggering. Some make sense, some don't.
   grunt.registerTask("default", [
     /*"csslint",*/
+    "gettext_finder",
     "jshint",
     "inlinelint",
     "simplemocha",
