@@ -18,7 +18,6 @@
     "webmaker-language-picker": "0.0.23"
   },
   "resolutions": {
-    "jquery": "~2.0.3",
-    "webmaker-analytics": "~0.1.0"
+    "jquery": "~2.0.3"
   }
 }
