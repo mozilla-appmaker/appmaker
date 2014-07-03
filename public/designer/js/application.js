@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-define(["jquery", "l10n", "reporter","designer/editable"], function($, l10n, reporter, Editable) {
+define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"], function($, l10n, reporter, Editable, publishPane) {
 
     return {
       getCurrentApp: function(){
@@ -70,10 +70,7 @@ define(["jquery", "l10n", "reporter","designer/editable"], function($, l10n, rep
             },
             type: 'post',
             success: function (data) {
-              setTimeout(function() {
-                // FIXME: This should not be on window?
-                window.showPublishPane(name, data);
-              },10);
+              publishPane.show(name, data);
 
               // update the user state menu to have an App URL entry
               var userState = document.querySelector('user-state');
@@ -255,7 +252,6 @@ define(["jquery", "l10n", "reporter","designer/editable"], function($, l10n, rep
           }
         });
       }
-
     };
   }
 );
