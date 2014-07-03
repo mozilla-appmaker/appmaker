@@ -7,6 +7,22 @@
   <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/install.css" />
   <script src="<%= process.env.ASSET_HOST %>/vendor/qrcodejs/qrcode.js"></script>
   <title>My Appmaker App</title>
+  <% if (process.env.GA_ACCOUNT){ %>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(["_setAccount", "<%- process.env.GA_ACCOUNT %>"]);
+      _gaq.push(["_setDomainName", "<%- process.env.GA_PUBLISH_DOMAIN %>"]);
+      _gaq.push(["_trackPageview"]);
+
+      (function() {
+        var ga = document.createElement("script"); ga.type = "text/javascript";
+        ga.async = true;
+        ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  <% } %>
 </head>
 <body>
   <script type="template/html">
