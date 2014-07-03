@@ -76,11 +76,11 @@ define(
       ]
     }
 
-    categories.names = [];
+    var categoryNames = [];
 
     for (var key in categories) {
       if (categories.hasOwnProperty(key)) {
-        categories.names.push(key);
+        categoryNames.push(key);
       }
     }
 
@@ -121,20 +121,17 @@ define(
         return item;
       },
       addComponentWithName: function(name) {
-
         if(!DesignerTray.isKnownComponent(name)) {
           var added = false;
           // See if it goes in any categories
-          for(var i = 0; i < categories.names.length; i++){
-            var category = categories.names[i];
+          for(var i = 0; i < categoryNames.length; i++){
+            var category = categoryNames[i];
+
             var components = categories[category.toLowerCase()] || [];
             for(var j = 0; j < components.length; j++){
               if(name == components[j]){
-                var item = DesignerTray.buildItem(name)
-                var containerCount = document.querySelectorAll(".category-container." + category.toLowerCase()).length;
-                if(containerCount == 0) {
-                  DesignerTray.buildCategory(category.toLowerCase());
-                }
+                var item = DesignerTray.buildItem(name);
+                DesignerTray.showCategory(category.toLowerCase());
                 document.querySelector(".category-container." + category.toLowerCase()).appendChild(item);
                 added = true;
               }
@@ -142,11 +139,8 @@ define(
           }
           //Means it wasn't in any categories
           if(!added){
-            var item = DesignerTray.buildItem(name)
-            var containerCount = document.querySelectorAll(".category-container.other").length;
-            if(containerCount == 0) {
-              DesignerTray.buildCategory("other");
-            }
+            var item = DesignerTray.buildItem(name);
+            DesignerTray.showCategory("other");
             document.querySelector(".category-container.other").appendChild(item);
           }
           knownComponents.push(name);
@@ -169,6 +163,12 @@ define(
           });
         }
       },
+      showCategory : function(category){
+        var container = document.querySelector('.' + category.toLowerCase());
+        var tag = document.querySelector('*[data-category="'+ category.toLowerCase() + '"]');
+        container.classList.remove("hidden");
+        tag.classList.remove("hidden");
+      },
       buildCategory : function(category){
         var categoryContainer = document.querySelector("[data-category="+category.toLowerCase()+"]");
 
@@ -179,6 +179,7 @@ define(
           if(category != "all") {
             //Build Category Container
             var container = document.createElement("div");
+            container.classList.add("hidden");
             var title = document.createElement("h2");
             title.innerHTML = category.charAt(0).toUpperCase() + category.slice(1) + " Bricks";
             container.appendChild(title);
@@ -194,6 +195,7 @@ define(
           if(category == "all") {
             option.innerHTML = "All Bricks";
           } else {
+            option.classList.add("hidden");
             option.innerHTML = category.charAt(0).toUpperCase() + category.slice(1);
           }
 
@@ -207,6 +209,10 @@ define(
       },
       addComponentsFromRegistry: function() {
         DesignerTray.buildCategory("all");
+        for (var i = 0; i < categoryNames.length; i++) {
+          DesignerTray.buildCategory(categoryNames[i]);
+        }
+        DesignerTray.buildCategory("other");
         CeciDesigner.forEachComponent(this.addComponentWithName);
         DesignerTray.filterCategory("basic");
         DesignerTray.sortComponents();
