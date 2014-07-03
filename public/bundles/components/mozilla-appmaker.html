@@ -972,7 +972,7 @@
 }
 
 </style>
-    <div class="button-wrapper" on-click="{{click}}">
+    <div class="button-wrapper" on-mousedown="{{click}}">
       <div id="button">{{label}}</div>
       <div class="overlay active-overlay"></div>
       <div class="overlay hover-overlay"></div>
@@ -5009,13 +5009,13 @@ header {
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-microphone-button" attributes="textcolor buttoncolor buttonactivecolor record done" extends="ceci-element" record="Record" done="Done" textcolor="#ffffff" buttoncolor="#4DB227" buttonactivecolor="#FF0000" assetpath="component-microphone-button/">
+<polymer-element name="ceci-microphone-button" attributes="textcolor record done" extends="ceci-element" record="Record" done="Done" textcolor="#ffffff" assetpath="component-microphone-button/">
   <ceci-definition>
     {
-      "tags": ["microphone", "button", "audio", "clip"],
+      "tags": ["microphone", "button", "audio"],
       "thumbnail": "./thumbnail.png",
-      "description": "Broadcasts an audio clip recorded using your microphone.",
-      "name": "Microphone Button",
+      "description": "Records an audio clip.",
+      "name": "Microphone",
       "broadcasts": {
         "clip": {
           "label": "clip",
@@ -5033,78 +5033,122 @@ header {
           "label": "stop"
         }
       },
-      "attributes": {
-        "record": {
-          "label": "Record",
-          "description": "Text shown on the button.",
-          "editable": "text"
-        },
-        "done": {
-          "label": "Done",
-          "description": "Text shown on the button.",
-          "editable": "text"
-        },
-        "textcolor": {
-          "label": "Text Color",
-          "description": "Color of the text on the button's label.",
-          "editable": "color"
-        },
-        "buttoncolor": {
-          "label": "Button Color",
-          "description": "Background color of the button.",
-          "editable": "color"
-        },
-        "buttonactivecolor": {
-          "label": "Button Active Color",
-          "description": "Background color of the button while it is being clicked or tapped.",
-          "editable": "color"
-        }
-      }
+      "attributes": {}
     }
   </ceci-definition>
   <template>
     <style>:host {
   display: block;
   width: 100%;
+  padding: 10px 0;
+  text-align: center;
+  background: #EEE;
 }
 
-:host button {
+:host .buttonwrapper {
+  display: inline-block;
+}
+
+:host .button {
   font-family: "FiraSans", sans-serif;
   cursor: pointer;
   position: relative;
   text-decoration: none;
   outline: none;
-  border-top: 1px solid rgba(255,255,255,.3);
-  border-bottom: 2px solid rgba(0,0,0,.2);
   background-color: #4DB227;
   text-align: center;
-  display: block;
-  padding-top: 5px;
-  padding-bottom: 3px;
-  text-overflow: ellipsis;
-  overflow: hidden;
   border-radius: 0.2rem;
   font-weight: 600;
   font-size: 1.8rem;
-  line-height: 3.8rem;
-  color: #ffffff;
-  width: 100%;
-  margin: 0;
   border: none;
-  background: inherit;
+  width: 80px;
+  height: 42px;
+  margin: 0 5px;
+  position: relative;
+  display: block;
+  width: 100px;
+  background: #CCC;
+
+  border: solid 2px #BBB;
+  border-top: solid 2px #CCC;
+  border-bottom: solid 4px #AAA;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  background-image:  -webkit-linear-gradient(top, #EEE,#DDD);
+  background-image:  -moz-linear-gradient(top, #EEE,#DDD);
+  background-image:  linear-gradient(top, #EEE,#DDD);
 }
 
-:host #startButton {
-  display: block;
+:host .button:active {
+  border-bottom: solid 2px #AAA;
+  margin-top: 2px;
 }
-:host #stopButton {
-  display: none;
+
+:host .icon {
+  width: 20px;
+  height: 20px;
 }
+
+:host #startButton .iconwrapper {
+  position: absolute;
+  top: calc(50% - 12px);
+  left: calc(50% - 12px);
+  padding: 2px;
+  background-image: -moz-linear-gradient(top, #AAA,#FFF);
+  background-image: -webkit-linear-gradient(top, #AAA,#FFF);
+  background-image:  linear-gradient(top, #AAA,#FFF);
+  -webkit-border-radius: 22px;
+  -moz-border-radius: 22px;
+  border-radius: 22px;
+}
+
+:host #stopButton .iconwrapper {
+  position: absolute;
+  top: calc(50% - 10px);
+  left: calc(50% - 10px);
+  -webkit-border-radius: 22px;
+  -moz-border-radius: 22px;
+  border-radius: 22px;
+}
+
+:host #startButton .icon {
+  background: #a13333;
+  -webkit-border-radius: 20px;*/
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  height: 20px;
+  width: 20px;
+}
+
+:host #stopButton .icon {
+  background: #555;
+}
+
+:host #startButton.recording  {
+  border-bottom: solid 2px #AAA;
+  margin-top: 2px;
+}
+
+:host #startButton.recording .icon {
+  background: #eb1919;
+}
+
 </style>
-    <div class="button">
-      <button id="startButton">{{ record }}</button>
-      <button id="stopButton">{{ done }}</button>
-    </div>
+      <div class="buttonwrapper">
+        <div class="button" id="startButton">
+          <div class="iconwrapper">
+            <div class="icon"></div>
+          </div>
+        </div>
+      </div>
+      <div class="buttonwrapper">
+        <div class="button" id="stopButton">
+          <div class="iconwrapper">
+            <div class="icon"></div>
+          </div>
+        </div>
+      </div>
     <shadow></shadow>
   </template>
   <script>
@@ -5122,7 +5166,7 @@ header {
       },
       attached: function() {
         if(!window.MediaRecorder) {
-          alert(this.gettext("your browser does not support recording"));;
+          // alert(this.gettext("your browser does not support recording"));;
           window.MediaRecorder = function() {
             var noop = function(){};
             this.start = noop;
@@ -5132,7 +5176,7 @@ header {
         }
 
         this.super();
-        console.log(this);
+
         var that = this;
 
         if (navigator.getMedia) {
@@ -5142,24 +5186,20 @@ header {
             {audio: true},
 
             function(stream) {
-              console.log("good to go");
 
               var mediaRecorder = new MediaRecorder(stream);
 
               that.startButton.onclick = function() {
                 console.log("starting recorder");
                 mediaRecorder.start();
-                that.bg.style.background = that.buttonactivecolor;
-                that.startButton.style.display = "none";
-                that.stopButton.style.display = "block";
+                that.startButton.classList.add("recording");
               };
 
               that.stopButton.onclick = function() {
                 console.log("stopping recorder");
                 mediaRecorder.stop();
                 that.bg.style.background = that.buttoncolor;
-                that.stopButton.style.display = "none";
-                that.startButton.style.display = "block";
+                that.startButton.classList.remove("recording");
               };
 
               var processData = function(e) {
@@ -5171,7 +5211,6 @@ header {
               };
 
               mediaRecorder.ondataavailable = processData;
-              that.startButton.style.display = "block";
             },
 
             function(err) { console.log('The following gUM error occured: ' + err); }
@@ -7902,27 +7941,27 @@ header {
 
 
 
-:host .channel {
+:host .channelrow {
   overflow: auto;
   margin-bottom: 4px;
 }
 
-:host .channel:last-child {
+:host .channelrow:last-child {
   margin-bottom: 0;
 }
 
-:host .channel .beat,
-:host .channel .label
+:host .channelrow .beat,
+:host .channelrow .label
 {
   display:block;
   float: left;
 }
 
-:host .channel .label:after {
+:host .channelrow .label:after {
   content: "1";
 }
 
-:host .channel .beat {
+:host .channelrow .beat {
   background: #DDD;
   margin: 0;
   height: 40px;
@@ -7943,11 +7982,11 @@ header {
   opacity: 0;
 }
 
-:host .channel .beat:last-child {
+:host .channelrow .beat:last-child {
   margin-right: 0px;
 }
 
-:host .channel .beat:hover {
+:host .channelrow .beat:hover {
   opacity: .8;
 }
 
@@ -7993,7 +8032,7 @@ header {
 :host [data-beat="2"] .indicator { left: 144px; }
 :host [data-beat="3"] .indicator { left: 216px; }
 
-:host .channel .beat.on {
+:host .channelrow .beat.on {
   opacity: 1;
 }
 
@@ -8028,7 +8067,7 @@ header {
       <div class="indicator top"></div>
       <div class="indicator bottom"></div>
       <template repeat="{{item, i in activebroadcasts}}">
-        <div data-color="{{item.channelcolor}}" data-channel="{{item.channelname}}" class="channel">
+        <div data-color="{{item.channelcolor}}" data-channel="{{item.channelname}}" class="channelrow">
             <div on-click="{{beattap}}" data-beat="1" class="beat"></div>
             <div on-click="{{beattap}}" data-beat="2" class="beat"></div>
             <div on-click="{{beattap}}" data-beat="3" class="beat"></div>
@@ -8040,7 +8079,7 @@ header {
   </template>
   <ceci-definition>
     {
-      "tags": ["alternating-gate", "low-level"],
+      "tags": [""],
       "thumbnail": "./thumbnail.png",
       "name": "Sequencer",
       "description": "Alternates output between set broadcasts from a single input",
@@ -8080,20 +8119,20 @@ header {
   </ceci-definition>
   <script>
     Polymer('ceci-sequencer', {
-      nextBroadcast : "",
-      beattap : function(e){
+      beattap: function(e){
         var that = this;
         var beatEl = e.target;
 
-        if(beatEl.classList.contains("on")){
+        if (beatEl.classList.contains("on")){
           beatEl.classList.remove("on");
-        } else {
+        }
+        else{
           beatEl.classList.add("on");
         }
 
         that.playbeats = [[],[],[],[]];
 
-        Array.prototype.forEach.call(this.shadowRoot.querySelectorAll(".channel"), function(chan) {
+        Array.prototype.forEach.call(this.shadowRoot.querySelectorAll(".channelrow"), function(chan) {
           var channel = chan.getAttribute("data-channel");
           var beat = 0;
           Array.prototype.forEach.call(chan.querySelectorAll(".beat"), function(beatEl) {
@@ -8105,7 +8144,7 @@ header {
         });
         this.setAttribute("playbeats",JSON.stringify(this.playbeats));
       },
-      currentBeat : 1,
+      currentBeat: 0,
       ready: function() {
         this.super();
         this.lastBroadcast = null;
@@ -8119,7 +8158,7 @@ header {
           var beats = this.playbeats[i];
           for(var j = 0; j < beats.length; j++) {
             var channel = beats[j];
-            this.shadowRoot.querySelector(".channel[data-channel="+channel+"] .beat:nth-child("+beatCount+")").classList.add("on");
+            this.shadowRoot.querySelector(".channelrow[data-channel="+channel+"] .beat:nth-child("+beatCount+")").classList.add("on");
           }
         }
       },
@@ -8149,15 +8188,14 @@ header {
 
       },
       input: function(value) {
-        this.currentBeat = this.currentBeat + 1;
         if(this.currentBeat > 3) {
           this.currentBeat = 0;
         }
-        var playChannels = this.playbeats[parseInt(this.currentBeat)];
+        var playChannels = this.playbeats[this.currentBeat];
         for(var i = 0; i < playChannels.length; i++){
-          this.broadcast(playChannels[i],"tick");
+          this.broadcast(playChannels[i], "tick");
         }
-
+        this.currentBeat += 1;
       }
     });
   </script>

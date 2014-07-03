@@ -1,6 +1,6 @@
 # Appmaker
 
-[![Build Status](https://travis-ci.org/mozilla-appmaker/appmaker.svg?branch=develop)](https://travis-ci.org/mozilla-appmaker/appmaker) 
+[![Build Status](https://travis-ci.org/mozilla-appmaker/appmaker.svg?branch=develop)](https://travis-ci.org/mozilla-appmaker/appmaker)
 [![devDependency Status](https://david-dm.org/mozilla-appmaker/appmaker/dev-status.svg)](https://david-dm.org/mozilla-appmaker/appmaker#info=devDependencies)
 
 Welcome to Appmaker (beta).
@@ -104,29 +104,41 @@ GA_PUBLISH_DOMAIN: Optional google analytics domain setting for the published ap
 
 ```
 
-### Install and run MongoDB
+### Install and Run MongoDB
 
-1. Install from MongoDB installation packages, brew, apt-get, etc
-2. Either configure MongoDB to run on startup or manually start the mongod daemon. You can also run mongod from foreman by adding it to your Procfile
-```
+MongoDB is used for saving the user-created apps before publishing.
+
+## Installation
+Visit http://docs.mongodb.org/manual/installation/ for platform-specific installation instructions.
+
+
+## Running `mongod`
+
+Either configure MongoDB to run on startup or manually start the mongod daemon. You can also run mongod from foreman by adding it to your Procfile.
+
+To manually start `mongod` once it is installed:
+
+```bash
 mongod
 ```
 
+The `mongod` process will, by default listen on port 27017. If you have it configured to listen on an alternate port, be sure to adjust your `MONGO_URL` in your `.env` file.
+
 ### Start the Server
 
-```
+```bash
 foreman start
 ```
 
 or
 
-```
+```bash
 foreman start -p <PORT>
 ```
 
 If you need foreman:
 
-```
+```bash
 sudo gem install foreman
 ```
 
