@@ -241,6 +241,7 @@
             ceciApp.setAttribute("appid", "ceci-app-"+uuid());
 
             var html = ceciApp.outerHTML;
+
             if(name){
               application.saveApp(name,ceciApp.appid,html, function(err,data){
                 if(!err){
@@ -289,7 +290,11 @@
 
           //Publish!
           this.$.publishApp.addEventListener("click", function() {
-            var app = document.querySelector('ceci-app');
+            var app = document.querySelector('ceci-app').cloneNode(true);
+
+            app.querySelector("ceci-card[visible=true]").removeAttribute("visible");
+            app.querySelector("ceci-card:first-child").setAttribute("visible","true");
+
             var name = app.name;
             // This might need to be made its own thing so it can be called
             // in various places:
