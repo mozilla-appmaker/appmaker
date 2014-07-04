@@ -54,13 +54,7 @@
         this.dispatchEvent(new CustomEvent('listenerUpdated', {name: name, bubbles: true, detail: this}));
       },
       updateContainerElement: function () {
-        while (true) {
-          this._element = this.parentNode;
-          if (!this._element) break;
-          if (this._element.localName.indexOf('ceci-') === 0 && ['ceci-listen', 'ceci-broadcast'].indexOf(this._element.localName) === -1) {
-            break;
-          }
-        }
+        this._element = this.parentNode;
       },
       onChanged: function (oldValue, newValue) {
         this.update();
