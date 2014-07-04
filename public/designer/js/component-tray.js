@@ -192,7 +192,7 @@ define(
           var option = document.createElement("a");
 
           if(category == "all") {
-            option.innerHTML = "All Bricks"
+            option.innerHTML = "All Bricks";
           } else {
             option.innerHTML = category.charAt(0).toUpperCase() + category.slice(1);
           }
