@@ -1,6 +1,11 @@
 @import "variables.less";
 @import "mixins.less";
 
+
+.channel-menu-wrapper {
+  z-index: 99999;
+}
+
 .channel-menu-wrapper.broadcast {
   position: absolute;
   left: ~"calc(100% + 12px)";
@@ -100,14 +105,8 @@
   border: solid 1px #BBB;
   background: -webkit-linear-gradient(top, #FFF, #FFF 70%, #EEE);
   background: -moz-linear-gradient(top, #FFF, #FFF 70%, #EEE);
-  z-index: 999999;
   border: solid 4px rgba(0,0,0,.20);
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-
-  &.picking-colors {
-    width: 200px;
-  }
+  border: solid 4px #BBB;
 
   .option-template {
     display: none;
@@ -149,12 +148,8 @@
 
   label .chosen-color {
     display: block;
-    color: rgba(255,255,255,1);
-    padding: 0px 6px 1px 6px;
     position: absolute;
-    top: 5px;
-    .border-radius(20px);
-
+    top: 4px;
     &:hover {
       text-decoration: none;
     }
@@ -183,14 +178,40 @@
 
     &:active {
       background: #F7F7F7;
-      border-bottom: none;
-      border-top: solid 1px #DDD;
     }
-
   }
 
   .color-row {
     float: left;
+  }
+
+  .color,
+  .chosen-color {
+    width: 20px;
+    padding: 1px 0 2px 0;
+    text-transform: uppercase;
+    text-align: center;
+    .border-radius(20px);
+    color: white;
+  }
+
+  .color-options {
+    overflow: auto;
+  }
+
+
+  .color,
+  .chosen-color {
+    width: 20px;
+    padding: 1px 0 2px 0;
+    text-transform: uppercase;
+    text-align: center;
+    .border-radius(20px);
+    color: white;
+  }
+
+  .color-options {
+    overflow: auto;
   }
 
   .color-ui {
@@ -199,14 +220,14 @@
     text-align: left;
     padding: 3px 5px 2px 5px;
     cursor: default;
-    overflow: auto;
+    width: 184px;
 
     h3 {
-      font-size: 13px;
+      font-size: 14px;
       padding: 0 0 3px 0;
       margin: 0 0 6px 0;
       font-weight: normal;
-      color: #999;
+      color: #777;
       position: relative;
       top: -1px;
       text-align: center;
@@ -219,30 +240,43 @@
       }
     }
 
+    .color-ui {
+      width: 160px;
+    }
+
     .color {
-      margin: 0 2px 2px 0px;
       color: rgba(255,255,255,.75);
       cursor: pointer;
-      position: relative;
-      overflow:hidden;
-      padding: 0px 6px 1px 6px;
+      margin: 0 3px 3px 0;
       opacity: .4;
-      font-size: 1.3rem;
-      .border-radius(20px);
+      display: block;
+      float: left;
+      width: 20px;
+      padding: 1px 0 2px 0;
+      -webkit-transition: opacity .05s linear;
 
       &:hover {
         opacity: 1;
         text-decoration: none;
       }
 
-      &[data-color=false] {
-        padding: 9px 7px 10px 7px;
+      &[data-channel=off] {
+        background: none;
+        text-transform: none;
         color: #777;
-        margin-left: 5px;
-        position: relative;
-        top: 11px;
-        border-top: solid 1px #CCC;
-        .border-radius(20px);
+        color: white;
+        opacity: 1;
+        margin-top: 5px;
+        background: #DDD;
+        float: none;
+        width: auto;
+        clear: both;
+
+        &:hover {
+          text-decoration: none;
+          background: #BBB;
+        }
+
       }
 
     }
@@ -250,57 +284,16 @@
 
 /*  These are the selected color labels in the menu*/
 
-  .channel-option .chosen-color[data-color=false]:after {
+  .channel-option .chosen-color[data-color=off]:after {
     content: "X";
     color:#999;
   }
 
-  .channel-option .chosen-color:after {
-    position: relative;
-    content: "1";
-    z-index: 999;
-  }
-
-  .channel-option [data-color*=two]:after {
-    position: relative;
-    content: "2";
-    z-index: 999;
-  }
-
-  .channel-option [data-color*=three]:after {
-    position: relative;
-    content: "3";
-    z-index: 999;
-  }
-
-  .channel-option {
-    [data-color*=blue] {
-      background: @channel-blue;
-    }
-    [data-color*=red] {
-      background: @channel-red;
-    }
-    [data-color*=pink] {
-      background: @channel-pink;
-    }
-    [data-color*=purple] {
-      background: @channel-purple;
-    }
-    [data-color*=green] {
-      background: @channel-green;
-    }
-    [data-color*=orange] {
-      background: @channel-orange;
-    }
-    [data-color*=yellow] {
-      background: @channel-yellow;
-    }
-    [data-color='false'] {
-      background-color: #DDD;
-      background-position: center;
-      background-size: contain;
-      background-repeat: no-repeat;
-    }
+  [data-color='off'] {
+    background-color: #DDD;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
   }
 
 }

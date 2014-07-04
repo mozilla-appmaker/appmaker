@@ -1,4 +1,4 @@
-s<polymer-element name="ceci-channel-vis">
+<polymer-element name="ceci-channel-vis">
   <script>
   (function(){
     //Animation speeds, In seconds
@@ -7,7 +7,7 @@ s<polymer-element name="ceci-channel-vis">
     Polymer('ceci-channel-vis', {
       attached: function () {
         var that = this;
-        this.component = this.parentNode;
+        this.channels = this.parentNode.channels;
         window.addEventListener('channelUpdated', function(data){
           that.updateChannelVis();
         });
@@ -15,7 +15,6 @@ s<polymer-element name="ceci-channel-vis">
       },
       updateChannelVis: function(elements) {
         var that = this;
-
         if(!elements) {
           if(this.direction === "in") {
             elements = this.parentNode.querySelectorAll("ceci-listen");
@@ -23,7 +22,6 @@ s<polymer-element name="ceci-channel-vis">
             elements = this.parentNode.querySelectorAll("ceci-broadcast");
           }
         }
-
         // Remove all existing channel lines
         var existingLines = this.lines;
         existingLines.innerHTML = "";
@@ -35,9 +33,30 @@ s<polymer-element name="ceci-channel-vis">
           var channel = document.createElement("div");
           channel.innerHTML = "<div class='dot color'></div><div class='chan-label'></label>";
           channel.setAttribute("color",el.getAttribute("on"));
+
+          var channelname = el.getAttribute("on");
+          var label = channel.querySelector(".chan-label");
+          label.innerHTML = channelname.toUpperCase() ;
+
+          function hexToRgb(hex) {
+            if(hex){
+              var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+              return parseInt(result[1], 16) + "," + parseInt(result[2], 16) + "," + parseInt(result[3], 16);
+            }
+          }
+
+          var rgb = hexToRgb(that.channels[channelname]);
+
+          label.style.background = "#" + that.channels[channelname];
+
           if(that.direction == "in") {
             channel.setAttribute("for",el.getAttribute("for"));
+            channel.style.backgroundImage = "-moz-linear-gradient(left,rgba("+rgb+",0),rgba("+rgb+",.3)";
+            channel.style.backgroundImage = "-webkit-linear-gradient(left,rgba("+rgb+",0),rgba("+rgb+",.3)";
+
           } else {
+            channel.style.backgroundImage = "-webkit-linear-gradient(left,rgba("+rgb+",.3),rgba("+rgb+",0)";
+            channel.style.backgroundImage = "-moz-linear-gradient(left,rgba("+rgb+",.3),rgba("+rgb+",0)";
             channel.setAttribute("from",el.getAttribute("from"));
           }
 
@@ -65,7 +84,10 @@ s<polymer-element name="ceci-channel-vis">
           indicator.classList.add("indicator");
           indicator.classList.add("indicator-" + this.direction);
 
-          // ...and remove it!
+          var color = "#" + this.channels[element.getAttribute("color")];
+
+          indicator.style.background = color;
+
           var removeIndicator = function() {
             element.removeChild(indicator);
           };
@@ -76,12 +98,13 @@ s<polymer-element name="ceci-channel-vis">
 
           setTimeout(function() {
             var bubble = document.createElement("div");
-            bubble.innerHTML = data.detail.data; //data
+            bubble.innerHTML = data.detail.data;
             bubble.classList.add("bubblepopup");
             bubble.classList.add("bubblepop");
+            bubble.style.color = color;
+            bubble.style.borderColor = color;
             element.appendChild(bubble);
 
-            // ...and remove it!
             setTimeout(function() {
               element.removeChild(bubble);
             }, bubbleDuration * 1000);

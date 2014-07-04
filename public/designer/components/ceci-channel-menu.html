@@ -3,71 +3,22 @@
     <link rel="stylesheet" href="/stylesheets/broadcast-menu.css" >
     <content>
       <div class="channel-menu-wrapper {{channeltype}}"  id="channelMenuWrapper">
-
         <div class="hover-helper" on-click="{{toggleMenu}}">
           <div class="arrow"></div>
         </div>
-
         <div id="{{channeltype}}Menu" class="{{channeltype}}-menu channel-menu">
-
           <div class="arrow-container">
             <div class="arrow"></div>
           </div>
-
           <div class="channel-option subscription-option option-template">
-
             <div class="color-ui">
-
-              <h3>Send <strong>Click</strong> on channel...</h3>
-
-              <div class="color-row">
-                <div data-color="blue" class="color" data-channel="blue">1</div>
-                <div data-color="blue" class="color" data-channel="blue-two">2</div>
-                <div data-color="blue" class="color" data-channel="blue-three">3</div>
+              <h3></h3>
+              <div class="color-options"></div>
+              <div>
+                <div data-color="off" class="color" data-channel="off">Disable</div>
               </div>
-
-              <div class="color-row">
-                <div data-color="green" class="color" data-channel="green">1</div>
-                <div data-color="green" class="color" data-channel="green-two">2</div>
-                <div data-color="green" class="color" data-channel="green-three">3</div>
-              </div>
-
-              <div class="color-row">
-                <div data-color="yellow" class="color" data-channel="yellow">1</div>
-                <div data-color="yellow" class="color" data-channel="yellow-two">2</div>
-                <div data-color="yellow" class="color" data-channel="yellow-three">3</div>
-              </div>
-
-              <div class="color-row">
-                <div data-color="orange" class="color" data-channel="orange">1</div>
-                <div data-color="orange" class="color" data-channel="orange-two">2</div>
-                <div data-color="orange" class="color" data-channel="orange-three">3</div>
-              </div>
-
-              <div class="color-row">
-                <div data-color="red" class="color" data-channel="red">1</div>
-                <div data-color="red" class="color" data-channel="red-two">2</div>
-                <div data-color="red" class="color" data-channel="red-three">3</div>
-              </div>
-
-              <div class="color-row">
-                <div data-color="pink" class="color" data-channel="pink">1</div>
-                <div data-color="pink" class="color" data-channel="pink-two">2</div>
-                <div data-color="pink" class="color" data-channel="pink-three">3</div>
-              </div>
-
-              <div class="color-row">
-                <div data-color="purple" class="color" data-channel="purple">1</div>
-                <div data-color="purple" class="color" data-channel="purple-two">2</div>
-                <div data-color="purple" class="color" data-channel="purple-three">3</div>
-              </div>
-
-              <div class="color-row">
-                <div data-color="false" class="color" data-channel="false">OFF</div>
-              </div>
-
             </div>
-            <label><span class="channel-name"></span><div data-color="false" class="chosen-color"></div></label>
+            <label><span class="channel-name"></span><div data-color="off" class="chosen-color"></div></label>
           </div>
         </div>
       </div>
@@ -78,8 +29,6 @@
       Polymer('ceci-channel-menu', {
         menubuilt : false,
         ready: function() {
-          this.super();
-          this.menuStructure = this.shadowRoot.querySelector("content");
           this.addEventListener("click", function(e) {
             window.dispatchEvent(new CustomEvent("SelectElement", { detail :  this.component }));
             e.stopPropagation();
@@ -87,10 +36,23 @@
         },
         attached: function () {
           var that = this;
-
-          this.menuWrapper = this.menuStructure.querySelector(".channel-menu-wrapper");
+          this.channels = this.parentNode.channels;
+          this.menuWrapper = this.shadowRoot.querySelector(".channel-menu-wrapper");
           this.menu = this.menuWrapper.querySelector(".channel-menu");
           this.hideMenu();
+          var optionsWrapper = this.menuWrapper.querySelector(".color-options");
+          var channelNames = Object.keys(this.channels);
+
+          for(var i=0; i < channelNames.length; i++){
+            var channelName = channelNames[i];
+            var color = this.channels[channelName];
+            var option = document.createElement("div");
+            option.classList.add("color");
+            option.innerHTML = channelName;
+            option.style.background = "#" + color;
+            option.setAttribute("data-channel",channelName);
+            optionsWrapper.appendChild(option);
+          }
 
           window.addEventListener("menuOpen",function(){
             that.hideMenu();
@@ -191,7 +153,7 @@
         changeChannel : function(handlerType, handler ,color){
           var visEl = this.component.querySelector("ceci-"+this.channeltype+"["+handlerType+"=\""+handler+"\"]");
 
-          if (color == "false"){
+          if (color == "off"){
             if (visEl){
               visEl.parentNode.removeChild(visEl);
             }
@@ -226,11 +188,15 @@
           function colorListClickHandler(handlerType){
             return function(event) {
               if(event.target.classList.contains("color")){
+
                 that.menu.classList.remove("picking-colors");
                 var channelOption = event.target.parentNode.parentNode.parentNode;
-                var color = event.target.getAttribute("data-channel");
+
+
+                var channel = event.target.getAttribute("data-channel");
                 var handler = this.parentNode.getAttribute(handlerType);
-                that.changeChannel(handlerType, handler, color);
+
+                that.changeChannel(handlerType, handler, channel);
 
                 //Show all the options again
                 var options = that.menu.querySelectorAll(".channel-option:not(.option-template)");
@@ -239,7 +205,17 @@
                 }
 
                 channelOption.querySelector("label").style.display = "block";
-                channelOption.querySelector("label .chosen-color").setAttribute("data-color", color);
+                channelOption.querySelector("label .chosen-color").setAttribute("data-color", channel);
+
+                var color = that.channels[channel] || "DDD";
+
+                channelOption.querySelector("label .chosen-color").style.background =  "#" + color;
+                if(channel == "off"){
+                  channelOption.querySelector("label .chosen-color").innerHTML = "";
+                } else {
+                  channelOption.querySelector("label .chosen-color").innerHTML = channel;
+                }
+
                 channelOption.querySelector(".color-ui").style.display = "none";
                 that.adjustMenuPosition();
                 that.hideMenu();
@@ -305,6 +281,8 @@
               if(existingEl){
                 var color = existingEl.getAttribute("on");
                 channelOption.querySelector(".chosen-color").setAttribute("data-color",color);
+                channelOption.querySelector(".chosen-color").style.background = "#" + this.channels[color];
+                channelOption.querySelector(".chosen-color").innerHTML = color;
               }
 
               //Set up all of the click stuff for color options
