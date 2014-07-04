@@ -34,13 +34,13 @@
   border-radius: 4px;
   top: 50%;
   background: linear-gradient( 90deg, #3fb58e, #ffcd36, #27aae1 );
+  overflow: hidden;
 }
 
 .loading-cover {
   background-color: #31353C;
   height: 100%;
   width: 100%;
-  border-radius: 4px;
   right: 0;
   position: absolute;
   transition: width .2s linear;
