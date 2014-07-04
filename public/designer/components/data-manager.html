@@ -220,7 +220,7 @@
             detail.removed.removeEventListener("propertychange", onCollectionPropertyChange);
           }
         }
-        function onCeciAppAttached() {
+        function onCeciAppDOMReady() {
           self.collectionsElement = document.querySelector("ceci-collections");
           var collections = self.collectionsElement.getCollections();
           if (collections.length) {
@@ -240,7 +240,7 @@
           }
           self.collectionsElement.addEventListener("collectionchange", onCollectionChange);
         }
-        window.addEventListener("CeciAppAttached", onCeciAppAttached);
+        window.addEventListener("CeciAppDOMReady", onCeciAppDOMReady);
       },
       addCollection: function () {
         this.collectionsElement.addCollection("New Collection " + (this.collections.length + 1));
