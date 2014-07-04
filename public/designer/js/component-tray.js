@@ -125,14 +125,17 @@ define(
           var added = false;
           // See if it goes in any categories
           for(var i = 0; i < categoryNames.length; i++){
-            var category = categoryNames[i];
+            var category = categoryNames[i].toLowerCase();
 
-            var components = categories[category.toLowerCase()] || [];
+            var components = categories[category] || [];
             for(var j = 0; j < components.length; j++){
               if(name == components[j]){
                 var item = DesignerTray.buildItem(name);
-                DesignerTray.showCategory(category.toLowerCase());
-                document.querySelector(".category-container." + category.toLowerCase()).appendChild(item);
+                DesignerTray.showCategory(category);
+                if (category === "basic") {
+                  DesignerTray.filterCategory("basic");
+                }
+                document.querySelector(".category-container." + category).appendChild(item);
                 added = true;
               }
             }
@@ -165,7 +168,7 @@ define(
       },
       showCategory : function(category){
         var container = document.querySelector('.' + category.toLowerCase());
-        var tag = document.querySelector('*[data-category="'+ category.toLowerCase() + '"]');
+        var tag = document.querySelector('.brick-category a[data-category="'+ category.toLowerCase() + '"]');
         container.classList.remove("hidden");
         tag.classList.remove("hidden");
       },
@@ -213,8 +216,8 @@ define(
           DesignerTray.buildCategory(categoryNames[i]);
         }
         DesignerTray.buildCategory("other");
+        DesignerTray.filterCategory("all");
         CeciDesigner.forEachComponent(this.addComponentWithName);
-        DesignerTray.filterCategory("basic");
         DesignerTray.sortComponents();
       },
       filterCategory : function(category){
