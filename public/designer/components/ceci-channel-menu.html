@@ -98,17 +98,22 @@
         hideMenu : function() {
           this.menuWrapper.classList.remove("open");
 
-          //Revert the menu to the list of listeners or subscribers
+          var channelOptions = this.menuWrapper.querySelectorAll(".channel-option:not(.option-template)");
+          for(var i = 0; i < channelOptions.length; i++){
+            channelOptions[i].style.display = "block";
+          }
+
           var colorUis = this.menuWrapper.querySelectorAll(".color-ui");
           for(var i = 0; i < colorUis.length; i++){
             colorUis[i].style.display = "none";
           }
+
           var labels = this.menuWrapper.querySelectorAll("label");
           for(var j = 0; j < labels.length; j++){
             labels[j].style.display = "block";
           }
-          window.dispatchEvent(new CustomEvent('menuClosed'));
 
+          window.dispatchEvent(new CustomEvent('menuClosed'));
         },
         adjustMenuPosition : function(){
           this.menu = this.shadowRoot.querySelector(".channel-menu");
