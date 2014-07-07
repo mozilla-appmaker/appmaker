@@ -111,7 +111,6 @@ define(
             var newElement = document.createElement(name);
             // wait until Polymer has prepared the element completely
             newElement.async(function() {
-              newElement.applyDefaults();
               card.appendChild(newElement);
               analytics.event("Added Component", {label: name});
             });

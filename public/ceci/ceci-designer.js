@@ -19,6 +19,7 @@ define([], function() {
     "ceci-element-base",
     "ceci-listen",
     "ceci-listen-vis",
+    "ceci-channels",
     "ceci-channel-map"
   ];
 

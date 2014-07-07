@@ -1,4 +1,4 @@
-<polymer-element name="ceci-channel-map" attributes="broadcastchannels listenerchannels">
+<polymer-element name="ceci-channel-map" attributes="broadcastchannels listenerchannels channels" extends="ceci-channels">
   <template>
     <content></content>
   </template>
@@ -6,10 +6,10 @@
     Polymer('ceci-channel-map', {
       ready : function(){
         this.app = document.querySelector("ceci-app");
-        var that = this;
-
         this.broadcastchannels = this.broadcastchannels || [];
         this.listenerchannels = this.listenerchannels || [];
+        this.channelNames = Object.keys(this.channels);
+        var that = this;
         this.onChannelUpdate = function() {
           that.getChannels();
         };
@@ -17,6 +17,60 @@
       },
       detached: function() {
         window.removeEventListener('channelUpdate', this.onChannelUpdate);
+      },
+      defaultIndex : 0,
+      getFreeChannel : function(type){
+        // Order of returned channel:
+        // 1 - First unmatched listner / broadcast channel
+        // 2 - Next unused channel (cycling from a to z)
+
+        this.getChannels();
+        var useChannel, matches, doesntmatch;
+
+        if(type == "listener") {
+          matches = this.broadcastchannels;
+          doesntmatch = this.listenerchannels;
+        } else {
+          matches = this.listenerchannels;
+          doesntmatch = this.broadcastchannels;
+        }
+
+        //Return first unused broadcast channel...
+        for(var i = 0; i < this.channelNames.length; i++){
+          var channelName = this.channelNames[i];
+          if(matches.indexOf(channelName) > -1) {
+            if(doesntmatch.indexOf(channelName) < 0) {
+              return channelName;
+            }
+          }
+        }
+
+        // ...or fist unused listener channel
+        for(var i = 0; i < this.channelNames.length; i++){
+          var channelName = this.channelNames[i];
+          if(doesntmatch.indexOf(channelName) < 0) {
+            useChannel = channelName;
+            break;
+          }
+        }
+
+        // If no free channels left
+        if(!useChannel) {
+          useChannel = this.channelNames[this.defaultIndex];
+          this.defaultIndex++;
+          if(this.defaultIndex >= this.channelNames.length ){
+            this.defaultIndex = 0;
+          }
+        }
+        this.lastDefault = useChannel;
+        return useChannel;
+
+      },
+      get freeListenerChannel() {
+        return this.getFreeChannel("listener");
+      },
+      get freeBroadcastChannel() {
+        return this.getFreeChannel("broadcast");
       },
       getChannels : function(){
         this.map = {};

@@ -33,6 +33,7 @@
         this.dispatchEvent(new CustomEvent('log', {bubbles: true, detail: message}));
       },
       attached: function() {
+        this.super();
         var that = this;
 
         var hasBroadcasts = Object.keys(this.ceci.broadcasts).length > 0 ? true : false;
