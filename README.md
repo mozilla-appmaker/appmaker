@@ -145,6 +145,10 @@ sudo gem install foreman
 NOTE: foreman's configuration file is Procfile in the root of the appmaker directory
 Foreman explanation: http://blog.daviddollar.org/2011/05/06/introducing-foreman.html
 
+NOTE FOR WINDOWS USERS: newer versions of Foreman may not work, and it is recommended
+to install v0.61.0, which is known to work. To install this specific version, use
+`gem install foreman -v0.61.0`
+
 ## How you can help
 
 * Fix issues by [submitting Pull Requests](#submitting-a-pull-request)
