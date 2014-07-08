@@ -2,11 +2,10 @@
       <div id="remix-icon"></div>
       <div id="remix-panel">
         <button id="close-remix-panel"></button>
-        <div id="remix-panel-content" class="hidden">
+        <div id="remix-panel-content">
           <div id="remix-panel-inner">
             <input type="email" id="remix-panel-email" placeholder="Your Email">
             <button id="remix-button" class="remix-button"><%- gettext("Mail me the remix link") %></button>
-            <div class="centered"><%- gettext("or") %></div>
             <button id="remix-now-button" class="remix-button"><%- gettext("Remix now") %></button>
             <div class="remix-explanation">
               <%- gettext("remixExplaination") %>
@@ -18,13 +17,11 @@
         (function(){
           var open = document.getElementById('remix-icon');
           var panel = document.getElementById('remix-panel');
-          var content = document.getElementById('remix-panel-content');
           var close = document.getElementById('close-remix-panel');
           var email = document.getElementById('remix-panel-email');
 
           open.onclick = function (e) {
             panel.classList.add('expanded');
-            content.classList.remove('hidden');
             open.classList.add('hidden');
             remixButton.disabled = false;
             email.disabled = false;
@@ -35,7 +32,6 @@
 
           function closeRemixPanel (e) {
             panel.classList.remove('expanded');
-            content.classList.add('hidden');
             open.classList.remove('hidden');
           }
 
@@ -62,10 +58,13 @@
           };
 
           var remixNowButton = document.querySelector("#remix-now-button");
-          remixNowButton.onclick = function (e) {
-            var remixURL = '<%= process.env.ASSET_HOST %>/remix?app=<%- remixURL %>';
-            window.open(remixURL);
-          };
+          if ('ontouchstart' in window) {
+            remixNowButton.classList.add('hidden');
+          } else {
+            remixNowButton.onclick = function (e) {
+              window.open('<%= process.env.ASSET_HOST %>/remix?app=<%- remixURL %>');
+            };
+          }
 
         })();
       </script>

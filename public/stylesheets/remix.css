@@ -50,7 +50,6 @@ button.remix-button {
   -moz-appearance: none;
   border: none;
   width: 100%;
-  display: block;
   border-radius: 2px;
   box-sizing:border-box;
   -moz-box-sizing:border-box; /* Firefox */
@@ -64,6 +63,10 @@ button.remix-button {
 
 button.remix-button:hover {
   background: #3f9fe8;
+}
+
+.hidden {
+  display: none;
 }
 
 button.remix-button:active {
