@@ -100,7 +100,7 @@ define(
 
         for(var k = 0; k < bricktags.length; k++){
           var tag = bricktags[k];
-          if(tags.indexOf(tag) == -1) {
+          if(tags.indexOf(tag) === -1) {
             tags.push(tag);
           }
         }
@@ -129,7 +129,7 @@ define(
 
             var components = categories[category] || [];
             for(var j = 0; j < components.length; j++){
-              if(name == components[j]){
+              if(name === components[j]){
                 var item = DesignerTray.buildItem(name);
                 DesignerTray.showCategory(category);
                 if (category === "basic") {
@@ -172,6 +172,15 @@ define(
         container.classList.remove("hidden");
         tag.classList.remove("hidden");
       },
+      hideCategory : function(category){
+        var container = document.querySelector('.' + category.toLowerCase());
+        var tag = document.querySelector('.brick-category a[data-category="'+ category.toLowerCase() + '"]');
+        container.classList.add("hidden");
+        tag.classList.add("hidden");
+        if (tag.classList.contains("selected-category")) {
+          this.filterCategory("all");
+        }
+      },
       buildCategory : function(category){
         var categoryContainer = document.querySelector("[data-category="+category.toLowerCase()+"]");
 
@@ -179,7 +188,7 @@ define(
         if(!categoryContainer) {
           var that = this;
 
-          if(category != "all") {
+          if(category !== "all") {
             //Build Category Container
             var container = document.createElement("div");
             container.classList.add("hidden");
@@ -195,7 +204,7 @@ define(
           var tagContainer = document.querySelector(".brick-category");
           var option = document.createElement("a");
 
-          if(category == "all") {
+          if(category === "all") {
             option.innerHTML = "All Bricks";
           } else {
             option.classList.add("hidden");
@@ -230,7 +239,7 @@ define(
         document.querySelector("#components").setAttribute("data-category",category);
 
         var categoryEls = document.querySelectorAll(".category-container");
-        if(category == "all"){
+        if(category === "all"){
           Array.prototype.forEach.call(categoryEls, function(el, i){
             el.style.display = "";
           });
@@ -250,7 +259,12 @@ define(
           knownComponents.splice(pos, 1);
           var componentTrayContainer = document.getElementById('components');
           var item = componentTrayContainer.querySelector("[name='" + name + "']");
-          item.parentNode.removeChild(item);
+          var parentNode = item.parentNode;
+          parentNode.removeChild(item);
+          if (parentNode.childNodes.length === 1) {
+            var category = parentNode.className.replace("category-container", "").trim()
+            this.hideCategory(category);
+          }
         }
       }
     };
@@ -289,7 +303,7 @@ define(
           });
 
           Array.prototype.forEach.call(categoryContainers, function(el, i){
-            if(el.querySelectorAll("designer-component-tray-item:not(.hide)").length == 0) {
+            if(el.querySelectorAll("designer-component-tray-item:not(.hide)").length === 0) {
               el.classList.add("no-results");
             } else {
               el.classList.remove("no-results");
