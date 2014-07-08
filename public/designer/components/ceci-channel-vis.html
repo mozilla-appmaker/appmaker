@@ -1,4 +1,4 @@
-<polymer-element name="ceci-channel-vis">
+<polymer-element name="ceci-channel-vis" extends="ceci-channels">
   <script>
   (function(){
     //Animation speeds, In seconds
@@ -7,7 +7,6 @@
     Polymer('ceci-channel-vis', {
       attached: function () {
         var that = this;
-        this.channels = this.parentNode.channels;
         window.addEventListener('channelUpdated', function(data){
           that.updateChannelVis();
         });

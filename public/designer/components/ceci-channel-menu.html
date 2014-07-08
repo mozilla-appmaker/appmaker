@@ -1,4 +1,4 @@
-<polymer-element name="ceci-channel-menu" attributes="channeltype">
+<polymer-element name="ceci-channel-menu" attributes="channeltype" extends="ceci-channels">
   <template>
     <link rel="stylesheet" href="/stylesheets/broadcast-menu.css" >
     <content>
@@ -36,7 +36,6 @@
         },
         attached: function () {
           var that = this;
-          this.channels = this.parentNode.channels;
           this.menuWrapper = this.shadowRoot.querySelector(".channel-menu-wrapper");
           this.menu = this.menuWrapper.querySelector(".channel-menu");
           this.hideMenu();
@@ -63,13 +62,21 @@
           });
 
           this.async(function () {
-            this.component = this.parentNode;
-            if(!this.menubuilt){
-              this.buildMenu(this.component);
-              this.adjustMenuPosition();
+            that.component = that.parentNode;
+            if(!that.menubuilt){
+              // Make sure the component is ready enough to start building a menu for it.
+              if (that.component.ceci) {
+                that.buildMenu(that.component);
+                that.adjustMenuPosition();
+              }
+              else {
+                that.component.addEventListener('CeciElementReady', function () {
+                  that.buildMenu(that.component);
+                  that.adjustMenuPosition();
+                });
+              }
             }
           });
-
         },
         toggleMenu : function(){
           this.menuWrapper.classList.toggle("open");
