@@ -262,7 +262,7 @@ define(
           var parentNode = item.parentNode;
           parentNode.removeChild(item);
           if (parentNode.childNodes.length === 1) {
-            var category = parentNode.className.replace("category-container", "").trim()
+            var category = parentNode.className.replace("category-container", "").trim();
             this.hideCategory(category);
           }
         }
