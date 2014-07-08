@@ -301,6 +301,8 @@
             while (!name || name === l10n.get("Unsaved App")) {
               name = prompt("Please name your app first:");
               if(name === null) break;
+              app.setAttribute("name", name);
+              app.setAttribute("appid", "ceci-app-"+uuid());
             }
             if(!name) {
               return reporter.errorReport("Save was cancelled.");
