@@ -102,7 +102,8 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
             remixURL: remixUrl,
             bundles: app.locals.bundles,
             components: coreComponents.concat(appComponents),
-            userComponents: userComponents
+            userComponents: userComponents,
+            manifestUrl: remoteURLs.manifest
           });
 
           var installStr = templates.install({

@@ -1,0 +1,27 @@
+.install-spinner {
+  background-image: url(../images/icon_gear.png);
+  height: 24px;
+  width: 24px;
+  background-size: 16px auto;
+  background-position: center center;
+  background-repeat: no-repeat;
+  display: none;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+.install-spinner.spinning {
+  display: inline-block;
+  -moz-animation: linear 2s gearspin;
+  -moz-animation-iteration-count: infinite;
+}
+
+@-moz-keyframes gearspin {
+  0% { -moz-transform: rotate(0deg)}
+  100% { -moz-transform: rotate(360deg)}
+}
+
+@-webkit-keyframes gearspin {
+  0%    { -webkit-transform: rotate(0deg)}
+  100%  { -webkit-transform: rotate(360deg)}
+}
