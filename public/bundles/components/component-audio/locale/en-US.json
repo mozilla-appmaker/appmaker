@@ -1,14 +1,16 @@
 {
-  "ceci-audio/description": "Plays a sound.",
-  "ceci-audio/name": "Audio Clip",
-  "ceci-audio/play/description": "Plays the audio clip.",
-  "ceci-audio/play/label": "Play",
-  "ceci-audio/source/label": "Audio source URL",
-  "ceci-audio/source/description": "The URL for the sound clip you want to play",
-  "ceci-audio/speed/label": "Audio playback rate",
-  "ceci-audio/speed/description": "1 for normal speed, 2 for twice speed, -1 for reverse, etc.",
-  "ceci-audio/attributes/label/label": "Label",
-  "ceci-audio/attributes/label/description": "Text shown on the button.",
-  "ceci-audio/tapecolor/label": "Value",
-  "ceci-audio/tapecolor/description": "Color of the tape"
+	"ceci-audio": "Audio Clip",
+	"ceci-audio/description": "Broadcasts a \"click\" when clicked.",
+	"ceci-audio/attributes/label": "Play",
+	"ceci-audio/attributes/label/label": "Label",
+	"ceci-audio/attributes/label/description": "Text shown on the button.",
+	"ceci-audio/attributes/value": "Play",
+	"ceci-audio/attributes/value/label": "Value",
+	"ceci-audio/attributes/value/description": "Value sent by the button.",
+	"ceci-audio/attributes/textcolor/label": "Text Color",
+	"ceci-audio/attributes/textcolor/description": "Color of the text on the button's label.",
+	"ceci-audio/attributes/buttoncolor/label": "Button Color",
+	"ceci-audio/attributes/buttoncolor/description": "Background color of the button.",
+	"ceci-audio/attributes/buttonactivecolor/label": "Button Active Color",
+	"ceci-audio/attributes/buttonactivecolor/description": "Background color of the button while it is being clicked or tapped."
 }

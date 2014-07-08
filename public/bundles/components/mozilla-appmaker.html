@@ -586,7 +586,7 @@
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-audio" attributes="source speed label value tapecolor" extends="ceci-element" label="dogs.wav" source="http://soundjax.com/reddo/21812%5Edog_bark_x.mp3" tapecolor="#2181cb" speed="1.0" assetpath="component-audio/">
+<polymer-element name="ceci-audio" attributes="source speed label value tapecolor volume" extends="ceci-element" label="dogs.wav" volume=".5" source="http://soundjax.com/reddo/21812%5Edog_bark_x.mp3" tapecolor="#2181cb" speed="1.0" assetpath="component-audio/">
   <ceci-definition>
     {
       "tags": ["sound", "audio", "music"],
@@ -596,9 +596,17 @@
       "broadcasts": {},
       "listeners": {
         "play": {
-          "description": "Plays the audio clip.",
+          "description": "Play the audio clip.",
           "label": "Play",
           "default": true
+        },
+        "pause": {
+          "description": "Pause the audio clip.",
+          "label": "Pause"
+        },
+        "stopsound": {
+          "description": "Stop the audio clip.",
+          "label": "Stop"
         }
       },
       "attributes": {
@@ -607,6 +615,12 @@
           "description": "The URL for the sound clip you want to play",
           "editable": "text",
           "listener": true
+        },
+        "volume": {
+          "label": "Volume",
+          "editable": "number",
+          "min" : 0,
+          "max" : 1
         },
         "speed": {
           "label": "Audio playback rate",
@@ -690,6 +704,25 @@
   border-radius: 100px;
 }
 
+:host .cantplay .right,
+:host .cantplay .left {
+  -webkit-animation: cantplay linear .075s 5;
+  animation: cantplay linear .075s 5;
+}
+
+@-webkit-keyframes cantplay {
+  0% { -webkit-transform: rotate(0deg);}
+  50% { -webkit-transform: rotate(15deg);}
+  100% { -webkit-transform: rotate(0deg);}
+}
+
+@keyframes cantplay {
+  0% { transform: rotate(0deg);}
+  50% { transform: rotate(15deg);}
+  100% { transform: rotate(0deg);}
+}
+
+
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg);}
   100% { -webkit-transform: rotate(360deg);}
@@ -711,6 +744,8 @@
   -webkit-animation: spin linear 1.5s infinite;
   animation: spin linear 1.5s infinite;
 }
+
+
 
 :host .right {
   right: -20px;
@@ -737,7 +772,7 @@
         <div class="circle right"></div>
       </div>
     </div>
-    <audio id="sound" src="component-audio/sounds/snare.mp3" preload="preload"></audio>
+    <audio id="sound" src="component-audio/sounds/snare.mp3" preload="auto"></audio>
     <shadow></shadow>
   </template>
   <script>
@@ -746,23 +781,48 @@
         this.super();
         var that = this;
         this.$.sound.addEventListener("ended",function(){
-          that.stopSound();
+          that.stopsound();
         });
       },
-      stopSound : function(){
-        this.$.wrapper.classList.remove("playing");
-      },
-      play: function() {
-        this.$.wrapper.classList.add("playing");
+      state : "stopped",
+      stopsound : function(){
         this.$.sound.pause();
         this.$.sound.currentTime = 0;
-        this.$.sound.play();
+        this.$.wrapper.classList.remove("playing");
+        this.state = "stopped";
+      },
+      play: function() {
+        var readyState = this.$.sound.readyState;
+        if(readyState != 0) {
+          this.$.wrapper.classList.add("playing");
+          if(this.state == "paused") {
+            this.$.sound.play();
+            this.state = "playing";
+          } else {
+            this.$.sound.pause();
+            this.$.sound.currentTime = 0;
+            this.$.sound.play();
+            this.state = "playing";
+          }
+        } else {
+          this.$.wrapper.classList.remove("cantplay");
+          this.$.wrapper.offsetWidth = this.$.wrapper.offsetWidth;
+          this.$.wrapper.classList.add("cantplay");
+        }
+      },
+      pause : function(){
+        this.$.wrapper.classList.remove("playing");
+        this.$.sound.pause();
+        this.state = "paused";
       },
       sourceChanged: function(oldValue, newValue) {
         this.$.sound.src = newValue;
       },
       setSpeed: function(channel, value) {
         this.speedChanged(this.$.sound.playbackRate || 1, value);
+      },
+      volumeChanged : function(oldValue, newValue){
+        this.$.sound.volume = newValue;
       },
       tapecolorChanged: function (oldValue, newValue) {
         this.$.wrapper.style.background = newValue;
@@ -2363,7 +2423,7 @@
     </script>
 </polymer-element>
 
-<polymer-element name="ceci-cowbell" attributes="bellcolor backgroundcolor" bellcolor="#FFFFFF" backgroundcolor="#4DB227" extends="ceci-element" assetpath="component-cowbell/">
+<polymer-element name="ceci-cowbell" attributes="bellcolor volume backgroundcolor" bellcolor="#FFFFFF" backgroundcolor="#4DB227" volume=".5" extends="ceci-element" assetpath="component-cowbell/">
   <ceci-definition>
     {
       "tags": ["button", "click", "tap"],
@@ -2382,6 +2442,12 @@
         "backgroundcolor": {
           "label": "Background Color",
           "editable": "color"
+        },
+        "volume": {
+          "label": "Volume",
+          "editable": "number",
+          "min" : 0,
+          "max" : 1
         },
         "bellcolor": {
           "label": "Cowbell Color",
@@ -2430,7 +2496,7 @@
     <div id="wrapper" class="off" on-mousedown="{{kickon}}" on-mouseup="{{kickoff}}">
       <div id="bell"></div>
     </div>
-    <audio id="kicksound" src="component-cowbell/sounds/sound.mp3" preload="preload"></audio>
+    <audio id="kicksound" src="component-cowbell/sounds/sound.mp3" preload="auto"></audio>
     <shadow></shadow>
   </template>
   <script>
@@ -2450,15 +2516,13 @@
         var that = this;
         window.setTimeout(function(){
           that.kickoff();
-        },100)
+        },100);
       },
       kickoff : function(){
         this.$.wrapper.classList.remove("hit");
       },
-      snare: function () {
-        this.$.snare.pause();
-        this.$.snare.currentTime = 0;
-        this.$.snare.play();
+      volumeChanged : function(oldValue, newValue){
+        this.$.kicksound.volume = newValue;
       },
       backgroundcolorChanged: function (oldValue, newValue) {
         this.$.wrapper.style.background = newValue;
@@ -4270,12 +4334,12 @@ header {
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-kickdrum" attributes="stickcolor backgroundcolor drumcolor" drumcolor="#d60e0e" stickcolor="#000000" backgroundcolor="#FFFFFF" extends="ceci-element" assetpath="component-kickdrum/">
+<polymer-element name="ceci-kickdrum" attributes="stickcolor backgroundcolor drumcolor volume" drumcolor="#d60e0e" stickcolor="#000000" backgroundcolor="#FFFFFF" volume=".5" extends="ceci-element" assetpath="component-kickdrum/">
   <ceci-definition>
     {
-      "tags": ["button", "click", "tap"],
+      "tags": ["kick", "drum"],
       "thumbnail": "./thumbnail.png",
-      "description": "Broadcasts a \"click\" when clicked.",
+      "description": "Plays a kickdrum sound when activated",
       "name": "Kick Drum",
       "broadcasts": {},
       "listeners": {
@@ -4289,6 +4353,12 @@ header {
         "stickcolor": {
           "label": "Stick Color",
           "editable": "color"
+        },
+        "volume": {
+          "label": "Volume",
+          "editable": "number",
+          "min" : 0,
+          "max" : 1
         },
         "backgroundcolor": {
           "label": "Background Color",
@@ -4387,7 +4457,7 @@ header {
   display: none;
 }
 </style>
-    <div id="kick" on-mousedown="{{kickon}}" on-mouseup="{{kickoff}}">
+    <div id="kick" on-pointerdown="{{kickon}}" on-pointerup="{{kickoff}}">
       <div id="drum">
         <div id="face"></div>
       </div>
@@ -4395,7 +4465,7 @@ header {
         <div id="ball"></div>
       </div>
     </div>
-    <audio id="kicksound" src="component-kickdrum/sounds/kick.mp3" preload="preload"></audio>
+    <audio id="kicksound" src="component-kickdrum/sounds/kick.mp3" preload="auto"></audio>
     <shadow></shadow>
   </template>
   <script>
@@ -4404,7 +4474,7 @@ header {
         this.super();
         var that = this;
       },
-      kickon: function () {
+      kickon: function (e) {
         this.$.kicksound.pause();
         this.$.kicksound.currentTime = 0;
         this.$.kicksound.play();
@@ -4417,8 +4487,11 @@ header {
           that.kickoff();
         },100)
       },
-      kickoff : function(){
+      kickoff : function(e){
         this.$.kick.classList.remove("on");
+      },
+      volumeChanged : function(oldValue, newValue){
+        this.$.kicksound.volume = newValue;
       },
       stickcolorChanged: function (oldValue, newValue) {
         this.$.stick.style.background = newValue;
@@ -8201,7 +8274,7 @@ header {
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-snaredrum" attributes="drumcolor backgroundcolor stickcolor" drumcolor="#FFFFFF" stickcolor="#000000" backgroundcolor="#ff9900" extends="ceci-element" speed="1.0" assetpath="component-snaredrum/">
+<polymer-element name="ceci-snaredrum" attributes="drumcolor backgroundcolor stickcolor volume" drumcolor="#FFFFFF" stickcolor="#000000" backgroundcolor="#ff9900" extends="ceci-element" volume=".5" assetpath="component-snaredrum/">
   <ceci-definition>
     {
       "tags": ["music", "instrument", "tap"],
@@ -8220,6 +8293,12 @@ header {
         "stickcolor": {
           "label": "Stick Color",
           "editable": "color"
+        },
+        "volume": {
+          "label": "Volume",
+          "editable": "number",
+          "min" : 0,
+          "max" : 1
         },
         "backgroundcolor": {
           "label": "Background Color",
@@ -8298,7 +8377,7 @@ header {
       <div id="drum"></div>
       <div id="stick"></div>
     </div>
-    <audio id="kicksound" src="component-snaredrum/sounds/snare.mp3" preload="preload"></audio>
+    <audio id="kicksound" src="component-snaredrum/sounds/snare.mp3" preload="auto"></audio>
     <shadow></shadow>
   </template>
   <script>
@@ -8318,31 +8397,13 @@ header {
         var that = this;
         window.setTimeout(function(){
           that.kickoff();
-        },100)
+        },100);
       },
       kickoff : function(){
         this.$.kick.classList.remove("hit");
       },
-      snare: function () {
-        this.$.snare.pause();
-        this.$.snare.currentTime = 0;
-        this.$.snare.play();
-      },
-      sourceChanged: function(oldValue, newValue) {
-        this.$.clip.src = newValue;
-      },
-      setSpeed: function(channel, value) {
-        this.speedChanged(this.$.snare.playbackRate || 1, value);
-        this.speedChanged(this.$.kick.playbackRate || 1, value);
-      },
-      speedChanged: function(oldValue, newValue) {
-        try  {
-          var f = parseFloat(newValue);
-          if (f) {
-            this.$.kick.playbackRate = parseFloat(newValue);
-            this.$.snare.playbackRate = parseFloat(newValue);
-          }
-        } catch (e) {}
+      volumeChanged : function(oldValue, newValue){
+        this.$.kicksound.volume = newValue;
       },
       stickcolorChanged: function (oldValue, newValue) {
         this.$.stick.style.background = newValue;
