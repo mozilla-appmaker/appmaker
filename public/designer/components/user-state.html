@@ -1,26 +1,15 @@
 <polymer-element name="user-state" attributes="user editingmode">
   <template>
     <link rel="stylesheet" href="/stylesheets/user-state.css">
-
-<!--
-    commented off for https://github.com/mozilla-appmaker/appmaker/issues/1618, with the intention of turning it back on after Maker Party
-
-    <a id="collaborate" class="button" on-click="{{collaborateClick}}">
-      {{ {'Collaborate': !user.collaborating} | tokenList}}
-      {{ {'End Collaboration': !!user.collaborating} | tokenList}}
-    </a>
-
--->
-    <a id="signin" class="button {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">Sign In</a>
-    <div id="signInProgress"></div>
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.css" >
 
     <div class="dropdowns {{ {hidden: user.state == 'signedout'} | tokenList }}">
 
-      <div class="menu-wrapper user-menu">
-        <a id="email" class="menu-button button" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">
+      <div class="menu-wrapper user-menu button">
+        <div id="email" class="menu-button user-menu-button {{ {hidden: user.state == 'signedout'} | tokenList}}" on-mousedown="{{toggleMenu}}">
           <span class="icon"></span>
           {{user.email}}
-        </a>
+        </div>
         <div class="menu">
           <h3 id="myappsheading">My apps</h3>
           <span id="noApps">You don't have any saved apps!</span>
@@ -35,11 +24,10 @@
           <a id="signout" class="button" on-click="{{signoutClick}}">Sign Out</a>
         </div>
       </div>
-      <div class="menu-wrapper app-menu">
-        <a class="menu-button button" on-mousedown="{{toggleMenu}}" class="button btn-std btn-md {{ {hidden: user.state == 'signedout'} | tokenList}}">
-          <span class="icon"></span>
-          <span id="App">App</span>
-        </a>
+      <div class="menu-wrapper app-menu button">
+        <div class="menu-button {{ {hidden: user.state == 'signedout'} | tokenList}}" on-mousedown="{{toggleMenu}}">
+          <div class="icon-reorder"></div>
+        </div>
         <div class="menu app-actions menu-options">
           <a id="saveAppAs">Save As</a>
           <a class="saved" id="saveApp">Save</a>
@@ -52,6 +40,17 @@
     </div>
 
     <a id="newApp" class="button">New App</a>
+<!--
+    commented off for https://github.com/mozilla-appmaker/appmaker/issues/1618, with the intention of turning it back on after Maker Party
+
+    <a id="collaborate" class="button" on-click="{{collaborateClick}}">
+      {{ {'Collaborate': !user.collaborating} | tokenList}}
+      {{ {'End Collaboration': !!user.collaborating} | tokenList}}
+    </a>
+
+-->
+    <a id="signin" class="button {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">Sign In</a>
+    <div id="signInProgress" class="hidden"></div>
   </template>
   <script>
   (function() {
@@ -110,7 +109,6 @@
           that.$.myappsheading.innerHTML = l10n.get("My apps");
           that.$.noApps.innerHTML = l10n.get("You don't have any saved apps!");
           that.$.signout.innerHTML = l10n.get("Sign Out");
-          that.$.App.innerHTML = l10n.get("App");
           that.$.saveAppAs.innerHTML = l10n.get("Save As");
           that.$.saveApp.innerHTML = l10n.get("Save");
           that.$.renameApp.innerHTML = l10n.get("Rename");
@@ -353,14 +351,14 @@
           }
         },
         signInStarted: function(){
-          this.$.signInProgress.style.display = "block";
+          this.$.signInProgress.classList.remove("hidden");
         },
         signInFinished: function(){
-          this.$.signInProgress.style.display = "none";
-          this.$.signin.style.display = "none";
+          this.$.signInProgress.classList.add("hidden");
+          this.$.signin.classList.add("hidden");
         },
         signedOut: function(){
-          this.$.signin.style.display = "block";
+          this.$.signin.classList.remove("hidden");
         },
         failedAppLoad: function(){
           application.clearCurrentApp();
@@ -702,9 +700,9 @@
               });
 
               if(count == 0){
-                noApps.style.display = "block";
+                noApps.classList.remove("hidden");
               } else {
-                noApps.style.display = "none";
+                noApps.classList.add("hidden");
               }
             } catch (e) {
               reporter.errorReport(e);
