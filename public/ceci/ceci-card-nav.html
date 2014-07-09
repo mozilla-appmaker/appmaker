@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="/stylesheets/cards.css" >
   </template>
   <script>
-  require(['l10n', 'analytics'], function(l10n, analytics) {
+  require(['jquery', 'l10n', 'analytics'], function($, l10n, analytics) {
     Polymer('ceci-card-nav', {
       checked : false,
       attached : function(){
