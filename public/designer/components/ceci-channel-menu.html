@@ -53,13 +53,11 @@
             optionsWrapper.appendChild(option);
           }
 
-          window.addEventListener("menuOpen",function(){
+          this.onHideMenu = function(){
             that.hideMenu();
-          });
-
-          window.addEventListener("designerClick",function(e){
-            that.hideMenu();
-          });
+          };
+          window.addEventListener("menuOpen", this.onHideMenu);
+          window.addEventListener("designerClick", this.onHideMenu);
 
           this.async(function () {
             that.component = that.parentNode;
@@ -77,6 +75,10 @@
               }
             }
           });
+        },
+        detached: function() {
+          window.removeEventListener("menuOpen", this.onHideMenu);
+          window.removeEventListener("designerClick", this.onHideMenu);
         },
         toggleMenu : function(){
           this.menuWrapper.classList.toggle("open");
