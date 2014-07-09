@@ -49,6 +49,7 @@ var MAX_FONT_AGE_MS = 1000 * 60 * 60 * 24 * 180;
 
 var webmakerAuth = new WebmakerAuth({
   loginURL: process.env.LOGINAPI,
+  authLoginURL: process.env.LOGINAPI_WITH_AUTH,
   secretKey: process.env.COOKIE_SECRET,
   forceSSL: process.env.FORCE_SSL,
   domain: process.env.COOKIE_DOMAIN
