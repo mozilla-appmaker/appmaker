@@ -79,7 +79,8 @@ A short explanation of a complete `.env` file:
 
 ```
 MONGO_URL: REQUIRED - the URI for your mongod instance and database, for example mongodb://localhost/appmakerdev (or whatever your database is named)
-LOGINAPI: REQUIRED - The URI of a Webmaker login server to use for user authentication. for exmaple http://testuser:password@localhost:3000
+LOGINAPI: REQUIRED - The URI of a Webmaker login server to use for user authentication. for exmaple http://localhost:3000
+LOGINAPI_WITH_AUTH: - The URI of a Webmaker login server, including basic authentication credentials. for exmaple http://testuser:password@localhost:3000
 COOKIE_SECRET: A long, complex string for cookie encryption (NOTE: You define this for your local use, the string can be anything).
 FORCE_SSL: If using SSL, set this to true.
 STORE: Storage approach for publishing apps. `local` is the default, `s3` requires additional environment variables (prefixed by S3_)
