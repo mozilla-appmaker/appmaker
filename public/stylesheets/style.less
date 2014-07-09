@@ -10,6 +10,7 @@
 
 html {
   font-size: 62.5%; /* so rem-based font sizes look right */
+  font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 body,html {
@@ -475,7 +476,8 @@ button.done {
 
 .top-nav {
   height: 50px;
-  background-color: @brand-darkblue;
+  border-bottom: solid 1px #C5C5C5;
+  background: white;
   position: fixed;
   z-index: 100;
   top: 0px;
@@ -501,8 +503,6 @@ button.done {
   background-position: 4px 3px;
   background-size: 160px;
 }
-
-
 
 .container .garbage-bin {
   display: none;
@@ -620,23 +620,25 @@ li.tab {
 }
 
 .right-column label {
-  color: #b5bac2;
+  color: #555;
   margin-bottom: 2px;
   display: block;
 }
 
 .editable-section .tray-tabs {
   overflow: auto;
-
-  margin-top: 10px;
+  background: #40464f;
+  border-bottom: solid 4px #3fb58e;
 }
 
 .editable-section .tray-tabs a {
   display: block;
   border-radius: 2px 2px 0 0 ;
   float: left;
-  padding: 5px 10px;
-  color: #999;
+  font-size: 15px;
+  padding: 10px 10px;
+  color: white;
+
 }
 
 .editable-section .tray-tabs a:hover {
@@ -646,15 +648,14 @@ li.tab {
 }
 
 .editable-section .tray-tabs a.selected-tab {
-  background: #40464f;
-  color: #EEE;
+  background: #3fb58e;
+  color: white;
 }
 
 .section {
-  border-bottom: 1px solid #454B56;
-  background: #40464f;
-  padding: 10px 15px;
   height: 100%;
+  padding: 10px 20px;
+
 }
 
 .tab-sections .section {
@@ -663,7 +664,6 @@ li.tab {
 
 .editable-section .editable-header {
   font-size: 18px;
-  color: #fff;
   font-weight: 400;
   line-height: 30px;
   text-align: left;
@@ -1350,10 +1350,9 @@ ul.component-actions {
 .editable-section textarea {
   font-size: 15px;
   width: 100%;
-  background-color: #181b1f;
-  border: none;
+  border: solid 1px #C5C5C5;
   border-radius: 1px;
-  color: #fff;
+  color: #555;
   outline: none;
 }
 
@@ -1788,10 +1787,6 @@ button.return-btn {
   background-position: left;
 }
 
-.section {
-  border-bottom: 1px solid #31353C;
-  padding: 10px 20px;
-}
 
 .log-header {
   padding: 10px 20px 0px 20px;
@@ -1825,7 +1820,6 @@ button.return-btn {
 .remix-mode .editable-section .tray-tabs [tab=css]{
   display: block;
 }
-
 
 .tab-sections .section-customize {
   display: block;
@@ -2101,6 +2095,7 @@ button.return-btn {
   right: 0px;
   position: relative;
   min-height:100%;
+  background: #e9edf0;
 }
 
 .container {
@@ -2135,18 +2130,14 @@ button.return-btn {
   bottom: 0;
   height: ~"calc(100% - 50px)";
   position: fixed;
-  background-color: #212429;
+  background-color: white;
+  border-left: solid 1px #C5C5C5;
+
 
   z-index: 1;
 }
 
 .tray {
-  .tray-header {
-    padding: 10px 10px 0px 10px;
-    font-size: 20px;
-    color: #666;
-    position: relative;
-  }
 
   position: fixed;
   left: 0px;
@@ -2155,7 +2146,18 @@ button.return-btn {
   z-index: 1;
   display: flex;
   flex-direction: column;
-  background: #DDD;
+  border-right: solid 1px #C5C5C5;
+  background: white;
+
+  .tray-header {
+    padding: 10px 10px 0px 10px;
+    font-size: 20px;
+    color: #666;
+    position: relative;
+  }
+
+
+
 }
 
 

@@ -46,11 +46,35 @@
     min-width: 50px;
     padding-left: 28px;
     padding-right: 50px;
+
+    padding: 3px 30px 5px 10px;
+    background-color: white;
     background-image: url(/images/arrow-down.png);
     background-size: 24px;
     background-repeat: no-repeat;
     background-position: right 10px center;
-    color:rgba(255,255,255,.9);
+    color: #777;
+    border: solid 1px #C5C5C5;
+    font-size: 15px;
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &:after {
+      content: ' ';
+      display: block;
+      position: absolute;
+      top: 50%;
+      right: 17px;
+      margin-top: -3px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 5px 5px 0 5px;
+      border-color: #333 transparent transparent transparent;
+    }
+
   }
 
   #signout {
@@ -74,7 +98,7 @@
   }
 
   .icon {
-    display: block;
+    display: none;
     position: absolute;
     left: 5px;
     right: 0px;
@@ -97,8 +121,26 @@
     background-image: url(/images/icon_user_lookdown.png);
   }
 
-  .menu-open .user-menu-button {
-    background-image: url(/images/arrow-up.png);
+  .menu-open {
+    .menu-button:after {
+      content: ' ';
+      display: block;
+      position: absolute;
+      top: 50%;
+      right: 17px;
+      margin-top: -3px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0px 5px 5px 5px;
+      border-color:  transparent transparent #333 transparent;
+    }
+
+  }
+
+  .menubutton {
+    display: inline-block;
+
   }
 
   .menu {
@@ -118,9 +160,7 @@
   }
 
   .menu-open  {
-    .menu-button {
-      color: rgba(255,255,255,1);
-    }
+
     .menu {
       display: block;
     }
