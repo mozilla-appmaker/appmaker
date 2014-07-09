@@ -1,6 +1,10 @@
 @import "variables.less";
 @import "mixins.less";
 
+:host([editingmode="draft"]) .menu a.saved {
+  display: none;
+}
+
 :host {
   color: white;
   position: relative;
@@ -265,10 +269,6 @@
   }
 
   .hidden {
-    display: none;
-  }
-
-  &[editingmode="draft"] .menu a.saved {
     display: none;
   }
 
