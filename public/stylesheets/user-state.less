@@ -28,7 +28,6 @@
 
   .button {
     cursor: pointer;
-    font-size: 16px;
     text-align: left;
     padding: 4px 12px;
   }
@@ -46,15 +45,12 @@
     min-width: 50px;
     padding-left: 28px;
     padding-right: 50px;
-
     padding: 3px 30px 5px 10px;
     background-color: white;
-    background-image: url(/images/arrow-down.png);
     background-size: 24px;
     background-repeat: no-repeat;
     background-position: right 10px center;
     color: #777;
-    border: solid 1px #C5C5C5;
     font-size: 15px;
 
     &:hover {
@@ -65,9 +61,8 @@
       content: ' ';
       display: block;
       position: absolute;
-      top: 50%;
-      right: 17px;
-      margin-top: -3px;
+      top: 11px;
+      right: 11px;
       width: 0;
       height: 0;
       border-style: solid;
@@ -84,6 +79,7 @@
 
   #newApp {
     .green-button;
+    font-size: 15px;
   }
 
   #addComponent {
@@ -122,20 +118,10 @@
   }
 
   .menu-open {
-    .menu-button:after {
-      content: ' ';
-      display: block;
-      position: absolute;
-      top: 50%;
-      right: 17px;
-      margin-top: -3px;
-      width: 0;
-      height: 0;
-      border-style: solid;
+    .user-menu-button:after {
       border-width: 0px 5px 5px 5px;
       border-color:  transparent transparent #333 transparent;
     }
-
   }
 
   .menubutton {
@@ -178,7 +164,9 @@
     display: inline-block;
     position: relative;
     margin-right: 8px;
-    background-color: @brand-brightblue;
+    background-color: white;
+    color: #777;
+    border: solid 1px #C5C5C5;
 
     &.button {
       padding: 0;
@@ -186,7 +174,6 @@
 
     &:hover {
       text-decoration: none;
-      background-color: @brand-brightblue-hover;
     }
   }
 
