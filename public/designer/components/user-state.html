@@ -2,10 +2,15 @@
   <template>
     <link rel="stylesheet" href="/stylesheets/user-state.css">
 
+<!--
+    commented off for https://github.com/mozilla-appmaker/appmaker/issues/1618, with the intention of turning it back on after Maker Party
+
     <a id="collaborate" class="button" on-click="{{collaborateClick}}">
       {{ {'Collaborate': !user.collaborating} | tokenList}}
       {{ {'End Collaboration': !!user.collaborating} | tokenList}}
     </a>
+
+-->
     <a id="signin" class="button {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">Sign In</a>
     <div id="signInProgress"></div>
 
