@@ -277,6 +277,7 @@ define(
         var searchValue = searchBox.value.trim().toLowerCase();
         var componentsContainer = document.querySelector('#components');
         if (searchValue.length > 0) {
+          DesignerTray.filterCategory("all");
           CeciDesigner.forEachComponent(function (componentTag) {
             var menuElement = componentsContainer.querySelector('designer-component-tray-item[name="' + componentTag + '"]');
 
