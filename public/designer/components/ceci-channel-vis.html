@@ -8,8 +8,6 @@
       attached: function () {
         var that = this;
         this.onChannelUpdated = function() {
-        var channelsEl = document.querySelector("ceci-channels");
-        this.channels = channelsEl.channels;
           that.updateChannelVis();
         };
         window.addEventListener('channelUpdated', this.onChannelUpdated);
