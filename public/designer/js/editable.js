@@ -125,11 +125,12 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
     'color': function (element, attributeName, title, value, definition) {
       var e = $(
         '<div><label>' + title + '</label>' +
-        '<input type="text" value="' + value + '">' +
+        '<div class="colorpicker"><div class="swatch" style="background: '+value+'"></div><input type="text" value="' + value + '"/></div>' +
         '</div>'
       );
 
       var input = e.find('input');
+      var swatch = e.find('.swatch');
       var oldColor;
 
       input.colorpicker({
@@ -137,11 +138,8 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
         },
         select: function (event, color) {
           input[0].value = '#' + color.formatted;
+          swatch.css('background', '#' + color.formatted);
           element.setAttribute(attributeName, '#' + color.formatted);
-        },
-        close: function (event, color) {
-        },
-        ok: function (event, color) {
         },
         open: function (event, color) {
           oldColor = input[0].value;
@@ -149,6 +147,11 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
         cancel: function (event, color) {
           element.setAttribute(attributeName, oldColor);
         }
+      });
+
+      swatch.on("click",function(){
+        input.focus();
+        return false;
       });
 
       e.on('change', function (evt) {
