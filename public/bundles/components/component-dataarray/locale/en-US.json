@@ -1,0 +1,16 @@
+{
+  "ceci-dataarray/name": "Data Array",
+  "ceci-dataarray/description": "Pulls data from collections and provides an indexable list.",
+  "ceci-dataarray/currentValue/label": "Value",
+  "ceci-dataarray/currentValue/description": "Current value changed.",
+  "ceci-dataarray/next/label": "Next Item",
+  "ceci-dataarray/next/description": "Moves to the next item in the data.",
+  "ceci-dataarray/previous/label": "Previous Item",
+  "ceci-dataarray/previous/description": "Moves to the previous item in the data.",
+  "ceci-dataarray/index/label": "Index",
+  "ceci-dataarray/index/description": "Index of the array.",
+  "ceci-dataarray/collection/label": "Collection",
+  "ceci-dataarray/collection/description": "Collection to use.",
+  "ceci-dataarray/field/label": "Field",
+  "ceci-dataarray/field/description": "Field of the collection to use."
+}

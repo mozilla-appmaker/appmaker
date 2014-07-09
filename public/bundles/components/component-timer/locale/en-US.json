@@ -1,0 +1,14 @@
+{
+  "ceci-timer/name": "Timer",
+  "ceci-timer/description": "Counts elapsed time and warns when specified time is exhausted!",
+  "ceci-timer/timeup/label": "Time is Up",
+  "ceci-timer/timeup/description": "Time is up!",
+  "ceci-timer/start/label": "Start",
+  "ceci-timer/start/description": "Starts the timer.",
+  "ceci-timer/pause/label": "Pause",
+  "ceci-timer/pause/description": "Pauses the timer.",
+  "ceci-timer/reset/label": "Reset",
+  "ceci-timer/reset/description": "Resets the timer.",
+  "ceci-timer/time/label": "Time",
+  "ceci-timer/time/description": "Amount of time to elapse"
+}

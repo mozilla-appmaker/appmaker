@@ -2737,6 +2737,161 @@
   </script>
 </polymer-element>
 
+<script src="component-dataarray/popcorn.js"></script>
+<polymer-element name="ceci-dataarray" attributes="url" extends="ceci-element" assetpath="component-dataarray/">
+  <ceci-definition>
+    {
+      "tags": ["data", "array"],
+      "name": "Data Array",
+      "description": "Pulls data from collections and provides an indexable list.",
+      "broadcasts": {
+        "currentValue": {
+          "label": "Value",
+          "description": "Current value changed."
+        }
+      },
+      "listeners": {
+        "next": {
+          "label": "Next Item",
+          "description": "Moves to the next item in the data."
+        },
+        "previous": {
+          "label": "Previous Item",
+          "description": "Moves to the previous item in the data."
+        }
+      },
+      "attributes": {
+        "index": {
+          "label": "Index",
+          "description": "Index of the array.",
+          "editable": "number",
+          "listener": true
+        },
+        "collection": {
+          "label": "Collection",
+          "description": "Collection to use.",
+          "editable": "select",
+          "options": [],
+          "listener": true
+        },
+        "field": {
+          "label": "Field",
+          "description": "Field of the collection to use.",
+          "editable": "select",
+          "options": [],
+          "listener": true
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <style>
+      :host {
+        display: block;
+        min-height: 50px;
+      }
+    </style>
+    <div id="container">{{_value}}</div>
+    <shadow></shadow>
+    <content></content>
+  </template>
+  <script>
+    function waitForCeciCollections (callback) {
+      var ceciCollections = document.querySelector('ceci-collections');
+      if (ceciCollections.getCollections) {
+        callback(ceciCollections);
+      }
+      else {
+        if (ceciCollections.async) {
+          ceciCollections.async(function (){
+            callback(ceciCollections);
+          });
+        }
+        else {
+          setTimeout(function () {
+            waitForCeciCollections(callback);
+          }, 10);
+        }
+      }
+    }
+
+    Polymer('ceci-dataarray', {
+      index: 0,
+      _value: '',
+      _data: [],
+      ready: function () {
+        this.super();
+        var ceciCollections = document.querySelector('ceci-collections');
+        ceciCollections.addEventListener('collectionchange', this.updateCollections.bind(this));
+        this.updateCollections(function () {
+          if (ceciCollections.getCollections().length) {
+            this.collection = this.collection || ceciCollections.getCollections()[0].name;
+            this.collectionChanged();
+            if (ceciCollections.getCollection(this.collection).getFields().length) {
+              this.field = this.field || ceciCollections.getCollection(this.collection).getFields()[0].name;
+            }
+          }
+        }.bind(this));
+      },
+      indexChanged: function () {
+        this._updateValue();
+      },
+      _updateValue: function () {
+        this._value = this._data[+this.index][this.field];
+        this.broadcast('currentValue', this._value);
+      },
+      fieldChanged: function () {
+        var that = this;
+        waitForCeciCollections(function (ceciCollections) {
+          if (that.collection &&
+              that.field &&
+              ceciCollections.getCollection(that.collection) &&
+              ceciCollections.getCollection(that.collection).getField(that.field)) {
+
+            var collection = ceciCollections.getCollection(that.collection);
+            that._data = collection.data;
+            that._updateValue();
+          }
+        });
+      },
+      collectionChanged: function () {
+        var that = this;
+        waitForCeciCollections(function (ceciCollections) {
+          var collection = ceciCollections.getCollection(that.collection);
+          var fields = collection.getFields();
+
+          that.ceci.attributes.field.options = [];
+          fields.forEach(function (field) {
+            that.ceci.attributes.field.options.push(field.name);
+          });
+        });
+      },
+      updateCollections: function (callback) {
+        var that = this;
+        waitForCeciCollections(function (ceciCollections) {
+          var collections = ceciCollections.getCollections();
+
+          that.ceci.attributes.collection.options = [];
+          collections.forEach(function (collection) {
+            that.ceci.attributes.collection.options.push(collection.name);
+          });
+          callback();
+        });
+      },
+      next: function () {
+        this.index = (+this.index + 1) % this._data.length;
+      },
+      previous: function () {
+        var i = (+this.index - 1) % this._data.length;
+        if (i < 0) {
+          i = this._data.length - 1;
+        }
+        this.index = i;
+      }
+    });
+  </script>
+</polymer-element>
+
 <polymer-element name="ceci-dataview" showdelete="true" showedit="true" attributes="showaddtoitem listschema showkey dataname datascope showedit showdelete" dataname="Items" extends="ceci-element" assetpath="component-dataview/">
   <template>
     <style>:host {
@@ -3883,6 +4038,370 @@
 </polymer-element>
 
 
+<polymer-element name="ceci-game-controller" extends="ceci-element" attributes="leftbuttonvalue upbuttonvalue downbuttonvalue rightbuttonvalue selectbuttonvalue startbuttonvalue abuttonvalue bbuttonvalue" leftbuttonvalue="left" upbuttonvalue="up" downbuttonvalue="down" rightbuttonvalue="right" selectbuttonvalue="select" startbuttonvalue="start" abuttonvalue="a" bbuttonvalue="b" assetpath="component-game-controller/">
+  <ceci-definition>
+    {
+      "name": "Game Controller",
+      "thumbnail": "./thumbnail.png",
+      "description": "A classic NES game controller",
+      "broadcasts": {
+        "press": {
+          "label": "Any Button Pressed",
+          "description": "Any button was pressed"
+        },
+        "release": {
+          "label": "Any Button Released",
+          "description": "Any button was released"
+        },
+        "left": {
+          "label": "Left Button",
+          "description": "Left button was pressed"
+        },
+        "up": {
+          "label": "Up Button",
+          "description": "Up button was pressed"
+        },
+        "down": {
+          "label": "Down Button",
+          "description": "Down button was pressed"
+        },
+        "right": {
+          "label": "Right Button",
+          "description": "Right button was pressed"
+        },
+        "select": {
+          "label": "Select Button",
+          "description": "Select button was pressed"
+        },
+        "start": {
+          "label": "Start Button",
+          "description": "Start button was pressed"
+        },
+        "abutton": {
+          "label": "A Button",
+          "description": "A button was pressed"
+        },
+        "bbutton": {
+          "label": "B Button",
+          "description": "B button was pressed"
+        }
+      },
+      "attributes": {
+        "leftbuttonvalue": {
+          "label": "Left Button Value",
+          "description": "Value to send when this button is clicked",
+          "editable": "text"
+        },
+        "upbuttonvalue": {
+          "label": "Up Button Value",
+          "description": "Value to send when this button is clicked",
+          "editable": "text"
+        },
+        "downbuttonvalue": {
+          "label": "Down Button Value",
+          "description": "Value to send when this button is clicked",
+          "editable": "text"
+        },
+        "rightbuttonvalue": {
+          "label": "Right Button Value",
+          "description": "Value to send when this button is clicked",
+          "editable": "text"
+        },
+        "selectbuttonvalue": {
+          "label": "Select Button Value",
+          "description": "Value to send when this button is clicked",
+          "editable": "text"
+        },
+        "startbuttonvalue": {
+          "label": "Start Button Value",
+          "description": "Value to send when this button is clicked",
+          "editable": "text"
+        },
+        "abuttonvalue": {
+          "label": "A Button Value",
+          "description": "Value to send when this button is clicked",
+          "editable": "text"
+        },
+        "bbuttonvalue": {
+          "label": "B Button Value",
+          "description": "Value to send when this button is clicked",
+          "editable": "text"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <style>:host {
+  display: block;
+  width: 100%;
+  position: relative;
+}
+
+:host .game-controller {
+  height: 120px;
+  border: 5px solid lightgrey;
+  background-color: lightgrey;
+  border-top-width: 15px;
+  border-radius: 5px;
+}
+
+:host .game-controller:after {
+  content: "";
+  display: block;
+  border-radius: 5px;
+  background-color: black;
+  height: 100%;
+}
+
+:host .d-pad-container {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  width: 33%;
+}
+
+:host .start-select-container {
+  position: absolute;
+  left: 33%;
+  top: 0px;
+  bottom: 0px;
+  width: 33%;
+}
+
+:host .a-b-buttons-container {
+  position: absolute;
+  right: 0;
+  top: 0px;
+  bottom: 0px;
+  width: 33%;
+}
+
+:host .d-pad {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  bottom: 20%;
+}
+
+:host .left-button {
+  position: absolute;
+  border-radius: 5px 0 0 5px;
+  border-style: solid;
+  border-color: lightgrey;
+  height: 20px;
+  width: 20px;
+  border-width: 5px;
+  border-right-width: 0;
+  left: 15px;
+  top: 20px;
+  cursor: pointer;
+}
+:host .up-button {
+  position: absolute;
+  border-style: solid;
+  border-radius: 5px 5px 0 0;
+  border-color: lightgrey;
+  height: 20px;
+  width: 20px;
+  border-width: 5px;
+  border-bottom-width: 0;
+  top: 0;
+  left: 35px;
+  cursor: pointer;
+}
+:host .down-button {
+  position: absolute;
+  border-radius: 0 0 5px 5px;
+  border-style: solid;
+  border-color: lightgrey;
+  height: 20px;
+  width: 20px;
+  border-width: 5px;
+  border-top-width: 0;
+  bottom: 0;
+  left: 35px;
+  cursor: pointer;
+}
+:host .right-button {
+  position: absolute;
+  border-radius: 0 5px 5px 0;
+  border-style: solid;
+  border-color: lightgrey;
+  height: 20px;
+  width: 20px;
+  border-width: 5px;
+  border-left-width: 0;
+  right: 17px;
+  top: 20px;
+  cursor: pointer;
+}
+
+:host .start-select {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: lightgrey;
+  border-radius: 5px;
+  height: 30%;
+  bottom: 20%;
+}
+
+:host .select-button {
+  background-color: black;
+  border-radius: 5px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 50%;
+  margin: 16% 5% 16% 10%;
+  cursor: pointer;
+}
+
+:host .start-button {
+  background-color: black;
+  border-radius: 5px;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  margin: 16% 10% 16% 5%;
+  cursor: pointer;
+}
+
+:host .a-b-buttons {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 30%;
+  bottom: 20%;
+}
+
+:host .a-button {
+  background-color: #D3D3D3;
+  border-radius: 5px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  margin: 0px 4%;
+  width: 40%;
+  cursor: pointer;
+}
+
+:host .b-button {
+  background-color: #D3D3D3;
+  border-radius: 5px;
+  position: absolute;
+  left: 43%;
+  top: 0px;
+  bottom: 0px;
+  margin: 0px 5%;
+  width: 40%;
+  cursor: pointer;
+}
+
+:host .a-button:after,
+:host .b-button:after {
+  content: "";
+  display: block;
+  border-radius: 50%;
+  background-color: red;
+  top: 10%;
+  bottom: 10%;
+  left: 10%;
+  right: 10%;
+  position: absolute;
+}
+
+</style>
+    <div class="game-controller">
+      <div class="d-pad-container">
+        <div class="d-pad">
+          <div class="left-button" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{leftClicked}}"></div>
+          <div class="up-button" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{upClicked}}"></div>
+          <div class="down-button" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{downClicked}}"></div>
+          <div class="right-button" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{rightClicked}}"></div>
+        </div>
+      </div>
+      <div class="start-select-container">
+        <div class="start-select">
+          <div class="select-button" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{selectClicked}}"></div>
+          <div class="start-button" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{startClicked}}"></div>
+        </div>
+      </div>
+      <div class="a-b-buttons-container">
+        <div class="a-b-buttons">
+          <div class="a-button" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{aButtonClicked}}"></div>
+          <div class="b-button" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{bButtonClicked}}"></div>
+        </div>
+      </div>
+    </div>
+    <shadow></shadow>
+  </template>
+  <tags>game</tags>
+    <script>
+      Polymer("ceci-game-controller", {
+        ready: function() {
+          this.super();
+          var that = this;
+          function detechTouch() {
+            // Disable mouse events
+            that.onMouseDown = function() {};
+            that.onMouseUp = function() {};
+            this.removeEventListener("touchstart", detechTouch);
+          }
+          this.addEventListener("touchstart", detechTouch);
+        },
+        onPress: function(e) {
+          this.broadcast("press", e.target.classList[0]);
+        },
+        onRelease: function(e) {
+          this.broadcast("release", e.target.classList[0]);
+        },
+        onMouseDown: function(e) {
+          this.onPress(e);
+        },
+        onMouseUp: function(e) {
+          this.onRelease(e);
+        },
+        onTouchStart: function(e) {
+          this.onPress(e);
+        },
+        onTouchEnd: function(e) {
+          this.onRelease(e);
+        },
+        leftClicked: function(e) {
+          this.broadcast("left", this.leftbuttonvalue);
+        },
+        upClicked: function(e) {
+          this.broadcast("up", this.upbuttonvalue);
+        },
+        downClicked: function(e) {
+          this.broadcast("down", this.downbuttonvalue);
+        },
+        rightClicked: function(e) {
+          this.broadcast("right", this.rightbuttonvalue);
+        },
+        selectClicked: function(e) {
+          this.broadcast("select", this.selectbuttonvalue);
+        },
+        startClicked: function(e) {
+          this.broadcast("start", this.startbuttonvalue);
+        },
+        aButtonClicked: function(e) {
+          this.broadcast("abutton", this.abuttonvalue);
+        },
+        bButtonClicked: function(e) {
+          this.broadcast("bbutton", this.bbuttonvalue);
+        }
+      });
+    </script>
+</polymer-element>
+
 <polymer-element name="ceci-header" attributes="header" extends="ceci-element" header="Header" assetpath="component-header/">
   <ceci-definition>
     {
@@ -4803,6 +5322,155 @@ header {
       },
       heightChanged: function () {
         this.$.container.style.height = this.height + 'px';
+      }
+    });
+  </script>
+</polymer-element>
+
+<script src="component-media/popcorn.js"></script>
+<polymer-element name="ceci-media" attributes="url autoplay starttime volume" extends="ceci-element" assetpath="component-media/">
+  <ceci-definition>
+    {
+      "tags": ["media", "audio", "video", "youtube", "popcorn", "soundcloud"],
+      "name": "Media",
+      "description": "Plays HTML5 media using the PopcornJS library",
+      "broadcasts": {
+        "tick": {
+          "label": "Tick",
+          "description": "Media time progressed."
+        },
+        "ready": {
+          "label": "Ready",
+          "description": "Media is ready to play."
+        },
+        "ended": {
+          "label": "Ended",
+          "description": "Media reached its end."
+        },
+        "playing": {
+          "label": "Playing",
+          "description": "Media started to play."
+        }
+      },
+      "listeners": {
+        "play": {
+          "label": "Start",
+          "description": "Starts the selected media"
+        },
+        "pause": {
+          "label": "Stop",
+          "description": "Stops the selected media"
+        },
+        "rewind": {
+          "label": "Rewind",
+          "description": "Starts media from the beginning."
+        }
+      },
+      "attributes": {
+        "starttime": {
+          "label": "Start Time",
+          "description": "The desired starting point in the selected media.",
+          "editable": "number",
+          "listener": true
+        },
+        "url": {
+          "label": "Media URL",
+          "description": "Web URL for the desired media.",
+          "editable": "text",
+          "listener": true
+        },
+        "volume": {
+          "label": "Volume",
+          "description": "Volume of the playing media.",
+          "editable": "number",
+          "max": 1,
+          "min": 0,
+          "listener": true
+        },
+        "autoplay": {
+          "label": "Play Automatically",
+          "description": "Play the media as soon as its ready",
+          "editable": "boolean"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <style>
+      :host {
+        display: block;
+        min-height: 50px;
+      }
+    </style>
+    <div id="mediaContainer"></div>
+    <shadow></shadow>
+    <content></content>
+  </template>
+  <script>
+    var popcornEvents = ['canplay', 'currentTime', 'ended', 'playing'];
+
+    Polymer('ceci-media', {
+      // some Beethoven
+      url: 'https://www.youtube.com/watch?v=zucBfXpCA6s',
+      starttime: 0,
+      volume: 1,
+      autoplay: 'false',
+      ready: function () {
+        this.super();
+
+        // Make sure `this` scope never changes for these handlers...
+        this.onPopcornCanplay = function () { this.broadcast('ready'); }.bind(this);
+        this.onPopcornCurrentTime = function (e) { this.broadcast('tick', e.currentTime); }.bind(this);
+        this.onPopcornEnded = function (e) { this.broadcast('ended'); }.bind(this);
+        this.onPopcornPlaying = function (e) { this.broadcast('playing'); }.bind(this);
+
+        if (this.url) {
+          this.initPopcorn();
+        }
+
+      },
+      urlChanged: function () {
+        this.initPopcorn();
+      },
+      volumeChanged: function () {
+        if (this._popcornPlayer) {
+          this._popcornPlayer.volume = this.volume;
+        }
+      },
+      play: function () {
+        if (this._popcornPlayer) {
+          this._popcornPlayer.play();
+        }
+      },
+      pause: function () {
+        if (this._popcornPlayer) {
+          this._popcornPlayer.pause();
+        }
+      },
+      rewind: function () {
+        if (this._popcornPlayer) {
+          this._popcornPlayer.currentTime(0);
+        }
+      },
+      initPopcorn: function () {
+        this.destroyPopcorn();
+        this._popcornPlayer = Popcorn.smart(this.$.mediaContainer, this.url);
+        popcornEvents.forEach(function (popcornEvent) {
+          this._popcornPlayer.on(popcornEvent, this['onPopcorn' + popcornEvent.substr(0, 1).toUpperCase() + popcornEvent.substr(1)]);
+        }.bind(this));
+        this._popcornPlayer.volume = this.volume;
+        if (this.autoplay === 'true') {
+          this._popcornPlayer.play();
+        }
+      },
+      destroyPopcorn: function () {
+        if (this._popcornPlayer) {
+          popcornEvents.forEach(function (popcornEvent) {
+            this._popcornPlayer.off(popcornEvent, this['onPopcorn' + popcornEvent.substr(0, 1).toUpperCase() + popcornEvent.substr(1)]);
+          }.bind(this));
+          Popcorn.destroy(this._popcornPlayer);
+          this.$.mediaContainer.innerHTML = '';
+        }
       }
     });
   </script>
@@ -8755,6 +9423,162 @@ header {
       textChanged: function (oldValue, newValue) {
         this.$.textBox.innerHTML = newValue;
       }
+    });
+  </script>
+</polymer-element>
+
+<polymer-element name="ceci-timer" extends="ceci-element" attributes="time" assetpath="component-timer/">
+  <ceci-definition>
+    {
+      "name": "Timer",
+      "thumbnail": "./thumbnail.png",
+      "description": "Counts elapsed time and warns when specified time is exhausted!",
+      "tags": ["timer", "time"],
+      "broadcasts": {
+        "timeup": {
+          "label": "Time is Up",
+          "description": "Time is up!"
+        }
+      },
+      "listeners": {
+        "start": {
+          "label": "Start",
+          "description": "Starts the timer."
+        },
+        "pause": {
+          "label": "Pause",
+          "description": "Pauses the timer."
+        },
+        "reset": {
+          "label": "Reset",
+          "description": "Resets the timer."
+        }
+      },
+      "attributes": {
+        "time": {
+          "label": "Time",
+          "description": "Amount of time to elapse",
+          "editable": "number"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <style>
+      :host {
+        display: block;
+        height: 3.5em;
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+      :host .timer, :host .elapsed-time {
+        margin-left: 10px;
+      }
+
+      @-webkit-keyframes flashing {
+        from {
+          background-color: darkred;
+          color: white;
+        }
+        to {
+          background-color: transparent;
+          color: darkred;
+        }
+      }
+
+      @keyframes flashing {
+        from {
+          background-color: darkred;
+          color: white;
+        }
+        to {
+          background-color: transparent;
+          color: darkred;
+        }
+      }
+
+      :host #timerTime.timeup {
+        -webkit-animation: flashing 2s infinite;
+        animation: flashing 2s infinite;
+        -webkit-animation-timing-function: steps(2, end);
+        animation-timing-function: steps(2, end);
+        font-weight: bold;
+      }
+    </style>
+    <template if="{{time &gt; 0}}">
+      <div class="timer"><strong>Time Left:</strong> <span id="timerTime">{{_timeLeftString}}</span></div>
+    </template>
+    <div class="elapsed-time"><strong>Elapsed Time:</strong> {{_elapsedTimeString}}</div>
+    <shadow></shadow>
+  </template>
+  <script>
+    function timeFromSeconds (milliseconds) {
+      milliseconds = parseInt(milliseconds, 10);
+
+      var hours = Math.floor(milliseconds / 3600000);
+      var minutes = Math.floor((milliseconds - (hours * 3600000)) / 60000);
+      var seconds = Math.floor((milliseconds - (hours * 3600000) - (minutes * 60000)) / 1000);
+
+      milliseconds = milliseconds - (seconds * 1000) - (hours * 3600000) - (minutes * 60000);
+
+      if (hours < 10) hours = "0" + hours;
+      if (minutes < 10) minutes = "0" + minutes;
+      if (seconds < 10) seconds = "0" + seconds;
+      if (milliseconds < 10) milliseconds = "00" + milliseconds;
+      else if (milliseconds < 100) milliseconds = "0" + milliseconds;
+
+      return hours + ':' + minutes + ':' + seconds + '.' + milliseconds;
+    }
+
+    Polymer("ceci-timer", {
+      time: 10,
+      _timeLeft: 0,
+      _elapsedTime: 0,
+      _lastElapsedTime: 0,
+      _timeUp: false,
+      ready: function() {
+        this.super();
+        this._timeLeft = this.time * 1000;
+        this._elapsedTimeString = timeFromSeconds(this._elapsedTime);
+        this._timeLeftString = timeFromSeconds(this._timeLeft);
+      },
+      start: function() {
+        this._startTime = Date.now();
+        this._startTimer();
+      },
+      pause: function () {
+        this._lastElapsedTime = this._elapsedTime;
+        clearInterval(this._timerInterval);
+      },
+      reset: function () {
+        clearInterval(this._timerInterval);
+        this._timeUp = false;
+        this._timeLeft = this.time * 1000;
+        this._elapsedTime = 0;
+        this._lastElapsedTime = 0;
+        this._elapsedTimeString = timeFromSeconds(this._elapsedTime);
+        this._timeLeftString = timeFromSeconds(this._timeLeft);
+        this.$.timerTime.classList.remove('timeup');
+      },
+      _startTimer: function () {
+        this._timerInterval = setInterval(function () {
+          this._elapsedTime = Date.now() - this._startTime + this._lastElapsedTime;
+          this._timeLeft = (this.time * 1000) - this._elapsedTime;
+          this._elapsedTimeString = timeFromSeconds(this._elapsedTime);
+
+          if (this._timeLeft <= 0) {
+            this._timeLeftString = timeFromSeconds(0);
+            if (!this._timeUp) {
+              this._timeUp = true;
+              this.broadcast('timeup');
+              this.$.timerTime.classList.add('timeup');
+            }
+          }
+          else {
+            this._timeLeftString = timeFromSeconds(this._timeLeft);
+          }
+        }.bind(this), 50);
+      },
     });
   </script>
 </polymer-element>
