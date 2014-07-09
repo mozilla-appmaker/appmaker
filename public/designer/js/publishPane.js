@@ -73,7 +73,7 @@ define([], function () {
         email.classList.remove('fadeout');
         email.value = '';
         appurl.setAttribute('href', data.install);
-        appurl.innerHTML = data.install;
+        appurl.textContent = data.install;
 
         instsallQRCode.innerHTML = '';
         appQRCode.innerHTML = '';
