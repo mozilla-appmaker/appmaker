@@ -52,11 +52,11 @@
     Polymer('project-settings', {
       ready: function() {
         var that = this;
-        function onCeciAppAttached () {
+        function onCeciAppDOMReady () {
           that.app = document.querySelector("ceci-app");
           that.appName = that.app.name;
         }
-        window.addEventListener("CeciAppAttached", onCeciAppAttached);
+        window.addEventListener("CeciAppDOMReady", onCeciAppDOMReady);
       },
       onAppNameChange: function(event, detail, sender) {
         var userState = document.querySelector('user-state');
