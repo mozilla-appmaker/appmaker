@@ -35,7 +35,6 @@
           });
         },
         attached: function () {
-          var that = this;
           this.menuWrapper = this.shadowRoot.querySelector(".channel-menu-wrapper");
           this.menu = this.menuWrapper.querySelector(".channel-menu");
           this.hideMenu();
@@ -53,6 +52,7 @@
             optionsWrapper.appendChild(option);
           }
 
+          var that = this;
           this.onHideMenu = function(){
             that.hideMenu();
           };
