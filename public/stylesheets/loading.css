@@ -6,7 +6,7 @@
   background: #31353C;
   background-color: #31353C;
   position: absolute;
-  transition: opacity .6s ease-in .4s;
+  transition: opacity .4s ease-in .2s;
   top: 0;
   opacity: 1;
 }
