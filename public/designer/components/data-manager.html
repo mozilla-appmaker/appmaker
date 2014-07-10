@@ -1,25 +1,23 @@
 <polymer-element name="data-manager">
   <template>
     <style>
-      :host input,
-      :host textarea {
+      :host input {
         font-size: 15px;
         width: 100%;
-
         border: solid 1px #C5C5C5;
         border-radius: 1px;
-        color: #fff;
+        color: #555;
+        margin: 0px;
         outline: none;
         font-family: 'Source Sans Pro', arial;
-      }
-      :host input {
-        height: 30px;
-        padding: 0px;
-        text-indent: 10px;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 5px;
       }
       :host h3 {
-        color: #b5bac2;
+        color: #555;
         margin-bottom: 2px;
+        font-weight: normal;
       }
       :host .editable-attributes div {
         padding-bottom: 10px;
@@ -29,7 +27,6 @@
         margin: 0;
         padding: 0;
       }
-
       :host ul li {
         margin-top: 10px;
       }
@@ -38,23 +35,6 @@
         margin-top: 10px;
         width: 100%;
         border: 1px solid #c0c0c0;
-      }
-
-      :host table tr:nth-child(even) {
-        background: #545A66;
-      }
-
-      :host table td {
-        padding: 3px;
-      }
-
-      :host table tr:nth-child(odd) {
-        background: #737A85;
-      }
-
-      :host table tr:first-child {
-        color: #212429;
-        background: #fff;
       }
 
       :host .hidden {
@@ -70,11 +50,12 @@
       :host #data-table .add-remove-column {
         text-align: center;
         cursor: pointer;
+        background: #BBB;
       }
 
       :host #data-table .add-remove-column:hover {
         color: #212429;
-        background: #fff;
+        background: #CCC;
       }
     </style>
     <select hidden?="{{ collections.length == 0 }}" value="{{currentCollectionIndex}}">

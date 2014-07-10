@@ -494,7 +494,7 @@ button.done {
 .logo {
   height: 50px;
   float: left;
-  width: 250px;
+  width: 285px;
   z-index: 99;
   font-size: 20px;
   line-height: 50px;
@@ -609,12 +609,6 @@ li.tab {
   height: 100%;
 }
 
-.right-column input[type=text] {
-  height: 30px;
-  padding: 0px;
-  text-indent: 10px;
-}
-
 .right-column input[type=checkbox] {
   margin-right: 4px;
 }
@@ -638,11 +632,7 @@ li.tab {
   font-size: 15px;
   padding: 10px 10px;
   color: white;
-
-}
-
-.editable-section .tray-tabs a:hover {
-  cursor: default;
+  cursor: pointer;
 }
 
 .editable-section .tray-tabs a.selected-tab {
@@ -661,7 +651,7 @@ li.tab {
 }
 
 .editable-section .editable-header {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 400;
   line-height: 30px;
   text-align: left;
@@ -1090,7 +1080,6 @@ ul.component-actions {
 }
 
 .component-description {
-  background: #f7f7f7;
   position: relative;
   padding: 10px;
 }
@@ -1133,41 +1122,6 @@ ul.component-actions {
   cursor: pointer;
 }
 
-.component-card {
-  display: inline-block;
-  border: solid 1px #CCC;
-  margin: 0 0 5px 0;
-  position: relative;
-  background: white;
-  box-shadow: 0px 2px 2px rgba(0,0,0,.15);
-  width: ~"calc(100% - 2px)";
-  border-radius: 2px;
-  background: #f7f7f7;
-  cursor: pointer;
-}
-
-.component-card:last-child {
-  margin-bottom: 0px;
-}
-
-.mode-discovery .component-card {
-  margin: 0px 10px 10px 0px;
-  box-shadow: 0px 2px 3px rgba(0,0,0,.15);
-  float: left;
-  width: ~"calc(50% - 15px)";
-}
-
-@media (min-width: 1100px) {
-  .mode-discovery .component-card {
-  width: ~"calc(33% - 11px)";
-  }
-}
-
-
-.mode-discovery .component-card .add-tooltip {
-  right: 5px;
-  bottom: 5px;
-}
 
 .tags {
   margin-top: 20px;
@@ -1377,10 +1331,14 @@ ul.component-actions {
   font-size: 14px;
 }
 
-.editables-section input[type="text"] {
+.editable-section input[type="text"],
+.editable-section input[type="number"] {
   background-color: #FFF;
-  padding: 4px 6px;
-  width: 246px;
+  padding: 5px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+
+
 }
 
 .log-expanded {
@@ -1875,12 +1833,15 @@ button.return-btn {
   position: relative;
 
   input {
-    padding-left: 20px;
+    padding-left: 28px;
   }
 
   .swatch {
+    -moz-box-shadow:    inset 0 0 1px rgba(0,0,0,.5);
+    -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,.5);
+    box-shadow:         inset 0 0 1px rgba(0,0,0,.5);
     position: absolute;
-    top: 6px;
+    top: 9px;
     left: 6px;
     height: 18px;
     width: 18px;
@@ -2025,7 +1986,7 @@ button.return-btn {
 
 .brick-category {
   padding: 0 10px;
-  margin: 0 0 10px 0;
+  margin: 0 0 15px 0;
   overflow: hidden;
 
   a {
@@ -2035,12 +1996,12 @@ button.return-btn {
     float: left;
     .border-radius(3px);
 
-    background: #BBB;
+    background: #e9edf0;
     padding: 5px 10px 5px 10px;
     -webkit-box-sizing: border-box;
 
     &:hover {
-      background: #a2bbcd;
+      background: #d7dee4;
     }
 
     &.hidden {
