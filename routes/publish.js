@@ -20,6 +20,23 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
     install: null
   };
 
+  var icons = {};
+
+  [60, 79, 128].forEach(function (iconSize) {
+    var iconFilename = __dirname + '/../public/images/app-icon-' + iconSize + '.png';
+    fs.readFile(iconFilename, function (err, iconData) {
+      if (err) {
+        console.error('Could not load icon at ' + iconFilename + ' .');
+      }
+      else {
+        icons[iconSize] = {
+          filename: 'app-icon-' + iconSize + '.png',
+          data: iconData
+        }
+      }
+    });
+  });
+
   fs.readFile(viewsPath + '/publish.ejs', 'utf8', function (err, publishHTMLData) {
     templates.publish = ejs.compile(publishHTMLData, {
       // for partial include access
@@ -125,8 +142,6 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
               "url": "https://appmaker.mozillalabs.com/"
             },
             "icons": {
-              "60": "/style/icons/icon-60.png",
-              "79": "/style/icons/icon-79.png"
             },
             "default_locale": "en",
             "permissions": {
@@ -139,6 +154,11 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
             }
           };
 
+          Object.keys(icons).forEach(function (iconSize) {
+            var icon = icons[iconSize];
+            manifestJSON.icons[iconSize] = urlManager.createIconPath(folderName, icon.filename);
+          });
+
           var outputFiles = [
             {filename: urlManager.objectPrefix + '/' + folderName + '/' + manifestFilename,
               data: JSON.stringify(manifestJSON),
@@ -148,7 +168,10 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
               data: appStr},
             {filename: urlManager.objectPrefix + '/' + folderName + '/' + installHTMLFilename,
               data: installStr}
-          ];
+          ].concat(Object.keys(icons).map(function (iconSize) {
+            return {filename: urlManager.objectPrefix + '/' + folderName + '/' + icons[iconSize].filename,
+              data: icons[iconSize].data, contentType: 'image/png'};
+          }));
 
           var filesDone = 0;
 
