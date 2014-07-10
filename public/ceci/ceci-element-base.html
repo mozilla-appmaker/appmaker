@@ -155,7 +155,14 @@
         this.localized();
         this.fire('CeciElementReady');
       },
-      attached : function(){
+      applyDefaults: function () {
+        // This code should never be moved to "attached" or be applied automatically when
+        // the element is added to the page. It must be run explicitly by an external function,
+        // since it's hard to detect whether or not this element is really "new" (e.g. someone
+        // just added it to their app), or was created from a loaded app. In the latter case,
+        // defaults should not be applied. Only when an element is new do we want this function
+        // to run.
+
         var that = this;
         var map = document.querySelector("ceci-channel-map");
 
@@ -201,6 +208,7 @@
 
           listener.setAttribute('on', channel);
           listener.setAttribute('for', name);
+          this.fire('CeciChannelUpdated', {detail: {name: name, channel: channel, type: 'listen'}});
         }
         else {
           console.error('No listener definition found for "' + name + '".');
@@ -208,7 +216,6 @@
       },
       setBroadcast: function (name, channel) {
         var entry = this.ceci.broadcasts[name];
-
         if (entry) {
           var broadcast = this.querySelector('ceci-broadcast[from="' + name + '"]');
           if (!broadcast) {
@@ -217,6 +224,7 @@
           }
           broadcast.setAttribute('on', channel);
           broadcast.setAttribute('from', name);
+          this.fire('CeciChannelUpdated', {detail: {name: name, channel: channel, type: 'broadcast'}});
         }
         else {
           console.error('No broadcast definition found for "' + name + '".');
@@ -226,13 +234,18 @@
         var listen = this.querySelector('ceci-listen[for="' + name + '"]');
         if (listen) {
           this.removeChild(listen);
+          this.fire('CeciChannelUpdated', {detail: {name: name, channel: null, type: 'listen'}});
         }
       },
       removeBroadcast: function (name) {
         var broadcast = this.querySelector('ceci-broadcast[from="' + name + '"]');
         if (broadcast) {
           this.removeChild(broadcast);
+          this.fire('CeciChannelUpdated', {detail: {name: name, channel: null, type: 'broadcast'}});
         }
+      },
+      attached: function () {
+        document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));
       },
       domReady: function () {
         document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));

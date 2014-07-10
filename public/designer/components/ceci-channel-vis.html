@@ -6,25 +6,20 @@
     var bubbleDuration = 1;
     Polymer('ceci-channel-vis', {
       attached: function () {
-        var that = this;
-        this.onChannelUpdated = function() {
-          that.updateChannelVis();
-        };
-        window.addEventListener('channelUpdated', this.onChannelUpdated);
-        that.updateChannelVis();
+        this.component = this.parentNode;
+        this.component.addEventListener('CeciChannelUpdated', this.updateChannelVis.bind(this));
+        this.updateChannelVis();
       },
-      detached: function() {
-        window.removeEventListener('channelUpdated', this.onChannelUpdated);
-      },
-      updateChannelVis: function(elements) {
+      updateChannelVis: function() {
         var that = this;
-        if(!elements) {
-          if(this.direction === "in") {
-            elements = this.parentNode.querySelectorAll("ceci-listen");
-          } else {
-            elements = this.parentNode.querySelectorAll("ceci-broadcast");
-          }
+        var elements;
+
+        if(this.direction === "in") {
+          elements = this.component.querySelectorAll("ceci-listen");
+        } else {
+          elements = this.component.querySelectorAll("ceci-broadcast");
         }
+
         // Remove all existing channel lines
         var existingLines = this.lines;
         existingLines.innerHTML = "";

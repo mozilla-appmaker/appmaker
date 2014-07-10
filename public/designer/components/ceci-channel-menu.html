@@ -164,25 +164,10 @@
 
           }
         },
-        changeChannel : function(handlerType, handler ,color){
-          var visEl = this.component.querySelector("ceci-"+this.channeltype+"["+handlerType+"=\""+handler+"\"]");
-
-          if (color == "off"){
-            if (visEl){
-              visEl.parentNode.removeChild(visEl);
-            }
-          } else {
-            // If it exists
-            if (visEl){
-              visEl.setAttribute("on",color);
-            } else {
-              var newEl = document.createElement("ceci-" + this.channeltype);
-              newEl.setAttribute("on",color);
-              newEl.setAttribute(handlerType,handler);
-              this.component.appendChild(newEl);
-            }
-          }
-          this.dispatchEvent(new CustomEvent('channelUpdated', {name: name, bubbles: true, detail: this}));
+        changeChannel : function(handlerType, handler, color){
+          var action = color === 'off' ? 'remove' : 'set';
+          var messageType = this.channeltype === 'broadcast' ? 'Broadcast' : 'Listener';
+          this.component[action + messageType](handler, color);
         },
         buildMenu: function() {
           this.menubuilt = true;
