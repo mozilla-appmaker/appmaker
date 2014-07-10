@@ -43,12 +43,19 @@
    height: 20px;
    width: 20px;
    right: 5px;
-   top: 7px;
+   top: 5px;
    opacity: .4;
    background: url(../images/page-tab-x.png) center no-repeat;
    background-size: 12px;
    .border-radius(2px);
    display: none;
+
+   &:hover {
+     background: url(../images/page-tab-x.png) center no-repeat;
+     background-size: 12px;
+     background-color: rgba(0,0,0,.1);
+     opacity: .8;
+   }
  }
 
  .bounce .card:not(.selected) {
@@ -56,7 +63,6 @@
    -webkit-transform-origin: bottom;
    animation: tabdance infinite .25s;
    transform-origin: bottom;
-
  }
 
  .card {
@@ -66,15 +72,15 @@
    cursor: pointer;
    display: inline-block;
    float: left;
-   background: #444;
+   background: white;
    color: #999;
    .border-radius(2px 2px 0 0);
    position: relative;
    padding: 0px 10px;
-   height: 30px;
+   height: 29px;
    line-height: 30px;
    position: relative;
-
+   border: solid 1px #c5c5c5;
 
    &.selected:only-child {
      padding: 0px 10px 0px 10px;
@@ -84,23 +90,17 @@
      display: none;
    }
 
-   .delete-card:hover {
-     background: url(../images/page-tab-x.png) center no-repeat;
-     background-size: 12px;
-     background-color: #DDD;
-     opacity: .8;
-   }
-
    &:hover {
-     background: #666;
-     color: #BBB;
+     background: #ecf1f4;
    }
 
    &.selected {
      color: #666;
      background-position: left center;
-     background: #FFF;
+     background: #e9edf0;
      padding: 0px 30px 0px 10px;
+     border-width: 1px 1px 0 1px;
+     height: 30px;
    }
 
    &.selected .delete-card {

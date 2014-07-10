@@ -19,7 +19,20 @@
   #signin {
     background: #358CCE;
     margin-left: 8px;
+    height: 22px;
+    font-size: 15px;
+    display: inline-block;
+
+    &:hover {
+      background: #439add;
+    }
+
+    &:active {
+      background: #2674af;
+    }
+
   }
+
 
   #collaborate {
     background: #750CCE;
@@ -28,7 +41,6 @@
 
   .button {
     cursor: pointer;
-    font-size: 16px;
     text-align: left;
     padding: 4px 12px;
   }
@@ -36,6 +48,7 @@
   .menu-button {
     display: block;
     padding: 4px 8px;
+    height: 20px;
   }
 
   .icon-reorder {
@@ -46,11 +59,31 @@
     min-width: 50px;
     padding-left: 28px;
     padding-right: 50px;
-    background-image: url(/images/arrow-down.png);
+    padding: 3px 30px 5px 10px;
+    background-color: white;
     background-size: 24px;
     background-repeat: no-repeat;
     background-position: right 10px center;
-    color:rgba(255,255,255,.9);
+    color: #777;
+    font-size: 15px;
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &:after {
+      content: ' ';
+      display: block;
+      position: absolute;
+      top: 11px;
+      right: 11px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 5px 5px 0 5px;
+      border-color: #333 transparent transparent transparent;
+    }
+
   }
 
   #signout {
@@ -60,6 +93,9 @@
 
   #newApp {
     .green-button;
+    font-size: 15px;
+    height: 22px;
+    display: inline-block;
   }
 
   #addComponent {
@@ -74,7 +110,7 @@
   }
 
   .icon {
-    display: block;
+    display: none;
     position: absolute;
     left: 5px;
     right: 0px;
@@ -97,30 +133,51 @@
     background-image: url(/images/icon_user_lookdown.png);
   }
 
-  .menu-open .user-menu-button {
-    background-image: url(/images/arrow-up.png);
+  .menu-open {
+    .user-menu-button:after {
+      border-width: 0px 5px 5px 5px;
+      border-color:  transparent transparent #333 transparent;
+    }
   }
+
+  .menubutton {
+    display: inline-block;
+  }
+
 
   .menu {
     max-width: 300px;
     z-index: 12000;
-    padding: 10px 5px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     position: absolute;
-    left: 0;
+    left: -1px;
     top: 28px;
-    background: #DDD;
+    background: white;
     text-align: left;
-    // border-top: solid 2px #117b84;
-    border: solid 2px @brand-brightblue;
+    border: solid 1px #C5C5C5;
     display: none;
+
+    .button {
+      color: white;
+    }
+
+  }
+
+  .user-menu {
+    .menu {
+      padding: 10px 10px 20px 10px;
+      min-width: 250px;
+    }
+  }
+
+  .app-menu {
+    .menu {
+      min-width:120px;
+    }
   }
 
   .menu-open  {
-    .menu-button {
-      color: rgba(255,255,255,1);
-    }
     .menu {
       display: block;
     }
@@ -129,16 +186,17 @@
   .menu h3 {
     padding: 0 0 4px 0 ;
     margin: 2px 2px 8px 2px;
-    border-bottom: solid 2px #BBB;
     color: #444;
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .menu-wrapper {
     display: inline-block;
     position: relative;
     margin-right: 8px;
-    background-color: @brand-brightblue;
+    background-color: white;
+    color: #777;
+    border: solid 1px #C5C5C5;
 
     &.button {
       padding: 0;
@@ -146,19 +204,19 @@
 
     &:hover {
       text-decoration: none;
-      background-color: @brand-brightblue-hover;
     }
   }
 
   #myapps,#mycomponents {
     display: block;
-    margin: 0 0 12px 0;
+    margin: 0 0 20px 0;
     padding: 0;
     clear: both;
     width: 100%;
     max-height: 15em;
     overflow: scroll;
     overflow-x: hidden;
+
   }
 
   #mycomponents {
@@ -181,11 +239,9 @@
   }
 
   a.applink {
-    background-image: url(/images/icon_app_published.png);
     background-position: left;
     background-size: 22px;
     background-repeat: no-repeat;
-    padding-left: 24px !important;
   }
 
   a.componentlink {
@@ -199,7 +255,7 @@
   .x {
     background-image: url(/images/delete.png);
     background-position: 3px;
-    background-size: 16px;
+    background-size: 15px;
     background-repeat: no-repeat;
     padding-left: 16px !important;
     margin-left: 10px;
@@ -213,10 +269,9 @@
     color: #777;
     padding: 0;
     margin: 0;
-    padding: 3px 6px;
+    padding: 10px;
     display: block;
-    font-size: 16px;
-    border-top: solid 1px #DDD;
+    font-size: 15px;
     border-bottom: solid 1px #DDD;
     cursor: pointer;
 
@@ -254,13 +309,13 @@
   }
 
   #noApps,#noComponents {
-    font-size: 16px;
+    font-size: 15px;
     color: #777;
   }
 
   .app-actions a {
     display: block;
-    font-size: 16px;
+    font-size: 15px;
     color: #555;
     cursor: pointer;
     &.hidden {

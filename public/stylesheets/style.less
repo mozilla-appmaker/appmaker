@@ -10,6 +10,7 @@
 
 html {
   font-size: 62.5%; /* so rem-based font sizes look right */
+  font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 body,html {
@@ -471,7 +472,8 @@ button.done {
 
 .top-nav {
   height: 50px;
-  background-color: @brand-darkblue;
+  border-bottom: solid 1px #C5C5C5;
+  background: white;
   position: fixed;
   z-index: 100;
   top: 0px;
@@ -488,7 +490,7 @@ button.done {
 .logo {
   height: 50px;
   float: left;
-  width: 250px;
+  width: 285px;
   z-index: 99;
   font-size: 20px;
   line-height: 50px;
@@ -497,8 +499,6 @@ button.done {
   background-position: 4px 3px;
   background-size: 160px;
 }
-
-
 
 .container .garbage-bin {
   display: none;
@@ -600,57 +600,50 @@ li.tab {
   -moz-transition: linear all .1s;
 }
 
-.right-column .inner-wrapper {
-  overflow: auto;
-  height: 100%;
-}
-
-.right-column input[type=text] {
-  height: 30px;
-  padding: 0px;
-  text-indent: 10px;
-}
 
 .right-column input[type=checkbox] {
   margin-right: 4px;
 }
 
 .right-column label {
-  color: #b5bac2;
+  color: #555;
   margin-bottom: 2px;
   display: block;
 }
 
 .editable-section .tray-tabs {
   overflow: auto;
-
-  margin-top: 10px;
+  background: #40464f;
+  border-bottom: solid 4px #3fb58e;
 }
 
 .editable-section .tray-tabs a {
   display: block;
   border-radius: 2px 2px 0 0 ;
   float: left;
-  padding: 5px 10px;
-  color: #999;
-}
-
-.editable-section .tray-tabs a:hover {
-  color: #BBB;
-  background: #31363d;
-  cursor: default;
+  font-size: 15px;
+  padding: 10px 10px;
+  color: white;
+  cursor: pointer;
 }
 
 .editable-section .tray-tabs a.selected-tab {
-  background: #40464f;
-  color: #EEE;
+  background: #3fb58e;
+  color: white;
 }
 
 .section {
-  border-bottom: 1px solid #454B56;
-  background: #40464f;
-  padding: 10px 15px;
-  height: 100%;
+  padding: 10px;
+  position: relative;
+}
+
+.tab-sections {
+  overflow-y: auto;
+  flex: 1;
+  position: absolute;
+  top: 45px;
+  bottom: 0px;
+  width: 100%;
 }
 
 .tab-sections .section {
@@ -658,8 +651,7 @@ li.tab {
 }
 
 .editable-section .editable-header {
-  font-size: 18px;
-  color: #fff;
+  font-size: 22px;
   font-weight: 400;
   line-height: 30px;
   text-align: left;
@@ -749,6 +741,7 @@ li.tab {
 
 .editable-section .tab-sections textarea {
   height: 100px;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding: 5px 10px;
 }
@@ -1088,7 +1081,6 @@ ul.component-actions {
 }
 
 .component-description {
-  background: #f7f7f7;
   position: relative;
   padding: 10px;
 }
@@ -1131,41 +1123,6 @@ ul.component-actions {
   cursor: pointer;
 }
 
-.component-card {
-  display: inline-block;
-  border: solid 1px #CCC;
-  margin: 0 0 5px 0;
-  position: relative;
-  background: white;
-  box-shadow: 0px 2px 2px rgba(0,0,0,.15);
-  width: ~"calc(100% - 2px)";
-  border-radius: 2px;
-  background: #f7f7f7;
-  cursor: pointer;
-}
-
-.component-card:last-child {
-  margin-bottom: 0px;
-}
-
-.mode-discovery .component-card {
-  margin: 0px 10px 10px 0px;
-  box-shadow: 0px 2px 3px rgba(0,0,0,.15);
-  float: left;
-  width: ~"calc(50% - 15px)";
-}
-
-@media (min-width: 1100px) {
-  .mode-discovery .component-card {
-  width: ~"calc(33% - 11px)";
-  }
-}
-
-
-.mode-discovery .component-card .add-tooltip {
-  right: 5px;
-  bottom: 5px;
-}
 
 .tags {
   margin-top: 20px;
@@ -1346,10 +1303,9 @@ ul.component-actions {
 .editable-section textarea {
   font-size: 15px;
   width: 100%;
-  background-color: #181b1f;
-  border: none;
+  border: solid 1px #C5C5C5;
   border-radius: 1px;
-  color: #fff;
+  color: #555;
   outline: none;
 }
 
@@ -1376,10 +1332,12 @@ ul.component-actions {
   font-size: 14px;
 }
 
-.editables-section input[type="text"] {
+.editable-section input[type="text"],
+.editable-section input[type="number"] {
   background-color: #FFF;
-  padding: 4px 6px;
-  width: 246px;
+  padding: 5px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 
 .log-expanded {
@@ -1580,9 +1538,6 @@ span.channel {
 
 #components-wrapper {
   flex: 1;
-}
-
-#components-wrapper {
   overflow-y: auto;
   position: relative;
 }
@@ -1784,10 +1739,6 @@ button.return-btn {
   background-position: left;
 }
 
-.section {
-  border-bottom: 1px solid #31353C;
-  padding: 10px 20px;
-}
 
 .log-header {
   padding: 10px 20px 0px 20px;
@@ -1821,7 +1772,6 @@ button.return-btn {
 .remix-mode .editable-section .tray-tabs [tab=css]{
   display: block;
 }
-
 
 .tab-sections .section-customize {
   display: block;
@@ -1879,12 +1829,15 @@ button.return-btn {
   position: relative;
 
   input {
-    padding-left: 20px;
+    padding-left: 28px;
   }
 
   .swatch {
+    -moz-box-shadow:    inset 0 0 1px rgba(0,0,0,.5);
+    -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,.5);
+    box-shadow:         inset 0 0 1px rgba(0,0,0,.5);
     position: absolute;
-    top: 6px;
+    top: 9px;
     left: 6px;
     height: 18px;
     width: 18px;
@@ -2029,7 +1982,7 @@ button.return-btn {
 
 .brick-category {
   padding: 0 10px;
-  margin: 0 0 10px 0;
+  margin: 0 0 15px 0;
   overflow: hidden;
 
   a {
@@ -2039,12 +1992,12 @@ button.return-btn {
     float: left;
     .border-radius(3px);
 
-    background: #BBB;
+    background: #e9edf0;
     padding: 5px 10px 5px 10px;
     -webkit-box-sizing: border-box;
 
     &:hover {
-      background: #a2bbcd;
+      background: #d7dee4;
     }
 
     &.hidden {
@@ -2097,6 +2050,7 @@ button.return-btn {
   right: 0px;
   position: relative;
   min-height:100%;
+  background: #e9edf0;
 }
 
 .container {
@@ -2122,21 +2076,26 @@ button.return-btn {
 .right-column,
 .tray {
   width: 250px;
+  top: 50px;
+  bottom: 0;
+  background-color: white;
+  position: fixed;
+  z-index: 1;
+  flex-direction: column;
+  display: flex;
 }
 
 
 .right-column {
-  top: 50px;
   right: 0;
-  bottom: 0;
-  height: ~"calc(100% - 50px)";
-  position: fixed;
-  background-color: #212429;
-
-  z-index: 1;
+  border-left: solid 1px #C5C5C5;
 }
 
 .tray {
+
+  left: 0px;
+  border-right: solid 1px #C5C5C5;
+
   .tray-header {
     padding: 10px 10px 0px 10px;
     font-size: 20px;
@@ -2144,14 +2103,6 @@ button.return-btn {
     position: relative;
   }
 
-  position: fixed;
-  left: 0px;
-  top: 50px;
-  bottom: 0px;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  background: #DDD;
 }
 
 
@@ -2183,6 +2134,11 @@ button.return-btn {
   .tray {
     width: 0;
     overflow: hidden;
+
+    * {
+      display: none;
+    }
+
   }
   .expand-left {
     left: 0px;
@@ -2201,6 +2157,9 @@ button.return-btn {
 .right-closed {
   .right-column {
     width: 0;
+    * {
+      display: none;
+    }
   }
   .expand-right {
     right: 0px;
