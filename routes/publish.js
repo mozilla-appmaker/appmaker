@@ -184,7 +184,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                 makeAPIPublisher.publish({
                   url: remoteURLs.install,
                   remix: remixUrl,
-                  thumbnail: 'http://appmaker.mozillalabs.com/images/mail-man.png',
+                  thumbnail: process.env.ASSET_HOST + "/images/app-icon.png",
                   title: appName,
                   appDescription: appDescription,
                   appTags: inputData.appTags || "",
