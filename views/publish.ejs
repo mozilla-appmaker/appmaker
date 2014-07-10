@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/install-spinner.css" />
     <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300, 400,600" rel="stylesheet" type="text/css">
 
+    <base href="<%- ceciComponentURL %>">
+
+    <script src="/vendor/platform/platform.js"></script>
+    <script src="/vendor/polymer/polymer.js"></script>
+
     <meta name="viewport" content="width=320, user-scalable=no">
     <script>
       if(screen.width > 600) {
@@ -16,10 +21,6 @@
         mvp.setAttribute('content','width=device-width');
       }
     </script>
-    <base href="<%- ceciComponentURL %>">
-
-    <script src="/vendor/platform/platform.js"></script>
-    <script src="/vendor/polymer/polymer.js"></script>
 
     <script src="/vendor/requirejs/require.js"></script>
     <script src="/javascripts/requireConfig.js"></script>
