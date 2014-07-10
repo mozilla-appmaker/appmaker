@@ -604,10 +604,6 @@ li.tab {
   -moz-transition: linear all .1s;
 }
 
-.right-column .inner-wrapper {
-  overflow: auto;
-  height: 100%;
-}
 
 .right-column input[type=checkbox] {
   margin-right: 4px;
@@ -641,9 +637,17 @@ li.tab {
 }
 
 .section {
-  height: 100%;
-  padding: 10px 20px;
+  padding: 10px;
+  position: relative;
+}
 
+.tab-sections {
+  overflow-y: auto;
+  flex: 1;
+  position: absolute;
+  top: 45px;
+  bottom: 0px;
+  width: 100%;
 }
 
 .tab-sections .section {
@@ -741,6 +745,7 @@ li.tab {
 
 .editable-section .tab-sections textarea {
   height: 100px;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   padding: 5px 10px;
 }
@@ -1539,9 +1544,6 @@ span.channel {
 
 #components-wrapper {
   flex: 1;
-}
-
-#components-wrapper {
   overflow-y: auto;
   position: relative;
 }
@@ -2080,33 +2082,25 @@ button.return-btn {
 .right-column,
 .tray {
   width: 250px;
+  top: 50px;
+  bottom: 0;
+  background-color: white;
+  position: fixed;
+  z-index: 1;
+  flex-direction: column;
+  display: flex;
 }
 
 
 .right-column {
-  top: 50px;
   right: 0;
-  bottom: 0;
-  height: ~"calc(100% - 50px)";
-  position: fixed;
-  background-color: white;
   border-left: solid 1px #C5C5C5;
-
-
-  z-index: 1;
 }
 
 .tray {
 
-  position: fixed;
   left: 0px;
-  top: 50px;
-  bottom: 0px;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
   border-right: solid 1px #C5C5C5;
-  background: white;
 
   .tray-header {
     padding: 10px 10px 0px 10px;
@@ -2114,8 +2108,6 @@ button.return-btn {
     color: #666;
     position: relative;
   }
-
-
 
 }
 
@@ -2148,6 +2140,11 @@ button.return-btn {
   .tray {
     width: 0;
     overflow: hidden;
+
+    * {
+      display: none;
+    }
+
   }
   .expand-left {
     left: 0px;
@@ -2166,6 +2163,9 @@ button.return-btn {
 .right-closed {
   .right-column {
     width: 0;
+    * {
+      display: none;
+    }
   }
   .expand-right {
     right: 0px;
