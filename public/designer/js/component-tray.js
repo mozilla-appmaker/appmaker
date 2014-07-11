@@ -197,7 +197,7 @@ define(
             var container = document.createElement("div");
             container.classList.add("hidden");
             var title = document.createElement("h2");
-            title.innerHTML = category.charAt(0).toUpperCase() + category.slice(1) + " Bricks";
+            title.textContent = category.charAt(0).toUpperCase() + category.slice(1) + " Bricks";
             container.appendChild(title);
             container.classList.add("category-container");
             container.classList.add(category.toLowerCase());
@@ -209,10 +209,10 @@ define(
           var option = document.createElement("a");
 
           if(category === "all") {
-            option.innerHTML = "All Bricks";
+            option.textContent = "All Bricks";
           } else {
             option.classList.add("hidden");
-            option.innerHTML = category.charAt(0).toUpperCase() + category.slice(1);
+            option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
           }
 
           option.setAttribute("data-category",category.toLowerCase());

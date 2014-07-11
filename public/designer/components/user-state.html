@@ -105,17 +105,17 @@
             e.stopPropagation();
           });
 
-          that.$.signin.innerHTML = l10n.get("Sign In");
-          that.$.myappsheading.innerHTML = l10n.get("My apps");
-          that.$.noApps.innerHTML = l10n.get("You don't have any saved apps!");
-          that.$.signout.innerHTML = l10n.get("Sign Out");
-          that.$.saveAppAs.innerHTML = l10n.get("Save As");
-          that.$.saveApp.innerHTML = l10n.get("Save");
-          that.$.renameApp.innerHTML = l10n.get("Rename");
-          that.$.publishApp.innerHTML = l10n.get("Publish");
-          that.$.deleteApp.innerHTML = l10n.get("Delete");
-          that.$.viewlink.innerHTML = l10n.get("App URL");
-          that.$.newApp.innerHTML = l10n.get("New App");
+          that.$.signin.textContent = l10n.get("Sign In");
+          that.$.myappsheading.textContent = l10n.get("My apps");
+          that.$.noApps.textContent = l10n.get("You don't have any saved apps!");
+          that.$.signout.textContent = l10n.get("Sign Out");
+          that.$.saveAppAs.textContent = l10n.get("Save As");
+          that.$.saveApp.textContent = l10n.get("Save");
+          that.$.renameApp.textContent = l10n.get("Rename");
+          that.$.publishApp.textContent = l10n.get("Publish");
+          that.$.deleteApp.textContent = l10n.get("Delete");
+          that.$.viewlink.textContent = l10n.get("App URL");
+          that.$.newApp.textContent = l10n.get("New App");
 
           function loadRemixContent (remixName) {
             application.loadAppByUrl(decodeURIComponent(remixName));
@@ -389,7 +389,7 @@
           this.getOrWaitForCeciApp(function(ceciApp){
             if (ceciApp && name) {
               ceciApp.name = name;
-              document.querySelector(".phone-top .app-name").innerHTML = ceciApp.name;
+              document.querySelector(".phone-top .app-name").textContent = ceciApp.name;
             }
           });
         },

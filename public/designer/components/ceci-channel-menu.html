@@ -46,7 +46,7 @@
             var color = this.channels[channelName];
             var option = document.createElement("div");
             option.classList.add("color");
-            option.innerHTML = channelName;
+            option.textContent = channelName;
             option.style.background = "#" + color;
             option.setAttribute("data-channel",channelName);
             optionsWrapper.appendChild(option);
@@ -210,9 +210,9 @@
 
                 channelOption.querySelector("label .chosen-color").style.background =  "#" + color;
                 if(channel == "off"){
-                  channelOption.querySelector("label .chosen-color").innerHTML = "";
+                  channelOption.querySelector("label .chosen-color").textContent = "";
                 } else {
-                  channelOption.querySelector("label .chosen-color").innerHTML = channel;
+                  channelOption.querySelector("label .chosen-color").textContent = channel;
                 }
 
                 channelOption.querySelector(".color-ui").style.display = "none";
@@ -281,7 +281,7 @@
                 var color = existingEl.getAttribute("on");
                 channelOption.querySelector(".chosen-color").setAttribute("data-color",color);
                 channelOption.querySelector(".chosen-color").style.background = "#" + this.channels[color];
-                channelOption.querySelector(".chosen-color").innerHTML = color;
+                channelOption.querySelector(".chosen-color").textContent = color;
               }
 
               //Set up all of the click stuff for color options

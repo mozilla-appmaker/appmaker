@@ -34,7 +34,7 @@
 
           var channelname = el.getAttribute("on");
           var label = channel.querySelector(".chan-label");
-          label.innerHTML = channelname.toUpperCase() ;
+          label.textContent = channelname.toUpperCase();
 
           function hexToRgb(hex) {
             if(hex){
@@ -96,7 +96,7 @@
 
           setTimeout(function() {
             var bubble = document.createElement("div");
-            bubble.innerHTML = data.detail.data;
+            bubble.textContent = data.detail.data;
             bubble.classList.add("bubblepopup");
             bubble.classList.add("bubblepop");
             bubble.style.color = color;
