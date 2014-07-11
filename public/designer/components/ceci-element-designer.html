@@ -14,6 +14,9 @@
       ready: function() {
         this.super();
         this.classList.add("brick");
+
+        // Just to preserve "this" for event handlers
+        this._cleanUp = this.cleanUp.bind(this);
       },
       broadcast: function(name, data) {
         this.super(arguments);
@@ -31,6 +34,16 @@
         message.eventType = eventType;
         message.eventName = eventName;
         this.dispatchEvent(new CustomEvent('log', {bubbles: true, detail: message}));
+      },
+      cleanUp: function () {
+        // Remove myself from the DOM!
+        this.parentNode.removeChild(this);
+
+        var that = this;
+        require(['designer/editable', 'analytics'], function (Editable, analytics) {
+          Editable.removeAttributes();
+          analytics.event("Removed Component", { label: that.localName });
+        });
       },
       attached: function() {
         this.super();
@@ -68,16 +81,10 @@
           this.appendChild(garbage);
         }
 
-        this.querySelector(".garbage").addEventListener("click",function(){
-          this.parentNode.parentNode.removeChild(this.parentNode);
-          var that = this;
-          require(['designer/editable','analytics'], function(Editable,analytics){
-            Editable.removeAttributes();
-            analytics.event("Removed Component", { label : that.parentNode.localName});
-          });
-        });
-
-
+        this.querySelector(".garbage").addEventListener("click", this._cleanUp);
+      },
+      detached: function () {
+        this.querySelector(".garbage").removeEventListener("click", this._cleanUp);
       }
 
 
