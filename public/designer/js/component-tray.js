@@ -21,59 +21,93 @@ define(
     var tags = [];
 
     var categories = {
-      "basic" : [
-         "ceci-button",
-         "ceci-counter",
-         "ceci-image",
-         "ceci-header",
-         "ceci-metronome"
-      ],
-      "layout" : [
-        "ceci-button",
-        "ceci-button-with-confirmation",
-        "ceci-double-button",
-        "ceci-header",
-        "ceci-image",
-        "ceci-spacer",
-        "ceci-textbox"
-      ],
-      "connectors" : [
-        "ceci-transformer",
-        "ceci-channel-gate",
-        "ceci-alternating-gate",
-        "ceci-splitter",
-        "ceci-combiner"
-      ],
-      "audio" : [
-        "ceci-audio",
-        "ceci-cowbell",
-        "ceci-snaredrum",
-        "ceci-kickdrum",
-        "ceci-metronome",
-        "ceci-microphone-button",
-        "ceci-sequencer"
-      ],
-      "logic" : [
-        "ceci-bool",
-        "ceci-counter",
-        "ceci-daily-counter",
-        "ceci-random"
-      ],
-      "media" : [
-        "ceci-chart",
-        "ceci-component-canvas",
-        "ceci-camera-button",
-        "ceci-chat-window",
-        "ceci-fireworks",
-        "ceci-hot-potato",
-        "ceci-jazzhands",
-        "ceci-meatspaces-messages",
-        "ceci-meatspaces-input",
-        "ceci-notebook",
-        "ceci-pad-grid",
-        "ceci-text-input",
-        "ceci-todo-list"
-      ]
+      "basic": {
+        "description": L10n.get("Start with simple bricks useful for almost every app."),
+        "bricks": [
+          "ceci-button",
+          "ceci-counter",
+          "ceci-image",
+          "ceci-header",
+          "ceci-textbox",
+          "ceci-metronome"
+        ]
+      },
+      "utility": {
+        "description": L10n.get("Add more advanced utilities for your app."),
+        "bricks": [
+          "ceci-button",
+          "ceci-button-with-confirmation",
+          "ceci-double-button",
+          "ceci-header",
+          "ceci-image",
+          "ceci-metronome",
+          "ceci-spacer",
+          "ceci-textbox",
+          "ceci-text-input",
+        ]
+      },
+      "connection": {
+        "description": L10n.get("Create complex data-driven connections between bricks."),
+        "bricks": [
+          "ceci-transformer",
+          "ceci-channel-gate",
+          "ceci-alternating-gate",
+          "ceci-splitter",
+          "ceci-combiner",
+          "ceci-bool"
+        ]
+      },
+      "audio": {
+        "description": L10n.get("Record and play sounds, listen to music, and more."),
+        "bricks": [
+          "ceci-audio",
+          "ceci-cowbell",
+          "ceci-snaredrum",
+          "ceci-kickdrum",
+          "ceci-metronome",
+          "ceci-microphone-button",
+          "ceci-sequencer"
+        ]
+      },
+      "number": {
+        "description": L10n.get("Count objects and manipulate numbers."),
+        "bricks": [
+          "ceci-counter",
+          "ceci-daily-counter",
+          "ceci-random"
+        ]
+      },
+      "media": {
+        "description": L10n.get("Draw, take pictures, and chart progress with these more interactive bricks."),
+        "bricks": [
+          "ceci-chart",
+          "ceci-component-canvas",
+          "ceci-camera-button",
+          "ceci-notebook",
+          "ceci-pad-grid",
+          "ceci-todo-list"
+        ]
+      },
+      "fun": {
+        "description": L10n.get("Your app needs more cowbell."),
+        "bricks": [
+          "ceci-fireworks",
+          "ceci-hot-potato",
+          "ceci-jazzhands",
+          "ceci-metronome",
+          "ceci-cowbell",
+          "ceci-snaredrum",
+          "ceci-kickdrum",
+        ]
+      },
+      "chat": {
+        "description": L10n.get("Chat with friends using text and images."),
+        "bricks": [
+          "ceci-chat-window",
+          "ceci-meatspaces-messages",
+          "ceci-meatspaces-input"
+        ]
+      }
     }
 
     var categoryNames = [];
@@ -131,7 +165,7 @@ define(
           for(var i = 0; i < categoryNames.length; i++){
             var category = categoryNames[i].toLowerCase();
 
-            var components = categories[category] || [];
+            var components = categories[category].bricks || [];
             for(var j = 0; j < components.length; j++){
               if(name === components[j]){
                 var item = DesignerTray.buildItem(name);
@@ -197,8 +231,18 @@ define(
             var container = document.createElement("div");
             container.classList.add("hidden");
             var title = document.createElement("h2");
-            title.textContent = category.charAt(0).toUpperCase() + category.slice(1) + " Bricks";
+
+            title.textContent = L10n.get(category.charAt(0).toUpperCase() + category.slice(1) + " Bricks");
+
             container.appendChild(title);
+
+            if (categories[category]) {
+              var description = document.createElement('div');
+              description.classList.add('category-description');
+              description.innerHTML = L10n.get(categories[category].description);
+              container.appendChild(description);
+            }
+
             container.classList.add("category-container");
             container.classList.add(category.toLowerCase());
             document.querySelector("#components").appendChild(container);
@@ -235,6 +279,7 @@ define(
       },
       filterCategory : function(category){
         var categoryLinks = document.querySelectorAll(".brick-category a");
+
         Array.prototype.forEach.call(categoryLinks, function(el, i){
           el.classList.remove("selected-category");
         });
