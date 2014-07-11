@@ -72,7 +72,7 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
             success: function (data) {
               publishPane.show(name, data);
 
-              // update the user state menu to have an App URL entry
+              // update the user state menu to have a Preview URL entry
               var userState = document.querySelector('user-state');
               userState.setAppURL(data.app);
 
