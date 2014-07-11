@@ -913,8 +913,8 @@
         attached : function(){
           this.super();
         },
-        incomingMessage : function(e){
-          if (e.toLowerCase === this.checkif.toLowerCase) {
+        incomingMessage : function(value){
+          if (value.toString().toLowerCase() === this.checkif.toLowerCase()) {
             this.broadcast("true", "true");
           }
           else {
@@ -2426,7 +2426,7 @@
 <polymer-element name="ceci-cowbell" attributes="bellcolor volume backgroundcolor" bellcolor="#FFFFFF" backgroundcolor="#4DB227" volume=".5" extends="ceci-element" assetpath="component-cowbell/">
   <ceci-definition>
     {
-      "tags": ["button", "click", "tap"],
+      "tags": ["music", "audio", "cowbell"],
       "thumbnail": "./thumbnail.png",
       "description": "Broadcasts a \"click\" when clicked.",
       "name": "Cowbell",
@@ -5481,7 +5481,7 @@ header {
 <!--3. support tap / touch event? touchend-->
 <!--4. cancel-->
 
-<polymer-element name="ceci-metronome" attributes="changeby beatsperminute autostart" beatsperminute="60" autostart="true" extends="ceci-element" changeby="10" assetpath="component-metronome/">
+<polymer-element name="ceci-metronome" attributes="changeby beatsperminute autostart" beatsperminute="60" autostart="false" extends="ceci-element" changeby="10" assetpath="component-metronome/">
   <template>
     <style>:host {
   display: block;
@@ -13734,15 +13734,20 @@ require(['jquery'], function($) {
         this._timeLeftString = timeFromSeconds(this._timeLeft);
       },
       start: function() {
+        if (this._timeUp || this._timerInterval) {
+          this.reset();
+        }
         this._startTime = Date.now();
         this._startTimer();
       },
       pause: function () {
         this._lastElapsedTime = this._elapsedTime;
         clearInterval(this._timerInterval);
+        this._timerInterval = null;
       },
       reset: function () {
         clearInterval(this._timerInterval);
+        this._timerInterval = null;
         this._timeUp = false;
         this._timeLeft = this.time * 1000;
         this._elapsedTime = 0;
@@ -13761,8 +13766,8 @@ require(['jquery'], function($) {
             this._timeLeftString = timeFromSeconds(0);
             if (!this._timeUp) {
               this._timeUp = true;
-              this.broadcast('timeup');
               this.$.timerTime.classList.add('timeup');
+              this.broadcast('timeup');
             }
           }
           else {
