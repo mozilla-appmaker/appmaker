@@ -219,56 +219,6 @@ button.btn-start {
   display: block;
 }
 
-button.publish {
-  height: 26px;
-  padding-left: 1em;
-  padding-right: 1em;
-  font-size: 16px;
-  cursor: pointer;
-  margin: 12px 12px 0px 0px;
-  border-radius: 2px;
-}
-
-button.new {
-  height: 26px;
-  padding-left: 1em;
-  padding-right: 1em;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: #e81e1e;
-  margin: 12px 12px 0px 0px;
-  border-radius: 2px;
-}
-
-button.save {
-  height: 26px;
-  padding-left: 1em;
-  padding-right: 1em;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: rgba(66, 197, 47, 1);
-  margin: 12px 12px 0px 0px;
-  border-radius: 2px;
-}
-
-button.view-source {
-  float: right;
-  height: 26px;
-  width: 102px;
-  font-size: 16px;
-  cursor: pointer;
-  margin: 12px 12px 0px 0px;
-  border-radius: 2px;
-}
-
-button.new:hover {
-  background-color: #fa2f2f;
-}
-
-button.new:active {
-  background-color: #c91818;
-}
-
 .publish-url {
   display: block;
   position: absolute;
@@ -526,9 +476,6 @@ button.done {
   margin-left: 0px;
   margin-right: ~"calc(100% - 720px)";
 }
-
-
-
 
 ul.tabs {
   display: none;
@@ -1083,11 +1030,6 @@ ul.component-actions {
   padding-bottom: 0px;
 }
 
-.component-description {
-  position: relative;
-  padding: 10px;
-}
-
 .mode-discovery .component-description {
   padding: 8px 15px 12px 15px;
   height: 85px;
@@ -1541,8 +1483,7 @@ span.channel {
 
 #components-wrapper {
   flex: 1;
-  overflow-y: auto;
-  position: relative;
+  overflow: auto;
 }
 
 #components {
@@ -1643,41 +1584,6 @@ button.return-btn {
 }
 
 /*Color UI Strip*/
-
-.channel-chooser {
-  position: absolute;
-  background-color: #FFF;
-  padding: 5px;
-  border-radius: 2px;
-  z-index: 110;
-  box-shadow: 0px 2px 2px rgba(0,0,0,.1);
-}
-
-.channel-chooser .arrow {
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid white;
-  position: absolute;
-  left: 50%;
-  margin-left: -10px;
-  top: -10px;
-}
-
-.channel-chooser.listen-section {
-  right: 0px;
-}
-
-.colorChoice {
-  height: 20px;
-  width: 20px;
-  float: left;
-  margin-right: 5px;
-  border-radius: 2px;
-}
-
-.colorChoice:nth-last-child(1) {
-  margin-right: 0px;
-}
 
 .input-color {
   height: 40px;
@@ -2063,7 +1969,6 @@ button.return-btn {
 .container {
   padding: 80px 0 30px 0;
   position: relative;
-
   width: ~"calc(100% - 560px)";
   z-index: 3;
   margin: 0 auto;
@@ -2076,7 +1981,6 @@ button.return-btn {
     background-color: #181b1f;
     border-radius: 6px;
   }
-
 
 }
 
@@ -2302,4 +2206,71 @@ button.return-btn {
       }
     }
   }
+}
+
+body > .more-info {
+  display: block;
+  border-top: solid 1px #DDD;
+  margin-top: 15px;
+  padding-top: 10px;
+  position: absolute;
+  width: 200px;
+  background: white;
+  padding: 10px;
+  border: solid 1px #c5c5c5;
+  .border-radius(2px);
+  z-index: 4;
+  -webkit-box-shadow: 0px 2px 4px rgba(0,0,0,.2);
+  box-shadow: 0px 2px 4px rgba(0,0,0,.2);
+
+  .image-wrapper {
+    text-align: center;
+    margin-bottom: 10px;
+    width: 100%;
+    position: relative;
+    display: none;
+
+    &.loaded {
+      display: block;
+    }
+  }
+
+  .image-wrapper img {
+    display: block;
+    max-width: 100%;
+    max-height: 150px;
+    margin: auto;
+  }
+
+  .arrow-wrapper {
+    width: 20px;
+    height: 22px;
+    position: absolute;
+    left: -20px;
+    top: ~"calc(50% - 11px)";
+    overflow: hidden;
+
+    &:after {
+      content: ' ';
+      display: block;
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: white;
+      border: solid 1px #C5C5C5;
+      right: -6px;
+      top: 5px;
+      -webkit-transform-origin: center;
+      -webkit-transform: rotate(45deg);
+      transform-origin: center;
+      transform: rotate(45deg);
+    }
+
+  }
+
+  p {
+    margin: 0;
+    color: #999;
+  }
+
 }

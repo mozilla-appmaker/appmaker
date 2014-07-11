@@ -16,24 +16,18 @@
 .component-card {
   display: inline-block;
   margin: 0 0 4px 0;
-  position: relative;
   background: #e9edf0;
   border: solid 1px #dbe2e7;
   border-width: 1px 1px 2px  1px;
   width: ~"calc(100% - 2px)";
-  border-radius: 2px;
   cursor: pointer;
 
   &:hover {
     background: #d7dee4;
     border-color: #bdc8d1;
   }
-
 }
 
-.component-card h1 {
-  margin: 0;
-}
 
 .component-card .show-more {
   display: inline-block;
@@ -57,7 +51,15 @@
   border-top: solid 1px #DDD;
   margin-top: 15px;
   padding-top: 10px;
-  display: none;
+  position: absolute;
+  width:150px;
+  box-shadow: 0px 2px 4px rgba(0,0,0,.2);
+  right: -185px;
+  background: white;
+  padding: 10px;
+  border: solid 1px #c5c5c5;
+  -webkit-border-radius: 2px;
+  z-index: 9999999;
 }
 
 .component-card .more-info h3 {
@@ -90,104 +92,17 @@
   width: ~"calc(100% - 20px)";
 }
 
-.component-preview .image-wrapper {
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
-  height: 115px;
-  width: 100%;
-  position: relative;
-}
-
-.component-preview img {
-  display: block;
-  max-width: 90%;
-  max-height: 150px;
-  margin: auto;
-}
-
-.component-preview:hover .add-component-overlay {
-  display: block;
-}
-
-.component-card:hover {
-
-}
-
-.component-preview .add-component-overlay {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  bottom: 0px;
-  width: ~"calc(100% - 4px)";
-  background:  rgba(94,193,37,0);
-  background-position: bottom right;
-  background-repeat: no-repeat;
-  background-size: 75px;
-  -webkit-transition: linear all .05s;
-  -moz-transition: linear all .05s;
-  overflow: hidden;
-}
-
-.component-card .add-tooltip {
-  border-radius: 20px;
-  display: none;
-  -moz-border-radius: 20px;
-  font-size: 2rem;
-  background:  rgba(94,193,37,1);
-  color: white;
-  opacity: .7;
-  padding: 0px 7px 0 7px;
-  text-align: center;
-  font-weight: bold;
-  position: absolute;
-  z-index: 9999;
-  overflow: hidden;
-  right: 5px;
-  bottom: 6px;
-}
-
-.component-card:hover .add-tooltip {
-  -webkit-transform: scale(1);
-  -moz-transform: scale(1);
-}
-
-:host-context(.mode-discovery) .component-card .add-tooltip {
-  right: 5px;
-  bottom: 5px;
-}
-
-.component-description {
-  position: relative;
-  padding: 10px;
-
-}
-
-.mode-discovery .component-description {
-  padding: 8px 15px 12px 15px;
-  height: 85px;
-}
-
 .component-description h1 {
-  float: none;
-  font-size: 1.4rem;
+  padding: 10px 15px 10px 15px;
+  font-size: 15px;
   font-weight: normal;
+  position: relative;
+  margin: 0;
 }
 
-:host-context(.mode-discovery) .component-description h1 {
-  float: none;
-  font-size: 1.5rem;
-  margin-bottom: 4px;
-}
-
-:host-context(.mode-discovery) .component-description h6 {
-  color: #999;
-  font-size: 1.3rem;
-  display: block;
-}
-
-.component-description h6 {
-  display: none;
+:host .description {
+  margin: 0;
+  padding: 0;
 }
 
 .friends {
@@ -202,10 +117,38 @@
   cursor: pointer;
 }
 
-
 :host-context(.mode-discovery) .component-card {
   margin: 0px 10px 10px 0px;
   box-shadow: 0px 2px 3px rgba(0,0,0,.15);
   float: left;
   width: ~"calc(50% - 15px)";
+}
+
+:host #showInfo {
+  float: right;
+  background: rgba(0,0,0,.1);
+  width: 25px;
+  text-align: center;
+  border-radius: 2px;
+  color: white;
+  padding: 3px 0;
+  position: absolute;
+  right: 4px;
+  top: 7px;
+
+  &::after {
+    content: '?'
+  }
+
+  &:hover {
+    background: rgba(0,0,0,.3);
+
+    &::after {
+      content: '\203A';
+    }
+  }
+}
+
+:host .more-info {
+  display: none;
 }
