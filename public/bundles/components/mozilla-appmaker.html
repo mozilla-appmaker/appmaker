@@ -4569,7 +4569,7 @@ header {
     </script>
 </polymer-element>
 
-<polymer-element name="ceci-image" source="http://www.placekitten.com/150/150" attributes="height source" extends="ceci-element" height="160" assetpath="component-image/">
+<polymer-element name="ceci-image" source="//www.placekitten.com/150/150" attributes="height source" extends="ceci-element" height="160" assetpath="component-image/">
   <template>
     <style>:host {
   display: block;
@@ -4639,12 +4639,11 @@ header {
         this.onclick = function () {
           that.broadcast("click", this.img.getAttribute( "src" ));
         };
-        this.super();
       },
       setValue : function(v) {
         this.setImageSource(v);
       },
-      sourceChanged : function(oldValue,newValue){
+      sourceChanged : function(oldValue, newValue){
         this.setImageSource(this.source);
       },
       setImageSource : function (val) {
@@ -5684,15 +5683,25 @@ header {
         this._playing = false;
         this.timeout = null;
       },
-      leftView: function () {
+      detached: function () {
         clearTimeout(this.timeout);
+        this.timeout = null;
+        this.super();
+      },
+      attached: function () {
+        if (this._playing) {
+          this._setTimeout();
+        }
+        this.super();
       },
       setArrowSpeed: function (v) {
         var animDuration = v * 2;
         var metronomeArrow = this.shadowRoot.querySelector('.metronome-arrow');
         metronomeArrow.classList.remove("metronome-animation");
         if (v > 0 && this._playing) {
+          //force a reflow
           metronomeArrow.offsetWidth = metronomeArrow.offsetWidth;
+
           metronomeArrow.classList.add("metronome-animation");
           metronomeArrow.style.webkitAnimationDuration = animDuration + "s";
           metronomeArrow.style.animationDuration = animDuration + "s";
@@ -5700,7 +5709,9 @@ header {
       },
       autostartChanged : function(){
         if(this.autostart == "true") {
-          this.start();
+          if (!this._playing) {
+            this.start();
+          }
         } else {
           this.stop();
         }
@@ -5722,7 +5733,11 @@ header {
         if (newValue <= 0) {
           this.beatsperminute = 0.1;
         }
+        this._clearTimeout();
         this.setArrowSpeed((60 / this.beatsperminute));
+        if (this._playing) {
+          this._setTimeout();
+        }
       },
       start: function (oldValue, newValue) {
         this._playing = true;
@@ -5732,18 +5747,25 @@ header {
       stop: function () {
         this._playing = false;
         this.setArrowSpeed(0);
+        this._clearTimeout(this.timeout);
+      },
+      _setTimeout: function () {
+        this.timeout = setTimeout(function () {
+          this.timeout = null;
+          this._count++;
+          this.broadcast('tick', this._count);
+          this.tick();
+        }.bind(this), (60 / this.beatsperminute) * 1000);
+      },
+      _clearTimeout: function () {
+        clearTimeout(this.timeout);
+        this.timeout = null;
       },
       tick: function () {
-        if (!this._playing) {
+        if (!this._playing || this.timeout) {
           return;
         }
-        this._count++;
-        this.broadcast('tick', this._count);
-        var t = this;
-        var defer = function () {
-          t.tick();
-        };
-        this.timeout = setTimeout(defer, (60 / this.beatsperminute) * 1000);
+        this._setTimeout();
       }
     });
   </script>
@@ -8808,10 +8830,10 @@ header {
       <div class="indicator bottom"></div>
       <template repeat="{{item, i in activebroadcasts}}">
         <div data-color="{{item.channelcolor}}" data-channel="{{item.channelname}}" class="channelrow">
-            <div on-click="{{beattap}}" data-beat="1" class="beat"></div>
-            <div on-click="{{beattap}}" data-beat="2" class="beat"></div>
-            <div on-click="{{beattap}}" data-beat="3" class="beat"></div>
-            <div on-click="{{beattap}}" data-beat="4" class="beat"></div>
+          <div on-click="{{beattap}}" data-beat="0" class="beat"></div>
+          <div on-click="{{beattap}}" data-beat="1" class="beat"></div>
+          <div on-click="{{beattap}}" data-beat="2" class="beat"></div>
+          <div on-click="{{beattap}}" data-beat="3" class="beat"></div>
         </div>
       </template>
     </div>
@@ -8860,7 +8882,7 @@ header {
   <script>
     Polymer('ceci-sequencer', {
       beattap: function(e){
-        var that = this;
+        var self = this;
         var beatEl = e.target;
 
         if (beatEl.classList.contains("on")){
@@ -8870,21 +8892,21 @@ header {
           beatEl.classList.add("on");
         }
 
-        that.playbeats = [[],[],[],[]];
+        self.playbeats = [[],[],[],[]];
 
         Array.prototype.forEach.call(this.shadowRoot.querySelectorAll(".channelrow"), function(chan) {
           var channel = chan.getAttribute("data-channel");
           var beat = 0;
           Array.prototype.forEach.call(chan.querySelectorAll(".beat"), function(beatEl) {
             if(beatEl.classList.contains("on")) {
-              that.playbeats[beat].push(channel);
+              self.playbeats[beat].push(channel);
             }
-              beat++;
+            beat++;
           });
         });
         this.setAttribute("playbeats",JSON.stringify(this.playbeats));
       },
-      currentBeat: 0,
+      currentBeat: -1,
       ready: function() {
         this.super();
         this.lastBroadcast = null;
@@ -8892,42 +8914,49 @@ header {
         this.playbeats = JSON.parse(this.getAttribute("playbeats")) || [["A"],["B"],["A"],["B"]];
       },
       colorSquares : function(){
-        var that = this;
-        for(var i = 0; i < this.playbeats.length; i++){
-          var beatCount = i + 1;
-          var beats = this.playbeats[i];
-          for(var j = 0; j < beats.length; j++) {
-            var channel = beats[j];
-            this.shadowRoot.querySelector(".channelrow[data-channel="+channel+"] .beat:nth-child("+beatCount+")").classList.add("on");
+        if (this.activebroadcasts.length > 0){
+          for(var i = 0; i < this.playbeats.length; i++){
+            var beatCount = i + 1;
+            var beats = this.playbeats[i];
+            for(var j = 0; j < beats.length; j++) {
+              var channel = beats[j];
+
+              this.shadowRoot.querySelector(".channelrow[data-channel=" + channel +"] .beat:nth-child(" + beatCount + ")").classList.add("on");
+            }
           }
         }
       },
       attached : function(){
         this.super();
-        var that = this;
-        this.addEventListener("channelUpdated",function(){
+
+        this.addEventListener("CeciChannelUpdated", function(){
           this.updateChannels();
         });
-        this.updateChannels();
-        this.async(function(){
-          this.colorSquares()
-        });
-      },
-      updateChannels: function(){
-        var that = this;
-        this.activebroadcasts = [];
-        Array.prototype.forEach.call(this.querySelectorAll("ceci-broadcast"), function(broadcast) {
-          var item = {};
-          item.channelcolor = broadcast.getAttribute("on");
-          item.channelname = broadcast.getAttribute("from");
-          that.activebroadcasts.push(item);
-        });
+
         this.async(function(){
           this.colorSquares()
         });
 
+        this.updateChannels();
+      },
+      updateChannels: function(){
+        var self = this;
+        this.activebroadcasts = [];
+
+        Array.prototype.forEach.call(this.querySelectorAll("ceci-broadcast"), function(broadcast) {
+          var item = {};
+          item.channelcolor = broadcast.getAttribute("on");
+          item.channelname = broadcast.getAttribute("from");
+          self.activebroadcasts.push(item);
+        });
+
+        this.async(function(){
+          this.colorSquares()
+        });
       },
       input: function(value) {
+        this.currentBeat += 1;
+
         if(this.currentBeat > 3) {
           this.currentBeat = 0;
         }
@@ -8935,7 +8964,6 @@ header {
         for(var i = 0; i < playChannels.length; i++){
           this.broadcast(playChannels[i], "tick");
         }
-        this.currentBeat += 1;
       }
     });
   </script>
