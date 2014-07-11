@@ -6,6 +6,11 @@
 }
 
 :host {
+
+  .hidden {
+    display: none!important;
+  }
+
   color: white;
   position: relative;
   text-align: left;
@@ -30,9 +35,7 @@
     &:active {
       background: #2674af;
     }
-
   }
-
 
   #collaborate {
     background: #750CCE;
@@ -318,13 +321,6 @@
     font-size: 15px;
     color: #555;
     cursor: pointer;
-    &.hidden {
-      display: none;
-    }
-  }
-
-  .hidden {
-    display: none;
   }
 
   #signInProgress {
