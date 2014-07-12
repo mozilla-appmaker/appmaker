@@ -15,16 +15,9 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
   dbModels.init(dbconn);
 
   return {
+
     index: function(req, res) {
-      res.render('index.ejs', { view: "home" });
-    },
-
-    about: function(req, res) {
-      res.render('about.ejs', { view: "about" });
-    },
-
-    contribute: function(req, res) {
-      res.render('contribute.ejs', { view: "contribute" });
+      res.redirect(301, 'designer');
     },
 
     designer: function (req, res) {
@@ -67,14 +60,6 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
       } else {
         res.json({error: 'No valid appURL.'}, 500);
       }
-    },
-
-    testappdesigner: function(req, res) {
-      res.render('testappdesigner');
-    },
-
-    testapp: function(req, res) {
-      res.render('testapp');
     },
 
     publish: require('./publish')(store, viewsPath, urlManager, makeAPIPublisher, dbconn),

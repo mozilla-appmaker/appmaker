@@ -182,16 +182,7 @@ app.post('/logout', webmakerAuth.handlers.logout);
 app.post('/check-username', webmakerAuth.handlers.exists);
 
 app.get('/', routes.index);
-
-app.get('/about', routes.about);
-
-app.get('/contribute', routes.contribute);
-
 app.all('/designer', routes.designer);
-
-app.get('/testappdesigner', routes.testappdesigner);
-
-app.get('/testapp', routes.testapp);
 
 // remix and publish email notification routes
 app.get('/remix', routes.remix);
