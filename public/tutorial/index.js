@@ -1,7 +1,7 @@
 define(
   ["jquery"],
   function($) {
-    var Tutorial = function Tutorial(steps) {
+    function Tutorial(steps) {
       var _this = this;
       var currentIdx;
 

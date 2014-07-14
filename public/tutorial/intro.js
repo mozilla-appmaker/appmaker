@@ -59,17 +59,13 @@ define(
           dialogClass: "tutorial-dialog-arrow tutorial-dialog-arrow-right",
           init: function() {
             var tab = "project-settings";
-            //From js/modes.js changeEditableTab()
+            // From designer/js/modes.js changeEditableTab()
+            // FIXME: expose this method in modes.js and use it here
             $(".tray-tabs").find("a").removeClass("selected-tab");
             $(".tray-tabs [tab='"+tab+"']").addClass("selected-tab");
             $(".tab-sections .section").hide();
             $(".tab-sections .section-" + tab).show();
             $(".tab-sections .section-" + tab + " textarea").focus();
-            if(tab == "view-source"){
-            } else {
-              if($(".right-column").not(".remix-mode").length == 1){
-              }
-            }
           }
         },
         {
