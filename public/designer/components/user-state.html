@@ -6,10 +6,7 @@
     <div class="dropdowns {{ {hidden: user.state == 'signedout'} | tokenList }}">
 
       <div class="menu-wrapper user-menu button">
-        <div id="email" class="menu-button user-menu-button {{ {hidden: user.state == 'signedout'} | tokenList}}" on-mousedown="{{toggleMenu}}">
-          <span class="icon"></span>
-          {{user.email}}
-        </div>
+        <div id="email" class="menu-button user-menu-button {{ {hidden: user.state == 'signedout'} | tokenList}}" on-mousedown="{{toggleMenu}}"><span class="icon"></span>{{user.email}}</div>
         <div class="menu">
           <h3 id="myappsheading">My apps</h3>
           <span id="noApps">You don't have any saved apps!</span>
@@ -37,6 +34,7 @@
           <a class="hidden" id="viewlink">Preview App</a>
         </div>
       </div>
+
     </div>
 
     <a id="newApp" class="button">New App</a>
@@ -51,6 +49,12 @@
 -->
     <a id="signin" class="button {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">Sign In</a>
     <div id="signInProgress" class="hidden"></div>
+
+    <div class="back-to-webmaker">
+      <span class="webmaker-icon"></span>
+      <a href="https://webmaker.org/en-US">Webmaker.org</a>
+    </div>
+
   </template>
   <script>
   (function() {

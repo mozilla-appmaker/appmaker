@@ -7,6 +7,15 @@
 
 :host {
 
+  & > div, & > a {
+    display: block;
+    float: left;
+  }
+
+  display: inline-block;
+  height: 30px;
+  margin-top: 10px;
+
   .hidden {
     display: none!important;
   }
@@ -17,8 +26,24 @@
   z-index: 99999;
   position: relative;
 
-  .dropdowns {
-    display: inline-block;
+  .back-to-webmaker {
+    padding-left: 40px;
+    height: 30px;
+    line-height: 30px;
+
+    a {
+      color: #555;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    background: url("/images/webmaker-main_01.png") no-repeat;
+    background-position: 10px 0;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
   }
 
   #signin {
@@ -26,7 +51,6 @@
     margin-left: 8px;
     height: 22px;
     font-size: 15px;
-    display: inline-block;
 
     &:hover {
       background: #439add;
@@ -98,7 +122,6 @@
     .green-button;
     font-size: 15px;
     height: 22px;
-    display: inline-block;
   }
 
   #addComponent {
