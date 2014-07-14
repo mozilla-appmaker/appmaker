@@ -263,6 +263,8 @@ define(
           tagContainer.appendChild(option);
 
           option.addEventListener("click",function(e){
+            document.querySelector('.component-search').value = "";
+            doSearch();
             that.filterCategory(e.target.getAttribute("data-category"));
           });
         }
@@ -318,57 +320,61 @@ define(
       }
     };
 
+    function doSearch(searchValue) {
+      var categoryContainers = document.querySelectorAll(".category-container");
+      searchValue = searchValue || "";
+      var componentsContainer = document.querySelector('#components');
+      if (searchValue.length > 0) {
+        DesignerTray.filterCategory("all");
+        CeciDesigner.forEachComponent(function (componentTag) {
+          var menuElement = componentsContainer.querySelector('designer-component-tray-item[name="' + componentTag + '"]');
+
+          if (window.CeciDefinitions[componentTag] && menuElement) {
+            var tags = window.CeciDefinitions[componentTag].tags || [];
+            var found = false;
+
+            var stringsToSearch = typeof tags === 'string' ? [tags] : tags;
+            stringsToSearch.push(componentTag.toLowerCase());
+            window.CeciDefinitions[componentTag].name && stringsToSearch.push(window.CeciDefinitions[componentTag].name.toLowerCase());
+            window.CeciDefinitions[componentTag].description && stringsToSearch.push(window.CeciDefinitions[componentTag].description.toLowerCase());
+
+            stringsToSearch.forEach(function (string) {
+              found = found || string.toLowerCase().indexOf(searchValue) > -1;
+            });
+
+            if (!found) {
+              menuElement.classList.add('hide');
+            }
+            else {
+              menuElement.classList.remove('hide');
+            }
+          }
+        });
+
+        Array.prototype.forEach.call(categoryContainers, function(el, i){
+          if(el.querySelectorAll("designer-component-tray-item:not(.hide)").length === 0) {
+            el.classList.add("no-results");
+          } else {
+            el.classList.remove("no-results");
+          }
+        });
+
+      }
+      else {
+        Array.prototype.forEach.call(categoryContainers, function(el, i){
+          el.classList.remove("no-results");
+        });
+        Array.prototype.forEach.call(componentsContainer.querySelectorAll('designer-component-tray-item'), function (e) {
+          e.classList.remove('hide');
+        });
+      }
+    }
+
     window.addEventListener("polymer-ready", function () {
       DesignerTray.addComponentsFromRegistry();
-      var categoryContainers = document.querySelectorAll(".category-container");
       var searchBox = document.querySelector('.component-search');
-      searchBox.addEventListener('keyup', function (e) {
-        var searchValue = searchBox.value.trim().toLowerCase();
-        var componentsContainer = document.querySelector('#components');
-        if (searchValue.length > 0) {
-          DesignerTray.filterCategory("all");
-          CeciDesigner.forEachComponent(function (componentTag) {
-            var menuElement = componentsContainer.querySelector('designer-component-tray-item[name="' + componentTag + '"]');
-
-            if (window.CeciDefinitions[componentTag] && menuElement) {
-              var tags = window.CeciDefinitions[componentTag].tags || [];
-              var found = false;
-
-              var stringsToSearch = typeof tags === 'string' ? [tags] : tags;
-              stringsToSearch.push(componentTag.toLowerCase());
-              window.CeciDefinitions[componentTag].name && stringsToSearch.push(window.CeciDefinitions[componentTag].name.toLowerCase());
-              window.CeciDefinitions[componentTag].description && stringsToSearch.push(window.CeciDefinitions[componentTag].description.toLowerCase());
-
-              stringsToSearch.forEach(function (string) {
-                found = found || string.toLowerCase().indexOf(searchValue) > -1;
-              });
-
-              if (!found) {
-                menuElement.classList.add('hide');
-              }
-              else {
-                menuElement.classList.remove('hide');
-              }
-            }
-          });
-
-          Array.prototype.forEach.call(categoryContainers, function(el, i){
-            if(el.querySelectorAll("designer-component-tray-item:not(.hide)").length === 0) {
-              el.classList.add("no-results");
-            } else {
-              el.classList.remove("no-results");
-            }
-          });
-
-        }
-        else {
-          Array.prototype.forEach.call(categoryContainers, function(el, i){
-            el.classList.remove("no-results");
-          });
-          Array.prototype.forEach.call(componentsContainer.querySelectorAll('designer-component-tray-item'), function (e) {
-            e.classList.remove('hide');
-          });
-        }
+      searchBox.addEventListener('keyup', function() {
+        doSearch(searchBox.value.trim().toLowerCase());
       });
     });
 
