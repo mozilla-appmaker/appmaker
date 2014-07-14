@@ -239,7 +239,7 @@ define(
             if (categories[category]) {
               var description = document.createElement('div');
               description.classList.add('category-description');
-              description.innerHTML = L10n.get(categories[category].description);
+              description.textContent = L10n.get(categories[category].description);
               container.appendChild(description);
             }
 
