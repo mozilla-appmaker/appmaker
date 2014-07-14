@@ -21,7 +21,7 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
     },
 
     designer: function (req, res) {
-      res.render('designer');
+      res.render('designer', { allowCustomcomponents: !!process.env.ALLOW_CUSTOM_COMPONENTS });
     },
 
     remix: function (req, res) {
