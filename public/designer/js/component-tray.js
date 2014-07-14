@@ -264,7 +264,7 @@ define(
 
           option.addEventListener("click",function(e){
             document.querySelector('.component-search').value = "";
-            doSearch("");
+            doSearch();
             that.filterCategory(e.target.getAttribute("data-category"));
           });
         }
