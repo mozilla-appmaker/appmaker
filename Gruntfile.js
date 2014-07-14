@@ -78,7 +78,8 @@ module.exports = function( grunt ) {
       options: {
         pathToJSON: [ "locale/en_US/msg.json" ],
         extraSearchRegexp: [
-          /[lL]10n(\.get)?\(["'][^)]+["']\)/g
+          /[lL]10n(\.get)?\(["'][^)]+["']\)/g,
+          /\{\{\s*["'][^|]+["']\s*\|\s*l10n\s*\}\}/g
         ]
       }
     }
@@ -153,8 +154,7 @@ module.exports = function( grunt ) {
   // TODO: the csslinting is turned off right now, because the number
   //       of warnings is staggering. Some make sense, some don't.
   grunt.registerTask("default", [
-    /*"csslint",*/
-    "gettext_finder",
+    // "csslint",
     "jshint",
     "inlinelint",
     "simplemocha",

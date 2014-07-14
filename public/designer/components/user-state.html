@@ -1,7 +1,7 @@
 <polymer-element name="user-state" attributes="user editingmode">
   <template>
     <link rel="stylesheet" href="/stylesheets/user-state.css">
-    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.css" >
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.css">
 
     <div class="dropdowns {{ {hidden: user.state == 'signedout'} | tokenList }}">
 
@@ -11,17 +11,17 @@
           {{user.email}}
         </div>
         <div class="menu">
-          <h3 id="myappsheading">My apps</h3>
-          <span id="noApps">You don't have any saved apps!</span>
+          <h3 id="myappsheading">{{'My apps' | l10n}}</h3>
+          <span id="noApps">{{"You don't have any saved apps!" | l10n}}</span>
           <ul id="myapps" class="menu-options">
           </ul>
-          <h3 id="mycomponentsheading">My components</h3>
+          <h3 id="mycomponentsheading">{{'My components' | l10n}}</h3>
           <div>
-            <a id="addComponent" class="button" on-click={{addComponent}}>Add component</a>
+            <a id="addComponent" class="button" on-click={{addComponent}}>{{'Add Component' | l10n}}</a>
           </div>
           <ul id="mycomponents" class="menu-options">
           </ul>
-          <a id="signout" class="button" on-click="{{signoutClick}}">Sign Out</a>
+          <a id="signout" class="button" on-click="{{signoutClick}}">{{'Sign Out' | l10n}}</a>
         </div>
       </div>
       <div class="menu-wrapper app-menu button">
@@ -29,17 +29,17 @@
           <div class="icon-reorder"></div>
         </div>
         <div class="menu app-actions menu-options">
-          <a id="saveAppAs">Save As</a>
-          <a class="saved" id="saveApp">Save</a>
-          <a class="saved" id="renameApp">Rename</a>
-          <a id="publishApp">Publish</a>
-          <a class="saved" id="deleteApp">Delete</a>
-          <a class="hidden" id="viewlink">Preview App</a>
+          <a id="saveAppAs"><span class="icon icon-save"> </span> {{'Save As' | l10n}}</a>
+          <a class="saved" id="saveApp"><span class="icon icon-save"> </span> {{'Save' | l10n}}</a>
+          <a class="saved" id="renameApp"><span class="icon icon-edit"> </span> {{'Rename' | l10n}}</a>
+          <a id="publishApp"><span class="icon icon-mobile-phone"> </span> {{'Publish' | l10n}}</a>
+          <a class="saved" id="deleteApp"><span class="icon icon-trash"> </span> {{'Delete' | l10n}}</a>
+          <a class="hidden" id="viewlink"><span class="icon icon-external-link"> </span> {{'Preview App' | l10n}}</a>
         </div>
       </div>
     </div>
 
-    <a id="newApp" class="button">New App</a>
+    <a id="newApp" class="button">{{'New App' | l10n}}</a>
 <!--
     commented off for https://github.com/mozilla-appmaker/appmaker/issues/1618, with the intention of turning it back on after Maker Party
 
@@ -49,7 +49,7 @@
     </a>
 
 -->
-    <a id="signin" class="button {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">Sign In</a>
+    <a id="signin" class="button {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">{{'Sign In' | l10n}}</a>
     <div id="signInProgress" class="hidden"></div>
   </template>
   <script>
@@ -88,6 +88,9 @@
       });
 
       Polymer('user-state', {
+        l10n: function (str) {
+          return l10n.get(str);
+        },
         user: user,
         editingmodeChanged : function(oldValue, newValue){
           localStorage.editingmode = newValue;
@@ -104,18 +107,6 @@
           this.addEventListener("click", function(e) {
             e.stopPropagation();
           });
-
-          that.$.signin.textContent = l10n.get("Sign In");
-          that.$.myappsheading.textContent = l10n.get("My apps");
-          that.$.noApps.textContent = l10n.get("You don't have any saved apps!");
-          that.$.signout.textContent = l10n.get("Sign Out");
-          that.$.saveAppAs.textContent = l10n.get("Save As");
-          that.$.saveApp.textContent = l10n.get("Save");
-          that.$.renameApp.textContent = l10n.get("Rename");
-          that.$.publishApp.textContent = l10n.get("Publish");
-          that.$.deleteApp.textContent = l10n.get("Delete");
-          that.$.viewlink.textContent = l10n.get("Preview App");
-          that.$.newApp.textContent = l10n.get("New App");
 
           function loadRemixContent (remixName) {
             application.loadAppByUrl(decodeURIComponent(remixName));

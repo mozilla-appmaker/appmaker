@@ -112,24 +112,8 @@
     size: large;
   }
 
-  .icon {
-    display: none;
-    position: absolute;
-    left: 5px;
-    right: 0px;
-    height: 20px;
-    width: 20px;
-    background-size: 16px;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-
   .user-menu .icon {
     background-image: url(/images/icon_user.png);
-  }
-
-  .app-menu .icon {
-    background-image: url(/images/icon_gear.png);
   }
 
   .user-menu.menu-open .icon {
@@ -300,6 +284,12 @@
       background-color: white;
       font-weight: bold;
     }
+
+    & [class^="icon-"], & [class*=" icon-"], .icon {
+      display: inline-block;
+      width: 20px;
+    }
+
   }
 
   .broken {
