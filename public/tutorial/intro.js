@@ -12,7 +12,8 @@ define(
       });
     }
 
-    var content = $(TutorialSteps);
+    var $content = $(TutorialSteps);
+    $content.find('[data-controls]').remove().appendTo($content.find('[data-step]:not(:last-child)'));
 
     var Intro = function() {
       return new Tutorial([
@@ -122,7 +123,6 @@ define(
           },
           init: function() {
             var _this = this;
-            console.log('xxx', _this);
             setTimeout(function() {
               $(document).one("click", function () {
                 _this.next();
@@ -130,7 +130,7 @@ define(
             }, 0);
           }
         }
-      ], content);
+      ], $content);
     }
 
     return Intro;

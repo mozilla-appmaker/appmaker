@@ -30,6 +30,7 @@ define(
       };
 
       this.next = function() {
+        if (currentIdx >= steps.length) return;
         hide(currentIdx);
         currentIdx++;
         if (currentIdx < steps.length) show(currentIdx);
@@ -37,10 +38,17 @@ define(
 
       this.end = function() {
         hide(currentIdx);
+        currentIdx = steps.length;
       };
 
-      $('.next', content).click(_this.next.bind(_this));
-      $('.skip', content).click(_this.end.bind(_this));
+      $('.tutorial-next', content).click(function () {
+        _this.next();
+        return false;
+      });
+      $('.tutorial-end', content).click(function () {
+        _this.end();
+        return false;
+      });
 
       return this;
     };
