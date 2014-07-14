@@ -154,11 +154,6 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
             }
           };
 
-          Object.keys(icons).forEach(function (iconSize) {
-            var icon = icons[iconSize];
-            manifestJSON.icons[iconSize] = urlManager.createIconPath(folderName, icon.filename);
-          });
-
           var outputFiles = [
             {filename: urlManager.objectPrefix + '/' + folderName + '/' + manifestFilename,
               data: JSON.stringify(manifestJSON),
@@ -169,6 +164,8 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
             {filename: urlManager.objectPrefix + '/' + folderName + '/' + installHTMLFilename,
               data: installStr}
           ].concat(Object.keys(icons).map(function (iconSize) {
+            var icon = icons[iconSize];
+            manifestJSON.icons[iconSize] = urlManager.createIconPath(folderName, icon.filename);
             return {filename: urlManager.objectPrefix + '/' + folderName + '/' + icons[iconSize].filename,
               data: icons[iconSize].data, contentType: 'image/png'};
           }));
