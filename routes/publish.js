@@ -35,6 +35,11 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
   });
 
   function getUserComponents (req, callback) {
+    if (!process.env.ALLOW_CUSTOM_COMPONENTS) {
+      callback([]);
+      return;
+    }
+
     if (! req.session.email) {
       console.error('Need to be signed in to retrieve components.');
       callback([]);

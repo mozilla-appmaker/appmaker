@@ -1,4 +1,4 @@
-<polymer-element name="user-state" attributes="user editingmode">
+<polymer-element name="user-state" attributes="user editingmode customcomponents">
   <template>
     <link rel="stylesheet" href="/stylesheets/user-state.css">
     <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.css">
@@ -15,12 +15,14 @@
           <span id="noApps">{{"You don't have any saved apps!" | l10n}}</span>
           <ul id="myapps" class="menu-options">
           </ul>
-          <h3 id="mycomponentsheading">{{'My components' | l10n}}</h3>
-          <div>
-            <a id="addComponent" class="button" on-click={{addComponent}}>{{'Add Component' | l10n}}</a>
-          </div>
-          <ul id="mycomponents" class="menu-options">
-          </ul>
+          <template if="{{ customcomponents }}">
+            <h3 id="mycomponentsheading">{{'My components' | l10n}}</h3>
+            <div>
+              <a id="addComponent" class="button" on-click={{addComponent}}>{{'Add Component' | l10n}}</a>
+            </div>
+            <ul id="mycomponents" class="menu-options">
+            </ul>
+          </template>
           <a id="signout" class="button" on-click="{{signoutClick}}">{{'Sign Out' | l10n}}</a>
         </div>
       </div>
@@ -399,6 +401,13 @@
           auth.logout();
         },
         loadLink: function(name, url, callback) {
+          if (!this.customcomponents) {
+            callback({
+              error: 'Custom components are not available in this build'
+            });
+            return;
+          }
+
           var link = document.createElement('link');
           link.rel = "import";
           link.href = url;
@@ -429,6 +438,8 @@
           return;
         },
         addComponentByURL: function (url) {
+          if (!this.customcomponents) { return; }
+
           var self = this;
 
           try {
@@ -489,6 +500,8 @@
           }
         },
         addComponent: function() {
+          if (!this.customcomponents) { return; }
+
           var self = this;
           // in a try/except block because called from an onclick handler,
           // so want to catch exceptions.
@@ -533,6 +546,8 @@
           return componentElement.getAttribute('name');
         },
         learnComponent: function(url, name) {
+          if (!this.customcomponents) { return; }
+
           // This function is to teach appmaker (client & server) about a new component URL
           var self = this;
           if (tray.isKnownComponent(name)) {
@@ -549,6 +564,8 @@
           });
         },
         storeComponentURL: function(url, name, next) {
+          if (!this.customcomponents) { return; }
+
           var self = this;
           $.ajax('/api/componentlinks', {
             data: {
@@ -567,6 +584,11 @@
           });
         },
         addComponentToUI: function(url, name, cb) {
+          if (!this.customcomponents) {
+            cb('Custom components are not available in this build');
+            return;
+          }
+
           var self = this;
           // Add to the menu
           var menuItem = this.addMenuItemForComponent(url, name);
@@ -583,6 +605,8 @@
           });
         },
         addMenuItemForComponent: function(url, name) {
+          if (!this.customcomponents) { return; }
+
           var self = this;
 
           var component = document.createElement('li');
@@ -720,6 +744,8 @@
           });
         },
         refreshComponentsList: function() {
+          if(!this.customcomponents) { return; }
+
           var self = this;
           var myComponents = this.shadowRoot.querySelector("#mycomponents");
           myComponents.innerHTML = "";
