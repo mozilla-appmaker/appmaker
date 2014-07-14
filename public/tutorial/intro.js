@@ -1,5 +1,5 @@
 define(
-  ["jquery", "tutorial/index", "text!/tutorial/intro.html", "designer/component-tray"],
+  ["jquery", "tutorial/index", "text!tutorial/intro.html", "designer/component-tray"],
   function ($, Tutorial, TutorialSteps, Tray) {
 
     function matchTarget(offset, elements) {
