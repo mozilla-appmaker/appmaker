@@ -38,7 +38,6 @@ define(
         hide(currentIdx);
       };
 
-      var _this = this;
       steps.forEach(function(step, i, arr) {
         $('.next', step.content).click(_this.next.bind(_this));
         $('.skip', step.content).click(_this.end.bind(_this));
