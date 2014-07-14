@@ -4,7 +4,7 @@
 
 define(
   [
-    "l10n", "inflector", "designer/utils", "ceci/ceci-designer",
+    "l10n", "inflector", "designer/utils", "ceci/ceci-designer", "tutorial/intro",
 
     // Unreferenced:
     "designer/component-tray",
@@ -18,7 +18,14 @@ define(
     "designer/debugger",
     "jquery-ui"
   ],
-  function(l10n, Inflector, Utils, Ceci) {
+  function(l10n, Inflector, Utils, Ceci, Intro) {
     "use strict";
+
+    if (Utils.getQueryStringVariable('tutorial')) {
+      window.addEventListener("polymer-ready", function () {
+        var intro = new Intro();
+        intro.start();
+      });
+    }
   }
 );
