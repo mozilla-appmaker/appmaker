@@ -287,7 +287,9 @@
             var app = document.querySelector('ceci-app').cloneNode(true);
 
             app.querySelector("ceci-card[visible=true]").removeAttribute("visible");
-            app.querySelector("ceci-card:first-child").setAttribute("visible","true");
+
+            // Need to use querySelector because first-child returns null (bug?)
+            app.querySelector("ceci-card").setAttribute("visible","true");
 
             var name = app.name;
             // This might need to be made its own thing so it can be called
