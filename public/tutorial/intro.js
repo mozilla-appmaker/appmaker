@@ -12,12 +12,12 @@ define(
       });
     }
 
-    var content = $(TutorialSteps).children().toArray();
+    var content = $(TutorialSteps);
 
     var Intro = function() {
       return new Tutorial([
         {
-          content: $('#welcome', TutorialSteps),
+          name: "welcome",
           position: {
             my: "center",
             at: "center",
@@ -26,7 +26,7 @@ define(
           }
         },
         {
-          content: $('#bricks', TutorialSteps),
+          name: "bricks",
           position: {
             my: "left top",
             at: "right+20 top+50",
@@ -35,7 +35,7 @@ define(
           dialogClass: "tutorial-dialog-arrow tutorial-dialog-arrow-left"
         },
         {
-          content: $('#customize', TutorialSteps),
+          name: "customize",
           position: {
             my: "right top",
             at: "left-20 top+50",
@@ -50,7 +50,7 @@ define(
           }
         },
         {
-          content: $('#project-settings', TutorialSteps),
+          name: "project-settings",
           position: {
             my: "right top",
             at: "left-20 top+50",
@@ -69,7 +69,7 @@ define(
           }
         },
         {
-          content: $("#pages", TutorialSteps),
+          name: "pages",
           position: {
             my: "center top",
             at: "center bottom+20",
@@ -78,7 +78,7 @@ define(
           dialogClass: "tutorial-dialog-arrow tutorial-dialog-arrow-top",
         },
         {
-          content: $("#channels", TutorialSteps),
+          name: "channels",
           position: {
             my: "right center",
             at: "left center",
@@ -91,7 +91,7 @@ define(
           }
         },
         {
-          content: $("#colors", TutorialSteps),
+          name: "colors",
           position: {
             my: "right center",
             at: "left center",
@@ -113,7 +113,7 @@ define(
           }
         },
         {
-          content: $("#end", TutorialSteps),
+          name: "end",
           position: {
             my: "center",
             at: "center",
@@ -130,7 +130,7 @@ define(
             }, 0);
           }
         }
-      ]);
+      ], content);
     }
 
     return Intro;

@@ -1,14 +1,15 @@
 define(
   ["jquery"],
   function($) {
-    function Tutorial(steps) {
+    function Tutorial(steps, content) {
       var _this = this;
       var currentIdx;
 
       function show(idx) {
         var step = steps[idx];
         if (step.init) step.init.apply(_this);
-        $(step.content).dialog({
+        step.$content = $('[data-step="' + step.name + '"]', content);
+        step.$content.dialog({
           dialogClass: [].concat("tutorial-dialog", step.dialogClass || []).join(' '),
           maxWidth: 300,
           modal: false,
@@ -20,7 +21,7 @@ define(
       function hide(idx) {
         var step = steps[idx];
         if (step.destroy) step.destroy.apply(_this);
-        $(step.content).dialog('destroy');
+        step.$content.dialog('destroy');
       }
 
       this.start = function() {
@@ -38,10 +39,8 @@ define(
         hide(currentIdx);
       };
 
-      steps.forEach(function(step, i, arr) {
-        $('.next', step.content).click(_this.next.bind(_this));
-        $('.skip', step.content).click(_this.end.bind(_this));
-      });
+      $('.next', content).click(_this.next.bind(_this));
+      $('.skip', content).click(_this.end.bind(_this));
 
       return this;
     };
