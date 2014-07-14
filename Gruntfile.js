@@ -155,7 +155,6 @@ module.exports = function( grunt ) {
   //       of warnings is staggering. Some make sense, some don't.
   grunt.registerTask("default", [
     // "csslint",
-    // "gettext_finder",
     "jshint",
     "inlinelint",
     "simplemocha",
