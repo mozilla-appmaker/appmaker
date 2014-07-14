@@ -123,10 +123,11 @@ define(
         var item = document.createElement('designer-component-tray-item');
         var ceciDefinition = CeciDesigner.getCeciDefinitionScript(name);
 
+        var label = ceciDefinition.name || Util.prettyName(name);
         item.setAttribute('name', name);
         item.setAttribute('thumbnail', resolvePath(name, ceciDefinition.thumbnail));
-        item.setAttribute('label', ceciDefinition.name || Util.prettyName(name));
-        item.setAttribute('description', L10n.get(name + "/description") || ceciDefinition.description);
+        item.setAttribute('label', label);
+        item.setAttribute('description', L10n.get(name + "/description") || ceciDefinition.description || label);
         item.setAttribute('author', ceciDefinition.author);
         item.setAttribute('updatedat', ceciDefinition.updatedAt);
 
@@ -139,7 +140,7 @@ define(
           }
         }
 
-        item.addEventListener('click', function (e) {
+        item.addEventListener('ComponentAddRequested', function (e) {
           var card = document.querySelector('ceci-card[visible]');
           if (card) {
             var newElement = document.createElement(name);
