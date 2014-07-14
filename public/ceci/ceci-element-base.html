@@ -11,6 +11,17 @@
 
     var DEFAULT_CHANNEL = 'blue';
 
+    // Mouse/touch events that need to be routed properly
+    var customListenerMap = {
+      'on-ceci-pressdown': { eventName: 'ceci-pressdown', mobile: 'touchstart', desktop: 'mousedown' },
+      'on-ceci-pressup': { eventName: 'ceci-pressup', mobile: 'touchend', desktop: 'mouseup' }
+    };
+
+    // Create a query selector based on the map above, like '[on-ceci-pressdown],[on-ceci-pressup]'.
+    var customListenerQuerySelector = Object.keys(customListenerMap).map(function (m) {
+      return '[' + m + ']';
+    }).join(',');
+
     function processDefinition (element) {
       var definitionJSON = window.CeciDefinitions[element.localName];
 
@@ -245,7 +256,27 @@
         }
       },
       attached: function () {
+        var els = this.shadowRoot.querySelectorAll(customListenerQuerySelector);
+        this.touchEnabled = "ontouchstart";
+        Array.prototype.forEach.call(els, this.addCustomListener.bind(this));
         document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));
+      },
+      addCustomListener: function(el, listener){
+        // Loop over the on-ceci-* listener types to see which one applies to this element
+        Object.keys(customListenerMap).forEach(function (listener) {
+          if (!el.hasAttribute(listener)) return;
+
+          // If there is a valid map entry, grab it
+          var mapEntry = customListenerMap[listener];
+
+          if (mapEntry) {
+            // Fire an event directly at the element with the on-ceci-* attribute
+            el.addEventListener(mapEntry[this.touchEnabled ? 'mobile' : 'desktop'], function(e){
+              // Emit an event without the "on-" prefix, to let Polymer's template syntax sugar do the rest
+              el.dispatchEvent(new CustomEvent(listener.substr(3), {bubbles: true, detail: this}));
+            });
+          }
+        });
       },
       domReady: function () {
         document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));
