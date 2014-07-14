@@ -253,7 +253,7 @@ define(
           var option = document.createElement("a");
 
           if(category === "all") {
-            option.textContent = "All Bricks";
+            option.textContent = L10n.get("All Bricks");
           } else {
             option.classList.add("hidden");
             option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
