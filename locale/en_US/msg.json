@@ -147,5 +147,22 @@
   "Your Appmaker App is ready!": "Your Appmaker App is ready!",
   "Your Appmaker Remix is ready!": "Your Appmaker Remix is ready!",
   "on channel...": "on channel...",
-  "when I hear" : "when I hear a signal on channel..."
+  "when I hear" : "when I hear a signal on channel...",
+  "Start with simple bricks useful for almost every app.": "Start with simple bricks useful for almost every app.",
+  "Add more advanced utilities for your app.": "Add more advanced utilities for your app.",
+  "Create complex data-driven connections between bricks.": "Create complex data-driven connections between bricks.",
+  "Record and play sounds, listen to music, and more.": "Record and play sounds, listen to music, and more.",
+  "Count objects and manipulate numbers.": "Count objects and manipulate numbers.",
+  "Draw, take pictures, and chart progress with these more interactive bricks.": "Draw, take pictures, and chart progress with these more interactive bricks.",
+  "Your app needs more cowbell.": "Your app needs more cowbell.",
+  "Chat with friends using text and images.": "Chat with friends using text and images.",
+  "Basic Bricks": "Basic Bricks",
+  "Utility Bricks": "Utility Bricks",
+  "Connection Bricks": "Connection Bricks",
+  "Audio Bricks": "Audio Bricks",
+  "Number Bricks": "Number Bricks",
+  "Media Bricks": "Media Bricks",
+  "Fun Bricks": "Fun Bricks",
+  "Chat Bricks": "Chat Bricks",
+  "All Bricks": "All Bricks"
 }
