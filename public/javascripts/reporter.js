@@ -5,6 +5,14 @@ define(function() {
   return {
 
     /**
+     * report to the user. Right now this simply alerts by
+     * wrapping this.errorReport
+     */
+    confirm: function(label) {
+      return confirm(label);
+    },
+
+    /**
      * report to console. Right now this simply wraps console.log
      */
     consoleReport: function() {

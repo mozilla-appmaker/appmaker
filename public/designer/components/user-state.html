@@ -205,7 +205,10 @@
 
           //Delete app
           this.$.deleteApp.addEventListener('click', function() {
-            application.deleteAppByName(application.getCurrentApp());
+            var name = application.getCurrentApp();
+            if(!reporter.confirm("Are you sure you want to delete '"+name+"'?"))
+              return;
+            application.deleteAppByName(name);
             application.clearCurrentApp();
             self.$.newApp.click();
             analytics.event("Deleted App");
