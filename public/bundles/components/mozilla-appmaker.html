@@ -8674,13 +8674,13 @@ header {
 </polymer-element>
 
 
-<polymer-element name="ceci-popcorn-component" extends="ceci-element" attributes="make starttime" starttime="0" assetpath="component-popcorn/">
+<polymer-element name="ceci-popcorn-component" extends="ceci-element" make="https://mozteach.makes.org/popcorn/1boj" attributes="make starttime" starttime="0" assetpath="component-popcorn/">
   <ceci-definition>
     {
       "name": "Popcorn Maker Player",
       "tags": "media,popcorn",
       "thumbnail": "./thumbnail.png",
-      "description": "Displays and controls a poprocn.webmaker.org make",
+      "description": "Displays and controls a popcorn.webmaker.org make",
       "broadcasts": {
         "loaded": {
           "label": "Loaded",
@@ -8749,6 +8749,10 @@ header {
   width: 100%;
 }
 
+:host iframe {
+  border: none;
+}
+
 </style>
     <iframe id="make-iframe"></iframe>
     
@@ -8759,7 +8763,6 @@ header {
         ready: function() {
           this.super();
         },
-        make: "",
         makeChanged: function() {
           var iframe = this.$["make-iframe"],
               self = this;
