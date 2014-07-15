@@ -1,6 +1,6 @@
 {
   "ceci-sequencer/name": "Sequencer",
-  "ceci-sequencer/description": "Alternates output between set broadcasts from a single input",
+  "ceci-sequencer/description": "Sends messages signals to other bricks according to a pattern.",
   "ceci-sequencer/A/label": "Beat A",
   "ceci-sequencer/A/description": "The first broadcast in the rotation.",
   "ceci-sequencer/B/label": "Beat B",

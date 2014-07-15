@@ -1,6 +1,6 @@
 {
 	"ceci-button": "Button",
-	"ceci-button/description": "Broadcasts a \"click\" when clicked.",
+	"ceci-button/description": "Responds to your clicks and taps.",
 	"ceci-button/attributes/label": "Click Me",
 	"ceci-button/attributes/label/label": "Label",
 	"ceci-button/attributes/label/description": "Text shown on the button.",

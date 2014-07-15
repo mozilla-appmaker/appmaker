@@ -1,6 +1,6 @@
 {
-  "ceci-chart/name": "Chart",
-  "ceci-chart/description": "Charts a collection",
+  "ceci-chart/name": "Line Graph",
+  "ceci-chart/description": "Shows a line graph of a data set over time.",
   "ceci-chart/graph/description": "Graphs available data.",
   "ceci-chart/graph/label": "Graph",
   "ceci-chart/collectionname/description": "The name of the collection to store the value",

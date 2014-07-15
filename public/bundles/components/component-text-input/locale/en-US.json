@@ -1,6 +1,6 @@
 {
-	"ceci-text-input": "Text Input",
-	"ceci-text-input/description": "A text input that broadcasts whatever a user types.",
+	"ceci-text-input": "Text Input with Button",
+	"ceci-text-input/description": "Sends text you've entered when you press the button.",
 	"ceci-text-input/button": "Submit",
 	"ceci-text-input/attributes/inputname" : "Text Input",
 	"ceci-text-input/attributes/inputname/label" : "Input Name",

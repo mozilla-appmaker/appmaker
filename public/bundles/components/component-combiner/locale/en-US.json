@@ -1,6 +1,6 @@
 {
-  "ceci-combiner/description": "Messages of any colour sent to this brick .",
-  "ceci-combiner/name": "Combiner",
+  "ceci-combiner/description": "Combines signals from multiple channels and broadcasts them on a single channel.",
+  "ceci-combiner/name": "Channel Combiner",
   "ceci-combiner/output/label": "Output",
   "ceci-combiner/output/description": "Repeats input",
   "ceci-combiner/input1/description": "Input 1",

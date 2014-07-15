@@ -1,5 +1,5 @@
 {
-  "ceci-jazzhands/description": "Broadcasts a \"click\" when clicked.",
+  "ceci-jazzhands/description": "Waves at you when pressed or input is received.",
   "ceci-jazzhands/name": "Jazz Hands",
   "ceci-jazzhands/both/description": "Jazz both hands",
   "ceci-jazzhands/both/label": "Both Hands",

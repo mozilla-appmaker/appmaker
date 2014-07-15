@@ -1,6 +1,6 @@
 {
-	"ceci-counter": "Counter",
-	"ceci-counter/description": "Listens for a message and counts",
+	"ceci-counter": "Boolean Gate",
+	"ceci-counter/description": "Compares input to a value you choose and reports \"true\" or \"false\".",
 	"ceci-counter/attributes/unit/label": "Unit",
 	"ceci-counter/attributes/unit/description": "Name for items which are being counted.",
 	"ceci-counter/attributes/increment/label": "Increment By",

@@ -1,6 +1,6 @@
 {
-	"ceci-counter": "Counter",
-	"ceci-counter/description": "Listens for a message and counts",
+	"ceci-counter": "Signal Transformer",
+	"ceci-counter/description": "Transforms an incoming signal to a value you set.",
 	"ceci-counter/attributes/unit/label": "Unit",
 	"ceci-counter/attributes/unit/description": "Name for items which are being counted.",
 	"ceci-counter/attributes/increment/label": "Increment By",

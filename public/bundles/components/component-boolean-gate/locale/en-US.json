@@ -1,6 +1,6 @@
 {
   "ceci-boolean-gate/name": "Channel Gate",
-  "ceci-boolean-gate/description": "Chooose which channel to send a signal through.",
+  "ceci-boolean-gate/description": "Allows or stops a signal from passing through.",
   "ceci-boolean-gate/input/label": "Input",
   "ceci-boolean-gate/input/description": "The input that is to be broadcast",
   "ceci-boolean-gate/open/label": "Open",

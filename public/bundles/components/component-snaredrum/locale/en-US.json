@@ -1,5 +1,5 @@
 {
-  "ceci-snaredrum/description": "Broadcasts a \"click\" when clicked.",
+  "ceci-snaredrum/description": "Plays a snare drum.",
   "ceci-snaredrum/name": "Snare Drum",
   "ceci-snaredrum/kick/description": "Causes a fake click event to occur.",
   "ceci-snaredrum/kick/label": "Hit",
