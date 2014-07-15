@@ -331,9 +331,9 @@ define(
       if (searchValue.length > 0) {
         DesignerTray.filterCategory("all");
         CeciDesigner.forEachComponent(function (componentTag) {
-          var menuElement = componentsContainer.querySelector('designer-component-tray-item[name="' + componentTag + '"]');
+          var menuElements = componentsContainer.querySelectorAll('designer-component-tray-item[name="' + componentTag + '"]');
 
-          if (window.CeciDefinitions[componentTag] && menuElement) {
+          if (window.CeciDefinitions[componentTag] && menuElements.length) {
             var tags = window.CeciDefinitions[componentTag].tags || [];
             var found = false;
 
@@ -347,10 +347,10 @@ define(
             });
 
             if (!found) {
-              menuElement.classList.add('hide');
+              Array.prototype.forEach.call(menuElements, function (e) { e.classList.add('hide'); });
             }
             else {
-              menuElement.classList.remove('hide');
+              Array.prototype.forEach.call(menuElements, function (e) { e.classList.remove('hide'); });
             }
           }
         });
