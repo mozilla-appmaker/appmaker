@@ -63,7 +63,7 @@
   -webkit-transition: top 0.2s, height 0.2s;
      -moz-transition: top 0.2s, height 0.2s;
           transition: top 0.2s, height 0.2s;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .publish-panel-header {
