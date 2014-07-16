@@ -1,6 +1,6 @@
 {
   "ceci-daily-counter/name": "Daily Counter",
-  "ceci-daily-counter/description": "Listens for a message and counts",
+  "ceci-daily-counter/description": "Counts daily progress toward your goals. Tells you how much time you have left and resets at the end of the day.",
   "ceci-daily-counter/currentCount/label": "Current Count",
   "ceci-daily-counter/currentCount/description": "Broadcasts the current count.",
   "ceci-daily-counter/countUp/description": "Increment the total by the increment value",

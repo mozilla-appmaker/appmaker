@@ -535,16 +535,22 @@
       },
       countbeforeswitch: 1,
       attached : function(){
+        this.super();
+      },
+      domReady: function() {
         var that = this;
-        this.addEventListener("channelUpdated",function(){
-          this.updateChannels();
-          this.updateUI();
-        });
+        this.onChannelUpdate = function(){
+          that.updateChannels();
+          that.updateUI();
+        };
+        window.addEventListener("channelUpdate", this.onChannelUpdate);
         this.updateChannels();
         this.nextBroadcast = this.activeBroadcasts[0];
         this.lastBroadcast = this.activeBroadcasts[0];
         this.updateUI();
-        this.super();
+      },
+      detached: function() {
+        window.removeEventListener("channelUpdate", this.onChannelUpdate);
       },
       updateUI : function(){
         Array.prototype.forEach.call(this.$.channels.querySelectorAll(".output-channel"), function(c) {
@@ -858,9 +864,9 @@
       },
 
       "listeners": {
-        "incomingMessage": {
-          "description": "Increment the total by the increment value",
-          "label": "Incoming Message",
+        "signal": {
+          "description": "The signal to match",
+          "label": "Signal",
           "default" : true
         }
       },
@@ -913,7 +919,7 @@
         attached : function(){
           this.super();
         },
-        incomingMessage : function(value){
+        signal : function(value){
           if (value.toString().toLowerCase() === this.checkif.toLowerCase()) {
             this.broadcast("true", "true");
           }
@@ -968,7 +974,7 @@
     {
       "tags": ["boolean-gate", "low-level"],
       "thumbnail": "./thumbnail.png",
-      "name": "Channel Gate",
+      "name": "Channel Filter",
       "description": "Allows or stops a signal from passing through.",
       "broadcasts": {
         "Out": {
@@ -1927,7 +1933,7 @@
       "tags": ["alternating-gate", "low-level"],
       "thumbnail": "./thumbnail.png",
       "name": "Channel Gate",
-      "description": "Chooose which channel to send a signal through.",
+      "description": "Sends an incoming signal on a broadcast channel of your choosing.",
       "broadcasts": {
         "A": {
           "label": "Output A",
@@ -1970,15 +1976,21 @@
         this.lastBroadcast = null;
       },
       attached : function(){
+        this.super();
+      },
+      domReady: function() {
         var that = this;
-        this.addEventListener("channelUpdated",function(){
-          this.updateChannels();
-          this.updateUI();
-        });
+        this.onChannelUpdate = function(){
+          that.updateChannels();
+          that.updateUI();
+        };
+        window.addEventListener("channelUpdate", this.onChannelUpdate);
         this.updateChannels();
         this.nextBroadcast = this.activeBroadcasts[0];
         this.updateUI();
-        this.super();
+      },
+      detached: function() {
+        window.removeEventListener("channelUpdate", this.onChannelUpdate);
       },
       updateUI : function(){
         Array.prototype.forEach.call(this.$.channels.querySelectorAll(".output-channel"), function(c) {
@@ -2640,7 +2652,7 @@
     {
       "name": "Daily Counter",
       "thumbnail": "./thumbnail.png",
-      "description": "Listens for a message and counts",
+      "description": "Counts daily progress toward your goals. Tells you how much time you have left and resets at the end of the day.",
       "broadcasts": {
         "currentCount": {
           "label": "Current Count",
@@ -8853,13 +8865,11 @@ header {
       },
       "attributes": {
         "min": {
-          "description": "",
           "label": "Min",
           "editable": "number"
         },
 
         "max": {
-          "description": "",
           "label": "Max",
           "editable": "number"
         },
@@ -14365,20 +14375,17 @@ require(['jquery'], function($) {
       "description": "Transforms an incoming signal to a value you set and broadcasts it.",
       "broadcasts": {
         "transformedMessage": {
-          "label": "Transformed Message",
-          "description": "Broadcasts the current count."
+          "label": "Transformed Message"
         }
       },
       "listeners": {
         "incomingMessage": {
-          "description": "Increment the total by the increment value",
           "label": "Incoming Message",
           "default" : true
         }
       },
       "attributes": {
         "message": {
-          "description": "Transform received messaeg to this.",
           "label": "Message",
           "editable": "Text",
           "default" : true

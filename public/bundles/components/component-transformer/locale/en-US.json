@@ -1,8 +1,7 @@
 {
-	"ceci-counter": "Signal Transformer",
-	"ceci-counter/description": "Transforms an incoming signal to a value you set.",
-	"ceci-counter/attributes/unit/label": "Unit",
-	"ceci-counter/attributes/unit/description": "Name for items which are being counted.",
-	"ceci-counter/attributes/increment/label": "Increment By",
-	"ceci-counter/attributes/increment/description": "Count up or down with this number."
+  "ceci-transformer/name": "Signal Transformer",
+  "ceci-transformer/description": "Transforms an incoming signal to a value you set and broadcasts it.",
+  "ceci-transformer/transformedMessage/label": "Transformed Message",
+  "ceci-transformer/incomingMessage/label": "Incoming Message",
+  "ceci-transformer/message/label": "Message"
 }
