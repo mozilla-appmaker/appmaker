@@ -7,16 +7,23 @@
   top: 100%;
   height: 100%;
   margin-top: -5px;
-  background-color: #ec6334;
+  background-color: #212429;
   border-top: 3px solid #ec6334;
   z-index: 999;
   font-family: 'Source Sans Pro', arial;
   -webkit-transition: top 0.2s, height 0.2s;
      -moz-transition: top 0.2s, height 0.2s;
           transition: top 0.2s, height 0.2s;
-  overflow: hidden;
+  overflow-y: scroll;
   color: #AEB1B5;
   font-size: 20px;
+}
+
+#remix-panel:before {
+  background-color: #EC6334;
+  height: 50px;
+  content: "";
+  display: block;
 }
 
 #remix-panel.expanded {
@@ -25,12 +32,11 @@
 
 #remix-panel-content {
   position: absolute;
-  top: 50px;
   bottom: 0px;
   right: 0px;
   left: 0px;
+  top: 50px;
   height: 100%;
-  background-color: #212429;
   z-index: 999;
 }
 
@@ -85,6 +91,10 @@ button#close-remix-panel {
   margin: 10px 10px 0px 0px;
   background: url(../images/close-panel.png) center no-repeat;
   background-color: #ff7445;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 button#close-remix-panel:hover {

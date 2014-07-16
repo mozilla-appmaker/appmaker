@@ -5,6 +5,8 @@
 requirejs.config({
   baseUrl: "/javascripts/",
   paths: {
+    "text": "../vendor/requirejs-text/text",
+
     "inflector": "../vendor/inflection-js/inflection.min",
 
     "jquery": "../vendor/jquery/jquery.min",
@@ -18,6 +20,8 @@ requirejs.config({
     "ceci": "../ceci",
 
     "designer": "../designer/js",
+
+    "tutorial": "../tutorial",
 
     'analytics': '../vendor/webmaker-analytics/analytics',
 

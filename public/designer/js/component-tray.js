@@ -140,24 +140,27 @@ define(
           }
         }
 
-        item.addEventListener('ComponentAddRequested', function (e) {
-          var card = document.querySelector('ceci-card[visible]');
-          if (card) {
-            var newElement = document.createElement(name);
-            // wait until Polymer has prepared the element completely
-            newElement.async(function() {
-              card.appendChild(newElement);
-
-              // Apply defaults here explicitly so that element doesn't
-              // have to figure out whether or not it's new when it's
-              // attached to the DOM.
-              newElement.applyDefaults();
-              analytics.event("Added Component", {label: name});
-            });
-          }
-        }, false);
+        var _this = this;
+        item.addEventListener('ComponentAddRequested', function(e) { _this.addComponentToCard(name) }, false);
         item.label = L10n.get(name) || item.label;
         return item;
+      },
+      addComponentToCard: function(name) {
+        var card = document.querySelector('ceci-card[visible]');
+        if (card) {
+          var newElement = document.createElement(name);
+          // wait until Polymer has prepared the element completely
+          newElement.async(function() {
+            card.appendChild(newElement);
+
+            // Apply defaults here explicitly so that element doesn't
+            // have to figure out whether or not it's new when it's
+            // attached to the DOM.
+            newElement.applyDefaults();
+            analytics.event("Added Component", {label: name});
+          });
+          return newElement;
+        }
       },
       addComponentWithName: function(name) {
         if(!DesignerTray.isKnownComponent(name)) {
@@ -328,9 +331,9 @@ define(
       if (searchValue.length > 0) {
         DesignerTray.filterCategory("all");
         CeciDesigner.forEachComponent(function (componentTag) {
-          var menuElement = componentsContainer.querySelector('designer-component-tray-item[name="' + componentTag + '"]');
+          var menuElements = componentsContainer.querySelectorAll('designer-component-tray-item[name="' + componentTag + '"]');
 
-          if (window.CeciDefinitions[componentTag] && menuElement) {
+          if (window.CeciDefinitions[componentTag] && menuElements.length) {
             var tags = window.CeciDefinitions[componentTag].tags || [];
             var found = false;
 
@@ -344,10 +347,10 @@ define(
             });
 
             if (!found) {
-              menuElement.classList.add('hide');
+              Array.prototype.forEach.call(menuElements, function (e) { e.classList.add('hide'); });
             }
             else {
-              menuElement.classList.remove('hide');
+              Array.prototype.forEach.call(menuElements, function (e) { e.classList.remove('hide'); });
             }
           }
         });
