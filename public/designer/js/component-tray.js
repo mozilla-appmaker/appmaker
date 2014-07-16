@@ -22,82 +22,76 @@ define(
 
     var categories = {
       "basic": {
-        "description": L10n.get("Start with simple bricks useful for almost every app."),
+        "description": L10n.get("Simple bricks useful for almost every app."),
         "bricks": [
           "ceci-button",
           "ceci-counter",
           "ceci-image",
+          "ceci-spacer",
           "ceci-header",
           "ceci-textbox",
           "ceci-metronome"
         ]
       },
       "utility": {
-        "description": L10n.get("Add more advanced utilities for your app."),
+        "description": L10n.get("Add more advanced utilities to your app."),
         "bricks": [
-          "ceci-button",
           "ceci-button-with-confirmation",
           "ceci-double-button",
-          "ceci-header",
-          "ceci-image",
-          "ceci-metronome",
-          "ceci-spacer",
-          "ceci-textbox",
+          "ceci-dataarray",
+          "ceci-paypal",
+          "ceci-todo-list",
           "ceci-text-input",
+          "ceci-timer"
         ]
       },
       "connection": {
-        "description": L10n.get("Create complex data-driven connections between bricks."),
+        "description": L10n.get("Create complex connections between bricks."),
         "bricks": [
           "ceci-transformer",
           "ceci-channel-gate",
           "ceci-alternating-gate",
           "ceci-splitter",
           "ceci-combiner",
-          "ceci-bool"
+          "ceci-bool",
+          "ceci-boolean-gate"
         ]
       },
-      "audio": {
-        "description": L10n.get("Record and play sounds, listen to music, and more."),
+      "number": {
+        "description": L10n.get("Count and manipulate numbers."),
+        "bricks": [
+          "ceci-counter",
+          "ceci-daily-counter",
+          "ceci-random",
+          "ceci-chart"
+        ]
+      },
+      "media": {
+        "description": L10n.get("Draw, take pictures, and chart progress with these more interactive bricks."),
+        "bricks": [
+          "ceci-component-canvas",
+          "ceci-camera-button",
+          "ceci-notebook",
+          "ceci-image",
+          "ceci-microphone-button",
+          "ceci-popcorn-component",
+          "ceci-media"
+        ]
+      },
+      "fun": {
+        "description": L10n.get("Add a little whimsy to your app."),
         "bricks": [
           "ceci-audio",
           "ceci-cowbell",
           "ceci-snaredrum",
           "ceci-kickdrum",
           "ceci-metronome",
-          "ceci-microphone-button",
-          "ceci-sequencer"
-        ]
-      },
-      "number": {
-        "description": L10n.get("Count objects and manipulate numbers."),
-        "bricks": [
-          "ceci-counter",
-          "ceci-daily-counter",
-          "ceci-random"
-        ]
-      },
-      "media": {
-        "description": L10n.get("Draw, take pictures, and chart progress with these more interactive bricks."),
-        "bricks": [
-          "ceci-chart",
-          "ceci-component-canvas",
-          "ceci-camera-button",
-          "ceci-notebook",
-          "ceci-pad-grid",
-          "ceci-todo-list"
-        ]
-      },
-      "fun": {
-        "description": L10n.get("Your app needs more cowbell."),
-        "bricks": [
+          "ceci-sequencer",
           "ceci-fireworks",
+          "ceci-pad-grid",
           "ceci-hot-potato",
           "ceci-jazzhands",
-          "ceci-metronome",
-          "ceci-cowbell",
-          "ceci-snaredrum",
-          "ceci-kickdrum",
+          "ceci-game-controller"
         ]
       },
       "chat": {

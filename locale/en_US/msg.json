@@ -85,6 +85,7 @@
   "Create complex data-driven connections between bricks.": "Create complex data-driven connections between bricks.",
   "Record and play sounds, listen to music, and more.": "Record and play sounds, listen to music, and more.",
   "Count objects and manipulate numbers.": "Count objects and manipulate numbers.",
+  "Simple bricks useful for almost every app." : "Simple bricks useful for almost every app.",
   "Draw, take pictures, and chart progress with these more interactive bricks.": "Draw, take pictures, and chart progress with these more interactive bricks.",
   "Your app needs more cowbell.": "Your app needs more cowbell.",
   "Chat with friends using text and images.": "Chat with friends using text and images.",
@@ -100,4 +101,8 @@
   "Customize your Brick": "Customize your Brick",
   "View and manage data stored by your App": "View and manage data stored by your App",
   "Name & describe your App": "Name & describe your App"
+  "Add more advanced utilities to your app." : "Add more advanced utilities to your app.",
+  "Create complex connections between bricks." : "Create complex connections between bricks.",
+  "Count and manipulate numbers." : "Count and manipulate numbers.",
+  "Add a little whimsy to your app." : "Add a little whimsy to your app."
 }
