@@ -1,6 +1,6 @@
 {
-  "ceci-media/name": "Media",
-  "ceci-media/description": "Plays HTML5 media using the PopcornJS library",
+  "ceci-media/name": "Media Player",
+  "ceci-media/description": "Plays HTML5 media using the PopcornJS library.",
   "ceci-media/tick/label": "Tick",
   "ceci-media/tick/description": "Media time progressed.",
   "ceci-media/ready/label": "Ready",

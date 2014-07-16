@@ -1,6 +1,6 @@
 {
 	"ceci-spacer": "Spacer",
-	"ceci-spacer/description": "A spacer to put between components.",
+	"ceci-spacer/description": "Adds blank space to separate your bricks.",
 	"ceci-spacer/attributes/height/label": "Height",
 	"ceci-spacer/attributes/height/description": "The height of the spacer."
 }

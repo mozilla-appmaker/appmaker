@@ -1,6 +1,6 @@
 {
   "ceci-hot-potato/name": "Hot Potato",
-  "ceci-hot-potato/description": "Generates a random number",
+  "ceci-hot-potato/description": "Sends out a signal at a random time between two numbers.",
   "ceci-hot-potato/finish/label": "Game over",
   "ceci-hot-potato/finish/description": "Sends a message that the game is over.",
   "ceci-hot-potato/start/description": "Starts a new game.",

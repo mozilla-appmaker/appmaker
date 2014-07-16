@@ -3,448 +3,6 @@
     <title></title>
 </head>
 <body>
-<polymer-element name="ceci-addform" attributes="resetonsubmit validatecontent dataname datascope" dataname="Items" extends="ceci-element" assetpath="component-addform/">
-  <template>
-    <style>:host {
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  background: #EFEFEF;
-  padding: 10px;
-}
-
-:host h1 {
-  font-size: 18px;
-  border-bottom: solid 2px #CCC;
-  margin-bottom: 10px;
-  padding-bottom: 4px;
-  text-shadow: 0px 1px 0px white;
-}
-
-:host input {
-  padding: 5px 3px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-:host input[type=text]{
-  width: 90%
-}
-
-:host input[type=checkbox]{
-  margin-right: 5px;
-}
-
-:host label {
-  display: block;
-}
-
-:host p {
-  color: white;
-  background: green;
-  cursor: pointer;
-  padding: 5px 10px;
-  display: inline-block;
-}
-
-:host .input-wrapper {
-  position: relative;
-  margin-bottom: 5px;
-}
-
-:host input[type=checkbox] {
-  margin: 0px;
-}
-
-:host .input-wrapper .delete-item {
-  display: inline-block;
-  background: #BBB;
-  -webkit-border-radius: 15px;
-  color: white;
-  cursor: pointer;
-  padding: 3px 7px;
-  float: right;
-  position: absolute;
-  top: calc(50% - 15px);
-  right: 0px;
-}
-
-:host .button {
-  background: green;
-  text-align: center;
-  padding: 5px 10px;
-  color: white;
-  cursor: pointer;
-  margin: 4px 0;
-}
-
-:host #add-input-view {
-  background: #DDD;
-  border-bottom: solid 1px #BBB;
-  padding: 5px;
-  padding: 10px;
-  -webkit-border-radius: 5px;
-  text-align: center;
-  margin-bottom: 8px;
-}
-
-:host #add-input-view h2 {
-  cursor: pointer;
-}
-
-:host #add-input-view h2 {
-  font-size: 15px;
-  margin-bottom: 10px;
-  font-weight: normal;
-  color: #777;
-  line-height: 15px;
-}
-
-:host #add-input-view[show=no] h2 {
-  margin-bottom: 0;
-}
-
-:host #add-input-view[show=no] .input-type {
-  display: none;
-}
-
-:host .input-type {
-  background: #CCC;
-  padding: 5px 10px;
-  cursor: pointer;
-  text-align: center;
-  padding: 5px 10px;
-  background: #FFF;
-  -webkit-border-radius: 4px;
-  margin-bottom: 6px;
-}
-
-:host .input-type:last-child {
-  margin-bottom: 0px;
-}
-
-:host .input-types {
-  display: block;
-}
-
-:host #form-wrapper {
-  position: relative;
-}
-
-:host #datascope {
-  text-align: center;
-  padding-bottom: 5px;
-}
-</style>
-    <div id="datascope"></div>
-    <div id="add-input-view" show="no">
-      <h2 on-click="{{toggleInputMenu}}" id="addInputs">+ Add Inputs</h2>
-      <div on-click="{{addInputClick}}" class="input-types">
-        <div class="input-type" type="text" id="textInput">Text Input</div>
-        <div class="input-type" type="checkbox" id="checkbox">Checkbox</div>
-        <div class="input-type" type="range" id="slider">Slider</div>
-      </div>
-    </div>
-    <div id="form-wrapper" class="form"></div>
-    <shadow></shadow>
-  </template>
-  <ceci-definition>
-    {
-      "thumbnail": "./thumbnail.png",
-      "name": "Add Form",
-      "description": "Create forms and save data to a database.",
-      "broadcasts": {
-      },
-      "listeners": {
-        "saveData": {
-          "description": "Submit this form and saves the data a record.",
-          "label": "Submit Form"
-        },
-        "setScope": {
-          "description": "Specifies what record to save the data to.",
-          "label": "Set Save Scope"
-        }
-      },
-      "attributes": {
-        "dataname": {
-          "description": "This form will create this item, ie.. 'Cats'",
-          "label": "I create...",
-          "editable": "text"
-        },
-        "resetonsubmit": {
-          "description": "Clear the form fields after submitting",
-          "label": "Reset fields on submit",
-          "editable": "boolean"
-        },
-        "validatecontent": {
-          "description": "Prevents the form from submitting without data",
-          "label": "Prevent submitting empty form",
-          "editable": "boolean"
-        }
-      }
-    }
-  </ceci-definition>
-  <script>
-    Polymer("ceci-addform", {
-      ready: function(){
-        this.super();
-        this.datascope = [];
-        var self = this;
-        window.addEventListener("CeciAppSaveAs", function(){
-          self.saveData();
-        });
-        this.$.addInputs.innerHTML = this.gettext(this.localName + "/addInputs") || this.$.addInputs.innerHTML;
-        this.$.textInput.innerHTML = this.gettext(this.localName + "/textInput") || this.$.textInput.innerHTML;
-        this.$.checkbox.innerHTML = this.gettext(this.localName + "/checkbox") || this.$.checkbox.innerHTML;
-        this.$.slider.innerHTML = this.gettext(this.localName + "/slider") || this.$.slider.innerHTML;
-        this.initialBuildForm = false;
-        this.buildForm();
-      },
-      toggleInputMenu: function(){
-        //Toggles the menu at the top of the form used for adding iputs
-        var menu = this.shadowRoot.querySelector("#add-input-view");
-        var state = menu.getAttribute("show");
-        if(state == "yes") {
-          menu.setAttribute("show","no");
-        } else {
-          menu.setAttribute("show","yes");
-        }
-      },
-      setScope : function(e){
-        this.datascope = e;
-      },
-      datascopeChanged : function(){
-        var scopeEl = this.shadowRoot.querySelector("#datascope");
-        var scopeString = "Adding to ";
-        if(this.datascope.length > 0) {
-          scopeEl.style.display = "block";
-          for(var i = 0; i < this.datascope.length; i++) {
-            scopeString = scopeString + this.datascope[i].dataset;
-          }
-          // scopeEl.innerHTML = scopeString;
-        } else {
-          scopeEl.style.display = "none";
-        }
-        scopeEl.style.display = "none";
-      },
-      addInputClick : function(e){
-        var type = e.target.getAttribute("type");
-        var inputName = window.prompt(this.gettext(this.localName + "/Name this input") || "Name this input");
-        if(inputName){
-          this.addInput(type,inputName);
-        }
-      },
-      datanameChanged : function(){
-        //handle the case where the dataname is in the process of changing or has changed
-        //but doesn't have any input forms yet, so nothing needs to be saved
-        this.updateSchema();
-      },
-      resetForm: function(){
-        var fields = this.shadowRoot.querySelectorAll(".form input");
-        for (var field in fields) {
-          if (fields.hasOwnProperty(field)) {
-            var f = fields[field];
-            f.value = "";
-          }
-        }
-      },
-      _addInputInit: function(type,inputName){
-        var self = this;
-
-        var wrapper = document.createElement("div");
-        wrapper.classList.add("input-wrapper");
-
-        var input = document.createElement("input");
-        input.setAttribute("type",type);
-        input.setAttribute("storeName",inputName);
-
-        var label = document.createElement("label");
-
-        var deleteLink = document.createElement("div");
-        deleteLink.innerHTML = "X";
-        deleteLink.classList.add("delete-item");
-        deleteLink.setAttribute("on-click","{{deleteMe}}");
-        deleteLink.addEventListener("click",function(e){
-          self.deleteItem(e);
-        });
-
-        wrapper.appendChild(deleteLink);
-
-        if(type=="checkbox"){
-            var labelWrapper = document.createElement("span");
-            labelWrapper.innerHTML = inputName;
-            label.appendChild(input);
-            label.appendChild(labelWrapper);
-            wrapper.appendChild(label);
-        } else {
-            label.innerHTML = inputName;
-            wrapper.appendChild(label);
-            wrapper.appendChild(input);
-        }
-        this.shadowRoot.querySelector("#form-wrapper").appendChild(wrapper);
-      },
-      addInput: function(type,inputName){
-        this._addInputInit(type,inputName);
-        this.updateSchema();
-      },
-      enteredView : function(){
-        var formWrapper = this.shadowRoot.querySelector("#form-wrapper");
-        this.super();
-      },
-      deleteItem : function(e){
-        var item = e.target.parentNode;
-        item.parentNode.removeChild(item);
-        this.updateSchema();
-      },
-      buildForm: function(){
-        //Builds out the remembered form fields
-        var self = this;
-
-        this._checkFirebase(function(ceciApp){
-          ceciApp.getFirebaseObject('form-data',"", function(data){
-            var db = data || {};
-
-            var fields = db[self.dataname + "_formschema"] || [];
-            for (var index in fields) {
-              if (fields.hasOwnProperty(index)) {
-                var field = fields[index];
-                self._addInputInit(field["type"],field["name"]);
-              }
-            }
-
-            self.initialBuildForm = true;
-          });
-        });
-      },
-      _checkFirebase: function(callback){
-        var ca = document.querySelector("ceci-app");
-        if(!ca){
-          var self = this;
-          window.addEventListener("CeciDataConnectionLoaded", function(e){
-            self.ca = document.querySelector("ceci-app");
-            callback(self.ca);
-          });
-        } else {
-          if(ca.firebase){
-            callback(ca);
-          } else {
-            //ceci-app available but firebase not up yet
-            window.addEventListener("CeciDataConnectionLoaded", function(e){
-              var ca = document.querySelector("ceci-app");
-              callback(ca);
-            });
-          }
-        }
-      },
-      updateSchema : function(){
-        if(this.initialBuildForm){
-          //Check what inputs there are, and build a schema file of them,
-          // so that when the component loads next time, it builds out the correct form
-          var schema = [];
-
-          //Builds a schema file based on the fields in the form,
-          // should be triggered on load and on add / remove of fields
-          var fields = this.shadowRoot.querySelectorAll(".form input");
-          for (var field in fields) {
-            if (fields.hasOwnProperty(field)) {
-              var fieldSchema = {}
-              var f = fields[field];
-              var name = f.getAttribute("storeName");
-              var type = f.getAttribute("type");
-              fieldSchema["name"] = name;
-              fieldSchema["type"] = type;
-              schema.push(fieldSchema);
-            }
-          }
-
-          // Builds new schema
-          var keyname = this.dataname + "_formschema";
-
-          this._checkFirebase(function(ca){
-            var that = self;
-
-            ca.getFirebaseObject('form-data',"", function(data){
-              var db = data || {};
-              db[keyname] = schema;
-
-              var ca = document.querySelector("ceci-app")
-              ca.setFirebaseObject('form-data', db);
-
-              //Stoage event!
-              var event = new CustomEvent("storage");
-              window.dispatchEvent(event);
-            });
-
-            // Event! So that data view components know when the schema has changed.
-            // Right now the schema depends only on the form inputs?
-            // var event = new CustomEvent("formChange");
-            // window.dispatchEvent(event);
-          });
-        }
-      },
-      saveData : function(){
-        var self = this;
-        var hasData = true;
-
-        this._checkFirebase(function(ca){
-          var that = self;
-          ca.getFirebaseObject('form-data',"", function(data){
-            var db = data || {};
-
-            var addTo = db;
-
-            for (var i = 0; i < that.datascope.length; i++){
-              var scopeItem = that.datascope[i];
-              addTo = addTo[scopeItem["dataset"]][scopeItem["index"]];
-            }
-
-            if (addTo[that.dataname] === undefined){
-              addTo[that.dataname] = [];
-            }
-
-            var newData = {};
-            var fields = that.shadowRoot.querySelectorAll(".form input");
-
-            for (var field in fields) {
-              if (fields.hasOwnProperty(field)) {
-                var f = fields[field];
-                var name = f.getAttribute("storeName");
-                if(f.getAttribute("type") == "checkbox"){
-                  var value = f.checked;
-                } else {
-                  var value = f.value;
-                  if(value == ""){
-                    hasData = false;
-                  }
-                }
-                newData[name] = value;
-              }
-            }
-
-            addTo[that.dataname].push(newData);
-
-            if(that.resetonsubmit == "true"){
-              that.resetForm();
-            }
-
-            if(that.validatecontent == "true" && hasData == false) {
-
-              //Don't submit if
-            } else {
-              var ca = document.querySelector("ceci-app")
-              ca.setFirebaseObject('form-data', db);
-              //Stoage event!
-              var event = new CustomEvent("storage");
-              window.dispatchEvent(event);
-            }
-
-          });
-        });
-      }
-    });
-  </script>
-</polymer-element>
-
 <polymer-element name="ceci-alternating-gate" attributes="countbeforeswitch" extends="ceci-element" assetpath="component-alternating-gate/">
   <template>
     <style>:host {
@@ -535,16 +93,22 @@
       },
       countbeforeswitch: 1,
       attached : function(){
+        this.super();
+      },
+      domReady: function() {
         var that = this;
-        this.addEventListener("channelUpdated",function(){
-          this.updateChannels();
-          this.updateUI();
-        });
+        this.onChannelUpdate = function(){
+          that.updateChannels();
+          that.updateUI();
+        };
+        window.addEventListener("channelUpdate", this.onChannelUpdate);
         this.updateChannels();
         this.nextBroadcast = this.activeBroadcasts[0];
         this.lastBroadcast = this.activeBroadcasts[0];
         this.updateUI();
-        this.super();
+      },
+      detached: function() {
+        window.removeEventListener("channelUpdate", this.onChannelUpdate);
       },
       updateUI : function(){
         Array.prototype.forEach.call(this.$.channels.querySelectorAll(".output-channel"), function(c) {
@@ -591,7 +155,7 @@
     {
       "tags": ["sound", "audio", "music"],
       "thumbnail": "./thumbnail.png",
-      "description": "Plays a sound.",
+      "description": "Plays an audio clip using a URL or data-uri as input.",
       "name": "Audio Clip",
       "broadcasts": {},
       "listeners": {
@@ -763,7 +327,7 @@
   display: none;
 }
 </style>
-    <div id="wrapper" on-click="{{play}}" class="wrapper">
+    <div id="wrapper" on-ceci-pressdown="{{play}}" class="wrapper">
       <div class="label">
         <div class="text">{{label}}</div>
       </div>
@@ -842,9 +406,9 @@
 <polymer-element name="ceci-bool" extends="ceci-element" attributes="checkif" checkif="hello" assetpath="component-boolean/">
   <ceci-definition>
     {
-      "name": "Boolean",
+      "name": "Boolean Gate",
       "thumbnail": "./thumbnail.png",
-      "description": "Checks if a message matches the condition and broadcasts true or false.",
+      "description": "Compares input to a value you choose and reports \"true\" or \"false\".",
       "broadcasts": {
         "true": {
           "label": "True",
@@ -858,9 +422,9 @@
       },
 
       "listeners": {
-        "incomingMessage": {
-          "description": "Increment the total by the increment value",
-          "label": "Incoming Message",
+        "signal": {
+          "description": "The signal to match",
+          "label": "Signal",
           "default" : true
         }
       },
@@ -913,7 +477,7 @@
         attached : function(){
           this.super();
         },
-        incomingMessage : function(value){
+        signal : function(value){
           if (value.toString().toLowerCase() === this.checkif.toLowerCase()) {
             this.broadcast("true", "true");
           }
@@ -968,8 +532,8 @@
     {
       "tags": ["boolean-gate", "low-level"],
       "thumbnail": "./thumbnail.png",
-      "name": "Boolean Gate",
-      "description": "Chooose which channel to send a signal through.",
+      "name": "Channel Filter",
+      "description": "Allows or stops a signal from passing through.",
       "broadcasts": {
         "Out": {
           "label": "Output",
@@ -1034,16 +598,16 @@
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-button" attributes="textcolor buttoncolor label value" value="Click" extends="ceci-element" label="Click Me" textcolor="#ffffff" buttoncolor="#4DB227" assetpath="component-button/">
+<polymer-element name="ceci-button" attributes="textcolor buttoncolor label value" value="Press" extends="ceci-element" label="Press Me" textcolor="#ffffff" buttoncolor="#4DB227" assetpath="component-button/">
   <ceci-definition>
     {
       "tags": ["button", "click", "tap"],
       "thumbnail": "./thumbnail.png",
-      "description": "Broadcasts a \"click\" when clicked.",
+      "description": "Responds to your clicks and taps.",
       "name": "Button",
       "broadcasts": {
         "click": {
-          "label": "Click",
+          "label": "Press",
           "description": "Occurs when button is clicked.",
           "default": true
         }
@@ -1057,7 +621,7 @@
           "listener": true
         },
         "value": {
-          "label": "Value",
+          "label": "Broadcast Value",
           "description": "Value sent by the button.",
           "editable": "text"
         },
@@ -1086,7 +650,6 @@
 }
 
 :host #button {
-  font-family: "FiraSans", sans-serif;
   cursor: pointer;
   border-bottom: 2px solid rgba(0,0,0,.1);
   display: block;
@@ -1141,7 +704,7 @@
 }
 
 </style>
-    <div class="button-wrapper" on-mousedown="{{click}}">
+    <div id="buttonwrapper" on-ceci-pressdown="{{pressdown}}" class="button-wrapper">
       <div id="button">{{label}}</div>
       <div class="overlay active-overlay"></div>
       <div class="overlay hover-overlay"></div>
@@ -1152,9 +715,11 @@
     Polymer('ceci-button', {
       ready: function () {
         this.super();
-        var that = this;
       },
-      click: function () {
+      attached : function(){
+        this.super();
+      },
+      pressdown : function(){
         this.broadcast('click', this.getAttribute('value'));
       },
       textcolorChanged: function (oldValue, newValue) {
@@ -1204,7 +769,7 @@
 }
 
 </style>
-    <button id="button" on-click="{{click}}"></button>
+    <button id="button" on-ceci-pressdown="{{click}}"></button>
     <shadow></shadow>
 
   </template>
@@ -1213,7 +778,7 @@
       "tags": ["button", "click", "tap"],
       "thumbnail": "./thumbnail.png",
       "name": "Button with Confirmation",
-      "description": "A button that asks the user to confirm before broadcasting.",
+      "description": "Responds to your clicks and taps by asking you \"Are you sure?\"",
       "broadcasts": {
         "click": {
           "label": "Click",
@@ -1225,12 +790,7 @@
           "description": "Occurs when button is clicked and the user denies the confirmation message."
         }
       },
-      "listeners": {
-        "click": {
-          "description": "Causes a fake click event to occur.",
-          "label": "Click"
-        }
-      },
+      "listeners": {},
       "attributes": {
         "label": {
           "label": "Label",
@@ -1246,27 +806,23 @@
         "value": {
           "label": "Value",
           "description": "Value sent by the button.",
-          "editable": "text",
-          "listener": true,
-          "defaultListener": true
+          "editable": "text"
         },
         "textcolor": {
           "label": "Text Color",
           "description": "Color of the text on the button's label.",
-          "editable": "color",
-          "listener": true
+          "editable": "color"
         },
         "buttoncolor": {
           "label": "Button Color",
           "description": "Background color of the button.",
           "editable": "color",
-          "listener": true
+          "listener" : "true"
         },
         "buttonactivecolor": {
           "label": "Button Active Color",
           "description": "Background color of the button while it is being clicked or tapped.",
-          "editable": "color",
-          "listener": true
+          "editable": "color"
         }
       }
     }
@@ -1514,10 +1070,10 @@
   </template>
   <ceci-definition>
     {
-      "tags": ["tap","camera","photo"],
+      "tags": ["camera","photo","image"],
       "thumbnail": "./thumbnail.png",
       "name": "Camera",
-      "description": "Takes a picture with your device camera, or uses an image file camera is not available.",
+      "description": "Takes a picture.",
       "broadcasts": {
         "photo": {
           "label": "Photo",
@@ -1671,10 +1227,10 @@
 <polymer-element name="ceci-component-canvas" extends="ceci-element" attributes="height pensize readonly imageurl generateonchange" assetpath="component-canvas/">
   <ceci-definition>
     {
-      "name": "Canvas",
-      "tags": "canvas",
+      "name": "Drawing Canvas",
+      "tags": ["canvas","drawing"],
       "thumbnail": "./thumbnail.png",
-      "description": "A canvas for drawing and sharing",
+      "description": "Lets you draw simple images.",
       "broadcasts": {
         "imageGenerated": {
           "label": "Image Generated",
@@ -1935,7 +1491,7 @@
       "tags": ["alternating-gate", "low-level"],
       "thumbnail": "./thumbnail.png",
       "name": "Channel Gate",
-      "description": "Chooose which channel to send a signal through.",
+      "description": "Sends an incoming signal on a broadcast channel of your choosing.",
       "broadcasts": {
         "A": {
           "label": "Output A",
@@ -1978,15 +1534,21 @@
         this.lastBroadcast = null;
       },
       attached : function(){
+        this.super();
+      },
+      domReady: function() {
         var that = this;
-        this.addEventListener("channelUpdated",function(){
-          this.updateChannels();
-          this.updateUI();
-        });
+        this.onChannelUpdate = function(){
+          that.updateChannels();
+          that.updateUI();
+        };
+        window.addEventListener("channelUpdate", this.onChannelUpdate);
         this.updateChannels();
         this.nextBroadcast = this.activeBroadcasts[0];
         this.updateUI();
-        this.super();
+      },
+      detached: function() {
+        window.removeEventListener("channelUpdate", this.onChannelUpdate);
       },
       updateUI : function(){
         Array.prototype.forEach.call(this.$.channels.querySelectorAll(".output-channel"), function(c) {
@@ -2029,9 +1591,9 @@
   <script src="component-chart/vendor/chartjs/Chart.min.js"></script>
   <ceci-definition>
     {
-      "name": "Chart",
+      "name": "Line Graph",
       "thumbnail": "./thumbnail.png",
-      "description": "Charts a collection",
+      "description": "Shows a line graph of a data set over time.",
       "tags": ["asdf"],
       "broadcasts": {
       },
@@ -2148,8 +1710,8 @@
     {
       "tags": ["chat", "social"],
       "thumbnail": "./thumbnail.png",
-      "description": "Start your own chat room.",
-      "name": "Chat Window",
+      "description": "Connects you to a simple chat room.",
+      "name": "Chat Room",
       "broadcasts": {
         "messageposted": {
           "label": "Message posted",
@@ -2338,7 +1900,7 @@
 }
 
 :host .combiner {
-  background-color: black;
+  background: url(thumbnail.png) black no-repeat center;
 }
 </style>
     <div class="combiner"></div>
@@ -2348,8 +1910,8 @@
     {
       "tags": ["component-combiner", "combiner"],
       "thumbnail": "./thumbnail.png",
-      "description": "Messages of any colour sent to this brick .",
-      "name": "Combiner",
+      "description": "Combines signals from multiple channels and broadcasts them on a single channel.",
+      "name": "Channel Combiner",
       "broadcasts": {
         "output": {
           "label": "Output",
@@ -2410,7 +1972,7 @@
     {
       "name": "Counter",
       "thumbnail": "./thumbnail.png",
-      "description": "Listens for a message and counts",
+      "description": "Counts up and down by any increment.",
       "broadcasts": {
         "currentCount": {
           "label": "Current Count",
@@ -2537,7 +2099,7 @@
     {
       "tags": ["music", "audio", "cowbell"],
       "thumbnail": "./thumbnail.png",
-      "description": "Broadcasts a \"click\" when clicked.",
+      "description": "Plays a cowbell.",
       "name": "Cowbell",
       "broadcasts": {},
       "listeners": {
@@ -2602,7 +2164,7 @@
   display: none;
 }
 </style>
-    <div id="wrapper" class="off" on-mousedown="{{kickon}}" on-mouseup="{{kickoff}}">
+    <div id="wrapper" class="off" on-ceci-pressdown="{{kickon}}" on-ceci-pressup="{{kickoff}}">
       <div id="bell"></div>
     </div>
     <audio id="kicksound" src="component-cowbell/sounds/sound.mp3" preload="auto"></audio>
@@ -2648,7 +2210,7 @@
     {
       "name": "Daily Counter",
       "thumbnail": "./thumbnail.png",
-      "description": "Listens for a message and counts",
+      "description": "Counts daily progress toward your goals. Tells you how much time you have left and resets at the end of the day.",
       "broadcasts": {
         "currentCount": {
           "label": "Current Count",
@@ -2846,687 +2408,12 @@
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-dataarray" attributes="url" extends="ceci-element" assetpath="component-dataarray/">
-  <ceci-definition>
-    {
-      "tags": ["data", "array"],
-      "name": "Data Array",
-      "description": "Pulls data from collections and provides an indexable list.",
-      "broadcasts": {
-        "currentValue": {
-          "label": "Value",
-          "description": "Current value changed."
-        }
-      },
-      "listeners": {
-        "next": {
-          "label": "Next Item",
-          "description": "Moves to the next item in the data."
-        },
-        "previous": {
-          "label": "Previous Item",
-          "description": "Moves to the previous item in the data."
-        }
-      },
-      "attributes": {
-        "index": {
-          "label": "Index",
-          "description": "Index of the array.",
-          "editable": "number",
-          "listener": true
-        },
-        "collection": {
-          "label": "Collection",
-          "description": "Collection to use.",
-          "editable": "select",
-          "options": [],
-          "listener": true
-        },
-        "field": {
-          "label": "Field",
-          "description": "Field of the collection to use.",
-          "editable": "select",
-          "options": [],
-          "listener": true
-        }
-      }
-    }
-  </ceci-definition>
-  <template>
-    <style>
-      :host {
-        display: block;
-        min-height: 50px;
-      }
-    </style>
-    <div id="container">{{_value}}</div>
-    <shadow></shadow>
-    <content></content>
-  </template>
-  <script>
-    function waitForCeciCollections (callback) {
-      var ceciCollections = document.querySelector('ceci-collections');
-      if (ceciCollections.getCollections) {
-        callback(ceciCollections);
-      }
-      else {
-        if (ceciCollections.async) {
-          ceciCollections.async(function (){
-            callback(ceciCollections);
-          });
-        }
-        else {
-          setTimeout(function () {
-            waitForCeciCollections(callback);
-          }, 10);
-        }
-      }
-    }
-
-    Polymer('ceci-dataarray', {
-      index: 0,
-      _value: '',
-      _data: [],
-      ready: function () {
-        this.super();
-        var ceciCollections = document.querySelector('ceci-collections');
-        ceciCollections.addEventListener('collectionchange', this.updateCollections.bind(this));
-        this.updateCollections(function () {
-          if (ceciCollections.getCollections().length) {
-            this.collection = this.collection || ceciCollections.getCollections()[0].name;
-            this.collectionChanged();
-            if (ceciCollections.getCollection(this.collection).getFields().length) {
-              this.field = this.field || ceciCollections.getCollection(this.collection).getFields()[0].name;
-            }
-          }
-        }.bind(this));
-      },
-      indexChanged: function () {
-        this._updateValue();
-      },
-      _updateValue: function () {
-        this._value = this._data[+this.index][this.field];
-        this.broadcast('currentValue', this._value);
-      },
-      fieldChanged: function () {
-        var that = this;
-        waitForCeciCollections(function (ceciCollections) {
-          if (that.collection &&
-              that.field &&
-              ceciCollections.getCollection(that.collection) &&
-              ceciCollections.getCollection(that.collection).getField(that.field)) {
-
-            var collection = ceciCollections.getCollection(that.collection);
-            that._data = collection.data;
-            that._updateValue();
-          }
-        });
-      },
-      collectionChanged: function () {
-        var that = this;
-        waitForCeciCollections(function (ceciCollections) {
-          var collection = ceciCollections.getCollection(that.collection);
-          var fields = collection.getFields();
-
-          that.ceci.attributes.field.options = [];
-          fields.forEach(function (field) {
-            that.ceci.attributes.field.options.push(field.name);
-          });
-        });
-      },
-      updateCollections: function (callback) {
-        var that = this;
-        waitForCeciCollections(function (ceciCollections) {
-          var collections = ceciCollections.getCollections();
-
-          that.ceci.attributes.collection.options = [];
-          collections.forEach(function (collection) {
-            that.ceci.attributes.collection.options.push(collection.name);
-          });
-          callback();
-        });
-      },
-      next: function () {
-        this.index = (+this.index + 1) % this._data.length;
-      },
-      previous: function () {
-        var i = (+this.index - 1) % this._data.length;
-        if (i < 0) {
-          i = this._data.length - 1;
-        }
-        this.index = i;
-      }
-    });
-  </script>
-</polymer-element>
-
-<polymer-element name="ceci-dataview" showdelete="true" showedit="true" attributes="showaddtoitem listschema showkey dataname datascope showedit showdelete" dataname="Items" extends="ceci-element" assetpath="component-dataview/">
-  <template>
-    <style>:host {
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 10px;
-  background: #EFEFEF;
-  border-bottom: solid 3px #BBB;
-}
-
-:host h1 {
-  font-size: 18px;
-  border-bottom: solid 2px #CCC;
-  margin-bottom: 10px;
-  padding-bottom: 4px;
-  text-shadow: 0px 1px 0px white;
-}
-
-:host .counter {
-  line-height: 3.8rem;
-  text-align: center;
-  font-size: 1.6rem;
-  font-family: "FiraSans", sans-serif;
-  padding: .5rem 0rem;
-  background: #0Da;
-  color: #666;
-}
-
-:host #keys-wrapper h2 {
-  color: #777;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: normal;
-  text-align: center;
-  margin: 0;
-}
-
-:host #keys[show=no]{
-  display: none;
-}
-
-:host #keys-wrapper {
-  background: #DDD;
-  -webkit-border-radius: 5px;
-  border-bottom: solid 1px #BBB;
-  padding: 5px 0 3px 0px;
-  font-size: 15px;
-  border-bottom: solid 1px #BBB;
-}
-
-:host #items {
-  margin-top: 10px;
-  text-align: center;
-}
-
-:host .keyConfig {
-  margin: 0 0 2px 0;
-  text-align: center;
-  color: #777;
-  font-size: 15px;
-}
-
-:host input {
-  display: block;
-  padding: 5px;
-}
-
-:host .dataGroup {
-  padding: 5px 0;
-  border: solid 1px #DDD;
-  margin-bottom: 5px;
-  background: white;
-  padding: 5px;
-  -webkit-border-radius: 3px;
-}
-
-:host .dataGroup .dataItem {
-  padding: 5px 0;
-  border-bottom: solid 1px #EFEFEF;
-  font-size: 16px;
-}
-
-:host .dataGroup .dataItem:only-child {
-  border: none;
-}
-
-:host .dataGroup img {
-  max-width: 100%;
-  display: block;
-  margin: 0 auto;
-  margin-bottom: 5px;
-  box-shadow: 0 1px 3px rgba(0,0,0,.25);
-}
-
-:host .deleteItem, :host .editItem, :host .addToItem {
-  display: inline-block;
-  padding: 4px 10px !important;
-  background: #BBB;
-  color: white;
-  margin: 8px 0px 3px 0px;
-  margin-right: 5px;
-  cursor: pointer;
-  -webkit-border-radius: 3px;
-}
-
-:host .editItem {
-  background: #358CCE;
-}
-
-:host .deleteItem {
-  background: #999;
-}
-
-:host .addToItem {
-  background: #84c147;
-}
-
-:host #datascope {
-  text-align: center;
-  padding-bottom: 5px;
-}
-</style>
-    <div id="datascope"></div>
-    <div id="keys-wrapper">
-      <h2 on-click="{{toggleKeyConfig}}" id="configureView">Configure View</h2>
-      <div id="keys" show="no"></div>
-    </div>
-    <div id="items"></div>
-    <shadow></shadow>
-    <script type="text/json" id="ceci-definition">
-
-    </script>
-  </template>
-  <ceci-definition>
-    {
-      "thumbnail": "./thumbnail.png",
-      "description": "Display any data you have created using forms made with addform component.",
-      "broadcasts": {
-        "editItem": {
-          "label": "Send Item",
-          "description": "Broadcasts a reference to the record when the 'Edit' button is tapped."
-        },
-        "addToItem": {
-          "description": "Broadcasts a reference to the record when the 'Add to' button is tapped.",
-          "label": "Add to Item"
-        },
-        "sendItem": {
-          "description": "Broadcasts a reference to the record when it is tapped.",
-          "label": "View Item"
-        }
-      },
-      "listeners": {
-        "showItem": {
-          "description": "Shows the data for this record.",
-          "label": "Show item"
-        }
-      },
-      "attributes": {
-        "dataname": {
-          "description": "Will try to show this kind of item in the saved data, i.e. 'Cats'",
-          "label": "I show...",
-          "editable": "text"
-        },
-        "showdelete": {
-          "description": "Hides or shows the delete icon for each record.",
-          "label": "Show Delete Link",
-          "editable": "boolean"
-        },
-        "showedit": {
-          "description": "Show 'Edit' button",
-          "label": "Hides or shows the Edit button for each record.",
-          "editable": "boolean"
-        },
-        "showaddtoitem": {
-          "description": "Show 'Add To' Button",
-          "label": "Hides or shows the 'Add to This' button",
-          "editable": "boolean"
-        }
-      }
-    }
-  </ceci-definition>
-  <tags>data</tags>
-  <script>
-    Polymer("ceci-dataview", {
-      keyConfig: {},
-      storedData: {},
-      dataChangedEvent: new CustomEvent("storage"),
-      ready: function(){
-        this.super();
-        this.datascope = [];
-        this.$.configureView.innerHTML = this.gettext(this.localName + "/configureView") || this.$.configureView.innerHTML;
-      },
-      toggleKeyConfig: function(){
-        var keysEl = this.shadowRoot.querySelector("#keys");
-        if(keysEl.getAttribute("show") == "no") {
-          keysEl.setAttribute("show","yes");
-        } else {
-          keysEl.setAttribute("show","no");
-        }
-      },
-      showdeleteChanged: function(oldValue,newValue){
-        this.showData();
-      },
-      showaddtoitemChanged: function(oldValue,newValue){
-        this.showData();
-      },
-      showeditChanged: function(oldValue,newValue){
-        this.showData();
-      },
-      datanameChanged: function (oldValue, newValue) {
-        this.updateKeyUI();
-        this.showData();
-      },
-      showItem: function(e){
-        this.datascope = e;
-      },
-      datascopeChanged: function(){
-        // If we want to indicate the scope of the data that is shown, there is where we'd do it.
-        // var scopeEl = this.shadowRoot.querySelector("#datascope");
-        this.updateKeyUI();
-        this.showData();
-      },
-      deleteItem: function(id){
-        var self = this;
-        var ca = document.querySelector("ceci-app");
-        if(!ca){
-          window.addEventListener("CeciDataConnectionLoaded", function(){
-            self._deleteItemFirebase(id);
-          });
-        }
-        else {
-          if(ca.firebase){
-            this._deleteItemFirebase(id);
-          }
-        }
-      },
-      _deleteItemFirebase: function(id){
-        var self = this;
-        var ca = document.querySelector("ceci-app")
-        ca.getFirebaseObject('form-data', "", function(data){
-          self.storedData = data || {};
-          for (var i = 0; i < self.datascope.length; i++){
-            var scopeItem = self.datascope[i];
-            self.storedData = self.storedData[scopeItem["dataset"]][scopeItem["index"]];
-          }
-          self.storedData = self.storedData[self.dataname] || [];
-          self.storedData.splice(id, 1);
-          ca.setFirebaseObject('form-data', data);
-          window.dispatchEvent(self.dataChangedEvent);
-        });
-      },
-      updateKeyUI: function(){
-        var self = this;
-        var ca = document.querySelector("ceci-app");
-        if(!ca){
-          window.addEventListener("CeciDataConnectionLoaded", function(){
-            self._updateKeyUIFirebase();
-          })
-        }
-        else {
-          if(ca.firebase){
-            this._updateKeyUIFirebase();
-          }
-          else {
-            window.addEventListener("CeciDataConnectionLoaded", function(){
-              self._updateKeyUIFirebase();
-            });
-          }
-        }
-      },
-      _updateKeyUIFirebase : function(){
-
-        //This builds the UI that lets you choose how each key in the data set is displayed!
-        var self = this;
-
-        document.querySelector("ceci-app").getFirebaseObject('form-data',"", function(data){
-
-          // Clears out the old UI
-          self.shadowRoot.querySelector("#keys").innerHTML = "";
-
-          // Tries to grab the stored Data
-          var db = data || {};
-          self.storedData = db[self.dataname] || [];
-
-          // Tries to grab it's own keyConfig (which tells it how to render each Key field)
-          self.keyConfig = JSON.parse(self.listschema) || {};
-
-          // Grabs the schema from the form
-          var formSchema = db[self.dataname + "_formschema"] || {};
-
-          // Builds a list of all the keys from the form and data set
-          // To know what to display options for.
-          var keylist = [];
-          for (var i = 0; i < self.storedData.length; i++){
-            var item = self.storedData[i];
-            for (var key in item) {
-              if(keylist.indexOf(key) < 0) {
-                keylist.push(key);
-              }
-            }
-          }
-
-          for (var j = 0; j < formSchema.length; j++){
-            var item = formSchema[j];
-            if(keylist.indexOf(item["name"]) < 0 ){
-              keylist.push(item["name"]);
-            }
-          }
-
-          for (var k = 0; k < keylist.length; k++){
-            var key = keylist[k];
-            if(!self.keyConfig[key]) {
-              self.keyConfig[key] = "text";
-            }
-          }
-
-          // CLean up the keyConfig file
-          // Removes everything in the keyConfig that isn't in the keylist anymore.
-          for (var key in self.keyConfig){
-            if(keylist.indexOf(key) < 0) {
-              delete self.keyConfig[key];
-            }
-          }
-
-          // We should also clean up the key config.
-          // we should also get rid of keys that are no longer needed from keyConfig
-          // Like if something is NOT in the keylist, then dump it
-
-          // Have a way to choose how each key is displayed
-
-          for (var j = 0; j < keylist.length; j ++){
-            var keyConfig = document.createElement("div");
-            keyConfig.classList.add("keyConfig");
-            keyConfig.innerHTML = "Show <strong>" + keylist[j] + "</strong> as ";
-
-            var select =  document.createElement("select");
-            keyConfig.appendChild(select);
-
-            select.setAttribute("key",keylist[j]);
-            select.innerHTML = "<option value='text'>text</option><option value='image'>image</option><option value='hide'>hide</option>";
-            select.value = self.keyConfig[keylist[j]];
-
-            select.addEventListener("change",function(e){
-              self.keyConfig[e.target.getAttribute("key")] = e.target.value;
-              self.showData();
-              self.listschema = JSON.stringify(self.keyConfig);
-            });
-            self.shadowRoot.querySelector("#keys").appendChild(keyConfig);
-          }
-
-          //Put the list schema into the db
-          db[self.dataname + "_listSchema"] = self.keyConfig;
-          document.querySelector("ceci-app").setFirebaseObject('form-data', db);
-          self.showData();
-        });
-      },
-      enteredView : function(){
-        var self = this;
-
-        //Listens to updates to the data set
-        window.addEventListener('storage', this.showData.bind(this), false);
-        window.addEventListener('storage', this.updateKeyUI.bind(this), false);
-        window.addEventListener('formChange', this.updateKeyUI.bind(this), false);
-
-        this.updateKeyUI();
-
-        //Show exising data
-        this.showData();
-        this.super();
-      },
-      getOrWaitForCeciApp: function(callback){
-        var ceciApp = document.querySelector("ceci-app");
-        if(!ceciApp){
-          window.addEventListener("CeciDataConnectionLoaded", function(){
-            callback(document.querySelector("ceci-app"));
-          });
-        } else {
-          if(ceciApp && ceciApp.firebase){
-            callback(ceciApp);
-          } else {
-            window.addEventListener("CeciDataConnectionLoaded", function(){
-              callback(document.querySelector("ceci-app"));
-            });
-          }
-        }
-      },
-      showData: function(){
-        var self = this;
-        this.getOrWaitForCeciApp(function(ceciApp){
-          var that = self;
-          ceciApp.getFirebaseObject('form-data', "", function(data){
-          var those = that;
-          those.storedData = data || {};
-
-          //handle case where dataview is just loading and listSchema hasn't been parsed and
-          //stored in keyConfig
-          if(those.keyConfig && Object.getOwnPropertyNames(those.keyConfig).length < 1){
-            those.keyConfig = those.storedData[those.dataname+"_listSchema"];
-          }
-
-          var lastData;
-          for (var i = 0; i < those.datascope.length; i++){
-            var scopeItem = those.datascope[i];
-            self.storedData = those.storedData[scopeItem["dataset"]][scopeItem["index"]];
-            lastData = scopeItem["dataset"];
-          }
-
-          if (lastData == those.dataname){
-            var blam = [];
-            blam.push(those.storedData);
-            those.storedData = blam;
-          }
-          else {
-            those.storedData = those.storedData[those.dataname] || [];
-          }
-
-          var itemList = those.shadowRoot.querySelector("#items");
-          itemList.innerHTML = "";
-
-          for(var i = 0; i < those.storedData.length; i++){
-            var item = those.storedData[i];
-            var itemEl = document.createElement("div");
-            itemEl.classList.add("dataGroup");
-
-            for (var key in item) {
-              var displayType = those.keyConfig[key];
-              var dataItem;
-
-              if (displayType == "text") {
-                dataItem = document.createElement("div");
-
-                if (typeof item[key] == "object"){
-                  dataItem.innerHTML = "List of " + item[key].length + " " + key;
-                }
-                else {
-                  dataItem.innerHTML = item[key];
-                }
-              }
-              else if (displayType == "image") {
-                dataItem = document.createElement("img");
-                dataItem.setAttribute("src", item[key]);
-              }
-              else {
-                dataItem = document.createElement("div");
-              }
-
-              dataItem.classList.add("dataItem");
-
-              var these = those;
-              dataItem.addEventListener("click",function(e){
-                var nodeList = Array.prototype.slice.call(e.currentTarget.parentNode.parentNode.children);
-                var index = nodeList.indexOf(e.currentTarget.parentNode);
-                var sendScope = JSON.parse(JSON.stringify(that.datascope));
-                var scopeItem = {};
-                scopeItem["dataset"] = these.dataname;
-                scopeItem["index"] = index;
-                sendScope.push(scopeItem);
-                these.broadcast('sendItem', sendScope);
-              });
-
-              if(displayType != "hide") {
-                itemEl.appendChild(dataItem);
-              }
-            }
-
-            if(self.showedit == "true"){
-              var editItem = document.createElement("div");
-              editItem.innerHTML = "Edit";
-              editItem.classList.add("editItem");
-              itemEl.appendChild(editItem);
-              editItem.addEventListener("click",function(e){
-                var nodeList = Array.prototype.slice.call(e.currentTarget.parentNode.parentNode.children);
-                var index = nodeList.indexOf( e.currentTarget.parentNode );
-                var sendScope = JSON.parse(JSON.stringify(that.datascope));
-                var scopeItem = {};
-                scopeItem["dataset"] = these.dataname;
-                scopeItem["index"] = index;
-                sendScope.push(scopeItem);
-                these.broadcast('editItem', sendScope);
-              });
-            }
-
-            if(these.showaddtoitem == "true"){
-              var el = document.createElement("div");
-              el.innerHTML = "Add to self";
-              el.classList.add("addToItem");
-              itemEl.appendChild(el);
-              el.addEventListener("click",function(e){
-                var nodeList = Array.prototype.slice.call(e.currentTarget.parentNode.parentNode.children);
-                var index = nodeList.indexOf( e.currentTarget.parentNode );
-                var sendScope = JSON.parse(JSON.stringify(that.datascope));
-                var scopeItem = {};
-                scopeItem["dataset"] = these.dataname;
-                scopeItem["index"] = index;
-                sendScope.push(scopeItem);
-                these.broadcast('addToItem', sendScope);
-              });
-            }
-
-            if(self.showdelete == "true"){
-              var deleteItem = document.createElement("div");
-              deleteItem.innerHTML = "X";
-              deleteItem.classList.add("deleteItem");
-              itemEl.appendChild(deleteItem);
-              deleteItem.addEventListener("click",function(e){
-                var nodeList = Array.prototype.slice.call(e.currentTarget.parentNode.parentNode.children);
-                var index = nodeList.indexOf( e.currentTarget.parentNode );
-                these.deleteItem(index);
-              });
-            }
-
-            itemList.appendChild(itemEl);
-          }
-          });
-        });
-      }
-    });
-  </script>
-</polymer-element>
-
 <polymer-element name="ceci-double-button" attributes="textcolor rightbuttoncolor leftbuttoncolor leftlabel rightlabel value" value="Click" extends="ceci-element" leftlabel="OK" rightlabel="Cancel" textcolor="#ffffff" leftbuttoncolor="#4DB227" rightbuttoncolor="#bd400a" assetpath="component-double-button/">
   <ceci-definition>
     {
       "tags": ["button", "click", "tap"],
       "thumbnail": "./thumbnail.png",
-      "description": "Broadcasts a \"click\" when clicked.",
+      "description": "Responds to your clicks and taps.",
       "name": "Double Button",
       "broadcasts": {
         "clickleft": {
@@ -3585,7 +2472,6 @@
 }
 
 :host .button {
-  font-family: "FiraSans", sans-serif;
   cursor: pointer;
   border-bottom: 2px solid rgba(0,0,0,.1);
   display: block;
@@ -3593,7 +2479,7 @@
   padding: 12px 0 10px 0;
   text-overflow: ellipsis;
   overflow: hidden;
-  font-weight: 600;
+  font-weight: 300;
   font-size: 1.8rem;
   line-height: 1.8rem;
   width: 100%;
@@ -3646,12 +2532,12 @@
   border: none;
 }
 </style>
-    <div class="button-wrapper" on-click="{{clickleft}}">
+    <div class="button-wrapper" on-ceci-pressdown="{{clickleft}}">
       <div class="button" id="leftbutton">{{leftlabel}}</div>
       <div class="overlay active-overlay"></div>
       <div class="overlay hover-overlay"></div>
     </div>
-    <div class="button-wrapper" on-click="{{clickright}}">
+    <div class="button-wrapper" on-ceci-pressdown="{{clickright}}">
       <div class="button" id="rightbutton">{{rightlabel}}</div>
       <div class="overlay active-overlay"></div>
       <div class="overlay hover-overlay"></div>
@@ -3684,160 +2570,6 @@
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-editform" extends="ceci-element" assetpath="component-editform/">
-  <template>
-    <style>:host {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-  background: #EFEFEF;
-}
-
-:host h1 {
-  font-size: 18px;
-  border-bottom: solid 2px #CCC;
-  margin-bottom: 10px;
-  padding-bottom: 4px;
-  text-shadow: 0px 1px 0px white;
-}
-
-:host input {
-  display: block;
-  padding: 5px;
-  width: 100%;
-  font-size: 16px;
-  margin-bottom: 4px;
-  box-sizing: border-box;
-}
-
-:host p {
-  color: white;
-  background: green;
-  cursor: pointer;
-  padding: 5px 10px;
-  display: inline-block;
-}
-</style>
-    <div class="form">
-
-    </div>
-    <shadow></shadow>
-  </template>
-  <ceci-definition>
-    {
-      "thumbnail": "./thumbnail.png",
-      "name": "Edit Form",
-      "description": "Edits an item!",
-      "listeners": {
-        "editItem": {
-          "description": "Set the item to edit with the form.",
-          "label": "Set Edit Item"
-        },
-        "submitForm": {
-          "description": "Submit this form.",
-          "label": "Submit Form"
-        }
-      }
-    }
-  </ceci-definition>
-  <script>
-    Polymer("ceci-editform", {
-      storedData : {},
-      db: {},
-      datascope: {},
-      storedData: {},
-      ready: function(){
-        this.super();
-      },
-      editItem : function(scope){
-        var self = this;
-        var ca = document.querySelector("ceci-app");
-
-        if(!ca){
-          window.addEventListener("CeciDataConnectionLoaded", function(){
-            self.editItemFirebase(scope);
-          });
-        } else {
-          if(ca.firebase){
-            this.editItemFirebase(scope);
-          }
-        }
-
-      },
-      editItemFirebase : function(scope){
-        var self = this;
-
-        document.querySelector("ceci-app").getFirebaseObject('form-data', "", function(data){
-
-          self.db = data;
-          self.datascope = scope;
-          self.storedData = data || {};
-
-          for (var i = 0; i < self.datascope.length; i++){
-            var scopeItem = self.datascope[i];
-            self.storedData = self.storedData[scopeItem["dataset"]][scopeItem["index"]];
-          }
-
-          var form = self.shadowRoot.querySelector(".form");
-          form.innerHTML = "";
-
-          for(key in self.storedData){
-            if(typeof self.storedData[key] != "object"){
-
-              var label = document.createElement("label");
-              label.innerHTML = key;
-              form.appendChild(label);
-
-              var input = document.createElement("input");
-              input.value = self.storedData[key];
-              input.setAttribute("storeName",key);
-              form.appendChild(input);
-            }
-          }
-
-        });
-
-      },
-      submitForm : function(){
-        // This resubmits the entire DB with the updated record
-        var self = this;
-
-        var newData = self.storedData;
-        var fields = self.shadowRoot.querySelectorAll(".form input");
-
-        self.storedData = self.db;
-
-        for (var field in fields) {
-          if (fields.hasOwnProperty(field)) {
-            var f = fields[field];
-            var name = f.getAttribute("storeName");
-            var value = f.value;
-            newData[name] = value;
-          }
-        }
-
-        // Gets a reference to the correct item
-        for (var i = 0; i < self.datascope.length; i++){
-          var scopeItem = self.datascope[i];
-          self.storedData = self.storedData[scopeItem["dataset"]][scopeItem["index"]];
-        }
-
-        // Replaces it with the new item
-        self.storedData = newData;
-
-        // Saves over the entire DB with the new item included
-        var ca = document.querySelector("ceci-app");
-        ca.setFirebaseObject('form-data', self.db);
-
-        var event = new CustomEvent("storage");
-        window.dispatchEvent(event);
-
-      }
-    });
-  </script>
-</polymer-element>
-
 <polymer-element name="ceci-fireworks" attributes="fireworksound" extends="ceci-element" fireworksound="Kaboom!" assetpath="component-fireworks/">
   <template>
     <style>:host {
@@ -3864,7 +2596,7 @@
       {
         "tags": ["animated", "starter", "fun"],
         "thumbnail": "./thumbnail.png",
-        "description": "Shows firework show",
+        "description": "Celebrates with fireworks whenever input is received.",
         "name": "Fireworks",
         "broadcasts": {
           "kaboom": {
@@ -4155,7 +2887,8 @@
       "broadcasts": {
         "press": {
           "label": "Any Button Pressed",
-          "description": "Any button was pressed"
+          "description": "Any button was pressed",
+          "default": true
         },
         "release": {
           "label": "Any Button Released",
@@ -4192,6 +2925,10 @@
         "bbutton": {
           "label": "B Button",
           "description": "B button was pressed"
+        },
+        "konami": {
+          "label": "Konami code triggered!",
+          "description": "A classic easter egg to add to your app"
         }
       },
       "attributes": {
@@ -4455,6 +3192,11 @@
       Polymer("ceci-game-controller", {
         ready: function() {
           this.super();
+
+          // Looking for ↑ ↑ ↓ ↓ ← → ← → B A
+          this.sequence = [];
+          this.KONAMI_CODE = "up,up,down,down,left,right,left,right,b,a";
+
           var that = this;
           function detechTouch() {
             // Disable mouse events
@@ -4465,6 +3207,17 @@
           this.addEventListener("touchstart", detechTouch);
         },
         onPress: function(e) {
+          var button = e.target.classList[0].split("-")[0];
+          this.sequence.push(button);
+
+          if (this.sequence.length > 10) {
+            this.sequence.shift();
+          }
+
+          if (this.sequence.join(",") == this.KONAMI_CODE) {
+            this.broadcast("konami", this.KONAMI_CODE);
+          }
+
           this.broadcast("press", e.target.classList[0]);
         },
         onRelease: function(e) {
@@ -4515,7 +3268,7 @@
     {
       "tags": ["starter", "layout", "navigation"],
       "thumbnail": "./thumbnail.png",
-      "description": "A page header. You can send it a signal to navigate to that page.",
+      "description": "Displays a title for a page in your app and lets you navigate to that page.",
       "name": "Header",
       "broadcasts": {},
       "listeners": {
@@ -4578,19 +3331,22 @@ header {
 <polymer-element name="ceci-hot-potato" extends="ceci-element" attributes="min max" min="10" max="15" assetpath="component-hot-potato/">
   <ceci-definition>
     {
-      "name": "Hot Potato",
+      "name" : "Hot Potato",
+      "tags" : ["game","timer","time"],
       "thumbnail": "./thumbnail.png",
-      "description": "Generates a random number",
+      "description": "Sends out a signal at a random time between two numbers.",
       "broadcasts": {
         "finish": {
           "label": "Game over",
-          "description": "Sends a message that the game is over."
+          "description": "Sends a message that the game is over.",
+          "default" : "true"
         }
       },
       "listeners": {
         "start": {
           "description": "Starts a new game.",
-          "label": "New Game"
+          "label": "New Game",
+          "default" : "true"
         }
       },
       "attributes": {
@@ -4695,8 +3451,8 @@ header {
 :host .image-container {
   overflow: hidden;
   width: 100%;
+  line-height: 0px;
 }
-
 </style>
     <div class="image-container">
       <img id="image">
@@ -4705,10 +3461,10 @@ header {
   </template>
   <ceci-definition>
     {
-      "tags": ["component-image", "view", "image"],
+      "tags": ["image", "photo", "picture"],
       "thumbnail": "./thumbnail.png",
       "name": "Image",
-      "description": "Shows a simple image.",
+      "description": "Displays an image using a simple web URL or data-uri.",
       "broadcasts": {
         "click": {
           "label": "Click",
@@ -4780,7 +3536,7 @@ header {
     {
       "tags": ["music", "instrument", "tap"],
       "thumbnail": "./thumbnail.png",
-      "description": "Broadcasts a \"click\" when clicked.",
+      "description": "Waves at you when pressed or input is received.",
       "name": "Jazz Hands",
       "broadcasts": {},
       "listeners": {
@@ -4929,7 +3685,7 @@ header {
   display: none;
 }
 </style>
-    <div id="kick" on-mousedown="{{both}}">
+    <div id="kick" on-ceci-pressdown="{{both}}">
       <div id="two" class="hand two"></div>
       <div id="one" class="hand one"></div>
     </div>
@@ -4973,7 +3729,7 @@ header {
     {
       "tags": ["kick", "drum"],
       "thumbnail": "./thumbnail.png",
-      "description": "Plays a kickdrum sound when activated",
+      "description": "Plays a kickdrum.",
       "name": "Kick Drum",
       "broadcasts": {},
       "listeners": {
@@ -5091,7 +3847,7 @@ header {
   display: none;
 }
 </style>
-    <div id="kick" on-pointerdown="{{kickon}}" on-pointerup="{{kickoff}}">
+    <div id="kick" on-ceci-pressdown="{{kickon}}" on-ceci-pressup="{{kickoff}}">
       <div id="drum">
         <div id="face"></div>
       </div>
@@ -5109,9 +3865,11 @@ header {
         var that = this;
       },
       kickon: function (e) {
-        this.$.kicksound.pause();
-        this.$.kicksound.currentTime = 0;
-        this.$.kicksound.play();
+        var kick = this.$.kicksound.cloneNode();
+        kick.play();
+        kick.addEventListener("ended",function(){
+          kick = {};
+        });
         this.$.kick.classList.add("on");
       },
       kick : function(){
@@ -5145,10 +3903,10 @@ header {
 <polymer-element name="ceci-meatspaces-input" attributes="image text server mode" extends="ceci-element" assetpath="component-meatspaces-input/">
   <ceci-definition>
     {
-      "tags": ["meatspaces", "input"],
+      "tags": ["meatspaces", "input", "chat"],
       "thumbnail": "./thumbnail.png",
-      "description": "Sends Meatspaces chat messages",
-      "name": "Meat Chat Input",
+      "description": "Sends your picture and message to the Meatspaces chat room.",
+      "name": "Meatspaces Chat Input",
       "listeners": {
         "send": {
           "label": "Send",
@@ -5279,8 +4037,8 @@ header {
     {
       "tags": ["meatspaces", "chat"],
       "thumbnail": "./thumbnail.png",
-      "name": "Meat Chat Window",
-      "description": "Displays Meatspaces chat messages",
+      "name": "Meatspaces Chat Room",
+      "description": "Connects you to a Meatspaces chat room.",
       "attributes": {
         "server": {
           "label": "Meatspaces Server",
@@ -5447,8 +4205,9 @@ header {
   <ceci-definition>
     {
       "tags": ["media", "audio", "video", "youtube", "popcorn", "soundcloud"],
-      "name": "Media",
-      "description": "Plays HTML5 media using the PopcornJS library",
+      "name": "Media Player",
+      "thumbnail": "./thumbnail.png",
+      "description": "Plays HTML5 media using the PopcornJS library.",
       "broadcasts": {
         "tick": {
           "label": "Tick",
@@ -5515,6 +4274,9 @@ header {
       :host {
         display: block;
         min-height: 50px;
+      }
+      :host #mediaContainer {
+        line-height: 0px;
       }
     </style>
     <div id="mediaContainer"></div>
@@ -5747,7 +4509,7 @@ header {
   </template>
   <ceci-definition>
     {
-      "description": "Outputs ticks measured in Beats Per Minute (BPM)",
+      "description": "Counts and sends out a beat at regular intervals.",
       "tags": ["fun","animated","starter"],
       "thumbnail": "./thumbnail.png",
       "name": "Metronome",
@@ -5893,7 +4655,7 @@ header {
     {
       "tags": ["microphone", "button", "audio"],
       "thumbnail": "./thumbnail.png",
-      "description": "Records an audio clip.",
+      "description": "Records sounds.",
       "name": "Microphone",
       "broadcasts": {
         "clip": {
@@ -7685,10 +6447,10 @@ header {
   </template>
   <ceci-definition>
     {
-      "tags": ["data", "words"],
+      "tags": ["data", "words", "text", "note"],
       "thumbnail": "./thumbnail.png",
       "name": "Notebook",
-      "description": "Stores pages of stuff",
+      "description": "Stores your notes.",
       "broadcasts": {
         "wantsPicture": {
           "label": "User wants picture",
@@ -8260,10 +7022,10 @@ header {
   </template>
   <ceci-definition>
     {
-      "tags": ["music", "touch"],
+      "tags": ["music", "touch", "button"],
       "thumbnail": "./thumbnail.png",
-      "name": "Pad Grid",
-      "description": "Alternates output between set broadcasts from a single input",
+      "name": "Button Grid",
+      "description": "Displays a grid of buttons, each capable of its own action.",
       "broadcasts": {
         "taplabel": {
           "label": "Tapped label",
@@ -8344,7 +7106,7 @@ header {
           "label": "Number of rows",
           "editable": "number"
         },
-        "palettenumber": { 
+        "palettenumber": {
           "label": "Which palette? 1-6",
           "editable": "number"
         }
@@ -8589,7 +7351,7 @@ header {
   <ceci-definition>
     {
       "name": "PayPal",
-      "description": "Add your own PayPal donation buttons, and start raising funds.",
+      "description": "Donates to the cause of your choice through PayPal.",
       "tags": ["paypal", "donate"],
       "thumbnail": "./thumbnail.png",
       "broadcasts": {
@@ -8813,38 +7575,29 @@ header {
 <polymer-element name="ceci-random" extends="ceci-element" attributes="allowsame min max value" min="0" max="9" allowsame="false" assetpath="component-random-number/">
   <ceci-definition>
     {
-      "name": "Random",
+      "name": "Random Number Generator",
       "thumbnail": "./thumbnail.png",
-      "description": "Generates a random number",
+      "description": "Generates a random number for other bricks to use.",
       "broadcasts": {
         "send": {
-          "label": "Send random number",
-          "description": "Sends the random number if explicitly asked to."
-        },
-        "changed": {
-          "label": "Random number changed",
-          "description": "Sends the newly generated number."
+          "label": "Random number",
+          "description": "Sends the random number if explicitly asked to.",
+          "default" : "true"
         }
       },
       "listeners": {
         "generate": {
           "description": "Generate a random number between min and max",
-          "label": "Generates a random number"
-        },
-        "send": {
-          "description": "Send the random number out",
-          "label": "Send random number"
+          "label": "Generate",
+          "default" : "true"
         }
       },
       "attributes": {
         "min": {
-          "description": "",
           "label": "Min",
           "editable": "number"
         },
-
         "max": {
-          "description": "",
           "label": "Max",
           "editable": "number"
         },
@@ -8910,6 +7663,7 @@ header {
             }
           }
           this.value = random;
+          this.send();
         },
         send: function() {
           this.broadcast("send", this.value);
@@ -9051,33 +7805,55 @@ header {
   opacity: 1;
 }
 
-[data-color*="yellow"] .beat {
-  background: rgba(229,210,0,1);
+[data-color="a"] .beat {
+  background: #de0310;
 }
-
-[data-color*="blue"] .beat {
-  background: rgba(53,140,206,1);
+[data-color="b"] .beat {
+  background: #e82f0a;
 }
-
-[data-color*="red"] .beat {
-  background: rgba(232,30,20,1);
+[data-color="c"] .beat {
+  background: #ef5106;
 }
-
-[data-color*="pink"] .beat {
-  background: rgba(255,84,167,1);
+[data-color="d"] .beat {
+  background: #f87303;
 }
-
-[data-color*="purple"] .beat {
-  background: rgba(159,39,207,1);
+[data-color="e"] .beat {
+  background: #f89200;
 }
-
-[data-color*="green"] .beat {
-  background: rgba(113,184,6,1);
+[data-color="f"] .beat {
+  background: #cca108;
 }
-
-[data-color*="orange"] .beat {
-  background: rgba(255,123,0,1);
-}</style>
+[data-color="g"] .beat {
+  background: #a0af0e;
+}
+[data-color="h"] .beat {
+  background: #78bc13;
+}
+[data-color="i"] .beat {
+  background: #56bb2d;
+}
+[data-color="j"] .beat {
+  background: #3dac5d;
+}
+[data-color="k"] .beat {
+  background: #259c8b;
+}
+[data-color="l"] .beat {
+  background: #0d8bb8;
+}
+[data-color="m"] .beat {
+  background: #1373d2;
+}
+[data-color="n"] .beat {
+  background: #3951d2;
+}
+[data-color="o"] .beat {
+  background: #5f30d2;
+}
+[data-color="p"] .beat {
+  background: #8a0bd;
+}
+</style>
     <div id="channels" data-beat="{{currentBeat}}">
       <div class="indicator top"></div>
       <div class="indicator bottom"></div>
@@ -9097,7 +7873,7 @@ header {
       "tags": [""],
       "thumbnail": "./thumbnail.png",
       "name": "Sequencer",
-      "description": "Alternates output between set broadcasts from a single input",
+      "description": "Sends messages signals to other bricks according to a pattern.",
       "broadcasts": {
         "A": {
           "label": "Beat A",
@@ -9200,11 +7976,12 @@ header {
           var item = {};
           item.channelcolor = broadcast.getAttribute("on");
           item.channelname = broadcast.getAttribute("from");
+
           self.activebroadcasts.push(item);
         });
 
         this.async(function(){
-          this.colorSquares()
+          this.colorSquares();
         });
       },
       input: function(value) {
@@ -9222,4204 +7999,12 @@ header {
   </script>
 </polymer-element>
 
-<script src="component-sheet/scripts/tabletop.js"></script>
-<polymer-element name="ceci-component-sheet" extends="ceci-element" attributes="url" assetpath="component-sheet/">
-  <ceci-definition>
-    {
-      "name": "Sheet",
-      "tags": "ceci-component-sheet",
-      "thumbnail": "./thumbnail.png",
-      "description": "A canvas for drawing and sharing",
-      "broadcasts": {
-        "sendvalue": {
-          "label": "send value",
-          "description": "A cell was tapped"
-        },
-        "sendheading": {
-          "label": "send heading",
-          "description": "A cell was tapped"
-        }
-      },
-      "listeners": {
-      },
-      "attributes": {
-        "url": {
-          "label": "Google Docs URL",
-          "description": "URL",
-          "editable": "text"
-        }
-      }
-    }
-  </ceci-definition>
-  <template>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>/*
- * HTML5 Boilerplate
- *
- * What follows is the result of much research on cross-browser styling.
- * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
- * Kroc Camen, and the H5BP dev community and team.
- */
-
-/* ==========================================================================
-   Base styles: opinionated defaults
-   ========================================================================== */
-
-html,
-button,
-input,
-select,
-textarea {
-  color: #222;
-}
-
-body {
-  font-size: 1em;
-  line-height: 1.4;
-}
-
-a {
-  color: #00e;
-}
-
-a:visited {
-  color: #551a8b;
-}
-
-a:hover {
-  color: #06e;
-}
-
-/*
- * Remove the gap between images and the bottom of their containers: h5bp.com/i/440
- */
-
-img {
-  vertical-align: middle;
-}
-
-/*
- * Remove default fieldset styles.
- */
-
-fieldset {
-  border: 0;
-  margin: 0;
-  padding: 0;
-}
-
-/*
- * Allow only vertical resizing of textareas.
- */
-
-textarea {
-  resize: vertical;
-}
-
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ==========================================================================
-   Helper classes
-   ========================================================================== */
-
-/* Prevent callout */
-
-.nocallout {
-  -webkit-touch-callout: none;
-}
-
-.pressed {
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
-/* A hack for HTML5 contenteditable attribute on mobile */
-
-textarea[contenteditable] {
-  -webkit-appearance: none;
-}
-
-/* A workaround for S60 3.x and 5.0 devices which do not animated gif images if
-   they have been set as display: none */
-
-.gifhidden {
-  position: absolute;
-  left: -100%;
-}
-
-/*
- * Image replacement
- */
-
-.ir {
-  background-color: transparent;
-  background-repeat: no-repeat;
-  border: 0;
-  direction: ltr;
-  display: block;
-  overflow: hidden;
-  text-align: left;
-  text-indent: -999em;
-}
-
-.ir br {
-  display: none;
-}
-
-/*
- * Hide from both screenreaders and browsers: h5bp.com/u
- */
-
-.hidden {
-  display: none !important;
-  visibility: hidden;
-}
-
-/*
- * Hide only visually, but have it available for screenreaders: h5bp.com/v
- */
-
-.visuallyhidden {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
-}
-
-/*
- * Extends the .visuallyhidden class to allow the element to be focusable
- * when navigated to via the keyboard: h5bp.com/p
- */
-
-.visuallyhidden.focusable:active,
-.visuallyhidden.focusable:focus {
-  clip: auto;
-  height: auto;
-  margin: 0;
-  overflow: visible;
-  position: static;
-  width: auto;
-}
-
-/*
- * Hide visually and from screenreaders, but maintain layout
- */
-
-.invisible {
-  visibility: hidden;
-}
-
-/**
- * Clearfix helper
- * Used to contain floats: h5bp.com/q
- */
-
-.clearfix::before,
-.clearfix::after {
-  content: "";
-  display: table;
-}
-
-.clearfix::after {
-  clear: both;
-}
-
-/* ==========================================================================
-   EXAMPLE Media Queries for Responsive Design.
-   Theses examples override the primary ('mobile first') styles.
-   Modify as content requires.
-   ========================================================================== */
-
-@media only screen and (min-width: 800px) {
-  /* Style adjustments for viewports that meet the condition */
-}
-
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
-     only screen and (min-resolution: 144dpi) {
-  /* Style adjustments for viewports that meet the condition */
-}
-</style>
-    <style>/*
- * Web Starter Kit
- *
- * Multi-screen layout styles for your page. Brought to you by the
- * Web Starter Kit team.
- *
- */
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  position: relative;
-  font-family: 'Roboto Condensed', 'Helvetica', 'Arial', sans-serif;
-  font-weight: 300;
-  background-color: #FFFFFF;
-  box-sizing: border-box;
-  min-height: 100%;
-}
-
-body.open {
-  overflow: hidden;
-}
-
-.app-bar {
-  display: block;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: #4285f4;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.app-bar-container {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  width: 100%;
-  height: 60px;
-  position: relative;
-  -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  margin: 0 auto;
-}
-
-.app-bar.open,
-.app-bar.open ~ main {
-  -webkit-transform: translate(250px, 0);
-          transform: translate(250px, 0);
-}
-
-.app-bar .logo {
-  -webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  font-size: 2em;
-  line-height: 60px;
-  margin: 0 16px;
-  padding: 0;
-  color: #fefefe;
-  float: none;
-  max-width: none;
-  font-weight: 300;
-  line-height: 60px;
-}
-
-.app-bar .logo a {
-  text-decoration: none;
-  color: inherit;
-  font-weight: normal;
-}
-
-.app-bar-actions {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  z-index: 2;
-}
-
-.app-bar button {
-  width: 60px;
-  height: 60px;
-  background-image: none;
-  background-color: transparent;
-  border: none;
-  padding: 0;
-  -webkit-transition: background-color 0.2s ease-out;
-          transition: background-color 0.2s ease-out;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.app-bar button img {
-  width: 60px;
-  height: 60px;
-}
-
-.app-bar button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.app-bar button:focus {
-  background-color: rgba(255, 255, 255, 0.2);
-  outline: 0;
-}
-
-.app-bar button:active {
-  background-color: rgba(255, 255, 255, 0.4);
-}
-
-button.menu img {
-  height:24px;
-  width: 24px;
-}
-
-.promote-layer {
-  /*
-  This may promote the layer to a composited
-  layer.
-
-  Replace with will-change when available
-
-  #perfmatters
-  */
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
-.base, p, ul, ol {
-  font-size: 19px;
-}
-
-.navdrawer-container {
-  z-index: 1;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  width: 250px;
-  height: 100%;
-  background-color: #3367D6;
-  color: #fefefe;
-  -webkit-transform: translate(-250px, 0);
-          transform: translate(-250px, 0);
-  overflow-y: auto;
-}
-
-.navdrawer-container.open {
-  -webkit-transform: translate(0, 0);
-          transform: translate(0, 0);
-}
-
-.app-bar, .navdrawer-container, main {
-  -webkit-transition: -webkit-transform 0.3s ease-out;
-          transition: transform 0.3s ease-out;
-}
-
-.navdrawer-container h4,
-.navdrawer-container ul li a {
-  height: auto;
-  padding: 17px 20px;
-  line-height: 1.4;
-}
-
-.navdrawer-container h4 {
-  background-color: white;
-  color: #3367D6;
-}
-
-.navdrawer-container ul {
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
-}
-
-.navdrawer-container ul li a {
-  display: block;
-  text-decoration: none;
-  color: white;
-  -webkit-transition: background-color 0.2s ease-out;
-          transition: background-color 0.2s ease-out;
-  white-space: nowrap;
-}
-
-.navdrawer-container ul li {
-  border-bottom-style: solid;
-  border-width: 1px;
-  border-color: white;
-  padding: 0;
-}
-
-.navdrawer-container ul li::before {
-  content: none;
-}
-
-.navdrawer-container ul li a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.navdrawer-container ul li a:focus {
-  background-color: rgba(255, 255, 255, 0.3);
-  outline: 0;
-}
-
-.navdrawer-container ul li a:active {
-  background-color: rgba(255, 255, 255, 0.4);
-}
-
-main {
-  margin: 0 auto;
-  /* Height of the header */
-  padding: 60px 16px 16px 16px;
-  min-height: 100%;
-}
-
-/** Larger Screens - desktops and tablets **/
-@media all and (min-width: 990px) {
-  .app-bar {
-    position: relative;
-  }
-
-  .app-bar.open,
-  .app-bar.open ~ main {
-    -webkit-transform: translate(0px, 0);
-            transform: translate(0px, 0);
-  }
-
-  .app-bar-container {
-    display: block;
-    height: 130px;
-    max-width: 864px;
-    padding: 0 16px;
-    box-sizing: border-box;
-    background-color: #4285f4;
-  }
-
-  .app-bar .logo {
-    float: left;
-    margin: 0;
-    padding: 0;
-    line-height: 130px;
-    font-size: 46px;
-  }
-
-  .app-bar-actions {
-    float: right;
-  }
-
-  .app-bar::after {
-    content: ' ';
-    display: block;
-    height: 0;
-    overflow: hidden;
-    clear: both;
-  }
-
-  button.menu {
-    display: none;
-  }
-
-  nav {
-    display: block;
-    margin-top: 130px;
-  }
-
-  .navdrawer-container {
-    position: relative;
-    width: 100%;
-    height: auto;
-    margin-top: 130px;
-    -webkit-transform: translate(0, 0);
-            transform: translate(0, 0);
-    -webkit-transition: none;
-            transition: none;
-    overflow-y: auto;
-  }
-
-  .navdrawer-container h4 {
-    display: none;
-  }
-
-  .navdrawer-container ul {
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    max-width: 864px;
-    margin: 0 auto;
-    -webkit-flex-direction: row;
-        -ms-flex-direction: row;
-            flex-direction: row;
-  }
-
-  .navdrawer-container ul li {
-    border: none;
-  }
-
-  main {
-    max-width: 864px;
-    padding-top: 0;
-    min-height: initial;
-  }
-
-  body {
-    overflow-y: scroll;
-  }
-
-  .navdrawer-container {
-    position: relative;
-    margin-top: 0;
-  }
-}
-</style>
-    <style>/**
-*
-* Main Stylesheet For Visual Style Guide
-*
-**/
-/**
-*
-* Utils
-*
-**/
-/*==========  VARIABLES  ==========*/
-/*==========  FUNCTIONS  ==========*/
-/*==========  MIXINS  ==========*/
-/*! normalize.css v3.0.1 | MIT License | git.io/normalize */
-/**
- * 1. Set default font family to sans-serif.
- * 2. Prevent iOS text size adjust after orientation change, without disabling
- *    user zoom.
- */
-html {
-  font-family: sans-serif;
-  /* 1 */
-  -ms-text-size-adjust: 100%;
-  /* 2 */
-  -webkit-text-size-adjust: 100%;
-  /* 2 */
-}
-
-/**
- * Remove default margin.
- */
-body {
-  margin: 0;
-}
-
-/* HTML5 display definitions
-   ========================================================================== */
-/**
- * Correct `block` display not defined for any HTML5 element in IE 8/9.
- * Correct `block` display not defined for `details` or `summary` in IE 10/11 and Firefox.
- * Correct `block` display not defined for `main` in IE 11.
- */
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-main,
-nav,
-section,
-summary {
-  display: block;
-}
-
-/**
- * 1. Correct `inline-block` display not defined in IE 8/9.
- * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.
- */
-audio,
-canvas,
-progress,
-video {
-  display: inline-block;
-  /* 1 */
-  vertical-align: baseline;
-  /* 2 */
-}
-
-/**
- * Prevent modern browsers from displaying `audio` without controls.
- * Remove excess height in iOS 5 devices.
- */
-audio:not([controls]) {
-  display: none;
-  height: 0;
-}
-
-/**
- * Address `[hidden]` styling not present in IE 8/9/10.
- * Hide the `template` element in IE 8/9/11, Safari, and Firefox < 22.
- */
-[hidden],
-template {
-  display: none;
-}
-
-/* Links
-   ========================================================================== */
-/**
- * Remove the gray background color from active links in IE 10.
- */
-a {
-  background: transparent;
-}
-
-/**
- * Improve readability when focused and also mouse hovered in all browsers.
- */
-a:active,
-a:hover {
-  outline: 0;
-}
-
-/* Text-level semantics
-   ========================================================================== */
-/**
- * Address styling not present in IE 8/9/10/11, Safari, and Chrome.
- */
-abbr[title] {
-  border-bottom: 1px dotted;
-}
-
-/**
- * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.
- */
-b,
-strong {
-  font-weight: bold;
-}
-
-/**
- * Address styling not present in Safari and Chrome.
- */
-dfn {
-  font-style: italic;
-}
-
-/**
- * Address styling not present in IE 8/9.
- */
-mark {
-  background: #ff0;
-  color: #000;
-}
-
-/**
- * Prevent `sub` and `sup` affecting `line-height` in all browsers.
- */
-sub,
-sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
-}
-
-sup {
-  top: -0.5em;
-}
-
-sub {
-  bottom: -0.25em;
-}
-
-/* Embedded content
-   ========================================================================== */
-/**
- * Remove border when inside `a` element in IE 8/9/10.
- */
-img {
-  border: 0;
-}
-
-/**
- * Correct overflow not hidden in IE 9/10/11.
- */
-svg:not(:root) {
-  overflow: hidden;
-}
-
-/* Grouping content
-   ========================================================================== */
-/**
- * Remove margin
- */
-figure {
-  margin: 0;
-}
-
-/**
- * Address differences between Firefox and other browsers.
- */
-hr {
-  box-sizing: content-box;
-  height: 0;
-}
-
-/**
- * Contain overflow in all browsers.
- */
-pre {
-  overflow: auto;
-}
-
-/**
- * Address odd `em`-unit font size rendering in all browsers.
- */
-code,
-kbd,
-pre,
-samp {
-  font-family: monospace, monospace;
-  font-size: 1em;
-}
-
-/* Forms
-   ========================================================================== */
-/**
- * Known limitation: by default, Chrome and Safari on OS X allow very limited
- * styling of `select`, unless a `border` property is set.
- */
-/**
- * 1. Correct color not being inherited.
- *    Known issue: affects color of disabled elements.
- * 2. Correct font properties not being inherited.
- * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
- */
-button,
-input,
-optgroup,
-select,
-textarea {
-  color: inherit;
-  /* 1 */
-  font: inherit;
-  /* 2 */
-  margin: 0;
-  /* 3 */
-}
-
-/**
- * Address `overflow` set to `hidden` in IE 8/9/10/11.
- */
-button {
-  overflow: visible;
-}
-
-/**
- * Address inconsistent `text-transform` inheritance for `button` and `select`.
- * All other form control elements do not inherit `text-transform` values.
- * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
- * Correct `select` style inheritance in Firefox.
- */
-button,
-select {
-  text-transform: none;
-}
-
-/**
- * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
- *    and `video` controls.
- * 2. Correct inability to style clickable `input` types in iOS.
- * 3. Improve usability and consistency of cursor style between image-type
- *    `input` and others.
- */
-button,
-html input[type="button"],
-input[type="reset"],
-input[type="submit"] {
-  -webkit-appearance: button;
-  /* 2 */
-  cursor: pointer;
-  /* 3 */
-}
-
-/**
- * Re-set default cursor for disabled elements.
- */
-button[disabled],
-html input[disabled] {
-  cursor: default;
-}
-
-/**
- * Remove inner padding and border in Firefox 4+.
- */
-button::-moz-focus-inner,
-input::-moz-focus-inner {
-  border: 0;
-  padding: 0;
-}
-
-/**
- * Address Firefox 4+ setting `line-height` on `input` using `!important` in
- * the UA stylesheet.
- */
-input {
-  line-height: normal;
-}
-
-/**
- * It's recommended that you don't attempt to style these elements.
- * Firefox's implementation doesn't respect box-sizing, padding, or width.
- *
- * 1. Address box sizing set to `content-box` in IE 8/9/10.
- * 2. Remove excess padding in IE 8/9/10.
- */
-input[type="checkbox"],
-input[type="radio"] {
-  box-sizing: border-box;
-  /* 1 */
-  padding: 0;
-  /* 2 */
-}
-
-/**
- * Fix the cursor style for Chrome's increment/decrement buttons. For certain
- * `font-size` values of the `input`, it causes the cursor style of the
- * decrement button to change from `default` to `text`.
- */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  height: auto;
-}
-
-/**
- * 1. Address `appearance` set to `searchfield` in Safari and Chrome.
- * 2. Address `box-sizing` set to `border-box` in Safari and Chrome
- *    (include `-moz` to future-proof).
- */
-input[type="search"] {
-  -webkit-appearance: textfield;
-  /* 1 */
-  /* 2 */
-  box-sizing: content-box;
-}
-
-/**
- * Remove inner padding and search cancel button in Safari and Chrome on OS X.
- * Safari (but not Chrome) clips the cancel button when the search input has
- * padding (and `textfield` appearance).
- */
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
-
-/**
- * 1. Correct `color` not being inherited in IE 8/9/10/11.
- * 2. Remove padding so people aren't caught out if they zero out fieldsets.
- */
-legend {
-  border: 0;
-  /* 1 */
-  padding: 0;
-  /* 2 */
-}
-
-/**
- * Remove default vertical scrollbar in IE 8/9/10/11.
- */
-textarea {
-  overflow: auto;
-}
-
-/**
- * Don't inherit the `font-weight` (applied by a rule above).
- * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
- */
-optgroup {
-  font-weight: bold;
-}
-
-/* Tables
-   ========================================================================== */
-/**
- * Remove most spacing between table cells.
- */
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-td,
-th {
-  padding: 0;
-}
-
-/* Blockquote
-   ========================================================================== */
-blockquote {
-  margin: 0;
-}
-
-/**
-*
-* Global
-*
-**/
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-html, body, button {
-  -webkit-font-smoothing: antialiased;
-  font-smoothing: antialiased;
-}
-
-body {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.6250em;
-  /* 26px */
-  font-weight: 300;
-  color: #404040;
-  position: relative;
-}
-body::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  z-index: 9;
-  display: none;
-  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.15) 95%, rgba(0, 0, 0, 0.15) 100%);
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 95%, rgba(0, 0, 0, 0.15) 100%);
-  background-size: 100% 26px;
-}
-body.debug::after {
-  display: block;
-  pointer-events: none;
-}
-
-pre {
-  background: #f0f0f0;
-  padding: 13px;
-}
-
-.main-container {
-  box-sizing: content-box;
-  position: relative;
-  padding-left: 5%;
-  padding-right: 5%;
-  margin-left: auto;
-  margin-right: auto;
-}
-@media only screen and (min-width: 1620px) {
-  .main-container {
-    padding-left: 4.8%;
-    padding-right: 4.8%;
-    max-width: 688px;
-  }
-}
-@media only screen and (min-width: 1800px) {
-  .main-container {
-    padding-left: 4.4%;
-    padding-right: 4.4%;
-    max-width: 864px;
-  }
-}
-
-.container {
-  box-sizing: content-box;
-  position: relative;
-  padding-left: 5%;
-  padding-right: 5%;
-  margin-left: auto;
-  margin-right: auto;
-}
-@media only screen and (min-width: 1620px) {
-  .container {
-    padding-left: 4.8%;
-    padding-right: 4.8%;
-    max-width: 688px;
-  }
-}
-@media only screen and (min-width: 800px) {
-  .container {
-    padding-left: 4.4%;
-    padding-right: 4.4%;
-    max-width: 864px;
-  }
-}
-
-@media only screen and (min-width: 1620px) {
-  .container-medium {
-    box-sizing: content-box;
-    position: relative;
-    padding-left: 5%;
-    padding-right: 5%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-@media only screen and (min-width: 1620px) and (min-width: 1620px) {
-  .container-medium {
-    padding-left: 4.8%;
-    padding-right: 4.8%;
-    max-width: 688px;
-  }
-}
-@media only screen and (min-width: 1620px) and (min-width: 800px) {
-  .container-medium {
-    padding-left: 4.4%;
-    padding-right: 4.4%;
-    max-width: 864px;
-  }
-}
-
-@media only screen and (max-width: 619px) {
-  .container-small {
-    box-sizing: content-box;
-    position: relative;
-    padding-left: 5%;
-    padding-right: 5%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-@media only screen and (max-width: 619px) and (min-width: 1620px) {
-  .container-small {
-    padding-left: 4.8%;
-    padding-right: 4.8%;
-    max-width: 688px;
-  }
-}
-@media only screen and (max-width: 619px) and (min-width: 800px) {
-  .container-small {
-    padding-left: 4.4%;
-    padding-right: 4.4%;
-    max-width: 864px;
-  }
-}
-
-@media only screen and (min-width: 800px) {
-  .content {
-    margin-right: 25.9%;
-  }
-  .content pre {
-    margin-right: -25.9%;
-  }
-}
-
-@font-face {
-  font-family: "icons";
-  src: url(images/icons/icons.eot);
-  src: url(images/icons/icons.eot?#iefix) format("embedded-opentype"), url(images/icons/icons.woff2) format("woff2"), url(images/icons/icons.woff) format("woff"), url(images/icons/icons.ttf) format("truetype"), url(images/icons/icons.svg?#icons) format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
-.icon {
-  font-family: "icons";
-  display: inline-block;
-  vertical-align: top;
-  line-height: 1;
-  font-weight: normal;
-  font-style: normal;
-  speak: none;
-  text-decoration: inherit;
-  text-transform: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.icon-bullet::before, ul li::before, ul.list-links a::before, .list-anchor a::before {
-  content: "\e001";
-}
-
-.icon-chevron-down::before {
-  content: "\e002";
-}
-
-.icon-chevron-large::before {
-  content: "\e003";
-}
-
-.icon-chevron-left::before, .article-nav-link--prev::before {
-  content: "\e004";
-}
-
-.icon-chevron-right::before, .article-nav-link--next::before, ul.list-links.list-links--primary a::before {
-  content: "\e005";
-}
-
-.icon-chevron-up::before {
-  content: "\e006";
-}
-
-.icon-close::before {
-  content: "\e007";
-}
-
-.icon-cog::before {
-  content: "\e008";
-}
-
-.icon-diamond::before {
-  content: "\e009";
-}
-
-.icon-exclamation::before {
-  content: "\e00a";
-}
-
-.icon-google-dev::before {
-  content: "\e00b";
-}
-
-.icon-hash::before {
-  content: "\e00c";
-}
-
-.icon-introduction-to-media::before {
-  content: "\e00d";
-}
-
-.icon-lessons::before {
-  content: "\e00e";
-}
-
-.icon-menu::before {
-  content: "\e00f";
-}
-
-.icon-minus::before {
-  content: "\e010";
-}
-
-.icon-multi-device-layouts::before {
-  content: "\e011";
-}
-
-.icon-performance::before {
-  content: "\e012";
-}
-
-.icon-plus::before {
-  content: "\e013";
-}
-
-.icon-question::before {
-  content: "\e014";
-}
-
-.icon-slash::before {
-  content: "\e015";
-}
-
-.icon-star::before {
-  content: "\e016";
-}
-
-.icon-tick::before {
-  content: "\e017";
-}
-
-.icon-user-input::before {
-  content: "\e018";
-}
-
-/**
-*
-* Highlight
-*
-**/
-.highlight-module {
-  overflow: hidden;
-  margin-top: 52px;
-  margin-bottom: 26px;
-  position: relative;
-}
-.highlight-module::after {
-  background: #f0f0f0;
-  content: "";
-  height: 100%;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  z-index: 0;
-  width: 100%;
-  right: 0;
-  left: 0;
-}
-.highlight-module ul,
-.highlight-module ol {
-  padding-left: 0;
-}
-
-.highlight-module__container {
-  box-sizing: content-box;
-  padding-left: 5%;
-  padding-right: 5%;
-  margin-left: auto;
-  margin-right: auto;
-  padding-bottom: 78px;
-  z-index: 1;
-  position: relative;
-}
-@media only screen and (min-width: 1620px) {
-  .highlight-module__container {
-    padding-left: 4.8%;
-    padding-right: 4.8%;
-    max-width: 688px;
-  }
-}
-@media only screen and (min-width: 800px) {
-  .highlight-module__container {
-    padding-left: 4.4%;
-    padding-right: 4.4%;
-    max-width: 864px;
-  }
-}
-.highlight-module__container::before {
-  display: none;
-}
-@media only screen and (min-width: 1620px) {
-  .highlight-module__container::before {
-    display: block;
-    position: absolute;
-    top: 106px;
-    right: 45px;
-    font-family: "icons";
-    font-size: 130px;
-    line-height: 1px;
-    text-align: center;
-    height: 100%;
-    width: 30.3%;
-    color: #ffffff;
-  }
-}
-.highlight-module--left .highlight-module__container::before {
-  right: auto;
-  left: 45px;
-}
-@media only screen and (min-width: 800px) {
-  .highlight-module__container::before {
-    top: 134px;
-    width: 22.2%;
-    font-size: 180px;
-  }
-  .highlight-module--large .highlight-module__container::before {
-    font-size: 430px;
-  }
-}
-@media only screen and (min-width: 1620px) {
-  .highlight-module__container {
-    padding-bottom: 52px;
-  }
-}
-@media only screen and (min-width: 800px) {
-  .highlight-module__container {
-    min-height: 208px;
-  }
-}
-
-.highlight-module__title {
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  font-size: 68px;
-  font-weight: 300;
-  line-height: 1.1471em;
-  /* 78px */
-  padding-top: 0.3824em;
-  padding-bottom: 0;
-  padding-top: 26px;
-}
-@media only screen and (min-width: 800px) {
-  .highlight-module__title {
-    font-family: "Roboto Condensed", Helvetica, sans-serif;
-    font-size: 110px;
-    font-weight: 300;
-    line-height: 1.19em;
-    /* 130px */
-    padding-top: 0.2364em;
-    padding-bottom: 0;
-  }
-}
-@media only screen and (min-width: 800px) {
-  .highlight-module__title {
-    font-family: "Roboto Condensed", Helvetica, sans-serif;
-    font-size: 42px;
-    font-weight: 300;
-    line-height: 1.2381em;
-    /* 52px */
-    padding-top: 0.6190em;
-    padding-bottom: 0;
-  }
-}
-@media only screen and (min-width: 800px) and (min-width: 800px) {
-  .highlight-module__title {
-    font-family: "Roboto Condensed", Helvetica, sans-serif;
-    font-size: 68px;
-    font-weight: 300;
-    line-height: 1.1471em;
-    /* 78px */
-    padding-top: 0.3824em;
-    padding-bottom: 0;
-  }
-}
-
-.highlight-module__cta {
-  display: block;
-}
-
-/*==========  LEARNING  ==========*/
-.highlight-module--learning {
-  color: #ffffff;
-}
-.highlight-module--learning::after {
-  background-color: #da2e75;
-}
-.highlight-module--learning a {
-  color: #ffffff;
-  text-decoration: underline;
-}
-
-/*==========  REMEMBER  ==========*/
-.highlight-module--remember {
-  color: #ffffff;
-}
-.highlight-module--remember::after {
-  background-color: #09829a;
-}
-.highlight-module--remember a {
-  color: #ffffff;
-  text-decoration: underline;
-}
-
-/*==========  CODE  ==========*/
-.highlight-module--code {
-  overflow: visible;
-  margin-bottom: 52px;
-}
-.highlight-module--code pre {
-  margin: 0;
-  padding-top: 26px;
-  font-size: 14px;
-  line-height: 26px;
-  padding-bottom: 0;
-  padding-left: 0;
-  padding-right: 0;
-}
-.highlight-module--code pre span {
-  margin: 0;
-  padding: 0;
-  display: inline-block;
-}
-.highlight-module--code code {
-  margin: 0;
-  padding: 0;
-  word-spacing: -2px;
-  display: block;
-}
-.highlight-module--code .highlight-module__container {
-  padding-bottom: 0;
-}
-.highlight-module--code .highlight-module__cta {
-  position: absolute;
-  bottom: -26px;
-}
-
-/*==========  LEFT  ==========*/
-@media only screen and (min-width: 800px) {
-  .highlight-module--left::after {
-    width: 80%;
-    right: 20%;
-  }
-}
-
-/*==========  RIGHT  ==========*/
-@media only screen and (min-width: 800px) {
-  .highlight-module--right::after {
-    width: 80%;
-    left: 20%;
-  }
-}
-@media only screen and (min-width: 800px) {
-  .highlight-module--right.highlight-module--code::after {
-    width: 100%;
-    left: 0;
-  }
-}
-
-/*==========  INLINE  ==========*/
-.highlight-module--inline {
-  color: #404040;
-  overflow: visible;
-  margin: 26px 0 0;
-}
-.highlight-module--inline .highlight-module__container {
-  padding-bottom: 0;
-}
-.highlight-module--inline .highlight-module__container::before {
-  display: none;
-}
-.highlight-module--inline .highlight-module__content {
-  border-color: #e0e0e0;
-  border-style: solid;
-  border-width: 1px;
-  border-left-width: 0;
-  border-right-width: 0;
-  margin-bottom: -2px;
-  padding: 0 0 26px;
-}
-.highlight-module--inline .highlight-module__title {
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 1.3000em;
-  /* 26px */
-  padding-top: 1.3000em;
-  padding-bottom: 0;
-}
-@media only screen and (min-width: 800px) {
-  .highlight-module--inline .highlight-module__title {
-    font-family: "Roboto Condensed", Helvetica, sans-serif;
-    font-size: 26px;
-    font-weight: 300;
-    line-height: 1.0000em;
-    /* 26px */
-    padding-top: 1.0000em;
-    padding-bottom: 0;
-  }
-}
-.highlight-module--inline.highlight-module--remember .highlight-module__title, .highlight-module--inline.highlight-module--remember li::before {
-  color: #09829a;
-}
-.highlight-module--inline.highlight-module--learning .highlight-module__title, .highlight-module--inline.highlight-module--learning li::before {
-  color: #da2e75;
-}
-.highlight-module--inline::after {
-  display: none !important;
-}
-
-/*==========  COLORS  ==========*/
-div.highlight > pre > code, code .highlight {
-  background: transparent;
-}
-
-div.highlight > pre > code .c, code .highlight .c {
-  color: #999988;
-  font-style: italic;
-}
-
-/* Comment */
-div.highlight > pre > code .err, code .highlight .err {
-  color: #a61717;
-  background-color: #e3d2d2;
-}
-
-/* Error */
-/* Keyword */
-/* Operator */
-div.highlight > pre > code .cm, code .highlight .cm {
-  color: #999988;
-  font-style: italic;
-}
-
-/* Comment.Multiline */
-div.highlight > pre > code .cp, code .highlight .cp {
-  color: #737373;
-}
-
-/* Comment.Preproc */
-div.highlight > pre > code .c1, code .highlight .c1 {
-  color: #999988;
-  font-style: italic;
-}
-
-/* Comment.Single */
-div.highlight > pre > code .cs, code .highlight .cs {
-  color: #737373;
-  font-style: italic;
-}
-
-/* Comment.Special */
-div.highlight > pre > code .gs, code .highlight .gd {
-  color: #000000;
-  background-color: #ffdddd;
-}
-
-/* Generic.Deleted */
-div.highlight > pre > code .gd .x, code .highlight .gd .x {
-  color: #000000;
-  background-color: #ffaaaa;
-}
-
-/* Generic.Deleted.Specific */
-div.highlight > pre > code .ge, code .highlight .ge {
-  font-style: italic;
-}
-
-/* Generic.Emph */
-div.highlight > pre > code .gr, code .highlight .gr {
-  color: #aa0000;
-}
-
-/* Generic.Error */
-div.highlight > pre > code .gh, code .highlight .gh {
-  color: #737373;
-}
-
-/* Generic.Heading */
-div.highlight > pre > code .gi, code .highlight .gi {
-  color: #000000;
-  background-color: #ddffdd;
-}
-
-/* Generic.Inserted */
-div.highlight > pre > code .gi .x, code .highlight .gi .x {
-  color: #000000;
-  background-color: #aaffaa;
-}
-
-/* Generic.Inserted.Specific */
-div.highlight > pre > code .go, code .highlight .go {
-  color: #888888;
-}
-
-/* Generic.Output */
-div.highlight > pre > code .gp, code .highlight .gp {
-  color: #555555;
-}
-
-/* Generic.Prompt */
-/* Generic.Strong */
-div.highlight > pre > code .gu, code .highlight .gu {
-  color: #aaaaaa;
-}
-
-/* Generic.Subheading */
-div.highlight > pre > code .gt, code .highlight .gt {
-  color: #aa0000;
-}
-
-/* Generic.Traceback */
-/* Keyword.Constant */
-/* Keyword.Declaration */
-/* Keyword.Pseudo */
-/* Keyword.Reserved */
-div.highlight > pre > code .kt, code .highlight .kt {
-  color: #445588;
-}
-
-/* Keyword.Type */
-div.highlight > pre > code .m, code .highlight .m {
-  color: #009999;
-}
-
-/* Literal.Number */
-div.highlight > pre > code .s, code .highlight .s {
-  color: #da2e75;
-}
-
-/* Literal.String */
-div.highlight > pre > code .na, code .highlight .na {
-  color: teal;
-}
-
-/* Name.Attribute */
-div.highlight > pre > code .nb, code .highlight .nb {
-  color: #0086b3;
-}
-
-/* Name.Builtin */
-div.highlight > pre > code .nc, code .highlight .nc {
-  color: #445588;
-}
-
-/* Name.Class */
-div.highlight > pre > code .no, code .highlight .no {
-  color: teal;
-}
-
-/* Name.Constant */
-div.highlight > pre > code .ni, code .highlight .ni {
-  color: purple;
-}
-
-/* Name.Entity */
-div.highlight > pre > code .ne, code .highlight .ne {
-  color: #990000;
-}
-
-/* Name.Exception */
-div.highlight > pre > code .nf, code .highlight .nf {
-  color: #990000;
-}
-
-/* Name.Function */
-div.highlight > pre > code .nn, code .highlight .nn {
-  color: #555555;
-}
-
-/* Name.Namespace */
-div.highlight > pre > code .nt, code .highlight .nt {
-  color: #09829a;
-}
-
-/* Name.Tag */
-div.highlight > pre > code .nv, code .highlight .nv {
-  color: teal;
-}
-
-/* Name.Variable */
-/* Operator.Word */
-div.highlight > pre > code .w, code .highlight .w {
-  color: #bbbbbb;
-}
-
-/* Text.Whitespace */
-div.highlight > pre > code .mf, code .highlight .mf {
-  color: #009999;
-}
-
-/* Literal.Number.Float */
-div.highlight > pre > code .mh, code .highlight .mh {
-  color: #009999;
-}
-
-/* Literal.Number.Hex */
-div.highlight > pre > code .mi, code .highlight .mi {
-  color: #009999;
-}
-
-/* Literal.Number.Integer */
-div.highlight > pre > code .mo, code .highlight .mo {
-  color: #009999;
-}
-
-/* Literal.Number.Oct */
-div.highlight > pre > code .sb, code .highlight .sb {
-  color: #da2e75;
-}
-
-/* Literal.String.Backtick */
-div.highlight > pre > code .sc, code .highlight .sc {
-  color: #da2e75;
-}
-
-/* Literal.String.Char */
-div.highlight > pre > code .sd, code .highlight .sd {
-  color: #da2e75;
-}
-
-/* Literal.String.Doc */
-div.highlight > pre > code .s2, code .highlight .s2 {
-  color: #da2e75;
-}
-
-/* Literal.String.Double */
-div.highlight > pre > code .se, code .highlight .se {
-  color: #da2e75;
-}
-
-/* Literal.String.Escape */
-div.highlight > pre > code .sh, code .highlight .sh {
-  color: #da2e75;
-}
-
-/* Literal.String.Heredoc */
-div.highlight > pre > code .si, code .highlight .si {
-  color: #da2e75;
-}
-
-/* Literal.String.Interpol */
-div.highlight > pre > code .sx, code .highlight .sx {
-  color: #da2e75;
-}
-
-/* Literal.String.Other */
-div.highlight > pre > code .sr, code .highlight .sr {
-  color: #009926;
-}
-
-/* Literal.String.Regex */
-div.highlight > pre > code .s1, code .highlight .s1 {
-  color: #da2e75;
-}
-
-/* Literal.String.Single */
-div.highlight > pre > code .ss, code .highlight .ss {
-  color: #990073;
-}
-
-/* Literal.String.Symbol */
-div.highlight > pre > code .bp, code .highlight .bp {
-  color: #737373;
-}
-
-/* Name.Builtin.Pseudo */
-div.highlight > pre > code .vc, code .highlight .vc {
-  color: teal;
-}
-
-/* Name.Variable.Class */
-div.highlight > pre > code .vg, code .highlight .vg {
-  color: teal;
-}
-
-/* Name.Variable.Global */
-div.highlight > pre > code .vi, code .highlight .vi {
-  color: teal;
-}
-
-/* Name.Variable.Instance */
-div.highlight > pre > code .il, code .highlight .il {
-  color: #009999;
-}
-
-/* Literal.Number.Integer.Long */
-/**
-*
-* Editorial Header
-*
-**/
-.editorial-header {
-  overflow: hidden;
-}
-.editorial-header .breadcrumbs {
-  color: #3372df;
-}
-.editorial-header .breadcrumbs a {
-  color: #3372df;
-}
-@media only screen and (min-width: 1620px) {
-  .editorial-header .container {
-    position: relative;
-  }
-  .editorial-header .container::before {
-    content: "\e003";
-    font-family: "icons";
-    font-size: 1000px;
-    line-height: 0;
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 100%;
-    color: #f0f0f0;
-    margin: 168px -35px 0 0;
-  }
-}
-
-.editorial-header__excerpt {
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 1.3000em;
-  /* 26px */
-  padding-top: 1.3000em;
-  padding-bottom: 0;
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-}
-
-.editorial-header .tag {
-  padding-top: 52px;
-}
-
-.editorial-header__subtitle {
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  font-size: 42px;
-  font-weight: 300;
-  line-height: 1.2381em;
-  /* 52px */
-  padding-top: 0.6190em;
-  padding-bottom: 0;
-  padding-top: 0;
-  color: #3372df;
-}
-@media only screen and (min-width: 800px) {
-  .editorial-header__subtitle {
-    font-family: "Roboto Condensed", Helvetica, sans-serif;
-    font-size: 68px;
-    font-weight: 300;
-    line-height: 1.1471em;
-    /* 78px */
-    padding-top: 0.3824em;
-    padding-bottom: 0;
-  }
-}
-@media only screen and (min-width: 1620px) {
-  .editorial-header__subtitle {
-    padding-top: 0;
-    padding-bottom: 26px;
-  }
-}
-
-.editorial-header__toc {
-  margin-top: 26px;
-}
-.editorial-header__toc ol {
-  padding-top: 0;
-}
-@media only screen and (min-width: 1620px) {
-  .editorial-header__toc ol {
-    padding-top: 0;
-  }
-}
-
-.editorial-header__toc-title {
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 13px;
-  padding-bottom: 13px !important;
-  color: #3372df;
-}
-
-/**
-*
-* Editorial Header
-*
-**/
-.summary-header {
-  background-color: #3372df;
-  padding-bottom: 78px;
-  color: #ffffff;
-  margin-bottom: 26px;
-  box-shadow: inset 0 2px 0 0 #fff;
-}
-.summary-header .breadcrumbs__link {
-  color: #ffffff;
-}
-
-.summary-header__anchor-list {
-  margin-top: 52px;
-}
-
-.summary-header__anchors-item a {
-  color: #ffffff;
-}
-
-/**
-*
-* Related items
-*
-**/
-.related-guides {
-  margin-top: 78px;
-  padding-bottom: 50px;
-  border-top: 2px solid #e0e0e0;
-  padding-top: 50px;
-}
-
-.related-guides__list .list-links {
-  padding-top: 0;
-}
-.related-guides__list a {
-  display: block;
-}
-
-.related-guides__title {
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  font-size: 26px;
-  font-weight: 300;
-  line-height: 1.0000em;
-  /* 26px */
-  padding-top: 1.0000em;
-  padding-bottom: 0;
-  padding-top: 0;
-}
-@media only screen and (min-width: 800px) {
-  .related-guides__title {
-    font-family: "Roboto Condensed", Helvetica, sans-serif;
-    font-size: 42px;
-    font-weight: 300;
-    line-height: 1.2381em;
-    /* 52px */
-    padding-top: 0.6190em;
-    padding-bottom: 0;
-  }
-}
-@media only screen and (min-width: 1620px) {
-  .related-guides__title {
-    padding-top: 0;
-  }
-}
-
-.related-guides__main-link {
-  text-transform: uppercase;
-}
-.related-guides__main-link::before {
-  content: "#";
-  display: inline-block;
-  padding-right: 2px;
-}
-
-/**
-*
-* In this guide
-*
-**/
-.in-this-guide {
-  margin-top: -78px;
-}
-
-.in-this-guide__title {
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 1.3000em;
-  /* 26px */
-  padding-top: 1.3000em;
-  padding-bottom: 0;
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  margin-bottom: 26px;
-}
-
-/**
-*
-* Articles section
-*
-**/
-.articles-section {
-  background: #f0f0f0;
-  text-align: center;
-  padding: 26px 0 104px;
-}
-
-.articles-count {
-  color: #3372df;
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  font-weight: 400;
-}
-
-.article-section__icon {
-  top: -26px;
-}
-@media only screen and (min-width: 1620px) {
-  .article-section__icon {
-    top: -39px;
-  }
-}
-
-.guides-section {
-  background: #f0f0f0;
-  text-align: center;
-  padding: 26px 0 104px;
-}
-
-/**
-*
-* Page header
-*
-**/
-.page-header {
-  text-align: center;
-}
-.page-header .breadcrumbs {
-  text-align: left;
-  color: #3372df;
-}
-.page-header .breadcrumbs a {
-  color: #3372df;
-}
-.page-header h3 {
-  color: #404040;
-  padding-top: 52px;
-}
-
-.page-header__excerpt {
-  position: relative;
-  padding-top: 0;
-}
-.page-header__excerpt:last-child {
-  padding-bottom: 78px;
-}
-
-/**
-*
-* Editorial Header
-*
-**/
-.featured-section {
-  background: #f0f0f0;
-}
-
-/**
-*
-* Editorial Header
-*
-**/
-.featured-spotlight {
-  background: #404040;
-  color: #ffffff;
-  overflow: hidden;
-  padding-bottom: 77px;
-  margin-top: 52px;
-}
-.featured-spotlight p {
-  padding-bottom: 26px;
-}
-.featured-spotlight .cta--primary {
-  color: #ffffff;
-}
-.featured-spotlight .cta--primary:hover {
-  color: #ffffff;
-}
-
-.featured-spotlight__container {
-  position: relative;
-}
-
-@media only screen and (max-width: 619px) {
-  .featured-spotlight__img {
-    padding-top: 58.4%;
-    padding-bottom: 0;
-    height: 0;
-    overflow: hidden;
-    position: relative;
-    width: 100%;
-  }
-}
-.featured-spotlight__img img {
-  margin: 0 auto;
-  display: block;
-  width: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  margin: 0;
-}
-@media only screen and (min-width: 1620px) {
-  .featured-spotlight__img img {
-    width: auto;
-    max-width: none;
-    left: 109%;
-  }
-}
-@media only screen and (min-width: 800px) {
-  .featured-spotlight__img img {
-    left: 107.4%;
-  }
-}
-
-/**
-*
-* Quote
-*
-**/
-.quote__content {
-  position: relative;
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  font-size: 16px;
-  line-height: 1.6250em;
-  /* 26px */
-  padding-top: 1.6250em;
-  padding-bottom: 0;
-  padding-top: 104px;
-  padding-left: 26px;
-}
-@media only screen and (min-width: 800px) {
-  .quote__content {
-    font-size: 20px;
-    font-weight: 300;
-    line-height: 1.3000em;
-    /* 26px */
-    padding-top: 1.3000em;
-    padding-bottom: 0;
-  }
-}
-@media only screen and (min-width: 1620px) {
-  .quote__content {
-    padding-top: 52px;
-    padding-left: 0;
-  }
-}
-.quote__content p {
-  border-top: 1px solid #e0e0e0;
-  text-align: right;
-  font-weight: 500;
-  margin-top: 12px;
-  padding-top: 13px;
-}
-.quote__content::before {
-  content: open-quote;
-  display: block;
-  position: absolute;
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  font-weight: 700;
-  color: #f0f0f0;
-  top: 90px;
-  left: 26px;
-  font-size: 260px;
-}
-@media only screen and (min-width: 1620px) {
-  .quote__content::before {
-    top: 225px;
-    left: -210px;
-    font-size: 540px;
-  }
-}
-
-/**
-*
-* Article nav
-*
-**/
-.article-nav {
-  overflow: hidden;
-  position: relative;
-}
-.article-nav::before {
-  content: "";
-  border-left: 2px solid #e0e0e0;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 50%;
-}
-
-.article-nav-link {
-  padding: 26px 32px;
-  float: left;
-  width: 50%;
-  position: relative;
-}
-.article-nav-link::before {
-  position: absolute;
-  top: 21px;
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  font-size: 20px;
-  font-weight: 400;
-}
-@media only screen and (min-width: 1620px) {
-  .article-nav-link::before {
-    top: 25px;
-    font-size: 26px;
-    display: block;
-    padding: 13px 10px;
-    color: #ffffff;
-    background: #3372df;
-  }
-}
-
-.article-nav p {
-  padding: 0;
-  margin: 0;
-}
-
-.article-nav-link--prev {
-  text-align: right;
-}
-.article-nav-link--prev::before {
-  font-family: "icons";
-  left: 32px;
-}
-@media only screen and (min-width: 1620px) {
-  .article-nav-link--prev p {
-    padding-left: 52px;
-  }
-}
-
-.article-nav-link--next::before {
-  font-family: "icons";
-  right: 32px;
-}
-@media only screen and (min-width: 1620px) {
-  .article-nav-link--next p {
-    padding-right: 52px;
-  }
-}
-
-.article-nav-count {
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 1.3000em;
-  /* 26px */
-  padding-top: 1.3000em;
-  padding-bottom: 0;
-  font-weight: 700;
-}
-@media only screen and (min-width: 800px) {
-  .article-nav-count {
-    font-family: "Roboto Condensed", Helvetica, sans-serif;
-    font-size: 26px;
-    font-weight: 300;
-    line-height: 1.0000em;
-    /* 26px */
-    padding-top: 1.0000em;
-    padding-bottom: 0;
-  }
-}
-@media only screen and (min-width: 1620px) {
-  .article-nav-count {
-    font-weight: 400;
-  }
-}
-
-/**
-*
-* Text module
-*
-**/
-@media only screen and (min-width: 1620px) {
-  .did-you-know ol {
-    padding-top: 0 !important;
-  }
-}
-.did-you-know .cta--primary {
-  margin-top: 26px;
-  font-weight: 500;
-}
-.did-you-know > .g--half {
-  position: relative;
-  padding-left: 0;
-}
-@media only screen and (min-width: 1620px) {
-  .did-you-know > .g--half {
-    padding-left: 32px;
-  }
-}
-
-.did-you-know__symbol {
-  padding-bottom: 312px;
-}
-@media only screen and (min-width: 1620px) {
-  .did-you-know__symbol {
-    padding-bottom: 26px;
-  }
-}
-.did-you-know__symbol::after {
-  content: "\e014";
-  color: #3372df;
-  font-family: "icons";
-  font-size: 300px;
-  top: 150px;
-  left: 30%;
-  position: relative;
-  display: block;
-  width: 0;
-}
-@media only screen and (min-width: 1620px) {
-  .did-you-know__symbol::after {
-    position: absolute;
-    font-size: 400px;
-    top: 200px;
-    left: 110%;
-  }
-}
-@media only screen and (min-width: 800px) {
-  .did-you-know__symbol::after {
-    position: absolute;
-    font-size: 400px;
-    top: 200px;
-    left: 124%;
-  }
-}
-
-/**
-*
-* Table of contents
-*
-**/
-.toc__title {
-  font-size: 16px;
-  line-height: 1.6250em;
-  /* 26px */
-  padding-top: 1.6250em;
-  padding-bottom: 0;
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  padding-bottom: 13px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid #e0e0e0;
-}
-@media only screen and (min-width: 800px) {
-  .toc__title {
-    font-size: 20px;
-    font-weight: 300;
-    line-height: 1.3000em;
-    /* 26px */
-    padding-top: 1.3000em;
-    padding-bottom: 0;
-  }
-}
-@media only screen and (min-width: 1620px) {
-  .toc__title {
-    padding-bottom: 13px;
-    margin-bottom: 13px;
-  }
-}
-
-.toc__list {
-  padding-top: 0;
-  border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 12px;
-  margin-bottom: 13px;
-}
-.toc__list a {
-  display: block;
-}
-
-.toc__sublist {
-  padding-top: 0;
-}
-
-/**
-*
-* Next Lessons
-*
-**/
-.next-lessons {
-  background: #404040;
-  padding: 26px 26px 52px;
-  margin-top: 26px;
-  color: #ffffff;
-  position: relative;
-}
-@media only screen and (min-width: 1620px) {
-  .next-lessons h3 i {
-    display: none;
-  }
-}
-.next-lessons::before, .next-lessons::after {
-  color: rgba(255, 255, 255, 0.5);
-  position: absolute;
-  display: none;
-}
-@media only screen and (min-width: 1620px) {
-  .next-lessons::before, .next-lessons::after {
-    display: inline-block;
-  }
-}
-@media only screen and (min-width: 1620px) {
-  .next-lessons::before {
-    content: attr(data-current-lesson);
-    font-family: "Roboto Condensed", Helvetica, sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1;
-    background: #404040;
-    display: inline-block;
-    padding: 5px 7px;
-    right: 127px;
-    top: 143px;
-    z-index: 1;
-    color: rgba(255, 255, 255, 0.5);
-  }
-}
-@media only screen and (min-width: 800px) {
-  .next-lessons::before {
-    font-size: 20px;
-    padding-left: 15px;
-    padding-right: 15px;
-    top: 126px;
-    right: 230px;
-  }
-}
-@media only screen and (min-width: 1620px) {
-  .next-lessons::after {
-    content: "\e00e";
-    font-family: "icons";
-    font-size: 150px;
-    right: 40px;
-    top: 185px;
-  }
-}
-@media only screen and (min-width: 800px) {
-  .next-lessons::after {
-    font-size: 210px;
-    right: 120px;
-  }
-}
-
-/**
-*
-* Grid
-*
-**/
-@media only screen and (min-width: 1620px) and (max-width: 799px) {
-  .g-medium--1 {
-    float: left;
-    margin-right: 4.5%;
-    width: 30.3%;
-  }
-
-  .g-medium--push-1 {
-    margin-left: 34.8%;
-  }
-
-  .g-medium--pull-1 {
-    margin-right: 34.8%;
-  }
-
-  .g-medium--2 {
-    float: left;
-    margin-right: 4.5%;
-    width: 65.1%;
-  }
-
-  .g-medium--push-2 {
-    margin-left: 69.6%;
-  }
-
-  .g-medium--pull-2 {
-    margin-right: 69.6%;
-  }
-
-  .g-medium--3 {
-    float: left;
-    margin-right: 4.5%;
-    width: 99.9%;
-    margin-right: 0;
-  }
-
-  .g-medium--full {
-    float: left;
-    margin-right: 4.5%;
-    margin-right: 0;
-    width: 100%;
-  }
-
-  .g--third {
-    float: left;
-    margin-right: 4.5%;
-    width: 30.3%;
-  }
-
-  .g--half,
-  .g-medium--half {
-    float: left;
-    margin-right: 4.5%;
-    width: 47.75%;
-  }
-
-  .g-medium--last {
-    margin-right: 0;
-  }
-
-  .g-medium--last + .g-medium--half {
-    clear: left;
-  }
-
-  .g--pull-half {
-    margin-right: 52.25%;
-  }
-}
-@media only screen and (min-width: 800px) {
-  .g-wide--1 {
-    float: left;
-    margin-right: 3.7%;
-    width: 22.2%;
-  }
-
-  .g-wide--push-1 {
-    margin-left: 25.9%;
-  }
-
-  .g-wide--pull-1 {
-    margin-right: 25.9%;
-  }
-
-  .g-wide--2 {
-    float: left;
-    margin-right: 3.7%;
-    width: 48.1%;
-  }
-
-  .g-wide--push-2 {
-    margin-left: 51.8%;
-  }
-
-  .g-wide--pull-2 {
-    margin-right: 51.8%;
-  }
-
-  .g-wide--3 {
-    float: left;
-    margin-right: 3.7%;
-    width: 74%;
-  }
-
-  .g-wide--push-3 {
-    margin-left: 77.7%;
-  }
-
-  .g-wide--pull-3 {
-    margin-right: 77.7%;
-  }
-
-  .g-wide--4 {
-    float: left;
-    margin-right: 3.7%;
-    width: 99.9%;
-    margin-right: 0;
-  }
-
-  .g-wide--last {
-    margin-right: 0;
-  }
-
-  .g-wide--full {
-    float: left;
-    margin-right: 3.7%;
-    margin-right: 0;
-    width: 100%;
-  }
-
-  .g--third {
-    float: left;
-    margin-right: 3.7%;
-    width: 30.8%;
-  }
-
-  .g--half,
-  .g-wide--half {
-    float: left;
-    margin-right: 3.7%;
-    width: 48.15%;
-  }
-
-  .g--pull-half {
-    margin-right: 51.85%;
-  }
-}
-.g--last {
-  margin-right: 0;
-}
-
-.g--centered {
-  float: none;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.grid-overlay {
-  display: none;
-  pointer-events: none;
-}
-.debug .grid-overlay {
-  box-sizing: content-box;
-  position: relative;
-  padding-left: 5%;
-  padding-right: 5%;
-  margin-left: auto;
-  margin-right: auto;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  display: block;
-}
-@media only screen and (min-width: 1620px) {
-  .debug .grid-overlay {
-    padding-left: 4.8%;
-    padding-right: 4.8%;
-    max-width: 688px;
-  }
-}
-@media only screen and (min-width: 800px) {
-  .debug .grid-overlay {
-    padding-left: 4.4%;
-    padding-right: 4.4%;
-    max-width: 864px;
-  }
-}
-.debug .grid-overlay [class*="g-"] {
-  height: 100%;
-  background-color: rgba(89, 89, 89, 0.2);
-}
-@media only screen and (min-width: 1620px) and (max-width: 799px) {
-  .debug .grid-overlay .g-wide--last {
-    display: none;
-  }
-}
-@media only screen and (max-width: 619px) {
-  .debug .grid-overlay {
-    display: none;
-  }
-}
-
-/**
-*
-* Typography
-*
-**/
-h1, h2, h3, h4, h5, p {
-  margin: 0;
-}
-
-.small,
-small {
-  font-size: 13px;
-  line-height: 2.0000em;
-  /* 26px */
-  padding-top: 2.0000em;
-  padding-bottom: 0;
-}
-
-.base,
-p,
-ul,
-ol {
-  font-size: 16px;
-  line-height: 1.6250em;
-  /* 26px */
-  padding-top: 1.6250em;
-  padding-bottom: 0;
-}
-
-.medium,
-h4 {
-  font-size: 16px;
-  line-height: 1.6250em;
-  /* 26px */
-  padding-top: 1.6250em;
-  padding-bottom: 0;
-}
-@media only screen and (min-width: 1800px) {
-  .medium,
-  h4 {
-    font-size: 20px;
-    font-weight: 300;
-    line-height: 1.3000em;
-    /* 26px */
-    padding-top: 1.3000em;
-    padding-bottom: 0;
-  }
-}
-
-.large,
-h3 {
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 1.3000em;
-  /* 26px */
-  padding-top: 1.3000em;
-  padding-bottom: 0;
-}
-@media only screen and (min-width: 1800px) {
-  .large,
-  h3 {
-    font-family: "Roboto Condensed", Helvetica, sans-serif;
-    font-size: 26px;
-    font-weight: 300;
-    line-height: 1.0000em;
-    /* 26px */
-    padding-top: 1.0000em;
-    padding-bottom: 0;
-  }
-}
-
-.xlarge,
-h2 {
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  font-size: 26px;
-  font-weight: 300;
-  line-height: 1.0000em;
-  /* 26px */
-  padding-top: 1.0000em;
-  padding-bottom: 0;
-}
-@media only screen and (min-width: 1800px) {
-  .xlarge,
-  h2 {
-    font-family: "Roboto Condensed", Helvetica, sans-serif;
-    font-size: 42px;
-    font-weight: 300;
-    line-height: 1.2381em;
-    /* 52px */
-    padding-top: 0.6190em;
-    padding-bottom: 0;
-  }
-}
-
-.xxlarge,
-h1 {
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  font-size: 42px;
-  font-weight: 300;
-  line-height: 1.2381em;
-  /* 52px */
-  padding-top: 0.6190em;
-  padding-bottom: 0;
-}
-@media only screen and (min-width: 1800px) {
-  .xxlarge,
-  h1 {
-    font-family: "Roboto Condensed", Helvetica, sans-serif;
-    font-size: 68px;
-    font-weight: 300;
-    line-height: 1.1471em;
-    /* 78px */
-    padding-top: 0.3824em;
-    padding-bottom: 0;
-  }
-}
-
-.huge {
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  font-size: 68px;
-  font-weight: 300;
-  line-height: 1.1471em;
-  /* 78px */
-  padding-top: 0.3824em;
-  padding-bottom: 0;
-}
-@media only screen and (min-width: 2800px) {
-  .huge {
-    font-family: "Roboto Condensed", Helvetica, sans-serif;
-    font-size: 110px;
-    font-weight: 300;
-    line-height: 1.19em;
-    /* 130px */
-    padding-top: 0.2364em;
-    padding-bottom: 0;
-  }
-}
-
-li > p {
-  padding-top: 0;
-}
-
-/**
-*
-* Button
-*
-**/
-.button, .button--primary, .button--secondary, .button--secondary-variation {
-  display: inline-block;
-  padding: 12px 32px;
-  margin-bottom: 13px;
-  margin-top: 13px;
-  min-height: 26px;
-  text-align: center;
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  font-weight: 600;
-  text-decoration: none;
-  outline: 0;
-  -webkit-transition: none;
-          transition: none;
-}
-.button:hover, .button--primary:hover, .button--secondary:hover, .button--secondary-variation:hover {
-  background: #4d4d4d;
-  color: #ffffff;
-  border: 1px solid #4d4d4d;
-  text-decoration: none;
-}
-
-.button--primary {
-  background: #4285f4;
-  color: white;
-  border: 1px solid #1266f1;
-}
-
-.button--secondary {
-  background: white;
-  color: #3372df;
-  border: 1px solid #e6e6e6;
-}
-
-.button--secondary-variation {
-  background: white;
-  color: #3372df;
-  border: 1px solid #e6e6e6;
-  border-color: transparent;
-}
-
-/**
-*
-* List
-*
-**/
-ul,
-ol {
-  list-style: none;
-  margin: 0;
-}
-@media only screen and (max-width: 619px) {
-  ul,
-  ol {
-    padding-left: 0;
-  }
-}
-
-ul li {
-  position: relative;
-  padding-left: 16px;
-}
-ul li::before {
-  font-family: "icons";
-  font-size: 13px;
-  display: block;
-  font-weight: 400;
-  position: absolute;
-  top: 0;
-  left: 0;
-  line-height: 26px;
-}
-ul li::before {
-  font-size: 4px;
-}
-
-ol {
-  counter-reset: list;
-}
-ol > li {
-  position: relative;
-  padding-left: 32px;
-}
-ol > li::before {
-  counter-increment: list;
-  content: "0" counter(list);
-  color: inherit;
-  font-weight: 400;
-  display: inline-block;
-  position: absolute;
-  left: 0;
-}
-ol > li:nth-child(10n) ~ li::before, ol > li:nth-child(10n)::before {
-  content: counter(list);
-}
-
-ul ol,
-ol ul {
-  padding-top: 0;
-}
-
-/*==========  LIST LINKS  ==========*/
-ul.list-links li::before {
-  display: none;
-}
-ul.list-links a {
-  font-weight: 400;
-}
-ul.list-links a::before {
-  font-family: "icons";
-  font-size: 13px;
-  display: block;
-  font-weight: 400;
-  position: absolute;
-  top: 0;
-  left: 0;
-  line-height: 26px;
-}
-ul.list-links a::before {
-  font-size: 4px;
-}
-ul.list-links.list-links--primary a {
-  font-weight: 400;
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  line-height: 1;
-  text-decoration: none;
-}
-ul.list-links.list-links--primary a::before {
-  font-family: "icons";
-  font-size: 13px;
-  display: block;
-  font-weight: 400;
-  position: absolute;
-  top: 0;
-  left: 0;
-  line-height: 26px;
-}
-
-ol.list-links li::before {
-  display: none;
-}
-ol.list-links li a {
-  display: inline-block;
-  font-weight: 300;
-}
-ol.list-links li a::before {
-  counter-increment: list;
-  content: "0" counter(list);
-  color: inherit;
-  font-weight: 400;
-  display: inline-block;
-  position: absolute;
-  left: 0;
-}
-ol.list-links li:nth-child(10n) ~ li a::before, ol.list-links li:nth-child(10n) a::before {
-  content: counter(list);
-}
-ol.list-links.list-links--secondary a::before {
-  display: none;
-}
-
-.list-links--secondary {
-  font-size: 16px;
-  line-height: 1.6250em;
-  /* 26px */
-  padding-top: 1.6250em;
-  padding-bottom: 0;
-  padding-left: 0;
-}
-.list-links--secondary li {
-  padding-left: 0;
-}
-
-/*==========  ANCHOR LIST  ==========*/
-.list-anchor {
-  padding-left: 0;
-}
-.list-anchor li {
-  font-size: 16px;
-  line-height: 1.6250em;
-  /* 26px */
-  padding-top: 1.6250em;
-  padding-bottom: 0;
-  padding-top: 0;
-  padding-left: 0;
-}
-.list-anchor li::before {
-  display: none;
-}
-.list-anchor a {
-  line-height: 1;
-  display: inline-block;
-  padding-left: 16px;
-}
-.list-anchor a::before {
-  font-family: "icons";
-  font-size: 13px;
-  display: block;
-  font-weight: 400;
-  position: absolute;
-  top: 0;
-  left: 0;
-  line-height: 26px;
-}
-.list-anchor a::before {
-  font-size: 4px;
-}
-
-/*==========  SMALL LIST  ==========*/
-@media only screen and (min-width: 1620px) {
-  .list-small li {
-    font-size: 13px;
-    line-height: 2.0000em;
-    /* 26px */
-    padding-top: 2.0000em;
-    padding-bottom: 0;
-    padding-top: 0;
-  }
-}
-
-/*==========  CENTERED LIST  ==========*/
-.list-centered {
-  text-align: center;
-  padding-left: 0;
-}
-
-/*==========  FEATURED LIST  ==========*/
-.featured-list {
-  padding-top: 78px;
-  padding-bottom: 78px;
-}
-
-.featured-list__item {
-  background: #ffffff;
-  padding-left: 0;
-  padding-top: 26px;
-  padding-bottom: 26px;
-  margin-top: 26px;
-}
-@media only screen and (min-width: 1620px) {
-  .featured-list__item {
-    min-height: 338px;
-    padding: 52px 32px;
-  }
-}
-.featured-list__item:first-child {
-  margin-top: 0;
-}
-.featured-list__item p {
-  margin-bottom: 26px;
-}
-
-.featured-list__img-wrapper {
-  display: none;
-  position: relative;
-  padding-top: 26px;
-  margin: 0 -5%;
-}
-@media only screen and (min-width: 1620px) {
-  .featured-list__img-wrapper {
-    display: block;
-    padding-top: 0;
-    margin: 0;
-  }
-}
-
-@media only screen and (min-width: 1620px) {
-  .featured-list__img {
-    padding-top: 60.8%;
-    padding-bottom: 0;
-    height: 0;
-    overflow: hidden;
-    position: absolute;
-    width: 100%;
-  }
-}
-.featured-list__img img {
-  display: block;
-  margin: 0 auto;
-  max-width: 100%;
-}
-@media only screen and (min-width: 1620px) {
-  .featured-list__img img {
-    margin: 0;
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    left: 0;
-  }
-}
-
-/*==========  RELATED GUIDES LIST  ==========*/
-.related-guides-list {
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  padding-top: 0;
-  padding-left: 0;
-}
-@media only screen and (min-width: 1620px) {
-  .related-guides-list {
-    padding-top: 26px;
-  }
-}
-@media only screen and (min-width: 800px) {
-  .related-guides-list {
-    padding-top: 0;
-  }
-}
-.related-guides-list p {
-  padding-top: 0;
-}
-.related-guides-list .tag {
-  padding-top: 0;
-}
-.related-guides-list li {
-  padding-top: 26px;
-  padding-bottom: 25px;
-  border-bottom: 1px solid #e0e0e0;
-}
-.related-guides-list li:last-child {
-  border-color: transparent;
-}
-@media only screen and (min-width: 1620px) {
-  .related-guides-list li {
-    padding-top: 0;
-    padding-bottom: 0;
-    border-color: transparent;
-  }
-}
-
-/*==========  LIST RESET  ==========*/
-.list--reset {
-  padding-left: 0;
-}
-.list--reset li {
-  padding-left: 0;
-}
-.list--reset.list-links a::before, .list--reset li::before {
-  display: none !important;
-}
-
-/*==========  LESSONS  ==========*/
-.list-lessons {
-  padding-left: 0;
-}
-.list-lessons a {
-  color: #ffffff;
-}
-.list-lessons .current,
-.list-lessons .current a {
-  text-decoration: none;
-  cursor: default;
-}
-.list-lessons .current .icon {
-  font-size: 13px;
-  display: inline-block;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 100%;
-  width: 26px;
-  line-height: 26px;
-  text-align: center;
-  margin-left: 7px;
-}
-
-/*==========  GUIDES INTO - used on homepage  ==========*/
-.list-guides-intro {
-  margin-bottom: 52px;
-}
-@media only screen and (max-width: 619px) {
-  .list-guides-intro {
-    padding-top: 52px;
-  }
-}
-.list-guides-intro li {
-  border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 51px;
-  margin-bottom: 52px;
-}
-@media only screen and (min-width: 1620px) {
-  .list-guides-intro li {
-    border-color: transparent;
-    padding-bottom: 0;
-  }
-}
-.list-guides-intro li:last-child {
-  border-bottom: transparent;
-  margin-bottom: 0;
-}
-
-/**
-*
-* Link
-*
-**/
-a {
-  color: #3372df;
-}
-
-a:hover {
-  text-decoration: none;
-}
-
-.cta--primary {
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  color: #3372df;
-  font-weight: 400;
-  display: inline-block;
-  line-height: 1;
-  text-decoration: none;
-}
-.cta--primary:hover {
-  color: #404040;
-}
-.cta--primary::before {
-  display: inline-block;
-  padding-right: 10px;
-  font-family: "icons";
-  line-height: 25px;
-  font-size: 13px;
-  content: "\e005";
-}
-
-.cta--secondary {
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  color: #3372df;
-  font-weight: 400;
-  display: inline-block;
-  line-height: 1;
-}
-.cta--secondary:hover {
-  color: #404040;
-}
-
-/**
-*
-* Table
-*
-**/
-table {
-  margin-top: 26px;
-  width: 100%;
-}
-table thead {
-  background: #3372df;
-  color: #ffffff;
-}
-table th {
-  text-align: center;
-  display: none;
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  font-size: 16px;
-  line-height: 1.6250em;
-  /* 26px */
-  padding-top: 1.6250em;
-  padding-bottom: 0;
-}
-@media only screen and (min-width: 800px) {
-  table th {
-    font-size: 20px;
-    font-weight: 300;
-    line-height: 1.3000em;
-    /* 26px */
-    padding-top: 1.3000em;
-    padding-bottom: 0;
-  }
-}
-@media only screen and (min-width: 1620px) {
-  table tr {
-    border-bottom: 1px solid #ffffff;
-  }
-}
-table tbody {
-  background: #f0f0f0;
-}
-table td {
-  display: block;
-  padding-top: 13px;
-  padding-bottom: 13px;
-}
-table td::before {
-  content: attr(data-th) " :";
-  display: inline-block;
-  color: #ffffff;
-  background: #3372df;
-  border-right: 2px solid #ffffff;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 100px;
-  max-height: 100%;
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  padding-left: 13px;
-  padding-top: 13px;
-}
-@media only screen and (min-width: 1620px) {
-  table td::before {
-    display: none;
-  }
-}
-table th,
-table td {
-  position: relative;
-  padding-left: 140px;
-}
-@media only screen and (min-width: 1620px) {
-  table th,
-  table td {
-    display: table-cell;
-  }
-}
-@media only screen and (min-width: 1620px) {
-  table th {
-    padding: 26px;
-    padding-top: 13px;
-    padding-bottom: 12px;
-  }
-}
-@media only screen and (min-width: 1620px) {
-  table td {
-    padding: 26px;
-    padding-bottom: 25px;
-  }
-}
-
-td:last-child::after {
-  content: "";
-  display: block;
-  background: #ffffff;
-  height: 1px;
-  left: 0;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
-@media only screen and (min-width: 1620px) {
-  td:last-child::after {
-    display: none;
-  }
-}
-
-.table-2 col {
-  width: 344px;
-}
-@media only screen and (min-width: 800px) {
-  .table-2 col {
-    width: 432px;
-  }
-}
-@media only screen and (min-width: 1620px) {
-  .table-2 th:first-child,
-  .table-2 td:first-child {
-    border-right: 2px solid #ffffff;
-  }
-}
-
-.table-3 col {
-  width: 229.3333333333px;
-}
-@media only screen and (min-width: 800px) {
-  .table-3 col {
-    width: 288px;
-  }
-}
-@media only screen and (min-width: 1620px) {
-  .table-3 th:nth-child(2),
-  .table-3 td:nth-child(2) {
-    border-left: 2px solid #ffffff;
-    border-right: 2px solid #ffffff;
-  }
-}
-
-.table-4 col {
-  width: 172px;
-}
-@media only screen and (min-width: 800px) {
-  .table-4 col {
-    width: 216px;
-  }
-}
-@media only screen and (min-width: 1620px) {
-  .table-4 th:nth-child(2), .table-4 th:nth-child(3),
-  .table-4 td:nth-child(2),
-  .table-4 td:nth-child(3) {
-    border-left: 2px solid #ffffff;
-    border-right: 2px solid #ffffff;
-  }
-}
-
-/**
-*
-* Media - imgs/videos
-*
-**/
-img,
-video,
-object {
-  max-width: 100%;
-}
-
-.content img {
-  margin-top: 26px;
-  margin-bottom: 26px;
-}
-
-/**
-*
-* Breadcrumb
-*
-**/
-.breadcrumbs {
-  display: none;
-  position: relative;
-  z-index: 1;
-}
-@media only screen and (min-width: 1620px) {
-  .breadcrumbs {
-    display: block;
-  }
-}
-
-.breadcrumbs p {
-  font-size: 13px;
-  line-height: 2.0000em;
-  /* 26px */
-  padding-top: 2.0000em;
-  padding-bottom: 0;
-  padding-top: 26px;
-}
-
-.breadcrumbs__link {
-  font-size: 13px;
-  line-height: 2.0000em;
-  /* 26px */
-  padding-top: 2.0000em;
-  padding-bottom: 0;
-  color: black;
-  font-weight: 400;
-  padding-top: 0;
-}
-@media only screen and (min-width: 1620px) {
-  .breadcrumbs__link {
-    padding-top: 0;
-  }
-}
-
-/**
-*
-* subsection__title
-*
-**/
-.subsection-title {
-  color: #404040;
-  margin-top: 52px;
-}
-
-.subsection-number {
-  font-size: 16px;
-  line-height: 1.6250em;
-  /* 26px */
-  padding-top: 1.6250em;
-  padding-bottom: 0;
-  padding-top: 0;
-  display: block;
-}
-
-/**
-*
-* Articles list
-*
-**/
-.articles-list {
-  padding-left: 0;
-}
-
-.articles-list__item {
-  padding-bottom: 52px;
-  padding-left: 0;
-}
-.articles-list__item:last-child {
-  padding-bottom: 53px;
-}
-.articles-list__item::before {
-  content: "";
-  display: block;
-  width: 40%;
-  height: 1px;
-  box-shadow: inset 0 1px 0 0 #e0e0e0;
-  margin-right: 0;
-  margin-left: 30%;
-}
-.articles-list__item h3 a:hover {
-  text-decoration: none;
-}
-.articles-list__item p {
-  margin-top: 26px;
-  margin-bottom: 26px;
-}
-.articles-list__item:first-child {
-  padding-top: 0;
-}
-@media only screen and (min-width: 1620px) {
-  .articles-list__item:first-child {
-    padding-top: 24px;
-  }
-}
-.articles-list__item:first-child::before {
-  display: none;
-}
-
-/**
-*
-* Guides List
-*
-**/
-.guides-list {
-  overflow: hidden;
-}
-@media only screen and (min-width: 1620px) {
-  .guides-list {
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-justify-content: space-between;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
-    padding-top: 52px;
-  }
-}
-
-.guides-list__item {
-  padding: 0;
-  background: #ffffff;
-  margin-top: 26px;
-  margin-bottom: 0;
-}
-@media only screen and (min-width: 1620px) {
-  .guides-list__item {
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-direction: column;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
-  }
-}
-.guides-list__item h3 {
-  margin: 0 32px;
-}
-.guides-list__item p {
-  margin: 26px 32px 0;
-}
-@media only screen and (min-width: 1620px) {
-  .guides-list__item .primary-content {
-    -webkit-flex: 1;
-        -ms-flex: 1;
-            flex: 1;
-  }
-}
-.guides-list__item .secondary-content {
-  position: relative;
-  margin-top: 51px;
-  border-top: 1px solid #e0e0e0;
-}
-@media only screen and (min-width: 1620px) {
-  .guides-list__item .secondary-content {
-    width: 100%;
-  }
-}
-.guides-list__item .secondary-content .icon-circle {
-  position: absolute;
-  top: -28px;
-  left: 50%;
-  margin-left: -21px;
-  border: 2px solid #ffffff;
-}
-.guides-list__item .secondary-content .icon-circle i {
-  font-size: 23px;
-}
-.guides-list__item ol {
-  margin: 26px 0 0;
-  padding: 52px 0 52px;
-  margin-top: 0;
-}
-.guides-list__item::before {
-  display: none;
-}
-
-/**
-*
-* Icon Circle
-*
-**/
-.icon-circle,
-.icon-circle--large {
-  height: 0;
-  width: 0;
-  background: #737373;
-  display: block;
-  position: relative;
-  border-radius: 100%;
-  font-size: 0;
-  padding: 22px;
-  margin: 4px auto;
-}
-.icon-circle i,
-.icon-circle span,
-.icon-circle--large i,
-.icon-circle--large span {
-  position: absolute;
-  line-height: 0px;
-  top: 50%;
-  width: 100%;
-  left: 0;
-  text-align: center;
-  color: #ffffff;
-  font-size: 26px;
-}
-.icon-circle span,
-.icon-circle--large span {
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  font-size: 26px;
-  font-weight: 700;
-}
-@media only screen and (min-width: 1620px) {
-  .icon-circle span,
-  .icon-circle--large span {
-    font-size: 42px;
-  }
-}
-
-.icon-circle--large {
-  margin-top: 0;
-  margin-bottom: 0;
-  padding: 26px;
-  position: relative;
-}
-.icon-circle--large i {
-  font-size: 26px;
-}
-@media only screen and (min-width: 1620px) {
-  .icon-circle--large i {
-    font-size: 42px;
-  }
-}
-@media only screen and (min-width: 1620px) {
-  .icon-circle--large {
-    padding: 37px;
-    border: 2px solid #ffffff;
-  }
-  a .icon-circle--large {
-    padding: 38px;
-    box-shadow: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.42);
-    border: 1px solid;
-    -webkit-transition: all 100ms linear;
-            transition: all 100ms linear;
-    -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-  }
-  .no-touch a:hover .icon-circle--large {
-    box-shadow: inset 0px 0px 0px 1px #ffffff;
-    -webkit-transform: scale(1.1);
-            transform: scale(1.1);
-  }
-}
-
-.icon-circle--nav {
-  height: 0;
-  width: 0;
-  background: #737373;
-  display: block;
-  position: relative;
-  border-radius: 100%;
-  font-size: 0;
-  padding: 13px;
-  margin: 0 auto;
-}
-@media only screen and (min-width: 1620px) {
-  .icon-circle--nav {
-    padding: 22px;
-    margin-top: 4px;
-    margin-bottom: 4px;
-  }
-}
-.icon-circle--nav i {
-  position: absolute;
-  line-height: 1px;
-  top: 50%;
-  width: 100%;
-  left: 0;
-  text-align: center;
-  color: #ffffff;
-  font-size: 16px;
-}
-@media only screen and (min-width: 1620px) {
-  .icon-circle--nav i {
-    font-size: 26px;
-  }
-}
-
-/**
-*
-* Themed styles
-*
-**/
-.theme--multi-device-layouts .themed {
-  color: #297ea9;
-}
-.theme--introduction-to-media .themed {
-  color: #cf423a;
-}
-.theme--user-input .themed {
-  color: #2c8566;
-}
-.theme--performance .themed {
-  color: #7b5294;
-}
-
-.theme--multi-device-layouts .themed--background, .theme--multi-device-layouts .themed--background.next-lessons::before {
-  background-color: #297ea9;
-}
-.theme--introduction-to-media .themed--background, .theme--introduction-to-media .themed--background.next-lessons::before {
-  background-color: #cf423a;
-}
-.theme--user-input .themed--background, .theme--user-input .themed--background.next-lessons::before {
-  background-color: #2c8566;
-}
-.theme--performance .themed--background, .theme--performance .themed--background.next-lessons::before {
-  background-color: #7b5294;
-}
-
-.theme--multi-device-layouts .themed--hover:hover {
-  color: #297ea9;
-}
-.theme--introduction-to-media .themed--hover:hover {
-  color: #cf423a;
-}
-.theme--user-input .themed--hover:hover {
-  color: #2c8566;
-}
-.theme--performance .themed--hover:hover {
-  color: #7b5294;
-}
-
-.theme--multi-device-layouts .themed--hover-secondary:hover {
-  color: #89c4e2;
-}
-.theme--introduction-to-media .themed--hover-secondary:hover {
-  color: #edb8b5;
-}
-.theme--user-input .themed--hover-secondary:hover {
-  color: #78d2b3;
-}
-.theme--performance .themed--hover-secondary:hover {
-  color: #c4add2;
-}
-
-.article--multi-device-layouts .article-container h1, .article--multi-device-layouts
-.article-container h2 {
-  color: #297ea9;
-}
-.article--introduction-to-media .article-container h1, .article--introduction-to-media
-.article-container h2 {
-  color: #cf423a;
-}
-.article--user-input .article-container h1, .article--user-input
-.article-container h2 {
-  color: #2c8566;
-}
-.article--performance .article-container h1, .article--performance
-.article-container h2 {
-  color: #7b5294;
-}
-
-.nav-theme--multi-device-layouts .themed--hover:hover {
-  color: #297ea9;
-}
-.nav-theme--introduction-to-media .themed--hover:hover {
-  color: #cf423a;
-}
-.nav-theme--user-input .themed--hover:hover {
-  color: #2c8566;
-}
-.nav-theme--performance .themed--hover:hover {
-  color: #7b5294;
-}
-
-.nav-theme--multi-device-layouts .themed {
-  color: #297ea9;
-}
-.nav-theme--introduction-to-media .themed {
-  color: #cf423a;
-}
-.nav-theme--user-input .themed {
-  color: #2c8566;
-}
-.nav-theme--performance .themed {
-  color: #7b5294;
-}
-
-.nav-theme--multi-device-layouts .themed--background {
-  background-color: #297ea9;
-}
-.nav-theme--introduction-to-media .themed--background {
-  background-color: #cf423a;
-}
-.nav-theme--user-input .themed--background {
-  background-color: #2c8566;
-}
-.nav-theme--performance .themed--background {
-  background-color: #7b5294;
-}
-
-/**
-*
-* Styleguide
-*
-**/
-.page--styleguide .styleguide__module-title {
-  margin-bottom: 26px;
-}
-.page--styleguide section {
-  margin-bottom: 52px;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 77px;
-}
-.page--styleguide .styleguide__color-list {
-  text-align: center;
-}
-.page--styleguide .styleguide__color-list li {
-  border-bottom: 52px solid;
-  margin-bottom: 26px;
-  position: relative;
-}
-.page--styleguide .styleguide__breadcrumb .breadcrumbs {
-  display: block;
-}
-.page--styleguide .styleguide__lists ul,
-.page--styleguide .styleguide__lists ol {
-  margin-bottom: 26px;
-}
-.page--styleguide .styleguide__inverted-block {
-  background: #e8e8e8;
-  padding: 0 13px;
-}
-.page--styleguide .styleguide__theme-block {
-  background: #297ea9;
-  padding: 0 13px;
-}
-
-.demo {
-  margin-bottom: 26px;
-  margin-top: 26px;
-}
-
-.demo [class*="g-"] {
-  background-color: #eeeeee;
-  position: relative;
-  margin-bottom: 26px;
-  min-height: 156px;
-}
-.demo [class*="g-"]::before, .demo [class*="g-"]::after {
-  font-size: 13px;
-  line-height: 2.0000em;
-  /* 26px */
-  padding-top: 2.0000em;
-  padding-bottom: 0;
-  display: block;
-  margin: 0 10px;
-}
-.demo [class*="g-"]::before {
-  content: "HTML classes: ";
-  font-weight: 700;
-}
-.demo [class*="g-"]::after {
-  content: attr(class);
-  word-spacing: 15px;
-}
-
-/**
-*
-* Resources page
-*
-**/
-.page--resources .article-section__icon, .page--resources .articles-count, .page--resources .guides-list__item .secondary-content {
-  display: none;
-}
-.page--resources .primary-content {
-  padding-top: 26px;
-  padding-bottom: 52px;
-}
-.page--resources .primary-content p {
-  margin-top: 0;
-}
-
-/**
-*
-* Helper
-*
-**/
-.clear::before, .clear::after {
-  content: "";
-  display: table;
-}
-.clear::after {
-  clear: both;
-}
-
-/*==========  COLORS  ==========*/
-.color--blue {
-  color: #3372df;
-}
-
-.color--red {
-  color: #cb4437;
-}
-
-.color--green {
-  color: #0f9d58;
-}
-
-.color--yellow {
-  color: #f4b400;
-}
-
-.color--blue-secondary {
-  color: #b7cdf4;
-}
-
-.color--red-secondary {
-  color: #ebb6b0;
-}
-
-.color--green-secondary {
-  color: #56efa5;
-}
-
-.color--yellow-secondary {
-  color: #ffd45b;
-}
-
-.color--gray-background {
-  color: #f0f0f0;
-}
-
-.color--gray-keyline {
-  color: #e0e0e0;
-}
-
-.color--gray {
-  color: #737373;
-}
-
-.color--gray-dark {
-  color: #404040;
-}
-
-.color--text {
-  color: #404040;
-}
-
-.color--highlight {
-  color: #3372df;
-}
-
-.color--warning {
-  color: #ffd45b;
-}
-
-.color--danger {
-  color: #cb4437;
-}
-
-.color--muted {
-  color: #737373;
-}
-
-.color--remember {
-  color: #09829a;
-}
-
-.color--learning {
-  color: #da2e75;
-}
-
-.color--layouts {
-  color: #297ea9;
-}
-
-.color--user {
-  color: #2c8566;
-}
-
-.color--media {
-  color: #cf423a;
-}
-
-.color--performance {
-  color: #7b5294;
-}
-
-.color--layouts-secondary {
-  color: #89c4e2;
-}
-
-.color--user-secondary {
-  color: #78d2b3;
-}
-
-.color--media-secondary {
-  color: #edb8b5;
-}
-
-.color--performance-secondary {
-  color: #c4add2;
-}
-
-/*==========  TEXT DIVIDER  ==========*/
-.text-divider {
-  position: relative;
-  margin-bottom: 26px;
-}
-.text-divider::after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 40%;
-  height: 1px;
-  box-shadow: 0 1px 0 0 #e0e0e0;
-  left: 30%;
-  bottom: -13px;
-}
-.text-divider.xlarge {
-  margin-bottom: 52px;
-}
-.text-divider.xlarge::after {
-  bottom: -26px;
-}
-.text-divider.xxlarge {
-  margin-bottom: 78px;
-}
-.text-divider.xxlarge::after {
-  bottom: -39px;
-}
-.text-divider.huge {
-  margin-bottom: 78px;
-}
-.text-divider.huge::after {
-  bottom: -39px;
-}
-
-/*==========  GENERIC  ==========*/
-.centered {
-  text-align: center;
-}
-
-/*==========  TAG  ==========*/
-.tag {
-  font-size: 13px;
-  line-height: 2.0000em;
-  /* 26px */
-  padding-top: 2.0000em;
-  padding-bottom: 0;
-  font-family: "Roboto Condensed", Helvetica, sans-serif;
-  text-transform: uppercase;
-  font-weight: 700;
-  display: inline-block;
-  text-decoration: none;
-}
-.tag:hover {
-  color: #404040;
-}
-.tag::before {
-  content: "# ";
-  display: inline-block;
-}
-</style>
-    <style>:host {
-  display: block;
-  width: 100%;
-  position: relative;
-  background-color: #fff;
-}
-
-:host table {
-  width: 320;
-  display: block;
-  max-width: 100% !important;
-  max-height: 400px;
-  cursor: pointer;
-  overflow: scroll;
-}
-
-:host table td.large {
-  word-wrap: normal;
-  word-break: normal;
-  padding-left: 120px;
-  padding-top: .6em;
-}
-:host table td a {
-  word-wrap: normal;
-  word-break: break-all;
-}
-
-:host #cursor {
-  background: #000;
-  position: absolute;
-  cursor: none;
-  pointer-events: none;
-}
-</style>
-    <table id="table">
-      <thead id="thead">
-      </thead>
-      <tbody id="tbody">
-      </tbody>
-    </table>
-    <shadow></shadow>
-  </template>
-    <script>
-require(['jquery'], function($) {
-      Polymer("ceci-component-sheet", {
-        onCellTap: function(heading, value) {
-          this.broadcast("sendvalue", value);
-          this.broadcast("sendheading", heading);
-        },
-        ready: function() {
-          this.super();
-
-          var that = this;
-          var key = "1nNDHnDvMPUZM7IAiHTNM3XLh2NRrWVDIDenkXe7i2C0";
-          Tabletop.init( { key: key,
-                           callback: function(data, tabletop) { 
-                            var model_names = tabletop.model_names;
-                            var cells = [];
-                           var headings = [];
-                            $.each( data[0], function( key, val ) {
-                              if (key != 'rowNumber') {
-                                cells.push("<th>" + key + "</th>");
-                                headings.push(key);
-                              }
-                            });
-                            $("<tr/>", {id:"header", html: cells.join("")}).appendTo($(that.$.thead));
-                            var items = [];
-                            var cells = [];
-                            $.each( data, function( key, val ) {
-                              cells = [];
-                              $.each(val, function(key, cell) {
-                              if (key != 'rowNumber') {
-//                                if (key == 'email') {
-//                                  cell = "<a Xhref='mailto:" + cell + "'>"+cell+"</a>";
-//                                } else if (key == 'phone') {
-//                                  cell = "<a Xhref='tel:" + cell + "'>"+cell+"</a>";
-//                                }
-                                cells.push("<td class='large' data-th='"+key+"'>" + cell + "</td>");
-                              }
-                            });
-                            var bits = $("<tr/>", {html: cells.join("")});
-                            bits.appendTo($(that.$.tbody));
-                          });
-                            $(that.$.tbody).on('click', 'td', function(evt) {
-                              console.log(evt.target);
-                              that.onCellTap(evt.target.getAttribute('data-th'), evt.target.textContent);
-                            });
-//                          console.log("body", $(that.$.tbody));
-//                          var links = that.$.tbody.querySelectorAll('a');
-//                          console.log("LINKS", links);
-//                          Array.prototype.forEach.call(links, function(link) {
-//                            link.on('click', function(evt) {
-//                              console.log(evt);
-//                            });
-//                          });
-                            console.log(data) 
-                           },
-                           simpleSheet: true } )
-          
-//          $.getJSON("http://localhost:4000/data", function(payload) {
-//            var items = [];
-//            var cells = [];
-//            var title = payload.title;
-//            var data = payload.data;
-//            $.each( data[0], function( key, val ) {
-//              cells.push("<th>" + val + "</th>");
-//            });
-//            $("<tr/>", {id:"header", html: cells.join("")}).appendTo($(that.$.thead));
-//            $.each( data.slice(1), function( key, val ) {
-//              cells = [];
-//              $.each(val, function(key, cell) {
-//                if (data[0][key] == 'Email') {
-//                  cell = "<a Xhref='mailto:" + cell + "'>"+cell+"</a>";
-//                } else if (data[0][key] == 'Phone') {
-//                  cell = "<a Xhref='tel:" + cell + "'>"+cell+"</a>";
-//                }
-//                cells.push("<td class='large' data-th='"+data[0][key]+"'>" + cell + "</td>");
-//              });
-//              var bits = $("<tr/>", {html: cells.join("")});
-//              bits.appendTo($(that.$.tbody));
-//            });
-//            console.log("body", $(that.$.tbody));
-//            var links = that.$.tbody.querySelectorAll('a');
-//            console.log("LINKS", links);
-//            Array.prototype.forEach.call(links, function(link) {
-//              link.on('click', function(evt) {
-//                console.log(evt);
-//              });
-//            });
-//          });
-          this.super();
-        }
-      });
-});
-    </script>
-</polymer-element>
-
 <polymer-element name="ceci-snaredrum" attributes="drumcolor backgroundcolor stickcolor volume" drumcolor="#FFFFFF" stickcolor="#000000" backgroundcolor="#ff9900" extends="ceci-element" volume=".5" assetpath="component-snaredrum/">
   <ceci-definition>
     {
-      "tags": ["music", "instrument", "tap"],
+      "tags": ["music", "instrument", "audio"],
       "thumbnail": "./thumbnail.png",
-      "description": "Broadcasts a \"click\" when clicked.",
+      "description": "Plays a snare drum.",
       "name": "Snare Drum",
       "broadcasts": {},
       "listeners": {
@@ -13513,7 +8098,7 @@ require(['jquery'], function($) {
   display: none;
 }
 </style>
-    <div id="kick" class="off" on-mousedown="{{kickon}}" on-mouseup="{{kickoff}}">
+    <div id="kick" class="off" on-ceci-pressdown="{{kickon}}" on-ceci-pressup="{{kickoff}}">
       <div id="drum"></div>
       <div id="stick"></div>
     </div>
@@ -13570,10 +8155,10 @@ require(['jquery'], function($) {
   </template>
   <ceci-definition>
     {
-      "tags": ["starter", "layout", "navigation"],
+      "tags": ["starter", "layout"],
       "thumbnail": "./thumbnail.png",
       "name": "Spacer",
-      "description": "A spacer to put between components.",
+      "description": "Adds blank space to separate your bricks.",
       "broadcasts": {},
       "listeners": {},
       "attributes": {
@@ -13607,7 +8192,7 @@ require(['jquery'], function($) {
 }
 
 :host .splitter {
-  background-color: black;
+  background: url(thumbnail.png) black no-repeat center;
 }
 </style>
     <div class="splitter">
@@ -13616,34 +8201,34 @@ require(['jquery'], function($) {
   </template>
   <ceci-definition>
     {
-      "tags": ["component-splitter", "splitter"],
+      "tags": ["channel", "splitter"],
       "thumbnail": "./thumbnail.png",
-      "description": "When a message passes through this component, it can send the message to multiple broadcasts.",
-      "name": "Splitter",
+      "description": "Splits an input on one channel into broadcasts on multiple channels.",
+      "name": "Channel Splitter",
       "broadcasts": {
         "splitter1": {
-          "label": "splitter1",
+          "label": "Output 1",
           "description": "repeats input",
           "default": true
         },
         "splitter2": {
-          "label": "splitter2",
+          "label": "Output 2",
           "description": "repeats input"
         },
         "splitter3": {
-          "label": "splitter3",
+          "label": "Output 3",
           "description": "repeats input"
         },
         "splitter4": {
-          "label": "splitter4",
+          "label": "Output 4",
           "description": "repeats input"
         },
         "splitter5": {
-          "label": "splitter5",
+          "label": "Output 5",
           "description": "repeats input"
         },
         "splitter6": {
-          "label": "splitter6",
+          "label": "Output 6",
           "description": "repeats input"
         }
       },
@@ -13680,8 +8265,8 @@ require(['jquery'], function($) {
     {
       "tags": ["input", "form", "button"],
       "thumbnail": "./thumbnail.png",
-      "name": "Text Input",
-      "description": "A text input that broadcasts whatever a user types.",
+      "name": "Text Input with Button",
+      "description": "Sends text you've entered when you press the button.",
       "broadcasts": {
         "sendData": {
           "label": "Send Data",
@@ -13837,26 +8422,48 @@ require(['jquery'], function($) {
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-textbox" attributes="text" extends="ceci-element" text="I&apos;m a textbox!" assetpath="component-textbox/">
+<polymer-element name="ceci-textbox" attributes="text fontsize textalign textcolor backgroundcolor" extends="ceci-element" textalign="left" fontsize="16" textcolor="#666666" backgroundcolor="#FFFFFF" text="I&apos;m a textbox!" assetpath="component-textbox/">
   <ceci-definition>
     {
       "tags": ["form", "input", "text"],
       "thumbnail": "./thumbnail.png",
-      "description": "Listen for a message and updates text",
+      "description": "Displays entered or incoming text.",
       "name": "Text",
       "broadcasts": {},
       "listeners": {
         "setValue": {
           "description": "Set value text box",
-          "label": "Set Value"
+          "label": "Set Text"
         }
       },
       "attributes": {
         "text": {
           "label": "Text",
           "description": "A text for your label to show up in your app.",
-          "editable": "text",
-          "listener": true
+          "editable": "text"
+        },
+        "textalign": {
+          "label": "Text Alignment",
+          "description": "Text Alignment",
+          "editable": "select",
+          "options": ["Left","Center","Right"]
+        },
+        "fontsize": {
+          "label": "Font Size",
+          "description": "Font Size",
+          "editable": "number",
+          "min" : "4",
+          "max" : "50"
+        },
+        "backgroundcolor": {
+          "label": "Background Color",
+          "description": "Background Color",
+          "editable": "color"
+        },
+        "textcolor": {
+          "label": "Text Color",
+          "description": "Text Color",
+          "editable": "color"
         }
       }
     }
@@ -13865,15 +8472,14 @@ require(['jquery'], function($) {
     <style>:host {
   display: block;
   width: 100%;
-  padding: 10px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
 
 :host p {
+  padding: 10px;
   word-wrap: break-word;
   overflow: hidden;
-  padding: 0;
   margin: 0;
   font-size: 15px;
   font-family: "FiraSans", sans-serif;
@@ -13881,7 +8487,7 @@ require(['jquery'], function($) {
   line-height: auto;
 }
 </style>
-    <p id="textBox"></p>
+      <p style="text-align: {{textalign}}; font-size: {{fontsize}}px; background: {{backgroundcolor}}; color: {{textcolor}}" id="textBox"></p>
     <shadow></shadow>
   </template>
   <script>
@@ -13904,7 +8510,7 @@ require(['jquery'], function($) {
     {
       "name": "Timer",
       "thumbnail": "./thumbnail.png",
-      "description": "Counts elapsed time and warns when specified time is exhausted!",
+      "description": "Keeps track of time and broadcasts when time is up.",
       "tags": ["timer", "time"],
       "broadcasts": {
         "timeup": {
@@ -14323,25 +8929,22 @@ require(['jquery'], function($) {
 <polymer-element name="ceci-transformer" extends="ceci-element" attributes="message" assetpath="component-transformer/">
   <ceci-definition>
     {
-      "name": "Transformer",
+      "name": "Signal Transformer",
       "thumbnail": "./thumbnail.png",
-      "description": "Listens for a message and sends out what the user specifies.",
+      "description": "Transforms an incoming signal to a value you set and broadcasts it.",
       "broadcasts": {
         "transformedMessage": {
-          "label": "Transformed Message",
-          "description": "Broadcasts the current count."
+          "label": "Transformed Message"
         }
       },
       "listeners": {
         "incomingMessage": {
-          "description": "Increment the total by the increment value",
           "label": "Incoming Message",
           "default" : true
         }
       },
       "attributes": {
         "message": {
-          "description": "Transform received messaeg to this.",
           "label": "Message",
           "editable": "Text",
           "default" : true

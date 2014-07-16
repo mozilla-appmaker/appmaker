@@ -1,6 +1,6 @@
 {
 	"ceci-metronome": "Metronome",
-	"ceci-metronome/description": "Outputs ticks measured in Beats Per Minute (BPM)",
+	"ceci-metronome/description": "Counts and sends out a beat at regular intervals.",
 	"ceci-metronome/attributes/beatsperminute/label": "Beats Per Minute (BPM)",
 	"ceci-metronome/attributes/beatsperminute/description": "Metronome ticks measured in beats per minute",
 	"ceci-metronome/attributes/autostart/label": "Autostart",

@@ -1,6 +1,6 @@
 {
   "ceci-timer/name": "Timer",
-  "ceci-timer/description": "Counts elapsed time and warns when specified time is exhausted!",
+  "ceci-timer/description": "Keeps track of time and broadcasts when time is up.",
   "ceci-timer/timeup/label": "Time is Up",
   "ceci-timer/timeup/description": "Time is up!",
   "ceci-timer/start/label": "Start",

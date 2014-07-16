@@ -1,6 +1,6 @@
 {
-  "ceci-component-canvas/name": "Canvas",
-  "ceci-component-canvas/description": "A canvas for drawing and sharing",
+  "ceci-component-canvas/name": "Drawing Canvas",
+  "ceci-component-canvas/description": "Lets you draw simple images.",
   "ceci-component-canvas/imageGenerated/label": "Image Generated",
   "ceci-component-canvas/imageGenerated/description": "A portable image URL was generated",
   "ceci-component-canvas/generateImage/label": "Generate Image",

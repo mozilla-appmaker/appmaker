@@ -1,6 +1,6 @@
 {
   "ceci-channel-gate/name": "Channel Gate",
-  "ceci-channel-gate/description": "Chooose which channel to send a signal through.",
+  "ceci-channel-gate/description": "Sends an incoming signal on a broadcast channel of your choosing.",
   "ceci-channel-gate/A/label": "Output A",
   "ceci-channel-gate/A/description": "The first broadcast in the rotation.",
   "ceci-channel-gate/B/label": "Output B",
