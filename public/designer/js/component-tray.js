@@ -178,9 +178,9 @@ define(
           }
           //Means it wasn't in any categories
           if(!added){
-            var item = DesignerTray.buildItem(name);
-            DesignerTray.showCategory("other");
-            document.querySelector(".category-container.other").appendChild(item);
+            // var item = DesignerTray.buildItem(name);
+            // DesignerTray.showCategory("other");
+            // document.querySelector(".category-container.other").appendChild(item);
           }
           knownComponents.push(name);
         }
