@@ -227,12 +227,14 @@
             analytics.event("New App Started");
           });
 
-          //Rename App
-          this.$.renameApp.addEventListener("click", function() {
+          function renameAppHandler() {
             var oldName = application.getCurrentApp();
             var newName = window.prompt(l10n.get("What do you want to call this app?"));
             self.renameApp(oldName, newName);
-          });
+          }
+
+          //Rename App
+          this.$.renameApp.addEventListener("click", renameAppHandler);
 
           //Save App As
           var saveAsHandler = function() {
@@ -267,7 +269,7 @@
           };
 
           this.$.saveAppAs.addEventListener("click", saveAsHandler);
-          document.querySelector(".app-name").addEventListener("click", saveAsHandler);
+          document.querySelector(".app-name").addEventListener("click", renameAppHandler);
 
           //Update App
           this.$.saveApp.addEventListener("click", function() {
