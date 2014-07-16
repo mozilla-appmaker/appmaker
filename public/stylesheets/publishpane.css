@@ -63,7 +63,7 @@
   -webkit-transition: top 0.2s, height 0.2s;
      -moz-transition: top 0.2s, height 0.2s;
           transition: top 0.2s, height 0.2s;
-  overflow: hidden;
+  overflow: scroll;
 }
 
 #publish-pane-panel.expanded {
@@ -73,10 +73,8 @@
 #publish-pane-panel-content {
   position: absolute;
   top: 50px;
-  bottom: 0px;
   right: 0px;
   left: 0px;
-  height: 100%;
   background-color: #212429;
   z-index: 999;
 }
