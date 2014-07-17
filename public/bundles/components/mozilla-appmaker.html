@@ -2481,8 +2481,12 @@
     <style>:host {
   display: block;
   width: 100%;
-  font-size: 0px;
   word-spacing: -1;
+}
+
+:host .buttons-wrapper {
+  line-height: 0px;
+  font-size: 0px;
 }
 
 :host .button-wrapper {
@@ -2552,15 +2556,17 @@
   border: none;
 }
 </style>
-    <div class="button-wrapper" on-ceci-pressdown="{{clickleft}}">
-      <div class="button" id="leftbutton">{{leftlabel}}</div>
-      <div class="overlay active-overlay"></div>
-      <div class="overlay hover-overlay"></div>
-    </div>
-    <div class="button-wrapper" on-ceci-pressdown="{{clickright}}">
-      <div class="button" id="rightbutton">{{rightlabel}}</div>
-      <div class="overlay active-overlay"></div>
-      <div class="overlay hover-overlay"></div>
+    <div class="buttons-wrapper">
+      <div class="button-wrapper" on-ceci-pressdown="{{clickleft}}">
+        <div class="button" id="leftbutton">{{leftlabel}}</div>
+        <div class="overlay active-overlay"></div>
+        <div class="overlay hover-overlay"></div>
+      </div>
+      <div class="button-wrapper" on-ceci-pressdown="{{clickright}}">
+        <div class="button" id="rightbutton">{{rightlabel}}</div>
+        <div class="overlay active-overlay"></div>
+        <div class="overlay hover-overlay"></div>
+      </div>
     </div>
     <shadow></shadow></template>
   <script>
