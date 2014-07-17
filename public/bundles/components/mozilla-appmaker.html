@@ -606,9 +606,9 @@
       "description": "Responds to your clicks and taps.",
       "name": "Button",
       "broadcasts": {
-        "tap": {
+        "click": {
           "label": "Press",
-          "description": "Occurs when button is tapped.",
+          "description": "Occurs when button is clicked.",
           "default": true
         }
       },
@@ -720,7 +720,7 @@
         this.super();
       },
       pressdown : function(){
-        this.broadcast('tap', this.getAttribute('value'));
+        this.broadcast('click', this.getAttribute('value'));
       },
       textcolorChanged: function (oldValue, newValue) {
         this.$.button.style.color = newValue;
