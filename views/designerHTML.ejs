@@ -34,16 +34,25 @@
       </div>
       <div class="tab-sections">
         <div class="section section-customize">
-          <div class="editable-header nonremix-ui">
-            <span class="name"></span>
+          <div class="section-header"><%- gettext("Customize your Brick") %></div>
+          <div class="section-content">
+            <div class="editable-header nonremix-ui">
+              <span class="name"></span>
+            </div>
+            <div class="editable-attributes"></div>
           </div>
-          <div class="editable-attributes"></div>
         </div>
         <div class="section section-manage-data">
-          <data-manager></data-manager>
+          <div class="section-header"><%- gettext("View and manage data stored by your App") %></div>
+          <div class="section-content">
+            <data-manager></data-manager>
+          </div>
         </div>
         <div class="section section-project-settings">
-          <project-settings></project-settings>
+          <div class="section-header"><%- gettext("Name & describe your App") %></div>
+          <div class="section-content">
+            <project-settings></project-settings>
+          </div>
         </div>
       </div>
     </div>
