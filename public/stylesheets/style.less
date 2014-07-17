@@ -583,17 +583,31 @@ li.tab {
 }
 
 .section {
-  padding: 10px;
   position: relative;
+
+  .section-header {
+    padding: 12px 10px 13px 10px;
+    color: #666;
+  }
+
+  .section-content {
+    padding: 10px;
+  }
 }
 
 .tab-sections {
   overflow-y: auto;
   flex: 1;
   position: absolute;
-  top: 45px;
+  top: 43px;
   bottom: 0px;
   width: 100%;
+
+  .section-header {
+    background: #EEE;
+  }
+
+
 }
 
 .tab-sections .section {
