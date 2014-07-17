@@ -606,9 +606,9 @@
       "description": "Responds to your clicks and taps.",
       "name": "Button",
       "broadcasts": {
-        "click": {
+        "tap": {
           "label": "Press",
-          "description": "Occurs when button is clicked.",
+          "description": "Occurs when button is tapped.",
           "default": true
         }
       },
@@ -720,7 +720,7 @@
         this.super();
       },
       pressdown : function(){
-        this.broadcast('click', this.getAttribute('value'));
+        this.broadcast('tap', this.getAttribute('value'));
       },
       textcolorChanged: function (oldValue, newValue) {
         this.$.button.style.color = newValue;
@@ -3855,21 +3855,49 @@ header {
         <div id="ball"></div>
       </div>
     </div>
-    <audio id="kicksound" src="component-kickdrum/sounds/kick.mp3" preload="auto"></audio>
     <shadow></shadow>
   </template>
   <script>
     Polymer('ceci-kickdrum', {
+      audioBuffer: null,
       ready: function () {
         this.super();
+
+        this.ctx = window.AudioContext || window.webkitAudioContext;
+
+        if (!this.ctx) {
+          console.error('Could not get AudioContext for kickdrum.');
+          return;
+        }
+
+        this.ctx = new this.ctx();
+
         var that = this;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", this.resolvePath('sounds/kick.ogg'), true);
+        xhr.responseType = "arraybuffer";
+        xhr.onload = function () {
+          if (xhr.response.byteLength) {
+            that.ctx.decodeAudioData(xhr.response, function(data) {
+              that.audioBuffer = data;
+            },
+            function (e) {
+              console.error('Error decoding the audio buffer for kickdrum.', arguments);
+            });
+          }
+        };
+        xhr.send();
       },
       kickon: function (e) {
-        var kick = this.$.kicksound.cloneNode();
-        kick.play();
-        kick.addEventListener("ended",function(){
-          kick = {};
-        });
+        var src = this.ctx.createBufferSource();
+        var gain = this.ctx.createGain();
+        gain.gain.value = this.volume;
+        src.buffer = this.audioBuffer;
+        src.loop = false;
+        src.connect(gain);
+        gain.connect(this.ctx.destination);
+        src.start(0);
         this.$.kick.classList.add("on");
       },
       kick : function(){
@@ -3881,9 +3909,6 @@ header {
       },
       kickoff : function(e){
         this.$.kick.classList.remove("on");
-      },
-      volumeChanged : function(oldValue, newValue){
-        this.$.kicksound.volume = newValue;
       },
       stickcolorChanged: function (oldValue, newValue) {
         this.$.stick.style.background = newValue;
