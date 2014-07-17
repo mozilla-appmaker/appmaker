@@ -1,6 +1,18 @@
 define(
-  ["jquery", "tutorial/index", "text!tutorial/intro.html", "designer/component-tray"],
-  function ($, Tutorial, TutorialSteps, Tray) {
+  [ "jquery",
+    "ejs",
+    "l10n",
+    "designer/component-tray",
+    "tutorial/index",
+    "text!tutorial/intro.ejs"
+  ],
+  function ($, Ejs, l10n, Tray, Tutorial, content) {
+
+    content = Ejs.render(content, {
+      gettext: l10n.get
+    });
+    var $content = $(content);
+    $content.find('[data-controls]').remove().appendTo($content.find('[data-step]:not(:last-child)'));
 
     function matchTarget(offset, elements) {
       $(this).css({
@@ -11,9 +23,6 @@ define(
         'box-sizing': 'border-box'
       });
     }
-
-    var $content = $(TutorialSteps);
-    $content.find('[data-controls]').remove().appendTo($content.find('[data-step]:not(:last-child)'));
 
     var Intro = function() {
       return new Tutorial([

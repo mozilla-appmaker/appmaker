@@ -73,7 +73,8 @@ module.exports = function( grunt ) {
         "public/templates/**/*.html",
         "public/templates/**/*.js",
         "public/samples/**/*.html",
-        "public/samples/**/*.js"
+        "public/samples/**/*.js",
+        "public/tutorial/*.ejs"
       ],
       options: {
         pathToJSON: [ "locale/en_US/msg.json" ],
