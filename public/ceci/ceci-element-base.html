@@ -257,12 +257,13 @@
       },
       attached: function () {
         var els = this.shadowRoot.querySelectorAll(customListenerQuerySelector);
-        this.touchEnabled = "ontouchstart";
+        this.touchEnabled = 'ontouchstart' in document.documentElement;
         Array.prototype.forEach.call(els, this.addCustomListener.bind(this));
         document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));
       },
       addCustomListener: function(el, listener){
         // Loop over the on-ceci-* listener types to see which one applies to this element
+        var that = this;
         Object.keys(customListenerMap).forEach(function (listener) {
           if (!el.hasAttribute(listener)) return;
 
@@ -271,7 +272,7 @@
 
           if (mapEntry) {
             // Fire an event directly at the element with the on-ceci-* attribute
-            el.addEventListener(mapEntry[this.touchEnabled ? 'mobile' : 'desktop'], function(e){
+            el.addEventListener(mapEntry[that.touchEnabled ? 'mobile' : 'desktop'], function(e){
               // Emit an event without the "on-" prefix, to let Polymer's template syntax sugar do the rest
               el.dispatchEvent(new CustomEvent(listener.substr(3), {bubbles: true, detail: this}));
             });
