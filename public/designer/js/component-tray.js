@@ -347,10 +347,10 @@ define(
             });
 
             if (!found) {
-              Array.prototype.forEach.call(menuElements, function (e) { e.classList.add('hide'); });
+              Array.prototype.forEach.call(menuElements, function(e) { e.classList.add('hide'); });
             }
             else {
-              Array.prototype.forEach.call(menuElements, function (e) { e.classList.remove('hide'); });
+              Array.prototype.forEach.call(menuElements, function(e) { e.classList.remove('hide'); });
             }
           }
         });
@@ -374,7 +374,7 @@ define(
       }
     }
 
-    Polymer.whenPolymerReady(function () {
+    window.addEventListener('polymer-ready', function() {
       DesignerTray.addComponentsFromRegistry();
       var searchBox = document.querySelector('.component-search');
       searchBox.addEventListener('keyup', function() {
