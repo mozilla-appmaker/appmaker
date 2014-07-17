@@ -13,7 +13,7 @@ define([], function () {
   var instsallQRCode;
 
 
-  document.addEventListener('DOMContentLoaded', function () {
+  function findImportantDOMElements () {
     master = document.getElementById('publish-pane');
     panel = document.getElementById('publish-pane-panel');
     content = document.getElementById('publish-pane-panel-content');
@@ -28,7 +28,14 @@ define([], function () {
     instsallQRCode = document.querySelector('.qrcode[data-qrcode-for="install"]');
 
     close.addEventListener("click", closePublishPanel);
-  });
+  }
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    findImportantDOMElements();
+  }
+  else {
+    window.addEventListener('polymer-ready', findImportantDOMElements);
+  }
 
   function showQRCode (kind) {
     var qrCodeTaggedElements = document.querySelectorAll('[data-qrcode-for]');
