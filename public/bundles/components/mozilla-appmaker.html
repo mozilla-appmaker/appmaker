@@ -649,8 +649,12 @@
   position: relative;
 }
 
-:host #button {
+:host #buttonwrapper {
   cursor: pointer;
+}
+
+:host #button {
+
   border-bottom: 2px solid rgba(0,0,0,.1);
   display: block;
   text-align: center;
@@ -660,7 +664,6 @@
   font-weight: 300;
   font-size: 1.8rem;
   line-height: 1.8rem;
-
 }
 
 :host .overlay {
@@ -680,21 +683,11 @@
   background: white;
 }
 
-:host .button-wrapper:hover .hover-overlay {
+:host .pressdown .active-overlay {
   opacity: .1;
 }
 
-:host .button-wrapper:active .active-overlay {
-  opacity: .1;
-}
-:host .button-wrapper:active .hover-overlay {
-  opacity: 0;
-}
-
-
-
-
-:host .button-wrapper:active #button {
+:host .pressdown #button {
   border-top: solid 2px rgba(0,0,0,.1);
   border-bottom: none;
 }
@@ -702,12 +695,10 @@
 :host button {
   border: none;
 }
-
 </style>
-    <div id="buttonwrapper" on-ceci-pressdown="{{pressdown}}" class="button-wrapper">
+    <div id="buttonwrapper" on-ceci-pressdown="{{pressdown}}" on-ceci-pressup="{{pressup}}" class="button-wrapper">
       <div id="button">{{label}}</div>
       <div class="overlay active-overlay"></div>
-      <div class="overlay hover-overlay"></div>
     </div>
     <shadow></shadow>
   </template>
@@ -719,7 +710,11 @@
       attached : function(){
         this.super();
       },
+      pressup : function(){
+        this.$.buttonwrapper.classList.remove("pressdown");
+      },
       pressdown : function(){
+        this.$.buttonwrapper.classList.add("pressdown");
         this.broadcast('click', this.getAttribute('value'));
       },
       textcolorChanged: function (oldValue, newValue) {
@@ -2167,19 +2162,47 @@
     <div id="wrapper" class="off" on-ceci-pressdown="{{kickon}}" on-ceci-pressup="{{kickoff}}">
       <div id="bell"></div>
     </div>
-    <audio id="kicksound" src="component-cowbell/sounds/sound.mp3" preload="auto"></audio>
     <shadow></shadow>
   </template>
   <script>
     Polymer('ceci-cowbell', {
+      audioBuffer: null,
       ready: function () {
         this.super();
+
+        this.ctx = window.AudioContext || window.webkitAudioContext;
+
+        if (!this.ctx) {
+          console.error('Could not get AudioContext for kickdrum.');
+          return;
+        }
+
+        this.ctx = new this.ctx();
         var that = this;
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", this.resolvePath('sounds/sound.mp3'), true);
+        xhr.responseType = "arraybuffer";
+        xhr.onload = function () {
+          if (xhr.response.byteLength) {
+            that.ctx.decodeAudioData(xhr.response, function(data) {
+              that.audioBuffer = data;
+            },
+            function (e) {
+              console.error('Error decoding the audio buffer for kickdrum.', arguments);
+            });
+          }
+        };
+        xhr.send();
       },
       kickon: function () {
-        this.$.kicksound.pause();
-        this.$.kicksound.currentTime = 0;
-        this.$.kicksound.play();
+        var src = this.ctx.createBufferSource();
+        var gain = this.ctx.createGain();
+        gain.gain.value = this.volume;
+        src.buffer = this.audioBuffer;
+        src.loop = false;
+        src.connect(gain);
+        gain.connect(this.ctx.destination);
+        src.start(0);
         this.$.wrapper.classList.add("hit");
       },
       kick : function(){
@@ -2191,9 +2214,6 @@
       },
       kickoff : function(){
         this.$.wrapper.classList.remove("hit");
-      },
-      volumeChanged : function(oldValue, newValue){
-        this.$.kicksound.volume = newValue;
       },
       backgroundcolorChanged: function (oldValue, newValue) {
         this.$.wrapper.style.background = newValue;
@@ -8127,19 +8147,47 @@ header {
       <div id="drum"></div>
       <div id="stick"></div>
     </div>
-    <audio id="kicksound" src="component-snaredrum/sounds/snare.mp3" preload="auto"></audio>
     <shadow></shadow>
   </template>
   <script>
     Polymer('ceci-snaredrum', {
+      audioBuffer: null,
       ready: function () {
         this.super();
+
+        this.ctx = window.AudioContext || window.webkitAudioContext;
+
+        if (!this.ctx) {
+          console.error('Could not get AudioContext for kickdrum.');
+          return;
+        }
+
+        this.ctx = new this.ctx();
         var that = this;
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", this.resolvePath('sounds/snare.mp3'), true);
+        xhr.responseType = "arraybuffer";
+        xhr.onload = function () {
+          if (xhr.response.byteLength) {
+            that.ctx.decodeAudioData(xhr.response, function(data) {
+              that.audioBuffer = data;
+            },
+            function (e) {
+              console.error('Error decoding the audio buffer for kickdrum.', arguments);
+            });
+          }
+        };
+        xhr.send();
       },
       kickon: function () {
-        this.$.kicksound.pause();
-        this.$.kicksound.currentTime = 0;
-        this.$.kicksound.play();
+        var src = this.ctx.createBufferSource();
+        var gain = this.ctx.createGain();
+        gain.gain.value = this.volume;
+        src.buffer = this.audioBuffer;
+        src.loop = false;
+        src.connect(gain);
+        gain.connect(this.ctx.destination);
+        src.start(0);
         this.$.kick.classList.add("hit");
       },
       kick : function(){
@@ -8151,9 +8199,6 @@ header {
       },
       kickoff : function(){
         this.$.kick.classList.remove("hit");
-      },
-      volumeChanged : function(oldValue, newValue){
-        this.$.kicksound.volume = newValue;
       },
       stickcolorChanged: function (oldValue, newValue) {
         this.$.stick.style.background = newValue;
@@ -8168,14 +8213,14 @@ header {
   </script>
 </polymer-element>
 
-<polymer-element name="ceci-spacer" attributes="height" height="30" extends="ceci-element" assetpath="component-spacer/">
+<polymer-element name="ceci-spacer" attributes="height background" extends="ceci-element" height="30" background="#FFFFFF" assetpath="component-spacer/">
   <template>
     <style>:host {
   display: block;
   width: 100%;
 }
 </style>
-    <div id="spacer"></div>
+    <div style="background: {{background}}; height: {{height}}px;" id="spacer"></div>
     <shadow></shadow>
   </template>
   <ceci-definition>
@@ -8192,6 +8237,11 @@ header {
           "description": "The height of the spacer.",
           "editable": "number",
           "min" : 5
+        },
+        "background": {
+          "label": "Background Color",
+          "description": "The background color of the spacer.",
+          "editable": "color"
         }
       }
     }
@@ -8200,9 +8250,6 @@ header {
     Polymer('ceci-spacer', {
       ready: function () {
         this.super();
-      },
-      heightChanged: function (oldValue, newValue) {
-        this.$.spacer.style.height = newValue + "px";
       }
     });
   </script>
