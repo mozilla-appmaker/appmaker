@@ -378,7 +378,7 @@
         getOrWaitForCeciApp: function(callback){
           var ceciApp = document.querySelector("ceci-app");
           if(!ceciApp){
-            window.addEventListener("CeciAppReady", function(e){
+            window.addEventListener("CeciAppDOMReady", function(e){
               var ceciApp = document.querySelector("ceci-app");
               callback(ceciApp);
             });
