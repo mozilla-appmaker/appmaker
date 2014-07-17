@@ -17,7 +17,8 @@
     "webmaker-analytics": "~0.1.0",
     "webmaker-auth-client": "0.1.7",
     "webmaker-language-picker": "0.0.23",
-    "requirejs-text": "~2.0.12"
+    "requirejs-text": "~2.0.12",
+    "ejs": "~1.0.0"
   },
   "resolutions": {
     "jquery": "~2.0.3"
