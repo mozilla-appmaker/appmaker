@@ -243,7 +243,9 @@
             var ceciApp = document.querySelector('ceci-app');
             var html = ceciApp.outerHTML;
 
-            if(name){
+            if (name === null) {
+              self.appRenameFailed(l10n.get("Save was cancelled."));
+            } else if(name.trim()){
               application.saveApp(name,ceciApp.appid,html, function(err,data){
                 if(!err){
 
@@ -305,17 +307,20 @@
             app.querySelector("ceci-card").setAttribute("visible","true");
 
             var name = app.name;
-            // This might need to be made its own thing so it can be called
-            // in various places:
-            while (!name || name === l10n.get("Unsaved App")) {
-              name = prompt("Please name your app first:");
-              if(name === null) break;
+            // This is a new app, so get a new name for it.
+            if (!name || name === l10n.get("Unsaved App")) {
+              // window.prompt needs to be made its own thing so it can be called
+              // in various places:
+              name = window.prompt("Please name your app first:");
+              if (name === null) {
+                return self.appRenameFailed(l10n.get("Save was cancelled."));
+              } else if (!name.trim()) {
+                return self.appRenameFailed(l10n.get("App names can't be blank."));
+              }
               app.setAttribute("name", name);
               app.setAttribute("appid", "ceci-app-"+uuid());
             }
-            if(!name) {
-              return reporter.errorReport("Save was cancelled.");
-            }
+
             // we have a name: publish!
             var alreadySaved = self.editingmode === "saved";
             function afterPublish(err,data) {
@@ -325,7 +330,11 @@
                   reporter.errorReport("app was published, but updating failed");
                   analytics.event("Error Updating Published App", { nonInteraction: true });
                 } else {
-                  reporter.errorReport((alreadySaved? "updated " : '') + "app was not successfully published");
+                  if (err.responseJSON.error === 'App name must be unique.') {
+                    self.appRenameFailed(l10n.get('App name must be unique.'));
+                  } else {
+                    reporter.errorReport((alreadySaved? "updated " : '') + "app was not successfully published");
+                  }
                   analytics.event("Error Publishing App", { nonInteraction: true });
                 }
                 return;

@@ -61,8 +61,7 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
         var op = alreadySaved ? this.updateApp : this.saveApp;
         op(name, appid, html, function callAPIPublish(err) {
           if(err) {
-            reporter.errorReport("publish failed in save step!", err);
-            if(next) { next(err); }
+            if(afterPublish) { afterPublish(err); }
             return;
           }
           $.ajax('/api/publish', {
