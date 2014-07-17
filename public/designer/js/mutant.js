@@ -47,6 +47,7 @@ define(
         });
       });
     }
+
     if (window.Polymer) {
       Polymer.whenPolymerReady(onPolymerReady);
     } else {

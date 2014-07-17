@@ -20,16 +20,16 @@ define(
   ],
   function(l10n, Inflector, Utils, Ceci, Intro) {
     "use strict";
-    function onPolymerReady() {
+    function onPolymerReadyForIntro() {
       var intro = new Intro();
       intro.start();
     }
 
     if (Utils.getQueryStringVariable('tutorial')) {
       if (window.Polymer) {
-        Polymer.whenPolymerReady(onPolymerReady);
+        Polymer.whenPolymerReady(onPolymerReadyForIntro);
       } else {
-        window.addEventListener("polymer-ready", onPolymerReady);
+        window.addEventListener("polymer-ready", onPolymerReadyForIntro);
       }
     }
   }
