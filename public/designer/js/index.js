@@ -22,7 +22,7 @@ define(
     "use strict";
 
     if (Utils.getQueryStringVariable('tutorial')) {
-      window.addEventListener("polymer-ready", function () {
+      Polymer.whenPolymerReady(function () {
         var intro = new Intro();
         intro.start();
       });

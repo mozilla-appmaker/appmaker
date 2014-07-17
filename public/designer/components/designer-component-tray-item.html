@@ -1,6 +1,23 @@
 <polymer-element
   name="designer-component-tray-item"
   attributes="name description label author updatedat thumbnail">
+  <template>
+    <link rel="stylesheet" href="/stylesheets/designer-component-tray-item.css">
+    <div class="add-component component-card" name="{{name}}" show="true" on-click="{{clicked}}">
+      <div class="more-info">
+        <div class="image-wrapper"><img src="{{thumbnail}}"></div>
+        <p class="description">{{description}}</p>
+        <div class="arrow-wrapper"></div>
+      </div>
+      <div class="component-description">
+        <h1>
+          {{label}}
+          <div id="showInfo" on-mouseenter="{{showPopup}}" on-mouseout="{{hidePopup}}"></div>
+        </h1>
+      </div>
+      <a class="show-more" href="#">More Info</a>
+    </div>
+  </template>
   <script>
     var floatingMoreInfoPopup;
 
@@ -46,21 +63,4 @@
       }
     });
   </script>
-  <template>
-    <link rel="stylesheet" href="/stylesheets/designer-component-tray-item.css">
-    <div class="add-component component-card" name="{{name}}" show="true" on-click="{{clicked}}">
-      <div class="more-info">
-        <div class="image-wrapper"><img src="{{thumbnail}}"></div>
-        <p class="description">{{description}}</p>
-        <div class="arrow-wrapper"></div>
-      </div>
-      <div class="component-description">
-        <h1>
-          {{label}}
-          <div id="showInfo" on-mouseenter="{{showPopup}}" on-mouseout="{{hidePopup}}"></div>
-        </h1>
-      </div>
-      <a class="show-more" href="#">More Info</a>
-    </div>
-  </template>
 </polymer-element>
