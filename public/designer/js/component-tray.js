@@ -374,7 +374,7 @@ define(
       }
     }
 
-    window.addEventListener("polymer-ready", function () {
+    Polymer.whenPolymerReady(function () {
       DesignerTray.addComponentsFromRegistry();
       var searchBox = document.querySelector('.component-search');
       searchBox.addEventListener('keyup', function() {
