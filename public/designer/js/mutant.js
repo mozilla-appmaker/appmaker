@@ -34,7 +34,7 @@ define(
 
     // For a special case in Chrome where elements are already in the DOM
     // and don't fire CeciElementAdded
-    Polymer.whenPolymerReady(function () {
+    window.addEventListener('polymer-ready', function () {
       var cards = document.querySelectorAll('ceci-card');
       Array.prototype.forEach.call(cards, function (card) {
         Array.prototype.forEach.call(card.childNodes, function (child) {
