@@ -273,7 +273,6 @@
           if (mapEntry) {
             // Fire an event directly at the element with the on-ceci-* attribute
             el.addEventListener(mapEntry[that.touchEnabled ? 'mobile' : 'desktop'], function(e){
-              console.log(mapEntry[that.touchEnabled ? 'mobile' : 'desktop']);
               // Emit an event without the "on-" prefix, to let Polymer's template syntax sugar do the rest
               el.dispatchEvent(new CustomEvent(listener.substr(3), {bubbles: true, detail: this}));
             });
