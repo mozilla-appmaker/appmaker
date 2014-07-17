@@ -793,7 +793,7 @@
         init(togetherjs_extension, l10n, jquery, application, tray, utils, reporter, analytics, persona, WebmakerAuthClient);
       },
       function(err) {
-        reporter.errorReport('Failed to load a required module (analytics and/or persona and/or webmaker-auth-client)', err);
+        console.error('Failed to load a required module (analytics and/or persona and/or webmaker-auth-client)', err);
         require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'reporter'], init);
       }
     );
