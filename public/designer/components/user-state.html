@@ -241,30 +241,33 @@
             var name = window.prompt(l10n.get("What do you want to call this app?"));
 
             var ceciApp = document.querySelector('ceci-app');
-            ceciApp.setAttribute("name", name);
-            ceciApp.setAttribute("appid", "ceci-app-"+uuid());
-
             var html = ceciApp.outerHTML;
 
             if(name){
               application.saveApp(name,ceciApp.appid,html, function(err,data){
                 if(!err){
+
                   application.setCurrentApp(name);
                   self.refreshUserState();
                   self.updateAppName(name);
+                  ceciApp.setAttribute("appid", "ceci-app-"+uuid());
                   self.editingmode = "saved";
                   window.dispatchEvent(new CustomEvent("CeciAppSaveAs"));
                   analytics.event("Saved App As");
                 } else {
-                  reporter.errorReport(
-                    l10n.get("Your app couldn't be saved."),
-                    (err.responseJSON ? l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error) : '')
-                  );
+                  if (err.responseJSON.error === 'App name must be unique.') {
+                    self.appRenameFailed(l10n.get('App name must be unique.'));
+                  } else {
+                    reporter.errorReport(
+                      l10n.get("Your app couldn't be saved."),
+                      (err.responseJSON ? l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error) : '')
+                    );
+                  }
                   analytics.event("Error Saving App As", { nonInteraction: true });
                 }
               });
             } else {
-              reporter.consoleReport("Please name your app.");
+              self.appRenameFailed(l10n.get("App names can't be blank."));
             }
           };
 
@@ -350,7 +353,7 @@
             application.renameApp(oldName, newName);
             analytics.event("Renamed App");
           } else {
-            reporter.errorReport(l10n.get("App names can't be blank."));
+            this.appRenameFailed(l10n.get("App names can't be blank."));
           }
         },
         signInStarted: function(){
@@ -397,12 +400,15 @@
           });
         },
         appRenameOk: function(name){
+          // Rename OK, update the current working app.
           application.setCurrentApp(name);
           this.updateAppName(name);
           this.refreshUserState();
         },
-        appRenameFailed: function(){
-          reporter.errorReport(l10n.get("app rename failed"));
+        appRenameFailed: function(message){
+          // Rename failed, revert to last know good app name
+          this.updateAppName(application.getCurrentApp());
+          reporter.errorReport(message);
         },
         signinClick: function() {
           auth.login();
