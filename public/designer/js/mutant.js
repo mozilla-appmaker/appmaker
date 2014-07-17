@@ -32,6 +32,21 @@ define(
       Editable.displayAttributes(element);
     }
 
+    // For a special case in Chrome where elements are already in the DOM
+    // and don't fire CeciElementAdded
+    Polymer.whenPolymerReady(function () {
+      var cards = document.querySelectorAll('ceci-card');
+      Array.prototype.forEach.call(cards, function (card) {
+        Array.prototype.forEach.call(card.childNodes, function (child) {
+          if (child.localName.indexOf('ceci-') === 0) {
+            child.addEventListener('click', function (e) {
+              selectElement(child);
+            });
+          }
+        });
+      });
+    });
+
     // Add click handler to new elements
     window.addEventListener('CeciElementAdded', function(e){
       var element = e.detail;
