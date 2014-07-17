@@ -34,7 +34,8 @@ define(
 
     // For a special case in Chrome where elements are already in the DOM
     // and don't fire CeciElementAdded
-    window.addEventListener('polymer-ready', function () {
+
+    function onPolymerReady() {
       var cards = document.querySelectorAll('ceci-card');
       Array.prototype.forEach.call(cards, function (card) {
         Array.prototype.forEach.call(card.childNodes, function (child) {
@@ -45,7 +46,12 @@ define(
           }
         });
       });
-    });
+    }
+    if (window.Polymer) {
+      Polymer.whenPolymerReady(onPolymerReady);
+    } else {
+      window.addEventListener("polymer-ready", onPolymerReady);
+    }
 
     // Add click handler to new elements
     window.addEventListener('CeciElementAdded', function(e){

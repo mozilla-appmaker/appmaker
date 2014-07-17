@@ -20,12 +20,17 @@ define(
   ],
   function(l10n, Inflector, Utils, Ceci, Intro) {
     "use strict";
+    function onPolymerReady() {
+      var intro = new Intro();
+      intro.start();
+    }
 
     if (Utils.getQueryStringVariable('tutorial')) {
-      window.addEventListener('polymer-ready', function () {
-        var intro = new Intro();
-        intro.start();
-      });
+      if (window.Polymer) {
+        Polymer.whenPolymerReady(onPolymerReady);
+      } else {
+        window.addEventListener("polymer-ready", onPolymerReady);
+      }
     }
   }
 );
