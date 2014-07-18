@@ -3,6 +3,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
+  function washString (str) {
+    var washer = document.createElement('div');
+    washer.textContent = str;
+    return washer.innerHTML;
+  }
+
   var urlComponent = window.CustomElements;
   var editableTypeHandlers = {
     'multiple': function (element, attributeName, title, value, definition) {
@@ -14,7 +20,7 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       );
 
       for (var key in options) {
-        e.find('.option-list').append('<input type="text" value="' +options[key]+'" />');
+        e.find('.option-list').append('<input type="text" value="' + washString(options[key]) +'" />');
       }
 
       var add = $('<a class="add" href="#">Add Another</a>');
@@ -57,7 +63,7 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       var e = $('<div><label>' +
         title +
         '</label><input type="text" value="' +
-        value +
+        washString(value) +
         '"></input></div>'
       );
       e.on('keyup', function(evt) {
@@ -69,7 +75,7 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       var e = $('<div><label>' +
         title +
         '</label><input type="text" value="' +
-        value +
+        washString(value) +
         '"></input></div>'
       );
       e.on('change', function(evt) {
@@ -125,7 +131,7 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
     'color': function (element, attributeName, title, value, definition) {
       var e = $(
         '<div><label>' + title + '</label>' +
-        '<div class="colorpicker"><div class="swatch" style="background: '+value+'"></div><input type="text" value="' + value + '"/></div>' +
+        '<div class="colorpicker"><div class="swatch" style="background: '+washString(value)+'"></div><input type="text" value="' + washString(value) + '"/></div>' +
         '</div>'
       );
 
@@ -155,7 +161,7 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       });
 
       e.on('change', function (evt) {
-        element.setAttribute(attributeName, evt.target.value);
+        element.setAttribute(attributeName, washString(evt.target.value));
       });
 
       return e[0];
