@@ -1,6 +1,6 @@
 {
 	"ceci-button-with-confirmation": "Button with Confirmation",
-	"ceci-button-with-confirmation/description": "A button that asks the user to confirm before broadcasting.",
+	"ceci-button-with-confirmation/description": "Responds to your clicks and taps by asking you \"Are you sure?\"",
 	"ceci-button-with-confirmation/attributes/label": "Click and Confirm Me",
 	"ceci-button-with-confirmation/attributes/label/label": "Label",
 	"ceci-button-with-confirmation/attributes/label/description": "Text shown on the button.",

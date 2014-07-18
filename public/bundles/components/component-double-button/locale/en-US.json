@@ -1,5 +1,5 @@
 {
-  "ceci-double-button/description": "Broadcasts a \"click\" when clicked.",
+  "ceci-double-button/description": "Responds to your clicks and taps.",
   "ceci-double-button/name": "Double Button",
   "ceci-double-button/clickleft/label": "Left Button",
   "ceci-double-button/clickleft/description": "Occurs when left button is clicked.",

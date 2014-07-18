@@ -1,6 +1,6 @@
 {
-	"ceci-chat-window": "Chat Window",
-	"ceci-chat-window/description": "Start your own chat room.",
+	"ceci-chat-window": "Chat Room",
+	"ceci-chat-window/description": "Connects you to a simple chat room.",
 	"ceci-chat-window/chatRoom": "Chat Room",
 	"ceci-chat-window/roomName": "Room:",
 	"ceci-chat-window/is now known as": "is now known as",

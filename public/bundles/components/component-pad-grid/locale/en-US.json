@@ -1,6 +1,6 @@
 {
-  "ceci-pad-grid/name": "Pad Grid",
-  "ceci-pad-grid/description": "Alternates output between set broadcasts from a single input",
+  "ceci-pad-grid/name": "Button Grid",
+  "ceci-pad-grid/description": "Displays a grid of buttons, each capable of its own action.",
   "ceci-pad-grid/taplabel/label": "Tapped label",
   "ceci-pad-grid/taplabel/description": "The label of the key tapped",
   "ceci-pad-grid/tapnumber/label": "Tapped number",

@@ -1,6 +1,6 @@
 {
-	"ceci-camera-button": "Camera Button",
-	"ceci-camera-button/description": "Takes a picture with your camera.",
+	"ceci-camera-button": "Camera",
+	"ceci-camera-button/description": "Takes a picture.",
 	"ceci-camera-button/attributes/label": "Enable Camera",
 	"ceci-camera-button/attributes/label/label": "Label",
 	"ceci-camera-button/attributes/label/description": "Text shown on the button.",

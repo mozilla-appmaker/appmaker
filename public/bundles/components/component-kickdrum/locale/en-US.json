@@ -1,5 +1,5 @@
 {
-  "ceci-kickdrum/description": "Broadcasts a \"click\" when clicked.",
+  "ceci-kickdrum/description": "Plays a kickdrum.",
   "ceci-kickdrum/name": "Kick Drum",
   "ceci-kickdrum/kick/description": "Hits the kick drum!",
   "ceci-kickdrum/kick/label": "Kick",

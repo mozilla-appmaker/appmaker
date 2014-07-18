@@ -1,6 +1,6 @@
 {
 	"ceci-audio": "Audio Clip",
-	"ceci-audio/description": "Broadcasts a \"click\" when clicked.",
+	"ceci-audio/description": "Plays an audio clip using a URL or data-uri as input.",
 	"ceci-audio/attributes/label": "Play",
 	"ceci-audio/attributes/label/label": "Label",
 	"ceci-audio/attributes/label/description": "Text shown on the button.",

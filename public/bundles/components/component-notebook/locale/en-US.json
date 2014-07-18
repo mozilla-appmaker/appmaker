@@ -1,6 +1,6 @@
 {
   "ceci-notebook/name": "Notebook",
-  "ceci-notebook/description": "Stores pages of stuff",
+  "ceci-notebook/description": "Stores your notes.",
   "ceci-notebook/wantsPicture/label": "User wants picture",
   "ceci-notebook/wantsPicture/description": "The user clicked on the picture icon",
   "ceci-notebook/wantsText/label": "User wants text",

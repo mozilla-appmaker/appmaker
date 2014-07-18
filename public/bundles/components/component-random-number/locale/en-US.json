@@ -1,8 +1,14 @@
 {
-	"ceci-counter": "Counter",
-	"ceci-counter/description": "Listens for a message and counts",
-	"ceci-counter/attributes/unit/label": "Unit",
-	"ceci-counter/attributes/unit/description": "Name for items which are being counted.",
-	"ceci-counter/attributes/increment/label": "Increment By",
-	"ceci-counter/attributes/increment/description": "Count up or down with this number."
+  "ceci-random/name": "Random Number Generator",
+  "ceci-random/description": "Generates a random number for other bricks to use.",
+  "ceci-random/send/label": "Send random number",
+  "ceci-random/send/description": "Send the random number out",
+  "ceci-random/changed/label": "Random number changed",
+  "ceci-random/changed/description": "Sends the newly generated number.",
+  "ceci-random/generate/description": "Generate a random number between min and max",
+  "ceci-random/generate/label": "Generates a random number",
+  "ceci-random/min/label": "Min",
+  "ceci-random/max/label": "Max",
+  "ceci-random/allowsame/description": "Allow same number twice",
+  "ceci-random/allowsame/label": "Allow same number twice"
 }

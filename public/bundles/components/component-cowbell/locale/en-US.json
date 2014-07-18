@@ -1,5 +1,5 @@
 {
-  "ceci-cowbell/description": "Broadcasts a \"click\" when clicked.",
+  "ceci-cowbell/description": "Plays a cowbell.",
   "ceci-cowbell/name": "Cowbell",
   "ceci-cowbell/kick/description": "Hits the cowbell!",
   "ceci-cowbell/kick/label": "More",
