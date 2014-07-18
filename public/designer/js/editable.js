@@ -4,7 +4,9 @@
 
 define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
   function washString (str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    var washer = document.createElement('div');
+    washer.textContent = str;
+    return washer.innerHTML;
   }
 
   var urlComponent = window.CustomElements;
