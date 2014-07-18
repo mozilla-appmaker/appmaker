@@ -85,7 +85,6 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
     },
     'number': function (element, attributeName, title, value, definition) {
       definition.step = definition.step || 1;
-      console.log(definition.step);
       var e = $(
         '<div><label>' +
         title +
