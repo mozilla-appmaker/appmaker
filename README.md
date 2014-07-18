@@ -103,6 +103,9 @@ IEXSS_PROTECTION_DISABLED: If set to "true", iexss vulnerability headers are not
 GA_ACCOUNT: Optional google analytics account setting. (https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiBasicConfiguration#_gat.GA_Tracker_._setAccount)
 GA_DESIGNER_DOMAIN: Optional google analytics domain setting for the designer. (https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiDomainDirectory#_gat.GA_Tracker_._setDomainName)
 GA_PUBLISH_DOMAIN: Optional google analytics domain setting for the published apps. (https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiDomainDirectory#_gat.GA_Tracker_._setDomainName)
+PUBLISH_HOST: Host of URL which points to a published app. Does not include a protocol prefix (e.g. `http://`). Use `{{ip}}` in this string to automatically insert your machine's IP address (useful for debugging apps on mobile devices in dev environment).
+ASSET_HOST: URL used to provide assets to published apps. Use `{{ip}}` in this string to automatically insert your machine's IP address (useful for debugging apps on mobile devices in dev environment).
+PUBLISH_HOST_PREFIX: Prefix of URL which points to a published app. Usually `http://` or `https://`.
 ```
 
 ### Install and Run MongoDB
