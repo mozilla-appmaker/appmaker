@@ -1,39 +1,36 @@
-    <div id="publish-pane" class="hidden">
-      <div id="publish-pane-panel">
-        <div class="publish-panel-header">
-          <button id="close-publish-pane-panel"></button>
+<div id="publish-pane" class="hidden">
+  <div id="publish-pane-panel">
+    <div id="publish-pane-panel-content" class="hidden">
+      <button class="close-panel" id="close-publish-pane-panel"></button>
+      <h1>
+        <%- gettext("You've Published your App!") %>
+      </h1>
+
+      <h2><%- gettext("App Install Link") %></h2>
+      <p>
+        <a title="Install your App" class="install-link" id="install-link" href=''></a>
+      </p>
+
+      <div class="app-buttons">
+        <a class="app-button" id="install-button" href=""><%- gettext("Install Now") %></a>
+        <a class="app-button" id="view-button" href=""><%- gettext("View as Web App") %></a>
+      </div>
+
+      <p><%- gettext("Or scan to install...") %></p>
+
+      <div class="qrcode" data-qrcode-for="install"></div>
+
+      <div class="mail-wrapper">
+        <div class="mail-link">
+          <input type="email" id="publish-pane-panel-email" placeholder'"<%- gettext("Your Email") %>'>
+          <a href="#" id="publish-pane-button"><%- gettext("Email my App URL") %></a>
         </div>
-        <div id="publish-pane-panel-content" class="hidden">
-          <div id="publish-pane-panel-inner">
-            <div id="publish-pane-logo">
-              <p class="publish-guide-text">
-                <%- gettext("Your app has been successfully published") %>
-                <%- gettext("It's ready for use at:") %>
-              </p>
-              <p class="app-link">
-                <a id="applink" href=''></a>
-              </p>
-            </div>
-            <div class="qrcodes-container">
-              <ul><li><a data-qrcode-for="install"><%- gettext("Install this app") %></a></li><li><a data-qrcode-for="app"><%- gettext("Use this app") %></a></li></ul>
-              <div class="qrcode-wrapper" data-qrcode-for="install">
-                <div class="qrcode" data-qrcode-for="install"></div>
-              </div>
-              <div class="qrcode-wrapper" data-qrcode-for="app">
-                <div class="qrcode" data-qrcode-for="app"></div>
-              </div>
-            </div>
-            <div class="mail-link">
-              <input type="email" id="publish-pane-panel-email" placeholder="Your Email">
-              <button id="publish-pane-button"><%- gettext("Mail me my app URL") %></button>
-            </div>
-            <div class="mail-notice">
-              <p class="publish-guide-text"><%- gettext("We have mailed you your app URL!") %></p>
-            </div>
-            <div class="mail-error">
-              <p class="publish-guide-text"><%- gettext("There was a problem mailing you your app URL. Please try again.") %></p>
-            </div>
-          </div>
+        <div class="mail-notice">
+          <p class="publish-guide-text"><%- gettext("We have mailed you your app URL!") %></p>
+        </div>
+        <div class="mail-error">
+          <p class="publish-guide-text"><%- gettext("There was a problem mailing you your app URL. Please try again.") %></p>
         </div>
       </div>
-    </div>
+  </div>
+</div>

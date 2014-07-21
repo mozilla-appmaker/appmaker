@@ -4,14 +4,15 @@ define([], function () {
   var content;
   var close;
   var email;
-  var appurl;
+  var installbutton;
+  var viewbutton;
+  var installlink;
   var mailButton;
   var mailNotice;
   var mailError;
   var mailLink;
-  var appQRCode;
-  var instsallQRCode;
 
+  var instsallQRCode;
 
   function findImportantDOMElements () {
     master = document.getElementById('publish-pane');
@@ -19,12 +20,13 @@ define([], function () {
     content = document.getElementById('publish-pane-panel-content');
     close = document.getElementById('close-publish-pane-panel');
     email = document.getElementById('publish-pane-panel-email');
-    appurl = document.getElementById('applink');
+    installbutton = document.getElementById('install-button');
+    viewbutton = document.getElementById('view-button');
+    installlink = document.getElementById('install-link');
     mailButton = document.querySelector('#publish-pane-button');
     mailNotice = document.querySelector('.mail-notice');
     mailError = document.querySelector('.mail-error');
     mailLink = document.querySelector('.mail-link');
-    appQRCode = document.querySelector('.qrcode[data-qrcode-for="app"]');
     instsallQRCode = document.querySelector('.qrcode[data-qrcode-for="install"]');
 
     close.addEventListener("click", closePublishPanel);
@@ -95,15 +97,12 @@ define([], function () {
         mailButton.classList.remove('fadeout');
         email.classList.remove('fadeout');
         email.value = '';
-        appurl.setAttribute('href', data.install);
-        appurl.textContent = data.install;
-
+        installbutton.setAttribute('href', data.install);
+        installlink.textContent = data.install;
+        installlink.setAttribute('href', data.install);
+        viewbutton.setAttribute('href', data.app);
         instsallQRCode.innerHTML = '';
-        appQRCode.innerHTML = '';
-
         new QRCode(instsallQRCode, data.install);
-        new QRCode(appQRCode, data.app);
-
         mailNotice.classList.remove("toggled");
 
         (function() {
