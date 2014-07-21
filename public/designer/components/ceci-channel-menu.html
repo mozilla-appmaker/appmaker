@@ -240,55 +240,54 @@
             that.adjustMenuPosition();
           }
 
-          for (var key in communicators) {
-            if (communicators.hasOwnProperty(key)) {
-              var channelTemplate = that.shadowRoot.querySelector(".option-template");
-              var channelOption = channelTemplate.cloneNode(true);
+          var keys = Object.keys(communicators).sort();
 
-              var heading = channelOption.querySelector("h3");
+          keys.forEach(function(key) {
+            var channelTemplate = that.shadowRoot.querySelector(".option-template");
+            var channelOption = channelTemplate.cloneNode(true);
 
-              var localizedSetter = L10n.get('Set {attribute}') || 'Set {attribute}';
-              var matchLabel = key.match(/[^_]*_(.+)/);
+            var heading = channelOption.querySelector("h3");
 
-              channelOption.classList.remove("option-template");
+            var localizedSetter = L10n.get('Set {attribute}') || 'Set {attribute}';
+            var matchLabel = key.match(/[^_]*_(.+)/);
 
-              if(matchLabel) {
-                channelOption.querySelector(".channel-name").textContent = localizedSetter.replace("{attribute}",
-                L10n.get(that.component.localName + "/attributes/" + matchLabel[1] + "/label") || communicators[key].label || key);
-                headingText = localizedSetter.replace("{attribute}",
-                L10n.get(that.component.localName + "/attributes/" + matchLabel[1] + "/label") || communicators[key].label || key);
-              } else {
-                channelOption.querySelector(".channel-name").textContent = communicators[key].label || key;
-                headingText = communicators[key].label || key;
-              }
+            channelOption.classList.remove("option-template");
 
-              if(handlerType === "from") {
-                heading.innerHTML = (L10n.get('broadcast') || 'Broadcast') + " <strong>" + headingText + "</strong> " + (L10n.get('on channel...') || 'on channel...');
-              } else {
-                heading.innerHTML = "<strong>" + headingText + "</strong> " + (L10n.get('when I hear') || 'when I hear a signal on channel...');
-              }
-
-              that.menu.appendChild(channelOption);
-              channelOption.setAttribute(handlerType, key);
-              channelOption.querySelector("label").addEventListener('click', showColorUI);
-
-              var colorOptions = channelOption.querySelectorAll(".color-ui .color");
-
-              //Check if there's a listener for that element already and set the appropriate color.
-              var existingEl = that.component.querySelector("ceci-" + this.channeltype + "["+handlerType+"="+key+"]");
-
-              if(existingEl){
-                var color = existingEl.getAttribute("on");
-                channelOption.querySelector(".chosen-color").setAttribute("data-color",color);
-                channelOption.querySelector(".chosen-color").style.background = "#" + this.channels[color];
-                channelOption.querySelector(".chosen-color").textContent = color;
-              }
-
-              //Set up all of the click stuff for color options
-              channelOption.querySelector(".color-ui").addEventListener("click",colorListClickHandler(handlerType)
-              );
+            if(matchLabel) {
+              channelOption.querySelector(".channel-name").textContent = localizedSetter.replace("{attribute}",
+              L10n.get(that.component.localName + "/attributes/" + matchLabel[1] + "/label") || communicators[key].label || key);
+              headingText = localizedSetter.replace("{attribute}",
+              L10n.get(that.component.localName + "/attributes/" + matchLabel[1] + "/label") || communicators[key].label || key);
+            } else {
+              channelOption.querySelector(".channel-name").textContent = communicators[key].label || key;
+              headingText = communicators[key].label || key;
             }
-          }
+
+            if(handlerType === "from") {
+              heading.innerHTML = (L10n.get('broadcast') || 'Broadcast') + " <strong>" + headingText + "</strong> " + (L10n.get('on channel...') || 'on channel...');
+            } else {
+              heading.innerHTML = "<strong>" + headingText + "</strong> " + (L10n.get('when I hear') || 'when I hear a signal on channel...');
+            }
+
+            that.menu.appendChild(channelOption);
+            channelOption.setAttribute(handlerType, key);
+            channelOption.querySelector("label").addEventListener('click', showColorUI);
+
+            var colorOptions = channelOption.querySelectorAll(".color-ui .color");
+
+            //Check if there's a listener for that element already and set the appropriate color.
+            var existingEl = that.component.querySelector("ceci-" + that.channeltype + "["+handlerType+"="+key+"]");
+
+            if(existingEl){
+              var color = existingEl.getAttribute("on");
+              channelOption.querySelector(".chosen-color").setAttribute("data-color",color);
+              channelOption.querySelector(".chosen-color").style.background = "#" + that.channels[color];
+              channelOption.querySelector(".chosen-color").textContent = color;
+            }
+
+            //Set up all of the click stuff for color options
+            channelOption.querySelector(".color-ui").addEventListener("click",colorListClickHandler(handlerType));
+          });
         }
       });
     })();

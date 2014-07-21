@@ -13,8 +13,9 @@
       updateChannelVis: function() {
         var that = this;
         var elements;
+        var inbound = this.direction === "in";
 
-        if(this.direction === "in") {
+        if(inbound) {
           elements = this.component.querySelectorAll("ceci-listen");
         } else {
           elements = this.component.querySelectorAll("ceci-broadcast");
@@ -24,7 +25,21 @@
         var existingLines = this.lines;
         existingLines.innerHTML = "";
 
-        Array.prototype.forEach.call(elements, function(el,index){
+        elements = Array.prototype.slice.call(elements);
+
+        elements.sort(function(a,b) {
+          if(inbound) {
+            a = a.for;
+            b = b.for;
+          } else {
+            a = a.from;
+            b = b.from;
+          }
+          if(!a || !b) return 0;
+          return a === b ? 0 : a<b ? -1 : 1;
+        });
+
+        elements.forEach(function(el,index){
           el.addEventListener('signalFired', function(data){
             that.fire(data);
           });
