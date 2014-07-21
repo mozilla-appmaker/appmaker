@@ -1,4 +1,4 @@
-<polymer-element name="project-settings" attributes="appName appTags appDescription">
+<polymer-element name="project-settings">
   <template>
     <style>
       :host input,
@@ -51,7 +51,6 @@
         var that = this;
         function onCeciAppDOMReady () {
           that.app = document.querySelector("ceci-app");
-          that.appName = that.app.name;
         }
         window.addEventListener("CeciAppDOMReady", onCeciAppDOMReady);
       },
