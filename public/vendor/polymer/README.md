@@ -1,7 +1,18 @@
-Polymer is a new type of library for the web, built on top of Web Components, and designed to leverage the evolving web platform on modern browsers.
+Polymer
+=======
+
+Shim repository for [Polymer](http://www.polymer-project.org).
 
 For Docs, License, Tests, and pre-packed downloads, see:
 http://www.polymer-project.org/
 
 Many thanks to our contributors:
 https://github.com/Polymer/platform/contributors
+
+
+Package Managers
+----------------
+
+* [Bower](http://bower.io): `polymer`
+* [Composer](http://packagist.org/packages/components/polymer): `components/polymer`
+* [Component](https://github.com/component/component): `components/polymer`
