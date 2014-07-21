@@ -84,6 +84,7 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       return e[0];
     },
     'number': function (element, attributeName, title, value, definition) {
+      definition.step = definition.step || 1;
       var e = $(
         '<div><label>' +
         title +
@@ -91,6 +92,8 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
         definition.min +
         '" max="' +
         definition.max +
+        '" step="' +
+        definition.step +
         '" value="' +
         value + '" /></div>'
       );
