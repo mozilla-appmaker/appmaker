@@ -98,7 +98,15 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
         value + '" /></div>'
       );
       e.on('change', function(evt) {
-        element.setAttribute(attributeName, evt.target.value);
+        var val = evt.target.value;
+        if(val > definition.max) {
+          val = definition.max;
+        }
+        if(val < definition.min) {
+          val = definition.min;
+        }
+        $(e).find("input").val(val);
+        element.setAttribute(attributeName, val);
       });
       return e[0];
     },
