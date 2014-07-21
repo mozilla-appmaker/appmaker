@@ -368,13 +368,18 @@ define(
       }
     }
 
-    window.addEventListener('polymer-ready', function() {
+    function onPolymerReady() {
       DesignerTray.addComponentsFromRegistry();
       var searchBox = document.querySelector('.component-search');
       searchBox.addEventListener('keyup', function() {
         doSearch(searchBox.value.trim().toLowerCase());
       });
-    });
+    }
+    if (window.Polymer) {
+      Polymer.whenPolymerReady(onPolymerReady);
+    } else {
+      window.addEventListener("polymer-ready", onPolymerReady);
+    }
 
     return DesignerTray;
   }
