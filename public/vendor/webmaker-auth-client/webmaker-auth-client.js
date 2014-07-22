@@ -179,7 +179,6 @@
                 user: {
                   username: usernameInput.value,
                   mailingList: mailingListInput.checked,
-                  referrer: cookieRefValue,
                   prefLocale: languagePreference.value
                 }
               }, function (err) {
@@ -281,6 +280,9 @@
       };
 
       self.createUser = function (data, callback) {
+
+        // capture the referrer ID if it exists
+        data.user.referrer = cookieRefValue;
 
         var http = new XMLHttpRequest();
         var body = JSON.stringify({

@@ -15,7 +15,7 @@
     "jqueryui-amd": "~0.0.2",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.3.5.tar.gz",
     "webmaker-analytics": "~0.1.0",
-    "webmaker-auth-client": "0.1.7",
+    "webmaker-auth-client": "0.1.10",
     "webmaker-language-picker": "0.0.23",
     "requirejs-text": "~2.0.12",
     "ejs": "~1.0.0"
