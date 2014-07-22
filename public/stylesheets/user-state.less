@@ -1,12 +1,14 @@
 @import "variables.less";
 @import "mixins.less";
 
-:host([editingmode="draft"]) .menu a.saved {
-  display: none;
+:host(.saved) .menu a.saved {
+  display: block;
 }
 
 :host {
-
+  .menu a.saved {
+    display: none;
+  }
   & > div, & > a {
     display: block;
     float: left;
