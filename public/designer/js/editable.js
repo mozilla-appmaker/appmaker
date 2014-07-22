@@ -112,17 +112,23 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
     },
     'range': function (element, attributeName, title, value, definition) {
       var e = $(
-        '<div><label>' +
+        '<div class="range"><label>' +
         title +
         '</label><input type="range" min="' +
         definition.min +
         '" max="' +
         definition.max +
         '" value="' +
-        value + '" /></div>'
+        value + '" /><span class="value">'+value+'</div></div>'
       );
+      var that = e;
+      e.on('input', function(evt) {
+        element.setAttribute(attributeName, evt.target.value);
+        $(this).find(".value").text(evt.target.value);
+      });
       e.on('change', function(evt) {
         element.setAttribute(attributeName, evt.target.value);
+        $(this).find(".value").text(evt.target.value);
       });
       return e[0];
     },
