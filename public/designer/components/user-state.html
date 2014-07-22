@@ -253,7 +253,6 @@
 
                   application.setCurrentApp(name);
                   self.refreshUserState();
-
                   self.updateAppName(name);
                   ceciApp.setAttribute("appid", "ceci-app-"+uuid());
                   self.editingmode = "saved";
@@ -310,7 +309,6 @@
             app.querySelector("ceci-card").setAttribute("visible","true");
 
             var name = app.name;
-
             // This is a new app, so get a new name for it.
             if (!name || name === l10n.get("Unsaved App")) {
               // window.prompt needs to be made its own thing so it can be called
