@@ -40,7 +40,11 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
             userState.appRenameOk(newName);
           },
           error: function (data) {
-            userState.appRenameFailed();
+            var message = l10n.get("app rename failed");
+            if (data.responseJSON.error === 'App name must be unique.') {
+              message = l10n.get('App name must be unique.');
+            }
+            userState.appRenameFailed(message);
           }
         });
       },
@@ -57,8 +61,7 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
         var op = alreadySaved ? this.updateApp : this.saveApp;
         op(name, appid, html, function callAPIPublish(err) {
           if(err) {
-            reporter.errorReport("publish failed in save step!", err);
-            if(next) { next(err); }
+            if(afterPublish) { afterPublish(err); }
             return;
           }
           $.ajax('/api/publish', {
@@ -116,7 +119,6 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
             if(next) { next(false, data); }
           },
           error: function (error) {
-            reporter.errorReport("App was not saved successfully!", error);
             if(next) { next(error); }
           }
         });

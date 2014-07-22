@@ -1,4 +1,4 @@
-<polymer-element name="project-settings" attributes="appName appTags appDescription">
+<polymer-element name="project-settings">
   <template>
     <style>
       :host input,
@@ -33,7 +33,7 @@
     <div class="editable-attributes">
       <div>
         <label>Title</label>
-        <input type="text" on-change="{{onAppNameChange}}" value="{{appName}}"></label>
+        <input type="text" on-change="{{onAppNameChange}}" value="{{app.name}}"></label>
       </div>
       <div>
         <label>Description</label>
@@ -51,7 +51,6 @@
         var that = this;
         function onCeciAppDOMReady () {
           that.app = document.querySelector("ceci-app");
-          that.appName = that.app.name;
         }
         window.addEventListener("CeciAppDOMReady", onCeciAppDOMReady);
       },

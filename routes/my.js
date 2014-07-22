@@ -73,23 +73,33 @@ module.exports = function (mongoose, dbconn) {
       var setObj = {};
       var oldName = request.body.oldName;
       var newName = request.body.newName;
-      setObj.name = newName;
-      setObj['modified-date'] = new Date();
 
-      App.update(
-        {author:request.session.email, name: oldName},
-        {
-          $set: setObj
-        },
-        {},
-        function(err,obj){
-          if(err){
-            return response.json(500, {error: 'App was not renamed due to ' + err});
-          } else {
-            return response.json(200, {message: 'App was renamed successfully'});
-          }
+      //Check if app with same name already exists
+      App.findOne({author:request.session.email, name: newName}, function(err, obj) {
+        if (obj) {
+          return response.json(500, {error: 'App name must be unique.'});
         }
-      );
+        else {
+
+          setObj.name = newName;
+          setObj['modified-date'] = new Date();
+
+          App.update(
+            {author:request.session.email, name: oldName},
+            {
+              $set: setObj
+            },
+            {},
+            function(err,obj){
+              if(err){
+                return response.json(500, {error: 'App was not renamed due to ' + err});
+              } else {
+                return response.json(200, {message: 'App was renamed successfully'});
+              }
+            }
+          );
+        }
+      });
     },
     deleteApp: function(request,response){
       if (!checkAuthorised(request, response)) return;
