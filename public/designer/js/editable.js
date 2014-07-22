@@ -98,7 +98,7 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
         value + '" /></div>'
       );
       e.on('change', function(evt) {
-        var val = evt.target.value;
+        var val = parseFloat(evt.target.value);
         if(val > definition.max) {
           val = definition.max;
         }
