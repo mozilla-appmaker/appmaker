@@ -101,8 +101,10 @@
           localStorage.editingmode = newValue;
           var appNameEl = document.querySelector(".phone-top .app-name");
           if(newValue == "saved"){
+            this.classList.add("saved");
             appNameEl.classList.add("saved");
           } else {
+            this.classList.remove("saved");
             appNameEl.classList.remove("saved");
           }
         },
@@ -251,6 +253,7 @@
 
                   application.setCurrentApp(name);
                   self.refreshUserState();
+
                   self.updateAppName(name);
                   ceciApp.setAttribute("appid", "ceci-app-"+uuid());
                   self.editingmode = "saved";
@@ -299,7 +302,7 @@
 
           //Publish!
           this.$.publishApp.addEventListener("click", function() {
-            var app = document.querySelector('ceci-app').cloneNode(true);
+            var app = document.querySelector('ceci-app');
 
             app.querySelector("ceci-card[visible=true]").removeAttribute("visible");
 
@@ -307,6 +310,7 @@
             app.querySelector("ceci-card").setAttribute("visible","true");
 
             var name = app.name;
+
             // This is a new app, so get a new name for it.
             if (!name || name === l10n.get("Unsaved App")) {
               // window.prompt needs to be made its own thing so it can be called
