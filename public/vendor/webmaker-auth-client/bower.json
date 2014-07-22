@@ -1,7 +1,7 @@
 {
   "name": "webmaker-auth-client",
   "main": "webmaker-auth-client.js",
-  "version": "0.1.7",
+  "version": "0.1.10",
   "authors": [
     "Kate Hudson <k88hudson@gmail.com>"
   ],
