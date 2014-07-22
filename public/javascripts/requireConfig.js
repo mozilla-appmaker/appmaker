@@ -11,6 +11,8 @@ requirejs.config({
 
     "jquery": "../vendor/jquery/jquery.min",
 
+    "ejs": "../vendor/ejs/ejs",
+
     "l10n": "l10n",
 
     "jquery-ui": "../vendor/jquery-ui/ui/minified/jquery-ui.min",
@@ -48,6 +50,9 @@ requirejs.config({
     "jquery-ui": {
       exports: "$",
       deps: ['jquery']
+    },
+    "ejs": {
+      exports: "ejs"
     },
     "colorpicker.core": ["jquery-ui"],
     "colorpicker.swatches.crayola": ["colorpicker.core"],

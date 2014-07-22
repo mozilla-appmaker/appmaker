@@ -1,6 +1,18 @@
 define(
-  ["jquery", "tutorial/index", "text!tutorial/intro.html", "designer/component-tray"],
-  function ($, Tutorial, TutorialSteps, Tray) {
+  [ "jquery",
+    "ejs",
+    "l10n",
+    "designer/component-tray",
+    "tutorial/index",
+    "text!tutorial/intro.ejs"
+  ],
+  function ($, Ejs, l10n, Tray, Tutorial, content) {
+
+    content = Ejs.render(content, {
+      gettext: l10n.get
+    });
+    var $content = $(content);
+    $content.find('[data-controls]').remove().appendTo($content.find('[data-step]:not(:last-child)'));
 
     function matchTarget(offset, elements) {
       $(this).css({
@@ -11,9 +23,6 @@ define(
         'box-sizing': 'border-box'
       });
     }
-
-    var $content = $(TutorialSteps);
-    $content.find('[data-controls]').remove().appendTo($content.find('[data-step]:not(:last-child)'));
 
     var Intro = function() {
       return new Tutorial([
@@ -29,9 +38,9 @@ define(
         {
           name: "bricks",
           position: {
-            my: "left top",
-            at: "right+20 top+50",
-            of: $('.tray')
+            my: "left center",
+            at: "right+20 center",
+            of: $('#components designer-component-tray-item:first-of-type')
           },
           dialogClass: "tutorial-dialog-arrow tutorial-dialog-arrow-left"
         },
@@ -82,8 +91,8 @@ define(
           name: "channels",
           position: {
             my: "right center",
-            at: "left center",
-            of: $(".container")
+            at: "left-175 top+37",
+            of: $("ceci-app")
           },
           dialogClass: "tutorial-dialog-arrow tutorial-dialog-arrow-right",
           init: function() {
@@ -95,15 +104,15 @@ define(
           name: "colors",
           position: {
             my: "right center",
-            at: "left center",
-            of: $(".container")
+            at: "left-175 top+155",
+            of: $("ceci-app")
           },
           dialogClass: "tutorial-dialog-arrow tutorial-dialog-arrow-right",
           init: function() {
             this.drum = Tray.addComponentToCard('ceci-kickdrum');
             this.button2 = Tray.addComponentToCard('ceci-button');
             setTimeout(function() {
-              $('ceci-button:last-of-type ceci-channel-menu[channeltype="broadcast"]')[0].toggleMenu();
+              $('ceci-kickdrum ceci-channel-menu[channeltype="listen"]')[0].toggleMenu();
             }, 100);
           },
           destroy: function() {

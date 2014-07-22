@@ -107,5 +107,17 @@
   "Or scan to install..." : "Or scan to install...",
   "Email my App URL" : "Email my App URL",
   "We have mailed you your app URL!": "We have mailed you your app URL!",
-  "There was a problem mailing you your app URL. Please try again.": "There was a problem mailing you your app URL. Please try again."
+  "There was a problem mailing you your app URL. Please try again.": "There was a problem mailing you your app URL. Please try again.",
+  "Ok got it, Next": "Ok got it, Next",
+  "Skip tutorial": "Skip tutorial",
+  "Welcome to Appmaker! Let's start by giving you a short tour.": "Welcome to Appmaker! Let's start by giving you a short tour.",
+  "These blocks over here are called \"Bricks\". Add them to your app simply by clicking the plus icon.": "These blocks over here are called \"Bricks\". Add them to your app simply by clicking the plus icon.",
+  "Bricks are neatly organized in collections. Explore all these goodies and even create your own brick if you are up for it, just click the icon.": "Bricks are neatly organized in collections. Explore all these goodies and even create your own brick if you are up for it, just click the icon.",
+  "Once you choose your bricks you can customize them by changing color, size, or other attributes.": "Once you choose your bricks you can customize them by changing color, size, or other attributes.",
+  "Give your app a fancy name, description, and tag. You can also try the advanced settings to manage data.": "Give your app a fancy name, description, and tag. You can also try the advanced settings to manage data.",
+  "Up here you can add pages to your app.": "Up here you can add pages to your app.",
+  "Once you add some bricks to your app you will notice these lines. They are called connectors and you can imagine them as wires that connect inputs, like a button brick, to outputs like these waving hands.": "Once you add some bricks to your app you will notice these lines. They are called connectors and you can imagine them as wires that connect inputs, like a button brick, to outputs like these waving hands.",
+  "If you have more than one input and output just click on the connector to switch colors. If you run out of the basics click on the + to select a color of your choice or turn them off if you don't need them.": "If you have more than one input and output just click on the connector to switch colors. If you run out of the basics click on the + to select a color of your choice or turn them off if you don't need them.",
+  "That was it. Now go ahead and start clicking. Happy making!": "That was it. Now go ahead and start clicking. Happy making!",
+  "Done": "Done"
 }
