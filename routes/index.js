@@ -20,6 +20,33 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
       res.redirect(301, 'designer');
     },
 
+    testInstall: function (req, res) {
+      res.render('install', {
+        appname : "Best App",
+        webmakerurl : "hello.com",
+        username : "flukeout",
+        description : "The best app.",
+        manifestUrl : "hello",
+        iframeSrc : "no.net"
+      });
+    },
+
+    testPublish: function (req, res) {
+      res.render('publish', {
+        appHTML : "<p>hi</p>",
+        appName : "Best App",
+        ceciComponentURL : "ceciComponentURL",
+        userComponents : [],
+        webmakerurl : "hello.com",
+        remixURL : "flukeout.com",
+        username : "flukeout",
+        description : "The best app.",
+        manifestUrl : "hello",
+        iframeSrc : "no.net"
+      });
+    },
+
+
     designer: function (req, res) {
       res.render('designer', { allowCustomComponents: !!process.env.ALLOW_CUSTOM_COMPONENTS });
     },

@@ -121,5 +121,15 @@
   "Once you add some bricks to your app you will notice these lines. They are called connectors and you can imagine them as wires that connect inputs, like a button brick, to outputs like these waving hands.": "Once you add some bricks to your app you will notice these lines. They are called connectors and you can imagine them as wires that connect inputs, like a button brick, to outputs like these waving hands.",
   "If you have more than one input and output just click on the connector to switch colors. If you run out of the basics click on the + to select a color of your choice or turn them off if you don't need them.": "If you have more than one input and output just click on the connector to switch colors. If you run out of the basics click on the + to select a color of your choice or turn them off if you don't need them.",
   "That was it. Now go ahead and start clicking. Happy making!": "That was it. Now go ahead and start clicking. Happy making!",
-  "Done": "Done"
+  "Done": "Done",
+  "By" : "By",
+  "Install App" : "Install App",
+  "Run App in Browser" : "Run App in Browser",
+  "Want to Install this App?" : "Want to Install this App?",
+  "You can install Appmaker apps on..." : "You can install Appmaker apps on...",
+  "Firefox OS Devices" : "Firefox OS Devices",
+  "Firefox for Android" : "Firefox for Android",
+  "Firefox for Desktop" : "Firefox for Desktop",
+  "This app was made with" : "This app was made with",
+  "Make your own app" : "Make your own app"
 }

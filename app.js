@@ -188,6 +188,10 @@ app.all('/designer', routes.designer);
 app.get('/remix', routes.remix);
 app.get('/notify', routes.notify);
 
+// Test pages for publish and install
+app.get('/test/install', routes.testInstall);
+app.get('/test/publish', routes.testPublish);
+
 //TODO: Security: https://github.com/mozilla-appmaker/appmaker/issues/602
 app.get('/api/proxy-component-*', cors(), routes.proxy.gitHubComponent);
 app.get('/component-*', cors(), routes.proxy.gitHubComponent);
