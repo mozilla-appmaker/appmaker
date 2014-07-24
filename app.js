@@ -144,18 +144,6 @@ app.configure(function(){
   enableRedirects(app);
 });
 
-app.configure('development', function(){
-  app.use(express.errorHandler());
-  if (!process.env['PERSONA_AUDIENCE']){
-    console.log("Setting PERSONA_AUDIENCE to be http://localhost:" + app.get('port'));
-    process.env['PERSONA_AUDIENCE'] = 'http://localhost:' + app.get('port');
-  }
-});
-
-require("express-persona")(app, {
-  audience: process.env.PERSONA_AUDIENCE
-});
-
 var store;
 store = s3Store.init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET, process.env.S3_DOMAIN, emulate_s3);
 
@@ -167,6 +155,25 @@ routes = require('./routes')(
   require('./lib/mailer')(postmark),
   makeAPIPublisher
 );
+
+
+app.configure('development', function(){
+  app.use(express.errorHandler());
+  if (!process.env['PERSONA_AUDIENCE']){
+    console.log("Setting PERSONA_AUDIENCE to be http://localhost:" + app.get('port'));
+    process.env['PERSONA_AUDIENCE'] = 'http://localhost:' + app.get('port');
+  }
+  // Test pages for publish and install
+  app.get('/test/install', routes.testInstall);
+  app.get('/test/publish', routes.testPublish);
+});
+
+
+require("express-persona")(app, {
+  audience: process.env.PERSONA_AUDIENCE
+});
+
+
 var langmap = i18n.getAllLocaleCodes();
 
 app.locals({
@@ -174,6 +181,7 @@ app.locals({
   locales: Object.keys(langmap),
   langmap: langmap
 });
+
 
 app.post('/verify', webmakerAuth.handlers.verify);
 app.post('/authenticate', webmakerAuth.handlers.authenticate);
@@ -187,6 +195,7 @@ app.all('/designer', routes.designer);
 // remix and publish email notification routes
 app.get('/remix', routes.remix);
 app.get('/notify', routes.notify);
+
 
 //TODO: Security: https://github.com/mozilla-appmaker/appmaker/issues/602
 app.get('/api/proxy-component-*', cors(), routes.proxy.gitHubComponent);

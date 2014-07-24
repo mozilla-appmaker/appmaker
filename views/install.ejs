@@ -1,145 +1,143 @@
 <!doctype html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600">
-  <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/install.css" />
-  <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/install-spinner.css" />
-  <script src="<%= process.env.ASSET_HOST %>/vendor/qrcodejs/qrcode.js"></script>
-  <title>My Appmaker App</title>
-  <% if (process.env.GA_ACCOUNT){ %>
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(["_setAccount", "<%- process.env.GA_ACCOUNT %>"]);
-      _gaq.push(["_setDomainName", "<%- process.env.GA_PUBLISH_DOMAIN %>"]);
-      _gaq.push(["_trackPageview"]);
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600">
+    <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/install.css" />
+    <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/install-spinner.css" />
+    <script src="<%= process.env.ASSET_HOST %>/vendor/qrcodejs/qrcode.js"></script>
 
-      (function() {
-        var ga = document.createElement("script"); ga.type = "text/javascript";
-        ga.async = true;
-        ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(ga, s);
-      })();
+    <title>My Appmaker App</title>
+    <% if (process.env.GA_ACCOUNT){ %>
+      <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(["_setAccount", "<%- process.env.GA_ACCOUNT %>"]);
+        _gaq.push(["_setDomainName", "<%- process.env.GA_PUBLISH_DOMAIN %>"]);
+        _gaq.push(["_trackPageview"]);
+
+        (function() {
+          var ga = document.createElement("script"); ga.type = "text/javascript";
+          ga.async = true;
+          ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(ga, s);
+        })();
+      </script>
+    <% } %>
+
+    <meta name="viewport" content="width=310, user-scalable=no">
+    <script>
+      if(screen.width > 600) {
+        var mvp = document.querySelector('meta[name=viewport]');
+        mvp.setAttribute('content','width=device-width');
+      }
     </script>
-  <% } %>
-</head>
-<body>
-  <script type="template/html">
-    <img src="<%= process.env.ASSET_HOST %>/images/app-icon.png">
-    <h1><%- gettext("You'll need Firefox for this App") %></h1>
-    <p>
-      <%- gettext("In order to install this app") %>
-      <%- gettext("see this app in action") %>
-      <a href=""><%- gettext("click here")%></a>
-    </p>
-  </script>
-  <p class="app-details">
-    <span class="app-title"><%- appname %> - <%- gettext("Made by") %> <a href="<%- webmakerurl %>/u/<%- username %>">@<%- username %></a></span><br>
-    <span><%- description %></span>
-  </p>
-  <div class="install-container">
-    <button class="install">
-      <span><%- gettext('Install App') %></span>
-      <span class="install-spinner"></span>
-    </button>
-    <button class="run-in-browser">
-      <span><%- gettext('Run in Browser') %></span>
-    </button>
-    <input type="email" class="mail-me-input" placeholder="Your Email">
-    <button class="mail-me-button">
-      <span><%- gettext('Mail me my app URL') %></span>
-    </button>
-    <p class="email-success hidden"><%- gettext("We have mailed you your app URL!") %></p>
-    <p class="email-fail hidden"><%- gettext("There was a problem mailing you your app URL. Please try again.") %></p>
-  </div>
-  <p><%- gettext("QR code install explanation") %></p>
-  <div id="qrcode"></div>
-  <script>
-    document.addEventListener('DOMContentLoaded', function (e) {
+  </head>
 
-      var container = document.querySelector(".install-container");
-      var appUrl = window.location.toString().replace("install", "app");
+  <body class="install-app">
+    <div class="page-wrapper">
 
-      // add install button if we're in FF, otherwise give user handy links
-      if(navigator.mozApps && navigator.mozApps.install) {
-        var installButton = container.querySelector('.install');
-        var runButton = container.querySelector('.run-in-browser');
-        var spinner = container.querySelector('.install-spinner');
-        installButton.addEventListener('click', function (e) {
-          var installRequest = navigator.mozApps.install('<%- manifestUrl %>');
+      <div class="app-details">
+        <div class="app-icon"></div>
+        <h1 class="app-title"><%- appname %></h1>
+        <h2 class="app-author"><%- gettext('By') %> <a href="https://www.webmaker.org/u/<%- username %>">@<%- username %></a></h2>
+      </div>
 
-          spinner.classList.add('spinning');
-          installRequest.onsuccess = function (data) {
-            spinner.classList.remove('spinning');
-            console.log('hooray!', data, this.result);
-          };
+      <p class="app-description"><%- description %></p>
 
-          installRequest.onerror = function (err) {
-            spinner.classList.remove('spinning');
-            console.error(':(', this.error);
-          };
-        }, false);
-        runButton.addEventListener('click', function (e) {
-          window.location.href = appUrl;
-        }, false);
-      }
+      <div class="install-container mode-caninstall">
+        <div class="action-button-wrapper">
+          <a class="action-button install-app-button" href="#" class="install">
+            <span class="button-label"><%- gettext('Install App') %><span class="install-spinner"></span></span>
+          </a>
+        </div>
+      </div>
 
-      else {
-        var scr = document.querySelector("script[type='template/html']");
-        container.classList.add("fall-back");
-        container.innerHTML = scr.textContent;
-        var a = container.querySelector("a");
-        a.href = appUrl;
-      }
-      new QRCode(document.querySelector("#qrcode"), '<%- iframeSrc %>');
+      <div class="action-button-wrapper mode-canrun">
+        <a class="action-button run-app" href="#">
+          <%- gettext('Run App in Browser') %>
+        </a>
+      </div>
 
-      var emailButton = document.querySelector('.mail-me-button');
-      var emailInput = document.querySelector('.mail-me-input');
-      var emailSuccess = document.querySelector(".email-success");
-      var emailError = document.querySelector(".email-fail");
+      <div class="cant-install mode-cantinstall">
+        <h1><%- gettext('Want to Install this App?') %></h1>
+        <p><%- gettext('You can install Appmaker apps on...') %></p>
+        <ul class="supported-platforms">
+          <li><a href="http://www.mozilla.org/en-US/firefox/os/"><%- gettext('Firefox OS Devices') %></a></li>
+          <li><a href="https://play.google.com/store/apps/details?id=org.mozilla.firefox"><%- gettext('Firefox for Android') %></a></li>
+          <li><a href="https://www.mozilla.org/en-US/firefox/new/"><%- gettext('Firefox for Desktop') %></a></li>
+        </ul>
+      </div>
 
-      function disableEmail(disable) {
-        emailButton.disabled = disable;
-        emailInput.disabled = disable;
-      }
+      <div class="about-appmaker">
+        <p><%- gettext('This app was made with') %></p>
+        <a href="http://apps.webmaker.org">
+          <img alt="Appmaker" src="<%= process.env.ASSET_HOST %>/images/appmaker-logo-header.png" />
+        </a>
+        <p>
+          <%- gettext('Make your own app') %><br>
+          <a href="http://apps.webmaker.org">apps.webmaker.org</a>
+        </p>
+      </div>
+    </div>
 
-      function onError(e) {
-        console.error(e);
-        disableEmail(false);
-        emailError.classList.remove("hidden");
-      }
+    <script>
 
-      emailInput.addEventListener("input", function() {
-        emailSuccess.classList.add("hidden");
-        emailError.classList.add("hidden");
-      });
+      document.addEventListener('DOMContentLoaded', function (e) {
 
-      emailButton.addEventListener("click", function (e) {
-        var address = emailInput.value.trim();
-        if (!address) {
-          return;
+        var container = document.querySelector(".page-wrapper");
+        var appUrl = window.location.toString().replace("install", "app");
+
+        // If we are able to install
+        if(navigator.mozApps && navigator.mozApps.install) {
+
+          container.querySelector(".mode-canrun").style.display = "block";
+          container.querySelector(".mode-caninstall").style.display = "block";
+
+          var installButton = container.querySelector('.install-app-button');
+          var runButton = container.querySelector('.run-app');
+          var spinner = container.querySelector('.install-spinner');
+
+          installButton.addEventListener('click', function (e) {
+
+            var installRequest = navigator.mozApps.install('<%- manifestUrl %>');
+
+            spinner.classList.add('spinning');
+
+            installRequest.onsuccess = function (data) {
+              spinner.classList.remove('spinning');
+              console.log('hooray!', data, this.result);
+            };
+
+            installRequest.onerror = function (err) {
+              spinner.classList.remove('spinning');
+              console.error(':(', this.error);
+            };
+
+          }, false);
+
+          runButton.addEventListener('click', function (e) {
+            window.location.href = appUrl;
+            return false;
+          }, false);
+
         }
-        disableEmail(true);
+        // If we are unable to install
+        else {
+          container.querySelector(".mode-canrun").style.display = "block";
+          container.querySelector(".mode-cantinstall").style.display = "block";
+          var a = container.querySelector(".run-app");
+          a.href = appUrl;
+        }
 
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '<%= process.env.ASSET_HOST %>/notify?appURL=' + encodeURIComponent(window.location.href) + '&email=' + address, true);
-        xhr.addEventListener("error", onError);
-        xhr.addEventListener("readystatechange", function (e) {
-          if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-              disableEmail(false);
-              emailSuccess.classList.remove("hidden");
-            }
-            else {
-              onError(e);
-            }
-          }
-        });
-        xhr.send(null);
+        function onError(e) {
+          console.error(e);
+          disableEmail(false);
+          emailError.classList.remove("hidden");
+        }
+
       });
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>

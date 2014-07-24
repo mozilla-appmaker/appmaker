@@ -1,0 +1,194 @@
+.install-app {
+  margin: 0 auto;
+  background-color: white;
+  font-size: 16px;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+
+  .page-wrapper {
+    background: white;
+    width: 310px;
+    margin: 0 auto;
+    padding: 20px 15px 20px 15px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 15px;
+    text-align: center;
+  }
+
+  .page-wrapper * {
+    margin:0;
+    padding:0;
+  }
+
+  .page-wrapper ul {
+    list-style-type: none;
+  }
+
+  p {
+    color: #999;
+    line-height: 140%;
+  }
+
+  .action-button-wrapper {
+    padding: 5px;
+    background: #DEDEDE;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+
+  .action-button {
+    background: #358CCE;
+    padding: 9px 0 10px 0;
+    color: white;
+    font-weight: bold;
+    display: block;
+    font-size: 18px;
+    text-shadow: 0px 2px 0px rgba(0,0,0,.2);
+    text-decoration: none;
+    text-align: center;
+    border-radius: 3px;
+    position: relative;
+    background: #358CCE;
+    background: -webkit-linear-gradient(#358CCE,#2371ac);
+    background: -moz-linear-gradient(#358CCE,#2371ac);
+    background: linear-gradient(#358CCE,#2371ac);
+    overflow: hidden;
+
+    .button-label {
+      position: relative;
+    }
+  }
+
+  .action-button:active {
+    background: #185c8f;
+  }
+
+  .supported-platforms {
+    margin: 8px 0 0 0;
+
+    li {
+      padding: 7px 0;
+      display: inline-block;
+      border-bottom: solid 1px #BBB;
+    }
+
+    li:last-child {
+      border: none;
+    }
+
+    a {
+      display: inline-block;
+    }
+  }
+
+  .mode-caninstall, .mode-cantinstall, .mode-canrun {
+    display: none;
+  }
+
+  .app-details {
+    text-align: left;
+    margin: 0;
+    padding: 2px 0 5px 65px;
+    background-position: -10px 4px;
+    background-size: 65px;
+    margin: 0 0 18px 0;
+    position: relative;
+  }
+
+  .app-icon {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    background: url(/images/app-icon.png) no-repeat;
+    background-position: -1px 0px;
+    background-size: 50px;
+    border: solid 1px #DDD;
+    border-radius: 5px;
+    top: 0px;
+    left: 0px;
+    box-shadow: 0px 2px 3px rgba(0,0,0,.1 )
+  }
+
+  .app-title {
+    font-size: 25px;
+    font-weight: normal;
+    color: #333;
+  }
+
+  .app-author {
+    font-size: 15px;
+    color: #999;
+    font-weight: normal;
+  }
+
+  .app-description {
+    font-size: 15px;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  a {
+    color: rgb(53, 140, 206);
+    text-decoration: none;
+  }
+
+  .cant-install {
+    background: #DEDEDE;
+    padding:  15px;
+    margin: 15px 0;
+    font-size: 15px;
+    text-align: center;
+    border-radius: 3px;
+  }
+
+  .cant-install h1 {
+    color: #555;
+    font-size: 18px;
+    margin: 0 0 10px 0;
+    font-weight: normal;
+  }
+
+  .cant-install p {
+    color: #888;
+  }
+
+  .about-appmaker {
+    margin-top: 25px;
+    border-top: solid 2px #DDD;
+    padding-top: 15px;
+
+    a {
+      font-size: 20px;
+    }
+
+    img {
+      width: 220px;
+      display: inline-block;
+      position: relative;
+      left: 13px;
+      margin: 12px 0;
+    }
+  }
+
+}
+
+@media (max-width: 310px)  {
+  html {
+    background: black;
+  }
+}
+
+@media all and (min-width: 601px)  {
+  .install-app {
+    background: black;
+    padding-top: 40px;
+    background: url(/images/background.gif);
+    background-size: 100px;
+  }
+
+  .page-wrapper {
+    border-radius: 5px;
+    box-shadow: 0px 2px 10px rgba(0,0,0,.2);
+  }
+}
