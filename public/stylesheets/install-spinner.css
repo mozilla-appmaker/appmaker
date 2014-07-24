@@ -5,11 +5,10 @@
   background-size: 20px auto;
   background-position: center center;
   background-repeat: no-repeat;
-  display: block-inline;
   vertical-align: middle;
   right: -25px;
-  display: none;
   top:2px;
+  display: none;
   position: absolute;
 }
 

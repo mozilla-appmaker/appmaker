@@ -22,30 +22,29 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
 
     testInstall: function (req, res) {
       res.render('install', {
-        appname : "Best App",
-        webmakerurl : "hello.com",
-        username : "flukeout",
-        description : "The best app.",
-        manifestUrl : "hello",
-        iframeSrc : "no.net"
+        appname : "Test App",
+        webmakerurl : "http://example.com",
+        username : "Mr. Test Testerson",
+        description : "One of the best test apps in the business. Test it all you want, it will never fail you.",
+        manifestUrl : "test.manifest",
+        iframeSrc : "http://example.com"
       });
     },
 
     testPublish: function (req, res) {
       res.render('publish', {
-        appHTML : "<p>hi</p>",
-        appName : "Best App",
+        appHTML : "<p>I'm an app, don't youk now!</p>",
+        appName : "Test App",
         ceciComponentURL : "ceciComponentURL",
         userComponents : [],
-        webmakerurl : "hello.com",
-        remixURL : "flukeout.com",
-        username : "flukeout",
-        description : "The best app.",
-        manifestUrl : "hello",
-        iframeSrc : "no.net"
+        webmakerurl : "http://example.com",
+        remixURL : "http://example.com",
+        username : "testperson",
+        description : "One of the best test apps in the business. Test it all you want, it will never fail you.",
+        manifestUrl : "test.manifest",
+        iframeSrc : "http://example.com"
       });
     },
-
 
     designer: function (req, res) {
       res.render('designer', { allowCustomComponents: !!process.env.ALLOW_CUSTOM_COMPONENTS });
