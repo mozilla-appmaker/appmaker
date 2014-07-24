@@ -26,7 +26,7 @@ define(
     }
 
     if (Utils.getQueryStringVariable('tutorial')) {
-      if (window.Polymer) {
+      if (window.Polymer && Polymer.whenPolymerReady) {
         Polymer.whenPolymerReady(onPolymerReadyForIntro);
       } else {
         window.addEventListener("polymer-ready", onPolymerReadyForIntro);

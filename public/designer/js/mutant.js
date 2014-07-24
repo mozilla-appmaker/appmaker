@@ -48,7 +48,7 @@ define(
       });
     }
 
-    if (window.Polymer) {
+    if (window.Polymer && Polymer.whenPolymerReady) {
       Polymer.whenPolymerReady(onPolymerReady);
     } else {
       window.addEventListener("polymer-ready", onPolymerReady);
