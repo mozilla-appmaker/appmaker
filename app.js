@@ -144,11 +144,6 @@ app.configure(function(){
   enableRedirects(app);
 });
 
-
-require("express-persona")(app, {
-  audience: process.env.PERSONA_AUDIENCE
-});
-
 var store;
 store = s3Store.init(process.env.S3_KEY, process.env.S3_SECRET, process.env.S3_BUCKET, process.env.S3_DOMAIN, emulate_s3);
 
@@ -160,14 +155,6 @@ routes = require('./routes')(
   require('./lib/mailer')(postmark),
   makeAPIPublisher
 );
-var langmap = i18n.getAllLocaleCodes();
-
-
-app.locals({
-  languages: i18n.getSupportLanguages(),
-  locales: Object.keys(langmap),
-  langmap: langmap
-});
 
 
 app.configure('development', function(){
@@ -179,6 +166,20 @@ app.configure('development', function(){
   // Test pages for publish and install
   app.get('/test/install', routes.testInstall);
   app.get('/test/publish', routes.testPublish);
+});
+
+
+require("express-persona")(app, {
+  audience: process.env.PERSONA_AUDIENCE
+});
+
+
+var langmap = i18n.getAllLocaleCodes();
+
+app.locals({
+  languages: i18n.getSupportLanguages(),
+  locales: Object.keys(langmap),
+  langmap: langmap
 });
 
 
