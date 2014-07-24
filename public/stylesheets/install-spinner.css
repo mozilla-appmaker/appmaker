@@ -7,12 +7,13 @@
   background-repeat: no-repeat;
   vertical-align: middle;
   right: -25px;
-  top:2px;
+  top: 2px;
   display: none;
   position: absolute;
 }
 
 .install-spinner.spinning {
+  display: block;
   -moz-animation: linear 2s gearspin;
   -moz-animation-iteration-count: infinite;
 }

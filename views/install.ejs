@@ -48,9 +48,8 @@
 
       <div class="install-container mode-caninstall">
         <div class="action-button-wrapper">
-          <a class="action-button install-app" href="#" class="install">
+          <a class="action-button install-app-button" href="#" class="install">
             <span class="button-label"><%- gettext('Install App') %><span class="install-spinner"></span></span>
-
           </a>
         </div>
       </div>
@@ -96,7 +95,7 @@
           container.querySelector(".mode-canrun").style.display = "block";
           container.querySelector(".mode-caninstall").style.display = "block";
 
-          var installButton = container.querySelector('.install-app');
+          var installButton = container.querySelector('.install-app-button');
           var runButton = container.querySelector('.run-app');
           var spinner = container.querySelector('.install-spinner');
 
@@ -115,8 +114,6 @@
               spinner.classList.remove('spinning');
               console.error(':(', this.error);
             };
-
-            return false;
 
           }, false);
 
