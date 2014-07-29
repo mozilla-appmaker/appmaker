@@ -5,8 +5,26 @@
 
     <div class="dropdowns {{ {hidden: user.state == 'signedout'} | tokenList }}">
 
+      <div class="menu-wrapper app-menu button">
+        <div class="menu-button {{ {hidden: user.state == 'signedout'} | tokenList}}" on-mousedown="{{toggleMenu}}">
+          <div class="icon-reorder"></div>
+        </div>
+        <div class="menu app-actions menu-options">
+          <a id="saveAppAs"><span class="icon icon-save"> </span> {{'Save As' | l10n}}</a>
+          <a class="saved" id="saveApp"><span class="icon icon-save"> </span> {{'Save' | l10n}}</a>
+          <a class="saved" id="renameApp"><span class="icon icon-edit"> </span> {{'Rename' | l10n}}</a>
+          <a id="publishApp"><span class="icon icon-mobile-phone"> </span> {{'Publish' | l10n}}</a>
+          <a class="saved" id="deleteApp"><span class="icon icon-trash"> </span> {{'Delete' | l10n}}</a>
+          <a class="hidden" id="viewlink"><span class="icon icon-external-link"> </span> {{'Preview App' | l10n}}</a>
+        </div>
+      </div>
+
       <div class="menu-wrapper user-menu button">
-        <div id="email" class="menu-button user-menu-button {{ {hidden: user.state == 'signedout'} | tokenList}}" on-mousedown="{{toggleMenu}}"><span class="icon"></span>{{user.email}}</div>
+        <div id="username" class="menu-button user-menu-button {{ {hidden: user.state == 'signedout'} | tokenList}}" on-mousedown="{{toggleMenu}}">
+          <img class="user-avatar" alt="User avatar" src="{{user.avatar}}">
+          {{'Hi' | l10n}} <strong>{{user.username}}</strong>
+          <span class="icon icon-caret-down"></span>
+        </div>
         <div class="menu">
           <h3 id="myappsheading">{{'My apps' | l10n}}</h3>
           <span id="noApps">{{"You don't have any saved apps!" | l10n}}</span>
@@ -21,19 +39,6 @@
             </ul>
           </template>
           <a id="signout" class="button" on-click="{{signoutClick}}">{{'Sign Out' | l10n}}</a>
-        </div>
-      </div>
-      <div class="menu-wrapper app-menu button">
-        <div class="menu-button {{ {hidden: user.state == 'signedout'} | tokenList}}" on-mousedown="{{toggleMenu}}">
-          <div class="icon-reorder"></div>
-        </div>
-        <div class="menu app-actions menu-options">
-          <a id="saveAppAs"><span class="icon icon-save"> </span> {{'Save As' | l10n}}</a>
-          <a class="saved" id="saveApp"><span class="icon icon-save"> </span> {{'Save' | l10n}}</a>
-          <a class="saved" id="renameApp"><span class="icon icon-edit"> </span> {{'Rename' | l10n}}</a>
-          <a id="publishApp"><span class="icon icon-mobile-phone"> </span> {{'Publish' | l10n}}</a>
-          <a class="saved" id="deleteApp"><span class="icon icon-trash"> </span> {{'Delete' | l10n}}</a>
-          <a class="hidden" id="viewlink"><span class="icon icon-external-link"> </span> {{'Preview App' | l10n}}</a>
         </div>
       </div>
 
@@ -79,7 +84,7 @@
         document.querySelector("#publish-pane-panel-email").setAttribute('placeholder', data.email);
         reporter.consoleReport("You have been logged in as: " + data.email);
         document.dispatchEvent(new CustomEvent('user-state', {
-          detail: {'state': 'signedin', 'email': data.email}
+          detail: {'state': 'signedin', 'data': data}
         }));
       });
 
@@ -87,7 +92,7 @@
         document.querySelector("#publish-pane-panel-email").setAttribute('placeholder', 'Your Email');
         document.dispatchEvent(
           new CustomEvent('user-state', {
-            detail: {'state': 'signedout', 'email': ''}
+            detail: {'state': 'signedout', 'data': {}}
           })
         );
       });
@@ -144,7 +149,9 @@
 
           document.addEventListener('user-state', function (event) {
             that.user.state = event.detail.state;
-            that.user.email = event.detail.email;
+            that.user.email = event.detail.data.email;
+            that.user.avatar = event.detail.data.avatar;
+            that.user.username = event.detail.data.username;
 
             var remixName = utils.getQueryStringVariable('remix');
             var currentApp = application.getCurrentApp();
