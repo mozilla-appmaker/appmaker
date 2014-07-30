@@ -94,7 +94,7 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
 
     proxy: require('./proxy'),
 
-    my: require('./my')(mongoose, dbconn)
+    my: require('./my')(mongoose, dbconn, makeAPIPublisher)
 
   }
 };

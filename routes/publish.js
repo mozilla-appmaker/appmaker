@@ -208,20 +208,43 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                   manifest: remoteURLs.manifest
                 }, 200);
                 // Don't wait for the MakeAPI to deliver url to user
-                makeAPIPublisher.publish({
-                  url: remoteURLs.install,
-                  remix: remixUrl,
-                  thumbnail: process.env.ASSET_HOST + "/images/app-icon.png",
-                  title: appName,
-                  appDescription: appDescription,
-                  appTags: inputData.appTags || "",
-                  email: req.session.email,
-                  author: userName,
-                  locale: req.localeInfo.lang
-                }, function (err, make) {
+                App.findOne({
+                  author: req.session.email,
+                  name: inputData.name
+                }, function(err, app) {
                   if (err) {
-                    console.error(err);
+                    return console.error('Error finding app for publishing to MakeAPI: ' + err);
                   }
+                  var id = app['makeapi-id'];
+                  makeAPIPublisher.publish({
+                    id: id,
+                    url: remoteURLs.install,
+                    remix: remixUrl,
+                    thumbnail: process.env.ASSET_HOST + "/images/app-icon.png",
+                    title: appName,
+                    appDescription: appDescription,
+                    appTags: inputData.appTags || "",
+                    email: req.session.email,
+                    author: userName,
+                    locale: req.localeInfo.lang
+                  }, function (err, make) {
+                    if (err) {
+                      console.error(err);
+                    }
+                    else if (!id) {
+                      App.update({
+                        author: req.session.email,
+                        name: inputData.name
+                      }, {
+                        $set: { 'makeapi-id': make.id }
+                      }, {},
+                      function(err,obj){
+                        if(err){
+                          console.error('Error saving MakeAPI id to database: ' + err);
+                        }
+                      });
+                    }
+                  });
                 });
               }
             }, description.contentType);
