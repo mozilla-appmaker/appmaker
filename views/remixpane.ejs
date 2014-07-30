@@ -128,12 +128,11 @@
 
       //Add close handlers to the popups
       var popups = document.querySelectorAll(".pagepop-inner");
+
       for(var i = 0; i < popups.length; i++){
         var p = popups[i];
         var closeme = p.querySelector(".close-panel");
-        closeme.addEventListener("click",function(){
-          hidePopup();
-        },false);
+        closeme.addEventListener("click",hidePopup);
       }
 
       var remixNowButton = document.querySelector("#remix-app");
@@ -182,7 +181,7 @@
             // App is already installed!
             installButton.parentNode.style.display = "none";
           }
-        }
+        };
       }
 
       // Install or show not-installable popup.
