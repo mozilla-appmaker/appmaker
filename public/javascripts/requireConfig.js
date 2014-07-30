@@ -27,6 +27,10 @@ requirejs.config({
 
     'analytics': '../vendor/webmaker-analytics/analytics',
 
+    "languages": "../vendor/webmaker-language-picker/js/languages",
+    "list": "../vendor/listjs/dist/list",
+    "fuzzySearch": "../vendor/list.fuzzysearch.js/dist/list.fuzzysearch.min",
+
     "colorpicker.core": "../vendor/colorpicker/jquery.colorpicker",
     "colorpicker.swatches.crayola": "../vendor/colorpicker/swatches/jquery.ui.colorpicker-crayola",
     "colorpicker.swatches.pantone": "../vendor/colorpicker/swatches/jquery.ui.colorpicker-pantone",

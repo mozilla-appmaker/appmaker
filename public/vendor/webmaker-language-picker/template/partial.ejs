@@ -1,0 +1,24 @@
+<span class="language-picker">
+  <a href="/<%=localeInfo.lang%>/languages?page=<%=currentPath%>" id="current-language" class="selected">
+    <i class="icon-globe"></i>
+    <%=localeInfo.name%>
+  </a>
+  <div id="list-of-languages" class="language-picker-box" dir="<%=localeInfo.direction%>">
+
+    <div>Webmaker.org is offered in <strong><%=languages.length%></strong> languages.</div>
+
+    <div class="input-wrapper">
+      <label for="language-search"><i class="icon-search"></i></label>
+      <input id="language-search" class="language-search">
+    </div>
+    <ul class="list col col-spacing" data-supported="<%=languages%>">
+    <% languages.forEach(function(language) { %>
+    <li data-value="<%=language%>" class="langList clearfix"><a<% if (language === localeInfo.lang) { %> class="selected"<% } %> target="_self">
+      <span class="localized-name hint--bottom hint--inline" data-hint="<%=languageEnglishName(language)%>" ><%= languageNameFor(language) %></span>
+      <span class="english-name"><%= languageEnglishName(language) %></span>
+    </a></li>
+    <% }) %>
+    </ul>
+    <p>Don't see your language? <a href="https://support.mozilla.org/en-US/kb/translate-webmaker" target="_blank">Click here to contribute.</a></p>
+  </div>
+</span>

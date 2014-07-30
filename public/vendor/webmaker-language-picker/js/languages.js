@@ -71,6 +71,8 @@ define(['jquery', 'list', 'fuzzySearch', 'analytics'], function ($, List, Fuzzy,
             right: offset.left/-10 + 'px'
           }
           $languageList.addClass("bottomTop");
+        } else if(options.css && typeof options.css === "function") {
+          cssOptions = options.css();
         }
         if(options.nav !== undefined && !options.nav) {
           cssOptions.top = offset.top/10 + 'px';
