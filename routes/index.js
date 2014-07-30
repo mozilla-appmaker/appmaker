@@ -38,7 +38,7 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
         ceciComponentURL : "ceciComponentURL",
         userComponents : [],
         webmakerurl : "http://example.com",
-        remixURL : "http://example.com",
+        remixUrl : "http://example.com",
         username : "testperson",
         description : "One of the best test apps in the business. Test it all you want, it will never fail you.",
         manifestUrl : "test.manifest",

@@ -1,95 +1,243 @@
-    <div id="remix-pane">
-      <div id="remix-icon"></div>
-      <div id="remix-panel">
-        <button id="close-remix-panel"></button>
-        <div id="remix-panel-content">
-          <div id="remix-panel-inner">
-            <input type="email" id="remix-panel-email" placeholder="Your Email">
-            <button id="remix-button" class="remix-button"><%- gettext("Mail me the remix link") %></button>
-            <button id="remix-now-button" class="remix-button"><%- gettext("Remix now") %></button>
-            <button id="install-now-button" class="remix-button">
-              <%- gettext("Install App") %>
-              <span class="install-spinner"></span>
-            </button>
-            <div class="remix-explanation">
-              <%- gettext("remixExplaination") %>
-            </div>
+<div id="remix-panel">
+
+  <div id="remix-panel-inner">
+    <div id="remix-panel-content">
+
+      <div class="app-details">
+        <div class="app-icon"></div>
+        <h1 class="app-title"><%- appName %></h1>
+        <h2 class="app-author"><%- gettext('By') %> <a href="https://www.webmaker.org/u/<%- username %>">@<%- username %></a></h2>
+      </div>
+
+      <p class="app-description"><%- description %></p>
+
+      <div class="action-button-wrapper">
+        <button class="action-button" id="install-app">
+          <%- gettext("Install this App") %>
+          <span class="install-spinner"></span>
+        </button>
+      </div>
+
+      <div class="action-button-wrapper">
+        <button id="remix-app" class="action-button">
+          <%- gettext("Remix this App") %>
+        </button>
+      </div>
+
+      <div class="action-button-wrapper share-app-button">
+        <button class="action-button">
+          <%- gettext("Share this App") %>
+        </button>
+      </div>
+
+      <div class="about-appmaker">
+        <p><%- gettext('This app was made with') %></p>
+        <a href="http://apps.webmaker.org">
+          <img alt="Appmaker" src="<%= process.env.ASSET_HOST %>/images/appmaker-logo-header.png" />
+        </a>
+        <p>
+          <%- gettext('Make your own app') %><br>
+          <a href="http://apps.webmaker.org">apps.webmaker.org</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="remix-toggle">
+    <button class="open-remix-panel" id="remix-icon"></button>
+    <button class="close-remix-panel" id="close-remix-panel"></button>
+  </div>
+
+</div>
+
+<div class="hidden pagepop">
+  <div class="pagepop-overlay">
+
+    <!-- Install App -->
+    <div class="pagepop-inner install-app" data-popup="install-app">
+      <div class="pagepop-header">
+        <h2><%- gettext('Cannot install header') %></h2>
+        <div class="close-panel"></div>
+      </div>
+      <div class="pagepop-body">
+        <!-- <p><%- gettext('Cannot install explanation') %></p> -->
+        <p>Unfortunately, we can't install Appmaker apps on this device.</p>
+        <h4>
+          Supported Platforms
+          <!-- <%- gettext('Supported platforms') %> -->
+        </h4>
+        <ul class="supported-platforms">
+          <li><a href="http://www.mozilla.org/en-US/firefox/os/"><%- gettext('Firefox OS Devices') %></a></li>
+          <li><a href="https://play.google.com/store/apps/details?id=org.mozilla.firefox"><%- gettext('Firefox for Android') %></a></li>
+          <li><a href="https://www.mozilla.org/en-US/firefox/new/"><%- gettext('Firefox for Desktop') %></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Share App -->
+    <div class="pagepop-inner share-app" data-popup="share-app">
+      <div class="pagepop-header">
+        <h2><%- gettext('Share this App') %></h2>
+        <div class="close-panel"></div>
+      </div>
+      <div class="pagepop-body">
+        <h3><%- gettext('Email it') %></h3>
+        <div class="share-by-email">
+          <input type="email" id="share-email" placeholder="email@example.com">
+          <div class="action-button-wrapper">
+            <button id="email-share-button" class="action-button"><%- gettext("Send App Link") %></button>
           </div>
+          <div class="email-sent hidden"><%- gettext('We sent your email!') %></div>
+        </div>
+        <div class="share-by-qr">
+          <h3><%- gettext('Or scan this QR Code') %></h3>
+          <div id="qrcode"></div>
         </div>
       </div>
-      <script>
-        (function(){
-          var open = document.getElementById('remix-icon');
-          var panel = document.getElementById('remix-panel');
-          var close = document.getElementById('close-remix-panel');
-          var email = document.getElementById('remix-panel-email');
-
-          open.onclick = function (e) {
-            panel.classList.add('expanded');
-            open.classList.add('hidden');
-            remixButton.disabled = false;
-            email.disabled = false;
-            remixButton.classList.remove('fadeout');
-            email.classList.remove('fadeout');
-            email.value = '';
-          };
-
-          function closeRemixPanel (e) {
-            panel.classList.remove('expanded');
-            open.classList.remove('hidden');
-          }
-
-          close.onclick = closeRemixPanel;
-
-          var remixButton = document.querySelector('#remix-button');
-          remixButton.onclick = function (e) {
-            remixButton.disabled = true;
-            email.disabled = false;
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '<%= process.env.ASSET_HOST %>/remix?app=<%- remixURL %>&email=' + email.value, true);
-            xhr.onerror = function (e) {
-              console.error(e);
-            };
-            xhr.onload = function (e) {
-              console.log(e);
-            };
-            xhr.send(null);
-            setTimeout(function () {
-              remixButton.classList.add('fadeout');
-              email.classList.add('fadeout');
-              closeRemixPanel();
-            }, 500);
-          };
-
-          var remixNowButton = document.querySelector("#remix-now-button");
-          if ('ontouchstart' in window) {
-            remixNowButton.classList.add('hidden');
-          } else {
-            remixNowButton.onclick = function (e) {
-              window.open('<%= process.env.ASSET_HOST %>/remix?app=<%- remixURL %>');
-            };
-          }
-
-          var installNowButton = document.querySelector("#install-now-button");
-          // add install button if we're in FF, otherwise give user handy links
-          if(navigator.mozApps && navigator.mozApps.install) {
-            var spinner = document.querySelector('.install-spinner');
-            installNowButton.addEventListener('click', function (e) {
-              var installRequest = navigator.mozApps.install('<%- manifestUrl %>');
-
-              spinner.classList.add('spinning');
-              installRequest.onsuccess = function (data) {
-                spinner.classList.remove('spinning');
-              };
-
-              installRequest.onerror = function (err) {
-                spinner.classList.remove('spinning');
-              };
-            }, false);
-          } else {
-            installNowButton.classList.add('hidden');
-          }
-
-        })();
-      </script>
     </div>
+
+    <!-- Remix App -->
+    <div class="pagepop-inner remix-app" data-popup="remix-app">
+      <div class="pagepop-header">
+        <h2><%- gettext('Remix this App') %></h2>
+        <div class="close-panel"></div>
+      </div>
+      <div class="pagepop-body">
+        <p><%- gettext("You'll need a desktop computer to remix this app.") %></p>
+        <h4><%- gettext('Email me the Remix Link') %><h4/>
+        <div class="share-by-email">
+          <input type="email" id="remix-email" placeholder="email@example.com">
+          <div class="action-button-wrapper">
+            <button id="email-remix-button" class="action-button"><%- gettext("Send Remix Link") %></button>
+          </div>
+          <div class="email-sent hidden"><%- gettext('We sent your email!') %></div>
+        </div>
+      </div>
+  </div>
+
+</div>
+
+<script>
+
+  (function(){
+
+      var shareButton = document.querySelector(".share-app-button");
+      shareButton.addEventListener("click",function(){
+        showPopup("share-app");
+      });
+
+      //Add close handlers to the popups
+      var popups = document.querySelectorAll(".pagepop-inner");
+      for(var i = 0; i < popups.length; i++){
+        var p = popups[i];
+        var closeme = p.querySelector(".close-panel");
+        closeme.addEventListener("click",function(){
+          hidePopup();
+        },false);
+      }
+
+      var remixNowButton = document.querySelector("#remix-app");
+      if ('ontouchstart' in window) {
+        remixNowButton.addEventListener("click",function(){
+          showPopup("remix-app");
+        },false);
+      } else {
+        remixNowButton.addEventListener("click",function(){
+          window.open('<%= process.env.ASSET_HOST %>/remix?app=<%- remixUrl %>');
+        },false);
+      }
+
+      var installButton = document.querySelector("#install-app");
+
+      var openRemixTab = document.querySelector('.open-remix-panel');
+      openRemixTab.addEventListener("click",function(){
+        openRemixPanel();
+      });
+
+      var closeRemixTab = document.querySelector('.close-remix-panel');
+      closeRemixTab.addEventListener("click",function(){
+        closeRemixPanel();
+      },false);
+
+      new QRCode(document.querySelector("#qrcode"), "<%- remixUrl %>");
+
+      // Share via Email
+      var shareEmailButton = document.querySelector('#email-share-button');
+      var shareEmailInput = document.querySelector('#share-email');
+      shareEmailButton.addEventListener("click",function(e){
+        sendEmail("share-app",shareEmailInput.value);
+      },false);
+
+      // Remix via Email
+      var remixEmailButton = document.querySelector('#email-remix-button');
+      var remixEmailInput = document.querySelector('#remix-email');
+      remixEmailButton.addEventListener("click",function(e){
+        sendEmail("remix-app",remixEmailInput.value);
+      },false);
+
+      // Install or show not-installable popup.
+      if(navigator.mozApps && navigator.mozApps.install) {
+        var spinner = document.querySelector('.install-spinner');
+        installButton.addEventListener('click', function (e) {
+          var installRequest = navigator.mozApps.install('<%- manifestUrl %>');
+          spinner.classList.add('spinning');
+          installRequest.onsuccess = function (data) {
+            spinner.classList.remove('spinning');
+          };
+          installRequest.onerror = function (err) {
+            spinner.classList.remove('spinning');
+          };
+        }, false);
+      } else {
+        installButton.addEventListener('click', function (e) {
+          showPopup("install-app");
+        }, false);
+      }
+
+    function closeRemixPanel (e) {
+      document.querySelector('#remix-panel').classList.remove('expanded');
+    }
+
+    function openRemixPanel () {
+      document.querySelector('#remix-panel').classList.add('expanded');
+    }
+
+    function sendEmail(type, val){
+
+      var confirmation = document.querySelector("[data-popup=" + type + "] .email-sent");
+      confirmation.classList.remove("hidden");
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '<%= process.env.ASSET_HOST %>/remix?app=<%- remixUrl %>&email=' + val, true);
+      xhr.onerror = function (e) {
+        console.error(e);
+      };
+      xhr.onload = function (e) {
+        console.log(e);
+      };
+      xhr.send(null);
+
+      setTimeout(function () {
+        hidePopup();
+        confirmation.classList.add("hidden");
+      }, 1000);
+    }
+
+    function showPopup(type){
+      document.querySelector("#remix-panel").classList.add("hidden");
+      document.querySelector(".pagepop").classList.remove("hidden");
+      document.querySelector("[data-popup=" + type + "]").style.display = "block";
+    }
+
+    function hidePopup(type){
+      var pops = document.querySelectorAll(".pagepop-inner");
+      for(var i = 0; i < pops.length; i++){
+        pops[i].style.display = "none";
+      }
+      document.querySelector("#remix-panel").classList.remove("hidden");
+      document.querySelector(".pagepop").classList.add("hidden");
+    }
+
+  })();
+</script>

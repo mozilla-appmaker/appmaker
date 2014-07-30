@@ -1,0 +1,228 @@
+// Here will be the shared styles for the installed mobile app as well as the install page.
+
+html, body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  font-size: 16px;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  text-align: center;
+}
+
+html * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+h1,h2,p,ul,li {
+  margin: 0;
+  padding: 0;
+}
+
+h2 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+p {
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+html {
+  background: url(/images/background.gif);
+  background-size: 100px;
+}
+
+body {
+  font-size:16px;
+  -webkit-text-size-adjust: none;
+}
+
+a {
+  color: rgb(53, 140, 206);
+  text-decoration: none;
+}
+
+// Buttons
+
+.action-button-wrapper {
+  padding: 5px;
+  background: #DEDEDE;
+  border-radius: 4px;
+  margin-bottom: 10px;
+
+  button.action-button {
+    width: 100%;
+    outline: none;
+  }
+
+  .action-button {
+    padding: 9px 0 10px 0;
+    margin: 0;
+    color: white;
+    position: relative;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    display: block;
+    font-size: 18px;
+    text-shadow: 0px 2px 0px rgba(0,0,0,.2);
+    text-decoration: none;
+    text-align: center;
+    border-radius: 3px;
+    background: #358CCE;
+    background: -webkit-linear-gradient(#358CCE,#2371ac);
+    background: -moz-linear-gradient(#358CCE,#2371ac);
+    background: linear-gradient(#358CCE,#2371ac);
+    overflow: hidden;
+
+    &:active {
+      background: #185c8f;
+    }
+
+    .button-label {
+      position: relative;
+      color: white;
+    }
+
+  }
+} /* - action button */
+
+.app {
+  width: 310px;
+  min-height: 400px;
+  position: relative;
+  margin: 0 auto;
+}
+
+@media (max-width: 310px)  {
+  html {
+    background: white;
+  }
+}
+
+@media all and (min-width: 601px)  {
+  body {
+    padding-top: 40px;
+  }
+
+  .app {
+    margin: 0 auto 0 auto;
+    // box-shadow: 0px 5px 10px rgba(0,0,0,.3);
+    border: solid 15px rgba(0,0,0,.4);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+  }
+}
+
+.about-appmaker {
+  margin-top: 28px;
+  border-top: solid 2px #DDD;
+  padding-top: 18px;
+
+  a {
+    font-size: 20px;
+  }
+
+  p {
+    margin-bottom: 5px;
+    color: #999;
+  }
+
+  img {
+    width: 220px;
+    display: inline-block;
+    position: relative;
+    left: 13px;
+    margin: 12px 0;
+  }
+}
+
+.app-details {
+  text-align: left;
+  margin: 0;
+  padding: 2px 0 5px 65px;
+  background-position: -10px 4px;
+  background-size: 65px;
+  margin: 0 0 10px 0;
+  position: relative;
+
+  .app-icon {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    background: url(/images/app-icon.png) white no-repeat;
+    background-position: -1px 0px;
+    background-size: 50px;
+    border: solid 1px #DDD;
+    border-radius: 5px;
+    top: 0px;
+    left: 0px;
+    box-shadow: 0px 2px 3px rgba(0,0,0,.1 )
+  }
+
+  .app-title {
+    font-size: 25px;
+    font-weight: normal;
+    color: #333;
+  }
+
+  .app-author {
+    font-size: 15px;
+    color: #999;
+    font-weight: normal;
+  }
+}
+
+.app-description {
+  font-size: 15px;
+  margin-bottom: 20px;
+  text-align: left;
+  color: #999;
+}
+
+.cant-install {
+  background: #DEDEDE;
+  border-bottom: solid 2px #BEBEBE;
+  padding:  15px;
+  margin: 15px 0;
+  font-size: 15px;
+  text-align: center;
+  border-radius: 3px 3px 4px 4px;
+
+  h1 {
+    color: #555;
+    font-size: 18px;
+    margin: 0 0 10px 0;
+    font-weight: normal;
+  }
+
+  p {
+    color: #888;
+  }
+
+}
+
+.supported-platforms {
+  margin: 8px 0 0 0;
+
+  li {
+    padding: 7px 0;
+    display: block;
+    border-bottom: solid 1px #BEBEBE;
+  }
+
+  li:last-child {
+    border: none;
+  }
+
+  a {
+    display: inline-block;
+  }
+}
