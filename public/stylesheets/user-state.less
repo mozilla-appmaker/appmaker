@@ -10,12 +10,12 @@
     display: none;
   }
   & > div, & > a {
-    display: block;
-    float: left;
+    display: inline-block;
   }
 
   display: inline-block;
-  height: 30px;
+  height: 42px;
+  line-height: 40px;
   margin-top: 10px;
 
   .hidden {
@@ -29,10 +29,8 @@
   position: relative;
 
   .back-to-webmaker {
-    height: 30px;
-    line-height: 30px;
-
     a {
+      display: inline-block;
       color: #555;
       text-decoration: none;
 
@@ -49,7 +47,7 @@
       height: 30px;
       width: 40px;
       display: inline-block;
-      float: left;
+      vertical-align: middle;
       margin-right: 2px;
     }
   }
@@ -57,8 +55,6 @@
   #signin {
     background: #358CCE;
     margin-left: 8px;
-    height: 22px;
-    font-size: 15px;
 
     &:hover {
       background: #439add;
@@ -78,57 +74,48 @@
     cursor: pointer;
     text-align: left;
     padding: 4px 12px;
+    vertical-align: middle;
+
+    &:not(.menu-wrapper) {
+      font-size: 15px;
+      line-height: 33px;
+      padding: 0 10px;
+      border-radius: 2px;
+    }
   }
 
   .menu-button {
     display: block;
-    padding: 4px 8px;
-    height: 20px;
+    padding: 5px 8px;
+    height: 30px;
   }
 
   .icon-reorder {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .button .user-menu-button {
     min-width: 50px;
-    padding-left: 28px;
-    padding-right: 50px;
-    padding: 3px 30px 5px 10px;
     background-color: white;
-    background-size: 24px;
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    color: #777;
-    font-size: 15px;
+    color: #373737;
+    font-size: 13px;
+    line-height: 30px;
+    padding-left: 50px;
+    padding-right: 28px;
 
     &:hover {
       text-decoration: none;
-    }
-
-    &:after {
-      content: ' ';
-      display: block;
-      position: absolute;
-      top: 11px;
-      right: 11px;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 5px 5px 0 5px;
-      border-color: #333 transparent transparent transparent;
     }
   }
 
   #signout {
     .red-button;
     margin: 0 0 3px 3px;
+    padding: 4px 12px;
   }
 
   #newApp {
     .green-button;
-    font-size: 15px;
-    height: 22px;
   }
 
   #addComponent {
@@ -142,12 +129,12 @@
     size: large;
   }
 
-  .user-menu .icon {
-    background-image: url(/images/icon_user.png);
-  }
-
-  .user-menu.menu-open .icon {
-    background-image: url(/images/icon_user_lookdown.png);
+  .user-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    position: absolute;
+    left: 10px;
   }
 
   .menu-open {
@@ -169,11 +156,12 @@
     -moz-box-sizing: border-box;
     position: absolute;
     left: -1px;
-    top: 28px;
+    top: 40px;
     background: white;
     text-align: left;
-    border: solid 1px #C5C5C5;
+    border: solid 1px #CCC;
     display: none;
+    line-height: 20px;
 
     .button {
       color: white;
@@ -189,6 +177,14 @@
   }
 
   .app-menu {
+    .menu-button {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      padding: 0;
+      text-align: center;
+    }
+
     .menu {
       min-width:120px;
     }
@@ -212,8 +208,8 @@
     position: relative;
     margin-right: 8px;
     background-color: white;
-    color: #777;
-    border: solid 1px #C5C5C5;
+    color: #555;
+    border: solid 1px #CCC;
 
     &.button {
       padding: 0;
