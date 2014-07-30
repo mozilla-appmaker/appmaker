@@ -14,7 +14,6 @@
       <div class="action-button-wrapper">
         <button class="action-button" id="install-app">
           <%- gettext("Install this App") %>
-          <span class="install-spinner"></span>
         </button>
       </div>
 
@@ -178,15 +177,13 @@
 
       // Install or show not-installable popup.
       if(navigator.mozApps && navigator.mozApps.install) {
-        var spinner = document.querySelector('.install-spinner');
         installButton.addEventListener('click', function (e) {
           var installRequest = navigator.mozApps.install('<%- manifestUrl %>');
-          spinner.classList.add('spinning');
           installRequest.onsuccess = function (data) {
-            spinner.classList.remove('spinning');
+            console.log('hooray!', data, this.result);
           };
           installRequest.onerror = function (err) {
-            spinner.classList.remove('spinning');
+            console.error(':(', this.error);
           };
         }, false);
       } else {
