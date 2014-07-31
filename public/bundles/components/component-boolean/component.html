@@ -1,0 +1,65 @@
+<polymer-element name="ceci-bool" extends="ceci-element" attributes="checkif" checkif="hello">
+  <ceci-definition>
+    {
+      "name": "Boolean Gate",
+      "thumbnail": "./thumbnail.png",
+      "description": "Compares input to a value you choose and reports \"true\" or \"false\".",
+      "broadcasts": {
+        "true": {
+          "label": "True",
+          "description": "The signal matches the condition.",
+          "default" : true
+        },
+        "false": {
+          "label": "False",
+          "description": "The signal doesn't match the condition."
+        }
+      },
+
+      "listeners": {
+        "signal": {
+          "description": "The signal to match",
+          "label": "Signal",
+          "default" : true
+        }
+      },
+      "attributes": {
+        "checkif": {
+          "description": "Check if the incoming signal matches this string.",
+          "label": "Check If",
+          "editable": "Text",
+          "default" : true
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css">
+
+    <div class="rule">
+      Does the signal equal <span class="checkif">"{{checkif}}"</span> ?
+    </div>
+
+    <shadow></shadow>
+  </template>
+  <tags>starter,math</tags>
+
+    <script>
+      Polymer("ceci-bool", {
+        ready: function() {
+          this.super();
+        },
+        attached : function(){
+          this.super();
+        },
+        signal : function(value){
+          if (value.toString().toLowerCase() === this.checkif.toLowerCase()) {
+            this.broadcast("true", "true");
+          }
+          else {
+            this.broadcast("false", "false");
+          }
+        }
+      });
+    </script>
+</polymer-element>

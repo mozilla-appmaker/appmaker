@@ -1,0 +1,73 @@
+<polymer-element name="ceci-paypal" attributes="amount account currency" extends="ceci-element" currency="BRL" amount="5" account="donate@mozilla.org" button="false">
+  <ceci-definition>
+    {
+      "name": "PayPal",
+      "description": "Donates to the cause of your choice through PayPal.",
+      "tags": ["paypal", "donate"],
+      "thumbnail": "./thumbnail.png",
+      "broadcasts": {
+        "donate": {
+          "label": "Donate",
+          "description": "Occurs when donation process begins."
+        }
+      },
+      "listeners": {
+        "submit": {
+          "description": "Submits a donation once settings have been chosen.",
+          "label": "Submit",
+          "default": "orange"
+        }
+      },
+      "attributes": {
+        "amount": {
+          "label": "Amount",
+          "description": "Amount of money to donate.",
+          "editable": "number",
+          "listener": true,
+          "max": 3,
+          "min": 50
+        },
+        "account": {
+          "label": "Account",
+          "description": "PayPal account which will receive payment.",
+          "editable": "text"
+        },
+        "currency": {
+          "label": "Currency",
+          "description": "Currency code for donation amount.",
+          "editable": "text"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <h3><span id="donationAmount">Donation Amount:</span> <span>{{amount}}</span> <span>{{currency}}</span></h3>
+    <p id="account">{{account}}</p>
+    <form id="form" method="post" action="https://www.paypal.com/cgi-bin/webscr">
+      <input type="hidden" name="amount" id="pp_amount" value="{{amount}}" />
+      <input type="hidden" name="business" id="pp_business" value="{{account}}" />
+      <input type="hidden" name="currency_code" id="pp_currency_code" value="{{currency}}" />
+      <input type="hidden" name="item_name" id="fundrasingCampaignName" value="Donation from AppMaker App" />
+      <input type="hidden" name="no_shipping" value="1"/>
+      <input type="hidden" name="rm" value="1"/>
+      <input type="hidden" name="cmd" value="_donations" /> <!-- TODO - could switch between donation and payments -->
+      <input type="hidden" name="return" value="" /> <!-- Return url is the current app url with query param to tell success -->
+    </form>
+    <img src="thumbnail.png">
+    <shadow></shadow>
+  </template>
+  <script>
+    Polymer('ceci-paypal', {
+      ready: function () {
+        this.super();
+        this.$.donationAmount.textContent = this.gettext(this.localName + "/donationAmount") || this.$.donationAmount.textContent;
+      },
+      submit: function (value) {
+        this.$.form.submit();
+        this.broadcast('donate');
+      }
+    });
+  </script>
+</polymer-element>
+

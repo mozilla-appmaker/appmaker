@@ -1,0 +1,31 @@
+:host {
+  display: block;
+  width: 100%;
+  background: #DDD;
+  text-align: center;
+  padding: 5px ;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+:host .timer {
+  text-align: center;
+  font-size: 16px;
+  padding: 5px 0;
+}
+
+:host .counter {
+  font-size: 16px;
+  color: #666;
+  margin: 5px auto;
+  text-align: center;
+  padding: 10px 12px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border: 1px #CCC solid;
+  border-bottom-width: 2px;
+  background: white;
+  display: inline-block;
+  font-weight: bold;
+}

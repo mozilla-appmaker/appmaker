@@ -1,0 +1,97 @@
+:host {
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+  text-align: center;
+  background: #EEE;
+}
+
+:host .buttonwrapper {
+  display: inline-block;
+}
+
+:host .button {
+  font-family: "FiraSans", sans-serif;
+  cursor: pointer;
+  position: relative;
+  text-decoration: none;
+  outline: none;
+  background-color: #4DB227;
+  text-align: center;
+  border-radius: 0.2rem;
+  font-weight: 600;
+  font-size: 1.8rem;
+  border: none;
+  width: 80px;
+  height: 42px;
+  margin: 0 5px;
+  position: relative;
+  display: block;
+  width: 100px;
+  background: #CCC;
+
+  border: solid 2px #BBB;
+  border-top: solid 2px #CCC;
+  border-bottom: solid 4px #AAA;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  background-image:  -webkit-linear-gradient(top, #EEE,#DDD);
+  background-image:  -moz-linear-gradient(top, #EEE,#DDD);
+  background-image:  linear-gradient(top, #EEE,#DDD);
+}
+
+:host .button:active {
+  border-bottom: solid 2px #AAA;
+  margin-top: 2px;
+}
+
+:host .icon {
+  width: 20px;
+  height: 20px;
+}
+
+:host #startButton .iconwrapper {
+  position: absolute;
+  top: calc(50% - 12px);
+  left: calc(50% - 12px);
+  padding: 2px;
+  background-image: -moz-linear-gradient(top, #AAA,#FFF);
+  background-image: -webkit-linear-gradient(top, #AAA,#FFF);
+  background-image:  linear-gradient(top, #AAA,#FFF);
+  -webkit-border-radius: 22px;
+  -moz-border-radius: 22px;
+  border-radius: 22px;
+}
+
+:host #stopButton .iconwrapper {
+  position: absolute;
+  top: calc(50% - 10px);
+  left: calc(50% - 10px);
+  -webkit-border-radius: 22px;
+  -moz-border-radius: 22px;
+  border-radius: 22px;
+}
+
+:host #startButton .icon {
+  background: #a13333;
+  -webkit-border-radius: 20px;*/
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  height: 20px;
+  width: 20px;
+}
+
+:host #stopButton .icon {
+  background: #555;
+}
+
+:host #startButton.recording  {
+  border-bottom: solid 2px #AAA;
+  margin-top: 2px;
+}
+
+:host #startButton.recording .icon {
+  background: #eb1919;
+}
+

@@ -1,0 +1,9 @@
+:host, :host .combiner {
+  display: block;
+  width: 100%;
+  height: 50px;
+}
+
+:host .combiner {
+  background: url(thumbnail.png) black no-repeat center;
+}

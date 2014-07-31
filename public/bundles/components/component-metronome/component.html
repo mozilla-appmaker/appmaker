@@ -1,0 +1,168 @@
+<!--TODO-->
+<!--1. stop event-->
+<!--2. Does this evaluate true / false  this.getAttribute('autostart')-->
+<!--3. support tap / touch event? touchend-->
+<!--4. cancel-->
+
+<polymer-element name="ceci-metronome" attributes="changeby beatsperminute autostart" beatsperminute="60" autostart="false" extends="ceci-element"
+                 changeby="10">
+  <template>
+    <link rel="stylesheet" href="component.css"/>
+    <div class="metronome-wrapper">
+      <div class="metronome-shadow"></div>
+      <div class="metronome-body" on-click="{{click}}">
+        <div class="metronome-hole"></div>
+        <div class="metronome-arrow"></div>
+      </div>
+      <div class="speed-control up" on-click="{{faster}}">
+        <span class="icon">+</span>
+      </div>
+      <div class="speed-control down" on-click="{{slower}}">
+        <span class="icon">-</span>
+      </div>
+    </div>
+    <shadow></shadow>
+    <script type="text/json" id="ceci-definition"></script>
+  </template>
+  <ceci-definition>
+    {
+      "description": "Counts and sends out a beat at regular intervals.",
+      "tags": ["fun","animated","starter"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Metronome",
+      "broadcasts": {
+        "tick": {
+          "label": "Tick",
+          "description": "A tick of the metronome measured in Beats Per Minute(BPM)",
+          "default": true
+        }
+      },
+      "listeners": {
+        "stop": {
+          "description": "Stops metronome ticking.",
+          "label": "Stop ticking"
+        },
+        "start": {
+          "description": "Starts metronome ticking.",
+          "label": "Start ticking"
+        }
+      },
+      "attributes": {
+        "beatsperminute": {
+          "label": "Beats Per Minute (BPM)",
+          "description": "Metronome ticks measured in beats per minute",
+          "editable": "number",
+          "min" : 0.1,
+          "listener": true
+        },
+        "changeby" : {
+          "label": "Button Increment",
+          "description": "How much the + and - buttons change the speed by.",
+          "editable": "number",
+          "min" : 1,
+          "listener": true
+        },
+        "autostart": {
+          "label": "Autostart",
+          "description": "Boolean value that controls if the metronome starts auto-playing when the component loads",
+          "editable": "boolean",
+          "listener": true
+        }
+      }
+    }
+  </ceci-definition>
+  <script>
+    Polymer('ceci-metronome', {
+      ready: function () {
+        this.super();
+        this._count = 0;
+        this._playing = false;
+        this.timeout = null;
+      },
+      detached: function () {
+        clearTimeout(this.timeout);
+        this.timeout = null;
+        this.super();
+      },
+      attached: function () {
+        if (this._playing) {
+          this._setTimeout();
+        }
+        this.super();
+      },
+      setArrowSpeed: function (v) {
+        var animDuration = v * 2;
+        var metronomeArrow = this.shadowRoot.querySelector('.metronome-arrow');
+        metronomeArrow.classList.remove("metronome-animation");
+        if (v > 0 && this._playing) {
+          //force a reflow
+          metronomeArrow.offsetWidth = metronomeArrow.offsetWidth;
+
+          metronomeArrow.classList.add("metronome-animation");
+          metronomeArrow.style.webkitAnimationDuration = animDuration + "s";
+          metronomeArrow.style.animationDuration = animDuration + "s";
+        }
+      },
+      autostartChanged : function(){
+        if(this.autostart == "true") {
+          if (!this._playing) {
+            this.start();
+          }
+        } else {
+          this.stop();
+        }
+      },
+      click: function() {
+        if(this._playing){
+          this.stop();
+        } else {
+          this.start();
+        }
+      },
+      faster : function(){
+        this.beatsperminute = parseInt(this.beatsperminute,10) + parseInt(this.changeby,10);
+      },
+      slower : function(){
+        this.beatsperminute = parseInt(this.beatsperminute,10) - parseInt(this.changeby,10);
+      },
+      beatsperminuteChanged: function (oldValue, newValue) {
+        if (newValue <= 0) {
+          this.beatsperminute = 0.1;
+        }
+        this._clearTimeout();
+        this.setArrowSpeed((60 / this.beatsperminute));
+        if (this._playing) {
+          this._setTimeout();
+        }
+      },
+      start: function (oldValue, newValue) {
+        this._playing = true;
+        this.setArrowSpeed((60 / this.beatsperminute));
+        this.tick();
+      },
+      stop: function () {
+        this._playing = false;
+        this.setArrowSpeed(0);
+        this._clearTimeout(this.timeout);
+      },
+      _setTimeout: function () {
+        this.timeout = setTimeout(function () {
+          this.timeout = null;
+          this._count++;
+          this.broadcast('tick', this._count);
+          this.tick();
+        }.bind(this), (60 / this.beatsperminute) * 1000);
+      },
+      _clearTimeout: function () {
+        clearTimeout(this.timeout);
+        this.timeout = null;
+      },
+      tick: function () {
+        if (!this._playing || this.timeout) {
+          return;
+        }
+        this._setTimeout();
+      }
+    });
+  </script>
+</polymer-element>

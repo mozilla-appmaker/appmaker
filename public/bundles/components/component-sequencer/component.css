@@ -1,0 +1,179 @@
+:host {
+  display: block;
+  width: 100%;
+  padding: 20px 10px 16px 10px;
+  background: #555;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+:host .output-channel {
+  padding: 5px 10px;
+  background: #999;
+  margin: 0 3px;
+  display: block;
+  border: solid 2px #555;
+}
+
+:host .beats {
+  display: inline-block;
+}
+
+:host .next-up {
+  background: white;
+  border: solid 2px white;
+  font-weight: bold;
+}
+
+:host #channels {
+  display: inline-block;
+  position: relative;
+}
+
+
+
+:host .channelrow {
+  overflow: auto;
+  margin-bottom: 4px;
+}
+
+:host .channelrow:last-child {
+  margin-bottom: 0;
+}
+
+:host .channelrow .beat,
+:host .channelrow .label
+{
+  display:block;
+  float: left;
+}
+
+:host .channelrow .label:after {
+  content: "1";
+}
+
+:host .channelrow .beat {
+  background: #DDD;
+  margin: 0;
+  height: 40px;
+  width: 68px;
+  opacity: .2;
+  margin: 0 4px 0px 0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  position: relative;
+}
+
+:host .overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: white;
+  opacity: 0;
+}
+
+:host .channelrow .beat:last-child {
+  margin-right: 0px;
+}
+
+:host .channelrow .beat:hover {
+  opacity: .8;
+}
+
+:host [data-beat="0"] .beat:first-child,
+:host [data-beat="1"] .beat:nth-child(2),
+:host [data-beat="2"] .beat:nth-child(3),
+:host [data-beat="3"] .beat:nth-child(4)
+{
+  opacity: .25;
+}
+
+:host [data-beat="0"] .beat.on:first-child,
+:host [data-beat="1"] .beat.on:nth-child(2),
+:host [data-beat="2"] .beat.on:nth-child(3),
+:host [data-beat="3"] .beat.on:nth-child(4)
+{
+  opacity: 1;
+}
+
+
+:host .indicator.top {
+  top: -8px;
+}
+
+:host .indicator {
+  position: absolute;
+  width: 68px;
+  height: 5px;
+  background: white;
+  opacity: .4;
+  -webkit-transform: scaleX(.2);
+  -webkit-transform-origin: center;
+  -moz-transform: scaleX(.2);
+  -moz-transform-origin: center;
+}
+
+:host .indicator.bottom {
+  bottom: -8px;
+}
+
+:host [data-beat="0"] .indicator { left: 0px; }
+:host [data-beat="1"] .indicator { left: 72px; }
+:host [data-beat="2"] .indicator { left: 144px; }
+:host [data-beat="3"] .indicator { left: 216px; }
+
+:host .channelrow .beat.on {
+  opacity: 1;
+}
+
+[data-color="a"] .beat {
+  background: #de0310;
+}
+[data-color="b"] .beat {
+  background: #e82f0a;
+}
+[data-color="c"] .beat {
+  background: #ef5106;
+}
+[data-color="d"] .beat {
+  background: #f87303;
+}
+[data-color="e"] .beat {
+  background: #f89200;
+}
+[data-color="f"] .beat {
+  background: #cca108;
+}
+[data-color="g"] .beat {
+  background: #a0af0e;
+}
+[data-color="h"] .beat {
+  background: #78bc13;
+}
+[data-color="i"] .beat {
+  background: #56bb2d;
+}
+[data-color="j"] .beat {
+  background: #3dac5d;
+}
+[data-color="k"] .beat {
+  background: #259c8b;
+}
+[data-color="l"] .beat {
+  background: #0d8bb8;
+}
+[data-color="m"] .beat {
+  background: #1373d2;
+}
+[data-color="n"] .beat {
+  background: #3951d2;
+}
+[data-color="o"] .beat {
+  background: #5f30d2;
+}
+[data-color="p"] .beat {
+  background: #8a0bd;
+}

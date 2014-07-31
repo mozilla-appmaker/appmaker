@@ -1,0 +1,121 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+:host .wrapper {
+  cursor: pointer;
+  background: orange;
+  height: 75px;
+  position: relative;
+  overflow: hidden;
+}
+
+:host .wrapper .label {
+  background: white;
+  position: absolute;
+  top: 8px;
+  width: 218px;
+  height: 30px;
+  left: 45px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+}
+
+:host .wrapper .text {
+  position: absolute;
+  top: 3px;
+  width: 100%;
+  height: 30px;
+  text-align:center;
+  font-size: 18px;
+}
+
+:host .wrapper .circles {
+  position: absolute;
+  bottom: -40px;
+  height: 70px;
+  width: 230px;
+  -webkit-border-radius: 60px;
+  border-radius: 60px;
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+  left: 40px;
+  overflow: hidden;
+  background-color: white;
+  border-top: solid 5px black;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+:host .circle {
+  background-image: url("/bundles/components/component-audio/images/circle.png");
+  background-size: 50px;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: 5px;
+  background-color: black;
+  -webkit-border-radius: 100px;
+  border-radius: 100px;
+}
+
+:host .cantplay .right,
+:host .cantplay .left {
+  -webkit-animation: cantplay linear .075s 5;
+  animation: cantplay linear .075s 5;
+}
+
+@-webkit-keyframes cantplay {
+  0% { -webkit-transform: rotate(0deg);}
+  50% { -webkit-transform: rotate(15deg);}
+  100% { -webkit-transform: rotate(0deg);}
+}
+
+@keyframes cantplay {
+  0% { transform: rotate(0deg);}
+  50% { transform: rotate(15deg);}
+  100% { transform: rotate(0deg);}
+}
+
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg);}
+  100% { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+:host .left {
+  left: -40px;
+  top: -45px;
+  height: 150px;
+  width: 150px;
+
+}
+
+:host .playing .left {
+  -webkit-animation: spin linear 1.5s infinite;
+  animation: spin linear 1.5s infinite;
+}
+
+
+
+:host .right {
+  right: -20px;
+  top: -25px;
+  height: 110px;
+  width: 110px;
+}
+
+:host .playing .right {
+    -webkit-animation: spin linear 1.3s infinite;
+    animation: spin linear 1.3s infinite;
+}
+
+:host audio {
+  display: none;
+}

@@ -1,0 +1,16 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+:host img {
+  width: 100%;
+}
+
+:host h3 {
+  text-align: center;
+}
+
+:host #account {
+  text-align: center;
+}

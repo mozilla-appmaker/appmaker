@@ -1,0 +1,39 @@
+<polymer-element name="ceci-spacer" attributes="height background" extends="ceci-element"
+height="30"
+background="#FFFFFF">
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div style="background: {{background}}; height: {{height}}px;" id="spacer"></div>
+    <shadow></shadow>
+  </template>
+  <ceci-definition>
+    {
+      "tags": ["starter", "layout"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Spacer",
+      "description": "Adds blank space to separate your bricks.",
+      "broadcasts": {},
+      "listeners": {},
+      "attributes": {
+        "height": {
+          "label": "Height",
+          "description": "The height of the spacer.",
+          "editable": "number",
+          "min" : 5
+        },
+        "background": {
+          "label": "Background Color",
+          "description": "The background color of the spacer.",
+          "editable": "color"
+        }
+      }
+    }
+  </ceci-definition>
+  <script>
+    Polymer('ceci-spacer', {
+      ready: function () {
+        this.super();
+      }
+    });
+  </script>
+</polymer-element>

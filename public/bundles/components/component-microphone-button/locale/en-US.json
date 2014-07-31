@@ -1,6 +1,6 @@
 {
-  "ceci-microphone-button/description": "Records sounds.",
-  "ceci-microphone-button/name": "Microphone",
+  "ceci-microphone-button/description": "Broadcasts an audio clip recorded using your microphone.",
+  "ceci-microphone-button/name": "Microphone Button",
   "ceci-microphone-button/clip/label": "clip",
   "ceci-microphone-button/clip/description": "An audio clip from your microphone.",
   "ceci-microphone-button/start/description": "Start a microphone recording.",

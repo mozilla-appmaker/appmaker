@@ -1,0 +1,66 @@
+<polymer-element name="ceci-combiner" extends="ceci-element">
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div class="combiner"></div>
+    <shadow></shadow>
+  </template>
+  <ceci-definition>
+    {
+      "tags": ["component-combiner", "combiner"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Combines signals from multiple channels and broadcasts them on a single channel.",
+      "name": "Channel Combiner",
+      "broadcasts": {
+        "output": {
+          "label": "Output",
+          "description": "Repeats input",
+          "default": true
+        }
+      },
+      "listeners": {
+        "input1": {
+          "description": "Input 1",
+          "label": "Input 1",
+          "default": "green"
+        },
+        "input2": {
+          "description": "Input 2",
+          "label": "Input 2",
+          "default": "red"
+        },
+        "input3": {
+          "description": "Input 3",
+          "label": "Input 3"
+        },
+        "input4": {
+          "description": "Input 4",
+          "label": "Input 4"
+        },
+        "input5": {
+          "description": "Input 5",
+          "label": "Input 5"
+        },
+        "input6": {
+          "description": "Input 6",
+          "label": "Input 6"
+        }
+      }
+    }
+  </ceci-definition>
+  <script>
+    Polymer('ceci-combiner', {
+      ready: function () {
+        this.super();
+
+        var i = 0;
+        while (i++ < Object.keys(this.ceci.listeners).length) {
+          this['input' + i] = this.input;
+        }
+      },
+      input: function(val) {
+        this.broadcast('output', val);
+      }
+    });
+  </script>
+</polymer-element>
+

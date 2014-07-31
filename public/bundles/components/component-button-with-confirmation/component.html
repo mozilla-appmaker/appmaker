@@ -1,0 +1,101 @@
+<polymer-element name="ceci-button-with-confirmation" attributes="textcolor buttoncolor buttonactivecolor label confirmationmessage value" extends="ceci-element"
+  label="Click and Confirm Me" textcolor="#ffffff" buttoncolor="#4DB227" buttonactivecolor="#358915" confirmationmessage="Are you sure?">
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <button id="button" on-ceci-pressdown="{{click}}">{{label}}</button>
+    <shadow></shadow>
+
+  </template>
+  <ceci-definition>
+    {
+      "tags": ["button", "click", "tap"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Button with Confirmation",
+      "description": "Responds to your clicks and taps by asking you \"Are you sure?\"",
+      "broadcasts": {
+        "click": {
+          "label": "Click",
+          "description": "Occurs when button is clicked.",
+          "default": true
+        },
+        "cancelClick": {
+          "label": "Cancel Click",
+          "description": "Occurs when button is clicked and the user denies the confirmation message."
+        }
+      },
+      "listeners": {},
+      "attributes": {
+        "label": {
+          "label": "Label",
+          "description": "Text shown on the button.",
+          "editable": "text",
+          "listener": true
+        },
+         "confirmationmessage": {
+          "label": "Confirmation Message",
+          "description": "Confirmation message that is displayed to the user before executing action.",
+          "editable": "text"
+        },
+        "value": {
+          "label": "Value",
+          "description": "Value sent by the button.",
+          "editable": "text"
+        },
+        "textcolor": {
+          "label": "Text Color",
+          "description": "Color of the text on the button's label.",
+          "editable": "color"
+        },
+        "buttoncolor": {
+          "label": "Button Color",
+          "description": "Background color of the button.",
+          "editable": "color",
+          "listener" : "true"
+        },
+        "buttonactivecolor": {
+          "label": "Button Active Color",
+          "description": "Background color of the button while it is being clicked or tapped.",
+          "editable": "color"
+        }
+      }
+    }
+  </ceci-definition>
+  <script>
+    Polymer('ceci-button-with-confirmation', {
+      ready: function () {
+        this.super();
+
+        var that = this;
+        this.$.button.addEventListener('mousedown', function (e) {
+          var valueBefore = that.buttoncolor;
+          if (that.buttonactivecolor) {
+            that.$.button.style.backgroundColor = that.buttonactivecolor;
+            window.addEventListener('mouseup', function (e) {
+              that.$.button.style.backgroundColor = valueBefore;
+            }, false);
+          }
+        }, false);
+
+        this.confirmationmessage = this.getAttribute('confirmationmessage') || "extra default";
+      },
+      confirmationmessage: (this.confirmationmessage || "default thingy"),
+      click: function () {
+        if (window.confirm(this.confirmationmessage)) {
+            this.broadcast('click', this.getAttribute('value'));
+        } else {
+            this.broadcast('cancelClick', this.getAttribute('value'));
+        }
+      },
+      textcolorChanged: function (oldValue, newValue) {
+          this.$.button.style.color = newValue;
+      },
+      buttoncolorChanged: function (oldValue, newValue) {
+        this.$.button.style.backgroundColor = newValue;
+      },
+      confirmationmessageChanged: function(oldValue, newValue) {
+        this.confirmationmessage = newValue;
+
+      }
+    });
+  </script>
+</polymer-element>

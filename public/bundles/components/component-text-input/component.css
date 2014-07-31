@@ -1,0 +1,60 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+:host input[type=text]{
+  padding: 10px 5px;
+  height: 100%;
+  border: none;
+  color: #000;
+  font-weight: 500;
+  font-size: 1.6rem;
+  background-color: #FFF;
+  background-size: auto 100%;
+  width: 70%;
+  border-radius: 0;
+  margin: 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border: 0.1rem solid rgb(204, 204, 204);
+  border-right: none;
+  text-indent: 0.6rem;
+  outline: none;
+  font-weight: 400;
+  font-size: 1.6rem;
+  font-family: "FiraSans", sans-serif;
+}
+
+:host .onchange input[type=text]{
+  width: 100%;
+}
+
+:host .onchange button {
+  display: none;
+}
+
+:host #wrapper {
+  position: relative;
+}
+
+:host button {
+  background: linear-gradient(to top, #f8f8f8, #ddd);
+  background: -webkit-linear-gradient(top, #f8f8f8, #ddd);
+  border: 0.1rem solid #a6a6a6;
+  border-radius: 0 0.2rem 0.2rem 0;
+  right: 0px;
+
+  width: 30%;
+  padding: 0;
+  height: 100%;
+  font-weight: 500;
+  font-size: 1.6rem;
+  font-family: "FiraSans", sans-serif;
+  position: absolute;
+}
+
+:host button:active {
+  background: linear-gradient(to top, #ddd, #ddd);
+  background: -webkit-linear-gradient(top, #ddd, #ddd);
+}

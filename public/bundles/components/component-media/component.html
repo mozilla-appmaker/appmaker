@@ -1,0 +1,152 @@
+<script src="/bundles/resources/popcorn.min.js"></script>
+<polymer-element name="ceci-media" attributes="url autoplay starttime volume" extends="ceci-element">
+  <ceci-definition>
+    {
+      "tags": ["media", "audio", "video", "youtube", "popcorn", "soundcloud"],
+      "name": "Media Player",
+      "thumbnail": "./thumbnail.png",
+      "description": "Plays HTML5 media using the PopcornJS library.",
+      "broadcasts": {
+        "tick": {
+          "label": "Tick",
+          "description": "Media time progressed."
+        },
+        "ready": {
+          "label": "Ready",
+          "description": "Media is ready to play."
+        },
+        "ended": {
+          "label": "Ended",
+          "description": "Media reached its end."
+        },
+        "playing": {
+          "label": "Playing",
+          "description": "Media started to play."
+        }
+      },
+      "listeners": {
+        "play": {
+          "label": "Start",
+          "description": "Starts the selected media"
+        },
+        "pause": {
+          "label": "Stop",
+          "description": "Stops the selected media"
+        },
+        "rewind": {
+          "label": "Rewind",
+          "description": "Starts media from the beginning."
+        }
+      },
+      "attributes": {
+        "starttime": {
+          "label": "Start Time",
+          "description": "The desired starting point in the selected media.",
+          "editable": "number",
+          "listener": true
+        },
+        "url": {
+          "label": "Media URL",
+          "description": "Web URL for the desired media.",
+          "editable": "text",
+          "listener": true
+        },
+        "volume": {
+          "label": "Volume",
+          "description": "Volume of the playing media.",
+          "editable": "number",
+          "max": 1,
+          "min": 0,
+          "listener": true
+        },
+        "autoplay": {
+          "label": "Play Automatically",
+          "description": "Play the media as soon as its ready",
+          "editable": "boolean"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <style>
+      :host {
+        display: block;
+        min-height: 50px;
+      }
+      :host #mediaContainer {
+        line-height: 0px;
+      }
+    </style>
+    <div id="mediaContainer"></div>
+    <shadow></shadow>
+    <content></content>
+  </template>
+  <script>
+    var popcornEvents = ['canplay', 'currentTime', 'ended', 'playing'];
+
+    Polymer('ceci-media', {
+      // some Beethoven
+      url: 'https://www.youtube.com/watch?v=zucBfXpCA6s',
+      starttime: 0,
+      volume: 1,
+      autoplay: 'false',
+      ready: function () {
+        this.super();
+
+        // Make sure `this` scope never changes for these handlers...
+        this.onPopcornCanplay = function () { this.broadcast('ready'); }.bind(this);
+        this.onPopcornCurrentTime = function (e) { this.broadcast('tick', e.currentTime); }.bind(this);
+        this.onPopcornEnded = function (e) { this.broadcast('ended'); }.bind(this);
+        this.onPopcornPlaying = function (e) { this.broadcast('playing'); }.bind(this);
+
+        if (this.url) {
+          this.initPopcorn();
+        }
+
+      },
+      urlChanged: function () {
+        this.initPopcorn();
+      },
+      volumeChanged: function () {
+        if (this._popcornPlayer) {
+          this._popcornPlayer.volume = this.volume;
+        }
+      },
+      play: function () {
+        if (this._popcornPlayer) {
+          this._popcornPlayer.play();
+        }
+      },
+      pause: function () {
+        if (this._popcornPlayer) {
+          this._popcornPlayer.pause();
+        }
+      },
+      rewind: function () {
+        if (this._popcornPlayer) {
+          this._popcornPlayer.currentTime(0);
+        }
+      },
+      initPopcorn: function () {
+        this.destroyPopcorn();
+        this._popcornPlayer = Popcorn.smart(this.$.mediaContainer, this.url);
+        popcornEvents.forEach(function (popcornEvent) {
+          this._popcornPlayer.on(popcornEvent, this['onPopcorn' + popcornEvent.substr(0, 1).toUpperCase() + popcornEvent.substr(1)]);
+        }.bind(this));
+        this._popcornPlayer.volume = this.volume;
+        if (this.autoplay === 'true') {
+          this._popcornPlayer.play();
+        }
+      },
+      destroyPopcorn: function () {
+        if (this._popcornPlayer) {
+          popcornEvents.forEach(function (popcornEvent) {
+            this._popcornPlayer.off(popcornEvent, this['onPopcorn' + popcornEvent.substr(0, 1).toUpperCase() + popcornEvent.substr(1)]);
+          }.bind(this));
+          Popcorn.destroy(this._popcornPlayer);
+          this.$.mediaContainer.innerHTML = '';
+        }
+      }
+    });
+  </script>
+</polymer-element>

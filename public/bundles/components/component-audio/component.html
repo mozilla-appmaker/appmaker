@@ -1,0 +1,137 @@
+<polymer-element name="ceci-audio" attributes="source speed label value tapecolor volume"
+ extends="ceci-element"
+  label="dogs.wav"
+  volume=".5"
+  source="http://soundjax.com/reddo/21812%5Edog_bark_x.mp3"
+  tapecolor="#2181cb"
+  speed="1.0">
+  <ceci-definition>
+    {
+      "tags": ["sound", "audio", "music"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Plays an audio clip using a URL or data-uri as input.",
+      "name": "Audio Clip",
+      "broadcasts": {},
+      "listeners": {
+        "play": {
+          "description": "Play the audio clip.",
+          "label": "Play",
+          "default": true
+        },
+        "pause": {
+          "description": "Pause the audio clip.",
+          "label": "Pause"
+        },
+        "stopsound": {
+          "description": "Stop the audio clip.",
+          "label": "Stop"
+        }
+      },
+      "attributes": {
+        "source": {
+          "label": "Audio source URL",
+          "description": "The URL for the sound clip you want to play",
+          "editable": "text",
+          "listener": true
+        },
+        "volume": {
+          "label": "Volume",
+          "editable": "number",
+          "min" : 0,
+          "max" : 1
+        },
+        "speed": {
+          "label": "Audio playback rate",
+          "description": "1 for normal speed, 2 for twice speed, -1 for reverse, etc.",
+          "editable": "number"
+        },
+        "label": {
+          "label": "Label",
+          "description": "Text shown on the button.",
+          "editable": "text"
+        },
+        "tapecolor": {
+          "label": "Value",
+          "description": "Color of the tape",
+          "editable": "color"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div id="wrapper" on-ceci-pressdown="{{play}}" class="wrapper">
+      <div class="label">
+        <div class="text">{{label}}</div>
+      </div>
+      <div class="circles">
+        <div class="circle left"></div>
+        <div class="circle right"></div>
+      </div>
+    </div>
+    <audio id="sound" src="sounds/snare.mp3" preload="auto"></audio>
+    <shadow></shadow>
+  </template>
+  <script>
+    Polymer('ceci-audio', {
+      ready: function() {
+        this.super();
+        var that = this;
+        this.$.sound.addEventListener("ended",function(){
+          that.stopsound();
+        });
+      },
+      state : "stopped",
+      stopsound : function(){
+        this.$.sound.pause();
+        this.$.sound.currentTime = 0;
+        this.$.wrapper.classList.remove("playing");
+        this.state = "stopped";
+      },
+      play: function() {
+        var readyState = this.$.sound.readyState;
+        if(readyState != 0) {
+          this.$.wrapper.classList.add("playing");
+          if(this.state == "paused") {
+            this.$.sound.play();
+            this.state = "playing";
+          } else {
+            this.$.sound.pause();
+            this.$.sound.currentTime = 0;
+            this.$.sound.play();
+            this.state = "playing";
+          }
+        } else {
+          this.$.wrapper.classList.remove("cantplay");
+          this.$.wrapper.offsetWidth = this.$.wrapper.offsetWidth;
+          this.$.wrapper.classList.add("cantplay");
+        }
+      },
+      pause : function(){
+        this.$.wrapper.classList.remove("playing");
+        this.$.sound.pause();
+        this.state = "paused";
+      },
+      sourceChanged: function(oldValue, newValue) {
+        this.$.sound.src = newValue;
+      },
+      setSpeed: function(channel, value) {
+        this.speedChanged(this.$.sound.playbackRate || 1, value);
+      },
+      volumeChanged : function(oldValue, newValue){
+        this.$.sound.volume = newValue;
+      },
+      tapecolorChanged: function (oldValue, newValue) {
+        this.$.wrapper.style.background = newValue;
+      },
+      speedChanged: function(oldValue, newValue) {
+        try  {
+          var f = parseFloat(newValue);
+          if (f) {
+            this.$.sound.playbackRate = parseFloat(newValue);
+          }
+        } catch (e) {}
+      }
+    });
+  </script>
+</polymer-element>

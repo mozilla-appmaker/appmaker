@@ -1,0 +1,34 @@
+:host {
+  display: block;
+  width: 100%;
+  background: orange;
+}
+
+:host #wrapper {
+  height: 75px;
+  display: block;
+  cursor: pointer;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+:host #bell {
+  position: absolute;
+  left: calc(50% - 75px);
+  width: 50px;
+  top: -20px;
+  border-bottom: 100px solid white;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+}
+
+:host .hit #bell {
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  transform: scale(1.2);
+}
+
+:host audio {
+  display: none;
+}

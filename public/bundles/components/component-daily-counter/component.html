@@ -1,0 +1,171 @@
+<polymer-element name="ceci-daily-counter" collectionname="times" extends="ceci-element" attributes="unit increment collectionname">
+  <ceci-definition>
+    {
+      "name": "Daily Counter",
+      "thumbnail": "./thumbnail.png",
+      "description": "Counts daily progress toward your goals. Tells you how much time you have left and resets at the end of the day.",
+      "broadcasts": {
+        "currentCount": {
+          "label": "Current Count",
+          "description": "Broadcasts the current count."
+        }
+      },
+      "listeners": {
+        "countUp": {
+          "description": "Increment the total by the increment value",
+          "label": "Count Up!",
+          "default" : false
+        },
+        "countDown": {
+          "description": "Decrement the total by the increment value",
+          "label": "Count Down"
+        },
+        "resetCount": {
+          "description": "Reset the total to 0.",
+          "label": "Reset Count"
+        }
+      },
+      "attributes": {
+        "unit": {
+          "description": "Name for items which are being counted.",
+          "label": "Unit",
+          "editable": "text"
+        },
+        "collectionname": {
+          "description": "The name of the collection to store the value",
+          "label": "Collection Name",
+          "editable": "text"
+        },
+        "increment": {
+          "description": "Count up or down with this number.",
+          "label": "Increment By",
+          "editable": "number",
+          "min" : 1
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css">
+      <div class="timer">
+        <span>{{dayCountDown}}</span>
+        <span class="label">left Today</span>
+      </div>
+      <div class="counter">
+        <span>{{value}}</span>
+        <span class="label">{{displayUnit}}</span>
+      </div>
+    <shadow></shadow>
+  </template>
+  <tags></tags>
+  <script>
+    Polymer("ceci-daily-counter", {
+      ready: function() {
+        this.dayCountDown = '00:00';
+        this.increment = Number(this.increment) || 1;
+        this.value = this.getTodaysValue() || 0;
+        this.displayUnit = this.unit;
+        this.updateUnit();
+        var t = this;
+        this.countdownInterval = setInterval(function(){
+          t.updateCountdown();
+        }, 2000);
+        t.updateCountdown();
+        this.super();
+      },
+      value: 0,
+      increment: 1,
+      unit: 'Times',
+      updateCountdown: function(){
+        function minutesUntilMidnight() {
+          var midnight = new Date();
+          midnight.setHours(24);
+          midnight.setMinutes(0);
+          midnight.setSeconds(0);
+
+          var hours = Math.floor(
+            (midnight.getTime() - new Date().getTime()) / 1000 / 60 / 60
+          );
+
+          if (hours < 10) {
+            hours = "0" + hours;
+          }
+
+          var minutes = Math.ceil(
+            (midnight.getTime() - new Date().getTime()) / 1000 / 60 % 60
+          );
+
+          if (minutes < 10) {
+            minutes = "0" + minutes;
+          }
+
+          return [hours, minutes].join(":");
+        }
+
+        this.dayCountDown = minutesUntilMidnight();
+      },
+      incrementChanged: function(oldValue, newValue) {
+        this.increment = Number(this.increment) || 0;
+      },
+      updateUnit : function(){
+        if (this.unit) {
+          var unit = this.unit.trim();
+          if (unit.length > 0) {
+
+            var pluralChar = "";
+            if((Number(this.value) !== 1) && (unit[unit.length - 1] !== 's')){
+              pluralChar = "s";
+            }
+
+            if(unit[unit.length - 1] === unit[unit.length - 1].toUpperCase()) {
+              pluralChar = pluralChar.toUpperCase()
+            }
+            this.displayUnit = " " + unit + pluralChar;
+          }
+        }
+      },
+      unitChanged: function() {
+        this.updateUnit();
+      },
+      getTodaysValue: function(){
+        var collection = localStorage['hack-collection-' + this.collectionname];
+
+        // This will go away when collections are redone
+        if (!collection){
+          localStorage['hack-collection-' + this.collectionname] = JSON.stringify({});
+        }
+
+        var data = JSON.parse(localStorage['hack-collection-' + this.collectionname]);
+
+        return data[new Date().toLocaleDateString()];
+      },
+      storeValue: function(val) {
+        var collection = localStorage['hack-collection-' + this.collectionname];
+
+        // This will go away when collections are redone
+        if (!collection){
+          localStorage['hack-collection-' + this.collectionname] = JSON.stringify({});
+        }
+
+        var data = JSON.parse(localStorage['hack-collection-' + this.collectionname]);
+
+        data[new Date().toLocaleDateString()] = val;
+        localStorage['hack-collection-' + this.collectionname] = JSON.stringify(data);
+      },
+      valueChanged: function() {
+        this.broadcast("currentCount", this.value);
+        this.storeValue(this.value);
+        this.updateUnit();
+      },
+      countUp: function() {
+        this.value = Number(this.value) + Number(this.increment, 10);
+      },
+      countDown: function() {
+        this.value = Number(this.value) - Number(this.increment, 10);
+      },
+      resetCount: function() {
+        this.value = 0;
+      }
+    });
+  </script>
+</polymer-element>

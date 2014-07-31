@@ -1,0 +1,67 @@
+<polymer-element name="ceci-textbox" attributes="text fontsize textalign textcolor backgroundcolor" extends="ceci-element"
+  textalign="left"
+  fontsize="16"
+  textcolor="#666666"
+  backgroundcolor="#FFFFFF"
+  text="I'm a textbox!">
+  <ceci-definition>
+    {
+      "tags": ["form", "input", "text"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Displays entered or incoming text.",
+      "name": "Text",
+      "broadcasts": {},
+      "listeners": {
+        "setValue": {
+          "description": "Set value text box",
+          "label": "Set Text"
+        }
+      },
+      "attributes": {
+        "text": {
+          "label": "Text",
+          "description": "A text for your label to show up in your app.",
+          "editable": "text"
+        },
+        "textalign": {
+          "label": "Text Alignment",
+          "description": "Text Alignment",
+          "editable": "select",
+          "options": ["Left","Center","Right"]
+        },
+        "fontsize": {
+          "label": "Font Size",
+          "description": "Font Size",
+          "editable": "number",
+          "min" : "4",
+          "max" : "50"
+        },
+        "backgroundcolor": {
+          "label": "Background Color",
+          "description": "Background Color",
+          "editable": "color"
+        },
+        "textcolor": {
+          "label": "Text Color",
+          "description": "Text Color",
+          "editable": "color"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+      <p style="text-align: {{textalign}}; font-size: {{fontsize}}px; background: {{backgroundcolor}}; color: {{textcolor}}" id="textBox">{{text}}</p>
+    <shadow></shadow>
+  </template>
+  <script>
+    Polymer('ceci-textbox', {
+      ready: function () {
+        this.super();
+      },
+      setValue: function(e) {
+        this.text = e;
+      }
+    });
+  </script>
+</polymer-element>

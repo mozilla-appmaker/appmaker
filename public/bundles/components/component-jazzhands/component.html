@@ -1,0 +1,73 @@
+<polymer-element name="ceci-jazzhands" attributes="backgroundcolor"
+  backgroundcolor="#ff9900"
+  extends="ceci-element">
+  <ceci-definition>
+    {
+      "tags": ["music", "instrument", "tap"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Waves at you when pressed or input is received.",
+      "name": "Jazz Hands",
+      "broadcasts": {},
+      "listeners": {
+        "both": {
+          "description": "Jazz both hands",
+          "label": "Both Hands",
+          "default": true
+        },
+        "left": {
+          "description": "Jazz the left hand",
+          "label": "Left Hand"
+        },
+        "right": {
+          "description": "Jazz the right hand",
+          "label": "Right Hand"
+        }
+      },
+      "attributes": {
+        "backgroundcolor": {
+          "label": "Background Color",
+          "editable": "color"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div id="kick" on-ceci-pressdown="{{both}}">
+      <div id="two" class="hand two"></div>
+      <div id="one" class="hand one"></div>
+    </div>
+    <!-- <audio id="kicksound" src="sounds/snare.mp3" preload=preload></audio> -->
+    <shadow></shadow>
+  </template>
+  <script>
+    Polymer('ceci-jazzhands', {
+      ready: function () {
+        this.super();
+        var that = this;
+      },
+      both : function(){
+        this.kickoff();
+        this.$.kick.classList.add("both");
+      },
+      left : function(){
+        this.kickoff();
+        this.$.kick.classList.add("left");
+      },
+      right : function(){
+        this.kickoff();
+        this.$.kick.classList.add("right");
+      },
+      kickoff : function(){
+        this.$.kick.classList.remove("both");
+        this.$.kick.classList.remove("right");
+        this.$.kick.classList.remove("left");
+        this.$.one.offsetWidth = this.$.one.offsetWidth;
+        this.$.two.offsetWidth = this.$.two.offsetWidth;
+      },
+      backgroundcolorChanged: function (oldValue, newValue) {
+        this.$.kick.style.background = newValue;
+      }
+    });
+  </script>
+</polymer-element>

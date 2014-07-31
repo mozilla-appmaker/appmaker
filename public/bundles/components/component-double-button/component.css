@@ -1,0 +1,77 @@
+:host {
+  display: block;
+  width: 100%;
+  word-spacing: -1;
+}
+
+:host .buttons-wrapper {
+  line-height: 0px;
+  font-size: 0px;
+}
+
+:host .button-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 50%;
+}
+
+:host .button {
+  cursor: pointer;
+  border-bottom: 2px solid rgba(0,0,0,.1);
+  display: block;
+  text-align: center;
+  padding: 12px 0 10px 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-weight: 300;
+  font-size: 1.8rem;
+  line-height: 1.8rem;
+  width: 100%;
+  display: inline-block;
+  -webkit-box-sizing: border-box;
+}
+
+:host #leftbutton {
+ border-right: 2px solid rgba(0,0,0,.1);
+}
+
+:host #rightbutton {
+  border-left: 2px solid rgba(255,255,255,.1);
+}
+
+:host .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+}
+
+:host .active-overlay {
+  background: black;
+}
+
+:host .hover-overlay {
+  background: white;
+}
+
+:host .button-wrapper:hover .hover-overlay {
+  opacity: .1;
+}
+
+:host .button-wrapper:active .active-overlay {
+  opacity: .1;
+}
+:host .button-wrapper:active .hover-overlay {
+  opacity: 0;
+}
+
+:host .button-wrapper:active .button {
+  border-top: solid 2px rgba(0,0,0,.1);
+  border-bottom: none;
+}
+
+:host button {
+  border: none;
+}

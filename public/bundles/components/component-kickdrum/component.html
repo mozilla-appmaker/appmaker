@@ -1,0 +1,122 @@
+<polymer-element name="ceci-kickdrum" attributes="stickcolor backgroundcolor drumcolor volume"
+  drumcolor="#d60e0e"
+  stickcolor="#000000"
+  backgroundcolor="#FFFFFF"
+  volume=".5"
+  extends="ceci-element">
+  <ceci-definition>
+    {
+      "tags": ["kick", "drum"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Plays a kickdrum.",
+      "name": "Kick Drum",
+      "broadcasts": {},
+      "listeners": {
+        "kick": {
+          "description": "Hits the kick drum!",
+          "label": "Kick",
+          "default": true
+        }
+      },
+      "attributes": {
+        "stickcolor": {
+          "label": "Stick Color",
+          "editable": "color"
+        },
+        "volume": {
+          "label": "Volume",
+          "editable": "number",
+          "min" : 0,
+          "max" : 1
+        },
+        "backgroundcolor": {
+          "label": "Background Color",
+          "editable": "color"
+        },
+        "drumcolor": {
+          "label": "Drum Color",
+          "description": "Color of the drum.",
+          "editable": "color"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div id="kick" on-ceci-pressdown="{{kickon}}" on-ceci-pressup="{{kickoff}}">
+      <div id="drum">
+        <div id="face"></div>
+      </div>
+      <div id="stick">
+        <div id="ball"></div>
+      </div>
+    </div>
+    <shadow></shadow>
+  </template>
+  <script>
+    Polymer('ceci-kickdrum', {
+      audioBuffer: null,
+      ready: function () {
+        this.super();
+
+        this.ctx = window.AudioContext || window.webkitAudioContext;
+
+        if (!this.ctx) {
+          console.error('Could not get AudioContext for kickdrum.');
+          return;
+        }
+
+        this.ctx = new this.ctx();
+
+        var that = this;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", this.resolvePath('sounds/kick.ogg'), true);
+        xhr.responseType = "arraybuffer";
+        xhr.onload = function () {
+          if (xhr.response.byteLength) {
+            that.ctx.decodeAudioData(xhr.response, function(data) {
+              that.audioBuffer = data;
+            },
+            function (e) {
+              console.error('Error decoding the audio buffer for kickdrum.', arguments);
+            });
+          }
+        };
+        xhr.send();
+      },
+      kickon: function (e) {
+        var src = this.ctx.createBufferSource();
+        var gain = this.ctx.createGain();
+        gain.gain.value = this.volume;
+        src.buffer = this.audioBuffer;
+        src.loop = false;
+        src.connect(gain);
+        gain.connect(this.ctx.destination);
+        src.start(0);
+        this.$.kick.classList.add("on");
+      },
+      kick : function(){
+        this.kickon();
+        var that = this;
+        window.setTimeout(function(){
+          that.kickoff();
+        },100)
+      },
+      kickoff : function(e){
+        this.$.kick.classList.remove("on");
+      },
+      stickcolorChanged: function (oldValue, newValue) {
+        this.$.stick.style.background = newValue;
+        this.$.ball.style.background = newValue;
+      },
+      drumcolorChanged: function (oldValue, newValue) {
+        this.$.drum.style.background = newValue;
+        this.$.face.style.borderColor = newValue;
+      },
+      backgroundcolorChanged: function (oldValue, newValue) {
+        this.$.kick.style.background = newValue;
+      }
+    });
+  </script>
+</polymer-element>

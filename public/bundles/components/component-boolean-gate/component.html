@@ -1,0 +1,75 @@
+<polymer-element name="ceci-boolean-gate" attributes="" extends="ceci-element">
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div id="state">OPEN</div>
+    <shadow></shadow>
+  </template>
+  <ceci-definition>
+    {
+      "tags": ["boolean-gate", "low-level"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Channel Filter",
+      "description": "Allows or stops a signal from passing through.",
+      "broadcasts": {
+        "Out": {
+          "label": "Output",
+          "description": "Broadcasts the message, if allowed",
+          "default": "green"
+        }
+      },
+      "listeners": {
+        "input": {
+          "description": "The input that is to be broadcast",
+          "label": "Input",
+          "default": true
+        },
+        "open": {
+          "description": "Open the gate",
+          "label": "Open"
+        },
+        "close": {
+          "description": "Close the gate",
+          "label": "Close"
+        }
+      },
+      "attributes": {}
+    }
+  </ceci-definition>
+  <script>
+    Polymer('ceci-boolean-gate', {
+      isOpen: true,
+      ready: function() {
+        this.super();
+        this.isOpen = true;
+      },
+      attached: function(){
+        var that = this;
+        this.addEventListener("channelUpdated",function(){
+          this.updateUI();
+        });
+        this.updateUI();
+        this.super();
+      },
+      updateUI: function(){
+        if(this.isOpen){
+          this.$.state.classList.remove("open");
+        } else {
+          this.$.state.classList.add("open");
+        }
+      },
+      open: function() {
+        this.isOpen = true;
+        this.updateUI();
+      },
+      close: function() {
+        this.isOpen = false;
+        this.updateUI();
+      },
+      input:function(value) {
+        if ( this.isOpen ) {
+          this.broadcast("Out", value);
+        }
+      }
+    });
+  </script>
+</polymer-element>

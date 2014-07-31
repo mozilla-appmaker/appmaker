@@ -1,0 +1,203 @@
+<polymer-element name="ceci-component-canvas" extends="ceci-element" attributes="height pensize readonly imageurl generateonchange">
+  <ceci-definition>
+    {
+      "name": "Drawing Canvas",
+      "tags": ["canvas","drawing"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Lets you draw simple images.",
+      "broadcasts": {
+        "imageGenerated": {
+          "label": "Image Generated",
+          "description": "A portable image URL was generated",
+          "default": "green"
+        }
+      },
+      "listeners": {
+        "generateImage": {
+          "label": "Generate Image",
+          "description": "Generates a portable image URL from the drawing"
+        },
+        "reset": {
+          "label": "Reset",
+          "description": "Description for reset"
+        }
+      },
+      "attributes": {
+        "generateonchange": {
+          "label": "Generate on Change",
+          "description": "Generate image when canvas is changed",
+          "editable": "boolean"
+        },
+        "pensize": {
+          "label": "Pen Size",
+          "description": "Width of pen used for drawing",
+          "editable": "number",
+          "min": 1
+        },
+        "readonly": {
+          "label": "Read Only",
+          "description": "Locks/unlocks drawn content",
+          "editable": "boolean"
+        },
+        "height": {
+          "label": "Height",
+          "description": "Height of canvas",
+          "editable": "number"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css">
+    <canvas id="canvas"></canvas>
+    <div id="cursor" hidden="true"></div>
+    <shadow></shadow>
+  </template>
+    <script>
+      function getMousePositionOffset(e, canvas) {
+        var rect = canvas.getBoundingClientRect();
+
+        if (e.touches) {
+          return [e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top];
+        }
+        else if (e.offsetX) {
+          return [e.offsetX, e.offsetY];
+        }
+        else {
+          // recover from PointerEvents bug... :/
+          return [e.clientX - rect.left, e.clientY - rect.top];
+        }
+      }
+
+      function enableCanvas (canvas, changedCallback) {
+        changedCallback = changedCallback || function () {};
+
+        return function (eMouseDown) {
+          var canvas = eMouseDown.target;
+          var ctx = canvas.getContext('2d');
+
+          var moved = false;
+
+          var canvasRect = canvas.getBoundingClientRect();
+          var startPos = getMousePositionOffset(eMouseDown, canvas);
+
+          ctx.beginPath();
+          ctx.moveTo(startPos[0], startPos[1]);
+
+          function onCanvasMouseMove (eMouseMove) {
+            var movedPos = getMousePositionOffset(eMouseMove, canvas);
+            ctx.lineTo(movedPos[0], movedPos[1]);
+            ctx.stroke();
+            moved = true;
+            eMouseMove.preventDefault();
+          }
+
+          function onCanvasMouseUp (eMouseUp) {
+            canvas.removeEventListener('mousemove', onCanvasMouseMove, false);
+            window.removeEventListener('mouseup', onCanvasMouseUp, false);
+            canvas.removeEventListener('touchmove', onCanvasMouseMove, false);
+            window.removeEventListener('touchend', onCanvasMouseUp, false);
+
+            if (!moved) {
+              ctx.lineTo(startPos[0] + ctx.lineWidth, startPos[1] + ctx.lineWidth);
+              ctx.stroke();
+            }
+            ctx.closePath();
+            changedCallback();
+          }
+
+          canvas.addEventListener('mousemove', onCanvasMouseMove, false);
+          window.addEventListener('mouseup', onCanvasMouseUp, false);
+          canvas.addEventListener('touchmove', onCanvasMouseMove, false);
+          window.addEventListener('touchend', onCanvasMouseUp, false);
+        }
+      }
+
+      Polymer("ceci-component-canvas", {
+        readonly: 'false',
+        pensize: 5,
+        height: 100,
+        generateonchange: 'false',
+        heightChanged: function () {
+          this.style.height = this.height + 'px';
+          this.async(function () {
+            var rect = this.getBoundingClientRect();
+            this.$.canvas.width = rect.width;
+            this.$.canvas.height = rect.height;
+          });
+        },
+        ready: function() {
+          this.super();
+
+          var that = this;
+          var cursor = this.$.cursor;
+          this.$.canvas.addEventListener('mousemove', function (e) {
+            var pos = getMousePositionOffset(e, that.$.canvas);
+            cursor.style.left = pos[0] + 'px';
+            cursor.style.top = pos[1] + 'px';
+          }, false);
+
+          this.$.canvas.addEventListener('mouseenter', function (e) {
+            cursor.hidden = false;
+          }, false);
+
+          this.$.canvas.addEventListener('mouseleave', function (e) {
+            cursor.hidden = true;
+          }, false);
+
+          if (this.imageurl && this.imageurl.indexOf('data:image/png;base64,') === 0) {
+            var img = new Image();
+            var canvas = this.$.canvas;
+            img.onload = function () {
+              canvas.getContext('2d').drawImage(img,0,0);
+            };
+            img.src = this.imageurl;
+          }
+
+          this.readonlyChanged();
+          this.pensizeChanged();
+        },
+        readonlyChanged: function () {
+          var that = this;
+          if (this.readonly === 'false') {
+            this._onCanvasMouseDown = enableCanvas(this.$.canvas, function () {
+              that.imageurl = that.$.canvas.toDataURL();
+              if (that.generateonchange === 'true') {
+                that.broadcast('imageGenerated', that.$.canvas.toDataURL());
+              }
+            });
+            this.$.canvas.addEventListener('mousedown', this._onCanvasMouseDown, false);
+            this.$.canvas.addEventListener('touchstart', this._onCanvasMouseDown, false);
+          }
+          else {
+            if (this._onCanvasMouseDown) {
+              this.$.canvas.removeEventListener('mousedown', this._onCanvasMouseDown, false);
+              this.$.canvas.removeEventListener('touchdown', this._onCanvasMouseDown, false);
+            }
+          }
+        },
+        pensizeChanged: function () {
+          var size = parseInt(this.pensize);
+          this.$.canvas.getContext('2d').lineWidth = parseInt(this.pensize);
+          this.$.cursor.style.width = size + 'px';
+          this.$.cursor.style.height = size + 'px';
+          this.$.cursor.style.marginTop = -(size/2) + 'px';
+          this.$.cursor.style.marginLeft = -(size/2) + 'px';
+        },
+        generateImage: function () {
+          this.broadcast('imageGenerated', this.$.canvas.toDataURL());
+        },
+        attached: function () {
+          var rect = this.getBoundingClientRect();
+          this.$.canvas.width = rect.width;
+          this.$.canvas.height = rect.height;
+          this.super();
+        },
+        reset: function() {
+          var c = this.$.canvas;
+          c.getContext('2d').clearRect(0, 0, c.width, c.height);
+          this.broadcast('reset');
+        }
+      });
+    </script>
+</polymer-element>

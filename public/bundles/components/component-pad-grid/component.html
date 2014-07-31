@@ -1,0 +1,340 @@
+<polymer-element name="ceci-pad-grid" extends="ceci-element"
+                 attributes="backgroundcolor textcolor numrows numcols labels palettenumber" backgroundcolor="#000000" textcolor="#ffffff" numrows="5" numcols="3" palettenumber="1" labels="cucumber,tomato,eggplant,,up,,left,,right,,down,">
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div id="box" class="box">
+     <div class="row">
+       <div class="push"></div>
+       <div class="push"></div>
+       <div class="push"></div>
+       <div class="push"></div>
+     </div>
+    </div>
+    <shadow></shadow>
+  </template>
+  <ceci-definition>
+    {
+      "tags": ["music", "touch", "button"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Button Grid",
+      "description": "Displays a grid of buttons, each capable of its own action.",
+      "broadcasts": {
+        "taplabel": {
+          "label": "Tapped label",
+          "description": "The label of the key tapped",
+          "default": "green"
+        },
+        "tapnumber": {
+          "label": "Tapped number",
+          "description": "The number of the key tapped (starts at 1)",
+          "default": "blue"
+        },
+        "tap1": {
+          "label": "Button 1 tapped",
+          "description": "The first button was tapped",
+          "default": ""
+        },
+        "tap2": {
+          "label": "Button 2 tapped",
+          "description": "The first button was tapped",
+          "default": ""
+        },
+        "tap3": {
+          "label": "Button 3 tapped",
+          "description": "The first button was tapped",
+          "default": ""
+        },
+        "tap4": {
+          "label": "Button 4 tapped",
+          "description": "The first button was tapped",
+          "default": ""
+        },
+        "tap5": {
+          "label": "Button 5 tapped",
+          "description": "The first button was tapped",
+          "default": ""
+        },
+        "tap6": {
+          "label": "Button 6 tapped",
+          "description": "The first button was tapped",
+          "default": ""
+        },
+        "tap7": {
+          "label": "Button 7 tapped",
+          "description": "The first button was tapped",
+          "default": ""
+        },
+        "tap8": {
+          "label": "Button 8 tapped",
+          "description": "The first button was tapped",
+          "default": ""
+        },
+        "tap9": {
+          "label": "Button 9 tapped",
+          "description": "The first button was tapped",
+          "default": ""
+        }
+      },
+      "listeners": {
+      },
+      "attributes": {
+        "backgroundcolor": {
+          "label": "Background Color",
+          "editable": "color"
+        },
+        "textcolor": {
+          "label": "Text Color",
+          "editable": "color"
+        },
+        "labels": {
+          "label": "Comma separated labels",
+          "editable": "text"
+        },
+        "numcols": {
+          "label": "Number of columns",
+          "editable": "number"
+        },
+        "numrows": {
+          "label": "Number of rows",
+          "editable": "number"
+        },
+        "palettenumber": {
+          "label": "Which palette? 1-6",
+          "editable": "number"
+        }
+      }
+    }
+  </ceci-definition>
+  <script>
+    Polymer('ceci-pad-grid', {
+      nextBroadcast : "",
+      ready: function() {
+        this.super();
+        this.colors = [
+          ["#578A71",
+"#CA53D5",
+"#D7552D",
+"#95DF44",
+"#692A3F",
+"#CFA83B",
+"#CD98BF",
+"#68DB90",
+"#C69D85",
+"#7C70D0",
+"#5D9335",
+"#C54692",
+"#CE5062",
+"#719CC2",
+"#C7D383",
+"#884928",
+"#525926",
+"#534273",
+"#9BD8CE",
+"#3D3D3C"] ,
+          ["#89FB21",
+"#CD94FD",
+"#F4701F",
+"#3FD5B7",
+"#32170D",
+"#196F17",
+"#D32458",
+"#E3B21E",
+"#6B3887",
+"#B9C2F2",
+"#D7FE76",
+"#E48475",
+"#283A46",
+"#4A7AC5",
+"#F174A2",
+"#65470F",
+"#57C4DE",
+"#32D089",
+"#A4FEF9",
+"#2D2706"],
+          ["#FEEBB5",
+"#E299BE",
+"#8EBCC8",
+"#EE9C74",
+"#ADD171",
+"#8AD4AA",
+"#DECFF4",
+"#FEFAF1",
+"#D0A399",
+"#E8C972",
+"#FBFE88",
+"#C7FCF2",
+"#EDFDAA",
+"#9CBA8B",
+"#CEFED8",
+"#BFDBF0",
+"#89E3CD",
+"#8FC1BA",
+"#F7C479",
+"#ACC674"],
+          ["#C8C3B3",
+"#1A1B13",
+"#8A6B58",
+"#E6DA9B",
+"#6E8476",
+"#DEF2F1",
+"#E7B68C",
+"#D1EABA",
+"#A38E67",
+"#9D9B9A",
+"#393A31",
+"#9FBFA9",
+"#F6FDE4",
+"#89906D",
+"#F0F6CA",
+"#A07763",
+"#B7C1B7",
+"#343432",
+"#DCB586",
+"#8E7055"],
+          ["#AB41BC",
+"#BAA5F1",
+"#755288",
+"#8F5CF1",
+"#F998ED",
+"#F258F4",
+"#BD91FF",
+"#9155AA",
+"#BF80C1",
+"#E780FF",
+"#7752C8",
+"#766AB8",
+"#9D3896",
+"#CF69FD",
+"#9A4F95",
+"#A994EF",
+"#B16FA5",
+"#8F36B6",
+"#9054E0",
+"#6A5DAB"],
+          ["#FFFFFF"],
+          ["#FF3333", "#FFFFFF"],
+          ["#BC4212",
+"#D3A18A",
+"#FE266A",
+"#9B4047",
+"#F54F4F",
+"#896759",
+"#C18058",
+"#D45162",
+"#F16941",
+"#F79D92",
+"#AD4436",
+"#915C3D",
+"#F90D4E",
+"#CE1B3A",
+"#AC2D4D",
+"#F76856",
+"#E29A6F",
+"#EB5461",
+"#F26E32",
+"#CE450C"]
+        ];
+        var self = this;
+        this.labelsList = this.getAttribute("labels").split(',');
+      },
+      attached : function(){
+        this.super();
+        var that = this;
+      },
+      updateChannels: function(){
+        var that = this;
+        this.activebroadcasts = [];
+        Array.prototype.forEach.call(this.querySelectorAll("ceci-broadcast"), function(broadcast) {
+          var item = {};
+          item.channelcolor = broadcast.getAttribute("on");
+          item.channelname = broadcast.getAttribute("from");
+          that.activebroadcasts.push(item);
+        });
+      },
+      input: function(value) {
+        this.currentBeat = this.currentBeat + 1;
+        if(this.currentBeat > 3) {
+          this.currentBeat = 0;
+        }
+        var playChannels = this.playbeats[parseInt(this.currentBeat)];
+        for(var i = 0; i < playChannels.length; i++){
+          this.broadcast(playChannels[i],"tick");
+        }
+      },
+      generateCells: function() {
+        this.$.box.innerHTML = '';
+        var that = this;
+        var row;
+        var cell;
+        var counter = 0;
+        for (var i=0; i < this.numrows; i++) {
+          row = document.createElement("div");
+          row.setAttribute('class', 'row');
+          for (var j=0; j < this.numcols; j++) {
+            cell = document.createElement("div");
+            cell.setAttribute('class', 'push');
+            cell.style.width =((100.0-this.numcols*4)/this.numcols).toString() + "%";
+            label = document.createElement('div');
+            label.setAttribute('class', 'label');
+            var labelText = this.labelsList[counter] || "";
+            cell.setAttribute('number', counter+1);
+            cell.setAttribute('label', labelText);
+            label.textContent = labelText
+            cell.appendChild(label);
+            cell.addEventListener("click", function(e) {
+              var square= e.currentTarget;
+              var label = square.getAttribute('label');
+              if (label) {
+                that.broadcast("taplabel", label);
+              }
+              var tapnumber = square.getAttribute('number');
+              that.broadcast("tapnumber", tapnumber);
+              if (Number(tapnumber) < 10) {
+                if (label == '') label = "tap"
+                that.broadcast('tap' + tapnumber, label);
+              }
+
+              // next two lines are sadly needed: http://css-tricks.com/restart-css-animation/
+              square.classList.remove("animation-target");
+              square.offsetWidth = square.offsetWidth;
+              square.classList.add("animation-target");
+            });
+            var palette = this.colors[(this.palettenumber-1) % this.colors.length];
+            cell.style.backgroundColor = palette[counter % palette.length];
+            row.appendChild(cell);
+            counter ++;
+          }
+          this.$.box.appendChild(row);
+        }
+      },
+      palettenumberChanged: function (oldValue, newValue) {
+        this.palettenumber = Number(newValue);
+        this.generateCells();
+      },
+      labelsChanged: function (oldValue, newValue) {
+        this.labelsList = newValue.split(',');
+        this.generateCells();
+      },
+      numcolsChanged: function (oldValue, newValue) {
+        if (newValue < 1) {
+          this.numcols = "1"; // XXX not sure how to force the settings pane to refuse a value.
+          return;
+        }
+        this.generateCells();
+      },
+      numrowsChanged: function (oldValue, newValue) {
+        if (newValue < 1) {
+          this.numrows = "1"; // XXX not sure how to force the settings pane to refuse a value.
+          return;
+        }
+        this.generateCells();
+      },
+      backgroundcolorChanged: function (oldValue, newValue) {
+        this.style.backgroundColor = newValue;
+      },
+      textcolorChanged: function (oldValue, newValue) {
+        this.style.color = newValue;
+      }
+    });
+  </script>
+</polymer-element>

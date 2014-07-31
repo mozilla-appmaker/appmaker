@@ -78,6 +78,8 @@ cp sample.env .env
 A short explanation of a complete `.env` file:
 
 ```
+BUNDLE: OPTIONAL - if this has any value, components will be bundled into a single mozilla-appmaker.min.html file in ./public/bundles/components (modifying individual components will then only take effect on app start)
+BUNDLE_MINIFY: OPTIONAL - if this has any value, it will also minify the resulting bundle(s)
 MONGO_URL: REQUIRED - the URI for your mongod instance and database, for example mongodb://localhost/appmakerdev (or whatever your database is named)
 LOGINAPI: REQUIRED - The URI of a Webmaker login server to use for user authentication. for exmaple http://localhost:3000
 LOGINAPI_WITH_AUTH: - The URI of a Webmaker login server, including basic authentication credentials. for exmaple http://testuser:password@localhost:3000
@@ -91,11 +93,9 @@ S3_OBJECT_PREFIX: String to prepend S3 objects. Useful for storing objects in fo
 PUBLISH_URL_PREFIX: String to prepend to filenames that are saved when publishing. Try use the URL that matches the protocol from which assets are hosted to avoid mixed content blockage.
 REDIRECT_URL: The hostname and port that we want to redirect to for Appmaker
 PORT: The port that the web process listens on for incomming connections
-GITHUB_TOKEN: A personal Github token used for loading lists of components from the mozilla-appmaker org during development (https://github.com/blog/1509-personal-api-tokens)
 EXCLUDED_COMPONENTS: A comma-delimited list of component repositories to exclude from the mozilla-appmaker org. The name is the repo name rather than the component name, though this is usually the same.
 ALLOW_CUSTOM_COMPONENTS: Optional flag to turn on using custom component for testing purposes (any value that coerces to true is accepted)
 BUNDLE: Any non-null value will cause the application to bundle as many resources as possible
-LOAD_FROM_GITHUB: if omitted, or "false", instructs appmaker to load components from repositories hosted on github.com
 HSTS_DISABLED: if set to "true", [HSTS](http://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security) is disabled.  **(If you are not forcing SSL, you should turn disable HSTS by setting HSTS_DISABLED='true' in the .env)**
 DISABLE_XFO_HEADERS_DENY: If set to "true", [X-Frame-Options Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/X-Frame-Options) are not set.  If not set to "true" / left unset, XFO headers are set to DENY.
 IEXSS_PROTECTION_DISABLED: If set to "true", iexss vulnerability headers are not set.  If set to false or left unset, iexss protection for IE8 will be enabled.

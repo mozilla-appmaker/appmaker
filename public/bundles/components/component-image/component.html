@@ -1,0 +1,80 @@
+<polymer-element name="ceci-image" source="//www.placekitten.com/150/150" attributes="height source" extends="ceci-element"
+  height="160">
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div class="image-container">
+      <img id="image">
+    </div>
+    <shadow></shadow>
+  </template>
+  <ceci-definition>
+    {
+      "tags": ["image", "photo", "picture"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Image",
+      "description": "Displays an image using a simple web URL or data-uri.",
+      "broadcasts": {
+        "click": {
+          "label": "Click",
+          "description": "Occurs when the image is clicked.",
+          "default": false
+        }
+      },
+      "listeners": {
+        "setImageSource": {
+          "description": "changes the image tags src attribute.",
+          "label": "Set Image Source",
+          "default": true
+        }
+      },
+      "attributes": {
+        "height": {
+          "label": "Image Height",
+          "description": "Image Height",
+          "editable": "number",
+          "listener": true
+        },
+        "source": {
+          "label": "Image Source",
+          "description": "The Image to Show",
+          "editable": "text"
+        }
+      }
+    }
+  </ceci-definition>
+  <script>
+    Polymer('ceci-image', {
+      ready: function () {
+        this.super();
+
+        var that = this;
+
+        // User-configurable Properties
+        // A component's user-configurable properties are stored as attributes.
+        // Here they are set to a remembered value, or to a default starting.
+        // The attribute name must match the name of the editable property in the 'editables' section.
+        this.setAttribute("imageUrl", this.getAttribute("imageUrl") || "");
+        this.img = this.$.image;
+        this.img.style.height = this.getAttribute( "height" ) + "px";
+
+        this.onclick = function () {
+          that.broadcast("click", this.img.getAttribute( "src" ));
+        };
+      },
+      setValue : function(v) {
+        this.setImageSource(v);
+      },
+      sourceChanged : function(oldValue, newValue){
+        this.setImageSource(this.source);
+      },
+      setImageSource : function (val) {
+        this.source = val;
+        this.img.setAttribute('src', val);
+      },
+      heightChanged: function( oldValue, newValue ) {
+        this.img.style.height = ( newValue || newValue === 0 ? newValue : "160" ) + "px";
+      }
+    });
+  </script>
+</polymer-element>
+

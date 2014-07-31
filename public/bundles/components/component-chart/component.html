@@ -1,0 +1,103 @@
+<polymer-element name="ceci-chart" collectionname="times" extends="ceci-element" attributes="unit increment value collectionname">
+  <script src="vendor/chartjs/Chart.min.js"></script>
+  <ceci-definition>
+    {
+      "name": "Line Graph",
+      "thumbnail": "./thumbnail.png",
+      "description": "Shows a line graph of a data set over time.",
+      "tags": ["asdf"],
+      "broadcasts": {
+      },
+      "listeners": {
+        "graph": {
+          "description": "Graphs available data.",
+          "label": "Graph",
+          "default": true
+        }
+      },
+      "attributes": {
+        "collectionname": {
+          "description": "The name of the collection to store the value",
+          "label": "Collection Name",
+          "editable": "text"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css">
+    <div class="wrapper">
+      <canvas id="canvas" width="310" height="400"></canvas>
+    </div>
+    <shadow></shadow>
+  </template>
+  <tags></tags>
+  <script>
+    Polymer("ceci-chart", {
+      ready: function() {
+        this.super();
+        var canvas = this.$.canvas;
+        var ctx = canvas.getContext('2d');
+        this.chart = new Chart(ctx);
+
+        localStorage['hack-collection-times'] = JSON.stringify({
+          "6/2/2014":20,
+          "6/3/2014":20,
+          "6/4/2014":23,
+          "6/5/2014":25,
+          "6/6/2014":30,
+          "6/7/2014":32,
+          "6/8/2014":35,
+          "6/9/2014":36,
+          "6/10/2014":33,
+          "6/11/2014":25,
+          "6/12/2014":34,
+          "6/13/2014":60
+        });
+
+        this.graph();
+
+      },
+      getData: function() {
+        var data = JSON.parse(localStorage['hack-collection-' + this.collectionname]);
+
+        var values = [];
+        var keys = Object.keys(data);
+
+        for (var i in keys){
+          values.push(data[keys[i]]);
+        }
+
+        return {
+          labels: keys,
+          datasets: [
+            {
+              fillColor: "rgba(54, 171, 42, .6)",
+              strokeColor: "rgba(30, 151, 29, 1.0000)",
+              data: values
+            }
+          ]
+        };
+      },
+      getIntegerScaleParameters: function(data) {
+        var maxValue = false;
+        for (datasetIndex = 0; datasetIndex < data.datasets.length; ++datasetIndex) {
+           var setMax = Math.max.apply(null, data.datasets[datasetIndex].data);
+           if (maxValue === false || setMax > maxValue) maxValue = setMax;
+        }
+
+        var steps = new Number(maxValue);
+        var stepWidth = new Number(1);
+        if (maxValue > 10) {
+           stepWidth = Math.floor(maxValue / 10);
+           steps = Math.ceil(maxValue / stepWidth);
+        }
+        return { animation: false, scaleOverride: true, scaleSteps: steps, scaleStepWidth: stepWidth, scaleStartValue: 0 };
+      },
+      graph: function() {
+        var data = this.getData();
+        this.chart.Line(data, this.getIntegerScaleParameters(data));
+      }
+    });
+  </script>
+</polymer-element>

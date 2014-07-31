@@ -1,0 +1,46 @@
+<polymer-element name="ceci-header" attributes="header" extends="ceci-element" header="Header">
+  <ceci-definition>
+    {
+      "tags": ["starter", "layout", "navigation"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Displays a title for a page in your app and lets you navigate to that page.",
+      "name": "Header",
+      "broadcasts": {},
+      "listeners": {
+        "navigateHere": {
+          "description": "navigateHere",
+          "label": "Navigate Here"
+        }
+      },
+      "attributes": {
+        "header": {
+          "label": "Header Label",
+          "description": "Text for header label",
+          "editable": "text",
+          "listener": true
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <header id="headerText">{{header}}</header>
+    <shadow></shadow>
+  </template>
+  <script>
+    Polymer('ceci-header', {
+      ready: function () {
+        this.super();
+      },
+      navigateHere: function () {
+        var parent = this.parentNode;
+        while (parent.nodeName !== "CECI-CARD") {
+          parent = parent.parentNode;
+        }
+        if (parent) {
+          parent.show();
+        }
+      }
+    });
+  </script>
+</polymer-element>

@@ -1,0 +1,22 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+:host .counter {
+  text-align: center;
+  font-size: 16px;
+  padding: 8px 0px;
+  background: #DDD;
+  color: #666;
+}
+
+:host .counter .count-wrapper {
+  display: inline-block;
+  background: white;
+  padding: 5px 12px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border: solid 1px #CCC;
+  border-width: 1px 1px 2px 1px;
+}

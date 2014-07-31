@@ -1,0 +1,55 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+:host .button-wrapper {
+  position: relative;
+}
+
+:host #buttonwrapper {
+  cursor: pointer;
+}
+
+:host #button {
+
+  border-bottom: 2px solid rgba(0,0,0,.1);
+  display: block;
+  text-align: center;
+  padding: 12px 0 10px 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-weight: 300;
+  font-size: 1.8rem;
+  line-height: 1.8rem;
+}
+
+:host .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+}
+
+:host .active-overlay {
+  background: black;
+}
+
+:host .hover-overlay {
+  background: white;
+}
+
+:host .pressdown .active-overlay {
+  opacity: .1;
+}
+
+:host .pressdown #button {
+  border-top: solid 2px rgba(0,0,0,.1);
+  border-bottom: none;
+}
+
+:host button {
+  border: none;
+}
