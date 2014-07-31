@@ -1,0 +1,14 @@
+:host {
+  display: block;
+  background: black;
+}
+
+:host .app-fireworks {
+  background-color: #0e1012;
+  display: inline-block;
+}
+
+:host canvas {
+  height: 100%;
+  width: 100%;
+}

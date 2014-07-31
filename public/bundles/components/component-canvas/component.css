@@ -1,0 +1,21 @@
+:host {
+  display: block;
+  width: 100%;
+  position: relative;
+  background-color: #fff;
+  background-image: linear-gradient(rgba(201, 210, 248, 0.4) .1em, transparent .1em);
+  background-size: 100% 1.2em;
+}
+
+:host canvas {
+  width: 100%;
+  height: 100%;
+  cursor: none;
+}
+
+:host #cursor {
+  background: #000;
+  position: absolute;
+  cursor: none;
+  pointer-events: none;
+}

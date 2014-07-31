@@ -1,0 +1,102 @@
+<polymer-element name="ceci-text-input" attributes="buttonlabel inputname placeholdertext emitonchange label" extends="ceci-element" placeholdertext="Placeholder" buttonlabel="Submit" inputname="Text Input">
+  <ceci-definition>
+    {
+      "tags": ["input", "form", "button"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Text Input with Button",
+      "description": "Sends text you've entered when you press the button.",
+      "broadcasts": {
+        "sendData": {
+          "label": "Send Data",
+          "description": "Sends the current value of the input field.",
+          "default": true
+        }
+      },
+      "listeners": {
+        "click": {
+          "description": "Causes a fake click event to occur.",
+          "label": "Send Data"
+        },
+        "setvalue": {
+          "description": "Set the value of the field.",
+          "label": "Set Value"
+        }
+      },
+      "attributes": {
+        "inputname": {
+          "label": "Input Name",
+          "description": "The name of this field, helpful when saving data.",
+          "editable": "text"
+        },
+        "buttonlabel": {
+          "label": "Button Label",
+          "description": "The label on the button.",
+          "editable": "text"
+        },
+        "placeholdertext": {
+          "label": "Placeholder Text",
+          "description": "The text you want your input field to show by default.",
+          "editable": "text"
+        },
+        "emitonchange": {
+          "label": "Emit on change",
+          "description": "Background color of the button while it is being clicked or tapped.",
+          "editable": "boolean"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css">
+    <div id="wrapper">
+      <input id="inputText" type="text" on-input="{{input}}" on-keypress="{{keypress}}" />
+      <button id="button" on-click="{{submit}}">{{buttonlabel}}</button>
+    </div>
+    <shadow></shadow>
+  </template>
+  <script>
+    Polymer('ceci-text-input', {
+      emitonchange:false,
+      ready: function () {
+        this.super();
+        var that = this;
+        this.$.button.textContent = this.gettext("ceci-text-input/button") || this.$.button.textContent;
+      },
+      submit: function () {
+        this.broadcast('sendData', this.$.inputText.value);
+        this.$.inputText.value = "";
+      },
+      click : function(){
+        this.submit();
+      },
+      input: function (e) {
+        if (!this.emitonchange) {
+          return;
+        }
+        this.broadcast('sendData', this.$.inputText.value);
+      },
+      keypress: function (e) {
+        if (!this.emitonchange) {
+          if (e.keyCode == 13) {
+            this.broadcast('sendData', this.$.inputText.value);
+            this.$.inputText.value = '';
+          }
+        }
+      },
+      setvalue: function(v) {
+        this.$.inputText.value = v;
+      },
+      emitonchangeChanged: function(oldValue, newValue) {
+        this.$.wrapper.classList.toggle('onchange');
+      },
+      placeholdertextChanged: function(oldValue, newValue) {
+        if (this.$.inputText.hasAttribute('placeholder')) {
+          this.$.inputText.setAttribute("placeholder", newValue);
+        }
+        else {
+          this.$.inputText.setAttribute("placeholder", newValue);
+        }
+      }
+    });
+  </script>
+</polymer-element>

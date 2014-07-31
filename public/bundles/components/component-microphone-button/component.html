@@ -1,0 +1,153 @@
+<polymer-element name="ceci-microphone-button" attributes="textcolor record done" extends="ceci-element"
+  record="Record"
+  done="Done"
+  textcolor="#ffffff">
+  <ceci-definition>
+    {
+      "tags": ["microphone", "button", "audio"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Records an audio clip.",
+      "name": "Microphone",
+      "broadcasts": {
+        "clip": {
+          "label": "clip",
+          "description": "An audio clip from your microphone.",
+          "default": true
+        }
+      },
+      "listeners": {
+        "start": {
+          "description": "Start a microphone recording.",
+          "label": "start"
+        },
+        "stop": {
+          "description": "Stop a microphone recording.",
+          "label": "stop"
+        }
+      },
+      "attributes": {}
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css">
+    <div class="buttonwrapper">
+      <div class="button" id="startButton">
+        <div class="iconwrapper">
+          <div class="icon"></div>
+        </div>
+      </div>
+    </div>
+    <div class="buttonwrapper">
+      <div class="button" id="stopButton">
+        <div class="iconwrapper">
+          <div class="icon"></div>
+        </div>
+      </div>
+    </div>
+    <shadow></shadow>
+  </template>
+  <script>
+    Polymer('ceci-microphone-button', {
+      ready: function () {
+        this.super();
+        navigator.getMedia = ( navigator.getUserMedia ||
+                               navigator.webkitGetUserMedia ||
+                               navigator.mozGetUserMedia ||
+                               navigator.msGetUserMedia );
+      },
+      attached: function() {
+        this.super();
+        if (navigator.getMedia) {
+
+          this.recording = false;
+          this.startButton = this.shadowRoot.querySelector("#startButton");
+          this.stopButton = this.shadowRoot.querySelector("#stopButton");
+          this.bg = this.shadowRoot.querySelector(".button");
+          this.bg.style.background = this.buttoncolor;
+
+          // either run native webaudio or use webrtc fallback
+          if(window.MediaRecorder) { this.setupWebAudioAPI(); }
+          else { this.setupRecordRTC(); }
+        }
+      },
+      /**
+       * Native WebAudio API support
+       */
+      setupWebAudioAPI: function() {
+        var that = this;
+        var audioCtx = new AudioContext();
+
+        var onbind = function(stream) {
+          var mediaRecorder = new MediaRecorder(stream);
+          that.startButton.onclick = function() {
+            mediaRecorder.start();
+            that.startButton.classList.add("recording");
+          };
+          that.stopButton.onclick = function() {
+            mediaRecorder.stop();
+            that.bg.style.background = that.buttoncolor;
+            that.startButton.classList.remove("recording");
+          };
+          var processData = function(e) {
+            var audioURL = window.URL.createObjectURL(e.data);
+            that.broadcast('clip', audioURL);
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.ondataavailable = processData;
+          };
+          mediaRecorder.ondataavailable = processData;
+        };
+
+        var onerror = function(err) {
+          console.error('An error occurred while trying to bind to the recording device: ' + err);
+        };
+
+        navigator.getMedia ({audio: true}, onbind, onerror);
+      },
+      /**
+       * WebRTC fallback due to lack of native WebAudio API support
+       */
+      setupRecordRTC: function() {
+        var that = this;
+        var recordRTC;
+
+        function loadupRecordingFunctionality() {
+
+          var onbind = function(stream) {
+            recordRTC = RecordRTC(stream);
+
+            that.startButton.onclick = function() {
+              recordRTC.startRecording();
+              that.startButton.classList.add("recording");
+              that.recording = true;
+            };
+
+            that.stopButton.onclick = function() {
+              if (!that.recording) return;
+              recordRTC.stopRecording(function(audioURL) {
+                that.recording = false;
+                that.broadcast('clip', audioURL);
+                that.bg.style.background = that.buttoncolor;
+                that.startButton.classList.remove("recording");
+              });
+            };
+          };
+
+          var onerror = function(err) {
+            console.error('An error occurred while trying to bind to the recording device: ' + err);
+          };
+
+          navigator.getMedia ({audio: true}, onbind, onerror);
+        }
+
+        // Try to bind the recorder, or load the recorder script
+        // if the browser hasn't done this yet.
+        if(!window.RecordRTC) {
+          var script = document.createElement("script");
+          script.onload = loadupRecordingFunctionality;
+          script.src = "/bundles/resources/RecordRTC.js";
+          document.head.appendChild(script);
+        } else { loadupRecordingFunctionality(); }
+      }
+    });
+  </script>
+</polymer-element>

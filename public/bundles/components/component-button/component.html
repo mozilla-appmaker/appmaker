@@ -1,0 +1,75 @@
+<polymer-element name="ceci-button" attributes="textcolor buttoncolor label value" value="Press" extends="ceci-element"
+  label="Press Me" textcolor="#ffffff"
+  buttoncolor="#4DB227">
+  <ceci-definition>
+    {
+      "tags": ["button", "click", "tap"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Responds to your clicks and taps.",
+      "name": "Button",
+      "broadcasts": {
+        "click": {
+          "label": "Press",
+          "description": "Occurs when button is clicked.",
+          "default": true
+        }
+      },
+      "listeners": {},
+      "attributes": {
+        "label": {
+          "label": "Label",
+          "description": "Text shown on the button.",
+          "editable": "text",
+          "listener": true
+        },
+        "value": {
+          "label": "Broadcast Value",
+          "description": "Value sent by the button.",
+          "editable": "text"
+        },
+        "textcolor": {
+          "label": "Text Color",
+          "description": "Color of the text on the button's label.",
+          "editable": "color"
+        },
+        "buttoncolor": {
+          "label": "Button Color",
+          "description": "Background color of the button.",
+          "editable": "color",
+          "listener": true
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div id="buttonwrapper" on-ceci-pressdown="{{pressdown}}" on-ceci-pressup="{{pressup}}" class="button-wrapper">
+      <div id="button">{{label}}</div>
+      <div class="overlay active-overlay"></div>
+    </div>
+    <shadow></shadow>
+  </template>
+  <script>
+    Polymer('ceci-button', {
+      ready: function () {
+        this.super();
+      },
+      attached : function(){
+        this.super();
+      },
+      pressup : function(){
+        this.$.buttonwrapper.classList.remove("pressdown");
+      },
+      pressdown : function(){
+        this.$.buttonwrapper.classList.add("pressdown");
+        this.broadcast('click', this.getAttribute('value'));
+      },
+      textcolorChanged: function (oldValue, newValue) {
+        this.$.button.style.color = newValue;
+      },
+      buttoncolorChanged: function (oldValue, newValue) {
+        this.$.button.style.backgroundColor = newValue;
+      }
+    });
+  </script>
+</polymer-element>

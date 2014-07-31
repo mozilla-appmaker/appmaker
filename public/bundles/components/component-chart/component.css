@@ -1,0 +1,14 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+:host .wrapper {
+  width: 100%;
+  min-height: 400px;
+}
+
+:host canvas {
+  height: 400px;
+  width: 100%;
+}

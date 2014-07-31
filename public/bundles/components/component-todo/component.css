@@ -1,0 +1,101 @@
+:host {
+  display: block;
+  width: 100%;
+  background: white;
+}
+
+:host .hidden {
+  display: none;
+}
+
+:host .list-container {
+  padding: 10px;
+}
+
+:host .item {
+  font-size: 16px;
+  border-bottom: solid 1px #DDD;
+}
+
+:host .item:last-child {
+  border: none;
+}
+
+:host .remove-column {
+  text-align: center;
+  cursor: pointer;
+}
+
+:host .remove-column:hover {
+  color: #212429;
+  background: #fff;
+}
+
+:host .remove-item {
+  display: none;
+  float: right;
+  color: #639ccd;
+}
+
+:host .first-run-container {
+  padding: 10px;
+}
+
+:host .first-run-container p {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #999;
+}
+
+:host .first-run-container h3 {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+:host .first-run-container input {
+  font-size: 16px;
+  padding: 6px 3px;
+}
+
+:host .completed .remove-item {
+  display: inline-block;
+  float: right;
+  color: #639ccd;
+  cursor: pointer;
+  padding: 10px 0;
+}
+
+:host label {
+  display: block;
+  padding: 10px 0;
+  width: 240px;
+}
+
+:host .completed .remove-item:hover {
+  text-decoration: underline;
+}
+
+:host .completed label {
+  text-decoration: line-through;
+
+  color: #999;
+}
+
+:host .no-items {
+  font-size: 16px;
+  margin: 0;
+}
+
+:host button {
+  background: #6eba1d;
+  border: none;
+  font-size: 16px;
+  color: white;
+  padding: 8px 8px;
+  cursor: pointer;
+
+}

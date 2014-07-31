@@ -1,0 +1,77 @@
+<polymer-element name="ceci-random" extends="ceci-element" attributes="allowsame min max value" min="0" max="9" allowsame="false">
+  <ceci-definition>
+    {
+      "name": "Random Number Generator",
+      "thumbnail": "./thumbnail.png",
+      "description": "Generates a random number for other bricks to use.",
+      "broadcasts": {
+        "send": {
+          "label": "Random number",
+          "description": "Sends the random number if explicitly asked to.",
+          "default" : "true"
+        }
+      },
+      "listeners": {
+        "generate": {
+          "description": "Generate a random number between min and max",
+          "label": "Generate",
+          "default" : "true"
+        }
+      },
+      "attributes": {
+        "min": {
+          "label": "Min",
+          "editable": "number"
+        },
+        "max": {
+          "label": "Max",
+          "editable": "number"
+        },
+        "allowsame": {
+          "description": "Allow same number twice",
+          "label": "Allow same number twice",
+          "editable": "boolean"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css">
+    <div class="counter">
+        Random between {{min}} and {{max}} &rarr;
+      <div class="count-wrapper">
+ {{value}}
+      </div>
+    </div>
+    <shadow></shadow>
+  </template>
+  <tags>starter,math</tags>
+    <script>
+      Polymer("ceci-random", {
+        ready: function() {
+          this.value = Number(this.value) || 0;
+          this.super();
+        },
+        value: 0,
+        valueChanged: function() {
+          this.broadcast("changed", this.value);
+        },
+        generate: function() {
+          var max = Number(this.max);
+          var min = Number(this.min);
+          var random = Math.floor(Math.random() * (max - min + 1)) + min;
+
+          if(this.allowsame == "false") {
+            while(this.value == random){
+              random = Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+          }
+          this.value = random;
+          this.send();
+        },
+        send: function() {
+          this.broadcast("send", this.value);
+        }
+      });
+    </script>
+</polymer-element>

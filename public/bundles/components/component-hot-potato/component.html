@@ -1,0 +1,71 @@
+<polymer-element name="ceci-hot-potato" extends="ceci-element" attributes="min max" min="10" max="15">
+  <ceci-definition>
+    {
+      "name" : "Hot Potato",
+      "tags" : ["game","timer","time"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Sends out a signal at a random time between two numbers.",
+      "broadcasts": {
+        "finish": {
+          "label": "Game over",
+          "description": "Sends a message that the game is over.",
+          "default" : "true"
+        }
+      },
+      "listeners": {
+        "start": {
+          "description": "Starts a new game.",
+          "label": "New Game",
+          "default" : "true"
+        }
+      },
+      "attributes": {
+        "min": {
+          "description": "Minimum",
+          "label": "Min",
+          "editable": "number"
+        },
+        "max": {
+          "description": "Maximum",
+          "label": "Max",
+          "editable": "number"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div class="timer">{{diffTime}}</div>
+    <shadow></shadow>
+  </template>
+  <tags>starter,math</tags>
+    <script>
+      Polymer("ceci-hot-potato", {
+        ready: function() {
+          this.super();
+          this.startTime = 0;
+          this.randomTimeBetweenRange = 0;
+          this.diffTime = 0;
+        },
+        start: function() {
+          this.startTime = Date.now();
+          var max = Number(this.max);
+          var min = Number(this.min);
+          this.randomTimeBetweenRange = Math.floor(Math.random() * (max - min + 1)) + min;
+          this.timer();
+        },
+        timer: function() {
+          var nowTime = Date.now();
+          this.diffTime = ( nowTime - this.startTime ) / 1000;
+          var that = this;
+          if (this.diffTime >= this.randomTimeBetweenRange) {
+            this.broadcast("finish", this.diffTime);
+            return;
+          }
+          setTimeout(function() {
+            that.timer();
+          }, 200);
+        }
+      });
+    </script>
+</polymer-element>

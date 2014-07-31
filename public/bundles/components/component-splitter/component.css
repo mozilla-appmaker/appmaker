@@ -1,0 +1,9 @@
+:host, :host .splitter {
+  display: block;
+  width: 100%;
+  height: 50px;
+}
+
+:host .splitter {
+  background: url(thumbnail.png) black no-repeat center;
+}

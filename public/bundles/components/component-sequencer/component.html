@@ -1,0 +1,147 @@
+<polymer-element name="ceci-sequencer" attributes="playbeats" extends="ceci-element">
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div id="channels" data-beat="{{currentBeat}}">
+      <div class="indicator top"></div>
+      <div class="indicator bottom"></div>
+      <template repeat="{{item, i in activebroadcasts}}">
+        <div data-color="{{item.channelcolor}}" data-channel="{{item.channelname}}" class="channelrow">
+          <div on-click="{{beattap}}" data-beat="0" class="beat"></div>
+          <div on-click="{{beattap}}" data-beat="1" class="beat"></div>
+          <div on-click="{{beattap}}" data-beat="2" class="beat"></div>
+          <div on-click="{{beattap}}" data-beat="3" class="beat"></div>
+        </div>
+      </template>
+    </div>
+    <shadow></shadow>
+  </template>
+  <ceci-definition>
+    {
+      "tags": [""],
+      "thumbnail": "./thumbnail.png",
+      "name": "Sequencer",
+      "description": "Sends messages signals to other bricks according to a pattern.",
+      "broadcasts": {
+        "A": {
+          "label": "Beat A",
+          "description": "The first broadcast in the rotation.",
+          "default": "green"
+        },
+        "B": {
+          "label": "Beat B",
+          "description": "The second broadcast in the rotation.",
+          "default": "yellow"
+        },
+        "C": {
+          "label": "Beat C",
+          "description": "The third broadcast in the rotation."
+        },
+        "D": {
+          "label": "Beat D",
+          "description": "The fourth broadcast in the rotation."
+        },
+        "E": {
+          "label": "Beat E",
+          "description": "The fifth broadcast in the rotation."
+        }
+      },
+      "listeners": {
+        "input": {
+          "description": "Plays the next beat in the sequence.",
+          "label": "Play Beat",
+          "default": true
+        }
+      },
+      "attributes": {}
+    }
+  </ceci-definition>
+  <script>
+    Polymer('ceci-sequencer', {
+      beattap: function(e){
+        var self = this;
+        var beatEl = e.target;
+
+        if (beatEl.classList.contains("on")){
+          beatEl.classList.remove("on");
+        }
+        else{
+          beatEl.classList.add("on");
+        }
+
+        self.playbeats = [[],[],[],[]];
+
+        Array.prototype.forEach.call(this.shadowRoot.querySelectorAll(".channelrow"), function(chan) {
+          var channel = chan.getAttribute("data-channel");
+          var beat = 0;
+          Array.prototype.forEach.call(chan.querySelectorAll(".beat"), function(beatEl) {
+            if(beatEl.classList.contains("on")) {
+              self.playbeats[beat].push(channel);
+            }
+            beat++;
+          });
+        });
+        this.setAttribute("playbeats",JSON.stringify(this.playbeats));
+      },
+      currentBeat: -1,
+      ready: function() {
+        this.super();
+        this.lastBroadcast = null;
+        var self = this;
+        this.playbeats = JSON.parse(this.getAttribute("playbeats")) || [["A"],["B"],["A"],["B"]];
+      },
+      colorSquares : function(){
+        if (this.activebroadcasts.length > 0){
+          for(var i = 0; i < this.playbeats.length; i++){
+            var beatCount = i + 1;
+            var beats = this.playbeats[i];
+            for(var j = 0; j < beats.length; j++) {
+              var channel = beats[j];
+
+              this.shadowRoot.querySelector(".channelrow[data-channel=" + channel +"] .beat:nth-child(" + beatCount + ")").classList.add("on");
+            }
+          }
+        }
+      },
+      attached : function(){
+        this.super();
+
+        this.addEventListener("CeciChannelUpdated", function(){
+          this.updateChannels();
+        });
+
+        this.async(function(){
+          this.colorSquares()
+        });
+
+        this.updateChannels();
+      },
+      updateChannels: function(){
+        var self = this;
+        this.activebroadcasts = [];
+
+        Array.prototype.forEach.call(this.querySelectorAll("ceci-broadcast"), function(broadcast) {
+          var item = {};
+          item.channelcolor = broadcast.getAttribute("on");
+          item.channelname = broadcast.getAttribute("from");
+
+          self.activebroadcasts.push(item);
+        });
+
+        this.async(function(){
+          this.colorSquares();
+        });
+      },
+      input: function(value) {
+        this.currentBeat += 1;
+
+        if(this.currentBeat > 3) {
+          this.currentBeat = 0;
+        }
+        var playChannels = this.playbeats[this.currentBeat];
+        for(var i = 0; i < playChannels.length; i++){
+          this.broadcast(playChannels[i], "tick");
+        }
+      }
+    });
+  </script>
+</polymer-element>

@@ -1,0 +1,129 @@
+:host {
+  display: block;
+  position: relative;
+  padding: 10px 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+:host .metronome-wrapper {
+  margin: 0 auto;
+  position: relative;
+}
+
+:host .speed-control {
+  height: 50px;
+  width: 50px;
+  background: #63a6cc;
+  position: absolute;
+  border-radius: 30px;
+  -webkit-border-radius: 30px;
+  top: 10px;
+  cursor: pointer;
+  opacity: .8;
+}
+
+:host .speed-control .icon {
+  position: absolute;
+  font-size: 40px;
+  color: white;
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  text-shadow: 0px -1px 0px rgba(0,0,0,.25);
+}
+
+:host .speed-control:hover {
+  opacity: 1;
+}
+
+:host .speed-control.up {
+  right: 40px;
+}
+
+:host .down .icon {
+  top: -4px;
+}
+
+:host .speed-control.down {
+  left: 40px;
+}
+
+:host .metronome-body {
+  background: #85560b;
+  border-top: solid 2px #85560b;
+  background: -webkit-linear-gradient(top, #a87018,#85560b);
+  background: -moz-linear-gradient(top, #a87018,#85560b);
+  width: 40px;
+  margin: 0 auto;
+  padding: 8px 0 12px 0;
+  -webkit-border-radius: 15px 15px 5px 5px;
+  border-radius: 15px 15px 5px 5px;
+  position: relative;
+  cursor: pointer;
+}
+
+:host  .metronome-hole {
+  background: white;
+  height: 50px;
+  width: 10px;
+  margin: 0 auto;
+  border-radius: 3px 3px 10px  10px;
+  border-top: solid 2px #85560b;
+  border-left: solid 1px #85560b;
+  border-right: solid 1px #85560b;
+}
+
+:host  .metronome-shadow {
+  background: #DDD;
+  width: 50px;
+  height: 20px;
+  margin: 0 auto;
+  -webkit-border-radius: 12px;
+  -webkit-transform: scaleY(.5);
+  border-radius: 12px;
+  transform: scaleY(.5);
+  border-radius: 12px;
+  position: absolute;
+  left: calc(50% - 25px);
+  top: 62px;
+}
+
+:host .metronome-arrow {
+  background: black;
+  height: 45px;
+  width: 6px;
+  border: solid 2px white;
+  -webkit-transform-origin: center 45px;
+  -webkit-border-radius: 0 0 5px 5px;
+  transform-origin: center 45px;
+  border-radius: 0 0 5px 5px;
+  position: absolute;
+  top: 10px;
+  left: 15px;
+}
+
+:host .metronome-animation {
+  -webkit-animation-name: metronome;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  animation-name: metronome;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes metronome {
+  0% {-webkit-transform: rotate(0deg); }
+  25% {-webkit-transform: rotate(-30deg); }
+  50% {-webkit-transform: rotate(0deg); }
+  75% {-webkit-transform: rotate(30deg); }
+  100% {-webkit-transform: rotate(0deg); }
+}
+
+@keyframes metronome {
+  0% {transform: rotate(0deg); }
+  25% {transform: rotate(-30deg); }
+  50% {transform: rotate(0deg); }
+  75% {transform: rotate(30deg); }
+  100% {transform: rotate(0deg); }
+}

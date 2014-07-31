@@ -1,0 +1,106 @@
+<polymer-element name="ceci-channel-gate" attributes="" extends="ceci-element">
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div id="channels"></div>
+    <shadow></shadow>
+  </template>
+  <ceci-definition>
+    {
+      "tags": ["alternating-gate", "low-level"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Channel Gate",
+      "description": "Sends an incoming signal on a broadcast channel of your choosing.",
+      "broadcasts": {
+        "A": {
+          "label": "Output A",
+          "description": "The first broadcast in the rotation.",
+          "default": "green"
+        },
+        "B": {
+          "label": "Output B",
+          "description": "The second broadcast in the rotation.",
+          "default": "yellow"
+        },
+        "C": {
+          "label": "Output C",
+          "description": "The third broadcast in the rotation."
+        },
+        "D": {
+          "label": "Output D",
+          "description": "The fourth broadcast in the rotation."
+        },
+        "E": {
+          "label": "Output E",
+          "description": "The fifth broadcast in the rotation."
+        }
+      },
+      "listeners": {
+        "input": {
+          "description": "The input that alternates out the broadcasts.",
+          "label": "Input",
+          "default": true
+        }
+      },
+      "attributes": {}
+    }
+  </ceci-definition>
+  <script>
+    Polymer('ceci-channel-gate', {
+      nextBroadcast : "",
+      ready: function() {
+        this.super();
+        this.lastBroadcast = null;
+      },
+      attached : function(){
+        this.super();
+      },
+      domReady: function() {
+        var that = this;
+        this.onChannelUpdate = function(){
+          that.updateChannels();
+          that.updateUI();
+        };
+        window.addEventListener("channelUpdate", this.onChannelUpdate);
+        this.updateChannels();
+        this.nextBroadcast = this.activeBroadcasts[0];
+        this.updateUI();
+      },
+      detached: function() {
+        window.removeEventListener("channelUpdate", this.onChannelUpdate);
+      },
+      updateUI : function(){
+        Array.prototype.forEach.call(this.$.channels.querySelectorAll(".output-channel"), function(c) {
+          c.classList.remove("next-up");
+        });
+        var selected = this.$.channels.querySelector("." + this.nextBroadcast);
+        if(selected){
+          selected.classList.add("next-up");
+        }
+      },
+      channelClick : function(from){
+        this.nextBroadcast = from;
+        this.updateUI();
+      },
+      updateChannels: function(){
+        var that = this;
+        this.activeBroadcasts = [];
+        that.$.channels.textContent = "";
+        Array.prototype.forEach.call(this.querySelectorAll("ceci-broadcast"), function(broadcast) {
+          that.activeBroadcasts.push(broadcast.getAttribute("from"));
+          var channel = document.createElement("div");
+          channel.classList.add("output-channel");
+          channel.classList.add(broadcast.getAttribute("from"));
+          channel.textContent = broadcast.getAttribute("from");
+          var from = broadcast.getAttribute("from");
+          channel.addEventListener("click",function(){
+            that.channelClick(from);
+          });
+          that.$.channels.appendChild(channel);
+        });
+      },
+      input: function(value) {
+        this.broadcast(this.nextBroadcast, value);
+      }
+    });
+  </script>
+</polymer-element>

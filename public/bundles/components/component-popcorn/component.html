@@ -1,0 +1,126 @@
+<polymer-element name="ceci-popcorn-component" extends="ceci-element" make="https://mozteach.makes.org/popcorn/1boj" attributes="make starttime" starttime="0">
+  <ceci-definition>
+    {
+      "name": "Popcorn Maker Player",
+      "tags": "media,popcorn",
+      "thumbnail": "./thumbnail.png",
+      "description": "Displays and controls a popcorn.webmaker.org make",
+      "broadcasts": {
+        "loaded": {
+          "label": "Loaded",
+          "description": "Popcorn make is ready to play"
+        },
+        "finished": {
+          "label": "Finished",
+          "description": "Popcorn make has finished"
+        },
+        "eventstart": {
+          "label": "Track event start",
+          "description": "Track event has started"
+        },
+        "eventend": {
+          "label": "Track event end",
+          "description": "Track event has ended"
+        },
+        "error": {
+          "label": "Error",
+          "description": "Popcorn make has an error"
+        },
+        "play": {
+          "label": "Play",
+          "description": "Popcorn make is playing"
+        },
+        "pause": {
+          "label": "Pause",
+          "description": "Popcorn make is now paused"
+        },
+        "timeupdate": {
+          "label": "Time Update",
+          "description": "Popcorn make's current time has changed"
+        }
+      },
+      "listeners": {
+        "play": {
+          "description": "Play the make",
+          "label": "Play make"
+        },
+        "pause": {
+          "description": "Pause the make",
+          "label": "Pause make"
+        },
+        "rewind": {
+          "description": "Rewind the make back to the start",
+          "label": "Rewind make"
+        }
+      },
+      "attributes": {
+        "make": {
+          "description": "url to popcorn.webmaker.org make",
+          "label": "Make",
+          "editable": "text"
+        },
+        "starttime": {
+          "description": "initial time of the popcorn make",
+          "label": "Start Time",
+          "editable": "number"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css">
+    <iframe id="make-iframe"></iframe>
+    </div>
+    <shadow></shadow>
+  </template>
+    <script>
+      Polymer("ceci-popcorn-component", {
+        ready: function() {
+          this.super();
+        },
+        makeChanged: function() {
+          var iframe = this.$["make-iframe"],
+              self = this;
+          window.addEventListener( "message", function( e ) {
+            if ( e.data.type === "loadedmetadata" ) {
+              if ( self.make ) {
+                self.$["make-iframe"].contentWindow.postMessage({
+                  type: 'currentTime',
+                  currentTime: parseInt(self.starttime, 10)
+                }, self.make);
+              }
+              self.broadcast("loaded");
+            } else if ( e.data.type === "play" ) {
+              self.broadcast("play", e.data.currentTime);
+            } else if ( e.data.type === "pause" ) {
+              self.broadcast("pause", e.data.currentTime);
+            } else if ( e.data.type === "trackend" ) {
+              self.broadcast("eventend", e.data.plugin);
+            } else if ( e.data.type === "trackstart" ) {
+              self.broadcast("eventstart", e.data.plugin);
+            } else if ( e.data.type === "ended" ) {
+              self.broadcast("finished");
+            } else if ( e.data.type === "timeupdate" ) {
+              self.broadcast("timeupdate", e.data.currentTime);
+            }
+          }, false );
+          if (this.make.slice( -1 ) !== "_") {
+            this.make = this.make + "_";
+          }
+          iframe.src = this.make;
+        },
+        play: function() {
+          this.$["make-iframe"].contentWindow.postMessage({type: "play"}, this.make);
+        },
+        pause: function() {
+          this.$["make-iframe"].contentWindow.postMessage({type: "pause"}, this.make);
+        },
+        rewind: function() {
+          this.$["make-iframe"].contentWindow.postMessage({
+            type: 'currentTime',
+            currentTime: 0
+          }, this.make);
+        }
+      });
+    </script>
+</polymer-element>

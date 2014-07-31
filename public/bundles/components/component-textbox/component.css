@@ -1,0 +1,17 @@
+:host {
+  display: block;
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+:host p {
+  padding: 10px;
+  word-wrap: break-word;
+  overflow: hidden;
+  margin: 0;
+  font-size: 15px;
+  font-family: "FiraSans", sans-serif;
+  font-weight: 500;
+  line-height: auto;
+}

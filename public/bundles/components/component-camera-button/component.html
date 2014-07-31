@@ -1,0 +1,203 @@
+<polymer-element name="ceci-camera-button" attributes="textcolor buttoncolor buttonactivecolor label value imageheight imagewidth" extends="ceci-element"
+  label="Enable Camera" textcolor="#ffffff" buttoncolor="#4DB227" buttonactivecolor="#358915" imageheight="160" imagewidth="160">
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+
+    <div class="mode mode-disabled">
+      <div class="mode-content">
+        <img src="images/camera-asleep.png" />
+        <button id="enable-camera" on-click="{{enableCamera}}">Enable Camera</button>
+      </div>
+      <div class="shutter-bar">
+        <div class="shutter-button"></div>
+      </div>
+    </div>
+
+    <div class="mode mode-pending">
+      <div class="mode-content">
+        <img src="images/arrow-up.png" />
+        <p>Please allow your device to use your camera.</p>
+      </div>
+      <div class="shutter-bar">
+        <div class="shutter-button"></div>
+      </div>
+    </div>
+
+    <div class="mode mode-file">
+      <div class="mode-content">
+        <img src="images/folder-photo.png" />
+        <h2>Oops!</h2>
+        <p>This device doesn't have a camera but you can...</p>
+        <button on-click="{{pickFile}}">Choose an Image File</button>
+      </div>
+    </div>
+
+    <div class="mode mode-enabled">
+      <div class="mode-content">
+        <video id="videoinput"></video>
+      </div>
+      <div class="shutter-bar">
+        <div class="shutter-button" on-click="{{takePhoto}}"></div>
+      </div>
+    </div>
+
+    <canvas id="canvasinput"></canvas>
+
+    <input id="camerainput" type="file" accept="image/*">
+    <shadow></shadow>
+  </template>
+  <ceci-definition>
+    {
+      "tags": ["camera","photo","image"],
+      "thumbnail": "./thumbnail.png",
+      "name": "Camera",
+      "description": "Takes a picture.",
+      "broadcasts": {
+        "photo": {
+          "label": "Photo",
+          "description": "Broadcasts the photo image data.",
+          "default": true
+        }
+      },
+      "listeners": {}
+    }
+  </ceci-definition>
+  <script>
+    Polymer('ceci-camera-button', {
+      ready: function () {
+        this.super();
+        // do we have getMedia available?
+        navigator.getMedia = (navigator.getUserMedia ||
+          navigator.webkitGetUserMedia ||
+          navigator.mozGetUserMedia ||
+          navigator.msGetUserMedia);
+      },
+      attached : function(){
+        if (!navigator.getMedia) {
+          this.cameraMode("file");
+        } else {
+          this.cameraMode("disabled");
+        }
+        this.super();
+      },
+      cameraMode : function(mode) {
+        var modes = this.shadowRoot.querySelectorAll(".mode");
+        modes = Array.prototype.slice.call(modes);
+        var fn = function(e) {
+          e.style.display = "none";
+        };
+        modes.forEach(fn);
+        this.shadowRoot.querySelector(".mode-" + mode).style.display = "block";
+      },
+      enableCamera: function() {
+        if (navigator.getMedia) {
+
+          this.cameraMode("pending");
+
+          this.streaming = false;
+          var that = this;
+          var video = this.video = this.$.videoinput;
+          var cameraPurpose = {
+            video: true,
+            audio: false
+          };
+
+          var streamHandler = function(stream) {
+            that.videoStream = stream;
+            if (navigator.mozGetUserMedia) {
+              video.mozSrcObject = stream;
+            } else {
+              var vendorURL = window.URL || window.webkitURL;
+              video.src = vendorURL.createObjectURL(stream);
+            }
+            video.play();
+          };
+
+          var errorHandler = function(err) {
+            console.log("An error occured! " + err);
+            that.cameraMode("disabled");
+          };
+
+          navigator.getMedia(cameraPurpose, streamHandler, errorHandler);
+
+          video.addEventListener('canplay', function(ev) {
+
+            if (!that.streaming) {
+              that.cameraMode("enabled");
+              that.streaming = true;
+            }
+          }, false);
+        }
+        // end of ready() code
+      },
+
+      takePhoto : function(){
+        if ("mozActivity" in navigator) {
+          return this.ffosClick();
+        }
+
+        var that = this;
+
+        if (navigator.getMedia) {
+          var canvas = this.$.canvasinput;
+          var video = this.$.videoinput;
+          var width = parseInt(this.imagewidth,10);
+          var height = video.videoHeight / (video.videoWidth/width);
+          canvas.width = width;
+          canvas.height = height;
+          canvas.getContext('2d').drawImage(video, 0, 0, width, height);
+          var data = canvas.toDataURL('image/png');
+          console.log("broadcasting");
+          this.broadcast('photo', data);
+
+          // Stops the video stream and resets camera
+          video.src = "";
+          this.videoStream.stop();
+          this.cameraMode("disabled");
+        }
+      },
+      ffosClick: function() {
+        var activity = new MozActivity({
+          // Ask for the "pick" activity
+          name: "pick",
+
+          // Provide the data required by the filters of the activity
+          data: {
+            type: ["image/jpeg", "image/png"]
+          }
+        });
+
+        var that = this;
+
+        activity.onsuccess = function() {
+          var data =  window.URL.createObjectURL(this.result.blob);
+          console.log("A picture has been retrieved");
+          that.broadcast("photo", data);
+        };
+
+        activity.onerror = function() {
+          console.log(this.error);
+        };
+      },
+      pickFile : function(){
+        var that = this;
+        function selectImageFile() {
+          var reader = new FileReader();
+          var file = that.$.camerainput.files[0];
+
+          reader.onloadend = function() {
+            console.log("File", reader.result);
+            that.broadcast("photo", reader.result);
+          };
+
+          if (file) {
+            reader.readAsDataURL(file);
+          }
+        }
+
+        this.$.camerainput.addEventListener("change", selectImageFile, false);
+        this.$.camerainput.click();
+      }
+    });
+  </script>
+</polymer-element>

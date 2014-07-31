@@ -1,0 +1,186 @@
+:host {
+  display: block;
+  width: 100%;
+  position: relative;
+}
+
+:host .game-controller {
+  height: 120px;
+  border: 5px solid lightgrey;
+  background-color: lightgrey;
+  border-top-width: 15px;
+  border-radius: 5px;
+}
+
+:host .game-controller:after {
+  content: "";
+  display: block;
+  border-radius: 5px;
+  background-color: black;
+  height: 100%;
+}
+
+:host .d-pad-container {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  width: 33%;
+}
+
+:host .start-select-container {
+  position: absolute;
+  left: 33%;
+  top: 0px;
+  bottom: 0px;
+  width: 33%;
+}
+
+:host .a-b-buttons-container {
+  position: absolute;
+  right: 0;
+  top: 0px;
+  bottom: 0px;
+  width: 33%;
+}
+
+:host .d-pad {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  bottom: 20%;
+}
+
+:host .left-button {
+  position: absolute;
+  border-radius: 5px 0 0 5px;
+  border-style: solid;
+  border-color: lightgrey;
+  height: 20px;
+  width: 20px;
+  border-width: 5px;
+  border-right-width: 0;
+  left: 15px;
+  top: 20px;
+  cursor: pointer;
+}
+:host .up-button {
+  position: absolute;
+  border-style: solid;
+  border-radius: 5px 5px 0 0;
+  border-color: lightgrey;
+  height: 20px;
+  width: 20px;
+  border-width: 5px;
+  border-bottom-width: 0;
+  top: 0;
+  left: 35px;
+  cursor: pointer;
+}
+:host .down-button {
+  position: absolute;
+  border-radius: 0 0 5px 5px;
+  border-style: solid;
+  border-color: lightgrey;
+  height: 20px;
+  width: 20px;
+  border-width: 5px;
+  border-top-width: 0;
+  bottom: 0;
+  left: 35px;
+  cursor: pointer;
+}
+:host .right-button {
+  position: absolute;
+  border-radius: 0 5px 5px 0;
+  border-style: solid;
+  border-color: lightgrey;
+  height: 20px;
+  width: 20px;
+  border-width: 5px;
+  border-left-width: 0;
+  right: 17px;
+  top: 20px;
+  cursor: pointer;
+}
+
+:host .start-select {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: lightgrey;
+  border-radius: 5px;
+  height: 30%;
+  bottom: 20%;
+}
+
+:host .select-button {
+  background-color: black;
+  border-radius: 5px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 50%;
+  margin: 16% 5% 16% 10%;
+  cursor: pointer;
+}
+
+:host .start-button {
+  background-color: black;
+  border-radius: 5px;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  margin: 16% 10% 16% 5%;
+  cursor: pointer;
+}
+
+:host .a-b-buttons {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 30%;
+  bottom: 20%;
+}
+
+:host .a-button {
+  background-color: #D3D3D3;
+  border-radius: 5px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  margin: 0px 4%;
+  width: 40%;
+  cursor: pointer;
+}
+
+:host .b-button {
+  background-color: #D3D3D3;
+  border-radius: 5px;
+  position: absolute;
+  left: 43%;
+  top: 0px;
+  bottom: 0px;
+  margin: 0px 5%;
+  width: 40%;
+  cursor: pointer;
+}
+
+:host .a-button:after,
+:host .b-button:after {
+  content: "";
+  display: block;
+  border-radius: 50%;
+  background-color: red;
+  top: 10%;
+  bottom: 10%;
+  left: 10%;
+  right: 10%;
+  position: absolute;
+}
+

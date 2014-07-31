@@ -48,18 +48,13 @@
     })();
     </script>
 
-
     <% bundles.emit('designer-components.html').forEach(function(href) { %>
-    <link rel="import" href="/<%= href %>">
-    <% }); %>
+    <link rel="import" href="/<%= href %>"><% }); %>
 
     <% if (!!process.env.BUNDLE){ %>
-      <link rel="import" href="/bundles/components/mozilla-appmaker.html">
-    <% } else { %>
-      <% components.forEach(function(href) { %>
-      <link rel="import" href="<%= href %>">
-      <% }) %>
-    <% } %>
+      <link rel="import" href="/bundles/components/mozilla-appmaker<% if (!!process.env.BUNDLE_MINIFY) {%>-min<%}%>.html">
+    <% } else { %><% components.forEach(function(href) { %>
+    <link rel="import" href="<%= href %>"><% }) %><% } %>
 
     <script src="/vendor/qrcodejs/qrcode.js"></script>
     <% if (process.env.GA_ACCOUNT){ %>

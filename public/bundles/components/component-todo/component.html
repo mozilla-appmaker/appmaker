@@ -1,0 +1,158 @@
+<polymer-element name="ceci-todo-list" extends="ceci-element" attributes="collection" collection="">
+  <ceci-definition>
+    {
+      "name": "To-Do List",
+      "thumbnail": "./thumbnail.png",
+      "description": "A list of things to do",
+      "broadcasts": {
+        "itemcompleted": {
+          "label": "Item done",
+          "description": "Sends a message that an item in the list was completed."
+        },
+        "allitemscompleted": {
+          "label": "All items done",
+          "description": "Sends a message that the todo list was completed."
+        }
+      },
+      "listeners": {
+        "additem": {
+          "description": "Adds a todo list item.",
+          "label": "Add Item",
+          "default" : true
+        }
+      },
+      "attributes": {
+        "collection": {
+          "description": "",
+          "label": "Collection",
+          "editable": "collection"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div class="first-run-container">
+      <h3>Choose or Create a Collection</h3>
+      <p>This Brick will store your items in a Collection with this name.</p>
+      <input placeholder="Ex. 'todos'" value="todos" type="text" />
+      <button on-click="{{addNewCollection}}" >Done</button>
+    </div>
+    <div class="list-container hidden">
+      <template if="{{ items.length == 0 }}">
+      <p class="no-items">0 To-do Items</p>
+      </template>
+      <template repeat="{{item, itemindex in items}}">
+        <div class="item {{item.completed | applyClassName}}">
+          <a on-click="{{removeItem}}" data-item-index="{{itemindex}}" class="remove-item">Clear</a>
+          <label>
+            <input data-item-index="{{itemindex}}" on-change="{{onCheckboxChange}}" type="checkbox" checked="{{item.completed}}" />
+            {{item.description}}
+          </label>
+        </div>
+      </template>
+    </div>
+    <shadow></shadow>
+  </template>
+    <script>
+      Polymer("ceci-todo-list", {
+        ready: function() {
+          this.super();
+          this.collections = document.querySelector("ceci-collections");
+          this.items = [];
+          this.onItemChange = null;
+          this.completed = 0;
+        },
+        collectionReady: function() {
+          var self = this;
+          var collection = this.collections.getCollection(this.collection);
+          var completedField = collection.getField("completed");
+          var descriptionField = collection.getField("description");
+          if (!completedField) {
+            collection.addField("completed", "checkbox");
+          }
+          if (!descriptionField) {
+            collection.addField("description", "text");
+          }
+          this.shadowRoot.querySelector(".list-container").classList.remove("hidden");
+          this.shadowRoot.querySelector(".first-run-container").classList.add("hidden");
+          this.items = [];
+          this.completed = 0;
+          for (var i = 0; i < collection.data.length; i++) {
+            this.items.push(collection.data[i]);
+            if (collection.data[i].completed) {
+              this.completed++;
+            }
+          }
+          this.onItemChange = function(e) {
+            var detail = e.detail;
+            if (detail.removed) {
+              self.items.splice(detail.index, 1);
+            }
+            if (detail.added) {
+              self.items.splice(detail.index, 0, detail.added);
+            }
+          };
+          collection.addEventListener("itemchange", this.onItemChange);
+          this.lastCollection = this.collection;
+        },
+        addNewCollection: function() {
+          this.collection = this.shadowRoot.querySelector(".first-run-container input").value;
+        },
+        additem: function(item) {
+          if(item){
+            var collection = this.collections.getCollection(this.collection);
+            collection.addItem({
+              description: item
+            });
+          }
+        },
+        collectionChanged: function() {
+          // Clean up any events on the old collection if we change collections.
+          if (this.lastCollection && this.onItemChange) {
+            var lastCollection = this.collections.getCollection(this.lastCollection);
+            lastCollection.removeEventListener("itemchange", this.onItemChange);
+            this.onItemChange = null;
+          }
+          this.shadowRoot.querySelector(".first-run-container input").value = this.collection;
+          if (this.collection === "") {
+            return;
+          }
+          var collection = this.collections.getCollection(this.collection);
+          if (!collection) {
+            this.collections.addCollection(this.collection);
+          }
+          this.async(this.collectionReady);
+        },
+        onCheckboxChange: function(event, detail, sender) {
+          var collection = this.collections.getCollection(this.collection);
+          var index = parseInt(sender.getAttribute('data-item-index'));
+          var dataItem = collection.data[index];
+          dataItem.completed = sender.checked;
+          collection.updateItem(index, dataItem);
+          if (sender.checked) {
+            this.completed++;
+            this.broadcast("itemcompleted", dataItem.description);
+            if (this.completed >= this.items.length) {
+              this.broadcast("allitemscompleted", this.completed);
+            }
+          } else {
+            this.completed--;
+          }
+        },
+        removeItem: function(event, detail, sender) {
+          var collection = this.collections.getCollection(this.collection);
+          var index = parseInt(sender.getAttribute('data-item-index'));
+          var dataItem = collection.data[index];
+          collection.removeItem(index);
+          this.completed--;
+        },
+        applyClassName: function(value) {
+          if (value) {
+            return "completed";
+          }
+          return;
+        }
+      });
+    </script>
+</polymer-element>

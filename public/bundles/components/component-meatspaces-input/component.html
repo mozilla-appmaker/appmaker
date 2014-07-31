@@ -1,0 +1,130 @@
+<polymer-element name="ceci-meatspaces-input" attributes="image text server mode" extends="ceci-element">
+  <ceci-definition>
+    {
+      "tags": ["meatspaces", "input", "chat"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Sends your picture and message to the Meatspaces chat room.",
+      "name": "Meatspaces Chat Input",
+      "listeners": {
+        "send": {
+          "label": "Send",
+          "description": "Send message to chat server",
+          "default": true
+        }
+      },
+      "broadcasts": {
+        "sent": {
+          "label": "Message Sent",
+          "description": "Message was sent to chat server"
+        }
+      },
+      "attributes": {
+        "image": {
+          "label": "Image",
+          "description": "Data-URL for image to be used",
+          "listener": true
+        },
+        "server": {
+          "label": "Server",
+          "description": "URL for Appmaker Meatspaces Chat Server",
+          "editable": "text"
+        },
+        "mode": {
+          "label": "Message Mode",
+          "description": "What kind of messages will be sent.",
+          "editable": "select",
+          "options": ["both", "text only", "image only"]
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <style>
+      :host {
+        display: block;
+        width: 100%;
+        min-height: 160px;
+        position: relative;
+      }
+
+      :host img {
+        width: 100px;
+        height: 100px;
+        float: left;
+        margin-left: 5px;
+        background-color: rgba(0, 0, 0, 0.2);
+        display: block;
+      }
+
+      :host #container {
+        padding: 5px 0;
+      }
+
+      :host #textarea-container {
+        position: absolute;
+        left: 110px;
+        right: 10px;
+        top: 5px;
+        bottom: 10px;
+      }
+
+      :host textarea {
+        width: 100%;
+        height: 100%;
+        resize: none;
+      }
+
+      :host #container[data-mode="text only"] img {
+        display: none;
+      }
+
+      :host #container[data-mode="text only"] #textarea-container {
+        left: 5px;
+      }
+
+      :host #container[data-mode="image only"] img {
+        float: none;
+        margin: 0 auto;
+        width: 150px;
+        height: 150px;
+      }
+
+      :host #container[data-mode="image only"] #textarea-container {
+        display: none;
+      }
+    </style>
+    <div id="container" data-mode="{{mode}}">
+      <img src="{{image}}">
+      <div id="textarea-container">
+        <textarea placeholder="Type here">{{text}}</textarea>
+      </div>
+    </div>
+    <shadow></shadow>
+  </template>
+  <script>
+    Polymer('ceci-meatspaces-input', {
+      text: '',
+      image: 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==',
+      server: 'http://appmaker-meatspaces-proxy.herokuapp.com/',
+      mode: 'both',
+      ready: function () {
+        this.super();
+      },
+      send: function () {
+        var payload = {
+          image: this.image,
+          text: this.text
+        };
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', this.server + '/add/chat', true);
+        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        xhr.onload = function (e) {
+          console.log(xhr.response);
+        };
+        xhr.send(JSON.stringify(payload));
+        this.text = '';
+        this.image = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+      }
+    });
+  </script>
+</polymer-element>

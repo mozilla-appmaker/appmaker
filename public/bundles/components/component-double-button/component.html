@@ -1,0 +1,95 @@
+<polymer-element name="ceci-double-button" attributes="textcolor rightbuttoncolor leftbuttoncolor leftlabel rightlabel value" value="Click" extends="ceci-element"
+  leftlabel="OK"
+  rightlabel="Cancel"
+  textcolor="#ffffff"
+  leftbuttoncolor="#4DB227"
+  rightbuttoncolor="#bd400a">
+  <ceci-definition>
+    {
+      "tags": ["button", "click", "tap"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Responds to your clicks and taps.",
+      "name": "Double Button",
+      "broadcasts": {
+        "clickleft": {
+          "label": "Left Button",
+          "description": "Occurs when left button is clicked.",
+          "default": "blue"
+        },
+        "clickright": {
+          "label": "Right Button",
+          "description": "Occurs when right button is clicked.",
+          "default": "blue-two"
+        }
+      },
+      "listeners": {},
+      "attributes": {
+        "leftlabel": {
+          "label": "Left Button Label",
+          "description": "Text shown on the left button.",
+          "editable": "text"
+        },
+        "leftbuttoncolor": {
+          "label": "Left Button Color",
+          "description": "Background color of the left button.",
+          "editable": "color"
+        },
+        "rightlabel": {
+          "label": "Right Button Label",
+          "description": "Text shown on the right button.",
+          "editable": "text"
+        },
+        "rightbuttoncolor": {
+          "label": "Right Button Color",
+          "description": "Background color of the right button.",
+          "editable": "color"
+        },
+        "textcolor": {
+          "label": "Text Color",
+          "description": "Color of the text on the button's label.",
+          "editable": "color"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div class="buttons-wrapper">
+      <div class="button-wrapper" on-ceci-pressdown="{{clickleft}}">
+        <div class="button" id="leftbutton" >{{leftlabel}}</div>
+        <div class="overlay active-overlay"></div>
+        <div class="overlay hover-overlay"></div>
+      </div>
+      <div class="button-wrapper" on-ceci-pressdown="{{clickright}}">
+        <div class="button" id="rightbutton" >{{rightlabel}}</div>
+        <div class="overlay active-overlay"></div>
+        <div class="overlay hover-overlay"></div>
+      </div>
+    </div>
+    <shadow></shadow></template>
+  <script>
+    Polymer('ceci-double-button', {
+      ready: function () {
+        this.super();
+        var that = this;
+      },
+      clickleft: function () {
+        this.broadcast('clickleft', this.getAttribute('value'));
+      },
+      clickright: function () {
+        this.broadcast('clickright', this.getAttribute('value'));
+      },
+      textcolorChanged: function (oldValue, newValue) {
+        this.$.leftbutton.style.color = newValue;
+        this.$.rightbutton.style.color = newValue;
+      },
+      leftbuttoncolorChanged: function (oldValue, newValue) {
+        this.$.leftbutton.style.backgroundColor = newValue;
+      },
+      rightbuttoncolorChanged: function (oldValue, newValue) {
+        this.$.rightbutton.style.backgroundColor = newValue;
+      }
+
+    });
+  </script>
+</polymer-element>

@@ -1,0 +1,136 @@
+<polymer-element name="ceci-chat-window" attributes="username room" extends="ceci-element" username="Anonymous" room="Mozilla">
+  <ceci-definition>
+    {
+      "tags": ["chat", "social"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Connects you to a simple chat room.",
+      "name": "Chat Room",
+      "broadcasts": {
+        "messageposted": {
+          "label": "Message posted",
+          "description": "Occurs when a message is posted in the chatroom.",
+          "default": "green"
+        }
+      },
+      "listeners": {
+        "clear": {
+          "description": "Clear all messages from the chat room",
+          "label": "Clear"
+        },
+        "sendMessage": {
+          "default": true,
+          "description": "Send a message to the chat room",
+          "label": "Send message"
+        }
+      },
+      "attributes": {
+        "username": {
+          "description": "A username to send messages as",
+          "editable": "text",
+          "label": "Username",
+          "listener": true
+        },
+        "room": {
+          "description": "A chat room to send messages to",
+          "editable": "text",
+          "label": "Room",
+          "listener": true
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <header>
+      <h1><span id="chatRoom"></span><span class="room-name-wrapper"><span id="roomName"></span> <span class="room-name">{{room}}</span></span></h1>
+    </header>
+    <ul id="messages"></ul>
+    <shadow></shadow>
+  </template>
+  <script>
+    var defaultAppID = 'appmaker';
+
+    Polymer("ceci-chat-window", {
+      "chatRoom": "Chat Room",
+      "roomName": "Room:",
+      ready: function() {
+        this.super();
+
+        this.$.chatRoom.textContent = this.gettext("ceci-chat-window/chatRoom") || this.chatRoom;
+        this.$.roomName.textContent = this.gettext("ceci-chat-window/roomName") || this.roomName;
+
+        if (!window.Firebase) {
+          var script = document.createElement("script");
+          script.onload = this._connect.bind(this);
+          script.src = "https://cdn.firebase.com/v0/firebase.js";
+          document.head.appendChild(script);
+          return;
+        }
+
+        this._db = null;
+        this._connect();
+      },
+      clear: function () {
+        this._clear();
+      },
+      usernameChanged: function(oldValue, newValue) {
+        if (oldValue && oldValue != 'null'){
+          this._sendMessage(
+            oldValue + " " +
+            this.gettext("ceci-chat-window/is now known as") + " " +
+            newValue
+          );
+        }
+      },
+      roomChanged: function(oldValue, newValue) {
+        this._connect();
+      },
+      sendMessage: function(event) {
+        this._sendMessage(this.username + ": " + event);
+      },
+      _clear: function() {
+        if (!window.Firebase) {
+          return;
+        }
+
+        this._db.remove();
+      },
+      _connect: function() {
+        if (!window.Firebase) {
+          return;
+        }
+        if(this.__prevQuery) {
+          this.__prevQuery.off("child_added");
+          this.__prevQuery.off("child_removed");
+        }
+
+        this._db = new Firebase("https://appmaker.firebaseio.com/" + defaultAppID + "/chat-window/" + this.room);
+
+        var query = this._db.limit(20);
+        query.on("child_added", function(snapshot) {
+          var li = document.createElement("li");
+          li.textContent = snapshot.val().message;
+          li.setAttribute("id", "chat-message-" + snapshot.name().substr(1));
+          this.$.messages.appendChild(li);
+          this.broadcast('messageposted', snapshot.val().message);
+          this.$.messages.scrollTop = this.$.messages.scrollHeight;
+        }.bind(this));
+        query.on("child_removed", function(snapshot) {
+          var messageElement = document.getElementById("chat-message-" + snapshot.name().substr(1));
+          if (messageElement) {
+            messageElement.remove();
+            this.$.messages.scrollTop = this.$.messages.scrollHeight;
+          }
+        }.bind(this));
+        this.__prevQuery = query;
+      },
+      _sendMessage: function(msg) {
+        if (!window.Firebase) {
+          return;
+        }
+
+        this._db.push({message: msg});
+      }
+    });
+  </script>
+</polymer-element>

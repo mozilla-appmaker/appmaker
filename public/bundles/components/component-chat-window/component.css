@@ -1,0 +1,49 @@
+:host {
+  display: block;
+  width: 100%;
+  position: relative;
+}
+
+:host header {
+  background: #333;
+  padding: 1.5rem;
+  color: white;
+}
+
+:host header h1 {
+  text-align: left;
+  font-size: 1.6rem;
+  color: #DDD;
+  font-weight: 400;
+}
+
+:host header .room-name-wrapper {
+  float: right;
+  color: #999;
+  font-size: 1.4rem;
+}
+
+:host ul {
+  margin: 0;
+  padding: 1rem 1.5rem;
+  list-style-type: none;
+  border-top: 1px solid #ccc;
+  height: 200px;
+  top: 7.5rem;
+  bottom: 0;
+  left: 1rem;
+  right: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+:host li {
+  font-size: 1.2rem;
+  font-family: "FiraSans", sans-serif;
+  padding: 0.1rem 0rem;
+  color: #777;
+}
+
+:host li:last-child {
+  border: none;
+}
