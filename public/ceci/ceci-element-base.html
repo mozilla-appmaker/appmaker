@@ -272,7 +272,7 @@
           var mapEntry = customListenerMap[listener];
 
           // Check if we've already added that listener
-          if(that.eventListeners.indexOf(mapEntry) < 0 && mapEntry) {
+          if(mapEntry && that.eventListeners.indexOf(mapEntry) < 0) {
             that.eventListeners.push(mapEntry);
             // Fire an event directly at the element with the on-ceci-* attribute
             el.addEventListener(mapEntry[that.touchEnabled ? 'mobile' : 'desktop'], function(e){
