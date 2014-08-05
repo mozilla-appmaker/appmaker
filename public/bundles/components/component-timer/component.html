@@ -45,7 +45,7 @@ background="#222">
           "description": "Play sound when timer finishes.",
           "editable": "boolean"
         },
-        "playsound": {
+        "background": {
           "label": "Background Color",
           "description": "Background color of the timer.",
           "editable": "color"
@@ -56,7 +56,7 @@ background="#222">
 
   <template>
     <link rel="stylesheet" href="component.css"></link>
-    <div class="timer" on-ceci-pressdown="{{ timerPressed }}">
+    <div class="timer" on-ceci-pressdown="{{ timerPressed }}" style="background: {{ background }}">
       {{_timeLeftString}}
       <div class="progress-wrapper">
         <div class="progress" style="width: {{ progress }}%"></div>
