@@ -2,32 +2,38 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
-  function washString (str) {
-    var washer = document.createElement('div');
-    washer.textContent = str;
-    return washer.innerHTML;
-  }
+define(['jquery', 'inflector', 'l10n', 'colorpicker.core'], function ($, Inflector, L10n) {
 
   var urlComponent = window.CustomElements;
+
+  /**
+   * We build a label/input combination for quite a number of our
+   * editables, so this function captures that build step.
+   */
+  var createLabeledTextfield = function(title, value) {
+    var e = $('<div><label></label><input type="text"></input></div>');
+    e.find("label").text(title);
+    e.find("input").val(value);
+    return e;
+  };
+
   var editableTypeHandlers = {
+
     'multiple': function (element, attributeName, title, value, definition) {
       var options = JSON.parse(value);
-      var e = $('<div>' +
-        '<label>'+ title + '</label>' +
-        '<div class="option-list"></div>' +
-        '</div>'
-      );
+      var e = $('<div><label></label><div class="option-list"></div></div>');
+      e.find('label').text(title);
 
-      for (var key in options) {
-        e.find('.option-list').append('<input type="text" value="' + washString(options[key]) +'" />');
-      }
+      $(options).each(function(key, value) {
+        var input = $('<input type="text">').val(value);
+        e.find('.option-list').append(input);
+      });
 
-      var add = $('<a class="add" href="#">Add Another</a>');
+      var add = $('<span class="add">Add Another</span>');
       e.append(add);
 
       e.on('click','.add', function(){
-        e.find('.option-list').append('<input type="text" value="" />');
+        e.find('.option-list').append('<input type="text">');
       });
 
       e.on('keyup', function(evt) {
@@ -37,66 +43,50 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
         });
         element.setAttribute(attributeName, JSON.stringify(options));
       });
+
       return e[0];
     },
+
     'select': function (element, attributeName, title, value, definition) {
-      var e = $('<div><label>' +
-        title +
-        '</label><select type="text" value="' +
-        value +
-        '"> '+
-        '</select></div>'
-      );
-      $(definition.options).each(function(i,k){
-        var option = document.createElement('option');
-        $(option).attr('value', k);
-        $(option).text(k);
+      var e = $('<div><label></label><select></select></div>');
+      e.find("label").text(title);
+
+      $(definition.options).each(function(optionidx, label){
+        var option = $("<option></option").text(label).val(optionidx);
         e.find('select').append(option);
       });
-      e.find('select').val(value);
-      e.on('change', function(evt) {
-        element.setAttribute(attributeName, evt.target.value);
-      });
+
       return e[0];
     },
+
     'text': function (element, attributeName, title, value, definition) {
-      var e = $('<div><label>' +
-        title +
-        '</label><input type="text" value="' +
-        washString(value) +
-        '"></input></div>'
-      );
+      var e = createLabeledTextfield(title, value);
+
       e.on('keyup', function(evt) {
         element.setAttribute(attributeName, evt.target.value);
       });
       return e[0];
     },
+
+    // FIXME: TODO: what makes this a collection? The code didn't make use of
+    //              the "definition" variable at all. Do we still use this?
     'collection': function (element, attributeName, title, value, definition) {
-      var e = $('<div><label>' +
-        title +
-        '</label><input type="text" value="' +
-        washString(value) +
-        '"></input></div>'
-      );
+      var e = createLabeledTextfield(title, value);
+
       e.on('change', function(evt) {
         element.setAttribute(attributeName, evt.target.value);
       });
       return e[0];
     },
+
     'number': function (element, attributeName, title, value, definition) {
       definition.step = definition.step || 1;
-      var e = $(
-        '<div><label>' +
-        title +
-        '</label><input type="number" min="' +
-        definition.min +
-        '" max="' +
-        definition.max +
-        '" step="' +
-        definition.step +
-        '" value="' +
-        value + '" /></div>'
-      );
+      var e = createLabeledTextfield(title, value);
+      e.find("input").attr('type', 'number')
+                     .attr('min', definition.min)
+                     .attr('max', definition.max)
+                     .attr('step', definition.step);
+
       e.on('change', function(evt) {
         var val = parseFloat(evt.target.value);
         if(val > definition.max) {
@@ -110,18 +100,16 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       });
       return e[0];
     },
+
     'range': function (element, attributeName, title, value, definition) {
-      var e = $(
-        '<div class="range"><label>' +
-        title +
-        '</label><input type="range" min="' +
-        definition.min +
-        '" max="' +
-        definition.max +
-        '" value="' +
-        value + '" /><span class="value">'+value+'</div></div>'
-      );
-      var that = e;
+      var e = $('<div class="range"><label></label><input type="range"><span class="value"></span></div>');
+
+      e.find("label").text(title);
+      e.find("input").val(value)
+                     .attr('min', definition.min)
+                     .attr('max', definition.max);
+      e.find("span").text(value);
+
       e.on('input', function(evt) {
         element.setAttribute(attributeName, evt.target.value);
         $(this).find(".value").text(evt.target.value);
@@ -132,28 +120,34 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       });
       return e[0];
     },
+
     'boolean': function (element, attributeName, title, value, definition) {
-      var e = $(
-        '<div><label>' +
-        '<input type="checkbox" ' +
-        (value === true || value === 'true' ? ' checked="true" ' : '') + '" value="' +
-        value + '" />' + title + ' </div>'
-      );
+      var e = $('<div><input type="checkbox"><label></label></div>');
+
+      e.find("label").text(title);
+
+      if (value === true || value === 'true') {
+        e.find("input").attr('checked','checked');
+      }
+
       e.on('change', function(evt) {
-        evt.target.value = evt.target.value == 'true' ? 'false' : 'true';
-        element.setAttribute(attributeName, evt.target.value == 'true' ? true : false);
+        var newCheckState = evt.target.value == 'true' ? 'false' : 'true';
+        element.setAttribute(attributeName, newCheckState);
       });
       return e[0];
     },
+
     'color': function (element, attributeName, title, value, definition) {
-      var e = $(
-        '<div><label>' + title + '</label>' +
-        '<div class="colorpicker"><div class="swatch" style="background: '+washString(value)+'"></div><input type="text" value="' + washString(value) + '"/></div>' +
-        '</div>'
-      );
+      var e = $('<div><label></label><div class="colorpicker"><div class="swatch"></div><input type="text"></div></div>');
+
+      e.find('label').text(title);
 
       var input = e.find('input');
       var swatch = e.find('.swatch');
+
+      input.val(value);
+      swatch.css('background', value);
+
       var oldColor;
 
       input.colorpicker({
@@ -178,7 +172,7 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       });
 
       e.on('change', function (evt) {
-        element.setAttribute(attributeName, washString(evt.target.value));
+        element.setAttribute(attributeName, evt.target.value);
       });
 
       return e[0];
@@ -190,34 +184,28 @@ define(['inflector', 'l10n', 'colorpicker.core'], function (Inflector, L10n) {
       // Use element[attributeName] instead of element.getAttribute(attributeName) because Polymer's
       // DOM might not reflect most recent attribute changes yet.
       var value = element[attributeName];
-
-      value = value !== null ? value : '';
-
+      value = (value !== null && value !== undefined) ? value : '';
       var title = L10n.get(element.localName + '/attributes/' + attributeName + '/label')
-        || definition.label
-        || Inflector.titleize(Inflector.underscore(attributeName));
-
+                  || definition.label
+                  || Inflector.titleize(Inflector.underscore(attributeName));
       var handler = editableTypeHandlers[definition.editable] || editableTypeHandlers.text;
       return handler(element, attributeName, title, value, definition);
     },
     removeAttributes: function () {
-      $('.editable-attributes').html('');
-      $('.editable-header .name').html('');
+      $('.editable-attributes').empty();
+      $('.editable-header .name').empty();
     },
     displayAttributes: function (element) {
-      $('.editable-header > .name').html(element.ceci.name);
+      $('.editable-header > .name').text(element.ceci.name);
 
       var attributeList = $('.editable-attributes');
-
-      attributeList.html('');
+      attributeList.empty();
 
       var attributes = element.ceci.attributes;
 
       Object.keys(attributes).forEach(function (attributeName) {
         var attributeDefinition = attributes[attributeName];
-
         if (!attributeDefinition.editable) return;
-
         var uiElement = editable.getAttributeUIElement(element, attributeName, attributeDefinition);
         attributeList.append(uiElement);
       });
