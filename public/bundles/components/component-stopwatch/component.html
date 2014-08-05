@@ -1,0 +1,135 @@
+<polymer-element name="ceci-stopwatch" extends="ceci-element" attributes="background" background="#222">
+  <ceci-definition>
+    {
+      "name": "Stopwatch",
+      "thumbnail": "./thumbnail.png",
+      "description": "Keeps track of time and broadcasts the time when it's stopped.",
+      "tags": ["timer", "time"],
+      "broadcasts": {
+        "stoptime": {
+          "label": "Time when Stopped",
+          "description": "Broadcasts the time when the stopwatch is stopped."
+        },
+        "laptime": {
+          "label": "Lap Time",
+          "description": "Send out the time when you count a Lap."
+        }
+      },
+      "listeners": {
+        "start": {
+          "label": "Start",
+          "description": "Start the stopwatch."
+        },
+        "pause": {
+          "label": "Stop",
+          "description": "Stop the stopwatch."
+        },
+        "reset": {
+          "label": "Reset",
+          "description": "Resets the timer."
+        },
+        "countlap": {
+          "label": "Count Lap",
+          "description": "Broadcasts the current lap time."
+        }
+      },
+      "attributes": {
+        "background": {
+          "label": "Background Color",
+          "description": "Background color of the stopwatch.",
+          "editable": "color"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div class="timer" on-ceci-pressdown="{{ pressTimer }}" style="background: {{ background }};">
+      <span id="timerTime">{{ _elapsedTimeString }}</span>
+    </div>
+    <shadow></shadow>
+  </template>
+
+  <script>
+    function timeFromSeconds (milliseconds) {
+      milliseconds = parseInt(milliseconds, 10);
+
+      var hours = Math.floor(milliseconds / 3600000);
+      var minutes = Math.floor((milliseconds - (hours * 3600000)) / 60000);
+      var seconds = Math.floor((milliseconds - (hours * 3600000) - (minutes * 60000)) / 1000);
+
+      milliseconds = milliseconds - (seconds * 1000) - (hours * 3600000) - (minutes * 60000);
+
+      if (hours < 10) hours = "0" + hours;
+      if (minutes < 10) minutes = "0" + minutes;
+      if (seconds < 10) seconds = "0" + seconds;
+      if (milliseconds < 10) milliseconds = "00" + milliseconds;
+      else if (milliseconds < 100) milliseconds = "0" + milliseconds;
+
+      //Trimming milliseconds to two numbers
+      milliseconds = milliseconds + "";
+      milliseconds = milliseconds.substr(0,1);
+
+      return ((parseInt(hours,10) > 0) ? hours + ":" : "") + minutes + ':' + seconds + '.' + milliseconds;
+
+    }
+
+    Polymer("ceci-stopwatch", {
+      _elapsedTime: 0,
+      _lastElapsedTime: 0,
+      running : false,
+      timestamp : 0,
+      lapTime : 0,
+      ready: function() {
+        this.super();
+        this._elapsedTimeString = timeFromSeconds(this._elapsedTime);
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                                      window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+      },
+      start: function() {
+        if(!this.running) {
+          this.timestamp = Date.now();
+          this.tick();
+          this.running = true;
+        }
+      },
+      countlap : function(){
+        this.broadcast("laptime",this.lapTime);
+        this.lapTime = 0;
+      },
+      pressTimer : function(){
+        if(this.running) {
+          this.pause();
+        } else {
+          this.start();
+        }
+      },
+      pause: function () {
+        if(this.running) {
+          this.running = false;
+        }
+        this.lapTime = 0;
+        this.broadcast("stoptime",this._elapsedTime);
+      },
+      reset: function () {
+        this.running = false;
+        this._elapsedTime = 0;
+        this._elapsedTimeString = timeFromSeconds(this._elapsedTime);
+        this.lapTime = 0;
+      },
+      tick : function(){
+        var that = this;
+        requestAnimationFrame(function(){
+          if(that.running == true) {
+            var timepassed = -1 * ( that.timestamp - Date.now());
+            that.lapTime = that.lapTime + timepassed;
+            that._elapsedTime = that._elapsedTime + timepassed;
+            that._elapsedTimeString = timeFromSeconds(that._elapsedTime);
+            that.timestamp = Date.now();
+            that.tick();
+          }
+        });
+      }
+    });
+  </script>
+</polymer-element>

@@ -42,7 +42,8 @@ define(
           "ceci-paypal",
           "ceci-todo-list",
           "ceci-text-input",
-          "ceci-timer"
+          "ceci-timer",
+          "ceci-stopwatch"
         ]
       },
       "connection": {
