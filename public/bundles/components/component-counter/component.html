@@ -1,4 +1,10 @@
-<polymer-element name="ceci-counter" extends="ceci-element" attributes="unit increment value">
+<polymer-element name="ceci-counter" extends="ceci-element" attributes="textcolor backgroundcolor fontsize textalign unit increment value startingvalue"
+startinvalue="0"
+increment="1"
+textcolor="#000000"
+backgroundcolor="#FFFFFF"
+textalign="Center"
+fontsize="16">
   <ceci-definition>
     {
       "name": "Counter",
@@ -23,6 +29,14 @@
         "resetCount": {
           "description": "Reset the total to 0.",
           "label": "Reset Count"
+        },
+        "setValue": {
+          "description": "Set the counter value to a specific number.",
+          "label": "Set Value"
+        },
+        "setIncrement": {
+          "description": "Set the counter increment to a specific number.",
+          "label": "Set Increment"
         }
       },
       "attributes": {
@@ -36,13 +50,42 @@
           "label": "Increment By",
           "editable": "number",
           "min" : 1
+        },
+        "startingvalue": {
+          "description": "The starting value of the counter.",
+          "label": "Starting Value",
+          "editable": "number",
+          "min" : 1
+        },
+        "textalign": {
+          "label": "Text Alignment",
+          "description": "Text Alignment",
+          "editable": "select",
+          "options": ["Left","Center","Right"]
+        },
+        "fontsize": {
+          "label": "Font Size",
+          "description": "Font Size",
+          "editable": "range",
+          "min" : "4",
+          "max" : "50"
+        },
+        "backgroundcolor": {
+          "label": "Background Color",
+          "description": "Background Color",
+          "editable": "color"
+        },
+        "textcolor": {
+          "label": "Text Color",
+          "description": "Text Color",
+          "editable": "color"
         }
       }
     }
   </ceci-definition>
   <template>
     <link rel="stylesheet" href="component.css">
-    <div class="counter">
+    <div class="counter" on-ceci-pressdown="{{ countUp }}" style="background: {{backgroundcolor}}; color: {{textcolor}}; text-align: {{textalign}}; font-size: {{fontsize}}px;">
       <div class="count-wrapper">
         <span class="count">{{value}}</span>
         <span class="count-label">{{displayUnit}}</span>
@@ -55,6 +98,7 @@
       Polymer("ceci-counter", {
         ready: function() {
           this.increment = Number(this.increment) || 1;
+          this.startingvalue = Number(this.startingvalue) || 0;
           this.value = Number(this.value) || 0;
           this.super();
           this.displayUnit = this.unit;
@@ -65,6 +109,10 @@
         unit: 'Sprocket',
         incrementChanged: function(oldValue, newValue) {
           this.increment = Number(this.increment) || 0;
+          console.log("new increment " + this.increment);
+        },
+        startingvalueChanged : function(){
+          this.value = this.startingvalue;
         },
         updateUnit : function(){
           if (this.unit) {
@@ -81,6 +129,8 @@
               }
               this.displayUnit = " " + unit + pluralChar;
             }
+          } else {
+            this.displayUnit = "";
           }
         },
         unitChanged: function() {
@@ -89,6 +139,12 @@
         valueChanged: function() {
           this.broadcast("currentCount", this.value);
           this.updateUnit();
+        },
+        setIncrement : function(value){
+          this.increment = value;
+        },
+        setValue : function(value){
+          this.value = value;
         },
         countUp: function() {
           this.value = Number(this.value) + Number(this.increment, 10);
