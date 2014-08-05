@@ -125,6 +125,7 @@
     }
 
     Polymer('ceci-element-base', {
+      eventListeners : [],
       ready: function () {
         if (this.ceci) return;
 
@@ -270,7 +271,9 @@
           // If there is a valid map entry, grab it
           var mapEntry = customListenerMap[listener];
 
-          if (mapEntry) {
+          // Check if we've already added that listener
+          if(mapEntry && that.eventListeners.indexOf(mapEntry) < 0) {
+            that.eventListeners.push(mapEntry);
             // Fire an event directly at the element with the on-ceci-* attribute
             el.addEventListener(mapEntry[that.touchEnabled ? 'mobile' : 'desktop'], function(e){
               // Emit an event without the "on-" prefix, to let Polymer's template syntax sugar do the rest
