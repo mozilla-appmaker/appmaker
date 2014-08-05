@@ -127,6 +127,7 @@
     Polymer('ceci-element-base', {
       eventListeners : [],
       ready: function () {
+        this.eventListeners = [];
         if (this.ceci) return;
 
         var that = this;
