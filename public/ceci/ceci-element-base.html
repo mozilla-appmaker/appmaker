@@ -175,7 +175,8 @@
         console.error("localize() has not yet been defined by ready().");
       },
       stringsUpdated: function(L10n) {
-        this.localize();        
+        this.localize();
+        this.fire("LocaleStringsUpdated");
       },
       ready: function () {
         this.sounds = {};
@@ -256,6 +257,11 @@
         }
       },
       applyDefaults: function () {
+        if (!this._defaultListeners && !this._defaultBroadcasts) {
+          // component is not ready yet. Schedule a recall based on locale strings being done
+          return this.addEventListener("LocaleStringsUpdated", this.applyDefaults);
+        }
+
         // This code should never be moved to "attached" or be applied automatically when
         // the element is added to the page. It must be run explicitly by an external function,
         // since it's hard to detect whether or not this element is really "new" (e.g. someone
