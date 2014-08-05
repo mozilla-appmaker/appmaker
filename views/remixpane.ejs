@@ -129,34 +129,32 @@
       //Add close handlers to the popups
       var popups = document.querySelectorAll(".pagepop-inner");
 
-      for(var i = 0; i < popups.length; i++){
-        var p = popups[i];
-        var closeme = p.querySelector(".close-panel");
+      var i, p, closeme;
+
+      for(i = 0; i < popups.length; i++){
+        p = popups[i];
+        closeme = p.querySelector(".close-panel");
         closeme.addEventListener("click",hidePopup);
       }
 
       var remixNowButton = document.querySelector("#remix-app");
-      if ('ontouchstart' in window) {
+      if (window.ontouchstart) {
         remixNowButton.addEventListener("click",function(){
           showPopup("remix-app");
-        },false);
+        });
       } else {
         remixNowButton.addEventListener("click",function(){
           window.open('<%= process.env.ASSET_HOST %>/remix?app=<%- remixUrl %>');
-        },false);
+        });
       }
 
       var installButton = document.querySelector("#install-app");
 
       var openRemixTab = document.querySelector('.open-remix-panel');
-      openRemixTab.addEventListener("click",function(){
-        openRemixPanel();
-      });
+      openRemixTab.addEventListener("click",openRemixPanel,false);
 
       var closeRemixTab = document.querySelector('.close-remix-panel');
-      closeRemixTab.addEventListener("click",function(){
-        closeRemixPanel();
-      },false);
+      closeRemixTab.addEventListener("click",closeRemixPanel,false);
 
       new QRCode(document.querySelector("#qrcode"), "<%- remixUrl %>");
 
@@ -165,14 +163,14 @@
       var shareEmailInput = document.querySelector('#share-email');
       shareEmailButton.addEventListener("click",function(e){
         sendEmail("share-app",shareEmailInput.value);
-      },false);
+      });
 
       // Remix via Email
       var remixEmailButton = document.querySelector('#email-remix-button');
       var remixEmailInput = document.querySelector('#remix-email');
       remixEmailButton.addEventListener("click",function(e){
         sendEmail("remix-app",remixEmailInput.value);
-      },false);
+      });
 
       if (navigator.mozApps) {
         var checkIfInstalled = navigator.mozApps.getSelf();
@@ -198,7 +196,7 @@
       } else {
         installButton.addEventListener('click', function (e) {
           showPopup("install-app");
-        }, false);
+        });
       }
 
     function closeRemixPanel (e) {
