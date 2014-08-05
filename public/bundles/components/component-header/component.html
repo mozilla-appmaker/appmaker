@@ -1,4 +1,7 @@
-<polymer-element name="ceci-header" attributes="header" extends="ceci-element" header="Header">
+<polymer-element name="ceci-header" attributes="header textalign backgroundcolor" extends="ceci-element"
+backgroundcolor="#212429"
+header="Header"
+textalign="center">
   <ceci-definition>
     {
       "tags": ["starter", "layout", "navigation"],
@@ -9,22 +12,34 @@
       "listeners": {
         "navigateHere": {
           "description": "navigateHere",
-          "label": "Navigate Here"
+          "label": "Navigate Here",
+          "default" : "true"
         }
       },
       "attributes": {
         "header": {
-          "label": "Header Label",
-          "description": "Text for header label",
+          "label": "Label",
+          "description": "Text for header.",
           "editable": "text",
           "listener": true
+        },
+        "textalign": {
+          "label": "Text Alignment",
+          "description": "Text Alignment",
+          "editable": "select",
+          "options": ["Left","Center","Right"]
+        },
+        "backgroundcolor": {
+          "label": "Background Color",
+          "description": "Background color of the header.",
+          "editable": "color"
         }
       }
     }
   </ceci-definition>
   <template>
     <link rel="stylesheet" href="component.css"></link>
-    <header id="headerText">{{header}}</header>
+    <header id="headerText" style="text-align: {{textalign}};background: {{backgroundcolor}}">{{header}}</header>
     <shadow></shadow>
   </template>
   <script>
