@@ -61,7 +61,7 @@
     </style>
     <select hidden?="{{ collections.length == 0 }}" value="{{currentCollectionIndex}}">
       <template repeat="{{collection, index in collections}}">
-        <option value="{{index}}">{{collection.name}}</option>
+        <option value="{{index}}">{{collection.collectionname}}</option>
       </template>
     </select>
     <button on-click="{{removeCollection}}" hidden?="{{ collections.length == 0 }}">-</button>
@@ -69,13 +69,13 @@
     <div hidden?="{{ collections.length == 0 }}">
       <h3>Name</h3>
       <template repeat="{{collection, collectionIndex in collections}}">
-        <div data-name="{{collection.name}}" data-index="{{collectionIndex}}" hidden?="{{currentCollectionIndex != collectionIndex}}">
-          <input type="text" value="{{collection.name}}" on-change="{{onCollectionNameChange}}">
+        <div data-name="{{collection.collectionname}}" data-index="{{collectionIndex}}" hidden?="{{currentCollectionIndex != collectionIndex}}">
+          <input type="text" value="{{collection.collectionname}}" on-change="{{onCollectionNameChange}}">
           <h3>Keys</h3>
           <ul style="list-style: none;">
             <template repeat="{{item, fieldIndex in collection.fields}}">
-              <li data-name="{{item.name}}" data-index="{{fieldIndex}}" >
-                <input data-index="{{fieldIndex}}" type="text" value="{{item.name}}" on-change="{{onFieldNameChange}}">
+              <li data-name="{{item.fieldname}}" data-index="{{fieldIndex}}" >
+                <input data-index="{{fieldIndex}}" type="text" value="{{item.fieldname}}" on-change="{{onFieldNameChange}}">
                 <select data-index="{{fieldIndex}}" value="{{item.kind}}" on-change="{{onItemTypeChange}}">
                   <option value="number">Number</option>
                   <option value="checkbox">Checkbox</option>
@@ -94,7 +94,7 @@
           <table id="data-table">
             <tr>
               <template repeat="{{item in collection.fields}}">
-                <td>{{item.name}}</td>
+                <td>{{item.fieldname}}</td>
               </template>
               <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
             </tr>
@@ -102,10 +102,10 @@
               <tr>
                 <template repeat="{{item, fieldIndex in collection.fields}}">
                   <template if="{{item.kind == 'checkbox'}}">
-                    <td><input on-change="{{updateDataRow}}" data-index="{{dataIndex}}" class="table-input" type="{{item.kind}}" checked="{{row[item.name]}}"></td>
+                    <td><input on-change="{{updateDataRow}}" data-index="{{dataIndex}}" class="table-input" type="{{item.kind}}" checked="{{row[item.fieldname]}}"></td>
                   </template>
                   <template if="{{item.kind != 'checkbox'}}">
-                    <td><input on-change="{{updateDataRow}}" data-index="{{dataIndex}}" class="table-input" type="{{item.kind}}" value="{{row[item.name]}}"></td>
+                    <td><input on-change="{{updateDataRow}}" data-index="{{dataIndex}}" class="table-input" type="{{item.kind}}" value="{{row[item.fieldname]}}"></td>
                   </template>
                 </template>
                 <td data-index="{{dataIndex}}" on-click="{{removeDataRow}}" class="add-remove-column">-</td>
@@ -127,17 +127,18 @@
       collections: [],
       currentCollectionIndex: 0,
       createFieldManager: function(field) {
+        var fieldName = field.getAttribute("fieldname");
         return {
-          name: field.fieldname,
-          oldName: field.fieldname,
+          fieldname: fieldName,
+          oldName: fieldName,
           kind: field.kind
         };
       },
       createCollectionManager: function(collection) {
-console.log(collection.collectionname);
+        var collectionName = collection.getAttribute("collectionname");
         return {
-          name: collection.collectionname,
-          oldName: collection.collectionname,
+          collectionname: collectionName,
+          oldName: collectionName,
           fields: [],
           data: collection.data.slice(0)
         };
@@ -146,21 +147,20 @@ console.log(collection.collectionname);
         var self = this;
         function onFieldChange(e) {
           var detail = e.detail;
-console.log(this.getAttribute("fieldname"));
-          var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ this.name + '"]').getAttribute("data-index");
+          var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ this.getAttribute("collectionname") + '"]').getAttribute("data-index");
           if (detail.added) {
             var obj = self.createFieldManager(detail.added);
             self.collections[collectionIndex].fields.push(obj);
             detail.added.addEventListener("propertychange", onFieldPropertyChange);
           } else if (detail.removed) {
-            var fieldIndex = self.shadowRoot.querySelector('*[data-name="'+ detail.removed.name + '"]').getAttribute("data-index");
+            var fieldIndex = self.shadowRoot.querySelector('*[data-name="'+ detail.removed.getAttribute("fieldname") + '"]').getAttribute("data-index");
             self.collections[collectionIndex].fields.splice(fieldIndex, 1);
             detail.removed.removeEventListener("propertychange", onFieldPropertyChange);
           }
         }
         function onItemChange(e) {
           var detail = e.detail;
-          var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ this.name + '"]').getAttribute("data-index");
+          var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ this.getAttribute("fieldname") + '"]').getAttribute("data-index");
           if (detail.removed) {
             self.collections[collectionIndex].data.splice(detail.index, 1);
           }
@@ -173,7 +173,7 @@ console.log(this.getAttribute("fieldname"));
           if (detail.changed) {
             this.async(function() {
               var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ this.getCollectionName() + '"]').getAttribute("data-index");
-              var fieldIndex = self.shadowRoot.querySelector('*[data-name="'+ this.name + '"]').getAttribute("data-index");
+              var fieldIndex = self.shadowRoot.querySelector('*[data-name="'+ this.getAttribute("fieldname") + '"]').getAttribute("data-index");
               self.collections[collectionIndex].fields[fieldIndex][detail.changed] = this[detail.changed];
             });
           }
@@ -182,7 +182,7 @@ console.log(this.getAttribute("fieldname"));
           var detail = e.detail;
           if (detail.changed) {
             this.async(function() {
-              var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ this.name + '"]').getAttribute("data-index");
+              var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ this.getAttribute("collectionname") + '"]').getAttribute("data-index");
               self.collections[collectionIndex][detail.changed] = this[detail.changed];
             });
           }
@@ -190,14 +190,16 @@ console.log(this.getAttribute("fieldname"));
         function onCollectionChange(e) {
           var detail = e.detail;
           if (detail.added) {
+            self.async(function() {
             var obj = self.createCollectionManager(detail.added);
             self.collections.push(obj);
             detail.added.addEventListener("itemchange", onItemChange);
             detail.added.addEventListener("fieldchange", onFieldChange);
             detail.added.addEventListener("propertychange", onCollectionPropertyChange);
+});
           }
           if (detail.removed) {
-            var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ detail.removed.name + '"]').getAttribute("data-index");
+            var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ detail.removed.getAttribute("collectionname") + '"]').getAttribute("data-index");
             self.collections.splice(collectionIndex, 1);
             detail.removed.removeEventListener("itemchange", onItemChange);
             detail.removed.removeEventListener("fieldchange", onFieldChange);
@@ -233,19 +235,19 @@ console.log(this.getAttribute("fieldname"));
         });
       },
       removeCollection: function () {
-        this.collectionsElement.removeCollection(this.collections[this.currentCollectionIndex].name);
+        this.collectionsElement.removeCollection(this.collections[this.currentCollectionIndex].getAttribute("collectionname"));
         this.async(function () {
           this.currentCollectionIndex = this.collections.length - 1;
         });
       },
       addKey: function () {
         var collection = this.collections[this.currentCollectionIndex];
-        this.collectionsElement.getCollection(collection.name).addField("New Field " + (collection.fields.length + 1));
+        this.collectionsElement.getCollection(collection.collectionname).addField("New Field " + (collection.fields.length + 1));
       },
       removeKey: function (event, detail, sender) {
         var collection = this.collections[this.currentCollectionIndex];
         var field = collection.fields[parseInt(sender.value, 10)];
-        this.collectionsElement.getCollection(collection.name).removeField(field.name);
+        this.collectionsElement.getCollection(collection.collectionname).removeField(field.fieldname);
       },
       addDataRow: function (event, detail, sender) {
         var newRow = {};
@@ -253,22 +255,22 @@ console.log(this.getAttribute("fieldname"));
         this.collections[this.currentCollectionIndex].fields.forEach(function (item, index) {
           var inputElement = dummyRow.querySelector('*[data-key="'+ index + '"]');
           if (item.kind === 'checkbox') {
-            newRow[item.name] = newRow[item.name] || inputElement.checked;
+            newRow[item.fieldname] = newRow[item.fieldname] || inputElement.checked;
             inputElement.checked = '';
           } else {
-            newRow[item.name] = newRow[item.name] || inputElement.value;
+            newRow[item.fieldname] = newRow[item.fieldname] || inputElement.value;
             inputElement.value = '';
           }
         });
         var collection = this.collections[this.currentCollectionIndex];
-        this.collectionsElement.getCollection(collection.name).addItem(newRow);
+        this.collectionsElement.getCollection(collection.collectionname).addItem(newRow);
       },
       removeDataRow: function (event, detail, sender) {
         var collection = this.collections[this.currentCollectionIndex];
-        this.collectionsElement.getCollection(collection.name).removeItem(parseInt(sender.getAttribute('data-index'), 10));
+        this.collectionsElement.getCollection(collection.collectionname).removeItem(parseInt(sender.getAttribute('data-index'), 10));
       },
       updateDataRow: function (event, detail, sender) {
-        var collectionName = this.collections[this.currentCollectionIndex].name;
+        var collectionName = this.collections[this.currentCollectionIndex].collectionname;
         var collection = this.collectionsElement.getCollection(collectionName)
         var index = parseInt(sender.getAttribute('data-index'), 10);
         var item = collection.data[index]
@@ -277,20 +279,20 @@ console.log(this.getAttribute("fieldname"));
       onItemTypeChange: function(event, detail, sender) {
         var collection = this.collections[this.currentCollectionIndex];
         var field = collection.fields[parseInt(sender.getAttribute('data-index'), 10)];
-        this.collectionsElement.getField(collection.name, field.name).kind = sender.value;
+        this.collectionsElement.getField(collection.collectionname, field.fieldname).kind = sender.value;
       },
       onCollectionNameChange: function(event, detail, sender) {
         var collection = this.collections[this.currentCollectionIndex];
         var oldName = collection.oldName;
-        collection.oldName = collection.name;
+        collection.oldName = collection.collectionname;
         this.collectionsElement.getCollection(oldName).setAttribute("collectionname", sender.value);
       },
       onFieldNameChange: function(event, detail, sender) {
         var collection = this.collections[this.currentCollectionIndex];
         var field = collection.fields[parseInt(sender.getAttribute('data-index'), 10)];
         var oldName = field.oldName;
-        field.oldName = field.name;
-        this.collectionsElement.getField(collection.name, oldName).setAttribute("fieldname", sender.value);
+        field.oldName = field.fieldname;
+        this.collectionsElement.getField(collection.collectionname, oldName).setAttribute("fieldname", sender.value);
       }
     });
   </script>
