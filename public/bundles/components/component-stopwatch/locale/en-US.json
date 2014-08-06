@@ -1,0 +1,16 @@
+{
+  "ceci-timer/name": "Stopwatch",
+  "ceci-timer/description": "Keeps track of time and broadcasts the time when it's stopped.",
+  "ceci-timer/timeup/label": "Time when Stopped",
+  "ceci-timer/timeup/description": "Broadcasts the time when the stopwatch is stopped.",
+  "ceci-timer/start/label": "Start",
+  "ceci-timer/start/description": "Start the stopwatch.",
+  "ceci-timer/pause/label": "Stop",
+  "ceci-timer/pause/description": "Stop the stopwatch.",
+  "ceci-timer/reset/label": "Reset",
+  "ceci-timer/reset/description": "Reset the stopwatch.",
+  "ceci-timer/time/label": "Count Lap",
+  "ceci-timer/time/description": "Broadcasts the current lap time.",
+  "ceci-timer/time/label": "Background",
+  "ceci-timer/time/description": "Background color of the stopwatch."
+}
