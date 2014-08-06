@@ -1,7 +1,12 @@
 :host {
   display: block;
-  width: 100%;
-  word-spacing: -1;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 5px 10px;
 }
 
 :host .buttons-wrapper {
@@ -32,11 +37,11 @@
 }
 
 :host #leftbutton {
- border-right: 2px solid rgba(0,0,0,.1);
+  border-radius: 3px 0 0 3px;
 }
 
 :host #rightbutton {
-  border-left: 2px solid rgba(255,255,255,.1);
+  border-radius: 0 3px 3px 0;
 }
 
 :host .overlay {
