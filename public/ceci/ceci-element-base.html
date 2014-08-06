@@ -129,6 +129,7 @@
       ready: function () {
         this.eventListeners = [];
         if (this.ceci) return;
+        this.addedCustomListeners = false;
 
         var that = this;
         this.ceci = {
@@ -258,9 +259,12 @@
         }
       },
       attached: function () {
-        var els = this.shadowRoot.querySelectorAll(customListenerQuerySelector);
-        this.touchEnabled = 'ontouchstart' in document.documentElement;
-        Array.prototype.forEach.call(els, this.addCustomListener.bind(this));
+        if(!this.addedCustomListeners) {
+          this.touchEnabled = 'ontouchstart' in document.documentElement;
+          var els = this.shadowRoot.querySelectorAll(customListenerQuerySelector);
+          Array.prototype.forEach.call(els, this.addCustomListener.bind(this));
+          this.addedCustomListeners = true;
+        }
         document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));
       },
       addCustomListener: function(el, listener){
@@ -272,9 +276,7 @@
           // If there is a valid map entry, grab it
           var mapEntry = customListenerMap[listener];
 
-          // Check if we've already added that listener
-          if(mapEntry && that.eventListeners.indexOf(mapEntry) < 0) {
-            that.eventListeners.push(mapEntry);
+          if(mapEntry) {
             // Fire an event directly at the element with the on-ceci-* attribute
             el.addEventListener(mapEntry[that.touchEnabled ? 'mobile' : 'desktop'], function(e){
               // Emit an event without the "on-" prefix, to let Polymer's template syntax sugar do the rest
