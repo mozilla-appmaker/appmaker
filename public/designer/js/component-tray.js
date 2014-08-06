@@ -146,8 +146,13 @@ define(
           var newElement = document.createElement(name);
           // wait until Polymer has prepared the element completely
           newElement.async(function() {
-            card.appendChild(newElement);
-
+            var selectedBrick = card.querySelector(".brick.selected");
+            var next = selectedBrick ? selectedBrick.nextSibling : false;
+            if(selectedBrick && next){
+              card.insertBefore(newElement,next);
+            } else {
+              card.appendChild(newElement);
+            }
             // Apply defaults here explicitly so that element doesn't
             // have to figure out whether or not it's new when it's
             // attached to the DOM.
