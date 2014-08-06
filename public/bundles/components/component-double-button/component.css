@@ -7,7 +7,6 @@
   -ms-user-select: none;
   user-select: none;
   padding: 5px 10px;
-
 }
 
 :host .button-wrapper {
@@ -18,20 +17,24 @@
   font-size: 0px;
 }
 
+:host .buttons-wrapper {
+  line-height: 0px;
+}
+
 :host .button {
   cursor: pointer;
-  display: block;
   text-align: center;
   padding: 12px 0px;
   text-overflow: ellipsis;
   overflow: hidden;
-  font-weight: 300;
   font-size: 1.8rem;
   position: relative;
   line-height: 1.8rem;
   width: 100%;
-  display: inline-block;
+  display: block;
   -webkit-box-sizing: border-box;
+  width: calc(100% - 5px);
+  border-radius: 3px;
 }
 
 :host .pressdown .button {
@@ -46,28 +49,31 @@
   bottom: 0px;
   z-index: 3;
   background: rgba(0,0,0,.25);
+  border-radius: 0 0 3px 3px;
+  z-index: 1;
+}
+
+:host .label {
+  font-weight: 400;
+  z-index: 9999;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  padding: inherit;
 }
 
 :host .pressdown .bottom {
   height: 2px;
 }
 
-:host #leftbutton {
-  border-radius: 3px 0 0 3px;
-}
-
-:host .left-button .bottom {
-  border-radius: 0 0 0 3px;
-}
-
 :host #rightbutton {
-  border-radius: 0 3px 3px 0;
+  float: right;
 }
-
-:host .right-button .bottom {
-  border-radius: 0 0 3px 0;
+:host #leftbutton {
+  float: left;
 }
-
 
 :host .overlay {
   position: absolute;
@@ -78,12 +84,11 @@
   opacity: 0;
   border-radius: 3px;
   background: black;
-
+  z-index: 2;
 }
 
-
 :host .pressdown .active-overlay {
-/*  opacity: .4;*/
+  opacity: .4;
 }
 
 :host .fade .active-overlay {
