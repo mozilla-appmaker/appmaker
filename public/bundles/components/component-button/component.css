@@ -1,55 +1,89 @@
 :host {
   display: block;
-  width: 100%;
-}
-
-:host .button-wrapper {
-  position: relative;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 5px 10px;
 }
 
 :host #buttonwrapper {
   cursor: pointer;
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  padding: 12px 0;
+  font-weight: 300;
+  border-radius: 3px;
 }
 
 :host #button {
-
-  border-bottom: 2px solid rgba(0,0,0,.1);
-  display: block;
-  text-align: center;
-  padding: 12px 0 10px 0;
+  z-index: 2;
+  padding: inherit;
+  font-size: inherit;
+  font-weight: inherit;
   text-overflow: ellipsis;
-  overflow: hidden;
-  font-weight: 300;
-  font-size: 1.8rem;
-  line-height: 1.8rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 :host .overlay {
+  border-radius: 3px;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   opacity: 0;
+  z-index: 1;
+}
+
+:host .bottom {
+  height: 3px;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  z-index: 3;
+  background: rgba(0,0,0,.25);
+}
+
+:host .pressdown .bottom {
+  height: 2px;
 }
 
 :host .active-overlay {
   background: black;
+  opacity: 0;
 }
 
-:host .hover-overlay {
-  background: white;
+:host #buttonwrapper.pressdown {
+  margin-top: 1px;
+  padding: 12px 0 11px 0;
+  /* bottom padding needs to be one less pixel than top padding*/
 }
 
 :host .pressdown .active-overlay {
-  opacity: .1;
+  opacity: .4;
 }
 
-:host .pressdown #button {
-  border-top: solid 2px rgba(0,0,0,.1);
-  border-bottom: none;
+:host .fade .active-overlay {
+  -webkit-animation: fadeout .2s linear;
+  animation: fadeout .2s linear;
+}
+@-webkit-keyframes fadeout {
+  0%    { opacity: .4; }
+  100%  { opacity: 0; }
 }
 
-:host button {
-  border: none;
+@keyframes fadeout {
+  0%    { opacity: .4; }
+  100%  { opacity: 0; }
 }
+

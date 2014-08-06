@@ -1,0 +1,13 @@
+:host {
+  width: 100%;
+  display: block;
+}
+
+:host .timer {
+  padding: 10px 0px;
+  color: #DDD;
+  cursor: pointer;
+  text-align: center;
+  background: #222;
+  font-size: 28px;
+}
