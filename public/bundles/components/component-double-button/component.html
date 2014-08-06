@@ -55,15 +55,18 @@
   <template>
     <link rel="stylesheet" href="component.css"></link>
     <div class="buttons-wrapper">
-      <div class="button-wrapper" on-ceci-pressdown="{{clickleft}}">
-        <div class="button" id="leftbutton" >{{leftlabel}}</div>
-        <div class="overlay active-overlay"></div>
-        <div class="overlay hover-overlay"></div>
-      </div>
-      <div class="button-wrapper" on-ceci-pressdown="{{clickright}}">
-        <div class="button" id="rightbutton" >{{rightlabel}}</div>
-        <div class="overlay active-overlay"></div>
-        <div class="overlay hover-overlay"></div>
+      <div class="left-button button-wrapper" on-ceci-pressdown="{{clickleft}}" on-ceci-pressup="{{clickleftoff}}">
+        <div class="button" id="leftbutton" >
+          {{leftlabel}}
+          <div class="overlay active-overlay"></div>
+        </div>
+        <div class="bottom"></div>
+      </div><div class="right-button button-wrapper" on-ceci-pressdown="{{clickright}}">
+        <div class="button" id="rightbutton" >
+          {{rightlabel}}
+          <div class="overlay active-overlay"></div>
+        </div>
+        <div class="bottom"></div>
       </div>
     </div>
     <shadow></shadow></template>
@@ -74,7 +77,14 @@
         var that = this;
       },
       clickleft: function () {
+        this.shadowRoot.querySelector(".left-button").classList.add("pressdown");
         this.broadcast('clickleft', this.getAttribute('value'));
+      },
+      clickleftoff: function () {
+        this.shadowRoot.querySelector(".left-button").classList.remove("pressdown");
+        this.shadowRoot.querySelector(".left-button").classList.remove("fade");
+        this.shadowRoot.querySelector(".left-button").width = this.shadowRoot.querySelector(".left-button").offsetWidth;
+        this.shadowRoot.querySelector(".left-button").classList.add("fade");
       },
       clickright: function () {
         this.broadcast('clickright', this.getAttribute('value'));
@@ -89,7 +99,7 @@
       rightbuttoncolorChanged: function (oldValue, newValue) {
         this.$.rightbutton.style.backgroundColor = newValue;
       }
-
     });
   </script>
 </polymer-element>
+
