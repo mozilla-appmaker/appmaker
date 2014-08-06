@@ -131,18 +131,18 @@ define(['jquery', 'inflector', 'l10n', 'colorpicker.core'], function ($, Inflect
     },
 
     'boolean': function (element, attributeName, title, value, definition) {
-      var e = $('<div><input type="checkbox"><label></label></div>');
-
-      e.find("label").text(title);
+      var e = $('<div><label></label></div>');
+      e.find("label").text(title).append($('<input type="checkbox">'));
 
       if (value === true || value === 'true') {
-        e.find("input").attr('checked','checked');
+        e.find("input").attr('checked','checked').attr('value', value);
       }
 
       e.on('change', function(evt) {
-        var newCheckState = evt.target.value == 'true' ? 'false' : 'true';
-        element.setAttribute(attributeName, newCheckState);
+        evt.target.value = evt.target.value == 'true' ? 'false' : 'true';
+        element.setAttribute(attributeName, evt.target.value == 'true' ? true : false);
       });
+
       return e[0];
     },
 
