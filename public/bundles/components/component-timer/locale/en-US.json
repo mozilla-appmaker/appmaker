@@ -1,20 +1,14 @@
 {
   "ceci-timer/name": "Timer",
-  "ceci-timer/description": "Counts down time and when time runs out it plays a sound and sends a broadcasts.",
+  "ceci-timer/description": "Keeps track of time and broadcasts when time is up.",
   "ceci-timer/timeup/label": "Time is Up",
   "ceci-timer/timeup/description": "Time is up!",
   "ceci-timer/start/label": "Start",
-  "ceci-timer/start/description": "Start the timer.",
+  "ceci-timer/start/description": "Starts the timer.",
   "ceci-timer/pause/label": "Pause",
-  "ceci-timer/pause/description": "Pause the timer.",
+  "ceci-timer/pause/description": "Pauses the timer.",
   "ceci-timer/reset/label": "Reset",
-  "ceci-timer/reset/description": "Reset the timer.",
-  "ceci-timer/time/label": "Set Timer",
-  "ceci-timer/time/description": "Set a time in seconds to count down from."
-  "ceci-timer/time/label": "Count Down (in Seconds)",
-  "ceci-timer/time/description": "Amount of time to count down from."
-  "ceci-timer/time/label": "Play sound when timer finishes",
-  "ceci-timer/time/description": "Play sound when timer finishes."
-  "ceci-timer/time/label": "Background Color",
-  "ceci-timer/time/description": "Background color of the timer."
+  "ceci-timer/reset/description": "Resets the timer.",
+  "ceci-timer/time/label": "Time",
+  "ceci-timer/time/description": "Amount of time to elapse"
 }

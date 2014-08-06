@@ -1,0 +1,8 @@
+{
+	"ceci-<%= name %>": "<%= name %>",
+	"ceci-<%= name %>/description": "Listens for a message and counts",
+	"ceci-<%= name %>/attributes/unit/label": "Unit",
+	"ceci-<%= name %>/attributes/unit/description": "Name for items which are being counted.",
+	"ceci-<%= name %>/attributes/increment/label": "Increment By",
+	"ceci-<%= name %>/attributes/increment/description": "Count up or down with this number."
+}

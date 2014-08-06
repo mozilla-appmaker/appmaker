@@ -1,0 +1,20 @@
+{
+  "name": "component-canvas",
+  "description": "A canvas for drawing and sharing",
+  "version": "0.0.0",
+  "keywords": [
+    "appmaker",
+    "webcomponents",
+    "ceci"
+  ],
+  "license": "MPL-v2",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-contrib-csslint": "~0.2.0",
+    "grunt-lint-inline": "~0.4.0",
+    "grunt-contrib-connect": "~0.6.0"
+  }
+}
+

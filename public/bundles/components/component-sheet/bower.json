@@ -1,0 +1,13 @@
+{
+  "name": "component-canvas",
+  "description": "A canvas for drawing and sharing",
+  "version": "0.0.0",
+  "keywords": [
+    "appmaker",
+    "webcomponents",
+    "ceci"
+  ],
+  "license": "MPL-v2",
+  "dependencies": {}
+}
+

@@ -1,23 +1,35 @@
-<polymer-element name="ceci-sequencer" attributes="playbeats" extends="ceci-element">
+<polymer-element name="ceci-sequencer" attributes="playbeats beatcount" beatcount="4" extends="ceci-element">
   <template>
     <link rel="stylesheet" href="component.css"></link>
     <div id="channels" data-beat="{{currentBeat}}">
-      <div class="indicator top"></div>
-      <div class="indicator bottom"></div>
-      <template repeat="{{item, i in activebroadcasts}}">
-        <div data-color="{{item.channelcolor}}" data-channel="{{item.channelname}}" class="channelrow">
-          <div on-click="{{beattap}}" data-beat="0" class="beat"></div>
-          <div on-click="{{beattap}}" data-beat="1" class="beat"></div>
-          <div on-click="{{beattap}}" data-beat="2" class="beat"></div>
-          <div on-click="{{beattap}}" data-beat="3" class="beat"></div>
-        </div>
-      </template>
+      <table cellpadding="0" cellspacing="4">
+
+        <tr class="indicator-row">
+          <template repeat="{{square, i in squares}}">
+            <td><div class="indicator"></div></td>
+          </template>
+        </tr>
+
+        <template repeat="{{item, i in activebroadcasts}}">
+          <tr data-color="{{item.channelcolor}}" data-channel="{{item.channelname}}" class="channelrow">
+            <template repeat="{{square, i in squares}}">
+              <td on-click="{{beattap}}" data-beat="{{i}}" class="beat"></td>
+            </template>
+          </tr>
+        </template>
+
+          <tr class="indicator-row">
+            <template repeat="{{square, i in squares}}">
+            <td><div class="indicator"></div></td>
+          </template>
+          </tr>
+      </table>
     </div>
     <shadow></shadow>
   </template>
   <ceci-definition>
     {
-      "tags": [""],
+      "tags": ["music","fun","audio","beat","timing"],
       "thumbnail": "./thumbnail.png",
       "name": "Sequencer",
       "description": "Sends messages signals to other bricks according to a pattern.",
@@ -52,7 +64,15 @@
           "default": true
         }
       },
-      "attributes": {}
+      "attributes": {
+        "beatcount": {
+          "label": "Beats",
+          "description": "The number of beats per channel.",
+          "editable": "number",
+          "min" : 1,
+          "max" : 8
+        }
+      }
     }
   </ceci-definition>
   <script>
@@ -60,27 +80,34 @@
       beattap: function(e){
         var self = this;
         var beatEl = e.target;
-
         if (beatEl.classList.contains("on")){
           beatEl.classList.remove("on");
         }
         else{
           beatEl.classList.add("on");
         }
+        this.scrapeBeats();
+      },
+      scrapeBeats : function(){
+        var that = this;
+        that.playbeats = [];
 
-        self.playbeats = [[],[],[],[]];
+        for(var i = 0; i < this.beatcount; i++) {
+          that.playbeats[i] = [];
+        }
 
         Array.prototype.forEach.call(this.shadowRoot.querySelectorAll(".channelrow"), function(chan) {
           var channel = chan.getAttribute("data-channel");
           var beat = 0;
           Array.prototype.forEach.call(chan.querySelectorAll(".beat"), function(beatEl) {
             if(beatEl.classList.contains("on")) {
-              self.playbeats[beat].push(channel);
+              that.playbeats[beat].push(channel);
             }
             beat++;
           });
         });
         this.setAttribute("playbeats",JSON.stringify(this.playbeats));
+
       },
       currentBeat: -1,
       ready: function() {
@@ -88,6 +115,7 @@
         this.lastBroadcast = null;
         var self = this;
         this.playbeats = JSON.parse(this.getAttribute("playbeats")) || [["A"],["B"],["A"],["B"]];
+
       },
       colorSquares : function(){
         if (this.activebroadcasts.length > 0){
@@ -96,24 +124,30 @@
             var beats = this.playbeats[i];
             for(var j = 0; j < beats.length; j++) {
               var channel = beats[j];
-
-              this.shadowRoot.querySelector(".channelrow[data-channel=" + channel +"] .beat:nth-child(" + beatCount + ")").classList.add("on");
+              var beatSquare = this.shadowRoot.querySelector(".channelrow[data-channel=" + channel +"] .beat:nth-child(" + parseInt(beatCount+1) + ")");
+              if(beatSquare){
+                beatSquare.classList.add("on");
+              }
             }
           }
         }
       },
       attached : function(){
         this.super();
-
         this.addEventListener("CeciChannelUpdated", function(){
           this.updateChannels();
         });
-
-        this.async(function(){
-          this.colorSquares()
-        });
-
         this.updateChannels();
+      },
+      beatcountChanged : function(){
+        this.squares = [];
+        for(var i = 0; i < this.beatcount; i++) {
+          this.squares.push(i);
+        }
+        // need to trim the playbeats
+        if(this.playbeats.length > parseInt(this.beatcount)){
+          this.playbeats = this.playbeats.splice(0,this.beatcount);
+        }
       },
       updateChannels: function(){
         var self = this;
@@ -123,21 +157,35 @@
           var item = {};
           item.channelcolor = broadcast.getAttribute("on");
           item.channelname = broadcast.getAttribute("from");
-
           self.activebroadcasts.push(item);
         });
 
         this.async(function(){
           this.colorSquares();
+          this.scrapeBeats();
         });
+
+        // nned to trim the beats here or rebuild it
+
       },
       input: function(value) {
         this.currentBeat += 1;
 
-        if(this.currentBeat > 3) {
+        if(this.currentBeat > (this.beatcount-1)) {
           this.currentBeat = 0;
         }
-        var playChannels = this.playbeats[this.currentBeat];
+
+        var indicators = this.shadowRoot.querySelectorAll(".indicator-row .indicator");
+        for(var i = 0; i < indicators.length; i++) {
+          indicators[i].style.display = "none";
+        }
+
+        var activeindicators = this.shadowRoot.querySelectorAll(".indicator-row td:nth-child("+parseInt(this.currentBeat + 2) +") .indicator");
+        for(var j = 0; j < activeindicators.length; j++) {
+          activeindicators[j].style.display = "block";
+        }
+
+        var playChannels = this.playbeats[this.currentBeat] || [];
         for(var i = 0; i < playChannels.length; i++){
           this.broadcast(playChannels[i], "tick");
         }

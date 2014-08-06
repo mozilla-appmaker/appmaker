@@ -1,4 +1,4 @@
-<polymer-element name="ceci-game-controller" extends="ceci-element" attributes="leftbuttonvalue upbuttonvalue downbuttonvalue rightbuttonvalue selectbuttonvalue startbuttonvalue abuttonvalue bbuttonvalue" leftbuttonvalue="left" upbuttonvalue="up" downbuttonvalue="down" rightbuttonvalue="right" selectbuttonvalue="select" startbuttonvalue="start" abuttonvalue="a" bbuttonvalue="b">
+<polymer-element name="ceci-game-controller" extends="ceci-element" attributes="konamicode leftbuttonvalue upbuttonvalue downbuttonvalue rightbuttonvalue selectbuttonvalue startbuttonvalue abuttonvalue bbuttonvalue" leftbuttonvalue="left" upbuttonvalue="up" downbuttonvalue="down" rightbuttonvalue="right" selectbuttonvalue="select" startbuttonvalue="start" abuttonvalue="a" bbuttonvalue="b" konamicode="up,up,down,down,left,right,left,right,b,a">
   <ceci-definition>
     {
       "name": "Game Controller",
@@ -91,6 +91,11 @@
           "label": "B Button Value",
           "description": "Value to send when this button is clicked",
           "editable": "text"
+        },
+        "konamicode": {
+          "label": "Konami Code",
+          "description": "A secret sequence of secret buttons to do something secret",
+          "editable": "text"
         }
       }
     }
@@ -100,22 +105,22 @@
     <div class="game-controller">
       <div class="d-pad-container">
         <div class="d-pad">
-          <div class="left-button" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{leftClicked}}"></div>
-          <div class="up-button" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{upClicked}}"></div>
-          <div class="down-button" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{downClicked}}"></div>
-          <div class="right-button" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{rightClicked}}"></div>
+          <div class="left-button" data-controller-button="left" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{leftClicked}}"></div>
+          <div class="up-button" data-controller-button="up" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{upClicked}}"></div>
+          <div class="down-button" data-controller-button="down" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{downClicked}}"></div>
+          <div class="right-button" data-controller-button="right" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{rightClicked}}"></div>
         </div>
       </div>
       <div class="start-select-container">
         <div class="start-select">
-          <div class="select-button" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{selectClicked}}"></div>
-          <div class="start-button" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{startClicked}}"></div>
+          <div class="select-button" data-controller-button="select" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{selectClicked}}"></div>
+          <div class="start-button" data-controller-button="start" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{startClicked}}"></div>
         </div>
       </div>
       <div class="a-b-buttons-container">
         <div class="a-b-buttons">
-          <div class="a-button" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{aButtonClicked}}"></div>
-          <div class="b-button" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{bButtonClicked}}"></div>
+          <div class="a-button" data-controller-button="a" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{aButtonClicked}}"></div>
+          <div class="b-button" data-controller-button="b" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{bButtonClicked}}"></div>
         </div>
       </div>
     </div>
@@ -127,9 +132,9 @@
         ready: function() {
           this.super();
 
-          // Looking for ↑ ↑ ↓ ↓ ← → ← → B A
+          // Default sequence ↑ ↑ ↓ ↓ ← → ← → B A
           this.sequence = [];
-          this.KONAMI_CODE = "up,up,down,down,left,right,left,right,b,a";
+          this.konamicodeChanged();
 
           var that = this;
           function detechTouch() {
@@ -140,34 +145,38 @@
           }
           this.addEventListener("touchstart", detechTouch);
         },
-        onPress: function(e) {
-          var button = e.target.classList[0].split("-")[0];
+        onPress: function(event, detail, sender) {
+          var button = sender.getAttribute("data-controller-button");
           this.sequence.push(button);
 
-          if (this.sequence.length > 10) {
+          if (this.sequence.length > this.codeLength) {
             this.sequence.shift();
           }
 
-          if (this.sequence.join(",") == this.KONAMI_CODE) {
-            this.broadcast("konami", this.KONAMI_CODE);
+          if (this.sequence.join(",") === this.konamicode) {
+            this.broadcast("konami", this.konamicode);
           }
 
-          this.broadcast("press", e.target.classList[0]);
+          this.broadcast("press", button);
         },
-        onRelease: function(e) {
-          this.broadcast("release", e.target.classList[0]);
+        konamicodeChanged: function() {
+          this.codeLength = this.konamicode.split(",").length;
+          this.sequence = [];
         },
-        onMouseDown: function(e) {
-          this.onPress(e);
+        onRelease: function(event, detail, sender) {
+          this.broadcast("release", sender.getAttribute("data-controller-button"));
         },
-        onMouseUp: function(e) {
-          this.onRelease(e);
+        onMouseDown: function(event, detail, sender) {
+          this.onPress(event, detail, sender);
         },
-        onTouchStart: function(e) {
-          this.onPress(e);
+        onMouseUp: function(event, detail, sender) {
+          this.onRelease(event, detail, sender);
         },
-        onTouchEnd: function(e) {
-          this.onRelease(e);
+        onTouchStart: function(event, detail, sender) {
+          this.onPress(event, detail, sender);
+        },
+        onTouchEnd: function(event, detail, sender) {
+          this.onRelease(event, detail, sender);
         },
         leftClicked: function(e) {
           this.broadcast("left", this.leftbuttonvalue);
