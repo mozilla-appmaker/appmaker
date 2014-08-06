@@ -10,11 +10,11 @@
   "ceci-timer/reset/label": "Reset",
   "ceci-timer/reset/description": "Reset the timer.",
   "ceci-timer/time/label": "Set Timer",
-  "ceci-timer/time/description": "Set a time in seconds to count down from."
+  "ceci-timer/time/description": "Set a time in seconds to count down from.",
   "ceci-timer/time/label": "Count Down (in Seconds)",
-  "ceci-timer/time/description": "Amount of time to count down from."
+  "ceci-timer/time/description": "Amount of time to count down from.",
   "ceci-timer/time/label": "Play sound when timer finishes",
-  "ceci-timer/time/description": "Play sound when timer finishes."
+  "ceci-timer/time/description": "Play sound when timer finishes.",
   "ceci-timer/time/label": "Background Color",
   "ceci-timer/time/description": "Background color of the timer."
 }
