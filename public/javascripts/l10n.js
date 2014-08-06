@@ -80,6 +80,6 @@ define([], function () {
       return html && html.lang ? html.lang : "en-US";
     }
   };
+
   return l10n;
 });
-

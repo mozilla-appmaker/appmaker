@@ -1,4 +1,4 @@
-<polymer-element name="ceci-chart" collectionname="times" extends="ceci-element" attributes="unit increment value collectionname">
+<polymer-element name="ceci-chart" extends="ceci-element" attributes="unit increment value collectionname">
   <script src="vendor/chartjs/Chart.min.js"></script>
   <ceci-definition>
     {
@@ -55,11 +55,12 @@
           "6/13/2014":60
         });
 
-        this.graph();
-
+        // this needs to happen on the next tick
+        this.async(this.graph);
       },
       getData: function() {
-        var data = JSON.parse(localStorage['hack-collection-' + this.collectionname]);
+        var key = 'hack-collection-' + this.collectionname;
+        var data = JSON.parse(localStorage[key]);
 
         var values = [];
         var keys = Object.keys(data);

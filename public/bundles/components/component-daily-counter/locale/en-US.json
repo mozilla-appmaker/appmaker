@@ -11,8 +11,9 @@
   "ceci-daily-counter/resetCount/label": "Reset Count",
   "ceci-daily-counter/unit/description": "Name for items which are being counted.",
   "ceci-daily-counter/unit/label": "Unit",
-  "ceci-daily-counter/collectionname/description": "The name of the collection to store the value",
-  "ceci-daily-counter/collectionname/label": "Collection Name",
   "ceci-daily-counter/increment/description": "Count up or down with this number.",
-  "ceci-daily-counter/increment/label": "Increment By"
+  "ceci-daily-counter/increment/label": "Increment By",
+  "ceci-daily-counter/attributes/collectionname": "times",
+  "ceci-daily-counter/attributes/collectionname/description": "The name of the collection to store the value",
+  "ceci-daily-counter/attributes/collectionname/label": "Collection Name"
 }

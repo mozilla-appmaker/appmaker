@@ -28,5 +28,9 @@
   "ceci-pad-grid/labels/label": "Comma separated labels",
   "ceci-pad-grid/numcols/label": "Number of columns",
   "ceci-pad-grid/numrows/label": "Number of rows",
-  "ceci-pad-grid/palettenumber/label": "Which palette? 1-6"
+  "ceci-pad-grid/palettenumber/label": "Which palette? 1-6",
+
+  "ceci-pad-grid/attributes/labels": "cucumber,tomato,eggplant,,up,,left,,right,,down,",
+  "ceci-pad-grid/attributes/labels/label": "Labels",
+  "ceci-pad-grid/attributes/labels/description": "The grid button labels"
 }

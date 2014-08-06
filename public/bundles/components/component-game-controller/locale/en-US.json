@@ -1,22 +1,39 @@
 {
 	"ceci-game-controller": "Game Controller",
 	"ceci-game-controller/description": "A classic NES game controller",
+
+	"ceci-game-controller/attributes/leftbuttonvalue": "left",
 	"ceci-game-controller/attributes/leftbuttonvalue/label": "Left Button Value",
 	"ceci-game-controller/attributes/leftbuttonvalue/description": "Value to send when this button is clicked",
+
+	"ceci-game-controller/attributes/upbuttonvalue": "up",
 	"ceci-game-controller/attributes/upbuttonvalue/label": "Up Button Value",
 	"ceci-game-controller/attributes/upbuttonvalue/description": "Value to send when this button is clicked",
+
+	"ceci-game-controller/attributes/downbuttonvalue": "down",
 	"ceci-game-controller/attributes/downbuttonvalue/label": "Down Button Value",
 	"ceci-game-controller/attributes/downbuttonvalue/description": "Value to send when this button is clicked",
+
+	"ceci-game-controller/attributes/rightbuttonvalue": "right",
 	"ceci-game-controller/attributes/rightbuttonvalue/label": "Right Button Value",
 	"ceci-game-controller/attributes/rightbuttonvalue/description": "Value to send when this button is clicked",
+
+	"ceci-game-controller/attributes/selectbuttonvalue": "select",
 	"ceci-game-controller/attributes/selectbuttonvalue/label": "Select Button Value",
 	"ceci-game-controller/attributes/selectbuttonvalue/description": "Value to send when this button is clicked",
+
+	"ceci-game-controller/attributes/startbuttonvalue": "start",
 	"ceci-game-controller/attributes/startbuttonvalue/label": "Start Button Value",
 	"ceci-game-controller/attributes/startbuttonvalue/description": "Value to send when this button is clicked",
+
+	"ceci-game-controller/attributes/abuttonvalue": "a",
 	"ceci-game-controller/attributes/abuttonvalue/label": "A Button Value",
 	"ceci-game-controller/attributes/abuttonvalue/description": "Value to send when this button is clicked",
+
+	"ceci-game-controller/attributes/bbuttonvalue": "b",
 	"ceci-game-controller/attributes/bbuttonvalue/label": "B Button Value",
 	"ceci-game-controller/attributes/bbuttonvalue/description": "Value to send when this button is clicked",
+
 	"ceci-game-controller/broadcasts/press/label": "Any Button",
 	"ceci-game-controller/broadcasts/press/description": "Any button was pressed",
 	"ceci-game-controller/broadcasts/left/label": "Left Button",

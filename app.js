@@ -9,10 +9,11 @@ bundles = require('./lib/bundles'),
 cors = require('cors'),
 components = require('./lib/components'),
 connectFonts = require('connect-fonts'),
-helmet = require('helmet'),
 enableRedirects = require('./routes/redirects'),
 engine = require('ejs-locals'),
 express = require('express'),
+fs = require("fs"),
+helmet = require('helmet'),
 http = require('http'),
 i18n = require('webmaker-i18n'),
 lessMiddleware = require('less-middleware'),
@@ -214,7 +215,19 @@ else{
 
 // This is a route that we use for client-side localization to return the JSON
 // when we do the XHR request to this route.
-app.get( "/strings/:lang?", middleware.crossOrigin, i18n.stringsRoute( "en-US" ) );
+if(process.env.PRODUCTION) {
+  app.get( "/strings/:lang?", middleware.crossOrigin, i18n.stringsRoute( "en-US" ));
+} else {
+  var basedir = "./public/bundles/components/";
+  var componentPaths = fs.readdirSync(basedir);
+  componentPaths = componentPaths.filter(function(fileName) {
+    return fileName.indexOf("component-") > -1;
+  }).map(function(v) {
+    return basedir + v;
+  });
+  componentPaths.push("./locale/en_US/msg.json");
+  app.get( "/strings/:lang?", middleware.crossOrigin, i18n.devStringsRoute( "en-US", componentPaths ));
+}
 
 app.post('/api/publish', routes.publish.publish(app));
 

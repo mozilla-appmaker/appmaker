@@ -29,7 +29,9 @@ define(
       }
       selectedElement = element;
       element.classList.add('selected');
-      Editable.displayAttributes(element);
+      element.onready(function() {
+        Editable.displayAttributes(element);          
+      })
     }
 
     // For a special case in Chrome where elements are already in the DOM

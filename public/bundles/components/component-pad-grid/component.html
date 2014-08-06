@@ -1,5 +1,5 @@
 <polymer-element name="ceci-pad-grid" extends="ceci-element"
-                 attributes="backgroundcolor textcolor numrows numcols labels palettenumber" backgroundcolor="#000000" textcolor="#ffffff" numrows="5" numcols="3" palettenumber="1" labels="cucumber,tomato,eggplant,,up,,left,,right,,down,">
+                 attributes="backgroundcolor textcolor numrows numcols labels palettenumber" backgroundcolor="#000000" textcolor="#ffffff" numrows="5" numcols="3" palettenumber="1">
   <template>
     <link rel="stylesheet" href="component.css"></link>
     <div id="box" class="box">
@@ -235,11 +235,10 @@
 "#CE450C"]
         ];
         var self = this;
-        this.labelsList = this.getAttribute("labels").split(',');
-      },
-      attached : function(){
-        this.super();
-        var that = this;
+        self.labelsList = [];
+        self.onready(function() {
+          self.labelsList = self.getAttribute("labels").split(',');
+        });
       },
       updateChannels: function(){
         var that = this;
