@@ -1,4 +1,8 @@
-<polymer-element name="ceci-text-input" attributes="buttonlabel inputname placeholdertext emitonchange label" extends="ceci-element" placeholdertext="Placeholder" buttonlabel="Submit" inputname="Text Input">
+<polymer-element name="ceci-text-input" attributes="resetonsubmit buttonlabel inputname placeholdertext emitonchange label" extends="ceci-element"
+placeholdertext="Placeholder"
+buttonlabel="Submit"
+inputname="Text Input"
+resetonsubmit="true">
   <ceci-definition>
     {
       "tags": ["input", "form", "button"],
@@ -38,6 +42,11 @@
           "description": "The text you want your input field to show by default.",
           "editable": "text"
         },
+        "resetonsubmit": {
+          "label": "Reset on Submit",
+          "description": "Reset the input field after submitting the value.",
+          "editable": "boolean"
+        },
         "emitonchange": {
           "label": "Emit on change",
           "description": "Background color of the button while it is being clicked or tapped.",
@@ -64,7 +73,9 @@
       },
       submit: function () {
         this.broadcast('sendData', this.$.inputText.value);
-        this.$.inputText.value = "";
+        if(this.resetonsubmit ===  "true"){
+          this.$.inputText.value = "";
+        }
       },
       click : function(){
         this.submit();

@@ -1,0 +1,104 @@
+<polymer-element name="ceci-<%= name %>" extends="ceci-element" attributes="unit increment value">
+  <template>
+    <link rel="stylesheet" href="component.css">
+    <div class="counter">
+      <div class="count-wrapper">
+        <span class="count">{{value}}</span>
+        <span class="count-label">{{displayUnit}}</span>
+      </div>
+    </div>
+    <shadow></shadow>
+    <script type="text/json" id="ceci-definition">
+      {
+        "name": "<%= name %>",
+        "tags": "<%= name %>,math,starter",
+        "thumbnail": "./thumbnail.png",
+        "description": "Listens for a message and counts",
+        "broadcasts": {
+          "currentCount": {
+            "label": "Current Count",
+            "description": "Broadcasts the current count."
+          }
+        },
+        "listeners": {
+          "countUp": {
+            "description": "Increment the total by the increment value",
+            "label": "Count Up!",
+            "default" : true
+          },
+          "countDown": {
+            "description": "Decrement the total by the increment value",
+            "label": "Count Down"
+          },
+          "resetCount": {
+            "description": "Reset the total to 0.",
+            "label": "Reset Count"
+          }
+        },
+        "attributes": {
+          "unit": {
+            "description": "Name for items which are being counted.",
+            "label": "Unit",
+            "editable": "text"
+          },
+          "increment": {
+            "description": "Count up or down with this number.",
+            "label": "Increment By",
+            "editable": "number",
+            "min" : 1
+          }
+        }
+      }
+    </script>
+  </template>
+    <script>
+      Polymer("ceci-<%= name %>", {
+        ready: function() {
+          this.increment = Number(this.increment) || 1;
+          this.value = Number(this.value) || 0;
+          this.super();
+          this.displayUnit = this.unit;
+          this.updateUnit();
+        },
+        value: 0,
+        increment: 1,
+        unit: 'Sprocket',
+        incrementChanged: function(oldValue, newValue) {
+          this.increment = Number(this.increment) || 0;
+        },
+        updateUnit : function(){
+          if (this.unit) {
+            var unit = this.unit.trim();
+            if (unit.length > 0) {
+
+              var pluralChar = "";
+              if((Number(this.value) !== 1) && (unit[unit.length - 1] !== 's')){
+                pluralChar = "s";
+              }
+
+              if(unit[unit.length - 1] === unit[unit.length - 1].toUpperCase()) {
+                pluralChar = pluralChar.toUpperCase()
+              }
+              this.displayUnit = " " + unit + pluralChar;
+            }
+          }
+        },
+        unitChanged: function() {
+          this.updateUnit();
+        },
+        valueChanged: function() {
+          this.broadcast("currentCount", this.value);
+          this.updateUnit();
+        },
+        countUp: function() {
+          this.value = Number(this.value) + Number(this.increment, 10);
+        },
+        countDown: function() {
+          this.value = Number(this.value) - Number(this.increment, 10);
+        },
+        resetCount: function() {
+          this.value = 0;
+        }
+      });
+    </script>
+</polymer-element>

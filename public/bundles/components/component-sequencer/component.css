@@ -1,7 +1,7 @@
 :host {
   display: block;
   width: 100%;
-  padding: 20px 10px 16px 10px;
+  padding: 10px;
   background: #555;
   text-align: center;
   -webkit-box-sizing: border-box;
@@ -28,7 +28,7 @@
 }
 
 :host #channels {
-  display: inline-block;
+  display: block;
   position: relative;
 }
 
@@ -46,19 +46,20 @@
 :host .channelrow .beat,
 :host .channelrow .label
 {
-  display:block;
-  float: left;
 }
 
 :host .channelrow .label:after {
   content: "1";
 }
 
+:host table {
+  width: 100%;
+}
+
 :host .channelrow .beat {
   background: #DDD;
   margin: 0;
   height: 40px;
-  width: 68px;
   opacity: .2;
   margin: 0 4px 0px 0;
   -webkit-border-radius: 3px;
@@ -83,30 +84,12 @@
   opacity: .8;
 }
 
-:host [data-beat="0"] .beat:first-child,
-:host [data-beat="1"] .beat:nth-child(2),
-:host [data-beat="2"] .beat:nth-child(3),
-:host [data-beat="3"] .beat:nth-child(4)
-{
-  opacity: .25;
-}
 
-:host [data-beat="0"] .beat.on:first-child,
-:host [data-beat="1"] .beat.on:nth-child(2),
-:host [data-beat="2"] .beat.on:nth-child(3),
-:host [data-beat="3"] .beat.on:nth-child(4)
-{
-  opacity: 1;
-}
-
-
-:host .indicator.top {
-  top: -8px;
+:host .indicator-row td {
+  height: 5px;
 }
 
 :host .indicator {
-  position: absolute;
-  width: 68px;
   height: 5px;
   background: white;
   opacity: .4;
@@ -114,16 +97,8 @@
   -webkit-transform-origin: center;
   -moz-transform: scaleX(.2);
   -moz-transform-origin: center;
+  display: none;
 }
-
-:host .indicator.bottom {
-  bottom: -8px;
-}
-
-:host [data-beat="0"] .indicator { left: 0px; }
-:host [data-beat="1"] .indicator { left: 72px; }
-:host [data-beat="2"] .indicator { left: 144px; }
-:host [data-beat="3"] .indicator { left: 216px; }
 
 :host .channelrow .beat.on {
   opacity: 1;

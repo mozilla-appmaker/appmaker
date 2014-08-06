@@ -1,25 +1,20 @@
-<polymer-element name="ceci-timer" extends="ceci-element" attributes="background time playsound"
-playsound="true"
-time="5"
-background="#222">
+<polymer-element name="ceci-timer" extends="ceci-element" attributes="time">
   <ceci-definition>
     {
       "name": "Timer",
       "thumbnail": "./thumbnail.png",
-      "description": "Counts down time and when time runs out it plays a sound and sends a broadcasts.",
+      "description": "Keeps track of time and broadcasts when time is up.",
       "tags": ["timer", "time"],
       "broadcasts": {
         "timeup": {
           "label": "Time is Up",
-          "description": "Time is up!",
-          "default" : "true"
+          "description": "Time is up!"
         }
       },
       "listeners": {
         "start": {
           "label": "Start",
-          "description": "Start the timer.",
-          "default" : "true"
+          "description": "Starts the timer."
         },
         "pause": {
           "label": "Pause",
@@ -28,43 +23,65 @@ background="#222">
         "reset": {
           "label": "Reset",
           "description": "Resets the timer."
-        },
-        "settimer": {
-          "label": "Set Timer",
-          "description": "Set a time in seconds to count down from."
         }
       },
       "attributes": {
         "time": {
-          "label": "Count Down (in Seconds)",
-          "description": "Amount of time to count down from.",
+          "label": "Time",
+          "description": "Amount of time to elapse",
           "editable": "number"
-        },
-        "playsound": {
-          "label": "Play sound when timer finishes",
-          "description": "Play sound when timer finishes.",
-          "editable": "boolean"
-        },
-        "background": {
-          "label": "Background Color",
-          "description": "Background color of the timer.",
-          "editable": "color"
         }
       }
     }
   </ceci-definition>
-
   <template>
-    <link rel="stylesheet" href="component.css"></link>
-    <div class="timer" on-ceci-pressdown="{{ timerPressed }}" style="background: {{ background }}">
-      {{_timeLeftString}}
-      <div class="progress-wrapper">
-        <div class="progress" style="width: {{ progress }}%"></div>
-      </div>
-    </div>
+    <style>
+      :host {
+        display: block;
+        height: 3.5em;
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+      :host .timer, :host .elapsed-time {
+        margin-left: 10px;
+      }
+
+      @-webkit-keyframes flashing {
+        from {
+          background-color: darkred;
+          color: white;
+        }
+        to {
+          background-color: transparent;
+          color: darkred;
+        }
+      }
+
+      @keyframes flashing {
+        from {
+          background-color: darkred;
+          color: white;
+        }
+        to {
+          background-color: transparent;
+          color: darkred;
+        }
+      }
+
+      :host #timerTime.timeup {
+        -webkit-animation: flashing 2s infinite;
+        animation: flashing 2s infinite;
+        -webkit-animation-timing-function: steps(2, end);
+        animation-timing-function: steps(2, end);
+        font-weight: bold;
+      }
+    </style>
+    <template if="{{time > 0}}">
+      <div class="timer"><strong>Time Left:</strong> <span id="timerTime">{{_timeLeftString}}</span></div>
+    </template>
+    <div class="elapsed-time"><strong>Elapsed Time:</strong> {{_elapsedTimeString}}</div>
     <shadow></shadow>
   </template>
-
   <script>
     function timeFromSeconds (milliseconds) {
       milliseconds = parseInt(milliseconds, 10);
@@ -81,134 +98,63 @@ background="#222">
       if (milliseconds < 10) milliseconds = "00" + milliseconds;
       else if (milliseconds < 100) milliseconds = "0" + milliseconds;
 
-      //Trimming milliseconds to two numbers
-      milliseconds = milliseconds + "";
-      milliseconds = milliseconds.substr(0,2);
-
-      return ((parseInt(hours,10) > 0) ? hours + ":" : "") + minutes + ':' + seconds + '.' + milliseconds;
+      return hours + ':' + minutes + ':' + seconds + '.' + milliseconds;
     }
 
     Polymer("ceci-timer", {
+      time: 10,
       _timeLeft: 0,
       _elapsedTime: 0,
       _lastElapsedTime: 0,
-      timestamp : 0,
-      running : false,
+      _timeUp: false,
       ready: function() {
-        // "Ding" sound courtesy of http://www.freesfx.co.uk
-
         this.super();
-        this.reset();
         this._timeLeft = this.time * 1000;
-        this._timeLeftString = timeFromSeconds(this._timeLeft);
-        this.updateDisplay();
-        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-                                      window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-
-        this.ctx = window.AudioContext || window.webkitAudioContext;
-
-        if (!this.ctx) {
-          console.error('Could not get AudioContext for kickdrum.');
-          return;
-        }
-
-        this.ctx = new this.ctx();
-        var that = this;
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", this.resolvePath('sounds/ding.mp3'), true);
-        xhr.responseType = "arraybuffer";
-        xhr.onload = function () {
-          if (xhr.response.byteLength) {
-            that.ctx.decodeAudioData(xhr.response, function(data) {
-              that.audioBuffer = data;
-            },
-            function (e) {
-              console.error('Error decoding the audio buffer for kickdrum.', arguments);
-            });
-          }
-        };
-        xhr.send();
-      },
-      playDing : function(){
-        if(this.playsound === "true"){
-          var src = this.ctx.createBufferSource();
-          var gain = this.ctx.createGain();
-          gain.gain.value = this.volume;
-          src.buffer = this.audioBuffer;
-          src.loop = false;
-          src.connect(gain);
-          gain.connect(this.ctx.destination);
-          src.start(0);
-        }
-      },
-      timerPressed : function(){
-        if(this.running) {
-          this.pause();
-        } else {
-          this.start();
-        }
-      },
-      updateDisplay: function(){
-        var progress = parseInt(this._timeLeft) / parseInt(this.time * 1000) * 100;
-        var p = progress;
-        this.progress = p;
-      },
-      settimer : function(v){
-        this.time = v;
-        this.reset();
-      },
-      timeChanged: function(oldValue,newValue){
-        this.time = newValue;
-        this._timeLeft = this.time * 1000;
+        this._elapsedTimeString = timeFromSeconds(this._elapsedTime);
         this._timeLeftString = timeFromSeconds(this._timeLeft);
       },
       start: function() {
-        if(!this.running) {
-          this._startTime = Date.now();
-          this.running = true;
-          this.tick();
-          this.timeStamp = Date.now();
+        if (this._timeUp || this._timerInterval) {
+          this.reset();
         }
+        this._startTime = Date.now();
+        this._startTimer();
+      },
+      pause: function () {
+        this._lastElapsedTime = this._elapsedTime;
+        clearInterval(this._timerInterval);
+        this._timerInterval = null;
       },
       reset: function () {
+        clearInterval(this._timerInterval);
+        this._timerInterval = null;
+        this._timeUp = false;
         this._timeLeft = this.time * 1000;
         this._elapsedTime = 0;
         this._lastElapsedTime = 0;
+        this._elapsedTimeString = timeFromSeconds(this._elapsedTime);
         this._timeLeftString = timeFromSeconds(this._timeLeft);
-        this.running = false;
-        this.updateDisplay();
+        this.$.timerTime.classList.remove('timeup');
       },
-      pause: function () {
-        if(this.running) {
-          this.running = false;
-        }
-      },
-      tick : function(){
-        var that = this;
+      _startTimer: function () {
+        this._timerInterval = setInterval(function () {
+          this._elapsedTime = Date.now() - this._startTime + this._lastElapsedTime;
+          this._timeLeft = (this.time * 1000) - this._elapsedTime;
+          this._elapsedTimeString = timeFromSeconds(this._elapsedTime);
 
-        requestAnimationFrame(function(){
-          if(that.running == true) {
-
-            that._elapsedTime = Date.now() - that.timeStamp;
-            that._timeLeft = that._timeLeft - that._elapsedTime;
-
-            if (that._timeLeft <= 0) {
-              that._timeLeftString = timeFromSeconds(0);
-              that.broadcast('timeup',"Ding!");
-              that.playDing();
-              that.reset();
+          if (this._timeLeft <= 0) {
+            this._timeLeftString = timeFromSeconds(0);
+            if (!this._timeUp) {
+              this._timeUp = true;
+              this.$.timerTime.classList.add('timeup');
+              this.broadcast('timeup');
             }
-            else {
-              that._timeLeftString = timeFromSeconds(that._timeLeft);
-            }
-            that.updateDisplay();
-
-            that.timeStamp = Date.now();
-            that.tick();
           }
-        });
-
-      }
+          else {
+            this._timeLeftString = timeFromSeconds(this._timeLeft);
+          }
+        }.bind(this), 50);
+      },
     });
   </script>
 </polymer-element>

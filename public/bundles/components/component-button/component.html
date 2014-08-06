@@ -1,8 +1,5 @@
-<polymer-element name="ceci-button" attributes="playsound fontsize textcolor buttoncolor label value" value="Press" extends="ceci-element"
-  label="Press Me"
-  textcolor="#ffffff"
-  fontsize="18"
-  playsound="true"
+<polymer-element name="ceci-button" attributes="textcolor buttoncolor label value" value="Press" extends="ceci-element"
+  label="Press Me" textcolor="#ffffff"
   buttoncolor="#4DB227">
   <ceci-definition>
     {
@@ -40,87 +37,38 @@
           "description": "Background color of the button.",
           "editable": "color",
           "listener": true
-        },
-        "fontsize": {
-          "label": "Font Size",
-          "description": "Button label font size.",
-          "editable": "range",
-          "min" : "4",
-          "max" : "40"
-        },
-        "playsound": {
-          "label": "Play Sound when Pressed",
-          "description": "Play a sound when pressed.",
-          "editable": "boolean"
         }
       }
     }
   </ceci-definition>
   <template>
     <link rel="stylesheet" href="component.css"></link>
-    <div id="buttonwrapper" style="font-size: {{fontsize}}px; background: {{buttoncolor}};" on-ceci-pressdown="{{pressdown}}" on-ceci-pressup="{{pressup}}" class="button-wrapper">
-      &nbsp;
+    <div id="buttonwrapper" on-ceci-pressdown="{{pressdown}}" on-ceci-pressup="{{pressup}}" class="button-wrapper">
+      <div id="button">{{label}}</div>
       <div class="overlay active-overlay"></div>
-      <div id="button" style="color: {{textcolor}};">{{label}}</div>
-      <div class="bottom"></div>
     </div>
     <shadow></shadow>
-    <!-- Button click sound courtesy of http://www.freesfx.co.uk -->
   </template>
   <script>
     Polymer('ceci-button', {
       ready: function () {
         this.super();
-
-        this.ctx = window.AudioContext || window.webkitAudioContext;
-
-        if (!this.ctx) {
-          console.error('Could not get AudioContext for kickdrum.');
-          return;
-        }
-
-        if(this.playsound === "true") {
-          this.ctx = new this.ctx();
-          var that = this;
-          var xhr = new XMLHttpRequest();
-          xhr.open("GET", this.resolvePath('sounds/tap.mp3'), true);
-          xhr.responseType = "arraybuffer";
-          xhr.onload = function () {
-            if (xhr.response.byteLength) {
-              that.ctx.decodeAudioData(xhr.response, function(data) {
-                that.audioBuffer = data;
-              },
-              function (e) {
-                console.error('Error decoding the audio buffer for the button.', arguments);
-              });
-            }
-          };
-          xhr.send();
-        }
-
       },
       attached : function(){
         this.super();
       },
+      pressup : function(){
+        this.$.buttonwrapper.classList.remove("pressdown");
+      },
       pressdown : function(){
-        if(this.playsound === "true") {
-          var src = this.ctx.createBufferSource();
-          var gain = this.ctx.createGain();
-          gain.gain.value = .4;
-          src.buffer = this.audioBuffer;
-          src.loop = false;
-          src.connect(gain);
-          gain.connect(this.ctx.destination);
-          src.start(0);
-        }
         this.$.buttonwrapper.classList.add("pressdown");
         this.broadcast('click', this.getAttribute('value'));
       },
-      pressup : function(){
-        this.$.buttonwrapper.classList.remove("pressdown");
-        this.$.buttonwrapper.classList.remove("fade");
-        this.$.buttonwrapper.offsetWidth = this.$.buttonwrapper.offsetWidth;
-        this.$.buttonwrapper.classList.add("fade");
+      textcolorChanged: function (oldValue, newValue) {
+        this.$.button.style.color = newValue;
+      },
+      buttoncolorChanged: function (oldValue, newValue) {
+        this.$.button.style.backgroundColor = newValue;
       }
     });
   </script>

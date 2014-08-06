@@ -6,7 +6,7 @@
     {
       "tags": ["microphone", "button", "audio"],
       "thumbnail": "./thumbnail.png",
-      "description": "Records an audio clip.",
+      "description": "Records sounds.",
       "name": "Microphone",
       "broadcasts": {
         "clip": {
@@ -144,7 +144,7 @@
         if(!window.RecordRTC) {
           var script = document.createElement("script");
           script.onload = loadupRecordingFunctionality;
-          script.src = "/bundles/resources/RecordRTC.js";
+          script.src = this.resolvePath("resources/RecordRTC.js");
           document.head.appendChild(script);
         } else { loadupRecordingFunctionality(); }
       }
