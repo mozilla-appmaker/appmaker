@@ -1,4 +1,4 @@
-<polymer-element name="ceci-field" attributes="name kind">
+<polymer-element name="ceci-field" attributes="kind">
   <template>
     <style>
       :host {
@@ -23,7 +23,7 @@
         this.fire("propertychange", detail);
       },
       getCollectionName: function() {
-        return this.parentNode.name;
+        return this.parentNode.getAttribute("fieldname");
       }
     });
   </script>

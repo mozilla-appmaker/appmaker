@@ -128,15 +128,16 @@
       currentCollectionIndex: 0,
       createFieldManager: function(field) {
         return {
-          name: field.name,
-          oldName: field.name,
+          name: field.fieldname,
+          oldName: field.fieldname,
           kind: field.kind
         };
       },
       createCollectionManager: function(collection) {
+console.log(collection.collectionname);
         return {
-          name: collection.name,
-          oldName: collection.name,
+          name: collection.collectionname,
+          oldName: collection.collectionname,
           fields: [],
           data: collection.data.slice(0)
         };
@@ -145,7 +146,8 @@
         var self = this;
         function onFieldChange(e) {
           var detail = e.detail;
-          var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ this.name + '"]').getAttribute("data-index");//document.getElementById(this.name).getAttribute("data-index");
+console.log(this.getAttribute("fieldname"));
+          var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ this.name + '"]').getAttribute("data-index");
           if (detail.added) {
             var obj = self.createFieldManager(detail.added);
             self.collections[collectionIndex].fields.push(obj);
@@ -281,14 +283,14 @@
         var collection = this.collections[this.currentCollectionIndex];
         var oldName = collection.oldName;
         collection.oldName = collection.name;
-        this.collectionsElement.getCollection(oldName).name = sender.value;
+        this.collectionsElement.getCollection(oldName).setAttribute("collectionname", sender.value);
       },
       onFieldNameChange: function(event, detail, sender) {
         var collection = this.collections[this.currentCollectionIndex];
         var field = collection.fields[parseInt(sender.getAttribute('data-index'), 10)];
         var oldName = field.oldName;
         field.oldName = field.name;
-        this.collectionsElement.getField(collection.name, oldName).name = sender.value;
+        this.collectionsElement.getField(collection.name, oldName).setAttribute("fieldname", sender.value);
       }
     });
   </script>

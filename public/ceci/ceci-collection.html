@@ -1,4 +1,4 @@
-<polymer-element name="ceci-collection" attributes="name" name="New Collection">
+<polymer-element name="ceci-collection">
   <template>
     <style>
       :host {
@@ -13,7 +13,7 @@
         this.data = [];
       },
       attached: function() {
-        var dataString = localStorage.getItem("ceci-collections-" + this.name);
+        var dataString = localStorage.getItem("ceci-collections-" + this.getAttribute("collectionname"));
         var savedData = [];
         var self = this;
         if (dataString) {
@@ -28,7 +28,7 @@
       addField: function(name, kind) {
         var field = document.createElement("ceci-field");
         this.appendChild(field);
-        field.name = name;
+        field.setAttribute("fieldname", name);
         field.kind = kind || "text";
         var detail = {
           added: field
@@ -36,7 +36,7 @@
         this.fire("fieldchange", detail);
       },
       removeField: function(name) {
-        var field = this.querySelector('*[name="'+ name + '"]');
+        var field = this.querySelector('ceci-field[fieldname="'+ name + '"]');
         this.removeChild(field);
         var detail = {
           removed: field
@@ -44,7 +44,7 @@
         this.fire("fieldchange", detail);
       },
       getField: function(name) {
-        return this.querySelector('*[name="'+ name + '"]');
+        return this.querySelector('ceci-field[fieldname="'+ name + '"]');
       },
       getFields: function() {
         return Array.prototype.slice.call(this.querySelectorAll("ceci-field"), 0);
@@ -82,7 +82,7 @@
         this.fire("itemchange", detail);
       },
       saveData: function() {
-        localStorage.setItem("ceci-collections-" + this.name, JSON.stringify(this.data));
+        localStorage.setItem("ceci-collections-" + this.getAttribute("collectionname"), JSON.stringify(this.data));
       }
     });
   </script>
