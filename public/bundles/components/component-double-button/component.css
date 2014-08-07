@@ -1,42 +1,78 @@
 :host {
   display: block;
-  width: 100%;
-  word-spacing: -1;
-}
-
-:host .buttons-wrapper {
-  line-height: 0px;
-  font-size: 0px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 5px 10px;
 }
 
 :host .button-wrapper {
   position: relative;
   display: inline-block;
   width: 50%;
+  line-height: 0px;
+  font-size: 0px;
+}
+
+:host .buttons-wrapper {
+  line-height: 0px;
 }
 
 :host .button {
   cursor: pointer;
-  border-bottom: 2px solid rgba(0,0,0,.1);
-  display: block;
   text-align: center;
-  padding: 12px 0 10px 0;
+  padding: 12px 0px;
   text-overflow: ellipsis;
   overflow: hidden;
-  font-weight: 300;
   font-size: 1.8rem;
+  position: relative;
   line-height: 1.8rem;
   width: 100%;
-  display: inline-block;
+  display: block;
   -webkit-box-sizing: border-box;
+  width: calc(100% - 5px);
+  border-radius: 3px;
 }
 
-:host #leftbutton {
- border-right: 2px solid rgba(0,0,0,.1);
+:host .pressdown .button {
+  margin-top: 1px;
+  padding: 12px 0 11px 0;
+}
+
+:host .bottom {
+  height: 3px;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  z-index: 3;
+  background: rgba(0,0,0,.25);
+  border-radius: 0 0 3px 3px;
+  z-index: 1;
+}
+
+:host .label {
+  font-weight: 400;
+  z-index: 9999;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  padding: inherit;
+}
+
+:host .pressdown .bottom {
+  height: 2px;
 }
 
 :host #rightbutton {
-  border-left: 2px solid rgba(255,255,255,.1);
+  float: right;
+}
+:host #leftbutton {
+  float: left;
 }
 
 :host .overlay {
@@ -46,32 +82,26 @@
   right: 0;
   bottom: 0;
   opacity: 0;
-}
-
-:host .active-overlay {
+  border-radius: 3px;
   background: black;
+  z-index: 2;
 }
 
-:host .hover-overlay {
-  background: white;
+:host .pressdown .active-overlay {
+  opacity: .4;
 }
 
-:host .button-wrapper:hover .hover-overlay {
-  opacity: .1;
+:host .fade .active-overlay {
+  -webkit-animation: fadeout .2s linear;
+  animation: fadeout .2s linear;
 }
 
-:host .button-wrapper:active .active-overlay {
-  opacity: .1;
-}
-:host .button-wrapper:active .hover-overlay {
-  opacity: 0;
+@-webkit-keyframes fadeout {
+  0%    { opacity: .4; }
+  100%  { opacity: 0; }
 }
 
-:host .button-wrapper:active .button {
-  border-top: solid 2px rgba(0,0,0,.1);
-  border-bottom: none;
-}
-
-:host button {
-  border: none;
+@keyframes fadeout {
+  0%    { opacity: .4; }
+  100%  { opacity: 0; }
 }
