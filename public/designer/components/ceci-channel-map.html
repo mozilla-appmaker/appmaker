@@ -19,12 +19,14 @@
         window.removeEventListener('channelUpdate', this.onChannelUpdate);
       },
       defaultIndex : 0,
-      getFreeChannel : function(type){
+      getFreeChannel : function(type,used){
         // Order of returned channel:
         // 1 - First unmatched listner / broadcast channel
         // 2 - Next unused channel (cycling from a to z)
 
+        used = used || [];
         this.getChannels();
+
         var useChannel, matches, doesntmatch;
 
         if(type == "listener") {
@@ -38,7 +40,7 @@
         //Return first unused broadcast channel...
         for(var i = 0; i < this.channelNames.length; i++){
           var channelName = this.channelNames[i];
-          if(matches.indexOf(channelName) > -1) {
+          if(matches.indexOf(channelName) > -1 && used.indexOf(channelName) < 0) {
             if(doesntmatch.indexOf(channelName) < 0) {
               return channelName;
             }
@@ -48,7 +50,7 @@
         // ...or fist unused listener channel
         for(var i = 0; i < this.channelNames.length; i++){
           var channelName = this.channelNames[i];
-          if(doesntmatch.indexOf(channelName) < 0) {
+          if(doesntmatch.indexOf(channelName) < 0 && used.indexOf(channelName) < 0) {
             useChannel = channelName;
             break;
           }
@@ -65,12 +67,6 @@
         this.lastDefault = useChannel;
         return useChannel;
 
-      },
-      get freeListenerChannel() {
-        return this.getFreeChannel("listener");
-      },
-      get freeBroadcastChannel() {
-        return this.getFreeChannel("broadcast");
       },
       getChannels : function(){
         this.map = {};
