@@ -3,11 +3,12 @@
   <head>
     <title><%- appName %></title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/app.css" />
+    <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/mobile.css" />
     <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/remix.css" />
     <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/loading.css" />
-    <link rel="stylesheet" href="<%= process.env.ASSET_HOST %>/stylesheets/install-spinner.css" />
     <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300, 400,600" rel="stylesheet" type="text/css">
+
+    <script src="<%= process.env.ASSET_HOST %>/vendor/qrcodejs/qrcode.js"></script>
 
     <base href="<%- ceciComponentURL %>">
 

@@ -121,11 +121,13 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
             appName: appName,
             gettext: req.gettext,
             ceciComponentURL: process.env.ASSET_HOST,
-            remixURL: remixUrl,
             bundles: app.locals.bundles,
             components: coreComponents.concat(appComponents),
             userComponents: userComponents,
-            manifestUrl: remoteURLs.manifest
+            manifestUrl: remoteURLs.manifest,
+            username: userName,
+            description: appDescription,
+            remixUrl : remoteURLs.app
           });
 
           var installStr = templates.install({
