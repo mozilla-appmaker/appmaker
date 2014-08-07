@@ -58,42 +58,10 @@
       audioBuffer: null,
       ready: function () {
         this.super();
-
-        this.ctx = window.AudioContext || window.webkitAudioContext;
-
-        if (!this.ctx) {
-          console.error('Could not get AudioContext for kickdrum.');
-          return;
-        }
-
-        this.ctx = new this.ctx();
-
-        var that = this;
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", this.resolvePath('sounds/kick.ogg'), true);
-        xhr.responseType = "arraybuffer";
-        xhr.onload = function () {
-          if (xhr.response.byteLength) {
-            that.ctx.decodeAudioData(xhr.response, function(data) {
-              that.audioBuffer = data;
-            },
-            function (e) {
-              console.error('Error decoding the audio buffer for kickdrum.', arguments);
-            });
-          }
-        };
-        xhr.send();
+        this.loadSound("kick","sounds/kick.ogg");
       },
       kickon: function (e) {
-        var src = this.ctx.createBufferSource();
-        var gain = this.ctx.createGain();
-        gain.gain.value = this.volume;
-        src.buffer = this.audioBuffer;
-        src.loop = false;
-        src.connect(gain);
-        gain.connect(this.ctx.destination);
-        src.start(0);
+        this.playSound("kick",.4);
         this.$.kick.classList.add("on");
       },
       kick : function(){
