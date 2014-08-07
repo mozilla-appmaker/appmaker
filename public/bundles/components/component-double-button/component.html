@@ -1,5 +1,5 @@
 <polymer-element name="ceci-double-button" attributes="playsound textcolor rightbuttoncolor leftbuttoncolor leftlabel rightlabel value" value="Click" extends="ceci-element"
-  playsound ="true"
+  playsound="true"
   leftlabel="OK"
   rightlabel="Cancel"
   textcolor="#ffffff"
@@ -87,7 +87,7 @@
         this.ctx = window.AudioContext || window.webkitAudioContext;
 
         if (!this.ctx) {
-          console.error('Could not get AudioContext for kickdrum.');
+          console.error('Could not get AudioContext for the Double Button brick.');
           return;
         }
 
