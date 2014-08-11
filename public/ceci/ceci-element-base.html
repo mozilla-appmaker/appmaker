@@ -179,16 +179,21 @@
 
         var that = this;
         var map = document.querySelector("ceci-channel-map");
+        var channel;
+        var used = []; //Used channels so we don't use the same one for broadcasting and listening
 
         this._defaultListeners.forEach(function (d) {
           if (!that.querySelector('ceci-listen[for="' + d.name + '"]')) {
-            that.setListener(d.name, map.freeListenerChannel);
+            channel = map.getFreeChannel("listener");
+            that.setListener(d.name, channel);
+            used.push(channel);
           }
         });
 
         this._defaultBroadcasts.forEach(function (d) {
           if (!that.querySelector('ceci-broadcast[from="' + d.name + '"]')) {
-            that.setBroadcast(d.name, map.freeBroadcastChannel);
+            channel = map.getFreeChannel("broadcast",used);
+            that.setBroadcast(d.name, channel);
           }
         });
       },
