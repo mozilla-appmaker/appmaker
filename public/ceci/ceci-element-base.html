@@ -129,8 +129,10 @@
       sounds : {},
       playSound : function(sound,volume){
         if(this.sounds[sound] && this.ctx){
-          if(!(typeof parseFloat(volume) == "number") || (typeof volume === "undefined")){
+          if(isNaN(parseFloat(volume))) {
             volume = 1;
+          } else {
+            volume = parseFloat(volume);
           }
           if(volume > 1) { volume = 1; }
           if(volume < 0) { volume = 0; }
