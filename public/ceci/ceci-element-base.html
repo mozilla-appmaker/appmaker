@@ -126,12 +126,57 @@
 
     Polymer('ceci-element-base', {
       eventListeners : [],
+      sounds : {},
+      playSound : function(sound,volume){
+        if(this.sounds[sound] && this.ctx){
+          if(isNaN(parseFloat(volume))) {
+            volume = 1;
+          } else {
+            volume = parseFloat(volume);
+          }
+          if(volume > 1) { volume = 1; }
+          if(volume < 0) { volume = 0; }
+          var gain = this.ctx.createGain();
+          gain.gain.value = volume;
+          gain.connect(this.ctx.destination);
+          var src = this.ctx.createBufferSource();
+          src.buffer = this.sounds[sound];
+          src.loop = false;
+          src.connect(gain);
+          src.start(0);
+        }
+      },
+      loadSound : function(soundName,soundPath){
+        if(this.ctx){
+          var that = this;
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", this.resolvePath(soundPath), true);
+          xhr.responseType = "arraybuffer";
+          xhr.onload = function () {
+            if (xhr.response.byteLength) {
+              that.ctx.decodeAudioData(xhr.response, function(data) {
+                that.sounds[soundName] = data;
+              },
+              function (e) {
+                console.error('Error decoding the audio buffer.', arguments);
+              });
+            }
+          };
+          xhr.send();
+        }
+      },
       ready: function () {
+        this.sounds = {};
         this.eventListeners = [];
         if (this.ceci) return;
         this.addedCustomListeners = false;
 
         var that = this;
+
+        //Use the app's audio context if it's ready
+        var app = document.querySelector("ceci-app");
+        if(app){ this.ctx = app.Audiocontext; }
+
         this.ceci = {
           broadcasts: {},
           listeners: {},
