@@ -129,9 +129,11 @@
       sounds : {},
       playSound : function(sound,volume){
         if(this.sounds[sound] && this.ctx){
-          if(!(typeof parseFloat(volume) == "number" && volume >= 0 && volume <= 1)){
+          if(!(typeof parseFloat(volume) == "number") || (typeof volume === "undefined")){
             volume = 1;
           }
+          if(volume > 1) { volume = 1; }
+          if(volume < 0) { volume = 0; }
           var gain = this.ctx.createGain();
           gain.gain.value = volume;
           gain.connect(this.ctx.destination);
