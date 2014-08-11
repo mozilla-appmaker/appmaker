@@ -8,6 +8,7 @@
     "listjs": "git://github.com/javve/list.js.git#~1.0.0",
     "selectize": "0.9.0"
   },
+  "version": "0.0.24",
   "homepage": "https://github.com/mozilla/webmaker-language-picker",
   "authors": [
     "Ali Al Dallal <ali@alicoding.com>"
@@ -19,13 +20,13 @@
     "Picker"
   ],
   "license": "Mozilla Public License, version 2.0",
-  "_release": "928ec12d93",
+  "_release": "0.0.24",
   "_resolution": {
-    "type": "branch",
-    "branch": "ejs-all-the-things",
-    "commit": "928ec12d93660b447f11a91209356dd5ab506631"
+    "type": "version",
+    "tag": "v0.0.24",
+    "commit": "dbb225f281645338863ce8417c1d7b5ac58a2410"
   },
-  "_source": "git://github.com/stenington/webmaker-language-picker.git",
-  "_target": "ejs-all-the-things",
-  "_originalSource": "stenington/webmaker-language-picker"
+  "_source": "git://github.com/mozilla/webmaker-language-picker.git",
+  "_target": "0.0.24",
+  "_originalSource": "webmaker-language-picker"
 }
