@@ -12,14 +12,14 @@
       addCollection: function(name) {
         var collection = document.createElement("ceci-collection");
         this.appendChild(collection);
-        collection.name = name;
+        collection.setAttribute("collectionname", name);
         var detail = {
           added: collection
         };
         this.fire("collectionchange", detail);
       },
       removeCollection: function(name) {
-        var collection = this.querySelector('*[name="'+ name + '"]');
+        var collection = this.querySelector('ceci-collection[collectionname="'+ name + '"]');
         this.removeChild(collection);
         var detail = {
           removed: collection
@@ -27,16 +27,16 @@
         this.fire("collectionchange", detail);
       },
       getCollection: function(name) {
-        return this.querySelector('*[name="'+ name + '"]');
+        return this.querySelector('ceci-collection[collectionname="'+ name + '"]');
       },
       getCollections: function() {
         return Array.prototype.slice.call(this.querySelectorAll("ceci-collection"), 0);
       },
       getField: function(collectionname, fieldname) {
-        return this.querySelector('*[name="'+ collectionname + '"]').getField(fieldname);
+        return this.querySelector('ceci-collection[collectionname="'+ collectionname + '"]').getField(fieldname);
       },
       getFields: function(name) {
-        return this.querySelector('*[name="'+ name + '"]').getFields();
+        return this.querySelector('ceci-collection[collectionname="'+ name + '"]').getFields();
       }
     });
   </script>
