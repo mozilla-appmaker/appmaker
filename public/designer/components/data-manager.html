@@ -190,13 +190,11 @@
         function onCollectionChange(e) {
           var detail = e.detail;
           if (detail.added) {
-            self.async(function() {
             var obj = self.createCollectionManager(detail.added);
             self.collections.push(obj);
             detail.added.addEventListener("itemchange", onItemChange);
             detail.added.addEventListener("fieldchange", onFieldChange);
             detail.added.addEventListener("propertychange", onCollectionPropertyChange);
-});
           }
           if (detail.removed) {
             var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ detail.removed.getAttribute("collectionname") + '"]').getAttribute("data-index");
