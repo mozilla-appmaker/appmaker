@@ -160,7 +160,7 @@
         }
         function onItemChange(e) {
           var detail = e.detail;
-          var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ this.getAttribute("fieldname") + '"]').getAttribute("data-index");
+          var collectionIndex = self.shadowRoot.querySelector('*[data-name="'+ this.getAttribute("collectionname") + '"]').getAttribute("data-index");
           if (detail.removed) {
             self.collections[collectionIndex].data.splice(detail.index, 1);
           }
