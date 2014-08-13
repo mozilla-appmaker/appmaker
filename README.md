@@ -78,6 +78,7 @@ cp sample.env .env
 A short explanation of a complete `.env` file:
 
 ```
+PRODUCTION: OPTIONAL - if this value is set, app.js will ignore "dev only" code paths
 BUNDLE: OPTIONAL - if this has any value, components will be bundled into a single mozilla-appmaker.min.html file in ./public/bundles/components (modifying individual components will then only take effect on app start)
 BUNDLE_MINIFY: OPTIONAL - if this has any value, it will also minify the resulting bundle(s)
 MONGO_URL: REQUIRED - the URI for your mongod instance and database, for example mongodb://localhost/appmakerdev (or whatever your database is named)

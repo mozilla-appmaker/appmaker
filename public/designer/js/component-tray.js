@@ -145,7 +145,7 @@ define(
         if (card) {
           var newElement = document.createElement(name);
           // wait until Polymer has prepared the element completely
-          newElement.async(function() {
+          var handle = function() {
             var selectedBrick = card.querySelector(".brick.selected");
             var next = selectedBrick ? selectedBrick.nextSibling : false;
             if(selectedBrick && next){
@@ -158,7 +158,13 @@ define(
             // attached to the DOM.
             newElement.applyDefaults();
             analytics.event("Added Component", {label: name});
-          });
+          };
+
+          if(newElement.elementReady) {
+            handle();
+          } else {
+            newElement.addEventListener("CeciElementReady", handle);
+          }
           return newElement;
         }
       },

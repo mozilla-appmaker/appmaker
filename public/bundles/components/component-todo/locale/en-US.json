@@ -1,3 +1,6 @@
 {
-	"ceci-todo-list": "Todo list"
+	"ceci-todo-list": "Todo list",
+	"ceci-todo-list/attributes/collection": "",
+	"ceci-todo-list/attributes/collection/label": "Collection",
+	"ceci-todo-list/attributes/collection/description": "Todo list collection name"
 }

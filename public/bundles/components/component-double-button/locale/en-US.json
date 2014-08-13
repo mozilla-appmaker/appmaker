@@ -5,14 +5,16 @@
   "ceci-double-button/clickleft/description": "Occurs when left button is clicked.",
   "ceci-double-button/clickright/label": "Right Button",
   "ceci-double-button/clickright/description": "Occurs when right button is clicked.",
-  "ceci-double-button/leftlabel/label": "Left Button Label",
-  "ceci-double-button/leftlabel/description": "Text shown on the left button.",
   "ceci-double-button/leftbuttoncolor/label": "Left Button Color",
   "ceci-double-button/leftbuttoncolor/description": "Background color of the left button.",
-  "ceci-double-button/rightlabel/label": "Right Button Label",
-  "ceci-double-button/rightlabel/description": "Text shown on the right button.",
   "ceci-double-button/rightbuttoncolor/label": "Right Button Color",
   "ceci-double-button/rightbuttoncolor/description": "Background color of the right button.",
   "ceci-double-button/textcolor/label": "Text Color",
-  "ceci-double-button/textcolor/description": "Color of the text on the button's label."
+  "ceci-double-button/textcolor/description": "Color of the text on the button's label.",
+  "ceci-double-button/attributes/leftlabel": "OK",
+  "ceci-double-button/attributes/leftlabel/label": "Left Button Label",
+  "ceci-double-button/attributes/leftlabel/description": "Text shown on the left button.",
+  "ceci-double-button/attributes/rightlabel": "Cancel",
+  "ceci-double-button/attributes/rightlabel/label": "Right Button Label",
+  "ceci-double-button/attributes/rightlabel/description": "Text shown on the right button."
 }

@@ -1,6 +1,7 @@
 {
 	"ceci-fireworks": "Fireworks",
 	"ceci-fireworks/description": "Celebrates with fireworks whenever input is received.",
+	"ceci-fireworks/attributes/fireworksound": "Kaboom!",
 	"ceci-fireworks/attributes/fireworksound/label": "Firework Sound",
 	"ceci-fireworks/attributes/fireworksound/description": "Tell the fireworks what to broadcast every shot."
 }
