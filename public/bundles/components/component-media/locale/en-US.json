@@ -17,10 +17,12 @@
   "ceci-media/rewind/description": "Starts media from the beginning.",
   "ceci-media/starttime/label": "Start Time",
   "ceci-media/starttime/description": "The desired starting point in the selected media.",
-  "ceci-media/url/label": "Media URL",
-  "ceci-media/url/description": "Web URL for the desired media.",
   "ceci-media/volume/label": "Volume",
   "ceci-media/volume/description": "Volume of the playing media.",
   "ceci-media/autoplay/label": "Play Automatically",
-  "ceci-media/autoplay/description": "Play the media as soon as its ready"
+  "ceci-media/autoplay/description": "Play the media as soon as its ready",
+
+  "ceci-media/attributes/url":  "https://www.youtube.com/watch?v=zucBfXpCA6s",
+  "ceci-media/attributes/url/label": "Media URL",
+  "ceci-media/attributes/url/description": "Web URL for the desired media."
 }
