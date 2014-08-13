@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/stylesheets/publishpane.css" >
     <link rel="stylesheet" href="/stylesheets/cards.css" >
     <link rel="stylesheet" href="/stylesheets/tutorial.css" >
+    <link rel="stylesheet" href="/stylesheets/languages.css" >
     <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.css" >
 
     <link rel="icon" href="/images/favicon.png" type="image/x-icon" />
@@ -77,5 +78,20 @@
   </head>
   <body>
     <%- body %>
+    <script type="text/javascript">
+      require(['languages'], function(languages) {
+        languages.ready({
+          css: function() {
+            var $currentLang = $('#current-language');
+            var $languageList = $('#list-of-languages');
+            $languageList.addClass("bottomTop");
+            return {
+              'top': $currentLang.offset().top + 12 + 'px',
+              'margin-left': ($languageList.outerWidth() / -2) + ($currentLang.outerWidth() / 2) + 'px'
+            };
+          }
+        });
+      });
+    </script>
   </body>
 </html>

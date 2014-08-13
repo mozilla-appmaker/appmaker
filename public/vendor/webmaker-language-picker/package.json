@@ -1,6 +1,6 @@
 {
   "name": "webmaker-language-picker",
-  "version": "0.0.22",
+  "version": "0.0.24",
   "main": "js/languages.js",
   "repository": {
     "type": "git",

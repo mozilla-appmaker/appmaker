@@ -1,0 +1,19 @@
+@colors-path: "../../../stylesheets";
+@language-bower-path: "../..";
+
+.clearfix() {
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+.language-picker .selected {
+  color: #373737;
+}
+
+@import "../vendor/webmaker-language-picker/styles/languages.less";

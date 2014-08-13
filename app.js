@@ -180,7 +180,8 @@ var langmap = i18n.getAllLocaleCodes();
 app.locals({
   languages: i18n.getSupportLanguages(),
   locales: Object.keys(langmap),
-  langmap: langmap
+  langmap: langmap,
+  currentPath: ''
 });
 
 
