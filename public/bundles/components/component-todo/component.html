@@ -23,8 +23,8 @@
       },
       "attributes": {
         "collection": {
-          "description": "",
-          "label": "Collection",
+          "description": "Todo list collection name",
+          "label": "Todo List Data",
           "editable": "collection"
         }
       }
@@ -111,14 +111,21 @@
           if (!this.collections) {
             return;
           }
+          var collectionInput = this.shadowRoot.querySelector(".first-run-container input");
           // Clean up any events on the old collection if we change collections.
           if (this.lastCollection && this.onItemChange) {
             var lastCollection = this.collections.getCollection(this.lastCollection);
-            lastCollection.removeEventListener("itemchange", this.onItemChange);
+            if (lastCollection) {
+              lastCollection.removeEventListener("itemchange", this.onItemChange);
+            }
             this.onItemChange = null;
           }
-          this.shadowRoot.querySelector(".first-run-container input").value = this.collection;
+          if (collectionInput) {
+            collectionInput.value = this.collection;
+          }
           if (this.collection === "") {
+            this.shadowRoot.querySelector(".list-container").classList.add("hidden");
+            this.shadowRoot.querySelector(".first-run-container").classList.remove("hidden");
             return;
           }
           var collection = this.collections.getCollection(this.collection);

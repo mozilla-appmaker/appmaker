@@ -80,11 +80,13 @@ define(['jquery', 'inflector', 'l10n', 'colorpicker.core'], function ($, Inflect
     // FIXME: TODO: what makes this a collection? The code didn't make use of
     //              the "definition" variable at all. Do we still use this?
     'collection': function (element, attributeName, title, value, definition) {
-      var e = createLabeledTextfield(title, value);
-
-      e.on('change', function(evt) {
-        element.setAttribute(attributeName, evt.target.value);
+      var e = $('<div><label></label><data-manager></data-manager></div>');
+      e.find("label").text(title);
+      var dataManager = e.find("data-manager")[0];
+      dataManager.addEventListener('collectionchange', function(evt) {
+        element.setAttribute(attributeName, evt.target.getAttribute("collection"));
       });
+      dataManager.setAttribute("collection", value);
       return e[0];
     },
 

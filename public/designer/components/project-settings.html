@@ -43,6 +43,10 @@
         <label>Tags</label>
         <input type="text" value="{{app.apptags}}"></label>
       </div>
+      <div>
+        <label>App Data</label>
+        <div class="data-manager"></div>
+      </div>
     </div>
   </template>
   <script>
@@ -51,6 +55,13 @@
         var that = this;
         function onCeciAppDOMReady () {
           that.app = document.querySelector("ceci-app");
+          // For now we need to ensure data manager isn't added until after potential data is ready.
+          var dataManager = document.createElement("data-manager");
+          var dataManagerContainer = that.shadowRoot.querySelector(".data-manager");
+          // Clear out old managers if this page loaded a new app
+          // from the app loading menu or new app being clicked.
+          dataManagerContainer.innerHTML = "";
+          dataManagerContainer.appendChild(dataManager);
         }
         window.addEventListener("CeciAppDOMReady", onCeciAppDOMReady);
       },
