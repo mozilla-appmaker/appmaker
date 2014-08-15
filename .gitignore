@@ -43,3 +43,6 @@ public/stylesheets/app.css
 public/stylesheets/publishpane.css
 public/stylesheets/install.css
 public/stylesheets/mobile.css
+
+public/bundles/components/mozilla-appmaker.html
+public/bundles/components/mozilla-appmaker-min.html
