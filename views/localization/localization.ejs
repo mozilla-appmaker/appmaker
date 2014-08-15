@@ -1,0 +1,95 @@
+var loadL10n = (function(global) {
+  var stringCache = "ceci locale string data";
+  global[stringCache] = global[stringCache] || {};
+
+  var _forceDev = <%= !process.env.PRODUCTION %>;
+
+  function loadL10n(owner) {
+    var _requestCache = {},
+        _requestedStrings = false;
+
+    var l10n = {
+      debug: function(message) {
+      },
+      get: function (key) {
+        return global[stringCache][key] || "";
+      },
+      processStrings: function(data) {
+        Object.keys(data).forEach(function(key) {
+          global[stringCache][key] = data[key];
+        });
+        owner.stringsUpdated(this);
+      },
+      requestStrings: function(url) {
+        var self = this;
+
+        // load locale strings from session cache, if available, rather than using an XHR
+        if (!_forceDev && Object.keys(global[stringCache]).length > 0) {
+          return setTimeout(function() {
+            owner.stringsUpdated(self);              
+          }, 1);
+        }
+
+        // reach out for /strings information if not cached
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.onreadystatechange = function(){
+          _requestCache[url] = {};
+          _requestCache[url].status = xhr.status;
+          if (this.readyState !== 4) return;
+          if (xhr.status !== 200) return console.error("Localized Error: HTTP error " + xhr.status, url);
+          try {
+            _requestCache[url].response = JSON.parse(this.responseText);
+            self.processStrings(_requestCache[url].response);
+          } catch (err) {
+            console.error("Localized Error: " + err + ", url = ", url);
+          }
+        };
+        xhr.send(null);
+      },
+      ready: function (options) {
+        options = options || {};
+
+        var noCache = !!options.noCache,
+            verboseLogging = !!options.verboseLogging,
+            url = options.url || '/strings';
+
+        if (verboseLogging) {
+          this.debug = console.log;
+        }
+
+        // Add cache busting if requested.
+        url = url + (noCache ? '?bust=' + Date.now() : '');
+
+        if (!_requestedStrings) {
+          _requestedStrings = true;
+          if (_requestCache[url]) {
+            if (_requestCache[url].status === 200) {
+              this.debug("[L10n]: Translation file cached. Firing callback for: ", url);
+              this.processStrings(_requestCache[url].response);
+              return;
+            }
+
+            if (_requestCache[url].status === 404) {
+              this.debug("[L10n]: Skipping the request for: " + url + " Status: " + _requestCache[url].status);
+              return;
+            }
+          }
+
+          this.requestStrings(url);
+        }
+      },
+      getCurrentLang: function () {
+        var html = document.querySelector( "html" );
+        return html && html.lang ? html.lang : "en-US";
+      }
+    };
+
+    l10n.ready();
+
+    return l10n;
+  }
+
+
+  return loadL10n;
+}(window));
