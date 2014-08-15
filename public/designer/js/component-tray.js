@@ -188,11 +188,12 @@ define(
               }
             }
           }
-          //Means it wasn't in any categories
-          if(!added){
-            // var item = DesignerTray.buildItem(name);
-            // DesignerTray.showCategory("other");
-            // document.querySelector(".category-container.other").appendChild(item);
+
+          //If it's not in any categories and we're in devmode, let's show it!
+          if(!added && DesignerTray.devmode == true){
+            var item = DesignerTray.buildItem(name);
+            DesignerTray.showCategory("other");
+            document.querySelector(".category-container.other").appendChild(item);
           }
           knownComponents.push(name);
         }
@@ -381,6 +382,7 @@ define(
     }
 
     function onPolymerReady() {
+      DesignerTray.devmode = document.querySelector("#components-wrapper").classList.contains("development");
       DesignerTray.addComponentsFromRegistry();
       var searchBox = document.querySelector('.component-search');
       searchBox.addEventListener('keyup', function() {
