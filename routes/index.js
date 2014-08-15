@@ -8,11 +8,20 @@ var dbModels = require('../lib/db-models');
 
 module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPublisher) {
   var mongoose = require('mongoose');
-  var dbconn = mongoose.connect(process.env.MONGOLAB_URI || process.env.MONGO_URI || 'mongodb://localhost/appmakerdev',function(err) {
-      if (err) throw new Error("Problem connecting to mongodb. Is mongod running? Is your database name correct?");
+  var dbconn = mongoose.connect(process.env.MONGOLAB_URI || process.env.MONGO_URI || 'mongodb://localhost/appmakerdev', function(err) {
+      if (err) {
+        console.log("****************************************************************************************");
+        console.log("*                                                                                      *");
+        console.log("*   Problem connecting to mongodb! Is mongod running? Is your database name correct?   *");
+        console.log("*   NOTE: Appmaker *will* run, but you will not be able to save or publish anything!   *");
+        console.log("*                                                                                      *");
+        console.log("****************************************************************************************");
+      }
   });
 
-  dbModels.init(dbconn);
+  if(dbconn) {
+    dbModels.init(dbconn);
+  }
 
   return {
 
