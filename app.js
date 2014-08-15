@@ -229,6 +229,7 @@ if(process.env.PRODUCTION) {
   componentPaths.push("./locale/en_US/msg.json");
   app.get( "/strings/:lang?", middleware.crossOrigin, i18n.devStringsRoute( "en-US", componentPaths ));
 }
+app.get( "/components/localization.js", function(req, res) { res.render( "localization/localization" ); });
 
 app.post('/api/publish', routes.publish.publish(app));
 
