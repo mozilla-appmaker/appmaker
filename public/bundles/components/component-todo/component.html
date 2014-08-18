@@ -108,6 +108,9 @@
           }
         },
         collectionChanged: function() {
+          if (!this.collections) {
+            return;
+          }
           // Clean up any events on the old collection if we change collections.
           if (this.lastCollection && this.onItemChange) {
             var lastCollection = this.collections.getCollection(this.lastCollection);
