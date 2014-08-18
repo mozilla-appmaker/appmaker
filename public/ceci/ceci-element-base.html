@@ -349,15 +349,6 @@
           this.fire('CeciChannelUpdated', {detail: {name: name, channel: null, type: 'broadcast'}});
         }
       },
-      attached: function () {
-        if(!this.addedCustomListeners) {
-          this.touchEnabled = 'ontouchstart' in document.documentElement;
-          var els = this.shadowRoot.querySelectorAll(customListenerQuerySelector);
-          Array.prototype.forEach.call(els, this.addCustomListener.bind(this));
-          this.addedCustomListeners = true;
-        }
-        document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));
-      },
       addCustomListener: function(el, listener){
         // Loop over the on-ceci-* listener types to see which one applies to this element
         var that = this;
@@ -377,6 +368,12 @@
         });
       },
       domReady: function () {
+        if(!this.addedCustomListeners) {
+          this.touchEnabled = 'ontouchstart' in document.documentElement;
+          var els = this.shadowRoot.querySelectorAll(customListenerQuerySelector);
+          Array.prototype.forEach.call(els, this.addCustomListener.bind(this));
+          this.addedCustomListeners = true;
+        }
         document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));
       },
       gettext: function (keyname) {
