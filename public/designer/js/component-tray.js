@@ -160,11 +160,7 @@ define(
             analytics.event("Added Component", {label: name});
           };
 
-          if(newElement.elementReady) {
-            handle();
-          } else {
-            newElement.addEventListener("CeciElementReady", handle);
-          }
+          newElement.onready(handle);
           return newElement;
         }
       },

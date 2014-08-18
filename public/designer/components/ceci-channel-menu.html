@@ -63,16 +63,10 @@
             that.component = that.parentNode;
             if(!that.menubuilt){
               // Make sure the component is ready enough to start building a menu for it.
-              if (that.component.ceci) {
+              that.component.onready(function() {
                 that.buildMenu(that.component);
                 that.adjustMenuPosition();
-              }
-              else {
-                that.component.addEventListener('CeciElementReady', function () {
-                  that.buildMenu(that.component);
-                  that.adjustMenuPosition();
-                });
-              }
+              });
             }
           });
         },
