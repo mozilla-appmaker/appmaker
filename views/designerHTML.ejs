@@ -18,8 +18,7 @@
       </div>
     </div>
     <div class="brick-category"></div>
-
-    <div id="components-wrapper">
+    <div id="components-wrapper" <% if (!process.env.PRODUCTION) { %>class="development"<% } %> >
       <div id="category-description"></div>
       <div id="components"></div>
     </div>
