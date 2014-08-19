@@ -1,37 +1,100 @@
-.handle, .garbage {
+.brick-ui {
   position: absolute;
-  top: 3px;
-  opacity: .6;
-  border-radius: 2px;
-  background-color: white;
-  width: 16px;
-  height: 16px;
-  padding: 3px;
-  background-repeat: no-repeat;
-  background-position: 3px 3px;
-  z-index: 9999;
+  top: -37px;
+  top: -16px;
+  right: 5px;
+  display: none;
+  border-width: 4px 4px 0px 0px;
+  z-index: 99999;
+
+  .brick-ui-inner {
+    border-radius: 7px;
+    overflow: auto;
+    display: block;
+    position: relative;
+    background: #2384c2;
+    box-shadow: 0px 2px 0px rgba(0,0,0,.1);
+  }
+
+  a {
+    display: block;
+    float: right;
+  }
+
+  .icon {
+    width: 26px;
+    height: 26px;
+    padding: 4px 6px 2px 6px;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: block;
+    cursor: pointer;
+  }
+
+  .handle {
+    opacity: .4;
+    cursor: move;
+
+    .icon {
+      background-image: url('/images/brick-ui-move.png');
+      background-size: 20px;
+      cursor: move;
+    }
+
+    &:hover {
+      opacity: .6;
+    }
+  }
+
+
+  .garbage .icon {
+    background-image: url('/images/brick-ui-delete.png');
+    background-size: 22px;
+  }
+
+  .clone-brick .icon {
+    background-image: url('/images/brick-ui-clone.png');
+    background-size: 22px;
+  }
+
+  .garbage:hover, .clone-brick:hover {
+    background-image: -webkit-linear-gradient(rgba(255,255,255,.15),rgba(255,255,255,0));
+    background-image: linear-gradient(rgba(255,255,255,.15),rgba(255,255,255,0));
+  }
+
+  .garbage:active, .clone-brick:active {
+    background-image: -webkit-linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,0));
+    background-image: linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,0));
+  }
+
+}
+
+.brick.selected .brick-ui {
   display: block;
-  opacity: 0;
 }
 
-.handle {
-  cursor: move;
-  right: 3px;
-  background-image: url('/designer/images/move.png');
+.brick.selected {
+  border-color: rgba(35,132,194,.3);
+  border-style: solid;
+  border-width: 0 7px 0 7px;
+  width: ~"calc(100% + 14px)";
+  left: -7px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-animation: selectedbrick linear infinite .8s;
+  animation: selectedbrick linear infinite .8s;
+  border-radius: 5px;
 }
 
-.garbage {
-  right: 30px;
-  background-image: url('/images/trash.png');
-  cursor: pointer;
+@-webkit-keyframes selectedbrick {
+  0% {border-color: rgba(35,132,194,.7);}
+  50% {border-color:  rgba(35,132,194,.9);}
+  100% {border-color:  rgba(35,132,194,.7);}
 }
 
-.brick:hover .handle.cecidesigner,
-.brick:hover .garbage.cecidesigner {
-  opacity: .5;
-}
-
-.brick:hover .handle.cecidesigner:hover,
-.brick:hover .garbage.cecidesigner:hover {
-  opacity: 1;
+@keyframes selectedbrick {
+  0% {border-color: rgba(35,132,194,.7);}
+  50% {border-color:  rgba(35,132,194,.9);}
+  100% {border-color:  rgba(35,132,194,.7);}
 }

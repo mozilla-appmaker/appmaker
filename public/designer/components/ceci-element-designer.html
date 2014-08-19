@@ -17,6 +17,7 @@
 
         // Just to preserve "this" for event handlers
         this._cleanUp = this.cleanUp.bind(this);
+        this._cloneBrick = this.cloneBrick.bind(this);
       },
       broadcast: function(name, data) {
         this.super(arguments);
@@ -34,6 +35,17 @@
         message.eventType = eventType;
         message.eventName = eventName;
         this.dispatchEvent(new CustomEvent('log', {bubbles: true, detail: message}));
+      },
+      cloneBrick : function(){
+        var clone = this.cloneNode();
+        clone.applyDefaults();
+        var next = this.nextSibling;
+        if(next){
+          this.parentNode.insertBefore(clone,next);
+        } else {
+          this.parentNode.appendChild(clone);
+        }
+        document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: clone}));
       },
       cleanUp: function () {
         // Remove myself from the DOM!
@@ -69,28 +81,58 @@
           }
         }
 
-        if(!this.querySelector(".handle")){
-          var handle = document.createElement('div');
-          handle.className = 'handle cecidesigner';
-          this.appendChild(handle);
+        //Set up the brick manipulation UI
+        if(this.querySelector(".brick-ui")) {
+          this.removeChild(this.querySelector(".brick-ui"));
         }
 
-        if(!this.querySelector(".garbage")){
-          garbage = document.createElement('div');
-          garbage.className = 'garbage cecidesigner';
-          this.appendChild(garbage);
-        }
+        var brickUI = document.createElement("div");
+        brickUI.classList.add("brick-ui");
+        var brickInner = document.createElement("div");
+        brickInner.classList.add("brick-ui-inner");
+        brickUI.appendChild(brickInner);
+        this.appendChild(brickUI);
 
+        var icon = document.createElement("div");
+        icon.classList.add("icon");
+
+        // Add "Move Brick" UI
+        if(this.querySelector(".handle")){
+          this.removeChild(this.querySelector(".handle"));
+        }
+        var handle = document.createElement('a');
+        handle.setAttribute("title","Move this brick.");
+        handle.className = 'handle cecidesigner';
+        handle.appendChild(icon.cloneNode());
+        brickInner.appendChild(handle);
+
+        // Add "Clone Brick" UI
+        if(this.querySelector(".clone-brick")){
+          this.removeChild(this.querySelector(".clone-brick"));
+        }
+        var clone = document.createElement('a');
+        clone.setAttribute("title","Duplicate this brick.");
+        clone.className = 'clone-brick cecidesigner';
+        clone.appendChild(icon.cloneNode());
+        brickInner.appendChild(clone);
+        this.querySelector(".clone-brick").addEventListener("click", this._cloneBrick);
+
+        // Add "Delete Brick" UI
+        if(this.querySelector(".garbage")){
+          this.removeChild(this.querySelector(".garbage"));
+        }
+        var garbage = document.createElement('a');
+        garbage.setAttribute("title","Delete this brick.");
+        garbage.className = 'garbage cecidesigner';
+        garbage.appendChild(icon.cloneNode());
+        brickInner.appendChild(garbage);
         this.querySelector(".garbage").addEventListener("click", this._cleanUp);
+
       },
       detached: function () {
+        this.querySelector(".clone-brick").removeEventListener("click", this._cleanUp);
         this.querySelector(".garbage").removeEventListener("click", this._cleanUp);
       }
-
-
   });
-
-
-
   </script>
 </polymer-element>
