@@ -56,9 +56,21 @@
   </template>
     <script>
       Polymer("ceci-todo-list", {
-        ready: function() {
+        attached: function() {
           this.super();
+          var that = this;
           this.collections = document.querySelector("ceci-collections");
+          if (this.collections) {
+            this.collections.addEventListener("collectionchange", function(e) {
+              var detail = e.detail;
+              if (detail.removed) {
+                var removedName = detail.removed.getAttribute("collectionname");
+                if (that.collection === removedName) {
+                  that.collection = "";
+                }
+              }
+            });
+          }
           this.items = [];
           this.onItemChange = null;
           this.completed = 0;
