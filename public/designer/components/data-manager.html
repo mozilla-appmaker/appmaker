@@ -245,8 +245,13 @@
             if (!collectionElement) {
               return;
             }
-            var collectionIndex = collectionElement.getAttribute("data-index");
+            var collectionIndex = parseInt(collectionElement.getAttribute("data-index"), 10);
             self.collections.splice(collectionIndex, 1);
+            if (collectionIndex === self.currentCollectionIndex) {
+              self.async(function() {
+                this.currentCollectionIndex = -1;
+              });
+            }
             detail.removed.removeEventListener("itemchange", onItemChange);
             detail.removed.removeEventListener("fieldchange", onFieldChange);
             detail.removed.removeEventListener("propertychange", onCollectionPropertyChange);
@@ -281,7 +286,7 @@
       removeCollection: function () {
         this.collectionsElement.removeCollection(this.collections[this.currentCollectionIndex].collectionname);
         this.async(function () {
-          this.currentCollectionIndex = this.collections.length - 1;
+          this.currentCollectionIndex = -1;
         });
       },
       addKey: function () {
