@@ -105,7 +105,14 @@
               self.items.splice(detail.index, 0, detail.added);
             }
           };
+          this.onPropertyChange = function(e) {
+            var detail = e.detail;
+            if (detail.changed && detail.changed === "collectionname") {
+              self.collection = this.getAttribute("collectionname");
+            }
+          };
           collection.addEventListener("itemchange", this.onItemChange);
+          collection.addEventListener("propertychange", this.onPropertyChange);
           this.lastCollection = this.collection;
         },
         addNewCollection: function() {
@@ -129,8 +136,10 @@
             var lastCollection = this.collections.getCollection(this.lastCollection);
             if (lastCollection) {
               lastCollection.removeEventListener("itemchange", this.onItemChange);
+              lastCollection.removeEventListener("propertychange", this.onPropertyChange);
             }
             this.onItemChange = null;
+            this.onPropertyChange = null;
           }
           if (collectionInput) {
             collectionInput.value = this.collection;
