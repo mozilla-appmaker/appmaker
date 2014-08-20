@@ -217,7 +217,7 @@ else{
 // This is a route that we use for client-side localization to return the JSON
 // when we do the XHR request to this route.
 if(process.env.PRODUCTION) {
-  app.get( "/strings/:lang?", middleware.crossOrigin, i18n.stringsRoute( "en-US" ));
+  app.get( "/strings/:lang?", middleware.crossOrigin, i18n.stringsRoute( "en-US", { strict: true } ));
 } else {
   var basedir = "./public/bundles/components/";
   var componentPaths = fs.readdirSync(basedir);
