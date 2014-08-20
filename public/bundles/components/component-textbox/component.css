@@ -7,7 +7,7 @@
 
 :host p {
   padding: 10px;
-  word-wrap: break-word;
+/*  word-wrap: break-word;*/
   overflow: hidden;
   margin: 0;
   font-size: 15px;

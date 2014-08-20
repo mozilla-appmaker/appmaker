@@ -88,6 +88,32 @@ define(['jquery', 'inflector', 'l10n', 'colorpicker.core'], function ($, Inflect
       return e[0];
     },
 
+    'textarea': function (element, attributeName, title, value, definition) {
+      var e = $('<div><label></label><textarea></textarea></div>');
+      e.find("label").text(title);
+      e.find("input").val(value);
+
+
+
+      e.on('keyup', function(evt) {
+        var text = evt.target.value;
+        text = text.replace(/\r?\n/g, '<br />');
+        element.setAttribute(attributeName, text);
+      });
+      return e[0];
+    },
+
+    // FIXME: TODO: what makes this a collection? The code didn't make use of
+    //              the "definition" variable at all. Do we still use this?
+    'collection': function (element, attributeName, title, value, definition) {
+      var e = createLabeledTextfield(title, value);
+
+      e.on('change', function(evt) {
+        element.setAttribute(attributeName, evt.target.value);
+      });
+      return e[0];
+    },
+
     'number': function (element, attributeName, title, value, definition) {
       definition.step = definition.step || 1;
       var e = createLabeledTextfield(title, value);
