@@ -105,40 +105,11 @@ background="#222">
         window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
                                       window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
-        this.ctx = window.AudioContext || window.webkitAudioContext;
-
-        if (!this.ctx) {
-          console.error('Could not get AudioContext for kickdrum.');
-          return;
-        }
-
-        this.ctx = new this.ctx();
-        var that = this;
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", this.resolvePath('sounds/ding.mp3'), true);
-        xhr.responseType = "arraybuffer";
-        xhr.onload = function () {
-          if (xhr.response.byteLength) {
-            that.ctx.decodeAudioData(xhr.response, function(data) {
-              that.audioBuffer = data;
-            },
-            function (e) {
-              console.error('Error decoding the audio buffer for kickdrum.', arguments);
-            });
-          }
-        };
-        xhr.send();
+        this.loadSound("ding","sounds/ding.mp3");
       },
       playDing : function(){
         if(this.playsound === "true"){
-          var src = this.ctx.createBufferSource();
-          var gain = this.ctx.createGain();
-          gain.gain.value = this.volume;
-          src.buffer = this.audioBuffer;
-          src.loop = false;
-          src.connect(gain);
-          gain.connect(this.ctx.destination);
-          src.start(0);
+          this.playSound("ding",.4);
         }
       },
       timerPressed : function(){
@@ -161,6 +132,10 @@ background="#222">
         this.time = newValue;
         this._timeLeft = this.time * 1000;
         this._timeLeftString = timeFromSeconds(this._timeLeft);
+      },
+      detached : function(){
+        this.super();
+        this.running = false;
       },
       start: function() {
         if(!this.running) {
@@ -187,8 +162,8 @@ background="#222">
         var that = this;
 
         requestAnimationFrame(function(){
-          if(that.running == true) {
 
+          if(that.running == true) {
             that._elapsedTime = Date.now() - that.timeStamp;
             that._timeLeft = that._timeLeft - that._elapsedTime;
 
