@@ -23,8 +23,8 @@
       },
       "attributes": {
         "collection": {
-          "description": "",
-          "label": "Collection",
+          "description": "Todo list collection name",
+          "label": "Todo List Data",
           "editable": "collection"
         }
       }
@@ -56,9 +56,21 @@
   </template>
     <script>
       Polymer("ceci-todo-list", {
-        ready: function() {
+        attached: function() {
           this.super();
+          var that = this;
           this.collections = document.querySelector("ceci-collections");
+          if (this.collections) {
+            this.collections.addEventListener("collectionchange", function(e) {
+              var detail = e.detail;
+              if (detail.removed) {
+                var removedName = detail.removed.getAttribute("collectionname");
+                if (that.collection === removedName) {
+                  that.collection = "";
+                }
+              }
+            });
+          }
           this.items = [];
           this.onItemChange = null;
           this.completed = 0;
@@ -93,8 +105,15 @@
               self.items.splice(detail.index, 0, detail.added);
             }
           };
+          this.onPropertyChange = function(e) {
+            var detail = e.detail;
+            if (detail.changed && detail.changed === "collectionname") {
+              self.collection = this.getAttribute("collectionname");
+            }
+          };
           collection.addEventListener("itemchange", this.onItemChange);
-          this.lastCollection = this.collection;
+          collection.addEventListener("propertychange", this.onPropertyChange);
+          this.lastCollection = collection;
         },
         addNewCollection: function() {
           this.collection = this.shadowRoot.querySelector(".first-run-container input").value;
@@ -111,14 +130,23 @@
           if (!this.collections) {
             return;
           }
+          var collectionInput = this.shadowRoot.querySelector(".first-run-container input");
           // Clean up any events on the old collection if we change collections.
           if (this.lastCollection && this.onItemChange) {
-            var lastCollection = this.collections.getCollection(this.lastCollection);
-            lastCollection.removeEventListener("itemchange", this.onItemChange);
+            var lastCollection = this.lastCollection;
+            if (lastCollection) {
+              lastCollection.removeEventListener("itemchange", this.onItemChange);
+              lastCollection.removeEventListener("propertychange", this.onPropertyChange);
+            }
             this.onItemChange = null;
+            this.onPropertyChange = null;
           }
-          this.shadowRoot.querySelector(".first-run-container input").value = this.collection;
+          if (collectionInput) {
+            collectionInput.value = this.collection;
+          }
           if (this.collection === "") {
+            this.shadowRoot.querySelector(".list-container").classList.add("hidden");
+            this.shadowRoot.querySelector(".first-run-container").classList.remove("hidden");
             return;
           }
           var collection = this.collections.getCollection(this.collection);

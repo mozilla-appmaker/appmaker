@@ -1,4 +1,4 @@
-<polymer-element name="ceci-collection">
+<polymer-element name="ceci-collection" attributes="collectionname">
   <template>
     <style>
       :host {
@@ -33,7 +33,7 @@
         var detail = {
           added: field
         };
-        this.fire("fieldchange", detail);
+        this.asyncFire("fieldchange", detail);
       },
       removeField: function(name) {
         var field = this.querySelector('ceci-field[fieldname="'+ name + '"]');
@@ -41,7 +41,7 @@
         var detail = {
           removed: field
         };
-        this.fire("fieldchange", detail);
+        this.asyncFire("fieldchange", detail);
       },
       getField: function(name) {
         return this.querySelector('ceci-field[fieldname="'+ name + '"]');
@@ -49,9 +49,11 @@
       getFields: function() {
         return Array.prototype.slice.call(this.querySelectorAll("ceci-field"), 0);
       },
-      nameChanged: function() {
+      collectionnameChanged: function(oldName, newName) {
         var detail = {
-          changed: "name"
+          changed: "collectionname",
+          removed: oldName,
+          added: newName
         };
         this.fire("propertychange", detail);
       },
