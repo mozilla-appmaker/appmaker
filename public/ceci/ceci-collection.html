@@ -33,7 +33,7 @@
         var detail = {
           added: field
         };
-        this.fire("fieldchange", detail);
+        this.asyncFire("fieldchange", detail);
       },
       removeField: function(name) {
         var field = this.querySelector('ceci-field[fieldname="'+ name + '"]');
@@ -41,7 +41,7 @@
         var detail = {
           removed: field
         };
-        this.fire("fieldchange", detail);
+        this.asyncFire("fieldchange", detail);
       },
       getField: function(name) {
         return this.querySelector('ceci-field[fieldname="'+ name + '"]');
