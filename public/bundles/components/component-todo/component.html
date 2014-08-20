@@ -113,7 +113,7 @@
           };
           collection.addEventListener("itemchange", this.onItemChange);
           collection.addEventListener("propertychange", this.onPropertyChange);
-          this.lastCollection = this.collection;
+          this.lastCollection = collection;
         },
         addNewCollection: function() {
           this.collection = this.shadowRoot.querySelector(".first-run-container input").value;
@@ -133,7 +133,7 @@
           var collectionInput = this.shadowRoot.querySelector(".first-run-container input");
           // Clean up any events on the old collection if we change collections.
           if (this.lastCollection && this.onItemChange) {
-            var lastCollection = this.collections.getCollection(this.lastCollection);
+            var lastCollection = this.lastCollection;
             if (lastCollection) {
               lastCollection.removeEventListener("itemchange", this.onItemChange);
               lastCollection.removeEventListener("propertychange", this.onPropertyChange);
