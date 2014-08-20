@@ -1,19 +1,16 @@
 <div>
   <div data-controls>
-    <button class="tutorial-next"><%- gettext("Ok got it, Next") %></button>
-    <a class="tutorial-end" href="#"><%- gettext("Skip tutorial") %></a>
+    <button class="btn btn-info tutorial-next"><%- gettext("Ok got it, Next") %> <i class="icon-caret-right"></i></button>
+    <a class="skip-link tutorial-end" href="#"><%- gettext("Skip tutorial") %></a>
   </div>
   <div data-step="welcome">
     <p class="loud">
-      <%- gettext("Welcome to Appmaker! Let's start by giving you a short tour.") %>
+      <%- gettext("Welcome to Appmaker. We'll start with a short tour.") %>
     </p>
   </div>
   <div data-step="bricks">
     <p>
-      <%- gettext("These blocks over here are called \"Bricks\". Add them to your app simply by clicking the plus icon.") %>
-    </p>
-    <p>
-      <%- gettext("Bricks are neatly organized in collections. Explore all these goodies and even create your own brick if you are up for it, just click the icon.") %>
+      <%- gettext("These are called <em>bricks</em>. They are organized in collections and you can add them to your new app simply by clicking on them. If you want to learn more about each brick try hovering over the question mark.") %>
     </p>
   </div>
   <div data-step="customize">
@@ -23,28 +20,31 @@
   </div>
   <div data-step="project-settings">
     <p>
-      <%- gettext("Give your app a fancy name, description, and tag. You can also try the advanced settings to manage data.") %>
+      <%- gettext("Give your app a fancy name, description, and tags.") %>
     </p>
   </div>
   <div data-step="pages">
     <p>
-      <%- gettext("Up here you can add pages to your app.") %>
+      <%- gettext("You can add pages to your app here.") %>
+      <img src="" alt="">
     </p>
   </div>
   <div data-step="channels">
     <p>
-      <%- gettext("Once you add some bricks to your app you will notice these lines. They are called connectors and you can imagine them as wires that connect inputs, like a button brick, to outputs like these waving hands.") %>
+      <%- gettext("Once you add bricks to your app you will notice these lines.") %>
+      <img src="" alt="">
+      <%- gettext("They are called channels and they connect inputs (like this button) to outputs (like these waving hands).") %>
     </p>
   </div>
   <div data-step="colors">
     <p>
-      <%- gettext("If you have more than one input and output just click on the connector to switch colors. If you run out of the basics click on the + to select a color of your choice or turn them off if you don't need them.") %>
+      <%- gettext("If you have more than one input and output, click on the connector to switch colors.") %>
     </p>
   </div>
   <div data-step="end">
     <p class="loud">
-      <%- gettext("That was it. Now go ahead and start clicking. Happy making!") %>
+      <%- gettext("That's it! Now go ahead and start building an app. Happy making!") %>
     </p>
-    <button class="tutorial-end"><%- gettext("Done") %></button>
+    <button class="btn btn-info tutorial-end"><%- gettext("Done") %></button>
   </div>
 </div>
