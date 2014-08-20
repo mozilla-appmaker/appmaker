@@ -3,7 +3,7 @@
 .tutorial-dialog {
   &.ui-widget-content {
     background: @background;
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .loud {
@@ -86,7 +86,7 @@
   }
 
   .btn {
-    display: inline-block;
+    display: block;
     margin-bottom: 0;
     font-weight: normal;
     text-align: center;
@@ -96,7 +96,7 @@
     border: 1px solid transparent;
     white-space: nowrap;
     padding: 6px 12px;
-    font-size: 12px;
+    font-size: 15px;
     line-height: 1.42857143;
     border-radius: 0;
     -webkit-user-select: none;
@@ -127,13 +127,22 @@
     }
   }
 
-  .skip-link {
+  .btn-link-secondary {
     color: #4d4e53;
-    font-size: 10px;
+    background: none;
+    font-size: 12px;
+    padding-left: 0;
+    padding-right: 0;
 
-    &:hover,
-    &:active {
+    &:hover {
       text-decoration: underline;
     }
+    &:active {
+      text-decoration: underline;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+
+
   }
 }
