@@ -71,15 +71,14 @@
   }
 
   .button {
-    cursor: pointer;
+
     text-align: left;
     padding: 4px 12px;
     vertical-align: middle;
 
     &:not(.menu-wrapper) {
       font-size: 15px;
-      line-height: 33px;
-      padding: 0 10px;
+      line-height: 34px;
       border-radius: 2px;
     }
   }
@@ -88,6 +87,7 @@
     display: block;
     padding: 5px 8px;
     height: 30px;
+    cursor: pointer;
   }
 
   .icon-reorder {
@@ -102,6 +102,7 @@
     line-height: 30px;
     padding-left: 50px;
     padding-right: 28px;
+    cursor: pointer;
 
     &:hover {
       text-decoration: none;
@@ -171,7 +172,7 @@
 
   .user-menu {
     .menu {
-      padding: 10px 10px 20px 10px;
+      padding: 10px 10px 10px 10px;
       min-width: 250px;
     }
   }
@@ -198,7 +199,7 @@
 
   .menu h3 {
     padding: 0 0 4px 0 ;
-    margin: 2px 2px 8px 2px;
+    margin: 2px 0px 8px 0px;
     color: #444;
     font-size: 15px;
   }
@@ -249,6 +250,10 @@
     font-size: small;
     padding: 0;
     overflow: auto;
+  }
+
+  a.button {
+    cursor: pointer;
   }
 
   a.applink {
