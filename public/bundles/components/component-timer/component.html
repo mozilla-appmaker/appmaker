@@ -133,6 +133,10 @@ background="#222">
         this._timeLeft = this.time * 1000;
         this._timeLeftString = timeFromSeconds(this._timeLeft);
       },
+      detached : function(){
+        this.super();
+        this.running = false;
+      },
       start: function() {
         if(!this.running) {
           this._startTime = Date.now();
@@ -158,8 +162,8 @@ background="#222">
         var that = this;
 
         requestAnimationFrame(function(){
-          if(that.running == true) {
 
+          if(that.running == true) {
             that._elapsedTime = Date.now() - that.timeStamp;
             that._timeLeft = that._timeLeft - that._elapsedTime;
 
