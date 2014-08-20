@@ -203,29 +203,43 @@
                 return;
               }
               var collectionIndex = collectionElement.getAttribute("data-index");
-              var fieldName = this.getAttribute("fieldname");
-              var fieldSelector = '*[data-field-name="'+ fieldName + '"]';
-              var fieldElement = self.shadowRoot.querySelector(fieldSelector);
-              if (!fieldElement) {
-                return;
+              // name changes move around references so we handle this a little differently.
+              if (detail.changed === "fieldname") {
+                var oldName = detail.removed;
+                var fieldSelector = '*[data-field-name="'+ oldName + '"]';
+                var fieldElement = self.shadowRoot.querySelector(fieldSelector);
+                if (!fieldElement) {
+                  return;
+                }
+                var fieldIndex = fieldElement.getAttribute("data-index");
+                self.collections[collectionIndex].fields[fieldIndex].oldName = this[detail.changed];
+                self.collections[collectionIndex].fields[fieldIndex].fieldname = this[detail.changed];
+              } else {
+                var fieldName = this.getAttribute("fieldname");
+                var fieldSelector = '*[data-field-name="'+ fieldName + '"]';
+                var fieldElement = self.shadowRoot.querySelector(fieldSelector);
+                if (!fieldElement) {
+                  return;
+                }
+                var fieldIndex = fieldElement.getAttribute("data-index");
+                self.collections[collectionIndex].fields[fieldIndex][detail.changed] = this[detail.changed];
               }
-              var fieldIndex = fieldElement.getAttribute("data-index");
-              self.collections[collectionIndex].fields[fieldIndex][detail.changed] = this[detail.changed];
             });
           }
         }
         function onCollectionPropertyChange(e) {
           var detail = e.detail;
-          if (detail.changed) {
+          if (detail.changed && detail.changed === "collectionname") {
             this.async(function() {
-              var collectionName = this.getAttribute("collectionname");
-              var collectionSelector = '*[data-collection-name="'+ collectionName + '"]';
+              var oldName = detail.removed;
+              var collectionSelector = '*[data-collection-name="'+ oldName + '"]';
               var collectionElement = self.shadowRoot.querySelector(collectionSelector);
               if (!collectionElement) {
                 return;
               }
               var collectionIndex = collectionElement.getAttribute("data-index");
-              self.collections[collectionIndex][detail.changed] = this[detail.changed];
+              self.collections[collectionIndex].oldName = this[detail.changed];
+              self.collections[collectionIndex].collectionname = this[detail.changed];
             });
           }
         }
@@ -333,15 +347,25 @@
       onCollectionNameChange: function(event, detail, sender) {
         var collection = this.collections[this.currentCollectionIndex];
         var oldName = collection.oldName;
+        var oldCollection = this.collectionsElement.getCollection(oldName);
+        // This likely means its name was already changed by another data manager.
+        if (!oldCollection) {
+          return;
+        }
         collection.oldName = collection.collectionname;
-        this.collectionsElement.getCollection(oldName).setAttribute("collectionname", sender.value);
+        oldCollection.setAttribute("collectionname", sender.value);
       },
       onFieldNameChange: function(event, detail, sender) {
         var collection = this.collections[this.currentCollectionIndex];
         var field = collection.fields[parseInt(sender.getAttribute('data-index'), 10)];
         var oldName = field.oldName;
+        var oldField = this.collectionsElement.getField(collection.collectionname, oldName);
+        // This likely means its name was already changed by another data manager.
+        if (!oldField) {
+          return;
+        }
         field.oldName = field.fieldname;
-        this.collectionsElement.getField(collection.collectionname, oldName).setAttribute("fieldname", sender.value);
+        oldField.setAttribute("fieldname", sender.value);
       },
       collectionChanged: function() {
         var collection = this.getAttribute("collection");

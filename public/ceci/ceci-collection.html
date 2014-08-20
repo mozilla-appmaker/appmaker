@@ -49,9 +49,11 @@
       getFields: function() {
         return Array.prototype.slice.call(this.querySelectorAll("ceci-field"), 0);
       },
-      collectionnameChanged: function() {
+      collectionnameChanged: function(oldName, newName) {
         var detail = {
-          changed: "collectionname"
+          changed: "collectionname",
+          removed: oldName,
+          added: newName
         };
         this.fire("propertychange", detail);
       },

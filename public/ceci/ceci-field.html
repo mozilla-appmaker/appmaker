@@ -1,4 +1,4 @@
-<polymer-element name="ceci-field" attributes="kind">
+<polymer-element name="ceci-field" attributes="kind fieldname">
   <template>
     <style>
       :host {
@@ -16,9 +16,11 @@
         };
         this.fire("propertychange", detail);
       },
-      nameChanged: function() {
+      fieldnameChanged: function(oldName, newName) {
         var detail = {
-          changed: "name"
+          changed: "fieldname",
+          added: newName,
+          removed: oldName
         };
         this.fire("propertychange", detail);
       },
