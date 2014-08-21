@@ -57,9 +57,9 @@ background="#222">
   <template>
     <link rel="stylesheet" href="component.css"></link>
     <div class="timer" on-ceci-pressdown="{{ timerPressed }}" style="background: {{ background }}">
-      {{_timeLeftString}}
+      <div class="time-left"></div>
       <div class="progress-wrapper">
-        <div class="progress" style="width: {{ progress }}%"></div>
+        <div class="progress"></div>
       </div>
     </div>
     <shadow></shadow>
@@ -91,16 +91,14 @@ background="#222">
     Polymer("ceci-timer", {
       _timeLeft: 0,
       _elapsedTime: 0,
-      _lastElapsedTime: 0,
-      timestamp : 0,
       running : false,
-      ready: function() {
+      attached: function() {
         // "Ding" sound courtesy of http://www.freesfx.co.uk
 
         this.super();
         this.reset();
         this._timeLeft = this.time * 1000;
-        this._timeLeftString = timeFromSeconds(this._timeLeft);
+        this.shadowRoot.querySelector(".time-left").textContent = timeFromSeconds(this._timeLeft);
         this.updateDisplay();
         window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
                                       window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
@@ -121,8 +119,7 @@ background="#222">
       },
       updateDisplay: function(){
         var progress = parseInt(this._timeLeft) / parseInt(this.time * 1000) * 100;
-        var p = progress;
-        this.progress = p;
+        this.shadowRoot.querySelector(".progress").style.width = progress + "%";
       },
       settimer : function(v){
         this.time = v;
@@ -131,7 +128,7 @@ background="#222">
       timeChanged: function(oldValue,newValue){
         this.time = newValue;
         this._timeLeft = this.time * 1000;
-        this._timeLeftString = timeFromSeconds(this._timeLeft);
+        this.shadowRoot.querySelector(".time-left").textContent = timeFromSeconds(this._timeLeft);
       },
       detached : function(){
         this.super();
@@ -141,15 +138,13 @@ background="#222">
         if(!this.running) {
           this._startTime = Date.now();
           this.running = true;
-          this.tick();
-          this.timeStamp = Date.now();
+          this.tick(Date.now());
         }
       },
       reset: function () {
         this._timeLeft = this.time * 1000;
         this._elapsedTime = 0;
-        this._lastElapsedTime = 0;
-        this._timeLeftString = timeFromSeconds(this._timeLeft);
+        this.shadowRoot.querySelector(".time-left").textContent = timeFromSeconds(this._timeLeft);
         this.running = false;
         this.updateDisplay();
       },
@@ -158,28 +153,26 @@ background="#222">
           this.running = false;
         }
       },
-      tick : function(){
+      tick : function(timeStamp){
         var that = this;
 
         requestAnimationFrame(function(){
 
-          if(that.running == true) {
-            that._elapsedTime = Date.now() - that.timeStamp;
+          if(that.running === true) {
+            that._elapsedTime = Date.now() - timeStamp;
             that._timeLeft = that._timeLeft - that._elapsedTime;
 
-            if (that._timeLeft <= 0) {
-              that._timeLeftString = timeFromSeconds(0);
+            if (that._timeLeft > 0) {
+              that.shadowRoot.querySelector(".time-left").textContent = timeFromSeconds(that._timeLeft);
+            } else {
+              that.shadowRoot.querySelector(".time-left").textContent = timeFromSeconds(0);
               that.broadcast('timeup',"Ding!");
               that.playDing();
               that.reset();
             }
-            else {
-              that._timeLeftString = timeFromSeconds(that._timeLeft);
-            }
             that.updateDisplay();
 
-            that.timeStamp = Date.now();
-            that.tick();
+            that.tick(Date.now());
           }
         });
 
