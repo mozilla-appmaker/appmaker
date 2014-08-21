@@ -190,6 +190,8 @@
             user.preventLoadedAppInsertion = true;
           }
           else {
+            var tutorialActive = utils.getQueryStringVariable('tutorial');
+            if (tutorialActive) user.preventLoadedAppInsertion = true;
             setupTempApp();
           }
 
