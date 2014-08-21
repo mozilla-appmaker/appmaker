@@ -91,7 +91,6 @@ background="#222">
     Polymer("ceci-timer", {
       _timeLeft: 0,
       _elapsedTime: 0,
-      _lastElapsedTime: 0,
       running : false,
       attached: function() {
         // "Ding" sound courtesy of http://www.freesfx.co.uk
@@ -145,7 +144,6 @@ background="#222">
       reset: function () {
         this._timeLeft = this.time * 1000;
         this._elapsedTime = 0;
-        this._lastElapsedTime = 0;
         this.shadowRoot.querySelector(".time-left").textContent = timeFromSeconds(this._timeLeft);
         this.running = false;
         this.updateDisplay();
