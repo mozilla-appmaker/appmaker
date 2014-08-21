@@ -381,7 +381,7 @@ define(
       DesignerTray.devmode = document.querySelector("#components-wrapper").classList.contains("development");
       DesignerTray.addComponentsFromRegistry();
       var searchBox = document.querySelector('.component-search');
-      searchBox.addEventListener('keyup', function() {
+      searchBox.addEventListener('input', function() {
         doSearch(searchBox.value.trim().toLowerCase());
       });
     }
