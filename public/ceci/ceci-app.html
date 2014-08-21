@@ -120,8 +120,8 @@
           this.removeChild(card);
         }
       },
-      addComponentToCard: function(name, opts) {
-        opts = opts || {};
+      addComponentToCard: function(name, options) {
+        options = options || {};
         var card = document.querySelector('ceci-card[visible]');
         if (card) {
           var newElement = document.createElement(name);
@@ -129,7 +129,7 @@
           var handle = function() {
             var selectedBrick = card.querySelector(".brick.selected");
             var next = selectedBrick ? selectedBrick.nextSibling : false;
-            var append = opts.append || !next;
+            var append = options.append || !next;
             if(append) {
               card.appendChild(newElement);
             } else {
