@@ -90,6 +90,19 @@ define(['jquery', 'inflector', 'l10n', 'colorpicker.core'], function ($, Inflect
       return e[0];
     },
 
+    'textarea': function (element, attributeName, title, value, definition) {
+      var e = $('<div><label></label><textarea></textarea></div>');
+      e.find("label").text(title);
+      e.find("textarea").val(value);
+
+      e.on('keyup', function(evt) {
+        var text = evt.target.value;
+        element.setAttribute(attributeName, text);
+      });
+
+      return e[0];
+    },
+
     'number': function (element, attributeName, title, value, definition) {
       definition.step = definition.step || 1;
       var e = createLabeledTextfield(title, value);
