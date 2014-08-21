@@ -92,7 +92,6 @@ background="#222">
       _timeLeft: 0,
       _elapsedTime: 0,
       _lastElapsedTime: 0,
-      timestamp : 0,
       running : false,
       ready: function() {
         // "Ding" sound courtesy of http://www.freesfx.co.uk
@@ -141,8 +140,7 @@ background="#222">
         if(!this.running) {
           this._startTime = Date.now();
           this.running = true;
-          this.tick();
-          this.timeStamp = Date.now();
+          this.tick(Date.now());
         }
       },
       reset: function () {
@@ -158,28 +156,26 @@ background="#222">
           this.running = false;
         }
       },
-      tick : function(){
+      tick : function(timeStamp){
         var that = this;
 
         requestAnimationFrame(function(){
 
-          if(that.running == true) {
-            that._elapsedTime = Date.now() - that.timeStamp;
+          if(that.running === true) {
+            that._elapsedTime = Date.now() - timeStamp;
             that._timeLeft = that._timeLeft - that._elapsedTime;
 
-            if (that._timeLeft <= 0) {
+            if (that._timeLeft > 0) {
+              that._timeLeftString = timeFromSeconds(that._timeLeft);
+            } else {
               that._timeLeftString = timeFromSeconds(0);
               that.broadcast('timeup',"Ding!");
               that.playDing();
               that.reset();
             }
-            else {
-              that._timeLeftString = timeFromSeconds(that._timeLeft);
-            }
             that.updateDisplay();
 
-            that.timeStamp = Date.now();
-            that.tick();
+            that.tick(Date.now());
           }
         });
 
