@@ -71,7 +71,7 @@ define(['jquery', 'inflector', 'l10n', 'colorpicker.core'], function ($, Inflect
     'text': function (element, attributeName, title, value, definition) {
       var e = createLabeledTextfield(title, value);
 
-      e.on('keyup', function(evt) {
+      e.on('input', function(evt) {
         element.setAttribute(attributeName, evt.target.value);
       });
       return e[0];
@@ -95,7 +95,7 @@ define(['jquery', 'inflector', 'l10n', 'colorpicker.core'], function ($, Inflect
       e.find("label").text(title);
       e.find("textarea").val(value);
 
-      e.on('keyup', function(evt) {
+      e.on('input', function(evt) {
         var text = evt.target.value;
         element.setAttribute(attributeName, text);
       });
