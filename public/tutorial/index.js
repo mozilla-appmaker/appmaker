@@ -14,7 +14,9 @@ define(
           maxWidth: 300,
           modal: false,
           resizable: false,
-          position: step.position
+          position: step.position,
+          show: 200,
+          hide: 200
         });
         step.resize = function resize() {
           step.$content.dialog("option", "position", step.position);
@@ -25,7 +27,10 @@ define(
       function hide(idx) {
         var step = steps[idx];
         if (step.destroy) step.destroy.apply(_this);
-        step.$content.dialog('destroy');
+        step.$content.dialog('close');
+        step.$content.on('dialogclose', function(evt, ui){
+          step.$content.dialog('destroy');
+        });
         $(window).off('resize', step.resize);
       }
 
