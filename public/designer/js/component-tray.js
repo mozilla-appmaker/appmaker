@@ -136,6 +136,13 @@ define(
         }
 
         var app = document.querySelector('ceci-app');
+
+        if(!app) {
+          window.addEventListener("CeciAppCreated", function(e) {
+            app = e.detail.source;
+          });
+        }
+
         item.addEventListener('ComponentAddRequested', function(e) {
           app.addComponentToCard(name);
           analytics.event("Added Component", {label: name});
