@@ -54,7 +54,7 @@
   function initCeciApp() {
     Polymer('ceci-app', {
       created: function() {
-        window.dispatchEvent(new CustomEvent("CeciAppCreated"));
+        window.dispatchEvent(new CustomEvent("CeciAppCreated", { detail: { source: this }} ));
       },
       ready: function() {
         if (this.querySelector('ceci-card')) {
