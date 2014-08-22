@@ -120,6 +120,31 @@
           this.removeChild(card);
         }
       },
+      addComponentToCard: function(name, options) {
+        options = options || {};
+        var card = document.querySelector('ceci-card[visible]');
+        if (card) {
+          var newElement = document.createElement(name);
+          // wait until Polymer has prepared the element completely
+          var handle = function() {
+            var selectedBrick = card.querySelector(".brick.selected");
+            var next = selectedBrick ? selectedBrick.nextSibling : false;
+            var append = options.append || !next;
+            if(append) {
+              card.appendChild(newElement);
+            } else {
+              card.insertBefore(newElement,next);
+            }
+            // Apply defaults here explicitly so that element doesn't
+            // have to figure out whether or not it's new when it's
+            // attached to the DOM.
+            newElement.applyDefaults();
+          };
+
+          newElement.onready(handle);
+          return newElement;
+        }
+      },
       appidChanged: function(){
         this.initFirebase();
       },

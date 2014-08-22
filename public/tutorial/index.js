@@ -16,12 +16,17 @@ define(
           resizable: false,
           position: step.position
         });
+        step.resize = function resize() {
+          step.$content.dialog("option", "position", step.position);
+        };
+        $(window).on('resize', step.resize);
       }
 
       function hide(idx) {
         var step = steps[idx];
         if (step.destroy) step.destroy.apply(_this);
         step.$content.dialog('destroy');
+        $(window).off('resize', step.resize);
       }
 
       this.start = function() {

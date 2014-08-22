@@ -2,11 +2,10 @@ define(
   [ "jquery",
     "ejs",
     "l10n",
-    "designer/component-tray",
     "tutorial/index",
     "text!tutorial/intro.ejs"
   ],
-  function ($, Ejs, l10n, Tray, Tutorial, content) {
+  function ($, Ejs, l10n, Tutorial, content) {
 
     content = Ejs.render(content, {
       gettext: l10n.get
@@ -40,7 +39,7 @@ define(
           position: {
             my: "left center",
             at: "right+20 center",
-            of: $('#components designer-component-tray-item:first-of-type')
+            of: $('#components')
           },
           dialogClass: "tutorial-dialog-arrow tutorial-dialog-arrow-left"
         },
@@ -53,7 +52,8 @@ define(
           },
           dialogClass: "tutorial-dialog-arrow tutorial-dialog-arrow-right",
           init: function() {
-            this.button = Tray.addComponentToCard('ceci-button');
+            var app = document.querySelector('ceci-app');
+            this.button = app.addComponentToCard('ceci-button', {append: true});
           },
           destroy: function() {
             $(this.button).remove();
@@ -96,21 +96,23 @@ define(
           },
           dialogClass: "tutorial-dialog-arrow tutorial-dialog-arrow-right",
           init: function() {
-            this.hands = Tray.addComponentToCard('ceci-jazzhands');
-            this.button = Tray.addComponentToCard('ceci-button');
+            var app = document.querySelector('ceci-app');
+            this.hands = app.addComponentToCard('ceci-jazzhands', {append: true});
+            this.button = app.addComponentToCard('ceci-button', {append: true});
           }
         },
         {
           name: "colors",
           position: {
             my: "right center",
-            at: "left-175 top+155",
+            at: "left-175 top+168",
             of: $("ceci-app")
           },
           dialogClass: "tutorial-dialog-arrow tutorial-dialog-arrow-right",
           init: function() {
-            this.drum = Tray.addComponentToCard('ceci-kickdrum');
-            this.button2 = Tray.addComponentToCard('ceci-button');
+            var app = document.querySelector('ceci-app');
+            this.drum = app.addComponentToCard('ceci-kickdrum', {append: true});
+            this.button2 = app.addComponentToCard('ceci-button', {append: true});
             setTimeout(function() {
               $('ceci-kickdrum ceci-channel-menu[channeltype="listen"]')[0].toggleMenu();
             }, 100);

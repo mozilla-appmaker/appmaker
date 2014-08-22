@@ -135,34 +135,13 @@ define(
           }
         }
 
-        var _this = this;
-        item.addEventListener('ComponentAddRequested', function(e) { _this.addComponentToCard(name) }, false);
+        var app = document.querySelector('ceci-app');
+        item.addEventListener('ComponentAddRequested', function(e) {
+          app.addComponentToCard(name);
+          analytics.event("Added Component", {label: name});
+        }, false);
         item.label = L10n.get(name) || item.label;
         return item;
-      },
-      addComponentToCard: function(name) {
-        var card = document.querySelector('ceci-card[visible]');
-        if (card) {
-          var newElement = document.createElement(name);
-          // wait until Polymer has prepared the element completely
-          var handle = function() {
-            var selectedBrick = card.querySelector(".brick.selected");
-            var next = selectedBrick ? selectedBrick.nextSibling : false;
-            if(selectedBrick && next){
-              card.insertBefore(newElement,next);
-            } else {
-              card.appendChild(newElement);
-            }
-            // Apply defaults here explicitly so that element doesn't
-            // have to figure out whether or not it's new when it's
-            // attached to the DOM.
-            newElement.applyDefaults();
-            analytics.event("Added Component", {label: name});
-          };
-
-          newElement.onready(handle);
-          return newElement;
-        }
       },
       addComponentWithName: function(name) {
         if(!DesignerTray.isKnownComponent(name)) {
