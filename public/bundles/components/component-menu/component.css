@@ -1,0 +1,17 @@
+:host {
+  display: block;
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+:host .items .item.selected {
+  color: white;
+  background-color: black;
+}
+
+:host .items .item {
+  color: black;
+  background-color: white;
+  cursor: pointer;
+}

@@ -30,6 +30,7 @@ define(
           "ceci-spacer",
           "ceci-header",
           "ceci-textbox",
+          "ceci-menu",
           "ceci-metronome"
         ]
       },

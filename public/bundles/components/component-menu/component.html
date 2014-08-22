@@ -1,0 +1,127 @@
+<polymer-element name="ceci-menu" extends="ceci-element" attributes="items" items="first,second,third">
+  <ceci-definition>
+    {
+      "tags": [],
+      "thumbnail": "./thumbnail.png",
+      "description": "",
+      "name": "Menu",
+      "broadcasts": {
+        "chosen": {
+          "label": "Item Chosen",
+          "description": "Sends the current value of the menu."
+        }
+      },
+      "listeners": {
+        "up": {
+          "description": "Navigate the selected menu option up.",
+          "label": "Navigate Up"
+        },
+        "down": {
+          "description": "Navigate the selected menu option down.",
+          "label": "Navigate Down"
+        },
+        "choose": {
+          "description": "Choose the currently selected item.",
+          "label": "Choose Selected"
+        },
+        "select": {
+          "description": "Select the item based on item name.",
+          "label": "Select Item"
+        },
+        "setitems": {
+          "description": "Sets the list of menu items from a comma seperated variable.",
+          "label": "Set Items"
+        }
+      },
+      "attributes": {
+        "items": {
+          "label": "Menu Items",
+          "description": "Comma seperated list of menu items.",
+          "editable": "text"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div class="items"></div>
+    <shadow></shadow>
+  </template>
+  <script>
+    Polymer('ceci-menu', {
+      selectedIndex: 0,
+      selected: "",
+      attached: function () {
+        this.super();
+      },
+      choose: function() {
+        this.broadcast("chosen", this.selected);
+      },
+      up: function() {
+        var container = this.shadowRoot.querySelector(".items");
+        var selected = container.childNodes[this.selectedIndex-1];
+        if (selected) {
+          var oldSelected = container.querySelector(".selected");
+          oldSelected.classList.remove("selected");
+          this.selected = selected.textContent;
+          selected.classList.add("selected");
+          this.selectedIndex--;
+        }
+      },
+      down: function() {
+        var container = this.shadowRoot.querySelector(".items");
+        var selected = container.childNodes[this.selectedIndex+1];
+        if (selected) {
+          var oldSelected = container.querySelector(".selected");
+          oldSelected.classList.remove("selected");
+          this.selected = selected.textContent;
+          selected.classList.add("selected");
+          this.selectedIndex++;
+        }
+      },
+      setitems: function(items) {
+        this.items = items;
+      },
+      select: function(name) {
+        name = name.trim();
+        var container = this.shadowRoot.querySelector(".items");
+        var items = container.childNodes;
+        for (var i = 0; i < items.length; i++) {
+          if (items[i].textContent === name) {
+            var oldSelected = container.querySelector(".selected");
+            oldSelected.classList.remove("selected");
+            this.selectedIndex = i;
+            this.selected = name;
+            items[i].classList.add("selected");
+            break;
+          }
+        }
+      },
+      itemsChanged: function() {
+        var self = this;
+        var container = this.shadowRoot.querySelector(".items");
+        container.innerHTML = "";
+        var items = this.items.split(",");
+        items.forEach(function(text, i) {
+          var item = document.createElement("div");
+          item.classList.add("item");
+          item.addEventListener("click", function() {
+            self.selected = this.textContent;
+            self.selectedIndex = i;
+            var oldSelected = container.querySelector(".selected");
+            oldSelected.classList.remove("selected");
+            this.classList.add("selected");
+            self.choose();
+          });
+          item.textContent = items[i].trim();
+          container.appendChild(item);
+        });
+        var selected = container.childNodes[this.selectedIndex];
+        if (selected) {
+          this.selected = selected.textContent;
+          selected.classList.add("selected");
+        }
+      }
+    });
+  </script>
+</polymer-element>
