@@ -61,25 +61,29 @@
         this.super();
         var that = this;
 
-        var hasBroadcasts = Object.keys(this.ceci.broadcasts).length > 0 ? true : false;
-        var hasListners = Object.keys(this.ceci.listeners).length > 0 ? true : false;
+        this.onready(function(){
 
-        if(!this.querySelector('ceci-channel-menu')) {
-          if(hasListners) {
-            var listenMenu  = document.createElement("ceci-channel-menu");
-            listenMenu.setAttribute("channeltype","listen");
-            this.appendChild(listenMenu);
-            var listenVis  = document.createElement("ceci-listen-vis");
-            this.appendChild(listenVis);
+          var hasBroadcasts = Object.keys(that.ceci.broadcasts).length > 0 ? true : false;
+          var hasListeners = Object.keys(that.ceci.listeners).length > 0 ? true : false;
+
+          if(!that.querySelector('ceci-channel-menu')) {
+            if(hasListeners) {
+              var listenMenu  = document.createElement("ceci-channel-menu");
+              listenMenu.setAttribute("channeltype","listen");
+              that.appendChild(listenMenu);
+              var listenVis  = document.createElement("ceci-listen-vis");
+              that.appendChild(listenVis);
+            }
+            if(hasBroadcasts) {
+              var broadcastVis  = document.createElement("ceci-broadcast-vis");
+              that.appendChild(broadcastVis);
+              var broadcastMenu  = document.createElement("ceci-channel-menu");
+              broadcastMenu.setAttribute("channeltype","broadcast");
+              that.appendChild(broadcastMenu);
+            }
           }
-          if(hasBroadcasts) {
-            var broadcastVis  = document.createElement("ceci-broadcast-vis");
-            this.appendChild(broadcastVis);
-            var broadcastMenu  = document.createElement("ceci-channel-menu");
-            broadcastMenu.setAttribute("channeltype","broadcast");
-            this.appendChild(broadcastMenu);
-          }
-        }
+
+        });
 
         //Set up the brick manipulation UI
         if(this.querySelector(".brick-ui")) {
