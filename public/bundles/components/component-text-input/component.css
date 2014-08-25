@@ -12,7 +12,7 @@
   font-size: 1.6rem;
   background-color: #FFF;
   background-size: auto 100%;
-  width: 70%;
+  width: 100%;
   border-radius: 0;
   margin: 0;
   -moz-box-sizing: border-box;
@@ -26,12 +26,16 @@
   font-family: "FiraSans", sans-serif;
 }
 
-:host .onchange input[type=text]{
-  width: 100%;
+:host .showbutton input[type=text]{
+  width: 70%;
 }
 
-:host .onchange button {
+:host button {
   display: none;
+}
+
+:host .showbutton button {
+  display: inline-block;
 }
 
 :host #wrapper {

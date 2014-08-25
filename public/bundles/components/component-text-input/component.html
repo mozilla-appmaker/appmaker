@@ -1,4 +1,5 @@
-<polymer-element name="ceci-text-input" attributes="resetonsubmit buttonlabel inputname placeholdertext emitonchange label" extends="ceci-element"
+<polymer-element name="ceci-text-input" attributes="resetonsubmit buttonlabel inputname placeholdertext showbutton label" extends="ceci-element"
+showbutton="true"
 resetonsubmit="true">
   <ceci-definition>
     {
@@ -44,9 +45,9 @@ resetonsubmit="true">
           "description": "Reset the input field after submitting the value.",
           "editable": "boolean"
         },
-        "emitonchange": {
-          "label": "Emit on change",
-          "description": "Background color of the button while it is being clicked or tapped.",
+        "showbutton": {
+          "label": "Submit via Button",
+          "description": "Shows a button that broadcasts the input value when pressed.",
           "editable": "boolean"
         }
       }
@@ -62,7 +63,6 @@ resetonsubmit="true">
   </template>
   <script>
     Polymer('ceci-text-input', {
-      emitonchange:false,
       ready: function () {
         this.super();
         var that = this;
@@ -78,13 +78,14 @@ resetonsubmit="true">
         this.submit();
       },
       input: function (e) {
-        if (!this.emitonchange) {
+        if (this.showbutton === "true") {
           return;
+        } else {
+          this.broadcast('sendData', this.$.inputText.value);
         }
-        this.broadcast('sendData', this.$.inputText.value);
       },
       keypress: function (e) {
-        if (!this.emitonchange) {
+        if (this.showbutton) {
           if (e.keyCode == 13) {
             this.broadcast('sendData', this.$.inputText.value);
             this.$.inputText.value = '';
@@ -94,8 +95,12 @@ resetonsubmit="true">
       setvalue: function(v) {
         this.$.inputText.value = v;
       },
-      emitonchangeChanged: function(oldValue, newValue) {
-        this.$.wrapper.classList.toggle('onchange');
+      showbuttonChanged: function(oldValue, newValue) {
+        if(this.showbutton === "true") {
+          this.$.wrapper.classList.add('showbutton');
+        } else {
+          this.$.wrapper.classList.remove('showbutton');
+        }
       },
       placeholdertextChanged: function(oldValue, newValue) {
         if (this.$.inputText.hasAttribute('placeholder')) {
