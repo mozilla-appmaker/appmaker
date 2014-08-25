@@ -43,7 +43,7 @@
       <p class="no-items">0 Items</p>
       </template>
       <template repeat="{{item, itemindex in items}}">
-        <div class="item-wrapper {{item.completed | applyClassName}}">
+        <div class="item-wrapper">
           <a on-click="{{removeItem}}" data-item-index="{{itemindex}}" class="remove-item">Clear</a>
           <div class="item" on-click="{{pressItem}}" data-item-index="{{itemindex}}">{{item.item}}</div>
         </div>
@@ -171,12 +171,6 @@
           var dataItem = collection.data[index];
           collection.removeItem(index);
           this.completed--;
-        },
-        applyClassName: function(value) {
-          if (value) {
-            return "completed";
-          }
-          return;
         }
       });
     </script>
