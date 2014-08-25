@@ -1,4 +1,4 @@
-<polymer-element name="ceci-menu" extends="ceci-element" attributes="items fontsize backgroundcolor textcolor selectedbackgroundcolor selectedtextcolor" backgroundcolor="#FFF" textcolor="#000" selectedbackgroundcolor="#000" selectedtextcolor="#FFF" fontsize="22px">
+<polymer-element name="ceci-menu" extends="ceci-element" attributes="items fontsize backgroundcolor textcolor selectedbackgroundcolor selectedtextcolor" backgroundcolor="#FFF" textcolor="#000" selectedbackgroundcolor="#000" selectedtextcolor="#FFF" fontsize="22">
   <ceci-definition>
     {
       "tags": [],
@@ -58,7 +58,9 @@
         "fontsize": {
           "label": "Font Size",
           "description": "Menu item font size.",
-          "editable": "text"
+          "editable": "range",
+          "min" : "4",
+          "max" : "50"
         }
       }
     }
@@ -165,7 +167,7 @@
       },
       fontsizeChanged: function() {
         var container = this.shadowRoot.querySelector(".items");
-        container.style.fontSize = this.fontsize;
+        container.style.fontSize = this.fontsize + "px";
       }
     });
   </script>
