@@ -1,5 +1,4 @@
-component-todo-list
+component-list
 ===================
 
-A To-do List brick for Mozilla Appmaker.
-
+A list brick for Mozilla Appmaker, you can add items and broadcast them.

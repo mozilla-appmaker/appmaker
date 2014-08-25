@@ -3,7 +3,7 @@
     {
       "name": "List",
       "thumbnail": "./thumbnail.png",
-      "description": "A list of things to do",
+      "description": "Keeps of a list of items and can broadcast them individually.",
       "broadcasts": {
         "senditem": {
           "label": "Single Item",
@@ -12,7 +12,7 @@
       },
       "listeners": {
         "additem": {
-          "description": "Adds a todo list item.",
+          "description": "Adds a list item.",
           "label": "Add Item",
           "default" : true
         },
@@ -35,7 +35,7 @@
     <div class="first-run-container">
       <h3>Choose or Create a Collection</h3>
       <p>This Brick will store your list items in a Collection with this name.</p>
-      <input placeholder="Ex. 'todos'" value="todos" type="text" />
+      <input placeholder="Ex. 'list-items'" value="list-items" type="text" />
       <button on-click="{{addNewCollection}}">OK</button>
     </div>
     <div class="list-container hidden">

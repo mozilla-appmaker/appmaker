@@ -94,6 +94,7 @@
 :host .no-items {
   font-size: 16px;
   margin: 0;
+  padding: 10px;
 }
 
 :host button {
