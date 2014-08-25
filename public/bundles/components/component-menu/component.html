@@ -78,13 +78,6 @@
       select: function() {
         this.broadcast("chosen", this.selected);
       },
-      up: function() {
-        var selected = this.shadowRoot.querySelector(".items").childNodes[this.selectedIndex-1];
-        if (selected) {
-          this.selectElement(selected);
-          this.selectedIndex--;
-        }
-      },
       selectElement: function(element) {
         var oldSelected = this.shadowRoot.querySelector(".selected");
         if (oldSelected) {
@@ -97,11 +90,30 @@
         this.selectedtextcolorChanged();
         this.selectedbackgroundcolorChanged();
       },
-      down: function() {
-        var selected = this.shadowRoot.querySelector(".items").childNodes[this.selectedIndex+1];
+      up: function() {
+        var index = this.selectedIndex-1;
+        var childNodes = this.shadowRoot.querySelector(".items").childNodes;
+        var selected = childNodes[index];
+        if (!selected) {
+          index = childNodes.length-1;
+          selected = childNodes[index];
+        }
         if (selected) {
           this.selectElement(selected);
-          this.selectedIndex++;
+          this.selectedIndex = index;
+        }
+      },
+      down: function() {
+        var index = this.selectedIndex+1;
+        var childNodes = this.shadowRoot.querySelector(".items").childNodes;
+        var selected = childNodes[index];
+        if (!selected) {
+          index = 0;
+          selected = childNodes[index];
+        }
+        if (selected) {
+          this.selectElement(selected);
+          this.selectedIndex = index;
         }
       },
       setitems: function(items) {
