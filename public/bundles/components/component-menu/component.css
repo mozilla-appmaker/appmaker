@@ -1,0 +1,15 @@
+:host {
+  display: block;
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+:host .items {
+  padding: 10px 0;
+}
+
+:host .items .item {
+  cursor: pointer;
+  padding: 0 10px;
+}

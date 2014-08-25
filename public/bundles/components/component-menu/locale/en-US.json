@@ -1,0 +1,7 @@
+{
+	"ceci-menu": "Menu",
+	"ceci-menu/description": "A menu brick.",
+	"ceci-menu/attributes/items": "first,second,third",
+	"ceci-menu/attributes/items/label": "Menu Items",
+	"ceci-menu/attributes/items/description": "Comma seperated list of menu items."
+}
