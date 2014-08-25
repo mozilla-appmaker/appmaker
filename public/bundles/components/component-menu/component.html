@@ -1,4 +1,4 @@
-<polymer-element name="ceci-menu" extends="ceci-element" attributes="items">
+<polymer-element name="ceci-menu" extends="ceci-element" attributes="items fontsize backgroundcolor textcolor selectedbackgroundcolor selectedtextcolor" backgroundcolor="#FFF" textcolor="#000" selectedbackgroundcolor="#000" selectedtextcolor="#FFF" fontsize="22px">
   <ceci-definition>
     {
       "tags": [],
@@ -20,13 +20,9 @@
           "description": "Navigate the selected menu option down.",
           "label": "Navigate Down"
         },
-        "choose": {
+        "select": {
           "description": "Choose the currently selected item.",
           "label": "Choose Selected"
-        },
-        "select": {
-          "description": "Select the item based on item name.",
-          "label": "Select Item"
         },
         "setitems": {
           "description": "Sets the list of menu items from a comma seperated variable.",
@@ -37,6 +33,31 @@
         "items": {
           "label": "Menu Items",
           "description": "Comma seperated list of menu items.",
+          "editable": "text"
+        },
+        "backgroundcolor": {
+          "label": "Background Color",
+          "description": "Color for the background of unselected items.",
+          "editable": "color"
+        },
+        "textcolor": {
+          "label": "Text Color",
+          "description": "Color for the text of unselected items.",
+          "editable": "color"
+        },
+        "selectedbackgroundcolor": {
+          "label": "Selected Background color",
+          "description": "Color for the background of selected items.",
+          "editable": "color"
+        },
+        "selectedtextcolor": {
+          "label": "Selected Text Color",
+          "description": "Color for the text of selected items.",
+          "editable": "color"
+        },
+        "fontsize": {
+          "label": "Font Size",
+          "description": "Menu item font size.",
           "editable": "text"
         }
       }
@@ -54,48 +75,36 @@
       attached: function () {
         this.super();
       },
-      choose: function() {
+      select: function() {
         this.broadcast("chosen", this.selected);
       },
       up: function() {
         var container = this.shadowRoot.querySelector(".items");
         var selected = container.childNodes[this.selectedIndex-1];
         if (selected) {
-          var oldSelected = container.querySelector(".selected");
-          oldSelected.classList.remove("selected");
-          this.selected = selected.textContent;
-          selected.classList.add("selected");
+          this.selectElement(selected);
           this.selectedIndex--;
         }
       },
+      selectElement: function(element) {
+        var oldSelected = this.shadowRoot.querySelector(".selected");
+        oldSelected.classList.remove("selected");
+        oldSelected.style.backgroundColor = "transparent";
+        oldSelected.style.color = "inherit";
+        this.selected = element.textContent;
+        element.classList.add("selected");
+        this.selectedtextcolorChanged();
+        this.selectedbackgroundcolorChanged();
+      },
       down: function() {
-        var container = this.shadowRoot.querySelector(".items");
-        var selected = container.childNodes[this.selectedIndex+1];
+        var selected = this.shadowRoot.childNodes[this.selectedIndex+1];
         if (selected) {
-          var oldSelected = container.querySelector(".selected");
-          oldSelected.classList.remove("selected");
-          this.selected = selected.textContent;
-          selected.classList.add("selected");
+          this.selectElement(selected);
           this.selectedIndex++;
         }
       },
       setitems: function(items) {
         this.items = items;
-      },
-      select: function(name) {
-        name = name.trim();
-        var container = this.shadowRoot.querySelector(".items");
-        var items = container.childNodes;
-        for (var i = 0; i < items.length; i++) {
-          if (items[i].textContent === name) {
-            var oldSelected = container.querySelector(".selected");
-            oldSelected.classList.remove("selected");
-            this.selectedIndex = i;
-            this.selected = name;
-            items[i].classList.add("selected");
-            break;
-          }
-        }
       },
       itemsChanged: function() {
         var self = this;
@@ -106,12 +115,9 @@
           var item = document.createElement("div");
           item.classList.add("item");
           item.addEventListener("click", function() {
-            self.selected = this.textContent;
+            self.selectElement(this);
             self.selectedIndex = i;
-            var oldSelected = container.querySelector(".selected");
-            oldSelected.classList.remove("selected");
-            this.classList.add("selected");
-            self.choose();
+            self.select();
           });
           item.textContent = items[i].trim();
           container.appendChild(item);
@@ -120,7 +126,33 @@
         if (selected) {
           this.selected = selected.textContent;
           selected.classList.add("selected");
+          this.selectedtextcolorChanged();
+          this.selectedbackgroundcolorChanged();
         }
+      },
+      backgroundcolorChanged: function() {
+        var container = this.shadowRoot.querySelector(".items");
+        container.style.backgroundColor = this.backgroundcolor;
+      },
+      textcolorChanged: function() {
+        var container = this.shadowRoot.querySelector(".items");
+        container.style.color = this.textcolor;
+      },
+      selectedbackgroundcolorChanged: function() {
+        var selected = this.shadowRoot.querySelector(".selected");
+        if (selected) {
+          selected.style.backgroundColor = this.selectedbackgroundcolor;
+        }
+      },
+      selectedtextcolorChanged: function() {
+        var selected = this.shadowRoot.querySelector(".selected");
+        if (selected) {
+          selected.style.color = this.selectedtextcolor;
+        }
+      },
+      fontsizeChanged: function() {
+        var container = this.shadowRoot.querySelector(".items");
+        container.style.fontSize = this.fontsize;
       }
     });
   </script>

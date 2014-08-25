@@ -5,13 +5,11 @@
   -webkit-box-sizing: border-box;
 }
 
-:host .items .item.selected {
-  color: white;
-  background-color: black;
+:host .items {
+  padding: 10px 0;
 }
 
 :host .items .item {
-  color: black;
-  background-color: white;
   cursor: pointer;
+  padding: 0 10px;
 }
