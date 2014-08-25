@@ -87,9 +87,11 @@
       },
       selectElement: function(element) {
         var oldSelected = this.shadowRoot.querySelector(".selected");
-        oldSelected.classList.remove("selected");
-        oldSelected.style.backgroundColor = "transparent";
-        oldSelected.style.color = "inherit";
+        if (oldSelected) {
+          oldSelected.classList.remove("selected");
+          oldSelected.style.backgroundColor = "transparent";
+          oldSelected.style.color = "inherit";
+        }
         this.selected = element.textContent;
         element.classList.add("selected");
         this.selectedtextcolorChanged();
