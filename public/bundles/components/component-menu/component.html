@@ -79,8 +79,7 @@
         this.broadcast("chosen", this.selected);
       },
       up: function() {
-        var container = this.shadowRoot.querySelector(".items");
-        var selected = container.childNodes[this.selectedIndex-1];
+        var selected = this.shadowRoot.querySelector(".items").childNodes[this.selectedIndex-1];
         if (selected) {
           this.selectElement(selected);
           this.selectedIndex--;
@@ -97,7 +96,7 @@
         this.selectedbackgroundcolorChanged();
       },
       down: function() {
-        var selected = this.shadowRoot.childNodes[this.selectedIndex+1];
+        var selected = this.shadowRoot.querySelector(".items").childNodes[this.selectedIndex+1];
         if (selected) {
           this.selectElement(selected);
           this.selectedIndex++;
