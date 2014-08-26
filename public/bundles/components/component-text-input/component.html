@@ -1,15 +1,19 @@
-<polymer-element name="ceci-text-input" attributes="resetonsubmit buttonlabel inputname placeholdertext showbutton label" extends="ceci-element"
+<polymer-element name="ceci-text-input" attributes="submitempty textcolor resetonsubmit buttonlabel inputname placeholdertext playsound showbutton buttoncolor label" extends="ceci-element"
 showbutton="true"
+textcolor="#FFFFFF"
+submitempty="false"
+playsound="true"
+buttoncolor="#3fb58e"
 resetonsubmit="true">
   <ceci-definition>
     {
       "tags": ["input", "form", "button"],
       "thumbnail": "./thumbnail.png",
-      "name": "Text Input with Button",
+      "name": "Text Input",
       "description": "Sends text you've entered when you press the button.",
       "broadcasts": {
         "sendData": {
-          "label": "Send Data",
+          "label": "Send Input",
           "description": "Sends the current value of the input field.",
           "default": true
         }
@@ -35,10 +39,25 @@ resetonsubmit="true">
           "description": "The label on the button.",
           "editable": "text"
         },
+        "buttoncolor": {
+          "label": "Button Color",
+          "description": "Color of the button",
+          "editable": "color"
+        },
+        "textcolor": {
+          "label": "Label Color",
+          "description": "Color of the button label",
+          "editable": "color"
+        },
         "placeholdertext": {
           "label": "Placeholder Text",
           "description": "The text you want your input field to show by default.",
           "editable": "text"
+        },
+        "submitempty": {
+          "label": "Allow submit when blank",
+          "description": "Sends a blank value when submitted without any text.",
+          "editable": "boolean"
         },
         "resetonsubmit": {
           "label": "Reset on Submit",
@@ -46,8 +65,13 @@ resetonsubmit="true">
           "editable": "boolean"
         },
         "showbutton": {
-          "label": "Submit via Button",
+          "label": "Show Button",
           "description": "Shows a button that broadcasts the input value when pressed.",
+          "editable": "boolean"
+        },
+        "playsound": {
+          "label": "Play sound when Pressed",
+          "description": "Play a sound when the submit button is pressed.",
           "editable": "boolean"
         }
       }
@@ -57,7 +81,11 @@ resetonsubmit="true">
     <link rel="stylesheet" href="component.css">
     <div id="wrapper">
       <input id="inputText" type="text" on-input="{{input}}" on-keypress="{{keypress}}" />
-      <button id="button" on-click="{{submit}}">{{buttonlabel}}</button>
+      <div id="button" style="color: {{textcolor}}; background-color: {{buttoncolor}};" on-ceci-pressup="{{pressup}}" on-ceci-pressdown="{{pressdown}}">
+        <div class="bottom"></div>
+        <div class="button-overlay"></div>
+        <div id="buttonlabel" class="button-label">{{buttonlabel}}</div>
+      </div>
     </div>
     <shadow></shadow>
   </template>
@@ -65,23 +93,27 @@ resetonsubmit="true">
     Polymer('ceci-text-input', {
       ready: function () {
         this.super();
-        var that = this;
-        this.$.button.textContent = this.gettext("ceci-text-input/button") || this.$.button.textContent;
+        this.loadSound("tap","sounds/tap.mp3");
+        this.$.buttonlabel.textContent = this.gettext("ceci-text-input/button") || this.$.buttonlabel.textContent;
+      },
+      pressup : function(){
+        this.$.button.classList.remove("pressdown");
+        this.$.button.classList.remove("fade");
+        this.$.button.offsetWidth = this.$.button.offsetWidth;
+        this.$.button.classList.add("fade");
       },
       submit: function () {
-        this.broadcast('sendData', this.$.inputText.value);
+
+        var inputString = this.$.inputText.value;
+
+        if(this.submitempty == "true" && inputString.length == 0) {
+          this.broadcast('sendData', inputString);
+        } else if (inputString.length > 0) {
+          this.broadcast('sendData', inputString);
+        }
+
         if(this.resetonsubmit ===  "true"){
           this.$.inputText.value = "";
-        }
-      },
-      click : function(){
-        this.submit();
-      },
-      input: function (e) {
-        if (this.showbutton === "true") {
-          return;
-        } else {
-          this.broadcast('sendData', this.$.inputText.value);
         }
       },
       keypress: function (e) {
@@ -91,6 +123,13 @@ resetonsubmit="true">
             this.$.inputText.value = '';
           }
         }
+      },
+      pressdown : function(){
+        this.$.button.classList.add("pressdown");
+        if(this.playsound === "true") {
+          this.playSound("tap",.4);
+        }
+        this.submit();
       },
       setvalue: function(v) {
         this.$.inputText.value = v;

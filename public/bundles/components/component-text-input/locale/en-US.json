@@ -1,5 +1,5 @@
 {
-	"ceci-text-input": "Text Input with Button",
+	"ceci-text-input": "Text Input",
 	"ceci-text-input/description": "Sends text you've entered when you press the button.",
 	"ceci-text-input/button": "Submit",
 	"ceci-text-input/attributes/inputname" : "Text Input",
@@ -11,6 +11,10 @@
 	"ceci-text-input/attributes/placeholdertext" : "Placeholder",
 	"ceci-text-input/attributes/placeholdertext/label" : "Placeholder Text",
 	"ceci-text-input/attributes/placeholdertext/description" : "The text you want your input field to show by default.",
-	"ceci-text-input/attributes/emitonchange/label" : "Show Button",
-	"ceci-text-input/attributes/emitonchange/description" : "Shows a button that broadcasts the input value when pressed."
+	"ceci-text-input/attributes/showbutton/label" : "Show Button",
+	"ceci-text-input/attributes/showbutton/description" : "Shows a button that broadcasts the input value when pressed.",
+	"ceci-text-input/attributes/resetonsubmit/label" : "Clear Input on Submit",
+	"ceci-text-input/attributes/resetonsubmit/description" : "Clears the input field when it is submitted",
+	"ceci-text-input/attributes/submitempty/label" : "Send input even if blank",
+	"ceci-text-input/attributes/submitempty/description" : "Submit the value of the input even if it's blank."
 }
