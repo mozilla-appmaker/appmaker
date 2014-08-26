@@ -41,6 +41,33 @@ catch(e) {
   }
 }
 
+
+var os = require('os');
+var interfaces = os.networkInterfaces();
+var ipv4Address;
+
+['PUBLISH_HOST','ASSET_HOST'].forEach(function (key) {
+  if (process.env[key]) {
+    if (process.env[key].indexOf('{{ip}}') > -1) {
+      if (!ipv4Address) {
+        Object.keys(interfaces).forEach(function (device) {
+          interfaces[device].forEach(function(details){
+            if (details.family === 'IPv4') {
+              ipv4Address = details.address;
+            }
+          });
+        });
+      }
+
+      process.env[key] = process.env[key].replace('{{ip}}', ipv4Address);
+    }
+    console.log(key + ' set to ' + process.env[key]);
+  }
+  else {
+    console.warn('Warning: ' + key + ' is unset. See README.md for more info.');
+  }
+});
+
 var urls = require('./lib/urls');
 var s3Store = require('./lib/s3-store');
 var makeAPIPublisher = require('./lib/makeapi-publisher').create(process.env.MAKEAPI_URL, process.env.MAKEAPI_ID, process.env.MAKEAPI_SECRET);
