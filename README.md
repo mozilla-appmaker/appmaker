@@ -110,7 +110,7 @@ GA_PUBLISH_DOMAIN: Optional google analytics domain setting for the published ap
 MongoDB is used for saving the user-created apps before publishing.
 
 ## Installation
-Visit http://docs.mongodb.org/manual/installation/ for platform-specific installation instructions.
+Visit http://docs.mongodb.org/manual/installation/ for platform-specific installation instructions. Be sure an install MongoDB outside of your local Appmaker repo.
 
 
 ## Running `mongod`
