@@ -19,7 +19,7 @@ resetonsubmit="true">
         }
       },
       "listeners": {
-        "click": {
+        "senddata": {
           "description": "Causes a fake click event to occur.",
           "label": "Send Data"
         },
@@ -102,10 +102,13 @@ resetonsubmit="true">
         this.$.button.offsetWidth = this.$.button.offsetWidth;
         this.$.button.classList.add("fade");
       },
+      senddata : function(){
+        console.log("senddata");
+        this.submit();
+      },
       submit: function () {
-
+        console.log("submit");
         var inputString = this.$.inputText.value;
-
         if(this.submitempty == "true" && inputString.length == 0) {
           this.broadcast('sendData', inputString);
         } else if (inputString.length > 0) {
