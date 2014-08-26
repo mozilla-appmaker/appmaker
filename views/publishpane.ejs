@@ -1,6 +1,7 @@
 <div id="publish-pane" class="hidden">
   <div id="publish-pane-panel">
     <div id="publish-pane-panel-content" class="hidden">
+
       <button class="close-panel" id="close-publish-pane-panel"></button>
       <h1>
         <%- gettext("You've Published your App!") %>
@@ -22,7 +23,7 @@
 
       <div class="mail-wrapper">
         <div class="mail-link">
-          <input type="email" id="publish-pane-panel-email" placeholder'"<%- gettext("Your Email") %>'>
+          <input type="email" id="publish-pane-panel-email" placeholder="<%- gettext("Your Email") %>">
           <a href="#" id="publish-pane-button"><%- gettext("Email my App URL") %></a>
         </div>
         <div class="mail-notice">
@@ -32,5 +33,7 @@
           <p class="publish-guide-text"><%- gettext("There was a problem mailing you your app URL. Please try again.") %></p>
         </div>
       </div>
+
+    </div>
   </div>
 </div>
