@@ -42,7 +42,7 @@ define(
       Array.prototype.forEach.call(cards, function (card) {
         Array.prototype.forEach.call(card.childNodes, function (child) {
           if (child.localName.indexOf('ceci-') === 0) {
-            child.addEventListener('click', function (e) {
+            child.addEventListener('mousedown', function (e) {
               selectElement(child);
             });
           }
@@ -60,7 +60,7 @@ define(
     window.addEventListener('CeciElementAdded', function(e){
       var element = e.detail;
 
-      element.addEventListener('click', function(e){
+      element.addEventListener('mousedown', function(e){
         selectElement(element);
       });
 
