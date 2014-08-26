@@ -226,6 +226,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                     title: appName,
                     appDescription: appDescription,
                     appTags: inputData.appTags || "",
+                    remixedFrom: inputData.remixedFrom,
                     email: req.session.email,
                     author: userName,
                     locale: req.localeInfo.lang

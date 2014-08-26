@@ -121,7 +121,13 @@
           });
 
           function loadRemixContent (remixName) {
-            application.loadAppByUrl(decodeURIComponent(remixName));
+            var remixedFrom = decodeURIComponent(remixName);
+            that.getOrWaitForCeciApp(function(ceciApp){
+              if (ceciApp && remixedFrom) {
+                ceciApp.remixedfrom = remixedFrom;
+              }
+            });
+            application.loadAppByUrl(remixedFrom);
             that.editingmode = 'draft';
             that.updateAppName(l10n.get("Unsaved App"));
             analytics.event("Loaded Remix Content");
@@ -360,6 +366,7 @@
               appDescription: app.appdescription,
               appTags: app.apptags,
               appid: app.appid,
+              remixedFrom: app.remixedfrom,
               html: app.outerHTML,
               alreadySaved: alreadySaved,
               afterPublish: afterPublish
