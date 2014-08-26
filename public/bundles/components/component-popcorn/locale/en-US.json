@@ -1,6 +1,6 @@
 {
-	"ceci-popcorn": "Popcorn",
-	"ceci-popcorn/attributes/make": "https://mozteach.makes.org/popcorn/1boj",
-	"ceci-popcorn/attributes/make/label": "Popcorn make",
-	"ceci-popcorn/attributes/make/description": "The popcorn make to play in this component"
+	"ceci-popcorn-component": "Popcorn Maker Player",
+	"ceci-popcorn-component/attributes/make": "https://mozteach.makes.org/popcorn/1boj",
+	"ceci-popcorn-component/attributes/make/label": "Popcorn make",
+	"ceci-popcorn-component/attributes/make/description": "The popcorn make to play in this component"
 }
