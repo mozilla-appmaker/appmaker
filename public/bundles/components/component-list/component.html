@@ -1,0 +1,178 @@
+<polymer-element name="ceci-list" extends="ceci-element" attributes="collection">
+  <ceci-definition>
+    {
+      "name": "List",
+      "thumbnail": "./thumbnail.png",
+      "description": "Keeps of a list of items and can broadcast them individually.",
+      "broadcasts": {
+        "senditem": {
+          "label": "Single Item",
+          "description": "Sends a message that an item in the list was completed."
+        }
+      },
+      "listeners": {
+        "additem": {
+          "description": "Adds a list item.",
+          "label": "Add Item",
+          "default" : true
+        },
+        "itemnumber": {
+          "description": "Adds a todo list item.",
+          "label": "Send Item"
+        }
+      },
+      "attributes": {
+        "collection": {
+          "description": "Todo list collection name",
+          "label": "Todo List Data",
+          "editable": "collection"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div class="first-run-container">
+      <h3>Choose or Create a Collection</h3>
+      <p>This Brick will store your list items in a Collection with this name.</p>
+      <input placeholder="Ex. 'list-items'" value="list-items" type="text" />
+      <button on-click="{{addNewCollection}}">OK</button>
+    </div>
+    <div class="list-container hidden">
+      <template if="{{ items.length == 0 }}">
+      <p class="no-items">0 Items</p>
+      </template>
+      <template repeat="{{item, itemindex in items}}">
+        <div class="item-wrapper">
+          <a on-click="{{removeItem}}" data-item-index="{{itemindex}}" class="remove-item">Clear</a>
+          <div class="item" on-click="{{pressItem}}" data-item-index="{{itemindex}}">{{item.item}}</div>
+        </div>
+      </template>
+    </div>
+    <shadow></shadow>
+  </template>
+    <script>
+      Polymer("ceci-list", {
+        attached: function() {
+          this.super();
+          var that = this;
+          this.collections = document.querySelector("ceci-collections");
+          if (this.collections) {
+            this.collections.addEventListener("collectionchange", function(e) {
+              var detail = e.detail;
+              if (detail.removed) {
+                var removedName = detail.removed.getAttribute("collectionname");
+                if (that.collection === removedName) {
+                  that.collection = "";
+                }
+              }
+            });
+          }
+          this.items = [];
+          this.onItemChange = null;
+          this.completed = 0;
+        },
+        pressItem : function(event, detail, sender) {
+          var collection = this.collections.getCollection(this.collection);
+          var index = parseInt(sender.getAttribute('data-item-index'));
+          var dataItem = collection.data[index];
+          this.broadcast("senditem",dataItem.item);
+        },
+        collectionReady: function() {
+
+          var self = this;
+          var collection = this.collections.getCollection(this.collection);
+          var itemField = collection.getField("item");
+
+          if (!itemField) {
+            collection.addField("item", "text");
+          }
+
+          this.shadowRoot.querySelector(".list-container").classList.remove("hidden");
+          this.shadowRoot.querySelector(".first-run-container").classList.add("hidden");
+          this.items = [];
+          this.completed = 0;
+
+          for (var i = 0; i < collection.data.length; i++) {
+            this.items.push(collection.data[i]);
+            if (collection.data[i].completed) {
+              this.completed++;
+            }
+          }
+
+          this.onItemChange = function(e) {
+            var detail = e.detail;
+            if (detail.removed) {
+              self.items.splice(detail.index, 1);
+            }
+            if (detail.added) {
+              self.items.splice(detail.index, 0, detail.added);
+            }
+          };
+          this.onPropertyChange = function(e) {
+            var detail = e.detail;
+            if (detail.changed && detail.changed === "collectionname") {
+              self.collection = this.getAttribute("collectionname");
+            }
+          };
+          collection.addEventListener("itemchange", this.onItemChange);
+          collection.addEventListener("propertychange", this.onPropertyChange);
+          this.lastCollection = collection;
+        },
+        addNewCollection: function() {
+          this.collection = this.shadowRoot.querySelector(".first-run-container input").value;
+        },
+        additem: function(item) {
+          if(item){
+            var collection = this.collections.getCollection(this.collection);
+            collection.addItem({
+              item: item
+            });
+          }
+        },
+        itemnumber : function(val) {
+          var collection = this.collections.getCollection(this.collection);
+          var dataItem = collection.data[val-1];
+          if(dataItem){
+            this.broadcast("senditem",dataItem.item);
+          }
+        },
+        collectionChanged: function() {
+          if (!this.collections) {
+            return;
+          }
+          var collectionInput = this.shadowRoot.querySelector(".first-run-container input");
+          // Clean up any events on the old collection if we change collections.
+          if (this.lastCollection && this.onItemChange) {
+            var lastCollection = this.lastCollection;
+            if (lastCollection) {
+              lastCollection.removeEventListener("itemchange", this.onItemChange);
+              lastCollection.removeEventListener("propertychange", this.onPropertyChange);
+            }
+            this.onItemChange = null;
+            this.onPropertyChange = null;
+          }
+          if (collectionInput) {
+            collectionInput.value = this.collection;
+          }
+          if (this.collection === "") {
+            this.shadowRoot.querySelector(".list-container").classList.add("hidden");
+            this.shadowRoot.querySelector(".first-run-container").classList.remove("hidden");
+            return;
+          }
+          var collection = this.collections.getCollection(this.collection);
+          if (!collection) {
+            this.collections.addCollection(this.collection);
+          }
+          this.async(this.collectionReady);
+        },
+        removeItem: function(event, detail, sender) {
+          var collection = this.collections.getCollection(this.collection);
+          var index = parseInt(sender.getAttribute('data-item-index'));
+          var dataItem = collection.data[index];
+          collection.removeItem(index);
+          this.completed--;
+        }
+      });
+    </script>
+</polymer-element>

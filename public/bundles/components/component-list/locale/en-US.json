@@ -1,0 +1,6 @@
+{
+	"ceci-todo-list": "list",
+	"ceci-todo-list/attributes/collection": "",
+	"ceci-todo-list/attributes/collection/label": "List Data",
+	"ceci-todo-list/attributes/collection/description": "List collection name"
+}
