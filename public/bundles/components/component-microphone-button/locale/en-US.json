@@ -1,11 +1,11 @@
 {
-  "ceci-microphone-button/description": "Records sounds.",
+  "ceci-microphone-button/description": "Records sounds with your device microphone.",
   "ceci-microphone-button/name": "Microphone",
-  "ceci-microphone-button/clip/label": "clip",
+  "ceci-microphone-button/clip/label": "Recorded Clip",
   "ceci-microphone-button/clip/description": "An audio clip from your microphone.",
-  "ceci-microphone-button/start/description": "Start a microphone recording.",
-  "ceci-microphone-button/start/label": "start",
-  "ceci-microphone-button/stop/description": "Stop a microphone recording.",
-  "ceci-microphone-button/stop/label": "stop",
+  "ceci-microphone-button/startRecording/description": "Start a microphone recording.",
+  "ceci-microphone-button/startRecording/label": "Start Recording",
+  "ceci-microphone-button/stopRecording/description": "Stop a microphone recording.",
+  "ceci-microphone-button/stopRecording/label": "Stop Recording",
   "your browser does not support recording":"your browser does not support microphone recording using the WebAudio MediaRecorder."
 }

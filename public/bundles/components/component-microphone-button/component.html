@@ -4,23 +4,23 @@
     {
       "tags": ["microphone", "button", "audio"],
       "thumbnail": "./thumbnail.png",
-      "description": "Records sounds.",
+      "description": "Records sounds with your device microphone.",
       "name": "Microphone",
       "broadcasts": {
         "clip": {
-          "label": "clip",
+          "label": "Recorded Clip",
           "description": "An audio clip from your microphone.",
           "default": true
         }
       },
       "listeners": {
-        "start": {
+        "startRecording": {
           "description": "Start a microphone recording.",
-          "label": "start"
+          "label": "Start Recording"
         },
-        "stop": {
+        "stopRecording": {
           "description": "Stop a microphone recording.",
-          "label": "stop"
+          "label": "Stop Recording"
         }
       },
       "attributes": {}
@@ -104,6 +104,21 @@
       /**
        * WebRTC fallback due to lack of native WebAudio API support
        */
+      startRecording : function(){
+        this.recordRTC.startRecording();
+        this.startButton.classList.add("recording");
+        this.recording = true;
+      },
+      stopRecording : function(){
+        if (!this.recording) return;
+        var that = this;
+        this.recordRTC.stopRecording(function(audioURL) {
+          that.recording = false;
+          that.broadcast('clip', audioURL);
+          that.bg.style.background = that.buttoncolor;
+          that.startButton.classList.remove("recording");
+        });
+      },
       setupRecordRTC: function() {
         var that = this;
         var recordRTC;
@@ -111,22 +126,14 @@
         function loadupRecordingFunctionality() {
 
           var onbind = function(stream) {
-            recordRTC = RecordRTC(stream);
+            that.recordRTC = RecordRTC(stream);
 
             that.startButton.onclick = function() {
-              recordRTC.startRecording();
-              that.startButton.classList.add("recording");
-              that.recording = true;
+              that.startRecording();
             };
 
             that.stopButton.onclick = function() {
-              if (!that.recording) return;
-              recordRTC.stopRecording(function(audioURL) {
-                that.recording = false;
-                that.broadcast('clip', audioURL);
-                that.bg.style.background = that.buttoncolor;
-                that.startButton.classList.remove("recording");
-              });
+              that.stopRecording();
             };
           };
 
