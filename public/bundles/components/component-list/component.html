@@ -82,7 +82,6 @@
 
           var self = this;
           var collection = this.collections.getCollection(this.collection);
-
           var itemField = collection.getField("item");
 
           if (!itemField) {
@@ -134,7 +133,9 @@
         itemnumber : function(val) {
           var collection = this.collections.getCollection(this.collection);
           var dataItem = collection.data[val-1];
-          this.broadcast("senditem",dataItem.item);
+          if(dataItem){
+            this.broadcast("senditem",dataItem.item);
+          }
         },
         collectionChanged: function() {
           if (!this.collections) {
