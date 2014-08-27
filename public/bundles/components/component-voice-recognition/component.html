@@ -1,5 +1,4 @@
-<link rel="import" href="./voice-recognition.html">
-<polymer-element name="ceci-voice-recognition" attributes="state" extends="ceci-element">
+<polymer-element name="ceci-voice-recognition" attributes="continuous text state grammar freespeech" extends="ceci-element">
   <ceci-definition>
     {
       "tags": ["text", "voice"],
@@ -95,7 +94,7 @@
     <voice-recognition id="vr"></voice-recognition>
     <div id="container">
       <div id="state-message">{{state}}</div>
-      <div id="result-text">{{resultantText}}</div>
+      <div id="result-text">{{text}}</div>
     </div>
     <shadow></shadow>
     <content></content>
@@ -104,9 +103,50 @@
     Polymer('ceci-voice-recognition', {
       resultantText: '',
       state: 'idle',
+      continuous: false,
+      text: '',
+ /* -- Lifecycle ------------------------------------------------- */
+      created: function() {
+          var SpeechRecognition = window.SpeechRecognition ||
+                                  window.webkitSpeechRecognition ||
+                                  window.mozSpeechRecognition ||
+                                  window.msSpeechRecognition ||
+                                  window.oSpeechRecognition;
+
+          if (SpeechRecognition !== undefined) {
+              this.recognition = new SpeechRecognition();
+          }
+          else {
+              console.error('Your browser do not support the Web Speech API');
+          }
+
+        var SpeechGrammarList = window.SpeechGrammarList ||
+                                  window.webkitSpeechGrammarList ||
+                                  window.mozSpeechGrammarList ||
+                                  window.msSpeechGrammarList ||
+                                  window.oSpeechGrammarList;
+
+
+          if (SpeechGrammarList !== undefined) {
+              this.grammarlist = new SpeechGrammarList();
+          }
+          else {
+              console.error('Your browser do not support the Web Speech API');
+          }
+
+
+      },
+
       ready: function () {
         this.super();
-        this.$.vr.bindOwner(this);
+        
+         [
+              'start',
+              'error',
+              'end'
+          ].forEach(this.propagateEvent.bind(this));
+          this.bindResult();
+
         this.$.vr.addEventListener('result', function (e) {
           this.resultantText = e.detail.result;
           console.log("e.detail.result " + e.detail.result);
@@ -115,22 +155,39 @@
         }.bind(this));
       },
       start: function () {
-        this.$.vr.start();
+        this.recognition.start();
         this.state = 'recording';
       },
       setgrammar: function () {
         console.log('set aki' + this.getAttribute('grammar'));
         this.grammarlist.addFromString  ( this.getAttribute('grammar') , 1 );
         this.recognition.grammars = this.grammarlist;        
-        this.$.vr.setgrammar();
       },      
       stop: function () {
-        this.$.vr.stop();
+        this.recognition.stop();
         this.state = 'decoding';
       },
       abort: function () {
-        this.$.vr.abort();
+        this.recognition.abort();
         this.state = 'idle';
+      },
+      /* -- Events ---------------------------------------------------- */
+      propagateEvent: function (eventName) {
+          this.recognition.addEventListener(eventName, this.fire.bind(this, eventName));
+      },
+      bindResult: function() {
+          var that = this;
+
+          this.recognition.addEventListener('result', function(e) {
+
+              for (var i = e.resultIndex; i < e.results.length; ++i) {
+                  that.text += e.results[i][0].transcript;
+                  e.result = that.text;
+                  that.broadcast('result', e.results[i][0].transcript);
+              }
+
+              that.fire('result', e);
+          });
       }
     });
   </script>
