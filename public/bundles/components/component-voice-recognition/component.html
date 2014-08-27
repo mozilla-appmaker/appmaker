@@ -106,9 +106,11 @@
       state: 'idle',
       ready: function () {
         this.super();
+        this.$.vr.bindOwner(this);
         this.$.vr.addEventListener('result', function (e) {
           this.resultantText = e.detail.result;
           console.log("e.detail.result " + e.detail.result);
+          this.broadcast('result',  e.detail.result);
           this.state = 'idle';
         }.bind(this));
       },
@@ -117,7 +119,9 @@
         this.state = 'recording';
       },
       setgrammar: function () {
-        console.log('set aki');
+        console.log('set aki' + this.getAttribute('grammar'));
+        this.grammarlist.addFromString  ( this.getAttribute('grammar') , 1 );
+        this.recognition.grammars = this.grammarlist;        
         this.$.vr.setgrammar();
       },      
       stop: function () {

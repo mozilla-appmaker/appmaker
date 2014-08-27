@@ -6,6 +6,10 @@
             continuous: true,
             text: '',
 
+            bindOwner: function(element) {
+                this.owner = element;
+            }
+
             /* -- Lifecycle ------------------------------------------------- */
             created: function() {
                 var SpeechRecognition = window.SpeechRecognition ||
@@ -55,8 +59,8 @@
                 this.recognition.start();
             },
             setgrammar: function() {
-                console.log("setgrammarlist called");
-                this.grammarlist.addFromString  (" #JSGF V1.0; grammar test; public <simple> =  how much does microsoft stock cost | how deep is the atlantic ocean | go forward ten meters | turn left | george washington | new york city  | call andre | call christopher | read messages  ; " , 1 );
+                console.log("setgrammarlist called" + this.getAttribute('grammar'));
+                this.grammarlist.addFromString  ( this.getAttribute('grammar') , 1 );
                 this.recognition.grammars = this.grammarlist;
             }, 
             stop: function() {
