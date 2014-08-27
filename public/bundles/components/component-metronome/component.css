@@ -25,12 +25,21 @@
 
 :host .speed-control .icon {
   position: absolute;
-  font-size: 40px;
-  color: white;
-  font-weight: bold;
-  width: 100%;
-  text-align: center;
-  text-shadow: 0px -1px 0px rgba(0,0,0,.25);
+  width: 20px;
+  height: 6px;
+  top: calc(50% - 3px);
+  left: calc(50% - 10px);
+  background: white;
+}
+
+:host .speed-control.up .icon:after {
+  content: "";
+  position: absolute;
+  height: 20px;
+  left: 7px;
+  width: 6px;
+  top: -7px;
+  background: white;
 }
 
 :host .speed-control:hover {
@@ -41,9 +50,6 @@
   right: 40px;
 }
 
-:host .down .icon {
-  top: -4px;
-}
 
 :host .speed-control.down {
   left: 40px;
@@ -91,8 +97,8 @@
 
 :host .metronome-arrow {
   background: black;
-  height: 45px;
-  width: 6px;
+  height: 48px;
+  width: 10px;
   border: solid 2px white;
   -webkit-transform-origin: center 45px;
   -webkit-border-radius: 0 0 5px 5px;
@@ -101,6 +107,9 @@
   position: absolute;
   top: 10px;
   left: 15px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 :host .metronome-animation {
