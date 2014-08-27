@@ -1,0 +1,93 @@
+<!-- Define your custom element -->
+<polymer-element name="voice-recognition" attributes="continuous text" extends="ceci-element">
+    <script>
+        Polymer('voice-recognition', {
+            /* -- Attributes ------------------------------------------------ */
+            continuous: true,
+            text: '',
+
+            /* -- Lifecycle ------------------------------------------------- */
+            created: function() {
+                var SpeechRecognition = window.SpeechRecognition ||
+                                        window.webkitSpeechRecognition ||
+                                        window.mozSpeechRecognition ||
+                                        window.msSpeechRecognition ||
+                                        window.oSpeechRecognition;
+
+                if (SpeechRecognition !== undefined) {
+                    this.recognition = new SpeechRecognition();
+                }
+                else {
+                    console.error('Your browser do not support the Web Speech API');
+                }
+
+              var SpeechGrammarList = window.SpeechGrammarList ||
+                                        window.webkitSpeechGrammarList ||
+                                        window.mozSpeechGrammarList ||
+                                        window.msSpeechGrammarList ||
+                                        window.oSpeechGrammarList;
+
+
+                if (SpeechGrammarList !== undefined) {
+                    this.grammarlist = new SpeechGrammarList();
+                }
+                else {
+                    console.error('Your browser do not support the Web Speech API');
+                }
+
+
+            },
+            ready: function() {
+                //this.recognition.continuous = this.continuous;
+                //this.recognition.interimResults = false;
+
+                // Initialize event listeners
+                [
+                    'start',
+                    'error',
+                    'end'
+                ].forEach(this.propagateEvent.bind(this));
+                this.bindResult();
+            },
+
+            /* -- Methods --------------------------------------------------- */
+            start: function() {
+                this.recognition.start();
+            },
+            setgrammar: function() {
+                console.log("setgrammarlist called");
+                this.grammarlist.addFromString  (" #JSGF V1.0; grammar test; public <simple> =  how much does microsoft stock cost | how deep is the atlantic ocean | go forward ten meters | turn left | george washington | new york city  | call andre | call christopher | read messages  ; " , 1 );
+                this.recognition.grammars = this.grammarlist;
+            }, 
+            stop: function() {
+                this.recognition.stop();
+            },
+            abort: function() {
+                this.recognition.abort();
+            },
+
+            /* -- Events ---------------------------------------------------- */
+            propagateEvent: function (eventName) {
+                this.recognition.addEventListener(eventName, this.fire.bind(this, eventName));
+            },
+            bindResult: function() {
+                var that = this;
+
+                this.recognition.addEventListener('result', function(e) {
+                    console.log('result');
+                    for (var i = e.resultIndex; i < e.results.length; ++i) {
+                        console.log('result loop' + e.results[i][0].transcript);
+                        that.text += e.results[i][0].transcript;
+                        e.result = that.text;
+                        console.log('result final loop');
+                        that.broadcast('result', "result final loop");
+
+                    }
+
+                    that.fire('result', e);
+                });
+            }
+        });
+    </script>
+
+</polymer-element>
