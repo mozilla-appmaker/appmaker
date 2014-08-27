@@ -98,7 +98,9 @@
   height: 35px;
   width: 35px;
   border-radius: 35px;
-  background: #4DB227 -webkit-linear-gradient(#DDD,white);
+  background: #4DB227;
+  background:  linear-gradient(#DDD,white);
+
   border: solid 3px #777;
 }
 
@@ -114,7 +116,7 @@
   border-bottom: 2px solid rgba(0,0,0,.35);
   border-radius: 0.2rem;
   text-shadow: 0px -1px 0px rgba(0,0,0,.3);
-  background: #4DB227 -webkit-linear-gradient(#58c82d,#4DB227);
+  background: #4DB227 linear-gradient(#58c82d,#4DB227);
   color: #ffffff;
   font-family: "FiraSans", sans-serif;
   font-weight: 400;
