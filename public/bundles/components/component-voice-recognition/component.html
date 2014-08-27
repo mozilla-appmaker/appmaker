@@ -1,0 +1,133 @@
+<link rel="import" href="./voice-recognition.html">
+<polymer-element name="ceci-voice-recognition" attributes="state" extends="ceci-element">
+  <ceci-definition>
+    {
+      "tags": ["text", "voice"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Speech recognition component",
+      "name": "Voice Recognition",
+      "broadcasts": {
+        "result": {
+          "label": "Result",
+          "description": "Occurs when speech is decoded."
+        }
+      },
+      "listeners": {
+        "start": {
+          "label": "Start Recording",
+          "description": "Start recording voice data."
+        },
+        "setgrammar": {
+          "label": "Set Grammar 1",
+          "description": "Set the grammar."
+        },        
+        "stop": {
+          "label": "Stop Recording",
+          "description": "Stop recording and try to decode."
+        }
+      },
+	"attributes": {
+    "freespeech": {
+          "description": "Set if is free speech",
+          "label": "Free speech?",
+          "editable": "boolean"
+      } ,
+      "continuous": {
+          "description": "Continuous recognition",
+          "label": "Continuous recognition?",
+          "editable": "boolean"
+      },
+      "grammar": {
+          "label": "Grammar",
+          "description": "Grammar.",
+          "editable": "textarea",
+          "listener": true
+      } 
+	}
+    }
+  </ceci-definition>
+  <template>
+    <style>
+      :host {
+        display: block;
+        width: 100%;
+        min-height: 2em;
+      }
+      :host #state-message {
+        color: white;
+        visibility: hidden;
+        text-align: center;
+        font-size: 1.5em;
+      }
+
+      :host #result-text {
+        padding: .2em;
+      }
+
+      :host([state="recording"],[state="decoding"]) #state-message {
+        visibility: visible;
+      }
+
+      :host([state="recording"]) #state-message {
+        background-color: darkred;
+      }
+
+      :host([state="decoding"]) #state-message {
+        background-color: gold;
+      }
+
+      :host(:not([state="idle"])) #result-text {
+        visibility: hidden;
+      }
+
+      :host #container {
+        position: relative;
+      }
+
+      :host #container div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+      }
+    </style>
+    <voice-recognition id="vr"></voice-recognition>
+    <div id="container">
+      <div id="state-message">{{state}}</div>
+      <div id="result-text">{{resultantText}}</div>
+    </div>
+    <shadow></shadow>
+    <content></content>
+  </template>
+  <script>
+    Polymer('ceci-voice-recognition', {
+      resultantText: '',
+      state: 'idle',
+      ready: function () {
+        this.super();
+        this.$.vr.addEventListener('result', function (e) {
+          this.resultantText = e.detail.result;
+          console.log("e.detail.result " + e.detail.result);
+          this.state = 'idle';
+        }.bind(this));
+      },
+      start: function () {
+        this.$.vr.start();
+        this.state = 'recording';
+      },
+      setgrammar: function () {
+        console.log('set aki');
+        this.$.vr.setgrammar();
+      },      
+      stop: function () {
+        this.$.vr.stop();
+        this.state = 'decoding';
+      },
+      abort: function () {
+        this.$.vr.abort();
+        this.state = 'idle';
+      }
+    });
+  </script>
+</polymer-element>
