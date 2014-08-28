@@ -23,6 +23,9 @@ define(
 
     function selectElement(element){
       var selectedElement = document.querySelector(".brick.selected");
+      if (element.classList.contains("selected")) {
+        return;
+      }
       if (selectedElement){
         selectedElement.classList.remove('selected');
       }
@@ -64,10 +67,6 @@ define(
     }, false);
 
     window.addEventListener('CeciElementsSorted', function (e) {
-      selectElement(e.detail);
-    });
-
-    window.addEventListener('SelectElement', function (e) {
       selectElement(e.detail);
     });
 
