@@ -292,7 +292,7 @@
       broadcast: function (name, data) {
         var broadcastElement = this.querySelector('ceci-broadcast[from="' + name + '"]');
         if (broadcastElement) {
-          data = data || name;
+          data = data || this.gettext(this.localName + "-component/attributes/" + name) || name;
           broadcastElement.fire(data);
         }
       },

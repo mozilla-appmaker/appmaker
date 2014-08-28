@@ -27,7 +27,7 @@
           var broadcastDetails = {
             channel : broadcastElement.on,
             handler : name,
-            data: data ? data : name
+            data: data ? data : this.gettext(this.localName + "-component/attributes/" + name) || name
           };
           this.dispatchEvent(new CustomEvent('broadcastFired', {name: name, bubbles: true, detail: broadcastDetails}));
         }
