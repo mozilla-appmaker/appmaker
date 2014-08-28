@@ -22,7 +22,7 @@ define(
     "use strict";
 
     function selectElement(element){
-      var selectedElement = document.querySelector("selected");
+      var selectedElement = document.querySelector(".brick.selected");
       if (selectedElement){
         selectedElement.classList.remove('selected');
       }
