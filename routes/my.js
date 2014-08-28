@@ -4,29 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-//TODO use node UUID module instead https://github.com/mozilla-appmaker/appmaker/issues/826
-function hex(length){
-    if (length > 8) return hex(8) + hex(length-8); // routine is good for up to 8 digits
-    var myHex = Math.random().toString(16).slice(2,2+length);
-    return pad(myHex, length); // just in case we don't get 8 digits for some reason
-}
-
-function pad(str, length){
-    while(str.length < length){
-        str += '0';
-    }
-    return str;
-}
-
-function variant(){
-    return '89ab'[Math.floor(Math.random() * 4)];
-}
-
-// Public interface
-function uuid(){
-    return hex(8) + '-' + hex(4) + '-4' + hex(3) + '-' + variant() + hex(3) + '-' + hex(12);
-}
-
 var request = require('request');
 var dbModels = require('../lib/db-models');
 
