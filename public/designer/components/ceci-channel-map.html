@@ -10,8 +10,13 @@
         this.listenerchannels = this.listenerchannels || [];
         this.channelNames = Object.keys(this.channels);
         var that = this;
-        this.onChannelUpdate = function() {
-          that.getChannels();
+        this.onChannelUpdate = function(evt) {
+          var details = evt.detail;
+          if(details && details.action && details.action === "detached") {
+            // end of the line for this component, no need to actually update
+            return;
+          }
+          that.getChannels(evt.detail);
         };
         window.addEventListener('channelUpdate', this.onChannelUpdate);
       },

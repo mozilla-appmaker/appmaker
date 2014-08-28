@@ -21,10 +21,11 @@
         this.updated();
       },
       detached: function(){
-        this.updated();
+        this.updated("detached");
       },
-      updated: function(){
-        window.dispatchEvent(new CustomEvent('channelUpdate'));
+      updated: function(action){
+        var details = { action: action };
+        window.dispatchEvent(new CustomEvent('channelUpdate', { detail: details } ));
       },
       attached: function () {
         this.updated();
