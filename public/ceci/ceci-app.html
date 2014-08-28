@@ -130,13 +130,18 @@
           // wait until Polymer has prepared the element completely
           var handle = function() {
             var selectedBrick = card.querySelector(".brick.selected");
-            var next = selectedBrick ? selectedBrick.nextSibling : false;
+            var next = false;
+            if (selectedBrick) {
+              next = selectedBrick.nextSibling;
+              selectedBrick.classList.remove("selected");
+            }
             var append = options.append || !next;
             if(append) {
               card.appendChild(newElement);
             } else {
               card.insertBefore(newElement,next);
             }
+            newElement.classList.add("selected");
             // Apply defaults here explicitly so that element doesn't
             // have to figure out whether or not it's new when it's
             // attached to the DOM.

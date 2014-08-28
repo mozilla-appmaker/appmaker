@@ -21,13 +21,11 @@ define(
   function(Editable) {
     "use strict";
 
-    var selectedElement = null;
-
     function selectElement(element){
+      var selectedElement = document.querySelector("selected");
       if (selectedElement){
         selectedElement.classList.remove('selected');
       }
-      selectedElement = element;
       element.classList.add('selected');
       element.onready(function() {
         Editable.displayAttributes(element);          
@@ -63,8 +61,6 @@ define(
       element.addEventListener('mousedown', function(e){
         selectElement(element);
       });
-
-      selectElement(element);
     }, false);
 
     window.addEventListener('CeciElementsSorted', function (e) {
