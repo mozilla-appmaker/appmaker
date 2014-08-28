@@ -45,6 +45,7 @@
         } else {
           this.parentNode.appendChild(clone);
         }
+        this.classList.remove("selected");
         document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: clone}));
       },
       cleanUp: function () {
