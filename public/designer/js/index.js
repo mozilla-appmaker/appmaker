@@ -20,7 +20,13 @@ define(
   ],
   function(l10n, Inflector, Utils, Ceci, Intro) {
     "use strict";
+
     function onPolymerReadyForIntro() {
+      // make sure we have a ceci-app available
+      var ceciApp = document.querySelector("ceci-app");
+      if(!ceciApp) {
+        return setTimeout(onPolymerReadyForIntro, 250);
+      }
       var intro = new Intro();
       intro.start();
     }
