@@ -75,6 +75,7 @@
   bottom: 0;
   text-align: center;
   padding-top: 9px;
+  overflow: hidden;
   z-index: 2;
 }
 

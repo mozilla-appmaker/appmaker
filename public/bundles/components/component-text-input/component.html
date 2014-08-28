@@ -151,6 +151,9 @@ resetonsubmit="true">
         else {
           this.$.inputText.setAttribute("placeholder", newValue);
         }
+      },
+      buttonlabelChanged: function(oldValue, newValue) {
+        this.$.buttonlabel.textContent = newValue;
       }
     });
   </script>
