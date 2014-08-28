@@ -28,6 +28,12 @@
     require(['l10n'], function(L10n) {
       Polymer('ceci-channel-menu', {
         menubuilt : false,
+        ready : function (){
+          this.addEventListener("click", function(e) {
+            window.dispatchEvent(new CustomEvent("SelectElement", { detail :  this.component }));
+            e.stopPropagation();
+          });
+        },
         attached: function () {
           this.menuWrapper = this.shadowRoot.querySelector(".channel-menu-wrapper");
           this.menu = this.menuWrapper.querySelector(".channel-menu");
