@@ -13,6 +13,10 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
         if (name && name !== l10n.get("Unsaved App")) {
           localStorage.currentApp = name;
         }
+        // If we have a remix query string, replace it.
+        if (location.search) {
+          history.pushState({}, "", location.origin + location.pathname);
+        }
       },
       clearCurrentApp: function(){
         localStorage.removeItem("currentApp");
