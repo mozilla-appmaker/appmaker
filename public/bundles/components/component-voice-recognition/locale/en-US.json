@@ -5,4 +5,7 @@
   "ceci-voice-recognition/start/description": "Start recording voice data.",
   "ceci-voice-recognition/stop/label": "Stop Recording",
   "ceci-voice-recognition/stop/description": "Stop recording and try to decode."
+  "ceci-voice-recognition/attributes/grammar/label" :  "Grammar"
+  "ceci-voice-recognition/attributes/grammar/text" :  "Grammar"
+  "ceci-voice-recognition/attributes/grammar" : "#JSGF V1.0; grammar test; public <simple> ="
 }
