@@ -49,9 +49,9 @@
 
     })(this);
 
-  require(['Firebase'], initCeciApp, initCeciApp);
+  require(['designer/mutant', 'Firebase'], initCeciApp, initCeciApp);
 
-  function initCeciApp() {
+  function initCeciApp(mutant) {
     Polymer('ceci-app', {
       created: function() {
         window.dispatchEvent(new CustomEvent("CeciAppCreated", { detail: { source: this }} ));
@@ -133,7 +133,6 @@
             var next = false;
             if (selectedBrick) {
               next = selectedBrick.nextSibling;
-              selectedBrick.classList.remove("selected");
             }
             var append = options.append || !next;
             if(append) {
@@ -141,7 +140,7 @@
             } else {
               card.insertBefore(newElement,next);
             }
-            newElement.classList.add("selected");
+            mutant.selectElement(newElement);
             // Apply defaults here explicitly so that element doesn't
             // have to figure out whether or not it's new when it's
             // attached to the DOM.

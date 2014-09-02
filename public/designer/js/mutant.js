@@ -31,8 +31,22 @@ define(
       }
       element.classList.add('selected');
       element.onready(function() {
-        Editable.displayAttributes(element);          
-      })
+        Editable.displayAttributes(element);
+      });
+    }
+
+    function setupElement(element) {
+      if (!element) {
+        return;
+      }
+      element.addEventListener('mousedown', function (e) {
+        selectElement(element);
+      });
+      if (element.classList.contains("selected")) {
+        element.onready(function() {
+          Editable.displayAttributes(element);
+        });
+      }
     }
 
     // For a special case in Chrome where elements are already in the DOM
@@ -43,9 +57,7 @@ define(
       Array.prototype.forEach.call(cards, function (card) {
         Array.prototype.forEach.call(card.childNodes, function (child) {
           if (child.localName.indexOf('ceci-') === 0) {
-            child.addEventListener('mousedown', function (e) {
-              selectElement(child);
-            });
+            setupElement(child);
           }
         });
       });
@@ -59,11 +71,7 @@ define(
 
     // Add click handler to new elements
     window.addEventListener('CeciElementAdded', function(e){
-      var element = e.detail;
-
-      element.addEventListener('mousedown', function(e){
-        selectElement(element);
-      });
+      setupElement(e.detail);
     }, false);
 
     window.addEventListener('CeciElementsSorted', function (e) {
