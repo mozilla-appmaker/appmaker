@@ -33,7 +33,7 @@
     <div class="editable-attributes">
       <div>
         <label>Title</label>
-        <input type="text" on-change="{{onAppNameChange}}" value="{{app.name}}"></label>
+        <input type="text" on-change="{{onAppNameChange}}" on-focus="{{onAppNameFocus}}" value="{{app.name}}"></label>
       </div>
       <div>
         <label>Description</label>
@@ -67,7 +67,14 @@
       },
       onAppNameChange: function(event, detail, sender) {
         var userState = document.querySelector('user-state');
-        userState.renameApp(this.app.name, sender.value);
+        if (userState.editingmode !== "saved") {
+          userState.saveAppAs(sender.value);
+        } else {
+          userState.renameApp(this.name, sender.value);
+        }
+      },
+      onAppNameFocus: function(event, detail, sender) {
+        this.name = sender.value;
       }
     });
   </script>
