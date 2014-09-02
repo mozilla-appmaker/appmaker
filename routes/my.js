@@ -37,7 +37,7 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
 
       App.findOne({author:request.session.email, name: request.query.name}, function(err, obj) {
         if (!obj) {
-          console.error('Unable to find app for %s', request.query.name);
+          console.warn('Unable to find app for %s', request.query.name);
           return response.json(500, {error: 'Unable to find app: ' + err});
         } else {
           return response.json(obj);
@@ -89,14 +89,14 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
         var makeId = app['makeapi-id'];
         App.remove({author:request.session.email, name: request.body.name}, function(err) {
           if(err){
-            console.error("Error deleting this app!");
+            console.warn("Error deleting this app!");
             return response.json(500, {error: 'App was not deleted due to ' + err});
           }
           return response.json(200);
         });
         if (makeId) {
           makeAPIPublisher.remove(makeId, function(err) {
-            if (err) console.error("Error deleting make: " + err);
+            if (err) console.warn("Error deleting make: " + err);
           });
         }
       });
@@ -190,7 +190,7 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
 
       Component.remove({author:request.session.email, url: request.body.url}, function(err){
         if(err){
-          console.error("Error forgetting this component!");
+          console.warn("Error forgetting this component!");
           return response.json(500, {error: 'Component was not deleted due to ' + err});
         }
       });

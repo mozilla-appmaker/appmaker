@@ -30,13 +30,13 @@ module.exports = {
 
     try {
       request.get(url).on('error',
-        function (err) { console.error('Error during remix proxy for ', url); })
+        function (err) { console.warn('Error during remix proxy for ', url); })
       .pipe(res)
       .on('error',
-        function (err) { console.error('Error during remix proxy for ', url); });
+        function (err) { console.warn('Error during remix proxy for ', url); });
     }
     catch (e) {
-      console.error('Error creating pipe for remix proxy', e);
+      console.warn('Error creating pipe for remix proxy', e);
       res.json({ message: 'No valid url.' }, 500);
       return;
     }
@@ -95,7 +95,7 @@ module.exports = {
         var newRequest = request.get(url);
 
         newRequest.on('error', function(err) {
-          console.error('error doing cors request for ', url);
+          console.warn('error doing cors request for ', url);
           res.json({error: 'No valid url (1).'}, 500);
         });
 
@@ -105,7 +105,7 @@ module.exports = {
           }
           else {
             newRequest.pipe(res).on('error', function(err) {
-              console.error('error doing piped cors request for ', url);
+              console.warn('error doing piped cors request for ', url);
               res.json({error: 'No valid url (2).'}, 500);
             });
           }
