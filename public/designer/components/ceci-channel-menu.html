@@ -30,7 +30,6 @@
         menubuilt : false,
         ready : function (){
           this.addEventListener("click", function(e) {
-            window.dispatchEvent(new CustomEvent("SelectElement", { detail :  this.component }));
             e.stopPropagation();
           });
         },
