@@ -119,12 +119,13 @@
           this.collection = this.shadowRoot.querySelector(".first-run-container input").value;
         },
         additem: function(item) {
-          if(item){
-            var collection = this.collections.getCollection(this.collection);
-            collection.addItem({
-              description: item
-            });
+          var collection = this.collections.getCollection(this.collection);
+          if (!item || !collection) {
+            return;
           }
+          collection.addItem({
+            description: item
+          });
         },
         collectionChanged: function() {
           if (!this.collections) {
