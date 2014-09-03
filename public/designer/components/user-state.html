@@ -251,37 +251,7 @@
           var saveAsHandler = function() {
             var name = window.prompt(l10n.get("What do you want to call this app?"));
 
-            var ceciApp = document.querySelector('ceci-app');
-            var html = ceciApp.outerHTML;
-
-            if (name === null) {
-              self.appRenameFailed(l10n.get("Save was cancelled."));
-            } else if(name.trim()){
-              application.saveApp(name,ceciApp.appid,html, function(err,data){
-                if(!err){
-
-                  application.setCurrentApp(name);
-                  self.refreshUserState();
-                  self.updateAppName(name);
-                  ceciApp.setAttribute("appid", "ceci-app-"+uuid());
-                  self.editingmode = "saved";
-                  window.dispatchEvent(new CustomEvent("CeciAppSaveAs"));
-                  analytics.event("Saved App As");
-                } else {
-                  if (err.responseJSON.error === 'App name must be unique.') {
-                    self.appRenameFailed(l10n.get('App name must be unique.'));
-                  } else {
-                    reporter.errorReport(
-                      l10n.get("Your app couldn't be saved."),
-                      (err.responseJSON ? l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error) : '')
-                    );
-                  }
-                  analytics.event("Error Saving App As", { nonInteraction: true });
-                }
-              });
-            } else {
-              self.appRenameFailed(l10n.get("App names can't be blank."));
-            }
+            self.saveAppAs(name);
           };
 
           this.$.saveAppAs.addEventListener("click", saveAsHandler);
@@ -374,6 +344,40 @@
             analytics.event("Renamed App");
           } else {
             this.appRenameFailed(l10n.get("App names can't be blank."));
+          }
+        },
+        saveAppAs: function(name) {
+          var ceciApp = document.querySelector('ceci-app');
+          var html = ceciApp.outerHTML;
+          var self = this;
+
+          if (name === null) {
+            self.appRenameFailed(l10n.get("Save was cancelled."));
+          } else if(name.trim()){
+            application.saveApp(name,ceciApp.appid,html, function(err,data){
+              if(!err){
+
+                application.setCurrentApp(name);
+                self.refreshUserState();
+                self.updateAppName(name);
+                ceciApp.setAttribute("appid", "ceci-app-"+uuid());
+                self.editingmode = "saved";
+                window.dispatchEvent(new CustomEvent("CeciAppSaveAs"));
+                analytics.event("Saved App As");
+              } else {
+                if (err.responseJSON.error === 'App name must be unique.') {
+                  self.appRenameFailed(l10n.get('App name must be unique.'));
+                } else {
+                  reporter.errorReport(
+                    l10n.get("Your app couldn't be saved."),
+                    (err.responseJSON ? l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error) : '')
+                  );
+                }
+                analytics.event("Error Saving App As", { nonInteraction: true });
+              }
+            });
+          } else {
+            self.appRenameFailed(l10n.get("App names can't be blank."));
           }
         },
         signInStarted: function(){
