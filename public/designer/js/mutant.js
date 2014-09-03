@@ -75,7 +75,13 @@ define(
     }, false);
 
     window.addEventListener('CeciElementsSorted', function (e) {
-      selectElement(e.detail);
+      var element = e.detail;
+      if (!element) {
+        return;
+      }
+      element.onready(function() {
+        Editable.displayAttributes(element);
+      });
     });
 
     return {
