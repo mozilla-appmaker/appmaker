@@ -15,8 +15,10 @@
 
 :host #bell {
   position: absolute;
+  width: 150px;
   left: calc(50% - 75px);
-  width: 50px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   top: -20px;
   border-bottom: 100px solid white;
   border-left: 50px solid transparent;
