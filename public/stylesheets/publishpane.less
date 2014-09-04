@@ -121,12 +121,19 @@
     }
   }
 
-  .mail-notice {
-    display: none;
-  }
-
+  .mail-notice,
   .mail-error {
     display: none;
+    &.toggled {
+      display: block;
+    }
+    p {
+      margin: 8px 0;
+    }
+  }
+
+  .mail-link {
+    margin: 10px 0px;
   }
 
   .mail-wrapper {

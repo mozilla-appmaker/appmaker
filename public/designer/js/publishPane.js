@@ -104,6 +104,7 @@ define([], function () {
         instsallQRCode.innerHTML = '';
         new QRCode(instsallQRCode, data.install);
         mailNotice.classList.remove("toggled");
+        mailError.classList.remove('toggled');
 
         (function() {
           var mailButton = document.querySelector('#publish-pane-button');
