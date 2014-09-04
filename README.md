@@ -113,7 +113,7 @@ PUBLISH_HOST_PREFIX: Prefix of URL which points to a published app. Usually `htt
 MongoDB is used for saving the user-created apps before publishing.
 
 ## Installation
-Visit http://docs.mongodb.org/manual/installation/ for platform-specific installation instructions.
+Visit http://docs.mongodb.org/manual/installation/ for platform-specific installation instructions. Be sure an install MongoDB outside of your local Appmaker repo.
 
 
 ## Running `mongod`

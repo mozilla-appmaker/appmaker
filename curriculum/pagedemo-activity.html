@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<!-- ================================================================
+WELCOME TO THE WEBMAKER ACTIVITY TEMPLATE!
+Use this template to create your own activity for learners, educational resource or lesson. 
+Edit the HTML below to add your own content, links and images.
+Code comments like these will help with hints and guides. 
+Need help? Start here: http://mzl.la/teachingkit-tips
+================================================================ -->
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta content="activity" name="webmaker:tags">
+    <link href="https://stuff.webmaker.org/webmaker-kits/v2/css/style.css" media="all" rel="stylesheet" type="text/css">
+    <!-- =============================== -->
+    <!-- ADD YOUR TITLE HERE -->
+
+    <title>How to use Pages in Appmaker</title>
+    <style>
+      body.activity header{
+      /*Thanks to the commons for this fine header image cc-by-sa: http://commons.wikimedia.org/wiki/File:Commons_media_discovery_app.png */
+	      background-image: url('http:///stuff.webmaker.org/teach-assets/appmaker-images/commons_apps.png');
+	      background-size:auto;
+	      background-color: #ee8950;
+      }
+      #header-group{
+	      background-color:rgba(0, 0, 0, 0.6);
+	      padding-top:25px; 
+	      padding-bottom:25px;
+	      padding-right:50px;
+	      padding-left:50px;
+	      border-radius:3px;
+	      color:white;
+      }
+    </style>
+</head>
+
+<body class="activity">
+    <div id="ribbon">
+        Activity
+    </div>
+
+    <header>
+        <hgroup id="header-group">
+            <h1>How to use Pages in Appmaker</h1>
+
+            <h2>This activity serves as an introduction to switching pages in Appmaker. We'll make a simple two page app, and help learners understand why switching pages is important in app-making.</h2>
+
+            <p id="made-by">Made by <a href="http://webmaker.org/u/laura">Laura</a></p>
+        </hgroup>
+    </header>
+
+    <div class="wrapper">
+        <div class="row">
+        	<main>
+            <section class="step-section">
+                <h2>Useful background information</h2>
+
+                <p><a href="https://apps.webmaker.org/">Appmaker</a> is an online tool that lets you add "Bricks" to easily build fun and useful mobile apps. 
+                A brick is a piece of code that allows a user to cause an interaction. You can add bricks to your app by clicking on them. To learn more about each brick, hover over the ? icon to the right of each brick. </p>
+                <p>Appmaker is the newest tool in the Webmaker collection, and <a href="https://docs.google.com/forms/d/1wLC3Mf4Sm1qvIkowoCzpLpdG0jDnthvvHXunB9W8QEQ/viewform">we're eager for feedback</a>!</p>
+
+                <p>A finished version of the two page app we'll build is available for reference (and remixing!) <a href="https://silly-station-969.webmak.es/app">here</a>.</p>
+
+                <h2>Let's get started.</h2>
+
+                <ol>
+                	<li>
+						<p>Open the Appmaker Designer at <a href="http://apps.webmaker.org/designer">http://apps.webmaker.org/designer</a> and explore the interface. On the left, there is a tray with the various "Bricks" Appmaker has preprogrammed, in the middle you'll see your working space, and on the right you'll see the customization panel.
+						<img src="http:///stuff.webmaker.org/teach-assets/appmaker-images/appmaker-interface-empty.png">
+						</p>
+                	</li>
+                	<li>
+                		<h3>Name your App</h3>
+                		<p>Give your project a name and description, and be sure to add any tags you'd like to use so that people can easily find your app on <a href="http://webmaker.org">Webmaker.org</a>
+                		<img src="http://stuff.webmaker.org/teach-assets/appmaker-images/name-project.gif">
+                		</p>
+                	</li>
+                    <li>
+                        <h3>Add a Header and Give it a Name</h3>
+
+                        <p><strong>Click "Header" in the Brick tray</strong> to add a Header brick. Bricks are functional as soon as they've been added to your project. The <strong>Header</strong> brick displays a title for a page in your app and lets you navigate to that page.</p>
+
+                        <p><strong>Rename your header</strong>. Simply change the label text in the customization panel. You can also change the color of your header here.
+						<img src="http:///stuff.webmaker.org/teach-assets/appmaker-images/page-header-brick.gif">
+						</p>
+                    </li>
+                    <li>
+                        <h3>Add a Button</h3>
+
+                         <p><strong>Click "Button" in the Brick tray</strong> to add a Button brick. <strong>Rename your button.</strong>
+						 <img src="http:///stuff.webmaker.org/teach-assets/appmaker-images/button-brick.gif">
+                        </p>
+						 <p><strong>Press the button</strong> a few times on the phone in your working space. Whenever the button is pressed, it sends out a "Press" signal. We can customize <strong>the channel</strong> that signal is sent along and which brick "hears" it. This way we can initiate a corresponding reaction.
+                        <img src="http:///stuff.webmaker.org/teach-assets/appmaker-images/signal.gif">
+						</p>
+                        <p>The "Press" signal is being sent from the Button Brick whenever it's pressed. All Appmaker bricks can send and receive signals.</p>
+                    </li>
+
+                    <li>
+                        <h3>Add a New Page</h3>
+
+                        <p><strong>Click the plus sign</strong> at the top of the interface, next to "Page 1". This will add a new page to your app. Each page can contain unique bricks and can send and receive signals to other pages. This allows the display of different screens based on how the user interacts with your app.</p>
+                        <p><strong>Repeat steps 3 and 4 on your new page.</strong> You'll need a header brick and a button brick on your second page. Change the Header brick title to "Second Page" and the Button brick label to "Go to Page 1".
+                        <img src="http:///stuff.webmaker.org/teach-assets/appmaker-images/new-page.gif">
+                        </p>
+                    </li>
+
+                    <li>
+                        <h3>SAVE!</h3>
+
+                        <p>We've done a lot, <strong>we should save our work!</strong> Click on the "Sign In" button in the top-right of Appmaker Designer. If you already have a Persona-enabled account, this process will be familiar to you. Otherwise, when a window pops up, follow the instructions to sign up for a Persona account or connect an existing account (e.g. GMail). Once you've signed in, you can save and publish your app. Click on the "App" menu, and choose "Save As". When prompted, type in a name for your app. Notice the title of your app appear on the phone display.
+						<img src="http:///stuff.webmaker.org/teach-assets/appmaker-images/signin.gif">
+						</p>
+                    </li>
+
+                    <li>
+                        <h3>Assign Channels</h3>
+                        <p>Now we'll set the channel for the Button on the first page to send a signal to the Header on the second page. First, look at the header on the second page. Take note of the Channel it's on.</p> 
+                        <p>In this demo, the second page header is set to the "B" Channel. Click on the page 1 tab, and set the Button channel to "B" by clicking the grey arrow and then clicking the "A Press" dialog. The Channels are revealed, and you can select "B".</p>
+						<p>Switch the 2nd Page's button to point to the Header brick on Page 1.
+						<img src="http:///stuff.webmaker.org/teach-assets/appmaker-images/page-demo-channels.gif">
+						</p>
+                        <p>Press your button and watch your app switch between pages!</p>
+                    </li>
+                    <li>
+                    	<h3>Publish!</h3>
+                    <p>You've just created a two page Appmaker app! Click on the "App" menu, and choose "Publish". You can now install your app on your phone or view the app in the browser. 
+                    <img src="http:///stuff.webmaker.org/teach-assets/appmaker-images/publish.gif">
+                    </p>
+                    <p>Don't forget to share what you're making with <a href="https://twitter.com/mozillaappmaker">@MozillaAppmaker</a> </p>
+                    </li>
+                </ol>
+            </section>
+        	</main>
+       <!--What is needed to run this activity? Replace the example materials with those your activity needs!-->
+
+        <aside>
+        	<section>
+        	<h2>The finished Pages Demo App</h2>
+            <a href="https://apps.webmaker.org/designer?remix=https%3A%2F%2Fsilly-station-969.webmak.es%2Fapp"><img src="http:///stuff.webmaker.org/teach-assets/appmaker-images/finished-pages-demo.png"></a>
+
+            
+        	</section>
+            <section class="materials">
+                <h2>Materials</h2>
+
+                <div class="well checklist">
+                    <ul>
+                        <li>Computer</li>
+						<li>Web Access</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="discussion">
+                <h2>Discussion</h2>
+
+                <div class="well yellow">
+                    In programming, <strong>an event is something that causes another thing to happen</strong>. How are events displayed in Appmaker? <strong>What is the difference between a Page, a Channel, and a Signal?</strong> How is cause and effect represented within Appmaker? Why do Appmaker Bricks need to "talk" to each other? Why is this important for mobile apps?
+                </div>
+            </section>
+
+            <section class="teach-list">
+                <h2>Related Activities</h2>
+
+                <div>
+                    <ul>
+                    	<li>
+							Now that you can use pages in Appmaker, why not get creative and remix a <a href="https://brown-wealth-267.webmak.es/app">Choose your Own Adventure story</a> or remix the <a href="https://right-amount-190.webmak.es/app">Take the Next Step App</a>
+						</li>
+                    	<li>
+                    		<a href="https://jess.makes.org/thimble/MTY3NTY4OTk4NA==/mobile-design-ideation-kit">Mobile Design Ideation Kit</a>
+                    	</li>
+                        <li>
+                            <a href="https://jess.makes.org/thimble/MTMyMzM2ODQ0OA==/mobile-design-kit">Mobile Design Kit</a>
+                        </li>
+
+                      
+                    </ul>
+                </div>
+            </section>
+        </aside>
+    </div>
+    </div>
+    <script src="//stuff.webmaker.org/webmaker-kits/v2/js/main.min.js">
+</script>
+</body>
+</html>
