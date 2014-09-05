@@ -138,7 +138,9 @@
       }
 
       var remixNowButton = document.querySelector("#remix-app");
-      if (window.ontouchstart) {
+      var touchEnabled = "ontouchstart" in document.createElement("div");
+
+      if (touchEnabled) {
         remixNowButton.addEventListener("click",function(){
           showPopup("remix-app");
         });
