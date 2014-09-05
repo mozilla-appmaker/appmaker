@@ -28,11 +28,13 @@
   padding: 12px 0px;
   text-overflow: ellipsis;
   overflow: hidden;
-  font-size: 1.8rem;
+  font-size: 18px;
   position: relative;
-  line-height: 1.8rem;
+  line-height: 18px;
   width: 100%;
+  font-family: inherit;
   display: block;
+  font-weight: 300;
   -webkit-box-sizing: border-box;
   width: calc(100% - 5px);
   border-radius: 3px;
