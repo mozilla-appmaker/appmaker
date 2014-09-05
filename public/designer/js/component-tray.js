@@ -78,7 +78,8 @@ define(
           "ceci-image",
           "ceci-microphone-button",
           "ceci-popcorn-component",
-          "ceci-media"
+          "ceci-media",
+	  "ceci-voice-recognition"
         ]
       },
       "fun": {

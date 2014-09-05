@@ -1,0 +1,183 @@
+<polymer-element name="ceci-voice-recognition" attributes="continuous text state grammar freespeech" extends="ceci-element">
+  <ceci-definition>
+    {
+      "tags": ["text", "voice"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Speech recognition component",
+      "name": "Voice Recognition",
+      "broadcasts": {
+        "result": {
+          "label": "Result",
+          "description": "Occurs when speech is decoded."
+        }
+      },
+      "listeners": {
+        "start": {
+          "label": "Start Recording",
+          "description": "Start recording voice data."
+        },
+        "setgrammar": {
+          "label": "Set Grammar ",
+          "description": "Set the grammar."
+        },        
+        "stop": {
+          "label": "Stop Recording",
+          "description": "Stop recording and try to decode."
+        }
+      },
+	"attributes": {
+	      "grammar": {
+        	  "label": "Grammar",
+	          "description": "Grammar.",
+	          "editable": "textarea"
+	      } 
+	}
+    }
+  </ceci-definition>
+  <template>
+    <style>
+      :host {
+        display: block;
+        width: 100%;
+        min-height: 2em;
+      }
+      :host #state-message {
+        color: white;
+        visibility: hidden;
+        text-align: center;
+        font-size: 1.5em;
+      }
+
+      :host #result-text {
+        padding: .2em;
+      }
+
+      :host([state="recording"],[state="decoding"]) #state-message {
+        visibility: visible;
+      }
+
+      :host([state="recording"]) #state-message {
+        background-color: darkred;
+      }
+
+      :host([state="decoding"]) #state-message {
+        background-color: gold;
+      }
+
+      :host(:not([state="idle"])) #result-text {
+        visibility: hidden;
+      }
+
+      :host #container {
+        position: relative;
+      }
+
+      :host #container div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+      }
+    </style>
+    <voice-recognition id="vr"></voice-recognition>
+    <div id="container">
+      <div id="state-message">{{state}}</div>
+      <div id="result-text">{{text}}</div>
+    </div>
+    <shadow></shadow>
+    <content></content>
+  </template>
+  <script>
+    Polymer('ceci-voice-recognition', {
+      resultantText: '',
+      state: 'idle',
+      continuous: false,
+      text: '',
+ /* -- Lifecycle ------------------------------------------------- */
+      created: function() {
+          var SpeechRecognition = window.SpeechRecognition ||
+                                  window.webkitSpeechRecognition ||
+                                  window.mozSpeechRecognition ||
+                                  window.msSpeechRecognition ||
+                                  window.oSpeechRecognition;
+
+          if (SpeechRecognition !== undefined) {
+              this.recognition = new SpeechRecognition();
+          }
+          else {
+              console.error('Your browser do not support the Web Speech API');
+          }
+
+        var SpeechGrammarList = window.SpeechGrammarList ||
+                                  window.webkitSpeechGrammarList ||
+                                  window.mozSpeechGrammarList ||
+                                  window.msSpeechGrammarList ||
+                                  window.oSpeechGrammarList;
+
+
+          if (SpeechGrammarList !== undefined) {
+              this.grammarlist = new SpeechGrammarList();
+          }
+          else {
+              console.error('Your browser do not support the Web Speech API');
+          }
+
+
+      },
+
+      ready: function () {
+        this.super();
+        
+         [
+              'start',
+              'error',
+              'end'
+          ].forEach(this.propagateEvent.bind(this));
+          this.bindResult();
+
+        this.$.vr.addEventListener('result', function (e) {
+          this.resultantText = e.detail.result;
+          console.log("e.detail.result " + e.detail.result);
+          this.broadcast('result',  e.detail.result);
+          this.state = 'idle';
+        }.bind(this));
+      },
+      start: function () {
+        this.recognition.start();
+        this.state = 'recording';
+      },
+      setgrammar: function () {
+        console.log('set aki' + this.getAttribute('grammar'));
+        this.grammarlist.addFromString  ( this.getAttribute('grammar') , 1 );
+        this.recognition.grammars = this.grammarlist;        
+      },      
+      stop: function () {
+        this.recognition.stop();
+        this.state = 'decoding';
+      },
+      abort: function () {
+        this.recognition.abort();
+        this.state = 'idle';
+      },
+      /* -- Events ---------------------------------------------------- */
+      propagateEvent: function (eventName) {
+          this.recognition.addEventListener(eventName, this.fire.bind(this, eventName));
+      },
+      bindResult: function() {
+          var that = this;
+
+          this.recognition.addEventListener('result', function(e) {
+
+              for (var i = e.resultIndex; i < e.results.length; ++i) {
+                  that.text += e.results[i][0].transcript;
+                  e.result = that.text;
+                  that.broadcast('result', e.results[i][0].transcript);
+              }
+
+              that.fire('result', e);
+          });
+      }
+    });
+  </script>
+</polymer-element>
