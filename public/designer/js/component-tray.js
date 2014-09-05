@@ -184,20 +184,25 @@ define(
         }
 
       },
-      sortComponents: function (container) {
+      sortComponents: function () {
         // Sorts components in each category container
-        var containers = document.querySelectorAll('.category-container');
-        for(var i = 0; i < containers.length; i++){
-          var container = containers[i];
-          var components = container.querySelectorAll('designer-component-tray-item').array();
-          components = components.sort(function (a, b) {
-            if (a.label > b.label) return 1;
-            if (a.label < b.label) return -1;
-            return 0;
-          });
-          components.forEach(function (c) {
-            container.appendChild(c);
-          });
+        var containers = document.querySelectorAll('.category-container'),
+            container,
+            labelSort = function (a, b) {
+              if (a.label > b.label) return 1;
+              if (a.label < b.label) return -1;
+              return 0;
+            },
+            reappend = function (c) {
+              container.appendChild(c);
+            },
+            i;
+        for(i = 0; i < containers.length; i++) {
+          container = containers[i];
+          container.querySelectorAll('designer-component-tray-item')
+                   .array()
+                   .sort(labelSort)
+                   .forEach(reappend);
         }
       },
       showCategory : function(category){
