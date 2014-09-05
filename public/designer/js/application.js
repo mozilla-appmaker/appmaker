@@ -91,13 +91,13 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
                   html: html
                 },
                 type: 'post',
-                success: function (updateData) {
+                success: function () {
                   reporter.consoleReport("app update (for publish url) succeeded");
                   if(afterPublish) { afterPublish(false, data); }
                 },
-                error: function (data) {
-                  reporter.errorReport("app update (for publish url) failed", updateData);
-                  if(afterPublish) { afterPublish(updateData, data); }
+                error: function (errorData) {
+                  reporter.errorReport("app update (for publish url) failed", errorData);
+                  if(afterPublish) { afterPublish(errorData, data); }
                 }
               });
             },
