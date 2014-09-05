@@ -26,7 +26,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
     var iconFilename = __dirname + '/../public/images/app-icon-' + iconSize + '.png';
     fs.readFile(iconFilename, function (err, iconData) {
       if (err) {
-        console.error('Could not load icon at ' + iconFilename + ' .');
+        console.warn('Could not load icon at ' + iconFilename + ' .');
       }
       else {
         icons[iconSize] = {
@@ -58,13 +58,13 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
     }
 
     if (! req.session.email) {
-      console.error('Need to be signed in to retrieve components.');
+      console.warn('Need to be signed in to retrieve components.');
       callback([]);
       return;
     }
     Component.find({author: req.session.email}, function (err, components) {
       if (err){
-        console.error('Unable to retrieve components.');
+        console.warn('Unable to retrieve components.');
         callback([]);
         return;
       }
@@ -193,7 +193,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
             }, {},
             function(err,obj){
               if(err){
-                console.error('Error saving published date to database: ' + err);
+                console.warn('Error saving published date to database: ' + err);
               }
             }
           );
@@ -201,7 +201,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
 
             store.write(description.filename, description.data, function (result) {
               if (200 !== result.statusCode) {
-                console.error('Trouble writing ' + description.filename + ' to S3 (' + result.statusCode + ').');
+                console.warn('Trouble writing ' + description.filename + ' to S3 (' + result.statusCode + ').');
               }
               if (++filesDone === outputFiles.length) {
                 res.json({error: null,
@@ -215,7 +215,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                   name: inputData.name
                 }, function(err, app) {
                   if (err) {
-                    return console.error('Error finding app for publishing to MakeAPI: ' + err);
+                    return console.warn('Error finding app for publishing to MakeAPI: ' + err);
                   }
                   var id = app['makeapi-id'];
                   makeAPIPublisher.publish({
@@ -231,7 +231,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                     locale: req.localeInfo.lang
                   }, function (err, make) {
                     if (err) {
-                      console.error(err);
+                      console.warn(err);
                     }
                     else if (!id) {
                       App.update({
@@ -242,7 +242,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                       }, {},
                       function(err,obj){
                         if(err){
-                          console.error('Error saving MakeAPI id to database: ' + err);
+                          console.warn('Error saving MakeAPI id to database: ' + err);
                         }
                       });
                     }

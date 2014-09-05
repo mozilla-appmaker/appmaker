@@ -57,7 +57,7 @@ module.exports = function (mongoose, dbconn) {
       var newComponent = new Component(compObj);
       newComponent.save(function(err, component){
         if (err){
-          console.error('saving new component failed');
+          console.warn('saving new component failed');
           return res.json(500, {error: 'Component was not saved due to ' + err});
         }
         // console.log("component added %j: ", component);
@@ -79,7 +79,7 @@ module.exports = function (mongoose, dbconn) {
       Component.findByIdAndUpdate(req.params.id || req.body._id, {
         $set: compObj}, {upsert:true}, function (err, user) {
           if (err){
-            console.error('saving modified component failed: ' + err);
+            console.warn('saving modified component failed: ' + err);
             return res.json(500, {error: 'Component was not updated due to ' + err});
           }
           return res.json(null);
