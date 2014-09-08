@@ -37,11 +37,11 @@
       </div>
       <div>
         <label>Description</label>
-        <textarea class="project-settings-description" placeholder="My app..." maxlength="200" value={{app.appdescription}}></textarea>
+        <textarea on-change="{{onAppDescriptionChange}}" class="project-settings-description" placeholder="My app..." maxlength="200" value={{app.appdescription}}></textarea>
       </div>
       <div>
         <label>Tags</label>
-        <input type="text" value="{{app.apptags}}"></label>
+        <input on-change="{{onAppTagsChange}}" placeholder="Space seperated list of tags" type="text" value="{{app.apptags}}"></label>
       </div>
       <div>
         <label>App Data</label>
@@ -72,6 +72,12 @@
         } else {
           userState.renameApp(this.name, sender.value);
         }
+      },
+      onAppDescriptionChange: function(event, detail, sender) {
+        this.app.setAttribute("appdescription", sender.value);
+      },
+      onAppTagsChange: function(event, detail, sender) {
+        this.app.setAttribute("apptags", sender.value);
       },
       onAppNameFocus: function(event, detail, sender) {
         this.name = sender.value;
