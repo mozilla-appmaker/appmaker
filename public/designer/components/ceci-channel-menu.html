@@ -11,7 +11,7 @@
             <div class="arrow"></div>
           </div>
           <div class="channel-option subscription-option option-template">
-            <div class="color-ui">
+            <div class="color-ui hidden">
               <h3></h3>
               <div class="color-options"></div>
               <div>
@@ -110,17 +110,17 @@
 
           var channelOptions = this.menuWrapper.querySelectorAll(".channel-option:not(.option-template)");
           for(var i = 0; i < channelOptions.length; i++){
-            channelOptions[i].style.display = "block";
+            channelOptions[i].classList.remove("hidden");
           }
 
           var colorUis = this.menuWrapper.querySelectorAll(".color-ui");
           for(var i = 0; i < colorUis.length; i++){
-            colorUis[i].style.display = "none";
+            colorUis[i].classList.add("hidden");
           }
 
           var labels = this.menuWrapper.querySelectorAll("label");
           for(var j = 0; j < labels.length; j++){
-            labels[j].style.display = "block";
+            labels[j].classList.remove("hidden");
           }
 
           window.dispatchEvent(new CustomEvent('menuClosed'));
@@ -174,18 +174,18 @@
           var that = this;
           var channelOption = that.shadowRoot.querySelector(".channel-option[from="+method+"]") || that.shadowRoot.querySelector(".channel-option[for="+method+"]") ;
 
-          channelOption.querySelector("label").style.display = "none";
+          channelOption.querySelector("label").classList.add("hidden");
 
           that.menu.classList.add("picking-colors");
 
           //Hide all the options
           var options = that.menu.querySelectorAll(".channel-option");
           for(var i=0, last=options.length; i<last; i++) {
-            options[i].style.display = "none";
+            options[i].classList.add("hidden");
           }
 
-          channelOption.style.display = "block";
-          channelOption.querySelector(".color-ui").style.display = "block";
+          channelOption.classList.remove("hidden");
+          channelOption.querySelector(".color-ui").classList.remove("hidden");
           that.adjustMenuPosition();
 
         },
@@ -219,10 +219,10 @@
                 //Show all the options again
                 var options = that.menu.querySelectorAll(".channel-option:not(.option-template)");
                 for(var i=0, last=options.length; i<last; i++) {
-                  options[i].style.display = "block";
+                  options[i].classList.remove("hidden");;
                 }
 
-                channelOption.querySelector("label").style.display = "block";
+                channelOption.querySelector("label").classList.remove("hidden");
                 channelOption.querySelector("label .chosen-color").setAttribute("data-color", channel);
 
                 var color = that.channels[channel] || "DDD";
@@ -234,7 +234,7 @@
                   channelOption.querySelector("label .chosen-color").textContent = channel;
                 }
 
-                channelOption.querySelector(".color-ui").style.display = "none";
+                channelOption.querySelector(".color-ui").classList.add("hidden");
                 that.adjustMenuPosition();
                 that.hideMenu();
               }
