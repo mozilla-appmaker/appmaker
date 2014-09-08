@@ -55,6 +55,7 @@
           this.onHideMenu = function(){
             that.hideMenu();
           };
+
           window.addEventListener("menuOpen", this.onHideMenu);
           window.addEventListener("designerClick", this.onHideMenu);
 
@@ -67,7 +68,26 @@
                 that.adjustMenuPosition();
               });
             }
+
+            //Listens for clicks on the channel lines
+            var channelLines = that.component.querySelectorAll("ceci-broadcast-vis,ceci-listen-vis");
+            for(var i = 0; i < channelLines.length; i++){
+              var line = channelLines[i];
+              line.addEventListener("channelClick",function(e){
+                var method = e.detail.method;
+                var direction = e.detail.direction;
+                if(that.channeltype === "broadcast" && direction === "out") {
+                  that.toggleMenu();
+                }
+                if(that.channeltype === "listen" && direction === "in") {
+                  that.toggleMenu();
+                }
+                that.showColorUI(method);
+              });
+            }
+
           });
+
         },
         detached: function() {
           window.removeEventListener("menuOpen", this.onHideMenu);
@@ -83,18 +103,6 @@
             this.adjustMenuPosition();
           } else {
             window.dispatchEvent(new CustomEvent('menuClosed'));
-          }
-        },
-        showMenu : function() {
-          var that = this;
-          var ceci = this.component.ceci;
-          var items = (that.channeltype == "listen") ? Object.keys(ceci.listeners) : Object.keys(ceci.broadcasts);
-          if (items.length > 0) {
-            that.menuWrapper.classList.add("open");
-            this.component.async(function () {
-              var height = that.menu.offsetHeight;
-              that.menu.style.marginTop = -1 * (height/2) + "px";
-            });
           }
         },
         hideMenu : function() {
@@ -162,6 +170,25 @@
           var messageType = this.channeltype === 'broadcast' ? 'Broadcast' : 'Listener';
           this.component[action + messageType](handler, color);
         },
+        showColorUI : function(method){
+          var that = this;
+          var channelOption = that.shadowRoot.querySelector(".channel-option[from="+method+"]") || that.shadowRoot.querySelector(".channel-option[for="+method+"]") ;
+
+          channelOption.querySelector("label").style.display = "none";
+
+          that.menu.classList.add("picking-colors");
+
+          //Hide all the options
+          var options = that.menu.querySelectorAll(".channel-option");
+          for(var i=0, last=options.length; i<last; i++) {
+            options[i].style.display = "none";
+          }
+
+          channelOption.style.display = "block";
+          channelOption.querySelector(".color-ui").style.display = "block";
+          that.adjustMenuPosition();
+
+        },
         buildMenu: function() {
           this.menubuilt = true;
           var that = this;
@@ -183,7 +210,6 @@
 
                 that.menu.classList.remove("picking-colors");
                 var channelOption = event.target.parentNode.parentNode.parentNode;
-
 
                 var channel = event.target.getAttribute("data-channel");
                 var handler = this.parentNode.getAttribute(handlerType);
@@ -213,24 +239,6 @@
                 that.hideMenu();
               }
             };
-          }
-
-          function showColorUI(){
-            //Hides the label for the current option
-            this.style.display = "none";
-
-            that.menu.classList.add("picking-colors");
-
-            //Hide all the options
-            var options = that.menu.querySelectorAll(".channel-option");
-            for(var i=0, last=options.length; i<last; i++) {
-              options[i].style.display = "none";
-            }
-
-            // Show this one
-            this.parentNode.style.display = "block";
-            this.parentNode.querySelector(".color-ui").style.display = "block";
-            that.adjustMenuPosition();
           }
 
           var keys = Object.keys(communicators).sort();
@@ -264,7 +272,10 @@
 
             that.menu.appendChild(channelOption);
             channelOption.setAttribute(handlerType, key);
-            channelOption.querySelector("label").addEventListener('click', showColorUI);
+            channelOption.querySelector("label").addEventListener('click', function(){
+              var method = this.parentNode.getAttribute("from") || this.parentNode.getAttribute("for");
+              that.showColorUI(method);
+            });
 
             var colorOptions = channelOption.querySelectorAll(".color-ui .color");
 

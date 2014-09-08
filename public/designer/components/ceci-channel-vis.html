@@ -45,7 +45,11 @@
           el.addEventListener('signalFired', function(data){
             that.fire(data);
           });
+
+
+
           var channel = document.createElement("div");
+
           channel.innerHTML = "<div class='dot color'></div><div class='chan-label'></label>";
           channel.setAttribute("color",el.getAttribute("on"));
 
@@ -74,6 +78,23 @@
             channel.style.backgroundImage = "-moz-linear-gradient(left,rgba("+rgb+",.3),rgba("+rgb+",0)";
             channel.setAttribute("from",el.getAttribute("from"));
           }
+
+          channel.addEventListener('click', function(e){
+            var method;
+            if(channel.hasAttribute("for")){
+              method = channel.getAttribute("for");
+            } else {
+              method = channel.getAttribute("from");
+            }
+
+            that.dispatchEvent(new CustomEvent('channelClick',{ detail: {
+              method : method,
+              direction : that.direction
+            }}));
+            e.stopPropagation();
+
+          });
+
 
           channel.classList.add("channel");
           that.$.visLines.appendChild(channel);
