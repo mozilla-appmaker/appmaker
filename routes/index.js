@@ -64,6 +64,7 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
       var app = req.query.app;
       var appURL = process.env.ASSET_HOST + '/designer?remix=' + encodeURIComponent(app);
 
+      res.set('Access-Control-Allow-Origin', "*");
       if (email !== false) {
         if (email) {
           remixMailer.sendRemixMail(req, email, appURL, function () {
