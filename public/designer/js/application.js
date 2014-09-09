@@ -55,6 +55,7 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
       publishApp: function(options) {
         var name = options.name,
             appDescription = options.appDescription,
+            remixedFrom = options.remixedFrom,
             appTags = options.appTags,
             appid = options.appid,
             html = options.html,
@@ -72,6 +73,7 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
             data: {
               name: name,
               html: html,
+              remixedFrom: remixedFrom || "",
               appDescription: appDescription,
               appTags: appTags
             },
