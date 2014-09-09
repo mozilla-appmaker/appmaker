@@ -30,19 +30,23 @@ tmp.env
 !/locale/en_US/*
 !/locale/localeinfo.json
 
+public/stylesheets/app.css
 public/stylesheets/broadcast-menu.css
 public/stylesheets/cards.css
 public/stylesheets/channel-vis.css
-public/stylesheets/designer-element.css
-public/stylesheets/site.css
-public/stylesheets/variables.css
-public/stylesheets/designer-component-tray-item.css
-public/stylesheets/user-state.css
-public/stylesheets/style.css
-public/stylesheets/app.css
-public/stylesheets/publishpane.css
 public/stylesheets/install.css
+public/stylesheets/designer-component-tray-item.css
+public/stylesheets/designer-element.css
 public/stylesheets/mobile.css
+public/stylesheets/publishpane.css
+public/stylesheets/remix.css
+public/stylesheets/site.css
+public/stylesheets/style.css
+public/stylesheets/tutorial.css
+
+public/stylesheets/user-state.css
+
+public/stylesheets/variables.css
 
 public/bundles/components/mozilla-appmaker.html
 public/bundles/components/mozilla-appmaker-min.html
