@@ -67,8 +67,8 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
       res.set('Access-Control-Allow-Origin', "*");
       if (email !== false) {
         if (email) {
-          remixMailer.sendRemixMail(req, email, appURL, function () {
-            res.json({error: null}, 200);
+          remixMailer.sendRemixMail(req, email, appURL, function (error, result) {
+            res.json({error: error, result: result}, result ? result.status : 500);
           });
         }
         else {

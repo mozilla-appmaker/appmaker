@@ -253,6 +253,8 @@
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
             callback();
+          } else {
+            callback(e);
           }
         }
       };
