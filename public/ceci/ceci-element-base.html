@@ -208,7 +208,7 @@
         this.localize = (function() {
 
           this.ceciDefinition = processDefinition(this);
- 
+
           var attributeResults = processAttributes(this.ceci.editables, this.ceciDefinition.attributes || {});
 
           Object.keys(attributeResults.attributeListeners).forEach(function (attributeName) {
@@ -307,52 +307,63 @@
           potentialCard.show();
         }
       },
+      getActiveListeners: function () {
+        return Array.prototype.slice.call(this.querySelectorAll("ceci-listen"));
+      },
       setListener: function (name, channel) {
         var entry = this.ceci.listeners[name];
 
         if (entry) {
           var listener = this.querySelector('ceci-listen[for="' + name + '"]');
+          var original = null;
           if (!listener) {
             listener = document.createElement('ceci-listen');
             this.appendChild(listener);
+            listener.setAttribute('for', name);
+          } else {
+             original = listener.on;
           }
-
           listener.setAttribute('on', channel);
-          listener.setAttribute('for', name);
-          this.fire('CeciChannelUpdated', {detail: {name: name, channel: channel, type: 'listen'}});
+          this.fire('CeciChannelUpdated', {detail: {name: name, channel: channel, type: 'listen', original: original}});
         }
         else {
           console.error('No listener definition found for "' + name + '".');
-        }
-      },
-      setBroadcast: function (name, channel) {
-        var entry = this.ceci.broadcasts[name];
-        if (entry) {
-          var broadcast = this.querySelector('ceci-broadcast[from="' + name + '"]');
-          if (!broadcast) {
-            broadcast = document.createElement('ceci-broadcast');
-            this.appendChild(broadcast);
-          }
-          broadcast.setAttribute('on', channel);
-          broadcast.setAttribute('from', name);
-          this.fire('CeciChannelUpdated', {detail: {name: name, channel: channel, type: 'broadcast'}});
-        }
-        else {
-          console.error('No broadcast definition found for "' + name + '".');
         }
       },
       removeListener: function (name) {
         var listen = this.querySelector('ceci-listen[for="' + name + '"]');
         if (listen) {
           this.removeChild(listen);
-          this.fire('CeciChannelUpdated', {detail: {name: name, channel: null, type: 'listen'}});
+          this.fire('CeciChannelUpdated', {detail: {name: name, channel: null, type: 'listen', original: listen.on}});
+        }
+      },
+      getActiveBroadcasts: function () {
+        return Array.prototype.slice.call(this.querySelectorAll("ceci-broadcast"));
+      },
+      setBroadcast: function (name, channel) {
+        var entry = this.ceci.broadcasts[name];
+        if (entry) {
+          var broadcast = this.querySelector('ceci-broadcast[from="' + name + '"]');
+          var original = null;
+          if (!broadcast) {
+            broadcast = document.createElement('ceci-broadcast');
+            this.appendChild(broadcast);
+            broadcast.setAttribute('from', name);
+          } else {
+            original = broadcast.on;
+          }
+          broadcast.setAttribute('on', channel);
+          this.fire('CeciChannelUpdated', {detail: {name: name, channel: channel, type: 'broadcast', original: original}});
+        }
+        else {
+          console.error('No broadcast definition found for "' + name + '".');
         }
       },
       removeBroadcast: function (name) {
         var broadcast = this.querySelector('ceci-broadcast[from="' + name + '"]');
         if (broadcast) {
           this.removeChild(broadcast);
-          this.fire('CeciChannelUpdated', {detail: {name: name, channel: null, type: 'broadcast'}});
+          this.fire('CeciChannelUpdated', {detail: {name: name, channel: null, type: 'broadcast', original: broadcast.on}});
         }
       },
       addCustomListener: function(el, listener){

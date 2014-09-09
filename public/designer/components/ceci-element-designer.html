@@ -59,6 +59,7 @@
         var that = this;
         require(['designer/editable', 'analytics'], function (Editable, analytics) {
           Editable.removeAttributes();
+          document.dispatchEvent(new CustomEvent('CeciElementRemoved', {bubbles: true, detail: that}));
           analytics.event("Removed Component", { label: that.localName });
         });
       },
