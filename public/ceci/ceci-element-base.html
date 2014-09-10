@@ -152,24 +152,35 @@
           src.start(0);
         }
       },
-      loadSound : function(soundName,soundPath){
-        if(this.ctx){
-          var that = this;
-          var xhr = new XMLHttpRequest();
-          xhr.open("GET", this.resolvePath(soundPath), true);
-          xhr.responseType = "arraybuffer";
-          xhr.onload = function () {
-            if (xhr.response.byteLength) {
-              that.ctx.decodeAudioData(xhr.response, function(data) {
-                that.sounds[soundName] = data;
-              },
-              function (e) {
-                console.error('Error decoding the audio buffer.', arguments);
-              });
-            }
+      loadSound : function(soundName,soundPath,app){
+        var that = this;
+        app = app || document.querySelector("ceci-app");
+
+        if(app && app.Audiocontext) {
+          this.ctx = app.Audiocontext;
+        } else {
+          var handler = function(evt) {
+            window.removeEventListener("CeciAppReady", handler);
+            that.loadSound(soundName,soundPath,evt.detail.app);
           };
-          xhr.send();
+          window.addEventListener("CeciAppReady", handler);
+          return;
         }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", this.resolvePath(soundPath), true);
+        xhr.responseType = "arraybuffer";
+        xhr.onload = function () {
+          if (xhr.response.byteLength) {
+            that.ctx.decodeAudioData(xhr.response, function(data) {
+              that.sounds[soundName] = data;
+            },
+            function (e) {
+              console.error('Error decoding the audio buffer.', arguments);
+            });
+          }
+        };
+        xhr.send();
       },
       localize: function() {
         console.error("localize() has not yet been defined by ready().");
@@ -185,10 +196,6 @@
         this.addedCustomListeners = false;
 
         var that = this;
-
-        //Use the app's audio context if it's ready
-        var app = document.querySelector("ceci-app");
-        if(app){ this.ctx = app.Audiocontext; }
 
         this.ceci = {
           broadcasts: {},

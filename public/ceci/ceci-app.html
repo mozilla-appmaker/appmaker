@@ -77,7 +77,7 @@
           this.Audiocontext = new this.audioctx();
         }
 
-        window.dispatchEvent(new CustomEvent("CeciAppReady"));
+        window.dispatchEvent(new CustomEvent("CeciAppReady", { detail: { app:this }}));
       },
       attached: function() {
         window.dispatchEvent(new CustomEvent("CeciAppAttached"));
