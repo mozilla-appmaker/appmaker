@@ -22,17 +22,26 @@ define(
     "use strict";
 
     function selectElement(element){
-      var selectedElement = document.querySelector(".brick.selected");
+
       if (element.classList.contains("selected")) {
         return;
       }
-      if (selectedElement){
-        selectedElement.classList.remove('selected');
-      }
+
+      unselectElements();
+
       element.classList.add('selected');
+
       element.onready(function() {
         Editable.displayAttributes(element);
       });
+
+    }
+
+    function unselectElements(){
+      var selectedElement = document.querySelector(".brick.selected");
+      if (selectedElement){
+        selectedElement.classList.remove('selected');
+      }
     }
 
     function setupElement(element) {
