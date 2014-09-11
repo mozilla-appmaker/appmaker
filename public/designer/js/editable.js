@@ -52,12 +52,11 @@ define(['jquery', 'inflector', 'l10n', 'colorpicker.core'], function ($, Inflect
       e.find("label").text(title);
 
       var selectedIndex = false;
-      $(definition.options).each(function(idx, label){
+      var options = Object.keys(definition.options);
 
-        var value = label;
-        if (definition.values && definition.values[idx] !== undefined) {
-          value = definition.values[idx];
-        }
+      $(options).each(function(idx, label){
+
+        var value = definition.options[label] || label;
         var option = $("<option></option").text(label).val(value);
         e.find('select').append(option);
         if(value.toLowerCase() === selectedValue.toLowerCase()) {
