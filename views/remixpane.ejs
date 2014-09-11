@@ -88,6 +88,7 @@
             <button id="email-share-button" class="action-button"><%- gettext("Send App Link") %></button>
           </div>
           <div class="email-sent hidden"><%- gettext('We sent your email!') %></div>
+          <div class="email-error hidden"><%- gettext('Problem sending email') %></div>
         </div>
         <div class="share-by-qr">
           <h3><%- gettext('Or scan this QR Code') %></h3>
@@ -111,6 +112,7 @@
             <button id="email-remix-button" class="action-button"><%- gettext("Send Remix Link") %></button>
           </div>
           <div class="email-sent hidden"><%- gettext('We sent your email!') %></div>
+          <div class="email-error hidden"><%- gettext('Problem sending email') %></div>
         </div>
       </div>
   </div>
@@ -163,15 +165,45 @@
       // Share via Email
       var shareEmailButton = document.querySelector('#email-share-button');
       var shareEmailInput = document.querySelector('#share-email');
+      var shareConfirmation = document.querySelector("[data-popup=share-app] .email-sent");
+      var shareErrorElement = document.querySelector("[data-popup=share-app] .email-error");
+      shareConfirmation.classList.add("hidden");
+      shareErrorElement.classList.add("hidden");
+      shareEmailInput.addEventListener("focus", function() {
+        shareConfirmation.classList.add("hidden");
+        shareErrorElement.classList.add("hidden");
+      });
       shareEmailButton.addEventListener("click",function(e){
-        sendEmail("share-app",shareEmailInput.value);
+        sendEmail(shareEmailInput.value, function(error) {
+          if (error) {
+            shareErrorElement.classList.remove("hidden");
+            return;
+          }
+          shareConfirmation.classList.remove("hidden");
+          setTimeout(hidePopup, 1000);
+        });
       });
 
       // Remix via Email
       var remixEmailButton = document.querySelector('#email-remix-button');
       var remixEmailInput = document.querySelector('#remix-email');
+      var remixConfirmation = document.querySelector("[data-popup=remix-app] .email-sent");
+      var remixErrorElement = document.querySelector("[data-popup=remix-app] .email-error");
+      remixConfirmation.classList.add("hidden");
+      remixErrorElement.classList.add("hidden");
+      remixEmailInput.addEventListener("focus", function() {
+        remixConfirmation.classList.add("hidden");
+        remixErrorElement.classList.add("hidden");
+      });
       remixEmailButton.addEventListener("click",function(e){
-        sendEmail("remix-app",remixEmailInput.value);
+        sendEmail(remixEmailInput.value, function(error) {
+          if (error) {
+            remixErrorElement.classList.remove("hidden");
+            return;
+          }
+          remixConfirmation.classList.remove("hidden");
+          setTimeout(hidePopup, 1000);
+        });
       });
 
       if (navigator.mozApps) {
@@ -209,25 +241,26 @@
       document.querySelector('#remix-panel').classList.add('expanded');
     }
 
-    function sendEmail(type, val){
+    function sendEmail(val, callback){
 
-      var confirmation = document.querySelector("[data-popup=" + type + "] .email-sent");
-      confirmation.classList.remove("hidden");
+      callback = callback || function() {};
 
       var xhr = new XMLHttpRequest();
       xhr.open('GET', '<%= process.env.ASSET_HOST %>/remix?app=<%- remixUrl %>&email=' + val, true);
       xhr.onerror = function (e) {
-        console.error(e);
+        callback(e);
       };
-      xhr.onload = function (e) {
-        console.log(e);
+
+      xhr.onreadystatechange = function (e) {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            callback();
+          } else {
+            callback(e);
+          }
+        }
       };
       xhr.send(null);
-
-      setTimeout(function () {
-        hidePopup();
-        confirmation.classList.add("hidden");
-      }, 1000);
     }
 
     function showPopup(type){

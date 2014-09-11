@@ -67,27 +67,40 @@
     padding: 15px 10px;
     position: relative;
   }
-
-  .hidden {
-    display: none;
-  }
-
 }
 .hidden {
   display: none;
 }
 
-
 .share-by-email {
 
   position: relative;
 
-  .email-sent {
+  .email-sent,
+  .email-error {
+    -webkit-transition: 0.4s opacity linear;
+            transition: 0.4s opacity linear;
     padding: 10px 0;
+    opacity: 1;
     border-radius: 3px;
+    font-weight: normal;
+    overflow: hidden;
+    &.hidden {
+      opacity: 0;
+      height: 0;
+      padding: 0;
+      display: block;
+    }
+  }
+
+  .email-sent {
     color: #327414;
     background: #afd1a1;
-    font-weight: normal;
+  }
+
+  .email-error {
+    color: #755;
+    background: #ECC;
   }
 
   input {

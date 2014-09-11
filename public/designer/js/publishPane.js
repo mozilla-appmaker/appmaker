@@ -20,6 +20,7 @@ define([], function () {
     content = document.getElementById('publish-pane-panel-content');
     close = document.getElementById('close-publish-pane-panel');
     email = document.getElementById('publish-pane-panel-email');
+    emailWrapper = document.querySelector('.mail-wrapper');
     installbutton = document.getElementById('install-button');
     viewbutton = document.getElementById('view-button');
     installlink = document.getElementById('install-link');
@@ -29,6 +30,10 @@ define([], function () {
     mailLink = document.querySelector('.mail-link');
     instsallQRCode = document.querySelector('.qrcode[data-qrcode-for="install"]');
 
+    email.addEventListener("focus", function() {
+      emailWrapper.classList.remove("success");
+      emailWrapper.classList.remove('error');
+    });
     close.addEventListener("click", closePublishPanel);
   }
 
@@ -71,7 +76,7 @@ define([], function () {
   }
 
   function onError() {
-    mailError.classList.add('toggled');
+    emailWrapper.classList.add('error');
     showEmailInput();
   }
 
@@ -103,7 +108,8 @@ define([], function () {
         viewbutton.setAttribute('href', data.app);
         instsallQRCode.innerHTML = '';
         new QRCode(instsallQRCode, data.install);
-        mailNotice.classList.remove("toggled");
+        emailWrapper.classList.remove("success");
+        emailWrapper.classList.remove('error');
 
         (function() {
           var mailButton = document.querySelector('#publish-pane-button');
@@ -117,7 +123,7 @@ define([], function () {
             }
 
             hideEmailInput();
-            mailError.classList.remove('toggled');
+            emailWrapper.classList.remove('error');
 
             var xhr = new XMLHttpRequest();
             xhr.open('GET', 'notify?appURL=' + encodeURIComponent(data.install) + '&email=' + address, true);
@@ -128,7 +134,7 @@ define([], function () {
             xhr.onreadystatechange = function (e) {
               if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                  mailNotice.classList.add('toggled');
+                  emailWrapper.classList.add('success');
                 }
                 else {
                   console.error(e);
