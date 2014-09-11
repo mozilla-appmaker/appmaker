@@ -33,7 +33,7 @@ define(
 
     //If a click happens on the blank app space or on the gray canvas, we deselect all components.
     window.addEventListener('designerClick', function(e){
-      if(e.detail.classList.contains("container") || e.detail.tagName === "CECI-APP"){
+      if(e.detail.classList.contains("container") || e.detail.classList.contains("phone-inner") || e.detail.classList.contains("phone-bottom") || e.detail.tagName === "CECI-APP" ){
         unselectElements();
       }
     });
