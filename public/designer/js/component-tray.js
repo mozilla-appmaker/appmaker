@@ -40,7 +40,6 @@ define(
           "ceci-button-with-confirmation",
           "ceci-double-button",
           "ceci-dataarray",
-          "ceci-paypal",
           "ceci-list",
           "ceci-todo-list",
           "ceci-text-input",
