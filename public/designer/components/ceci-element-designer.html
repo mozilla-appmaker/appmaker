@@ -53,6 +53,7 @@
           this.parentNode.appendChild(clone);
         }
         this.classList.remove("selected");
+        this.classList.remove("last-selected-on-page");
         document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: clone}));
       },
       cleanUp: function () {
