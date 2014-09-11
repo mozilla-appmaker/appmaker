@@ -47,15 +47,20 @@ define(['jquery', 'inflector', 'l10n', 'colorpicker.core'], function ($, Inflect
       return e[0];
     },
 
-    'select': function (element, attributeName, title, value, definition) {
+    'select': function (element, attributeName, title, selectedValue, definition) {
       var e = $('<div><label></label><select></select></div>');
       e.find("label").text(title);
 
       var selectedIndex = false;
       $(definition.options).each(function(idx, label){
-        var option = $("<option></option").text(label).val(label);
+
+        var value = label;
+        if (definition.values && definition.values[idx] !== undefined) {
+          value = definition.values[idx];
+        }
+        var option = $("<option></option").text(label).val(value);
         e.find('select').append(option);
-        if(label.toLowerCase() === value.toLowerCase()) {
+        if(value.toLowerCase() === selectedValue.toLowerCase()) {
           selectedIndex = idx;
         }
       });
