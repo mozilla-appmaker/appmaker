@@ -21,6 +21,11 @@ define(
   function(l10n, Inflector, Utils, Ceci, Intro) {
     "use strict";
 
+    // making things easier for devs of all walks of life
+    if(!NodeList.prototype.array) {
+      NodeList.prototype.array = Array.prototype.slice;
+    }
+
     function onPolymerReadyForIntro() {
       // make sure we have a ceci-app available
       var ceciApp = document.querySelector("ceci-app");
