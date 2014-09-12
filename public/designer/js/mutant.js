@@ -21,18 +21,50 @@ define(
   function(Editable) {
     "use strict";
 
+    //When we show a new card, check to see if there was a selected element on it previously
+    //and select it if there was.
+    window.addEventListener('cardShown', function(){
+      unselectElements();
+      var lastSelected = document.querySelector("ceci-card[visible=true] .last-selected-on-page");
+      if(lastSelected){
+        selectElement(lastSelected);
+      }
+    });
+
+    //If a click happens on the blank app space or on the gray canvas, we deselect all components.
+    window.addEventListener('designerClick', function(e){
+      if(e.detail.classList.contains("container") || e.detail.classList.contains("phone-inner") || e.detail.classList.contains("phone-bottom") || e.detail.tagName === "CECI-APP" ){
+        unselectElements();
+      }
+    });
+
     function selectElement(element){
-      var selectedElement = document.querySelector(".brick.selected");
       if (element.classList.contains("selected")) {
         return;
       }
-      if (selectedElement){
-        selectedElement.classList.remove('selected');
-      }
+      unselectElements();
       element.classList.add('selected');
+
+      //Change the last-selected on this page
+      var thisCard = document.querySelector("ceci-card[visible=true]");
+      var lastSelected = document.querySelector("ceci-card[visible=true] .last-selected-on-page");
+      if(lastSelected){
+        lastSelected.classList.remove("last-selected-on-page");
+      }
+
+      element.classList.add('last-selected-on-page');
+
       element.onready(function() {
         Editable.displayAttributes(element);
       });
+    }
+
+    function unselectElements(){
+      Editable.clearAttributes();
+      var selectedElement = document.querySelector(".brick.selected");
+      if (selectedElement){
+        selectedElement.classList.remove('selected');
+      }
     }
 
     function setupElement(element) {

@@ -223,7 +223,11 @@ define(['jquery', 'inflector', 'l10n', 'colorpicker.core'], function ($, Inflect
       $('.editable-attributes').empty();
       $('.editable-header .name').empty();
     },
+    clearAttributes : function(){
+      $('.section-customize').hide();
+    },
     displayAttributes: function (element) {
+      $('.section-customize').show();
       $('.editable-header > .name').text(element.ceci.name);
 
       var attributeList = $('.editable-attributes');
