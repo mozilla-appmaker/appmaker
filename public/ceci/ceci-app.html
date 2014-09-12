@@ -73,8 +73,14 @@
         this.firebase = null;
 
         this.audioctx = window.AudioContext || window.webkitAudioContext;
-        if (this.audioctx ) {
-          this.Audiocontext = new this.audioctx();
+
+        if (this.audioctx) {
+          if(window.Audiocontext){
+            this.Audiocontext = window.Audiocontext;
+          } else {
+            this.Audiocontext = new this.audioctx();
+            window.Audiocontext = this.Audiocontext;
+          }
         }
 
         window.dispatchEvent(new CustomEvent("CeciAppReady", { detail: { app:this }}));
