@@ -9,6 +9,9 @@
 
   <!-- base functions and globals -->
   <script>
+    // making things easier for devs of all walks of life
+    if(!NodeList.prototype.array) { NodeList.prototype.array = Array.prototype.slice; }
+
     var DEFAULT_CHANNEL = 'blue';
 
     // Mouse/touch events that need to be routed properly
