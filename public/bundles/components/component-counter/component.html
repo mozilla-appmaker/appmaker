@@ -19,7 +19,7 @@ fontsize="16">
       "listeners": {
         "countUp": {
           "description": "Increment the total by the increment value",
-          "label": "Count Up!",
+          "label": "Count Up",
           "default" : true
         },
         "countDown": {
@@ -27,8 +27,8 @@ fontsize="16">
           "label": "Count Down"
         },
         "resetCount": {
-          "description": "Reset the total to 0.",
-          "label": "Reset Count"
+          "description": "Reset the count to the starting count.",
+          "label": "Reset to Starting Count"
         },
         "setValue": {
           "description": "Set the counter value to a specific number.",
@@ -52,8 +52,8 @@ fontsize="16">
           "min" : 1
         },
         "startingvalue": {
-          "description": "The starting value of the counter.",
-          "label": "Starting Value",
+          "description": "The starting count of the counter.",
+          "label": "Starting Count",
           "editable": "number",
           "min" : 0
         },
@@ -153,7 +153,7 @@ fontsize="16">
           this.value = Number(this.value) - Number(this.increment, 10);
         },
         resetCount: function() {
-          this.value = 0;
+          this.value = this.startingvalue;
         }
       });
     </script>
