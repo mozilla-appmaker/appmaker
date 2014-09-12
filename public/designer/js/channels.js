@@ -2,8 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-define(
-  function() {
+define(['analytics'], function(analytics) {
     "use strict";
 
     // internal map for tracking the connection graph for an app
@@ -129,7 +128,12 @@ define(
       }
       if(channel) {
         var loop = findLoop(type, channel, element);
-        if (loop) { console.warn("Warning: possible loop established. Element chain:", loop); }
+        if (loop) {
+          console.warn("Warning: possible loop established. Element chain:", loop);
+          if(analytics) {
+            analytics.event("App with data loop");
+          }
+        }
         map[channel].push(element);
       }
     });
