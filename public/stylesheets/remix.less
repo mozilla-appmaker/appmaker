@@ -12,11 +12,11 @@
           transition: top 0.2s, height 0.2s;
 
   &.expanded {
-    position: absolute;
+    position: fixed;
     top: 0px;
     bottom: 0px;
     height: 100%;
-    margin-top: 0px;
+    overflow: auto;
 
     .remix-toggle {
       top: 0px;
@@ -186,7 +186,7 @@
 // Share, Install & Remix Popups
 
 .pagepop {
-  position: absolute;
+  position: fixed;
   left: 0px;
   right: 0px;
   top: 0px;
@@ -194,6 +194,7 @@
   width: 100%;
   z-index: 99999;
   background: black;
+  overflow: auto;
 
   &.hidden {
     display: none;

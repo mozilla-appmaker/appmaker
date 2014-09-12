@@ -95,30 +95,39 @@ a {
 
 .app {
   width: 310px;
-  min-height: 400px;
   position: relative;
   margin: 0 auto;
 }
 
-@media (max-width: 310px)  {
+//Devices
+@media (max-width: 320px)  {
   html {
     background: white;
   }
 }
 
-@media all and (min-width: 601px)  {
+
+@media all and (min-width: 321px)  {
   body {
-    padding-top: 40px;
+
   }
 
   .app {
-    margin: 0 auto;
+    margin: 40px auto;
     width: 340px;
+
     border: solid 15px rgba(0,0,0,.4);
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
+
+    ceci-app {
+      min-height: 480px;
+    }
+
   }
+
+
 }
 
 .about-appmaker {
