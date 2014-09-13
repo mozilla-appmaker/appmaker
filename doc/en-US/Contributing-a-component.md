@@ -27,7 +27,7 @@ Components are built with HTML, CSS & Javascript using a framework called
 ####Introducing the Counter component
 Let's look at the Counter component to get started. It counts up or down when it receives a signal and keeps track of the count.
 
-Check out the [Counter Component repo](https://github.com/mozilla-appmaker/component-counter).
+Check out the [Start Here Component repo](https://github.com/mozilla-appmaker/start-here).
 
 * The **HTML & Javascript** live in [component.html](https://github.com/mozilla-appmaker/component-counter/blob/gh-pages/component.html)
 * The **CSS** styles live in [component.css](https://github.com/mozilla-appmaker/component-counter/blob/gh-pages/component.html)
