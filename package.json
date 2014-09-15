@@ -23,6 +23,7 @@
     "express-bundles": "git://github.com/simonwex/express-bundles#master",
     "express-persona": "0.1.1",
     "grunt-gettext-finder": "0.0.5",
+    "habitat": "0.4.1",
     "helmet": "0.2.1",
     "html-minifier": "~0.6.5",
     "http-proxy": "1.1.1",
