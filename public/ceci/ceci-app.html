@@ -72,15 +72,12 @@
         this.dispatchEvent(new CustomEvent('ready', {bubbles: true, detail: this}));
         this.firebase = null;
 
-        this.audioctx = window.AudioContext || window.webkitAudioContext;
-
-        if (this.audioctx) {
-          if(window.Audiocontext){
-            this.Audiocontext = window.Audiocontext;
-          } else {
-            this.Audiocontext = new this.audioctx();
-            window.Audiocontext = this.Audiocontext;
+        var audioContext = window.AudioContext || window.webkitAudioContext; // shadows window.audioContext now
+        if(audioContext) {
+          if(!window.audioContext) { // sticking with JS var vs. object notation conventions
+            window.audioContext = new audioContext();
           }
+          this.Audiocontext = window.audioContext;
         }
 
         window.dispatchEvent(new CustomEvent("CeciAppReady", { detail: { app:this }}));
