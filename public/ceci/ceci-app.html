@@ -72,9 +72,9 @@
         this.dispatchEvent(new CustomEvent('ready', {bubbles: true, detail: this}));
         this.firebase = null;
 
-        var audioContext = window.AudioContext || window.webkitAudioContext; // shadows window.audioContext now
+        var audioContext = window.AudioContext || window.webkitAudioContext;
         if(audioContext) {
-          if(!window.audioContext) { // sticking with JS var vs. object notation conventions
+          if(!window.audioContext) {
             window.audioContext = new audioContext();
           }
           this.Audiocontext = window.audioContext;
