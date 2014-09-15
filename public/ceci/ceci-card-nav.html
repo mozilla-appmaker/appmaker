@@ -43,8 +43,8 @@
       },
       highlightTab : function(){
         var highlightIndex;
-        var list = document.querySelectorAll("ceci-card") || [];
-        Array.prototype.forEach.call(list, function(el,index){
+        var list = document.querySelectorAll("ceci-card").array() || [];
+        list.forEach(function(el,index){
           if(el.getAttribute("visible") == "true"){
             highlightIndex = index;
           }
@@ -85,14 +85,14 @@
         $(".card-list .card").remove();
 
         //Add tabs for all pages
-        var existingCards = document.querySelectorAll('ceci-card');
+        var existingCards = document.querySelectorAll('ceci-card').array();
 
         if(!existingCards){
           var self = this;
           document.getElementsByTagName('ceci-card')[0].addEventListener('WebComponentReady', function(){
-            var existingCards = document.querySelectorAll('ceci-card');
+            var existingCards = document.querySelectorAll('ceci-card').array();
             if(existingCards.length > 0){
-              Array.prototype.forEach.call(existingCards, function(el,index){
+              existingCards.forEach(function(el,index){
                 t.addCardTab(index+1,existingCards[index]);
               });
             }
@@ -100,7 +100,7 @@
           });
         } else {
           if(existingCards.length > 0){
-            Array.prototype.forEach.call(existingCards, function(el,index){
+            existingCards.forEach(function(el,index){
               t.addCardTab(index+1,existingCards[index]);
             });
           }

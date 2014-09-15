@@ -33,8 +33,7 @@ define(function() {
      * in a dialog or modal to notify the user of these errors.
      */
     errorReport: function() {
-      var list = Array.prototype.slice.call(arguments);
-      list = list.filter(function(v) {
+      var list = Array.prototype.slice.call(arguments).filter(function(v) {
         return !!v;
       }).map(function(v) {
         if(typeof v === "string") return v;

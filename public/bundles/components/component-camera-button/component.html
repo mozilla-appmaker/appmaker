@@ -81,8 +81,7 @@
         this.super();
       },
       cameraMode : function(mode) {
-        var modes = this.shadowRoot.querySelectorAll(".mode");
-        modes = Array.prototype.slice.call(modes);
+        var modes = this.shadowRoot.querySelectorAll(".mode").array();
         var fn = function(e) {
           e.style.display = "none";
         };

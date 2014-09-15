@@ -47,7 +47,7 @@
         return this.querySelector('ceci-field[fieldname="'+ name + '"]');
       },
       getFields: function() {
-        return Array.prototype.slice.call(this.querySelectorAll("ceci-field"), 0);
+        return this.querySelectorAll("ceci-field").array();
       },
       collectionnameChanged: function(oldName, newName) {
         var detail = {

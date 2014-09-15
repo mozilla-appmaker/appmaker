@@ -96,10 +96,12 @@
           that.playbeats[i] = [];
         }
 
-        Array.prototype.forEach.call(this.shadowRoot.querySelectorAll(".channelrow"), function(chan) {
+        var channelRows = this.shadowRoot.querySelectorAll(".channelrow").array();
+        channelRows.forEach(function(chan) {
           var channel = chan.getAttribute("data-channel");
           var beat = 0;
-          Array.prototype.forEach.call(chan.querySelectorAll(".beat"), function(beatEl) {
+          var beats = chan.querySelectorAll(".beat").array();
+          beats.forEach(function(beatEl) {
             if(beatEl.classList.contains("on")) {
               that.playbeats[beat].push(channel);
             }
@@ -153,7 +155,8 @@
         var self = this;
         this.activebroadcasts = [];
 
-        Array.prototype.forEach.call(this.querySelectorAll("ceci-broadcast"), function(broadcast) {
+        var broadcasts = this.querySelectorAll("ceci-broadcast").array()
+        broadcasts.forEach(function(broadcast) {
           var item = {};
           item.channelcolor = broadcast.getAttribute("on");
           item.channelname = broadcast.getAttribute("from");

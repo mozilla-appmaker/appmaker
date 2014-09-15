@@ -320,7 +320,7 @@
         }
       },
       getActiveListeners: function () {
-        return Array.prototype.slice.call(this.querySelectorAll("ceci-listen"));
+        return this.querySelectorAll("ceci-listen").array();
       },
       setListener: function (name, channel) {
         var entry = this.ceci.listeners[name];
@@ -350,7 +350,7 @@
         }
       },
       getActiveBroadcasts: function () {
-        return Array.prototype.slice.call(this.querySelectorAll("ceci-broadcast"));
+        return this.querySelectorAll("ceci-broadcast").array();
       },
       setBroadcast: function (name, channel) {
         var entry = this.ceci.broadcasts[name];
@@ -399,8 +399,8 @@
       domReady: function () {
         if(!this.addedCustomListeners) {
           this.touchEnabled = 'ontouchstart' in document.documentElement;
-          var els = this.shadowRoot.querySelectorAll(customListenerQuerySelector);
-          Array.prototype.forEach.call(els, this.addCustomListener.bind(this));
+          var els = this.shadowRoot.querySelectorAll(customListenerQuerySelector).array();
+          els.forEach(this.addCustomListener.bind(this));
           this.addedCustomListeners = true;
         }
         document.dispatchEvent(new CustomEvent('CeciElementAdded', {bubbles: true, detail: this}));

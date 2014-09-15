@@ -21,8 +21,8 @@
           elements = this.component.querySelectorAll("ceci-broadcast");
         }
 
-        elements = Array.prototype.slice.call(elements);
-
+        elements = elements.array();
+      
         // Remove all existing channel lines
         var existingLines = this.lines;
         existingLines.innerHTML = "";

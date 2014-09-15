@@ -53,7 +53,8 @@
       show: function () {
         this.setAttribute('visible', true);
         var that = this;
-        Array.prototype.forEach.call(document.querySelectorAll('ceci-card'), function (card) {
+        var cards = document.querySelectorAll('ceci-card').array();
+        cards.forEach(function (card) {
           if (card !== that) {
             card.removeAttribute('visible');
           }

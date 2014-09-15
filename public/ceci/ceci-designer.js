@@ -28,7 +28,7 @@ define([], function() {
     // It's expected that the channel object being sent has a .id to uniquely identify it.
     addChannels: function(channels){
       var self = this;
-      Array.prototype.forEach.call(channels, function(channel) {
+      channels.array().forEach(function(channel) {
         self.addChannel(channel);
       });
     },

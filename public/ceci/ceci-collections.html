@@ -30,7 +30,7 @@
         return this.querySelector('ceci-collection[collectionname="'+ name + '"]');
       },
       getCollections: function() {
-        return Array.prototype.slice.call(this.querySelectorAll("ceci-collection"), 0);
+        return this.querySelectorAll("ceci-collection").array();
       },
       getField: function(collectionname, fieldname) {
         return this.querySelector('ceci-collection[collectionname="'+ collectionname + '"]').getField(fieldname);
