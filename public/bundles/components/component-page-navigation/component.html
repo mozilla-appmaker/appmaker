@@ -1,0 +1,78 @@
+<polymer-element name="ceci-page-navigation" extends="ceci-element" attributes="background" background="#AAA">
+  <ceci-definition>
+    {
+      "tags": ["navigation","menu","page"],
+      "thumbnail": "./thumbnail.png",
+      "description": "Naviages to the last viewed page, or to a specific page in your app.",
+      "name": "Page Navigation",
+      "broadcasts": {},
+      "listeners": {
+        "previousPage": {
+          "description": "Navigate to the previously visible page.",
+          "label": "Previous Page",
+          "default" : "true"
+        },
+        "specificPage": {
+          "description": "Show a specific page in the app.",
+          "label": "Specific Page"
+        }
+      },
+      "attributes": {
+        "background": {
+          "label": "Background Color",
+          "description": "Background color of the Brick.",
+          "editable": "color"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <div class="wrapper" style="background-color: {{background}}"></div>
+    <link rel="stylesheet" href="component.css"></link>
+    <shadow></shadow>
+    <!-- Button click sound courtesy of http://www.freesfx.co.uk -->
+  </template>
+  <script>
+    Polymer('ceci-page-navigation', {
+      cardHistory : [],
+      lastCard : "",
+      ready: function () {
+        this.super();
+      },
+      attached : function(){
+        this.super();
+        var that = this;
+        var cardWhenLoaded = document.querySelector("ceci-card[visible=true]");
+        this.cardHistory.push(cardWhenLoaded);
+
+        window.addEventListener('cardShown', function(e){
+          var cardShown = e.detail;
+          var lastCard = that.cardHistory[that.cardHistory.length-1];
+          if(lastCard != cardShown){
+            that.cardHistory.push(cardShown);
+          }
+          if(that.cardHistory.length > 2){
+            that.cardHistory = that.cardHistory.slice(1,3);
+          }
+          that.lastCard = that.cardHistory[0];
+        });
+      },
+      specificPage : function(page){
+        if(parseInt(page)){
+          var navigateTo = document.querySelector("ceci-card:nth-of-type("+page+")");
+          if(navigateTo){
+            navigateTo.show();
+          }
+        }
+      },
+      previousPage : function(){
+        this.navigateBack();
+      },
+      navigateBack: function () {
+        if(this.lastCard){
+          this.lastCard.show();
+        }
+      }
+    });
+  </script>
+</polymer-element>

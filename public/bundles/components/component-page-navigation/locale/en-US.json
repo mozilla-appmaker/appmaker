@@ -1,0 +1,16 @@
+{
+	"ceci-back-button": "Page Navigation",
+	"ceci-back-button/description": "Naviages to the last viewed page, or to a specific page in your app.",
+	"ceci-back-button/attributes/label": "Back",
+	"ceci-back-button/attributes/label/label": "Label",
+	"ceci-back-button/attributes/label/description": "Text shown on the button.",
+	"ceci-back-button/attributes/value": "Press",
+	"ceci-back-button/attributes/value/label": "Broadcast Value",
+	"ceci-back-button/attributes/value/description": "Value broadcast by the button when pressed.",
+	"ceci-back-button/attributes/textcolor/label": "Text Color",
+	"ceci-back-button/attributes/textcolor/description": "Color of the text on the button's label.",
+	"ceci-back-button/attributes/buttoncolor/label": "Button Color",
+	"ceci-back-button/attributes/buttoncolor/description": "Background color of the button.",
+	"ceci-back-button/attributes/buttonactivecolor/label": "Button Active Color",
+	"ceci-back-button/attributes/buttonactivecolor/description": "Background color of the button while it is being pressed."
+}
