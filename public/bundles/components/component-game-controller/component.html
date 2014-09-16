@@ -1,5 +1,5 @@
-<polymer-element name="ceci-game-controller" extends="ceci-element" attributes="konamicode leftbuttonvalue upbuttonvalue downbuttonvalue rightbuttonvalue selectbuttonvalue startbuttonvalue abuttonvalue bbuttonvalue"
-konamicode="up,up,down,down,left,right,left,right,b,a">
+<polymer-element name="ceci-game-controller" extends="ceci-element" attributes="konamicode leftbuttonvalue upbuttonvalue downbuttonvalue rightbuttonvalue greenbuttonvalue bluebuttonvalue yellowbuttonvalue redbuttonvalue"
+konamicode="up,up,down,down,left,right,left,right,yellow,red">
   <ceci-definition>
     {
       "name": "Game Controller",
@@ -31,21 +31,21 @@ konamicode="up,up,down,down,left,right,left,right,b,a">
           "label": "Right Button",
           "description": "Right button was pressed"
         },
-        "select": {
-          "label": "Select Button",
-          "description": "Select button was pressed"
+        "greenbutton": {
+          "label": "Green Button",
+          "description": "Green button was pressed"
         },
-        "start": {
-          "label": "Start Button",
-          "description": "Start button was pressed"
+        "bluebutton": {
+          "label": "Blue Button",
+          "description": "Blue button was pressed"
         },
-        "abutton": {
-          "label": "A Button",
-          "description": "A button was pressed"
+        "yellowbutton": {
+          "label": "Yellow Button",
+          "description": "Yellow button was pressed"
         },
-        "bbutton": {
-          "label": "B Button",
-          "description": "B button was pressed"
+        "redbutton": {
+          "label": "Red Button",
+          "description": "Red button was pressed"
         },
         "konami": {
           "label": "Konami code triggered!",
@@ -73,23 +73,23 @@ konamicode="up,up,down,down,left,right,left,right,b,a">
           "description": "Value to send when this button is clicked",
           "editable": "text"
         },
-        "selectbuttonvalue": {
-          "label": "Select Button Value",
+        "greenbuttonvalue": {
+          "label": "Green Button Value",
           "description": "Value to send when this button is clicked",
           "editable": "text"
         },
-        "startbuttonvalue": {
-          "label": "Start Button Value",
+        "bluebuttonvalue": {
+          "label": "Blue Button Value",
           "description": "Value to send when this button is clicked",
           "editable": "text"
         },
-        "abuttonvalue": {
-          "label": "A Button Value",
+        "yellowbuttonvalue": {
+          "label": "Yellow Button Value",
           "description": "Value to send when this button is clicked",
           "editable": "text"
         },
-        "bbuttonvalue": {
-          "label": "B Button Value",
+        "redbuttonvalue": {
+          "label": "Red Button Value",
           "description": "Value to send when this button is clicked",
           "editable": "text"
         },
@@ -105,23 +105,19 @@ konamicode="up,up,down,down,left,right,left,right,b,a">
     <link rel="stylesheet" href="component.css"></link>
     <div class="game-controller">
       <div class="d-pad-container">
-        <div class="d-pad">
-          <div class="left-button" data-controller-button="left" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{leftClicked}}"></div>
-          <div class="up-button" data-controller-button="up" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{upClicked}}"></div>
-          <div class="down-button" data-controller-button="down" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{downClicked}}"></div>
-          <div class="right-button" data-controller-button="right" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{rightClicked}}"></div>
-        </div>
+        <div class="left-button" data-controller-button="left" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{leftClicked}}"></div>
+        <div class="up-button" data-controller-button="up" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{upClicked}}"></div>
+        <div class="down-button" data-controller-button="down" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{downClicked}}"></div>
+        <div class="right-button" data-controller-button="right" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{rightClicked}}"></div>
       </div>
-      <div class="start-select-container">
-        <div class="start-select">
-          <div class="select-button" data-controller-button="select" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{selectClicked}}"></div>
-          <div class="start-button" data-controller-button="start" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{startClicked}}"></div>
+      <div class="buttons-container">
+        <div class="top-buttons">
+          <div class="green-controller-button" data-controller-button="green" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{greenButtonClicked}}"></div>
+          <div class="blue-controller-button" data-controller-button="blue" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{blueButtonClicked}}"></div>
         </div>
-      </div>
-      <div class="a-b-buttons-container">
-        <div class="a-b-buttons">
-          <div class="a-button" data-controller-button="a" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{aButtonClicked}}"></div>
-          <div class="b-button" data-controller-button="b" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{bButtonClicked}}"></div>
+        <div class="bottom-buttons">
+          <div class="yellow-controller-button" data-controller-button="yellow" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{yellowButtonClicked}}"></div>
+          <div class="red-controller-button" data-controller-button="red" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{redButtonClicked}}"></div>
         </div>
       </div>
     </div>
@@ -133,7 +129,7 @@ konamicode="up,up,down,down,left,right,left,right,b,a">
         ready: function() {
           this.super();
 
-          // Default sequence ↑ ↑ ↓ ↓ ← → ← → B A
+          // Default sequence ↑ ↑ ↓ ↓ ← → ← → yellow red
           this.sequence = [];
           this.konamicodeChanged();
 
@@ -191,17 +187,17 @@ konamicode="up,up,down,down,left,right,left,right,b,a">
         rightClicked: function(e) {
           this.broadcast("right", this.rightbuttonvalue);
         },
-        selectClicked: function(e) {
-          this.broadcast("select", this.selectbuttonvalue);
+        greenButtonClicked: function(e) {
+          this.broadcast("greenbutton", this.greenbuttonvalue);
         },
-        startClicked: function(e) {
-          this.broadcast("start", this.startbuttonvalue);
+        blueButtonClicked: function(e) {
+          this.broadcast("bluebutton", this.bluebuttonvalue);
         },
-        aButtonClicked: function(e) {
-          this.broadcast("abutton", this.abuttonvalue);
+        yellowButtonClicked: function(e) {
+          this.broadcast("yellowbutton", this.yellowbuttonvalue);
         },
-        bButtonClicked: function(e) {
-          this.broadcast("bbutton", this.bbuttonvalue);
+        redButtonClicked: function(e) {
+          this.broadcast("redbutton", this.redbuttonvalue);
         }
       });
     </script>
