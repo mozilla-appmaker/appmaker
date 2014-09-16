@@ -44,7 +44,8 @@ define(
           "ceci-todo-list",
           "ceci-text-input",
           "ceci-timer",
-          "ceci-stopwatch"
+          "ceci-stopwatch",
+          "ceci-page-navigation"
         ]
       },
       "connection": {
