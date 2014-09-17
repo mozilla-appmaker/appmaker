@@ -1,7 +1,8 @@
-<polymer-element name="ceci-counter" extends="ceci-element" attributes="textcolor backgroundcolor fontsize textalign unit increment value startingvalue"
+<polymer-element name="ceci-counter" extends="ceci-element" attributes="tapincrement textcolor backgroundcolor fontsize textalign unit increment value startingvalue"
 startingvalue="0"
 increment="1"
 textcolor="#000000"
+tapincrement="false"
 backgroundcolor="#FFFFFF"
 textalign="Center"
 fontsize="16">
@@ -51,6 +52,11 @@ fontsize="16">
           "editable": "number",
           "min" : 1
         },
+        "tapincrement": {
+          "label": "Count up when tapped",
+          "description": "Count up when the Counter is tapped or clicked.",
+          "editable": "boolean"
+        },
         "startingvalue": {
           "description": "The starting count of the counter.",
           "label": "Starting Count",
@@ -85,7 +91,7 @@ fontsize="16">
   </ceci-definition>
   <template>
     <link rel="stylesheet" href="component.css">
-    <div class="counter" on-ceci-pressdown="{{ countUp }}" style="background: {{backgroundcolor}}; color: {{textcolor}}; text-align: {{textalign}}; font-size: {{fontsize}}px;">
+    <div class="counter" on-ceci-pressdown="{{ pressHandler }}" style="background: {{backgroundcolor}}; color: {{textcolor}}; text-align: {{textalign}}; font-size: {{fontsize}}px;">
       <div class="count-wrapper">
         <span class="count">{{value}}</span>
         <span class="count-label">{{displayUnit}}</span>
@@ -113,6 +119,11 @@ fontsize="16">
         },
         startingvalueChanged : function(){
           this.value = this.startingvalue;
+        },
+        pressHandler : function(){
+          if(this.tapincrement === "true") {
+            this.countUp();
+          }
         },
         updateUnit : function(){
           if (this.unit) {

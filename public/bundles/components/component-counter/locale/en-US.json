@@ -1,6 +1,8 @@
 {
 	"ceci-counter": "Counter",
 	"ceci-counter/description": "Counts up and down by any increment.",
+	"ceci-counter/attributes/tapincrement/label": "Count up when tapped",
+	"ceci-counter/attributes/tapincrement/description": "Count up when the Counter is tapped or clicked.",
 	"ceci-counter/attributes/unit/label": "Unit",
 	"ceci-counter/attributes/unit/description": "Name for items which are being counted.",
 	"ceci-counter/attributes/increment/label": "Increment By",
