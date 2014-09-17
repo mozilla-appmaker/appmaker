@@ -59,12 +59,12 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
             appTags = options.appTags,
             appid = options.appid,
             html = options.html,
-            alreadySaved = options.alreadySaved,
             afterPublish = options.afterPublish;
 
-        // make sure to save first; If that succeeds, perform a publish
-        var op = alreadySaved ? this.updateApp : this.saveApp;
-        op(name, appid, html, function callAPIPublish(err) {
+        var saveApp = this.saveApp;
+        var updateApp = this.updateApp;
+
+        function callAPIPublish(err) {
           if(err) {
             if(afterPublish) { afterPublish(err); }
             return;
@@ -108,6 +108,22 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
               if(afterPublish) { afterPublish(data); }
             }
           });
+        }
+
+        // Update or save before we publish.
+        $.ajax('/api/app', {
+          data: {
+            name: name
+          },
+          type: 'get',
+          success: function (data) {
+            // App exists, update it.
+            updateApp(name, appid, html, afterPublish);
+          },
+          error: function (data) {
+            // App not found, save it.
+            saveApp(name, appid, html, afterPublish);
+          }
         });
       },
       saveApp: function(name, appid, html, next){

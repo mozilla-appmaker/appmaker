@@ -308,8 +308,6 @@
               app.setAttribute("appid", "ceci-app-"+uuid());
             }
 
-            // we have a name: publish!
-            var alreadySaved = self.editingmode === "saved";
             function afterPublish(err,data) {
               if(err) {
                 if (data) {
@@ -320,7 +318,7 @@
                   if (err.responseJSON.error === 'App name must be unique.') {
                     self.appRenameFailed(l10n.get('App name must be unique.'));
                   } else {
-                    reporter.errorReport((alreadySaved? "updated " : '') + "app was not successfully published");
+                    reporter.errorReport("app was not successfully published");
                   }
                   analytics.event("Error Publishing App", { nonInteraction: true });
                 }
@@ -338,7 +336,6 @@
               appid: app.appid,
               remixedFrom: app.remixedfrom,
               html: app.outerHTML,
-              alreadySaved: alreadySaved,
               afterPublish: afterPublish
             };
             application.publishApp(options);
