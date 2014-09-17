@@ -81,7 +81,7 @@ define([], function () {
 
   return {
     show: function(name, data) {
-      var qrCodeLinks = document.querySelectorAll('a[data-qrcode-for]');
+      var qrCodeLinks = document.querySelectorAll('a[data-qrcode-for]').array();
       qrCodeLinks.forEach(function (a) {
         a.onclick = function (e) {
           showQRCode(a.getAttribute('data-qrcode-for'));
