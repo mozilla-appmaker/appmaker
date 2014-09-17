@@ -267,9 +267,10 @@
           this.$.saveApp.addEventListener("click", function() {
             var ceciApp = document.querySelector('ceci-app');
             var html = ceciApp.outerHTML;
-            var name = application.getCurrentApp();
+            var name = ceciApp.name;
+
             if(name){
-              application.updateApp(name,ceciApp.appid,html, function(err,data){
+              application.saveOrUpdateApp(name,ceciApp.appid,html, function(err,data){
                 if(!err){
                   reporter.consoleReport("App save.");
                   analytics.event("Saved App");

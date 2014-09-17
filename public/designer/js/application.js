@@ -61,9 +61,6 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
             html = options.html,
             afterPublish = options.afterPublish;
 
-        var saveApp = this.saveApp;
-        var updateApp = this.updateApp;
-
         function callAPIPublish(err) {
           if(err) {
             if(afterPublish) { afterPublish(err); }
@@ -110,21 +107,7 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
           });
         }
 
-        // Update or save before we publish.
-        $.ajax('/api/app', {
-          data: {
-            name: name
-          },
-          type: 'get',
-          success: function (data) {
-            // App exists, update it.
-            updateApp(name, appid, html, afterPublish);
-          },
-          error: function (data) {
-            // App not found, save it.
-            saveApp(name, appid, html, afterPublish);
-          }
-        });
+        this.saveOrUpdateApp(name, appid, html, callAPIPublish);
       },
       saveApp: function(name, appid, html, next){
         $.ajax('/api/save_app', {
@@ -163,6 +146,26 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
           }
         });
 
+      },
+      saveOrUpdateApp: function(name,appid,html,next) {
+        var saveApp = this.saveApp;
+        var updateApp = this.updateApp;
+
+        // Update if app exists, save as if it does not
+        $.ajax('/api/app', {
+          data: {
+            name: name
+          },
+          type: 'get',
+          success: function (data) {
+            // App exists, update it.
+            updateApp(name, appid, html, next);
+          },
+          error: function (data) {
+            // App not found, save it.
+            saveApp(name, appid, html, next);
+          }
+        });
       },
       getOrInsertCeciApp: function(){
         var app = document.querySelector('ceci-app');
