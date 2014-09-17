@@ -135,10 +135,10 @@
   display: block;
   border-radius: 50%;
   background-color: yellow;
-  top: 10%;
-  bottom: 10%;
-  left: 10%;
-  right: 10%;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  right: 3px;
   position: absolute;
 }
 
@@ -147,10 +147,10 @@
   display: block;
   border-radius: 50%;
   background-color: red;
-  top: 10%;
-  bottom: 10%;
-  left: 10%;
-  right: 10%;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  right: 3px;
   position: absolute;
 }
 
@@ -159,10 +159,10 @@
   display: block;
   border-radius: 50%;
   background-color: green;
-  top: 10%;
-  bottom: 10%;
-  left: 10%;
-  right: 10%;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  right: 3px;
   position: absolute;
 }
 
@@ -171,10 +171,10 @@
   display: block;
   border-radius: 50%;
   background-color: blue;
-  top: 10%;
-  bottom: 10%;
-  left: 10%;
-  right: 10%;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  right: 3px;
   position: absolute;
 }
 
