@@ -86,7 +86,7 @@
   bottom: 6px;
 }
 
-:host .green-controller-button {
+:host .topleft-controller-button {
   background-color: #D3D3D3;
   border-radius: 5px;
   position: absolute;
@@ -97,7 +97,7 @@
   cursor: pointer;
 }
 
-:host .blue-controller-button {
+:host .topright-controller-button {
   background-color: #D3D3D3;
   border-radius: 5px;
   position: absolute;
@@ -108,7 +108,7 @@
   cursor: pointer;
 }
 
-:host .yellow-controller-button {
+:host .bottomleft-controller-button {
   background-color: #D3D3D3;
   border-radius: 5px;
   position: absolute;
@@ -119,7 +119,7 @@
   cursor: pointer;
 }
 
-:host .red-controller-button {
+:host .bottomright-controller-button {
   background-color: #D3D3D3;
   border-radius: 5px;
   position: absolute;
@@ -130,7 +130,7 @@
   cursor: pointer;
 }
 
-:host .yellow-controller-button:after {
+:host .bottomleft-controller-button:after {
   content: "";
   display: block;
   border-radius: 50%;
@@ -142,7 +142,7 @@
   position: absolute;
 }
 
-:host .red-controller-button:after {
+:host .bottomright-controller-button:after {
   content: "";
   display: block;
   border-radius: 50%;
@@ -154,7 +154,7 @@
   position: absolute;
 }
 
-:host .green-controller-button:after {
+:host .topleft-controller-button:after {
   content: "";
   display: block;
   border-radius: 50%;
@@ -166,7 +166,7 @@
   position: absolute;
 }
 
-:host .blue-controller-button:after {
+:host .topright-controller-button:after {
   content: "";
   display: block;
   border-radius: 50%;

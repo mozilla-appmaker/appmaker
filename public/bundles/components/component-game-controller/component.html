@@ -1,5 +1,5 @@
-<polymer-element name="ceci-game-controller" extends="ceci-element" attributes="konamicode leftbuttonvalue upbuttonvalue downbuttonvalue rightbuttonvalue greenbuttonvalue bluebuttonvalue yellowbuttonvalue redbuttonvalue"
-konamicode="up,up,down,down,left,right,left,right,yellow,red">
+<polymer-element name="ceci-game-controller" extends="ceci-element" attributes="konamicode leftbuttonvalue upbuttonvalue downbuttonvalue rightbuttonvalue toprightbuttonvalue topleftbuttonvalue bottomleftbuttonvalue bottomrightbuttonvalue"
+konamicode="up,up,down,down,left,right,left,right,bottomleft,bottomright">
   <ceci-definition>
     {
       "name": "Game Controller",
@@ -31,21 +31,21 @@ konamicode="up,up,down,down,left,right,left,right,yellow,red">
           "label": "Right Button",
           "description": "Right button was pressed"
         },
-        "greenbutton": {
-          "label": "Green Button",
-          "description": "Green button was pressed"
+        "toprightbutton": {
+          "label": "Top Right Button",
+          "description": "Top right button was pressed"
         },
-        "bluebutton": {
-          "label": "Blue Button",
-          "description": "Blue button was pressed"
+        "toprightbutton": {
+          "label": "Top Right Button",
+          "description": "Top right button was pressed"
         },
-        "yellowbutton": {
-          "label": "Yellow Button",
-          "description": "Yellow button was pressed"
+        "bottomleftbutton": {
+          "label": "Bottom Left Button",
+          "description": "Bottom left button was pressed"
         },
-        "redbutton": {
-          "label": "Red Button",
-          "description": "Red button was pressed"
+        "bottomrightbutton": {
+          "label": "Bottom Right Button",
+          "description": "Bottom right button was pressed"
         },
         "konami": {
           "label": "Konami code triggered!",
@@ -73,23 +73,23 @@ konamicode="up,up,down,down,left,right,left,right,yellow,red">
           "description": "Value to send when this button is clicked",
           "editable": "text"
         },
-        "greenbuttonvalue": {
-          "label": "Green Button Value",
+        "topleftbuttonvalue": {
+          "label": "Top Left Button Value",
           "description": "Value to send when this button is clicked",
           "editable": "text"
         },
-        "bluebuttonvalue": {
-          "label": "Blue Button Value",
+        "toprightbuttonvalue": {
+          "label": "Top Right Button Value",
           "description": "Value to send when this button is clicked",
           "editable": "text"
         },
-        "yellowbuttonvalue": {
-          "label": "Yellow Button Value",
+        "bottomleftbuttonvalue": {
+          "label": "Bottom Left Button Value",
           "description": "Value to send when this button is clicked",
           "editable": "text"
         },
-        "redbuttonvalue": {
-          "label": "Red Button Value",
+        "bottomrightbuttonvalue": {
+          "label": "Bottom Right Button Value",
           "description": "Value to send when this button is clicked",
           "editable": "text"
         },
@@ -112,12 +112,12 @@ konamicode="up,up,down,down,left,right,left,right,yellow,red">
       </div>
       <div class="buttons-container">
         <div class="top-buttons">
-          <div class="green-controller-button" data-controller-button="green" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
-          <div class="blue-controller-button" data-controller-button="blue" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
+          <div class="topleft-controller-button" data-controller-button="topleft" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
+          <div class="topright-controller-button" data-controller-button="topright" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
         </div>
         <div class="bottom-buttons">
-          <div class="yellow-controller-button" data-controller-button="yellow" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
-          <div class="red-controller-button" data-controller-button="red" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
+          <div class="bottomleft-controller-button" data-controller-button="bottomleft" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
+          <div class="bottomright-controller-button" data-controller-button="bottomright" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
         </div>
       </div>
     </div>
@@ -129,7 +129,7 @@ konamicode="up,up,down,down,left,right,left,right,yellow,red">
         ready: function() {
           this.super();
 
-          // Default sequence ↑ ↑ ↓ ↓ ← → ← → yellow red
+          // Default sequence ↑ ↑ ↓ ↓ ← → ← → bottomleft bottomright
           this.sequence = [];
           this.konamicodeChanged();
         },
