@@ -15,19 +15,19 @@ konamicode="up,up,down,down,left,right,left,right,yellow,red">
           "label": "Any Button Released",
           "description": "Any button was released"
         },
-        "left": {
+        "leftbutton": {
           "label": "Left Button",
           "description": "Left button was pressed"
         },
-        "up": {
+        "upbutton": {
           "label": "Up Button",
           "description": "Up button was pressed"
         },
-        "down": {
+        "downbutton": {
           "label": "Down Button",
           "description": "Down button was pressed"
         },
-        "right": {
+        "rightbutton": {
           "label": "Right Button",
           "description": "Right button was pressed"
         },
@@ -151,10 +151,12 @@ konamicode="up,up,down,down,left,right,left,right,yellow,red">
           }
 
           if (this.sequence.join(",") === this.konamicode) {
+            this.sequence = [];
             this.broadcast("konami", this.konamicode);
           }
 
           this.broadcast("press", button);
+          this.broadcast(button + "button", this[button + "buttonvalue"]);
         },
         konamicodeChanged: function() {
           this.codeLength = this.konamicode.split(",").length;
@@ -174,30 +176,6 @@ konamicode="up,up,down,down,left,right,left,right,yellow,red">
         },
         onTouchEnd: function(event, detail, sender) {
           this.onRelease(event, detail, sender);
-        },
-        leftClicked: function(e) {
-          this.broadcast("left", this.leftbuttonvalue);
-        },
-        upClicked: function(e) {
-          this.broadcast("up", this.upbuttonvalue);
-        },
-        downClicked: function(e) {
-          this.broadcast("down", this.downbuttonvalue);
-        },
-        rightClicked: function(e) {
-          this.broadcast("right", this.rightbuttonvalue);
-        },
-        greenButtonClicked: function(e) {
-          this.broadcast("greenbutton", this.greenbuttonvalue);
-        },
-        blueButtonClicked: function(e) {
-          this.broadcast("bluebutton", this.bluebuttonvalue);
-        },
-        yellowButtonClicked: function(e) {
-          this.broadcast("yellowbutton", this.yellowbuttonvalue);
-        },
-        redButtonClicked: function(e) {
-          this.broadcast("redbutton", this.redbuttonvalue);
         }
       });
     </script>
