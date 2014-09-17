@@ -85,7 +85,7 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
 
       if (!name) {
         // app doesn't exist anymore, likely deleted in another tab.
-        return;
+        return response.json(200, {message: "app was deleted"});
       }
 
       App.findOne({author:request.session.email, name: name},function(err, app){
@@ -104,7 +104,7 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
             console.warn("Error deleting this app!");
             return response.json(500, {error: 'App was not deleted due to ' + err});
           }
-          return response.json(200);
+          return response.json(200, {message: "app was deleted"});
         });
         if (makeId) {
           makeAPIPublisher.remove(makeId, function(err) {
