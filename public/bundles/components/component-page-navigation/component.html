@@ -8,8 +8,8 @@
       "broadcasts": {},
       "listeners": {
         "previousPage": {
-          "description": "Navigate to the previously visible page.",
-          "label": "Previous Page",
+          "description": "Navigate to the last viewed page.",
+          "label": "View Last Page",
           "default" : "true"
         },
         "specificPage": {
@@ -30,15 +30,11 @@
     <div class="wrapper" style="background-color: {{background}}"></div>
     <link rel="stylesheet" href="component.css"></link>
     <shadow></shadow>
-    <!-- Button click sound courtesy of http://www.freesfx.co.uk -->
   </template>
   <script>
     Polymer('ceci-page-navigation', {
       cardHistory : [],
       lastCard : "",
-      ready: function () {
-        this.super();
-      },
       attached : function(){
         this.super();
         var that = this;
@@ -58,7 +54,7 @@
         });
       },
       specificPage : function(page){
-        if(parseInt(page)){
+        if(parseInt(page,10)){
           var navigateTo = document.querySelector("ceci-card:nth-of-type("+page+")");
           if(navigateTo){
             navigateTo.show();
