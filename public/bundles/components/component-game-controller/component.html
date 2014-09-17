@@ -105,19 +105,19 @@ konamicode="up,up,down,down,left,right,left,right,yellow,red">
     <link rel="stylesheet" href="component.css"></link>
     <div class="game-controller">
       <div class="d-pad-container">
-        <div class="left-button" data-controller-button="left" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{leftClicked}}"></div>
-        <div class="up-button" data-controller-button="up" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{upClicked}}"></div>
-        <div class="down-button" data-controller-button="down" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{downClicked}}"></div>
-        <div class="right-button" data-controller-button="right" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{rightClicked}}"></div>
+        <div class="left-button" data-controller-button="left" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
+        <div class="up-button" data-controller-button="up" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
+        <div class="down-button" data-controller-button="down" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
+        <div class="right-button" data-controller-button="right" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
       </div>
       <div class="buttons-container">
         <div class="top-buttons">
-          <div class="green-controller-button" data-controller-button="green" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{greenButtonClicked}}"></div>
-          <div class="blue-controller-button" data-controller-button="blue" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{blueButtonClicked}}"></div>
+          <div class="green-controller-button" data-controller-button="green" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
+          <div class="blue-controller-button" data-controller-button="blue" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
         </div>
         <div class="bottom-buttons">
-          <div class="yellow-controller-button" data-controller-button="yellow" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{yellowButtonClicked}}"></div>
-          <div class="red-controller-button" data-controller-button="red" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{redButtonClicked}}"></div>
+          <div class="yellow-controller-button" data-controller-button="yellow" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
+          <div class="red-controller-button" data-controller-button="red" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
         </div>
       </div>
     </div>
@@ -132,15 +132,6 @@ konamicode="up,up,down,down,left,right,left,right,yellow,red">
           // Default sequence ↑ ↑ ↓ ↓ ← → ← → yellow red
           this.sequence = [];
           this.konamicodeChanged();
-
-          var that = this;
-          function detechTouch() {
-            // Disable mouse events
-            that.onMouseDown = function() {};
-            that.onMouseUp = function() {};
-            this.removeEventListener("touchstart", detechTouch);
-          }
-          this.addEventListener("touchstart", detechTouch);
         },
         onPress: function(event, detail, sender) {
           var button = sender.getAttribute("data-controller-button");
@@ -164,18 +155,6 @@ konamicode="up,up,down,down,left,right,left,right,yellow,red">
         },
         onRelease: function(event, detail, sender) {
           this.broadcast("release", sender.getAttribute("data-controller-button"));
-        },
-        onMouseDown: function(event, detail, sender) {
-          this.onPress(event, detail, sender);
-        },
-        onMouseUp: function(event, detail, sender) {
-          this.onRelease(event, detail, sender);
-        },
-        onTouchStart: function(event, detail, sender) {
-          this.onPress(event, detail, sender);
-        },
-        onTouchEnd: function(event, detail, sender) {
-          this.onRelease(event, detail, sender);
         }
       });
     </script>
