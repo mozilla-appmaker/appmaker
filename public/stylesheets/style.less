@@ -613,13 +613,19 @@ li.tab {
   display: none;
 }
 
-.editable-section .editable-header {
-  font-size: 22px;
-  font-weight: 400;
-  line-height: 30px;
-  text-align: left;
-  margin-bottom: 10px
+.editable-section .editable-header  {
+  .name {
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 27px;
+    text-align: left;
+  }
 
+  .description {
+    color: #999;
+    text-align: left;
+    margin-bottom: 12px;
+  }
 }
 
 .editable-section .remix-ui {
@@ -1266,7 +1272,7 @@ ul.component-actions {
 
 .editable-section input,
 .editable-section textarea {
-  font-size: 15px;
+  font-size: 14px;
   width: 100%;
   border: solid 1px #C5C5C5;
   border-radius: 3px;

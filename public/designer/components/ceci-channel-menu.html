@@ -18,7 +18,7 @@
                 <div data-color="off" class="color" data-channel="off">Disable</div>
               </div>
             </div>
-            <label><span class="channel-name"></span><div data-color="off" class="chosen-color"></div></label>
+            <a class="label"><span class="channel-name"></span><div data-color="off" class="chosen-color"></div></a>
           </div>
         </div>
       </div>
@@ -118,7 +118,7 @@
             colorUis[i].classList.add("hidden");
           }
 
-          var labels = this.menuWrapper.querySelectorAll("label");
+          var labels = this.menuWrapper.querySelectorAll(".label");
           for(var j = 0; j < labels.length; j++){
             labels[j].classList.remove("hidden");
           }
@@ -174,7 +174,7 @@
           var that = this;
           var channelOption = that.shadowRoot.querySelector(".channel-option[from="+method+"]") || that.shadowRoot.querySelector(".channel-option[for="+method+"]") ;
 
-          channelOption.querySelector("label").classList.add("hidden");
+          channelOption.querySelector(".label").classList.add("hidden");
 
           that.menu.classList.add("picking-colors");
 
@@ -222,16 +222,16 @@
                   options[i].classList.remove("hidden");;
                 }
 
-                channelOption.querySelector("label").classList.remove("hidden");
-                channelOption.querySelector("label .chosen-color").setAttribute("data-color", channel);
+                channelOption.querySelector(".label").classList.remove("hidden");
+                channelOption.querySelector(".label .chosen-color").setAttribute("data-color", channel);
 
                 var color = that.channels[channel] || "DDD";
 
-                channelOption.querySelector("label .chosen-color").style.background =  "#" + color;
+                channelOption.querySelector(".label .chosen-color").style.background =  "#" + color;
                 if(channel == "off"){
-                  channelOption.querySelector("label .chosen-color").textContent = "";
+                  channelOption.querySelector(".label .chosen-color").textContent = "";
                 } else {
-                  channelOption.querySelector("label .chosen-color").textContent = channel;
+                  channelOption.querySelector(".label .chosen-color").textContent = channel;
                 }
 
                 channelOption.querySelector(".color-ui").classList.add("hidden");
@@ -272,7 +272,8 @@
 
             that.menu.appendChild(channelOption);
             channelOption.setAttribute(handlerType, key);
-            channelOption.querySelector("label").addEventListener('click', function(){
+            channelOption.querySelector(".label").setAttribute("title",communicators[key].description);
+            channelOption.querySelector(".label").addEventListener('click', function(){
               var method = this.parentNode.getAttribute("from") || this.parentNode.getAttribute("for");
               that.showColorUI(method);
             });
