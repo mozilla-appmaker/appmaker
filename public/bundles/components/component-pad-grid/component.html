@@ -243,7 +243,8 @@
       updateChannels: function(){
         var that = this;
         this.activebroadcasts = [];
-        Array.prototype.forEach.call(this.querySelectorAll("ceci-broadcast"), function(broadcast) {
+        var broadcasts = this.querySelectorAll("ceci-broadcast").array();
+        broadcasts.forEach(function(broadcast) {
           var item = {};
           item.channelcolor = broadcast.getAttribute("on");
           item.channelname = broadcast.getAttribute("from");

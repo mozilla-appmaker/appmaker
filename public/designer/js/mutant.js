@@ -85,9 +85,9 @@ define(
     // and don't fire CeciElementAdded
 
     function onPolymerReady() {
-      var cards = document.querySelectorAll('ceci-card');
-      Array.prototype.forEach.call(cards, function (card) {
-        Array.prototype.forEach.call(card.childNodes, function (child) {
+      var cards = document.querySelectorAll('ceci-card').array();
+      cards.forEach(function (card) {
+        card.childNodes.array().forEach(function (child) {
           if (child.localName.indexOf('ceci-') === 0) {
             setupElement(child);
           }

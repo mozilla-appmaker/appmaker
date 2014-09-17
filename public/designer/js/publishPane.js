@@ -45,9 +45,8 @@ define([], function () {
   }
 
   function showQRCode (kind) {
-    var qrCodeTaggedElements = document.querySelectorAll('[data-qrcode-for]');
-
-    Array.prototype.forEach.call(qrCodeTaggedElements, function (qrCode) {
+    var qrCodeTaggedElements = document.querySelectorAll('[data-qrcode-for]').array();
+    qrCodeTaggedElements.forEach(function (qrCode) {
       if (qrCode.getAttribute('data-qrcode-for') === kind) {
         qrCode.classList.add('on');
       }
@@ -83,8 +82,7 @@ define([], function () {
   return {
     show: function(name, data) {
       var qrCodeLinks = document.querySelectorAll('a[data-qrcode-for]');
-
-      Array.prototype.forEach.call(qrCodeLinks, function (a) {
+      qrCodeLinks.forEach(function (a) {
         a.onclick = function (e) {
           showQRCode(a.getAttribute('data-qrcode-for'));
         };

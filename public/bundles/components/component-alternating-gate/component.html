@@ -80,7 +80,8 @@
         window.removeEventListener("channelUpdate", this.onChannelUpdate);
       },
       updateUI : function(){
-        Array.prototype.forEach.call(this.$.channels.querySelectorAll(".output-channel"), function(c) {
+        var outputChannels = this.$.channels.querySelectorAll(".output-channel").array();
+        outputChannels.forEach(function(c) {
           c.classList.remove("next-up");
         });
         var selected = this.$.channels.querySelector("." + this.nextBroadcast);
@@ -92,7 +93,8 @@
         var that = this;
         this.activeBroadcasts = [];
         that.$.channels.textContent = "";
-        Array.prototype.forEach.call(this.querySelectorAll("ceci-broadcast"), function(broadcast) {
+        var broadcasts = this.querySelectorAll("ceci-broadcast").array();
+        broadcasts.forEach(function(broadcast) {
           that.activeBroadcasts.push(broadcast.getAttribute("from"));
           var channel = document.createElement("div");
           channel.classList.add("output-channel");
