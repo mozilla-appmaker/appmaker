@@ -1,5 +1,4 @@
-<polymer-element name="ceci-game-controller" extends="ceci-element" attributes="konamicode leftbuttonvalue upbuttonvalue downbuttonvalue rightbuttonvalue toprightbuttonvalue topleftbuttonvalue bottomleftbuttonvalue bottomrightbuttonvalue"
-konamicode="up,up,down,down,left,right,left,right,bottomleft,bottomright">
+<polymer-element name="ceci-game-controller" extends="ceci-element" attributes="konamicode leftbuttonvalue upbuttonvalue downbuttonvalue rightbuttonvalue toprightbuttonvalue topleftbuttonvalue bottomleftbuttonvalue bottomrightbuttonvalue topleftbuttoncolor toprightbuttoncolor bottomleftbuttoncolor bottomrightbuttoncolor" topleftbuttoncolor="green" toprightbuttoncolor="blue" bottomleftbuttoncolor="yellow" bottomrightbuttoncolor="red" konamicode="up,up,down,down,left,right,left,right,bottomleft,bottomright">
   <ceci-definition>
     {
       "name": "Game Controller",
@@ -31,8 +30,8 @@ konamicode="up,up,down,down,left,right,left,right,bottomleft,bottomright">
           "label": "Right Button",
           "description": "Right button was pressed"
         },
-        "toprightbutton": {
-          "label": "Top Right Button",
+        "topleftbutton": {
+          "label": "Top Left Button",
           "description": "Top right button was pressed"
         },
         "toprightbutton": {
@@ -93,6 +92,26 @@ konamicode="up,up,down,down,left,right,left,right,bottomleft,bottomright">
           "description": "Value to send when this button is clicked",
           "editable": "text"
         },
+        "topleftbuttoncolor": {
+          "label": "Top Left Button Color",
+          "description": "Color of the button",
+          "editable": "text"
+        },
+        "toprightbuttoncolor": {
+          "label": "Top Right Button Color",
+          "description": "Color of the button",
+          "editable": "text"
+        },
+        "bottomleftbuttoncolor": {
+          "label": "Bottom Left Button Color",
+          "description": "Color of the button",
+          "editable": "text"
+        },
+        "bottomrightbuttoncolor": {
+          "label": "Bottom Right Button Color",
+          "description": "Color of the button",
+          "editable": "text"
+        },
         "konamicode": {
           "label": "Konami Code",
           "description": "A secret sequence of secret buttons to do something secret",
@@ -112,12 +131,20 @@ konamicode="up,up,down,down,left,right,left,right,bottomleft,bottomright">
       </div>
       <div class="buttons-container">
         <div class="top-buttons">
-          <div class="topleft-controller-button" data-controller-button="topleft" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
-          <div class="topright-controller-button" data-controller-button="topright" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
+          <div class="topleft-controller-button" data-controller-button="topleft" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}">
+            <span class="button-inner"></span>
+          </div>
+          <div class="topright-controller-button" data-controller-button="topright" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}">
+            <span class="button-inner"></span>
+          </div>
         </div>
         <div class="bottom-buttons">
-          <div class="bottomleft-controller-button" data-controller-button="bottomleft" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
-          <div class="bottomright-controller-button" data-controller-button="bottomright" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
+          <div class="bottomleft-controller-button" data-controller-button="bottomleft" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}">
+            <span class="button-inner"></span>
+          </div>
+          <div class="bottomright-controller-button" data-controller-button="bottomright" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}">
+            <span class="button-inner"></span>
+          </div>
         </div>
       </div>
     </div>
@@ -155,6 +182,22 @@ konamicode="up,up,down,down,left,right,left,right,bottomleft,bottomright">
         },
         onRelease: function(event, detail, sender) {
           this.broadcast("release", sender.getAttribute("data-controller-button"));
+        },
+        topleftbuttoncolorChanged: function() {
+          var button = this.shadowRoot.querySelector(".topleft-controller-button .button-inner");
+          button.style.backgroundColor = this.topleftbuttoncolor;
+        },
+        toprightbuttoncolorChanged: function() {
+          var button = this.shadowRoot.querySelector(".topright-controller-button .button-inner");
+          button.style.backgroundColor = this.toprightbuttoncolor;
+        },
+        bottomleftbuttoncolorChanged: function() {
+          var button = this.shadowRoot.querySelector(".bottomleft-controller-button .button-inner");
+          button.style.backgroundColor = this.bottomleftbuttoncolor;
+        },
+        bottomrightbuttoncolorChanged: function() {
+          var button = this.shadowRoot.querySelector(".bottomright-controller-button .button-inner");
+          button.style.backgroundColor = this.bottomrightbuttoncolor;
         }
       });
     </script>
