@@ -217,9 +217,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                   if (err) {
                     return console.warn('Error finding app for publishing to MakeAPI: ' + err);
                   }
-                  var id = app['makeapi-id'];
-                  makeAPIPublisher.publish({
-                    id: id,
+                  var publishOptions = {
                     url: remoteURLs.install,
                     remix: remixUrl,
                     thumbnail: process.env.ASSET_HOST + "/images/app-icon.png",
@@ -230,7 +228,13 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                     email: req.session.email,
                     author: userName,
                     locale: req.localeInfo.lang
-                  }, function (err, make) {
+                  };
+
+                  if (app) {
+                    publishOptions.id = app['makeapi-id'];
+                  }
+
+                  makeAPIPublisher.publish(publishOptions, function (err, make) {
                     if (err) {
                       console.warn(err);
                     }

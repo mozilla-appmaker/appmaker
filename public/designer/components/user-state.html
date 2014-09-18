@@ -267,9 +267,10 @@
           this.$.saveApp.addEventListener("click", function() {
             var ceciApp = document.querySelector('ceci-app');
             var html = ceciApp.outerHTML;
-            var name = application.getCurrentApp();
+            var name = ceciApp.name;
+
             if(name){
-              application.updateApp(name,ceciApp.appid,html, function(err,data){
+              application.saveOrUpdateApp(name,ceciApp.appid,html, function(err,data){
                 if(!err){
                   reporter.consoleReport("App save.");
                   analytics.event("Saved App");
@@ -308,8 +309,6 @@
               app.setAttribute("appid", "ceci-app-"+uuid());
             }
 
-            // we have a name: publish!
-            var alreadySaved = self.editingmode === "saved";
             function afterPublish(err,data) {
               if(err) {
                 if (data) {
@@ -320,7 +319,7 @@
                   if (err.responseJSON.error === 'App name must be unique.') {
                     self.appRenameFailed(l10n.get('App name must be unique.'));
                   } else {
-                    reporter.errorReport((alreadySaved? "updated " : '') + "app was not successfully published");
+                    reporter.errorReport("app was not successfully published");
                   }
                   analytics.event("Error Publishing App", { nonInteraction: true });
                 }
@@ -338,7 +337,6 @@
               appid: app.appid,
               remixedFrom: app.remixedfrom,
               html: app.outerHTML,
-              alreadySaved: alreadySaved,
               afterPublish: afterPublish
             };
             application.publishApp(options);

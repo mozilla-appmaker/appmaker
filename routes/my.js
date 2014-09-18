@@ -81,18 +81,30 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
     deleteApp: function(request,response){
       if (!checkAuthorised(request, response)) return;
 
-      App.findOne({author:request.session.email, name: request.body.name},function(err, app){
+      var name = request.body.name;
+
+      if (!name) {
+        // app doesn't exist anymore, likely deleted in another tab.
+        return;
+      }
+
+      App.findOne({author:request.session.email, name: name},function(err, app){
         if (err) {
           console.log("Error finding app to delete!");
           return response.json(500, {error: 'App was not deleted due to ' + err});
         }
+
+        if (!app) {
+          return response.json(200, {message: "app was deleted"});
+        }
+
         var makeId = app['makeapi-id'];
         App.remove({author:request.session.email, name: request.body.name}, function(err) {
           if(err){
             console.warn("Error deleting this app!");
             return response.json(500, {error: 'App was not deleted due to ' + err});
           }
-          return response.json(200);
+          return response.json(200, {message: "app was deleted"});
         });
         if (makeId) {
           makeAPIPublisher.remove(makeId, function(err) {
@@ -104,7 +116,7 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
     saveApp: function(request, response) {
       if (!checkAuthorised(request, response)) return;
 
-      //Check if app with same name already exists
+      // Check if app with same name already exists
       App.findOne({author:request.session.email, name: request.body.name}, function(err, obj) {
         if (obj) {
           return response.json(500, {error: 'App name must be unique.'});
