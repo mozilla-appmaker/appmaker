@@ -133,8 +133,6 @@ define(['jquery', 'inflector', 'l10n', 'colorpicker.core'], function ($, Inflect
       var e = $('<div class="range"><label></label><input type="range"><span class="value"></span></div>');
 
       e.find("label").text(title);
-      console.log(value);
-
       e.find("input").attr('min', definition.min)
                      .attr('max', definition.max)
                      .attr('step', definition.step)
