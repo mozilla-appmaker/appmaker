@@ -1,6 +1,7 @@
-<polymer-element name="ceci-button" attributes="playsound fontsize textcolor buttoncolor label value" value="Press" extends="ceci-element"
+<polymer-element name="ceci-button" attributes="volume playsound fontsize textcolor buttoncolor label value" value="Press" extends="ceci-element"
   textcolor="#ffffff"
   fontsize="18"
+  volume=".5"
   playsound="true"
   buttoncolor="#3fb58e">
   <ceci-definition>
@@ -51,6 +52,13 @@
           "label": "Play Sound when Pressed",
           "description": "Play a sound when pressed.",
           "editable": "boolean"
+        },
+        "volume": {
+          "label": "Volume",
+          "editable": "range",
+          "min" : 0,
+          "max" : 1,
+          "step" : ".01"
         }
       }
     }
@@ -78,7 +86,7 @@
       pressdown : function(){
         this.super();
         if(this.playsound === "true") {
-          this.playSound("tap",.4);
+          this.playSound("tap",this.volume);
         }
         this.$.buttonwrapper.classList.add("pressdown");
         this.broadcast('click', this.getAttribute('value'));
