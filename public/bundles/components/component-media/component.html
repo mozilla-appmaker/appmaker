@@ -1,5 +1,5 @@
 <link rel="import" href="popcorn.html">
-<polymer-element name="ceci-media" attributes="url autoplay starttime volume" extends="ceci-element">
+<polymer-element name="ceci-media" attributes="url autoplay starttime volume" volume=".5" extends="ceci-element">
   <ceci-definition>
     {
       "tags": ["media", "audio", "video", "youtube", "popcorn", "soundcloud"],
@@ -53,11 +53,10 @@
         },
         "volume": {
           "label": "Volume",
-          "description": "Volume of the playing media.",
-          "editable": "number",
-          "max": 1,
-          "min": 0,
-          "listener": true
+          "editable": "range",
+          "min" : 0,
+          "max" : 1,
+          "step" : ".01"
         },
         "autoplay": {
           "label": "Play Automatically",

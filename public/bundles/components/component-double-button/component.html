@@ -1,6 +1,7 @@
-<polymer-element name="ceci-double-button" attributes="playsound textcolor rightbuttoncolor leftbuttoncolor leftlabel rightlabel value" value="Click" extends="ceci-element"
+<polymer-element name="ceci-double-button" attributes="volume playsound textcolor rightbuttoncolor leftbuttoncolor leftlabel rightlabel value" value="Click" extends="ceci-element"
   playsound="true"
   textcolor="#ffffff"
+  volume=".5"
   leftbuttoncolor="#3fb58e"
   rightbuttoncolor="#bd400a">
   <ceci-definition>
@@ -52,6 +53,13 @@
           "label": "Play Sound when Pressed",
           "description": "Play a sound when pressed.",
           "editable": "boolean"
+        },
+        "volume": {
+          "label": "Volume",
+          "editable": "range",
+          "min" : 0,
+          "max" : 1,
+          "step" : ".01"
         }
       }
     }
@@ -87,7 +95,7 @@
         this.leftButton.classList.add("pressdown");
         this.leftButton.classList.remove("fade");
         this.leftButton.width = this.leftButton.offsetWidth;
-        this.playSound("tap",.4);
+        this.playSound("tap",this.volume);
       },
       clickleftoff: function () {
         this.leftButton.classList.remove("pressdown");
@@ -100,7 +108,7 @@
         this.rightButton.classList.add("pressdown");
         this.rightButton.classList.remove("fade");
         this.rightButton.width = this.rightButton.offsetWidth;
-        this.playSound("tap",.4);
+        this.playSound("tap",this.volume);
       },
       clickrightoff: function () {
         this.rightButton.classList.remove("pressdown");
