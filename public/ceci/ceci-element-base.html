@@ -68,7 +68,7 @@
           }
 
           result.listeners[listenerName] = {
-            description: '(Setter) ' + attributeDefinition.description,
+            description: attributeDefinition.description,
             label: attributeDefinition.label,
             'default': attributeDefinition.defaultListener,
             attribute: attributeName
@@ -204,7 +204,8 @@
           broadcasts: {},
           listeners: {},
           editables: {},
-          attributes: {}
+          attributes: {},
+          description : ""
         };
 
         this.ceciDefinition = processDefinition(this);
@@ -236,6 +237,7 @@
           this._defaultBroadcasts = processBroadcasts(this.ceci.broadcasts, this.ceciDefinition.broadcasts);
 
           this.ceci.thumbnail = this.ceciDefinition.thumbnail;
+          this.ceci.description = this.ceciDefinition.description;
           this.ceci.tags = this.ceciDefinition.tags || [];
           this.ceci.attributes = this.ceciDefinition.attributes || {};
           this.ceci.name = this.gettext(this.localName) || this.ceciDefinition.name || this.localName;

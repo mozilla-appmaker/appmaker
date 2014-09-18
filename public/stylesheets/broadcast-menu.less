@@ -108,15 +108,11 @@
   border: solid 4px rgba(0,0,0,.20);
   border: solid 4px #BBB;
 
-  .hidden {
-    display: none;
-  }
-
   .option-template {
     display: none;
   }
 
-  label span {
+  .label span {
       white-space: nowrap;
   }
 
@@ -127,7 +123,7 @@
       right: 5px;
     }
 
-    label {
+    .label {
       text-align: right;
       padding: 5px 28px 5px 6px;
     }
@@ -137,7 +133,7 @@
   &.broadcast-menu {
     left: 40px;
 
-    label {
+    .label {
       text-align: left;
     }
 
@@ -145,12 +141,12 @@
        left: 5px;
      }
 
-     label {
+     .label {
        padding: 5px 6px  5px 28px;
      }
   }
 
-  label .chosen-color {
+  .label .chosen-color {
     display: block;
     position: absolute;
     top: 4px;
@@ -159,7 +155,7 @@
     }
   }
 
-  &.subscription-option.disabled-subscription label {
+  &.subscription-option.disabled-subscription .label {
     color: #999;
   }
 
@@ -168,7 +164,7 @@
     position: relative;
   }
 
-  label {
+  .label {
     color: #555;
     display: block;
     font-size: 1.3rem;
@@ -183,6 +179,10 @@
     &:active {
       background: #F7F7F7;
     }
+  }
+
+  .hidden {
+    display: none;
   }
 
   .color-row {

@@ -222,6 +222,7 @@ define(['jquery', 'inflector', 'l10n', 'colorpicker.core'], function ($, Inflect
     removeAttributes: function () {
       $('.editable-attributes').empty();
       $('.editable-header .name').empty();
+      $('.editable-header .description').empty();
     },
     clearAttributes : function(){
       $('.section-customize').hide();
@@ -229,6 +230,9 @@ define(['jquery', 'inflector', 'l10n', 'colorpicker.core'], function ($, Inflect
     displayAttributes: function (element) {
       $('.section-customize').show();
       $('.editable-header > .name').text(element.ceci.name);
+
+      var description = L10n.get(element.localName + '/description') || element.ceci.description;
+      $('.editable-header > .description').text(description);
 
       var attributeList = $('.editable-attributes');
       attributeList.empty();
