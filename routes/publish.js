@@ -238,7 +238,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                     if (err) {
                       console.warn(err);
                     }
-                    else if (!id) {
+                    else if (!publishOptions.id) {
                       App.update({
                         author: req.session.email,
                         name: inputData.name
