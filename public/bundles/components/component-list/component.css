@@ -15,12 +15,15 @@
 :host .item-wrapper {
   font-size: 16px;
   border-bottom: solid 1px #DDD;
-
   cursor: pointer;
 }
 
 :host .item {
   padding: 10px 0;
+}
+
+:host .item:empty:after {
+  content: "\00a0";
 }
 
 :host .item-wrapper:last-child {
