@@ -68,7 +68,11 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
       if (email !== false) {
         if (email) {
           remixMailer.sendRemixMail(req, email, appURL, function (error, result) {
-            res.json({error: error, result: result}, result ? result.status : 500);
+            if (error) {
+              res.json({error: error}, 500);
+            } else {
+              res.json({result: result}, 200);
+            }
           });
         }
         else {
@@ -83,11 +87,14 @@ module.exports = function (store, viewsPath, urlManager, remixMailer, makeAPIPub
     notify: function(req, res) {
       var email = (req.query.email === undefined ? false : req.query.email);
       var appURL = (req.query.appURL === undefined ? false : req.query.appURL);
-
       if (appURL) {
         if (email) {
           remixMailer.sendPublishMail(req, email, appURL, function (error, result) {
-            res.json({error: error, result: result}, result ? result.status : 500);
+            if (error) {
+              res.json({error: error}, 500);
+            } else {
+              res.json({result: result}, 200);
+            }
           });
         }
         else {
