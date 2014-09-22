@@ -8,6 +8,8 @@
       attached: function () {
         this.component = this.parentNode;
         this.component.addEventListener('CeciChannelUpdated', this.updateChannelVis.bind(this));
+      },
+      domReady : function(){
         this.updateChannelVis();
       },
       updateChannelVis: function() {
@@ -22,7 +24,6 @@
         }
 
         elements = elements.array();
-      
         // Remove all existing channel lines
         var existingLines = this.lines;
         existingLines.innerHTML = "";
@@ -45,8 +46,6 @@
           el.addEventListener('signalFired', function(data){
             that.fire(data);
           });
-
-
 
           var channel = document.createElement("div");
 
