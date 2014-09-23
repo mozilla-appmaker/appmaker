@@ -40,6 +40,7 @@ define(
 
     function selectElement(element){
       if (element.classList.contains("selected")) {
+        window.dispatchEvent(new CustomEvent("change-tray-tab", { detail: { tab: "customize"}}));
         return;
       }
       unselectElements();

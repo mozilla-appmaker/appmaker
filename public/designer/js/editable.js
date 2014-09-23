@@ -229,7 +229,8 @@ define(['jquery', 'inflector', 'l10n', 'colorpicker.core'], function ($, Inflect
       $('.section-customize').hide();
     },
     displayAttributes: function (element) {
-      $('.section-customize').show();
+      window.dispatchEvent(new CustomEvent("change-tray-tab", { detail: { tab: "customize"}}));
+
       $('.editable-header > .name').text(element.ceci.name);
 
       var description = L10n.get(element.localName + '/description') || element.ceci.description;

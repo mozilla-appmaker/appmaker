@@ -31,6 +31,10 @@ define(
       return false;
     });
 
+    window.addEventListener("change-tray-tab", function(e){
+      changeEditableTab(e.detail.tab);
+    });
+
     function changeEditableTab(tab) {
       $(".tray-tabs").find("a").removeClass("selected-tab");
       $(".tray-tabs [tab='"+tab+"']").addClass("selected-tab");
