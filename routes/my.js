@@ -24,7 +24,7 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
     apps: function(request, response) {
       if (!checkAuthorised(request, response)) return;
 
-      App.find({author:request.session.email}).sort({"name":1}).exec(function (err, apps) {
+      App.find({author:request.session.email}).exec(function (err, apps) {
         if (err){
           console.log('Unable to retrieve apps');
           return response.json(500, 'Unable to retrieve apps: ' + err);
