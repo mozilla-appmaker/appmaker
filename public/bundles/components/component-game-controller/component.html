@@ -1,5 +1,4 @@
-<polymer-element name="ceci-game-controller" extends="ceci-element" attributes="konamicode leftbuttonvalue upbuttonvalue downbuttonvalue rightbuttonvalue selectbuttonvalue startbuttonvalue abuttonvalue bbuttonvalue"
-konamicode="up,up,down,down,left,right,left,right,b,a">
+<polymer-element name="ceci-game-controller" extends="ceci-element" attributes="konamicode leftbuttonvalue upbuttonvalue downbuttonvalue rightbuttonvalue toprightbuttonvalue topleftbuttonvalue bottomleftbuttonvalue bottomrightbuttonvalue topleftbuttoncolor toprightbuttoncolor bottomleftbuttoncolor bottomrightbuttoncolor" topleftbuttoncolor="green" toprightbuttoncolor="blue" bottomleftbuttoncolor="yellow" bottomrightbuttoncolor="red" konamicode="up,up,down,down,left,right,left,right,bottomleft,bottomright">
   <ceci-definition>
     {
       "name": "Game Controller",
@@ -15,37 +14,37 @@ konamicode="up,up,down,down,left,right,left,right,b,a">
           "label": "Any Button Released",
           "description": "Any button was released"
         },
-        "left": {
+        "leftbutton": {
           "label": "Left Button",
           "description": "Left button was pressed"
         },
-        "up": {
+        "upbutton": {
           "label": "Up Button",
           "description": "Up button was pressed"
         },
-        "down": {
+        "downbutton": {
           "label": "Down Button",
           "description": "Down button was pressed"
         },
-        "right": {
+        "rightbutton": {
           "label": "Right Button",
           "description": "Right button was pressed"
         },
-        "select": {
-          "label": "Select Button",
-          "description": "Select button was pressed"
+        "topleftbutton": {
+          "label": "Top Left Button",
+          "description": "Top right button was pressed"
         },
-        "start": {
-          "label": "Start Button",
-          "description": "Start button was pressed"
+        "toprightbutton": {
+          "label": "Top Right Button",
+          "description": "Top right button was pressed"
         },
-        "abutton": {
-          "label": "A Button",
-          "description": "A button was pressed"
+        "bottomleftbutton": {
+          "label": "Bottom Left Button",
+          "description": "Bottom left button was pressed"
         },
-        "bbutton": {
-          "label": "B Button",
-          "description": "B button was pressed"
+        "bottomrightbutton": {
+          "label": "Bottom Right Button",
+          "description": "Bottom right button was pressed"
         },
         "konami": {
           "label": "Konami code triggered!",
@@ -73,24 +72,44 @@ konamicode="up,up,down,down,left,right,left,right,b,a">
           "description": "Value to send when this button is clicked",
           "editable": "text"
         },
-        "selectbuttonvalue": {
-          "label": "Select Button Value",
+        "topleftbuttonvalue": {
+          "label": "Top Left Button Value",
           "description": "Value to send when this button is clicked",
           "editable": "text"
         },
-        "startbuttonvalue": {
-          "label": "Start Button Value",
+        "toprightbuttonvalue": {
+          "label": "Top Right Button Value",
           "description": "Value to send when this button is clicked",
           "editable": "text"
         },
-        "abuttonvalue": {
-          "label": "A Button Value",
+        "bottomleftbuttonvalue": {
+          "label": "Bottom Left Button Value",
           "description": "Value to send when this button is clicked",
           "editable": "text"
         },
-        "bbuttonvalue": {
-          "label": "B Button Value",
+        "bottomrightbuttonvalue": {
+          "label": "Bottom Right Button Value",
           "description": "Value to send when this button is clicked",
+          "editable": "text"
+        },
+        "topleftbuttoncolor": {
+          "label": "Top Left Button Color",
+          "description": "Color of the button",
+          "editable": "text"
+        },
+        "toprightbuttoncolor": {
+          "label": "Top Right Button Color",
+          "description": "Color of the button",
+          "editable": "text"
+        },
+        "bottomleftbuttoncolor": {
+          "label": "Bottom Left Button Color",
+          "description": "Color of the button",
+          "editable": "text"
+        },
+        "bottomrightbuttoncolor": {
+          "label": "Bottom Right Button Color",
+          "description": "Color of the button",
           "editable": "text"
         },
         "konamicode": {
@@ -105,23 +124,27 @@ konamicode="up,up,down,down,left,right,left,right,b,a">
     <link rel="stylesheet" href="component.css"></link>
     <div class="game-controller">
       <div class="d-pad-container">
-        <div class="d-pad">
-          <div class="left-button" data-controller-button="left" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{leftClicked}}"></div>
-          <div class="up-button" data-controller-button="up" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{upClicked}}"></div>
-          <div class="down-button" data-controller-button="down" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{downClicked}}"></div>
-          <div class="right-button" data-controller-button="right" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{rightClicked}}"></div>
-        </div>
+        <div class="left-button" data-controller-button="left" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
+        <div class="up-button" data-controller-button="up" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
+        <div class="down-button" data-controller-button="down" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
+        <div class="right-button" data-controller-button="right" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}"></div>
       </div>
-      <div class="start-select-container">
-        <div class="start-select">
-          <div class="select-button" data-controller-button="select" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{selectClicked}}"></div>
-          <div class="start-button" data-controller-button="start" on-mousedown="{{onMouseDown}}" on-mouseup="{{onMouseUp}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{startClicked}}"></div>
+      <div class="buttons-container">
+        <div class="top-buttons">
+          <div class="topleft-controller-button" data-controller-button="topleft" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}">
+            <span class="button-inner"></span>
+          </div>
+          <div class="topright-controller-button" data-controller-button="topright" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}">
+            <span class="button-inner"></span>
+          </div>
         </div>
-      </div>
-      <div class="a-b-buttons-container">
-        <div class="a-b-buttons">
-          <div class="a-button" data-controller-button="a" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{aButtonClicked}}"></div>
-          <div class="b-button" data-controller-button="b" on-mousedown="{{onPress}}" on-mouseup="{{onRelease}}" on-touchstart="{{onTouchStart}}" on-touchend="{{onTouchEnd}}" on-click="{{bButtonClicked}}"></div>
+        <div class="bottom-buttons">
+          <div class="bottomleft-controller-button" data-controller-button="bottomleft" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}">
+            <span class="button-inner"></span>
+          </div>
+          <div class="bottomright-controller-button" data-controller-button="bottomright" on-ceci-pressup="{{onRelease}}" on-ceci-pressdown="{{onPress}}">
+            <span class="button-inner"></span>
+          </div>
         </div>
       </div>
     </div>
@@ -133,18 +156,9 @@ konamicode="up,up,down,down,left,right,left,right,b,a">
         ready: function() {
           this.super();
 
-          // Default sequence ↑ ↑ ↓ ↓ ← → ← → B A
+          // Default sequence ↑ ↑ ↓ ↓ ← → ← → bottomleft bottomright
           this.sequence = [];
           this.konamicodeChanged();
-
-          var that = this;
-          function detechTouch() {
-            // Disable mouse events
-            that.onMouseDown = function() {};
-            that.onMouseUp = function() {};
-            this.removeEventListener("touchstart", detechTouch);
-          }
-          this.addEventListener("touchstart", detechTouch);
         },
         onPress: function(event, detail, sender) {
           var button = sender.getAttribute("data-controller-button");
@@ -155,10 +169,12 @@ konamicode="up,up,down,down,left,right,left,right,b,a">
           }
 
           if (this.sequence.join(",") === this.konamicode) {
+            this.sequence = [];
             this.broadcast("konami", this.konamicode);
           }
 
           this.broadcast("press", button);
+          this.broadcast(button + "button", this[button + "buttonvalue"]);
         },
         konamicodeChanged: function() {
           this.codeLength = this.konamicode.split(",").length;
@@ -167,41 +183,21 @@ konamicode="up,up,down,down,left,right,left,right,b,a">
         onRelease: function(event, detail, sender) {
           this.broadcast("release", sender.getAttribute("data-controller-button"));
         },
-        onMouseDown: function(event, detail, sender) {
-          this.onPress(event, detail, sender);
+        topleftbuttoncolorChanged: function() {
+          var button = this.shadowRoot.querySelector(".topleft-controller-button .button-inner");
+          button.style.backgroundColor = this.topleftbuttoncolor;
         },
-        onMouseUp: function(event, detail, sender) {
-          this.onRelease(event, detail, sender);
+        toprightbuttoncolorChanged: function() {
+          var button = this.shadowRoot.querySelector(".topright-controller-button .button-inner");
+          button.style.backgroundColor = this.toprightbuttoncolor;
         },
-        onTouchStart: function(event, detail, sender) {
-          this.onPress(event, detail, sender);
+        bottomleftbuttoncolorChanged: function() {
+          var button = this.shadowRoot.querySelector(".bottomleft-controller-button .button-inner");
+          button.style.backgroundColor = this.bottomleftbuttoncolor;
         },
-        onTouchEnd: function(event, detail, sender) {
-          this.onRelease(event, detail, sender);
-        },
-        leftClicked: function(e) {
-          this.broadcast("left", this.leftbuttonvalue);
-        },
-        upClicked: function(e) {
-          this.broadcast("up", this.upbuttonvalue);
-        },
-        downClicked: function(e) {
-          this.broadcast("down", this.downbuttonvalue);
-        },
-        rightClicked: function(e) {
-          this.broadcast("right", this.rightbuttonvalue);
-        },
-        selectClicked: function(e) {
-          this.broadcast("select", this.selectbuttonvalue);
-        },
-        startClicked: function(e) {
-          this.broadcast("start", this.startbuttonvalue);
-        },
-        aButtonClicked: function(e) {
-          this.broadcast("abutton", this.abuttonvalue);
-        },
-        bButtonClicked: function(e) {
-          this.broadcast("bbutton", this.bbuttonvalue);
+        bottomrightbuttoncolorChanged: function() {
+          var button = this.shadowRoot.querySelector(".bottomright-controller-button .button-inner");
+          button.style.backgroundColor = this.bottomrightbuttoncolor;
         }
       });
     </script>
