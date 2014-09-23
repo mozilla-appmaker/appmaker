@@ -231,7 +231,10 @@
 
           //New app
           this.$.newApp.addEventListener("click",function() {
-            var brickCount = document.querySelectorAll("ceci-card > *").length;
+            var brickCount = 0;
+            document.querySelectorAll("ceci-card").array().forEach(function(e){
+              brickCount = brickCount + e.brickCount();
+            });
             if(brickCount > 0 && self.editingmode == "draft") {
               if(!window.confirm(l10n.get("Lose Work"))){
                 return;
