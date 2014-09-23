@@ -75,9 +75,8 @@ define(
         selectElement(element);
       });
       if (element.classList.contains("selected")) {
-        element.onready(function() {
-          Editable.displayAttributes(element);
-        });
+        element.classList.remove("selected");
+        selectElement(element);
       }
     }
 
@@ -85,13 +84,11 @@ define(
     // and don't fire CeciElementAdded
 
     function onPolymerReady() {
-      var cards = document.querySelectorAll('ceci-card').array();
-      cards.forEach(function (card) {
-        card.childNodes.array().forEach(function (child) {
-          if (child.localName.indexOf('ceci-') === 0) {
-            setupElement(child);
-          }
-        });
+      var ceciElements = document.querySelectorAll('ceci-card > *').array();
+      ceciElements.forEach(function (e) {
+        if (e.localName.indexOf('ceci-') === 0) {
+          setupElement(e);
+        }
       });
     }
 
@@ -104,9 +101,21 @@ define(
     // Add click handler to new elements
     window.addEventListener('CeciElementAdded', function(e){
       setupElement(e.detail);
-    }, false);
+    });
 
-    window.addEventListener('CeciElementsSorted', function (e) {
+    window.addEventListener('CeciElementSelected', function(e){
+      selectElement(e.detail);
+    });
+
+    window.addEventListener('CeciAppDOMReady', function(e){
+      var brick = e.detail.querySelector(".selected.brick");
+      if (!!brick) {
+        brick.classList.remove("selected");
+        selectElement(brick);
+      }
+    });
+
+    window.addEventListener('CeciElementsSorted', function (e){
       var element = e.detail;
       if (!element) {
         return;
