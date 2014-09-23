@@ -231,15 +231,25 @@
 
           //New app
           this.$.newApp.addEventListener("click",function() {
-            var brickCount = 0;
-            document.querySelectorAll("ceci-card").array().forEach(function(e){
-              brickCount = brickCount + e.brickCount();
-            });
-            if(brickCount > 0 && self.editingmode == "draft") {
-              if(!window.confirm(l10n.get("Lose Work"))){
-                return;
+
+            // If there are bricks in the app and we're in draft mode,
+            // confirm possible loss of work.
+            if(self.editingmode === "draft"){
+              var hasBricks = false;
+              var cards = document.querySelectorAll("ceci-card").array();
+              for(var i = 0; i < cards.length; i++) {
+                if(cards[i].brickCount() > 0){
+                  hasBricks = true;
+                  break;
+                }
+              }
+              if(hasBricks) {
+                if(!window.confirm(l10n.get("Lose Work"))){
+                  return;
+                }
               }
             }
+
             application.clearCurrentApp();
             application.newApp();
             self.closeMenus();
@@ -276,7 +286,7 @@
               var html = ceciApp.outerHTML;
               var name = ceciApp.name;
 
-              if(self.editingmode == "draft"){
+              if(self.editingmode === "draft"){
                 saveAsHandler();
                 return;
               }
