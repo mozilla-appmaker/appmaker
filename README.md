@@ -106,10 +106,10 @@ GA_PUBLISH_DOMAIN: Optional google analytics domain setting for the published ap
 PUBLISH_HOST: Host of URL which points to a published app. Does not include a protocol prefix (e.g. `http://`). Use `{{ip}}` in this string to automatically insert your machine's IP address (useful for debugging apps on mobile devices in dev environment).
 ASSET_HOST: URL used to provide assets to published apps. Use `{{ip}}` in this string to automatically insert your machine's IP address (useful for debugging apps on mobile devices in dev environment).
 PUBLISH_HOST_PREFIX: Prefix of URL which points to a published app. Usually `http://` or `https://`.
-POSTMARK_API_KEY: An API key that needs to match a Postmark API key (https://postmarkapp.com).
-POSTMARK_FROM_ADDRESS: A from email address displayed to the email receiver that must match a Postmark sender signature from email (https://postmarkapp.com).
-POSTMARK_INBOUND_ADDRESS: An email address that needs to match a Postmark inbound address (https://postmarkapp.com).
-POSTMARK_SMTP_SERVER: An SMPT server used by Postmark (https://postmarkapp.com).
+POSTMARK_API_KEY: An API key that needs to match a valid [Postmark](https://postmarkapp.com) API key.
+POSTMARK_FROM_ADDRESS: A valid email address that acts as the "from" address on emails sent out to users. This address must be added to the Sender Signature list associated with the Postmark API key provided in `POSTMARK_API_KEY`
+POSTMARK_INBOUND_ADDRESS: The "inbound email address" associated with the Postmark API key provided in `POSTMARK_API_KEY`
+POSTMARK_SMTP_SERVER: The SMTP server used by Postmark (default: `smtp.postmarkapp.com`)
 ```
 
 ### Install and Run MongoDB
