@@ -123,6 +123,7 @@
           this.collection = this.shadowRoot.querySelector(".first-run-container input").value;
         },
         additem: function(item) {
+          item = item.trim();
           if(item){
             var collection = this.collections.getCollection(this.collection);
             collection.addItem({

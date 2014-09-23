@@ -20,11 +20,9 @@
 
 :host .item {
   padding: 10px 0;
+  min-height: 22px;
 }
 
-:host .item:empty:after {
-  content: "\00a0";
-}
 
 :host .item-wrapper:last-child {
   border: none;
