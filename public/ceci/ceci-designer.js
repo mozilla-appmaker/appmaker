@@ -20,7 +20,8 @@ define([], function() {
     "ceci-listen",
     "ceci-listen-vis",
     "ceci-channels",
-    "ceci-channel-map"
+    "ceci-channel-map",
+    "ceci-notifications"
   ];
 
   // Because of the way requirejs works, this is a singleton.
