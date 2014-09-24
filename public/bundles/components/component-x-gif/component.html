@@ -1,7 +1,32 @@
 <polymer-element name="ceci-x-gif" attributes="src" extends="ceci-element">
+  <ceci-definition>
+    {
+      "tags": ["animated", "starter", "fun"],
+      "thumbnail": "./thumbnail.gif",
+      "description": "Animated Gif",
+      "name": "Animated Gif",
+      "broadcasts": {},
+      "listeners": {
+        
+      },
+      "attributes": {
+        
+      }
+    }
+  </ceci-definition>
   <template>
     <link rel="stylesheet" href="component.css">
     <link rel="import" href="./lib/x-gif.html">
     <x-gif src="{{src}}"></x-gif>
   </template>
+  <script>
+    Polymer('ceci-x-gif', {
+      ready: function () {
+        this.super();       
+      },
+      attached: function () {
+        this.super();        
+      },      
+    });
+  </script>
 </polymer-element>
