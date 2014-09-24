@@ -147,8 +147,11 @@ define(
         }
 
         item.addEventListener('ComponentAddRequested', function(e) {
-          app.addComponentToCard(name);
+          var element = app.addComponentToCard(name);
           analytics.event("Added Component", {label: name});
+          // when components are added from the tray, they should always
+          // cause the designer to reveal their editables.
+          window.dispatchEvent(new CustomEvent("CeciElementSelected", { detail: element }));
         }, false);
         item.label = L10n.get(name) || item.label;
         return item;

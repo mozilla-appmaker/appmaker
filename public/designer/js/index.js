@@ -6,7 +6,7 @@ define(
   [
     "l10n", "inflector", "designer/utils", "ceci/ceci-designer", "tutorial/intro",
 
-    // Unreferenced:
+    // Unreferenced but loading:
     "designer/component-tray",
     "designer/mutant",
     "designer/channels",
