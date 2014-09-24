@@ -754,6 +754,11 @@
         },
         refreshAppList: function(currentApp) {
           var self = this;
+
+          if (user.state === "signedout") {
+            return;
+          }
+
           var myApps = this.shadowRoot.querySelector("#myapps");
           var noApps = this.shadowRoot.querySelector("#noApps");
 
@@ -821,7 +826,9 @@
           });
         },
         refreshComponentsList: function() {
-          if(!this.customcomponents) { return; }
+          if(!this.customcomponents || user.state === "signedout") {
+            return;
+          }
 
           var self = this;
           var myComponents = this.shadowRoot.querySelector("#mycomponents");
