@@ -30,6 +30,7 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
 //      // TODO https://github.com/mozilla-appmaker/appmaker/issues/897
 //      // we have to decouple appidChanged and initFirebase
         app.setAttribute("appid", "ceci-app-"+uuid());
+        history.pushState({}, "", location.origin);
       },
       renameApp: function(oldName,newName){
         var userState = document.querySelector('user-state');
