@@ -41,8 +41,8 @@ define(function() {
       this.report("success",arguments);
     },
 
-    report : function(type,arguments){
-      var list = Array.prototype.slice.call(arguments).filter(function(v) {
+    report : function(type,details){
+      var list = Array.prototype.slice.call(details).filter(function(v) {
         return !!v;
       }).map(function(v) {
         if(typeof v === "string") return v;
