@@ -8,72 +8,73 @@ This handles...
 - View Source menu switching (HTML vs CSS vs JS, etc.)
 */
 
-define(
-  ["jquery", "analytics"],function($, analytics) {
-    "use strict";
+// TODO: this is another file like keyboard.js that's primarily side
+// effects. Should figure out a way to export a function (or set of
+// functions) to make this more testable.
 
-    //Open components modal
-    $('.expand-handle.expand-left').click(function () {
-      $(".page-wrapper").toggleClass("left-closed");
-      analytics.event("Used Expand Handle", {label: "Components Tray"});
-    });
+var $ = require('jquery');
+var analytics = require('webmaker-analytics');
 
-    $('.expand-handle.expand-right').click(function () {
-      $(".page-wrapper").toggleClass("right-closed");
-      analytics.event("Used Expand Handle", {label: "Options Tray"});
-    });
+//Open components modal
+$('.expand-handle.expand-left').click(function () {
+  $(".page-wrapper").toggleClass("left-closed");
+  analytics.event("Used Expand Handle", {label: "Components Tray"});
+});
 
-    /* Customize vs View Source Toggle */
+$('.expand-handle.expand-right').click(function () {
+  $(".page-wrapper").toggleClass("right-closed");
+  analytics.event("Used Expand Handle", {label: "Options Tray"});
+});
 
-    $(".tray-tabs").on("click","a",function(){
-      var tab = $(this).attr("tab");
-      changeEditableTab(tab);
-      return false;
-    });
+/* Customize vs View Source Toggle */
 
-    window.addEventListener("change-tray-tab", function(e){
-      changeEditableTab(e.detail.tab);
-    });
+$(".tray-tabs").on("click","a",function(){
+  var tab = $(this).attr("tab");
+  changeEditableTab(tab);
+  return false;
+});
 
-    function changeEditableTab(tab) {
-      $(".tray-tabs").find("a").removeClass("selected-tab");
-      $(".tray-tabs [tab='"+tab+"']").addClass("selected-tab");
-      $(".tab-sections .section").hide();
-      $(".tab-sections .section-" + tab).show();
-      $(".tab-sections .section-" + tab + " textarea").focus();
-      if(tab == "view-source"){
-      } else {
-        if($(".right-column").not(".remix-mode").length == 1){
-        }
-      }
+window.addEventListener("change-tray-tab", function(e){
+  changeEditableTab(e.detail.tab);
+});
+
+function changeEditableTab(tab) {
+  $(".tray-tabs").find("a").removeClass("selected-tab");
+  $(".tray-tabs [tab='"+tab+"']").addClass("selected-tab");
+  $(".tab-sections .section").hide();
+  $(".tab-sections .section-" + tab).show();
+  $(".tab-sections .section-" + tab + " textarea").focus();
+  if(tab == "view-source"){
+  } else {
+    if($(".right-column").not(".remix-mode").length == 1){
     }
-
-    // View source menu
-    $(".view-source-menu").on("click","a",function(){
-      var sourceType = $(this).attr("source");
-      switchSourceView(sourceType);
-    });
-
-    function switchSourceView(view) {
-      $(".view-source-menu a").removeClass("selected");
-      $(".view-source-menu a[source='" + view + "']").addClass("selected");
-      $(".view-source-items .source-type").hide();
-      $(".view-source-items [source='" + view + "']").show();
-    }
-
-    $(".view-source-items textarea").on("keyup",function(){
-      $(".right-column").addClass("remix-mode");
-      $(".remix-helper").hide();
-    });
-
-    /* Defaults */
-    switchSourceView("HTML");
-    changeEditableTab("customize");
-
-    /* Remix UI Stuff */
-    $(".remix-ui a.finish-remix, .remix-ui a.cancel-remix").on("click",function(){
-      $(".right-column").removeClass("remix-mode");
-      changeEditableTab("customize");
-    });
   }
-);
+}
+
+// View source menu
+$(".view-source-menu").on("click","a",function(){
+  var sourceType = $(this).attr("source");
+  switchSourceView(sourceType);
+});
+
+function switchSourceView(view) {
+  $(".view-source-menu a").removeClass("selected");
+  $(".view-source-menu a[source='" + view + "']").addClass("selected");
+  $(".view-source-items .source-type").hide();
+  $(".view-source-items [source='" + view + "']").show();
+}
+
+$(".view-source-items textarea").on("keyup",function(){
+  $(".right-column").addClass("remix-mode");
+  $(".remix-helper").hide();
+});
+
+/* Defaults */
+switchSourceView("HTML");
+changeEditableTab("customize");
+
+/* Remix UI Stuff */
+$(".remix-ui a.finish-remix, .remix-ui a.cancel-remix").on("click",function(){
+  $(".right-column").removeClass("remix-mode");
+  changeEditableTab("customize");
+});
