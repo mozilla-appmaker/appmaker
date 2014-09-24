@@ -10,6 +10,9 @@
 
   <script>
     Polymer('ceci-card', {
+      brickCount : function(){
+        return this.querySelectorAll(".brick").length;
+      },
       ready: function() {
         var that = this;
         this.super();

@@ -2,23 +2,21 @@
   <template>
     <link rel="stylesheet" href="/stylesheets/user-state.css">
     <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.css">
-
     <div class="dropdowns {{ {hidden: user.state == 'signedout'} | tokenList }}">
-
       <div class="menu-wrapper app-menu button">
         <div class="menu-button {{ {hidden: user.state == 'signedout'} | tokenList}}" on-mousedown="{{toggleMenu}}">
           <div class="icon-reorder"></div>
         </div>
         <div class="menu app-actions menu-options">
-          <a id="saveAppAs"><span class="icon icon-save"> </span> {{'Save As' | l10n}}</a>
-          <a class="saved" id="saveApp"><span class="icon icon-save"> </span> {{'Save' | l10n}}</a>
+          <a class="saveApp" id="saveApp"><span class="icon icon-save"> </span> {{'Save App' | l10n}}</a>
+          <a class="saved" id="saveAppAs"><span class="icon icon-save"> </span> {{'Save As' | l10n}}</a>
           <a class="saved" id="renameApp"><span class="icon icon-edit"> </span> {{'Rename' | l10n}}</a>
           <a id="publishApp"><span class="icon icon-mobile-phone"> </span> {{'Publish' | l10n}}</a>
           <a class="saved" id="deleteApp"><span class="icon icon-trash"> </span> {{'Delete' | l10n}}</a>
+          <a id="newApp"><span class="icon icon-file-alt"> </span> {{'New App' | l10n}}</a>
           <a class="hidden" id="viewlink"><span class="icon icon-external-link"> </span> {{'Preview App' | l10n}}</a>
         </div>
       </div>
-
       <div class="menu-wrapper user-menu button">
         <div id="username" class="menu-button user-menu-button {{ {hidden: user.state == 'signedout'} | tokenList}}" on-mousedown="{{toggleMenu}}">
           <img class="user-avatar" alt="User avatar" src="{{user.avatar}}">
@@ -41,10 +39,10 @@
           <a id="signout" class="button" on-click="{{signoutClick}}">{{'Sign Out' | l10n}}</a>
         </div>
       </div>
-
     </div>
 
-    <a id="newApp" class="button">{{'New App' | l10n}}</a>
+    <a class="saveApp saved button green-button" id="saveApp">{{'Save' | l10n}}</a>
+
 <!--
     commented off for https://github.com/mozilla-appmaker/appmaker/issues/1618, with the intention of turning it back on after Maker Party
 
@@ -233,6 +231,25 @@
 
           //New app
           this.$.newApp.addEventListener("click",function() {
+
+            // If there are bricks in the app and we're in draft mode,
+            // confirm possible loss of work.
+            if(self.editingmode === "draft"){
+              var hasBricks = false;
+              var cards = document.querySelectorAll("ceci-card").array();
+              for(var i = 0; i < cards.length; i++) {
+                if(cards[i].brickCount() > 0){
+                  hasBricks = true;
+                  break;
+                }
+              }
+              if(hasBricks) {
+                if(!window.confirm(l10n.get("Lose Work"))){
+                  return;
+                }
+              }
+            }
+
             application.clearCurrentApp();
             application.newApp();
             self.closeMenus();
@@ -256,33 +273,39 @@
           //Save App As
           var saveAsHandler = function() {
             var name = window.prompt(l10n.get("What do you want to call this app?"));
-
             self.saveAppAs(name);
           };
 
           this.$.saveAppAs.addEventListener("click", saveAsHandler);
           document.querySelector(".app-name").addEventListener("click", renameAppHandler);
 
-          //Update App
-          this.$.saveApp.addEventListener("click", function() {
-            var ceciApp = document.querySelector('ceci-app');
-            var html = ceciApp.outerHTML;
-            var name = ceciApp.name;
+          //Save App
+          this.shadowRoot.querySelectorAll(".saveApp").array().forEach(function(e){
+            e.addEventListener("click", function() {
+              var ceciApp = document.querySelector('ceci-app');
+              var html = ceciApp.outerHTML;
+              var name = ceciApp.name;
 
-            if(name){
-              application.saveOrUpdateApp(name,ceciApp.appid,html, function(err,data){
-                if(!err){
-                  reporter.consoleReport("App save.");
-                  analytics.event("Saved App");
-                } else {
-                  reporter.errorReport(
-                    l10n.get("Your app could not be saved at this time. Please try again."),
-                    (err.responseJSON ? l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error) : '')
-                  );
-                  analytics.event("Error Saving App", { nonInteraction: true });
-                }
-              });
-            }
+              if(self.editingmode === "draft"){
+                saveAsHandler();
+                return;
+              }
+
+              if(name){
+                application.saveOrUpdateApp(name,ceciApp.appid,html, function(err,data){
+                  if(!err){
+                    reporter.consoleReport("App save.");
+                    analytics.event("Saved App");
+                  } else {
+                    reporter.errorReport(
+                      l10n.get("Your app could not be saved at this time. Please try again."),
+                      (err.responseJSON ? l10n.get("Reason:") + " " + l10n.get(err.responseJSON.error) : '')
+                    );
+                    analytics.event("Error Saving App", { nonInteraction: true });
+                  }
+                });
+              }
+            });
           });
 
           //Publish!
