@@ -4,6 +4,7 @@ define([], function () {
   var content;
   var close;
   var email;
+  var emailWrapper;
   var installbutton;
   var viewbutton;
   var installlink;
@@ -12,7 +13,7 @@ define([], function () {
   var mailError;
   var mailLink;
 
-  var instsallQRCode;
+  var installQRCode;
 
   function findImportantDOMElements () {
     master = document.getElementById('publish-pane');
@@ -28,7 +29,7 @@ define([], function () {
     mailNotice = document.querySelector('.mail-notice');
     mailError = document.querySelector('.mail-error');
     mailLink = document.querySelector('.mail-link');
-    instsallQRCode = document.querySelector('.qrcode[data-qrcode-for="install"]');
+    installQRCode = document.querySelector('.qrcode[data-qrcode-for="install"]');
 
     email.addEventListener("focus", function() {
       emailWrapper.classList.remove("success");
@@ -104,8 +105,8 @@ define([], function () {
         installlink.textContent = data.install;
         installlink.setAttribute('href', data.install);
         viewbutton.setAttribute('href', data.app);
-        instsallQRCode.innerHTML = '';
-        new QRCode(instsallQRCode, data.install);
+        installQRCode.innerHTML = '';
+        new QRCode(installQRCode, data.install);
         emailWrapper.classList.remove("success");
         emailWrapper.classList.remove('error');
 
@@ -147,4 +148,3 @@ define([], function () {
     }
   };
 });
-
