@@ -9,7 +9,7 @@
   </template>
   <script>
     Polymer('ceci-notifications', {
-      showDuration : 2000,
+      showDuration : 2200,
       ready : function(){
         var that = this;
         window.addEventListener('notification', function(e){
@@ -24,6 +24,7 @@
         el.setAttribute("data-type",e.type);
         el.querySelector(".message").textContent = e.message;
         this.shadowRoot.appendChild(el);
+        el.style.left = "calc(50% - " + el.offsetWidth/2 + "px)";
 
         var removeDelay = window.setTimeout(function(){
           that.hideNotification(el);

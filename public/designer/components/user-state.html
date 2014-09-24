@@ -2,23 +2,25 @@
   <template>
     <link rel="stylesheet" href="/stylesheets/user-state.css">
     <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.css">
-    <div class="dropdowns {{ {hidden: user.state == 'signedout'} | tokenList }}">
+    <div>
+
       <div class="menu-wrapper app-menu button">
-        <div class="menu-button {{ {hidden: user.state == 'signedout'} | tokenList}}" on-mousedown="{{toggleMenu}}">
+        <div class="menu-button" on-mousedown="{{toggleMenu}}">
           <div class="icon-reorder"></div>
         </div>
         <div class="menu app-actions menu-options">
-          <a class="saveApp" id="saveApp"><span class="icon icon-save"> </span> {{'Save App' | l10n}}</a>
-          <a class="saved" id="saveAppAs"><span class="icon icon-save"> </span> {{'Save As' | l10n}}</a>
-          <a class="saved" id="renameApp"><span class="icon icon-edit"> </span> {{'Rename' | l10n}}</a>
-          <a id="publishApp"><span class="icon icon-mobile-phone"> </span> {{'Publish' | l10n}}</a>
-          <a class="saved" id="deleteApp"><span class="icon icon-trash"> </span> {{'Delete' | l10n}}</a>
+          <a class="saved {{ {hidden: user.state == 'signedout'} | tokenList}}" id="saveAppAs"><span class="icon icon-save"> </span> {{'Save As' | l10n}}</a>
+          <a class="saved {{ {hidden: user.state == 'signedout'} | tokenList}}" id="renameApp"><span class="icon icon-edit"> </span> {{'Rename' | l10n}}</a>
+          <a class="{{ {hidden: user.state == 'signedout'} | tokenList}}" id="publishApp"><span class="icon icon-mobile-phone"> </span> {{'Publish' | l10n}}</a>
+          <a class="{{ {hidden: user.state == 'signedout'} | tokenList}} saved" id="deleteApp"><span class="icon icon-trash"> </span> {{'Delete' | l10n}}</a>
           <a id="newApp"><span class="icon icon-file-alt"> </span> {{'New App' | l10n}}</a>
           <a class="hidden" id="viewlink"><span class="icon icon-external-link"> </span> {{'Preview App' | l10n}}</a>
         </div>
       </div>
-      <div class="menu-wrapper user-menu button">
-        <div id="username" class="menu-button user-menu-button {{ {hidden: user.state == 'signedout'} | tokenList}}" on-mousedown="{{toggleMenu}}">
+
+      <div class="menu-wrapper user-menu button {{ {hidden: user.state == 'signedout'} | tokenList}}">
+
+        <div id="username" class="menu-button user-menu-button" on-mousedown="{{toggleMenu}}">
           <img class="user-avatar" alt="User avatar" src="{{user.avatar}}">
           {{'Hi' | l10n}} <strong>{{user.username}}</strong>
           <span class="icon icon-caret-down"></span>
@@ -41,11 +43,10 @@
       </div>
     </div>
 
-    <a class="saveApp saved button green-button" id="saveApp">{{'Save' | l10n}}</a>
+    <a class="saveApp saved button green-button {{ {hidden: user.state == 'signedout'} | tokenList}}" id="saveApp">{{'Save App' | l10n}}</a>
 
 <!--
     commented off for https://github.com/mozilla-appmaker/appmaker/issues/1618, with the intention of turning it back on after Maker Party
-
     <a id="collaborate" class="button" on-click="{{collaborateClick}}">
       {{ {'Collaborate': !user.collaborating} | tokenList}}
       {{ {'End Collaboration': !!user.collaborating} | tokenList}}
@@ -296,6 +297,9 @@
                   if(!err){
                     reporter.consoleReport("App save.");
                     analytics.event("Saved App");
+                    reporter.successReport(
+                      l10n.get("App saved!")
+                    );
                   } else {
                     reporter.errorReport(
                       l10n.get("Your app could not be saved at this time. Please try again."),
@@ -384,7 +388,6 @@
           } else if(name.trim()){
             application.saveApp(name,ceciApp.appid,html, function(err,data){
               if(!err){
-
                 application.setCurrentApp(name);
                 self.refreshUserState();
                 self.updateAppName(name);
@@ -392,6 +395,9 @@
                 self.editingmode = "saved";
                 window.dispatchEvent(new CustomEvent("CeciAppSaveAs"));
                 analytics.event("Saved App As");
+                reporter.successReport(
+                  l10n.get("App saved!")
+                );
               } else {
                 if (err.responseJSON.error === 'App name must be unique.') {
                   self.appRenameFailed(l10n.get('App name must be unique.'));

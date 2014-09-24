@@ -35,14 +35,6 @@
         document.querySelector(".top-nav").appendChild(cards);
 
         $(".add-card").on("click",function(){
-
-          var event = new CustomEvent("notification",
-            { detail: {
-                message: "Hello World!",
-                type: "success"
-            }});
-          window.dispatchEvent(event);
-
           t.addCard();
         });
       },
