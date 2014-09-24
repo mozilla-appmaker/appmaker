@@ -28,6 +28,7 @@
     "html-minifier": "~0.6.5",
     "http-proxy": "1.1.1",
     "inflection": "^1.5.0",
+    "jquery": "^2.1.1",
     "knox": "0.8.9",
     "less": "1.7.0",
     "less-middleware": "0.1.15",
