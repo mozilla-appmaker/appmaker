@@ -1,8 +1,8 @@
-<polymer-element name="ceci-image" source="bundles/components/component-image/thumbnail.png" attributes="height source" extends="ceci-element"
+<polymer-element name="ceci-image" source="bundles/components/component-image/images/default.jpg" attributes="height source" extends="ceci-element"
   height="160">
   <template>
     <link rel="stylesheet" href="component.css"></link>
-    <div class="image-container">
+    <div id="image-container" class="image-container">
       <img id="image">
     </div>
     <shadow></shadow>
@@ -49,13 +49,9 @@
 
         var that = this;
 
-        // User-configurable Properties
-        // A component's user-configurable properties are stored as attributes.
-        // Here they are set to a remembered value, or to a default starting.
-        // The attribute name must match the name of the editable property in the 'editables' section.
         this.setAttribute("imageUrl", this.getAttribute("imageUrl") || "");
         this.img = this.$.image;
-        this.img.style.height = this.getAttribute( "height" ) + "px";
+        this.imagecontainer = this.shadowRoot.querySelector(".image-container");
 
         this.onclick = function () {
           that.broadcast("click", this.img.getAttribute( "src" ));
@@ -65,14 +61,22 @@
         this.setImageSource(v);
       },
       sourceChanged : function(oldValue, newValue){
-        this.setImageSource(this.source);
+        var that = this;
+        var img = document.createElement("img");
+        img.onload = function(){
+          that.img.setAttribute("src",that.source);
+          that.imagecontainer.classList.remove("bad-image");
+        }
+        img.onerror = function(){
+          that.imagecontainer.classList.add("bad-image");
+        }
+        img.setAttribute("src",that.source);
       },
       setImageSource : function (val) {
         this.source = val;
-        this.img.setAttribute('src', val);
       },
       heightChanged: function( oldValue, newValue ) {
-        this.img.style.height = ( newValue || newValue === 0 ? newValue : "160" ) + "px";
+        this.imagecontainer.style.height = ( newValue || newValue === 0 ? newValue : "160" ) + "px";
       }
     });
   </script>
