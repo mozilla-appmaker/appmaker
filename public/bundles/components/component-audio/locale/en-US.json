@@ -9,10 +9,11 @@
   "ceci-audio/attributes/loop/description": "Loop the audio clip when it finishes.",
   "ceci-audio/attributes/speed/label": "Playback speed",
   "ceci-audio/attributes/speed/description": "1 for normal speed, 2 for double speed.",
+
+  "ceci-audio/attributes/label": "Woof! Woof!",
   "ceci-audio/attributes/label/label": "Tape Label",
   "ceci-audio/attributes/label/description": "Text shown on the tape.",
-  "ceci-audio/attributes/label/label": "Tape Label",
-  "ceci-audio/attributes/label/description": "Text shown on the tape.",
+
   "ceci-audio/attributes/tapecolor/label": "Tape Color",
-  "ceci-audio/attributes/tapecolor/description": "What's your favorite?",
+  "ceci-audio/attributes/tapecolor/description": "What's your favorite?"
 }
