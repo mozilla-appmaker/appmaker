@@ -7,6 +7,7 @@
 // components that are using require.
 
 var Designer = {
+  Analytics: require('webmaker-analytics'),
   Application: require('./application'),
   CeciDesigner: require('../../ceci/ceci-designer'),
   Channels: require('./channels'),
