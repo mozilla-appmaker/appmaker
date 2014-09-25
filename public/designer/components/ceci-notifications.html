@@ -1,0 +1,48 @@
+<polymer-element name="ceci-notifications" attributes="">
+  <template>
+    <link rel="stylesheet" href="/stylesheets/notifications.css" >
+    <content></content>
+    <div class="note note-template">
+      <div class="dismiss"></div>
+      <div class="message"></div>
+    </div>
+  </template>
+  <script>
+    Polymer('ceci-notifications', {
+      showDuration : 2200,
+      ready : function(){
+        var that = this;
+        window.addEventListener('notification', function(e){
+          that.showNotification(e.detail);
+        });
+      },
+      showNotification : function(e){
+        var that = this;
+        var el = this.shadowRoot.querySelector(".note-template").cloneNode(true);
+        el.classList.remove("note-template");
+        el.classList.add("note-in");
+        el.setAttribute("data-type",e.type);
+        el.querySelector(".message").textContent = e.message;
+        this.shadowRoot.appendChild(el);
+        el.style.left = "calc(50% - " + el.offsetWidth/2 + "px)";
+
+        var removeDelay = window.setTimeout(function(){
+          that.hideNotification(el);
+        },that.showDuration);
+
+        el.addEventListener("click",function(){
+          that.hideNotification(el);
+          window.clearTimeout(removeDelay);
+        });
+      },
+      hideNotification: function(el){
+        var that = this;
+        el.classList.remove("note-in");
+        el.classList.add("note-out");
+        window.setTimeout(function(){
+          that.shadowRoot.removeChild(el);
+        },100);
+      }
+    });
+  </script>
+</polymer-element>

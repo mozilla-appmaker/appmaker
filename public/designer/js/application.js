@@ -43,6 +43,9 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
           dataType : "json",
           success: function (data) {
             userState.appRenameOk(newName);
+            reporter.successReport(
+              l10n.get("App rename successful")
+            );
           },
           error: function (data) {
             var message = l10n.get("app rename failed");
@@ -50,6 +53,9 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
               message = l10n.get('App name must be unique.');
             }
             userState.appRenameFailed(message);
+            reporter.errorReport(
+              l10n.get(message)
+            );
           }
         });
       },
@@ -225,7 +231,6 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
               reporter.errorReport('Error while parsing loaded app.');
               userState.failedAppLoad();
             }
-
             document.querySelector('ceci-card-nav').buildTabs();
           },
           error: function (data) {
@@ -273,7 +278,9 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
           },
           type: 'delete',
           success: function (data) {
-            reporter.consoleReport("App deleted successfully.");
+            reporter.successReport(
+              name + " " + l10n.get("deleted.")
+            );
           },
           error: function (data) {
             reporter.errorReport("Error while deleting app: ", data);
