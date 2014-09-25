@@ -53,7 +53,8 @@
           "editable": "range",
           "step" : ".01",
           "min" : ".5",
-          "max" : "4"
+          "max" : "4",
+          "listener" : true
         },
         "label": {
           "label": "Tape Label",
@@ -126,7 +127,9 @@
         this.state = "paused";
       },
       sourceChanged: function(oldValue, newValue) {
+        var rate = this.$.sound.playbackRate;
         this.$.sound.src = newValue;
+        this.$.sound.playbackRate = rate;
       },
       setSpeed: function(channel, value) {
         this.speedChanged(this.$.sound.playbackRate || 1, value);
