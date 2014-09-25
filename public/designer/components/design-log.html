@@ -55,7 +55,7 @@
     </div>
   </template>
   <script>
-  require(['l10n', 'analytics'], function(l10n, analytics) {
+  (function(l10n, analytics) {
     Polymer('design-log', {
       ready: function() {
         this.logs = [];
@@ -73,6 +73,6 @@
         analytics.event("Cleared Logs");
       }
     });
-  });
+  })(Designer.L10n, Designer.Analytics);
   </script>
 </polymer-element>
