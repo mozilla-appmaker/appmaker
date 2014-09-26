@@ -1,9 +1,0 @@
-before_script:
-  - "npm install -g grunt-cli"
-language: node_js
-node_js:
-  - "0.10"
-script:
-  - "npm test"
-  - "npm run build"
-  - "./test/verify_build.sh"
