@@ -12,6 +12,7 @@ var Designer = {
   CeciDesigner: require('../../ceci/ceci-designer'),
   Channels: require('./channels'),
   Click: require('./click'),
+  ComponentTray: require('./component-tray'),
   Debugger: require('./debugger'),
   Editable: require('./editable'),
   Inflection: require('inflection'),
@@ -22,6 +23,8 @@ var Designer = {
   Mutant: require('./mutant'),
   UserState: require('./userstate'),
   Utils: require('./utils'),
+  TogetherJS: require('./togetherjs'),
+  WebmakerAuthClient: require('vendor/webmaker-auth-client')
 };
 
 // making things easier for devs of all walks of life

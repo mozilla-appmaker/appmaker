@@ -62,9 +62,7 @@
 
   </template>
   <script>
-  (function() {
-
-    function init(togetherjs_extension, l10n, jquery, application, tray, utils, reporter, analytics, persona, WebmakerAuthClient) {
+    (function init(togetherjs_extension, l10n, $, application, tray, utils, reporter, analytics, WebmakerAuthClient) {
 
       var user = {
         email: '',
@@ -882,18 +880,14 @@
       });
 
       togetherjs_extension.init(user);
-    }
-
-   require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'reporter', 'analytics', 'persona', 'webmaker-auth-client'],
-      function(togetherjs_extension, l10n, jquery, application, tray, utils, reporter, analytics, persona, WebmakerAuthClient) {
-        init(togetherjs_extension, l10n, jquery, application, tray, utils, reporter, analytics, persona, WebmakerAuthClient);
-      },
-      function(err) {
-        console.error('Failed to load a required module (analytics and/or persona and/or webmaker-auth-client)', err);
-        require(['designer/togetherjs', 'l10n', 'jquery', 'designer/application', 'designer/component-tray', 'designer/utils', 'reporter'], init);
-      }
-    );
-
-  })();
+    })(Designer.TogetherJS,
+       Designer.L10n,
+       Designer.jQuery,
+       Designer.Application,
+       Designer.ComponentTray,
+       Designer.Utils,
+       Designer.Reporter,
+       Designer.Analytics,
+       Designer.WebmakerAuthClient);
   </script>
 </polymer-element>
