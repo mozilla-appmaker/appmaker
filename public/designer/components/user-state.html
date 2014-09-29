@@ -316,10 +316,8 @@
           this.$.publishApp.addEventListener("click", function() {
             var app = document.querySelector('ceci-app');
 
-            app.querySelector("ceci-card[visible=true]").removeAttribute("visible");
-
             // Need to use querySelector because first-child returns null (bug?)
-            app.querySelector("ceci-card").setAttribute("visible","true");
+            app.querySelector("ceci-card").show();
 
             var name = app.name;
             // This is a new app, so get a new name for it.
