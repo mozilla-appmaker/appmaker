@@ -1,6 +1,7 @@
-<polymer-element name="ceci-audio" attributes="source speed label value tapecolor volume"
+<polymer-element name="ceci-audio" attributes="loop source speed label value tapecolor volume"
  extends="ceci-element"
   volume="0.5"
+  loop="false"
   source="http://soundjax.com/reddo/21812%5Edog_bark_x.mp3"
   tapecolor="#2181cb"
   speed="1.0">
@@ -28,31 +29,41 @@
       },
       "attributes": {
         "source": {
-          "label": "Audio source URL",
-          "description": "The URL for the sound clip you want to play",
+          "label": "Audio Source URL",
+          "description": "The URL for the sound clip you want to play.",
           "editable": "text",
           "listener": true
         },
         "volume": {
           "label": "Volume",
+          "description": "How loud do you want it to be?",
           "editable": "range",
           "step" : ".01",
           "min" : 0,
           "max" : 1
         },
+        "loop": {
+          "label": "Loop",
+          "description": "Loop the audio clip when it finishes.",
+          "editable": "boolean"
+        },
         "speed": {
-          "label": "Audio playback rate",
-          "description": "1 for normal speed, 2 for twice speed, -1 for reverse, etc.",
-          "editable": "number"
+          "label": "Playback speed",
+          "description": "1 for normal speed, 2 for double speed.",
+          "editable": "range",
+          "step" : ".01",
+          "min" : ".5",
+          "max" : "4",
+          "listener" : true
         },
         "label": {
-          "label": "Label",
-          "description": "Text shown on the button.",
+          "label": "Tape Label",
+          "description": "Text shown on the tape.",
           "editable": "text"
         },
         "tapecolor": {
-          "label": "Value",
-          "description": "Color of the tape",
+          "label": "Tape Color",
+          "description": "What's your favorite?",
           "editable": "color"
         }
       }
@@ -79,6 +90,9 @@
         var that = this;
         this.$.sound.addEventListener("ended",function(){
           that.stopsound();
+          if(that.loop === "true"){
+            that.play();
+          }
         });
       },
       state : "stopped",
@@ -113,7 +127,9 @@
         this.state = "paused";
       },
       sourceChanged: function(oldValue, newValue) {
+        var rate = this.$.sound.playbackRate;
         this.$.sound.src = newValue;
+        this.$.sound.playbackRate = rate;
       },
       setSpeed: function(channel, value) {
         this.speedChanged(this.$.sound.playbackRate || 1, value);
