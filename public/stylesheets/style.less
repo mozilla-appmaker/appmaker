@@ -1494,25 +1494,58 @@ span.channel {
 }
 
 .brick-search {
-  padding: 6px 10px 8px 10px;
+  margin-top: 3px;
+  padding: 0px 10px 8px 10px;
   width: ~"calc(100% - 20px)";
   z-index: 99;
   font-size: 1.6rem;
   font-weight: bold;
   color: #888;
+  position: relative;
+
+  .icon-search {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    color: #BBB;
+    font-size: 13px;
+  }
+
+  .icon-remove {
+    position: absolute;
+    z-index: 999;
+    top: 3px;
+    right: 8px;
+    color: #BBB;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 2px 3px;
+
+    &.hidden {
+      display: none;
+    }
+
+    &:hover {
+      background: #EEE;
+      border-radius: 10px;
+    }
+  }
+
+  input {
+    font-size: 1.3rem;
+    padding: 0px 0px 2px 15px;
+    position: relative;
+    width: 100%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    background: transparent;
+    border: none;
+    border-bottom: solid 1px #CCC;
+    outline: none;
+  }
 }
 
-.brick-search input {
-  font-size: 1.3rem;
-  position: relative;
-  width: 100%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  background: transparent;
-  border: none;
-  border-bottom: solid 1px #CCC;
-  outline: none;
-}
+
 
 #components-wrapper {
   flex: 1;
@@ -2016,7 +2049,6 @@ button.return-btn {
   display: flex;
 }
 
-
 .right-column {
   right: 0;
   border-left: solid 1px #C5C5C5;
@@ -2028,14 +2060,13 @@ button.return-btn {
   border-right: solid 1px #C5C5C5;
 
   .tray-header {
-    padding: 10px 10px 0px 10px;
+    padding: 11px 10px 0px 10px;
     font-size: 20px;
     color: #666;
     position: relative;
+    font-weight: 400;
   }
-
 }
-
 
 .expand-handle {
   background-color: #999;
