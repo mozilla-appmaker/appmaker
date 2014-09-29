@@ -8,6 +8,8 @@
   margin: 0;
   padding: 0;
   display: inline-block;
+  height: 100%;
+  max-width: 310px;
 }
 
 :host .image-container {
@@ -15,3 +17,15 @@
   width: 100%;
   line-height: 0px;
 }
+
+:host .bad-image {
+  background-image: url("images/bad-image.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+:host .bad-image img {
+  display: none;
+}
+
