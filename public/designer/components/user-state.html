@@ -164,20 +164,20 @@
             that.user.username = event.detail.data.username;
 
             var remixName = utils.getQueryStringVariable('remix');
-            var currentApp = application.getCurrentApp();
+            var storedAppName = application.getStoredAppName();
             var editName = utils.getQueryStringVariable('edit');
             if (editName) {
-              application.setCurrentApp(decodeURIComponent(editName));
-              var currentApp = editName;
+              application.setStoredAppName(decodeURIComponent(editName));
+              storedAppName = editName;
             }
 
             if (that.user.state == 'signedin') {
               that.refreshUserState();
               if (!user.preventLoadedAppInsertion) {
-                if(currentApp){
-                  application.loadAppByName(currentApp);
+                if(storedAppName){
+                  application.loadAppByName(storedAppName);
                   that.editingmode = "saved";
-                  that.updateAppName(currentApp);
+                  that.updateAppName(storedAppName);
                 } else {
                   setupTempApp();
                 }
@@ -226,11 +226,13 @@
 
           //Delete app
           this.$.deleteApp.addEventListener('click', function() {
-            var name = application.getCurrentApp();
+            var ceciApp = document.querySelector('ceci-app');
+            var name = ceciApp.name;
+
             if(!reporter.confirm("Are you sure you want to delete '"+name+"'?"))
               return;
             application.deleteAppByName(name);
-            application.clearCurrentApp();
+            application.clearStoredAppName();
             self.$.newApp.click();
             analytics.event("Deleted App");
           });
@@ -256,7 +258,7 @@
               }
             }
 
-            application.clearCurrentApp();
+            application.clearStoredAppName();
             application.newApp();
             self.closeMenus();
             self.setAppURL(false);
@@ -268,7 +270,7 @@
           });
 
           function renameAppHandler() {
-            var oldName = application.getCurrentApp();
+            var oldName = application.getStoredAppName();
             var newName = window.prompt(l10n.get("What do you want to call this app?"));
             self.renameApp(oldName, newName);
           }
@@ -365,7 +367,7 @@
                 }
                 return;
               }
-              application.setCurrentApp(name);
+              application.setStoredAppName(name);
               self.refreshUserState();
               self.editingmode = "saved";
               analytics.event("Published App");
@@ -401,7 +403,7 @@
           } else if(name.trim()){
             application.saveApp(name,ceciApp.appid,html, function(err,data){
               if(!err){
-                application.setCurrentApp(name);
+                application.setStoredAppName(name);
                 self.refreshUserState();
                 self.updateAppName(name);
                 ceciApp.setAttribute("appid", "ceci-app-"+uuid());
@@ -438,7 +440,7 @@
           this.$.signin.classList.remove("hidden");
         },
         failedAppLoad: function(){
-          application.clearCurrentApp();
+          application.clearStoredAppName();
 
           var phoneBorderElement = document.querySelector(".phone-border");
           var ca = document.createElement("ceci-app");
@@ -472,13 +474,13 @@
         },
         appRenameOk: function(name){
           // Rename OK, update the current working app.
-          application.setCurrentApp(name);
+          application.setStoredAppName(name);
           this.updateAppName(name);
           this.refreshUserState();
         },
         appRenameFailed: function(message){
-          // Rename failed, revert to last know good app name
-          this.updateAppName(application.getCurrentApp());
+          // Rename failed, revert to last known good app name
+          this.updateAppName(document.querySelector('ceci-app').name || application.getStoredAppName());
           reporter.errorReport(message);
         },
         signinClick: function() {
@@ -759,18 +761,18 @@
           document.removeEventListener("click", userState.closeMenus);
         },
         refreshUserState: function() {
-          var currentApp = application.getCurrentApp() || "";
-          if (!user.preventLoadedAppInsertion && currentApp) {
-            this.updateAppName(currentApp || l10n.get("Unsaved App"));
+          var storedAppName = application.getStoredAppName() || "";
+          if (!user.preventLoadedAppInsertion && storedAppName) {
+            this.updateAppName(storedAppName || l10n.get("Unsaved App"));
           }
 
           // go to the server and find out what the user's apps are and then...
           // Build the list of apps
           // Update "current app" in apps menu
-          this.refreshAppList(currentApp);
+          this.refreshAppList(storedAppName);
           this.refreshComponentsList();
         },
-        refreshAppList: function(currentApp) {
+        refreshAppList: function(storedAppName) {
           var self = this;
 
           if (user.state === "signedout") {
@@ -802,8 +804,8 @@
                 link.id = key;
                 link.classList.add('app');
                 link.textContent = val.name;
-                if(currentApp == val.name){
-                  link.classList.add('currentApp');
+                if(storedAppName === val.name){
+                  link.classList.add('storedAppName');
                 }
                 link.classList.add('class', 'applink');
                 link.addEventListener('click', function(){
