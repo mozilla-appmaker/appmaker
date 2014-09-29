@@ -126,10 +126,17 @@
                 ceciApp.remixedfrom = remixedFrom;
               }
             });
-            application.loadAppByUrl(remixedFrom);
-            that.editingmode = 'draft';
-            that.updateAppName(l10n.get("Unsaved App"));
-            analytics.event("Loaded Remix Content");
+            application.loadAppByUrl(remixedFrom, function(error, data) {
+              if (error) {
+                return that.failedAppLoad();
+              }
+
+              that.editingmode = 'remix';
+              that.async(function() {
+                that.updateAppName(l10n.get("Remix of") + " " + data.name);
+              });
+              analytics.event("Loaded Remix Content");
+            });
           }
 
           function setupTempApp() {
@@ -235,7 +242,7 @@
 
             // If there are bricks in the app and we're in draft mode,
             // confirm possible loss of work.
-            if(self.editingmode === "draft"){
+            if(self.editingmode !== "saved"){
               var hasBricks = false;
               var cards = document.querySelectorAll("ceci-card").array();
               for(var i = 0; i < cards.length; i++) {
@@ -273,7 +280,13 @@
 
           //Save App As
           var saveAsHandler = function() {
-            var name = window.prompt(l10n.get("What do you want to call this app?"));
+            var name = "";
+            var ceciApp = document.querySelector('ceci-app');
+            if (self.editingmode === "remix") {
+              name = window.prompt(l10n.get("What do you want to call this remix?"), ceciApp.name);
+            } else {
+              name = window.prompt(l10n.get("What do you want to call this app?"));
+            }
             self.saveAppAs(name);
           };
 
@@ -287,7 +300,7 @@
               var html = ceciApp.outerHTML;
               var name = ceciApp.name;
 
-              if(self.editingmode === "draft"){
+              if(self.editingmode !== "saved"){
                 saveAsHandler();
                 return;
               }
@@ -323,10 +336,14 @@
 
             var name = app.name;
             // This is a new app, so get a new name for it.
-            if (!name || name === l10n.get("Unsaved App")) {
+            if (self.editingmode !== "saved" || !name || name === l10n.get("Unsaved App")) {
               // window.prompt needs to be made its own thing so it can be called
               // in various places:
-              name = window.prompt("Please name your app first:");
+              if (self.editingmode === "remix") {
+                name = window.prompt("Please name your remix first:", name);
+              } else {
+                name = window.prompt("Please name your app first:");
+              }
               if (name === null) {
                 return self.appRenameFailed(l10n.get("Save was cancelled."));
               } else if (!name.trim()) {

@@ -185,7 +185,7 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
           return app;
         }
       },
-      loadAppByUrl: function(url) {
+      loadAppByUrl: function(url, callback) {
         var self = this;
         var userState = document.querySelector('user-state');
 
@@ -224,18 +224,20 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
               var fragment = range.createContextualFragment(data.substring(indexOfOpeningTag, indexOfClosingTag + closingTag.length));
               var newApp = fragment.querySelector('ceci-app');
               var currentApp = self.getOrInsertCeciApp();
+
               currentApp.parentNode.replaceChild(newApp, currentApp);
               newApp.setAttribute("appid", "ceci-app-"+uuid());
+              callback(false, newApp);
             }
             else {
               reporter.errorReport('Error while parsing loaded app.');
-              userState.failedAppLoad();
+              callback(true);
             }
             document.querySelector('ceci-card-nav').buildTabs();
           },
           error: function (data) {
             reporter.errorReport('Error while loading app', data);
-            userState.failedAppLoad();
+            callback(true);
           }
         });
       },
