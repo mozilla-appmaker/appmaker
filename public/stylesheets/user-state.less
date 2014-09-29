@@ -71,13 +71,13 @@
   }
 
   .button {
-
     text-align: left;
     padding: 4px 12px;
     vertical-align: middle;
 
     &:not(.menu-wrapper) {
-      font-size: 15px;
+      font-size: 14px;
+      font-weight: 400;
       line-height: 34px;
       border-radius: 2px;
     }
@@ -198,10 +198,11 @@
   }
 
   .menu h3 {
-    padding: 0 0 4px 0 ;
-    margin: 2px 0px 8px 0px;
+    padding: 0 ;
+    margin: 2px 0px 10px 0px;
     color: #444;
     font-size: 15px;
+    font-weight: 400;
   }
 
   .menu-wrapper {
@@ -227,7 +228,7 @@
     padding: 0;
     clear: both;
     width: 100%;
-    max-height: 15em;
+    max-height: 300px;
     overflow: auto;
     overflow-x: hidden;
 
@@ -279,6 +280,10 @@
     margin-left: 10px;
   }
 
+  .menu-options li:last-child a {
+    border-bottom: none;
+  }
+
   .menu-options a {
     white-space: nowrap;
     text-align: left;
@@ -287,9 +292,9 @@
     color: #777;
     padding: 0;
     margin: 0;
-    padding: 10px;
+    padding: 8px;
     display: block;
-    font-size: 15px;
+    font-size: 14px;
     border-bottom: solid 1px #DDD;
     cursor: pointer;
     text-decoration: none;
@@ -301,9 +306,8 @@
 
     &.currentApp {
       color: #333;
+      font-weight: 400;
       background-color: #EFEFEF;
-      border-bottom: solid 1px white;
-      border-top: solid 1px #CCC
     }
 
     &.x {

@@ -30,7 +30,7 @@ body {
 
 input,
 textarea {
-  font-family: 'Source Sans Pro', arial;
+  font-family: inherit;
 }
 
 .phone-container body {
@@ -112,7 +112,6 @@ h6 {
 /*----------BUTTONS----------*/
 
 button.btn-std {
-  font-family: 'Source Sans Pro', arial;
   -webkit-appearance: none;
   border: none;
   color: #FFF;
@@ -557,7 +556,7 @@ li.tab {
 
 .editable-section .tray-tabs {
   overflow: auto;
-  background: #40464f;
+  background: #052938;
   border-bottom: solid 4px #3fb58e;
 }
 
@@ -565,15 +564,17 @@ li.tab {
   display: block;
   border-radius: 2px 2px 0 0 ;
   float: left;
-  font-size: 15px;
+  font-size: 14px;
   padding: 10px 10px;
   color: white;
   cursor: pointer;
+  font-weight: 400;
 }
 
 .editable-section .tray-tabs a.selected-tab {
   background: #3fb58e;
   color: white;
+
 }
 
 .section {
@@ -619,6 +620,7 @@ li.tab {
   .description {
     color: #999;
     text-align: left;
+    font-size: 12px;
     margin-bottom: 12px;
   }
 }
@@ -640,7 +642,6 @@ li.tab {
   background: #EEE;
   font-size: 1.6rem;
   max-width: 300px;
-  font-family: 'Source Sans Pro', arial;
 }
 
 .remix-ui  h3 a {
@@ -1313,6 +1314,8 @@ ul.component-actions {
 
 .editable-section label {
   font-size: 14px;
+  color: #666;
+  font-weight: 400;
 }
 
 .editable-section input[type="text"],
@@ -1901,7 +1904,9 @@ button.return-btn {
     cursor: pointer;
     margin: 0px 5px 5px 0;
     float: left;
+    font-size: 12px;
     .border-radius(3px);
+    font-weight: 400;
 
     background: #e9edf0;
     padding: 5px 10px 5px 10px;
@@ -2031,6 +2036,7 @@ button.return-btn {
     padding: 10px 10px 0px 10px;
     font-size: 20px;
     color: #666;
+    font-weight: 400;
     position: relative;
   }
 
