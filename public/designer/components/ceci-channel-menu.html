@@ -192,7 +192,7 @@
         buildMenu: function() {
           this.menubuilt = true;
           var that = this;
-          var communicators, handlertype;
+          var communicators, handlerType;
 
           if(this.channeltype == "broadcast") {
             communicators = this.component.ceci.broadcasts;
@@ -246,8 +246,8 @@
           keys.forEach(function(key) {
             var channelTemplate = that.shadowRoot.querySelector(".option-template");
             var channelOption = channelTemplate.cloneNode(true);
-
             var heading = channelOption.querySelector("h3");
+            var headingText;
 
             var localizedSetter = L10n.get('Set {attribute}') || 'Set {attribute}';
             var matchLabel = key.match(/[^_]*_(.+)/);
