@@ -21,33 +21,37 @@
 
     <link rel="stylesheet" href="/vendor/webmaker-auth-client/create-user/create-user-form.css" />
 
+    <!-- platform.js must be the first script loaded or polymer complains -->
     <script src="/vendor/platform/platform.js"></script>
+
+    <script src="/vendor/firebasev0/firebase.v0.js"></script>
     <script src="https://login.persona.org/include.js"></script>
+    <script src="/vendor/jsonlint/lib/jsonlint.js"></script>
+    <script>var TogetherJSConfig_cloneClicks = true;</script>
+    <script src="https://togetherjs.com/togetherjs-min.js"></script>
+
     <link rel="import" href="/vendor/polymer/polymer.html">
 
-
-    <script src="/vendor/requirejs/require.js"></script>
     <% if (!!process.env.BUNDLE) { %>
-      <script src="/javascripts/designer-build.js"></script>
+      <script>
+        window.require = function(){
+          console.error(arguments);
+          var e = new Error();
+          console.log(e.stack);
+        };
+      </script>
+      <script src="/javascripts/designer-bundle.js"></script>
     <% } else { %>
+      <script src="/vendor/requirejs/require.js"></script>
       <script src="/javascripts/requireConfig.js"></script>
     <% } %>
 
-    <script src="/vendor/jsonlint/lib/jsonlint.js"></script>
-
     <script>
-      var TogetherJSConfig_cloneClicks = true;
-    </script>
-    <script src="https://togetherjs.com/togetherjs-min.js"></script>
-
-    <script>
-    (function () {
       // We need to make sure we have our client-side .json file loaded before
       // all the components so that we can use it when the HTML file loaded.
-      require(['l10n'], function(localized) {
+      (function(localized) {
         localized.ready({url: "/strings/" + localized.getCurrentLang() });
-      });
-    })();
+      })(Designer.L10n);
     </script>
 
     <% bundles.emit('designer-components.html').forEach(function(href) { %>
@@ -80,6 +84,8 @@
   <body>
     <%- body %>
     <script type="text/javascript">
+      /*
+
       require(['languages'], function(languages) {
         languages.ready({
           css: function() {
@@ -93,6 +99,8 @@
           }
         });
       });
+
+      */
     </script>
   </body>
 </html>
