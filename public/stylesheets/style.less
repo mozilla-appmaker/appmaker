@@ -548,12 +548,6 @@ li.tab {
   float: left;
 }
 
-.right-column label {
-  color: #555;
-  margin-bottom: 2px;
-  display: block;
-}
-
 .editable-section .tray-tabs {
   overflow: auto;
   background: #052938;
@@ -583,6 +577,7 @@ li.tab {
   .section-header {
     padding: 12px 10px 13px 10px;
     color: #666;
+    font-weight: 400;
   }
 
   .section-content {
@@ -620,7 +615,6 @@ li.tab {
   .description {
     color: #999;
     text-align: left;
-    font-size: 13px;
     margin-bottom: 12px;
   }
 }
@@ -732,7 +726,7 @@ li.tab {
 }
 
 .editable-section .remix-ui .blue-button:hover {
-  background:  #3999e3;;
+  background:  #3999e3;
 }
 
 .editable-section .remix-ui .blue-button.run {
@@ -1277,8 +1271,20 @@ ul.component-actions {
   outline: none;
 }
 
-.editable-attributes div {
-  margin-bottom: 10px;
+.editable-attributes > div {
+  margin-bottom: 12px;
+}
+
+.editable-attributes {
+
+  select {
+    font-size: 14px;
+  }
+
+  label {
+    color: #555;
+    display: block;
+  }
 }
 
 
@@ -1315,14 +1321,15 @@ ul.component-actions {
 .editable-section label {
   font-size: 14px;
   color: #666;
-  font-weight: 400;
 }
 
 .editable-section input[type="text"],
+.editable-section textarea,
 .editable-section input[type="number"] {
   background-color: #FFF;
   padding: 5px;
-  color: #666;
+  color: #333;
+  font-weight: 300;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
@@ -1938,7 +1945,7 @@ button.return-btn {
     font-size: 14px;
     line-height: 15px;
     color: #666;
-    font-weight: bold;
+    font-weight: 600;
   }
 
   .category-description {
