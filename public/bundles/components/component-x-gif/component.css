@@ -1,0 +1,8 @@
+:host {
+  display: block;
+  width: 100%;
+}
+:host x-gif {
+  height: 100px;
+  background: green;
+}

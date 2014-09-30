@@ -1,0 +1,43 @@
+<polymer-element name="ceci-x-gif" attributes="src" extends="ceci-element">
+  <ceci-definition>
+    {
+      "tags": ["animated", "starter", "fun"],
+      "thumbnail": "./thumbnail.gif",
+      "description": "Animated Gif",
+      "name": "Animated Gif",
+      "broadcasts": {},
+      "listeners": {
+        "setSource": {
+          "description": "changes the animated image.",
+          "label": "Set Animated Image Source",
+          "default": true
+        }
+      },
+      "attributes": {
+      	"src": {
+          "label": "Animated Image Source",
+          "description": "The Animated Image to Show",
+          "editable": "text"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css">
+    <link rel="import" href="./lib/x-gif.html">
+    <x-gif src="{{src}}"></x-gif>
+  </template>
+  <script>
+    Polymer('ceci-x-gif', {
+      ready: function () {
+        this.super();
+      },
+      attached: function () {
+        this.super();
+      },
+      setSource: function(value) {
+        this.src = value;
+      }
+    });
+  </script>
+</polymer-element>
