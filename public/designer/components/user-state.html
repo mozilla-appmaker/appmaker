@@ -587,8 +587,7 @@
           var parser = document.createElement('a');
           parser.href = document.URL;
           parser.pathname = "component/" + repo + '/' + user + "/component.html";
-          url = parser.href;
-          return url;
+          return parser.href;
         },
         getNameForComponentURL: function(url, cb) {
           // We want to make sure that we can reach this URL, and that it's a component
