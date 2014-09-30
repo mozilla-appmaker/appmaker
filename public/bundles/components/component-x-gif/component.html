@@ -23,20 +23,24 @@
     }
   </ceci-definition>
   <template>
-    <link rel="stylesheet" href="component.css">
     <link rel="import" href="./lib/x-gif.html">
+    <link rel="stylesheet" href="component.css">
     <x-gif src="{{src}}"></x-gif>
+    <shadow></shadow>
   </template>
   <script>
     Polymer('ceci-x-gif', {
-      ready: function () {
+      ready: function() {
         this.super();
       },
-      attached: function () {
+      attached: function() {
         this.super();
+      },
+      srcChanged: function(oldvalue, newvalue) {
+        this.src = newvalue;
       },
       setSource: function(value) {
-        this.src = value;
+        this.srcChanged(this.src, value);
       }
     });
   </script>
