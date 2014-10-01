@@ -374,14 +374,41 @@ define(
       }
     }
 
+    var searchBox, clearSearchIcon;
+
+    function clearSearch(){
+      DesignerTray.filterCategory("all");
+      doSearch();
+      clearSearchIcon.classList.add("hidden");
+      searchBox.focus();
+      searchBox.value = "";
+    }
+
+    function searchInput(){
+      if(searchBox.value.length > 0) {
+        clearSearchIcon.classList.remove("hidden");
+      } else {
+        clearSearchIcon.classList.add("hidden");
+      }
+      doSearch(searchBox.value.trim().toLowerCase());
+    }
+
     function onPolymerReady() {
       DesignerTray.devmode = document.querySelector("#components-wrapper").classList.contains("development");
       DesignerTray.addComponentsFromRegistry();
-      var searchBox = document.querySelector('.component-search');
+
+      searchBox = document.querySelector('.component-search');
+      clearSearchIcon = document.querySelector('.clear-search');
+
+      clearSearchIcon.addEventListener('click', function() {
+        clearSearch();
+      });
+
       searchBox.addEventListener('input', function() {
-        doSearch(searchBox.value.trim().toLowerCase());
+        searchInput();
       });
     }
+
     if (window.Polymer && Polymer.whenPolymerReady) {
       Polymer.whenPolymerReady(onPolymerReady);
     } else {
