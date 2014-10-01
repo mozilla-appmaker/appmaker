@@ -11,6 +11,7 @@
 html {
   font-size: 62.5%; /* so rem-based font sizes look right */
   font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight: 300;
 }
 
 body,html {
@@ -21,7 +22,6 @@ body,html {
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Source Sans Pro', arial;
   font-size: 14px;
   color: #31353C;
   overflow-y: scroll;
@@ -30,7 +30,7 @@ body {
 
 input,
 textarea {
-  font-family: 'Source Sans Pro', arial;
+  font-family: inherit;
 }
 
 .phone-container body {
@@ -112,7 +112,6 @@ h6 {
 /*----------BUTTONS----------*/
 
 button.btn-std {
-  font-family: 'Source Sans Pro', arial;
   -webkit-appearance: none;
   border: none;
   color: #FFF;
@@ -549,15 +548,9 @@ li.tab {
   float: left;
 }
 
-.right-column label {
-  color: #555;
-  margin-bottom: 2px;
-  display: block;
-}
-
 .editable-section .tray-tabs {
   overflow: auto;
-  background: #40464f;
+  background: #052938;
   border-bottom: solid 4px #3fb58e;
 }
 
@@ -565,15 +558,17 @@ li.tab {
   display: block;
   border-radius: 2px 2px 0 0 ;
   float: left;
-  font-size: 15px;
+  font-size: 14px;
   padding: 10px 10px;
   color: white;
   cursor: pointer;
+  font-weight: 400;
 }
 
 .editable-section .tray-tabs a.selected-tab {
   background: #3fb58e;
   color: white;
+
 }
 
 .section {
@@ -582,6 +577,7 @@ li.tab {
   .section-header {
     padding: 12px 10px 13px 10px;
     color: #666;
+    font-weight: 400;
   }
 
   .section-content {
@@ -640,7 +636,6 @@ li.tab {
   background: #EEE;
   font-size: 1.6rem;
   max-width: 300px;
-  font-family: 'Source Sans Pro', arial;
 }
 
 .remix-ui  h3 a {
@@ -731,7 +726,7 @@ li.tab {
 }
 
 .editable-section .remix-ui .blue-button:hover {
-  background:  #3999e3;;
+  background:  #3999e3;
 }
 
 .editable-section .remix-ui .blue-button.run {
@@ -1276,8 +1271,20 @@ ul.component-actions {
   outline: none;
 }
 
-.editable-attributes div {
-  margin-bottom: 10px;
+.editable-attributes > div {
+  margin-bottom: 12px;
+}
+
+.editable-attributes {
+
+  select {
+    font-size: 14px;
+  }
+
+  label {
+    color: #555;
+    display: block;
+  }
 }
 
 
@@ -1313,12 +1320,16 @@ ul.component-actions {
 
 .editable-section label {
   font-size: 14px;
+  color: #666;
 }
 
 .editable-section input[type="text"],
+.editable-section textarea,
 .editable-section input[type="number"] {
   background-color: #FFF;
   padding: 5px;
+  color: #333;
+  font-weight: 300;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }
@@ -1901,7 +1912,9 @@ button.return-btn {
     cursor: pointer;
     margin: 0px 5px 5px 0;
     float: left;
+    font-size: 12px;
     .border-radius(3px);
+    font-weight: 400;
 
     background: #e9edf0;
     padding: 5px 10px 5px 10px;
@@ -1932,7 +1945,7 @@ button.return-btn {
     font-size: 14px;
     line-height: 15px;
     color: #666;
-    font-weight: bold;
+    font-weight: 600;
   }
 
   .category-description {
@@ -2031,6 +2044,7 @@ button.return-btn {
     padding: 10px 10px 0px 10px;
     font-size: 20px;
     color: #666;
+    font-weight: 400;
     position: relative;
   }
 
