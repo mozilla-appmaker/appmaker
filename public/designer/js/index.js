@@ -16,7 +16,7 @@ var Designer = {
   Debugger: require('./debugger'),
   Editable: require('./editable'),
   Inflection: require('inflection'),
-  jQuery: require('jquery'),
+  jQuery: require('vendor/jquery'),
   Keyboard: require('./keyboard'),
   L10n: require('vendor/l10n'),
   Modes: require('./modes'),

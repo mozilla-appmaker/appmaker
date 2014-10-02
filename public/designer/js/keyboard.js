@@ -7,27 +7,29 @@
 // testing is harder. If reasonable, we should export a function that
 // takes an element and attaches the event handler.
 
-var $ = require('jquery');
+var $ = require('vendor/jquery');
 
-$(window).keydown(function(e) {
-  switch (e.keyCode){
-   case 8: // Backspace
-    // Disable backspace if the target ends at the window
-    if ($(e.target).is('body')) {
-      e.preventDefault();
-      console.log('Backspace disabled in keyboard.js');
-    }
-  }
-
-  // Meta key shortcuts:
-  if (e.metaKey) {
+require('domready')(function () {
+  $(window).keydown(function(e) {
     switch (e.keyCode){
-     case 186: // meta + ;
-      $('input.component-search').val('').focus();
-      break;
-     case 191: // meta + / (shortcut help)
-      $('input.component-search').val('').focus();
-      break;
+     case 8: // Backspace
+      // Disable backspace if the target ends at the window
+      if ($(e.target).is('body')) {
+        e.preventDefault();
+        console.log('Backspace disabled in keyboard.js');
+      }
     }
-  }
+
+    // Meta key shortcuts:
+    if (e.metaKey) {
+      switch (e.keyCode){
+       case 186: // meta + ;
+        $('input.component-search').val('').focus();
+        break;
+       case 191: // meta + / (shortcut help)
+        $('input.component-search').val('').focus();
+        break;
+      }
+    }
+  });
 });

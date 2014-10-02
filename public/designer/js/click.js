@@ -5,7 +5,7 @@
 // TODO: don't rely on side-effects, convert to function that gets
 // exported so we can test this jam.
 
-var $ = require('jquery');
+var $ = require('vendor/jquery');
 var CustomEvent = require('vendor/customevent');
 
 $(window).click(function(e){

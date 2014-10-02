@@ -33,13 +33,6 @@
     <link rel="import" href="/vendor/polymer/polymer.html">
 
     <% if (!!process.env.BUNDLE) { %>
-      <script>
-        window.require = function(){
-          console.error(arguments);
-          var e = new Error();
-          console.log(e.stack);
-        };
-      </script>
       <script src="/javascripts/designer-bundle.js"></script>
     <% } else { %>
       <script src="/vendor/requirejs/require.js"></script>
