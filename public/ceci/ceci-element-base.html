@@ -263,6 +263,7 @@
        * or once the element finishes its initialisation an CeciElementReady get fired off.
        */
       onready: function(fn) {
+        fn = fn.bind(this);
         if(this.elementReady) { fn(); }
         else {
           this.addEventListener('CeciElementReady', fn);
