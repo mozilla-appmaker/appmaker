@@ -7,7 +7,7 @@
 // testing is harder. If reasonable, we should export a function that
 // takes an element and attaches the event handler.
 
-var $ = require('vendor/jquery');
+var $ = require('jquery');
 
 require('domready')(function () {
   $(window).keydown(function(e) {

@@ -8,7 +8,7 @@ This handles...
 - View Source menu switching (HTML vs CSS vs JS, etc.)
 */
 
-var $ = require('vendor/jquery');
+var $ = require('jquery');
 var analytics = require('webmaker-analytics');
 
 // TODO: this is another file like keyboard.js that's primarily side

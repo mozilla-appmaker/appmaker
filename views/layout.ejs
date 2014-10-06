@@ -33,6 +33,7 @@
     <link rel="import" href="/vendor/polymer/polymer.html">
 
     <% if (!!process.env.BUNDLE) { %>
+      <script src="/javascripts/common.js"></script>
       <script src="/javascripts/designer-bundle.js"></script>
     <% } else { %>
       <script src="/vendor/requirejs/require.js"></script>
@@ -77,9 +78,9 @@
   <body>
     <%- body %>
     <script type="text/javascript">
-      /*
-
-      require(['languages'], function(languages) {
+      (function(){
+        var languages = require('webmaker-language-picker');
+        console.log('loaded languages');
         languages.ready({
           css: function() {
             var $currentLang = $('#current-language');
@@ -91,9 +92,7 @@
             };
           }
         });
-      });
-
-      */
+      })();
     </script>
   </body>
 </html>
