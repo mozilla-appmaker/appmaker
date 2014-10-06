@@ -76,7 +76,9 @@
   },
   "scripts": {
     "test": "grunt",
-    "build": "browserify public/designer/js/index.js -o public/javascripts/designer-bundle.js && browserify -r webmaker-language-picker -o public/javascripts/common.js",
+    "bundle-common": "browserify -r webmaker-language-picker -r vendor/l10n -r jquery -o public/javascripts/common.js",
+    "bundle-app": "browserify -x jquery -x vendor/l10n public/designer/js/index.js -o public/javascripts/designer-bundle.js",
+    "bundle": "npm run bundle-common && npm run bundle-app",
     "postinstall": "webmaker-download-locales appmaker && bower install"
   }
 }

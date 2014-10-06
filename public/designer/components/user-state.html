@@ -73,6 +73,10 @@
 
       var auth = new WebmakerAuthClient();
 
+      auth.on('error', function(error) {
+        console.error(error);
+      })
+
       auth.on('login', function(data, reason) {
         if (reason === 'restored') {
           return;
