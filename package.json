@@ -77,6 +77,7 @@
   },
   "scripts": {
     "test": "grunt",
+    "bundle-js": "node ./lib/bundle-javascript.js",
     "start": "supervisor -i node_modules,public/build app.js",
     "postinstall": "webmaker-download-locales appmaker && bower install && npm dedupe"
   }
