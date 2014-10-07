@@ -26,7 +26,8 @@ postmark = require("postmark")(process.env.POSTMARK_API_KEY),
 uuid = require('node-uuid'),
 version = require('./package').version,
 emulate_s3 = process.env.S3_EMULATION || !process.env.S3_KEY,
-WebmakerAuth = require('webmaker-auth');
+WebmakerAuth = require('webmaker-auth'),
+bundleJavascript = require('./lib/bundle-javascript');
 
 try {
   // This does a pretty great job at figuring out booleans.
@@ -326,14 +327,13 @@ if (!module.parent) {
     });
     localeBuild(components, ["en-US"], function(map) {
       i18n.addLocaleObject(map, function(err) {
-        if(!err) {
-          http.createServer(app).listen(app.get('port'), function(){
+        if (err) return console.error(err);
+        bundleJavascript(function (err) {
+          if (err) return console.error(err);
+          http.createServer(app).listen(app.get('port'), function() {
             console.log("Express server listening on port " + app.get('port'));
           });
-        }
-        else{
-          console.log(err);
-        }
+        });
       });
     });
   });
