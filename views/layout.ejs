@@ -45,7 +45,7 @@
       // all the components so that we can use it when the HTML file loaded.
       (function(localized) {
         localized.ready({url: "/strings/" + localized.getCurrentLang() });
-      })(Designer.L10n);
+      })(require('vendor/l10n'));
     </script>
 
     <% bundles.emit('designer-components.html').forEach(function(href) { %>
@@ -78,9 +78,7 @@
   <body>
     <%- body %>
     <script type="text/javascript">
-      (function(){
-        var languages = require('webmaker-language-picker');
-        console.log('loaded languages');
+      (function(languages){
         languages.ready({
           css: function() {
             var $currentLang = $('#current-language');
@@ -92,7 +90,7 @@
             };
           }
         });
-      })();
+      })(require('webmaker-language-picker'));
     </script>
   </body>
 </html>
