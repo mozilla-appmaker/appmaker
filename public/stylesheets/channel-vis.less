@@ -35,6 +35,15 @@
     font-size: 11px;
     line-height: 16px;
     .border-radius(4px);
+
+    &.in-channel-direction {
+      background-image: -moz-linear-gradient(left,rgba(136,136,136,0),rgba(136,136,136,.3));
+      background-image: -webkit-linear-gradient(left,rgba(136,136,136,0),rgba(136,136,136,.3));
+    }
+    &.out-channel-direction {
+      background-image: -moz-linear-gradient(left,rgba(136,136,136,.3),rgba(136,136,136,0));
+      background-image: -webkit-linear-gradient(left,rgba(136,136,136,.3),rgba(136,136,136,0));
+    }
   }
 
   .chan-label {
@@ -50,6 +59,8 @@
     cursor: pointer;
     padding: 0;
     margin:0;
+    background-color: #888888;
+    overflow: hidden;
 
     &:hover {
       -webkit-transform: scale(1.1);

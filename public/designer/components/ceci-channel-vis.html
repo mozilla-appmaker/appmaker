@@ -8,14 +8,23 @@
       attached: function () {
         this.component = this.parentNode;
         this.component.addEventListener('CeciChannelUpdated', this.updateChannelVis.bind(this));
+
+        var that = this;
+
+        this.updateChannelElements();
+        this.channelElements.forEach(function(el,index){
+          var channelname = el.getAttribute("on");
+          if (!that.channels[channelname]) {
+            that.channels[channelname] = "888888";
+          }
+        });
       },
       domReady : function(){
         this.updateChannelVis();
       },
-      updateChannelVis: function() {
-        var that = this;
-        var elements;
+      updateChannelElements: function() {
         var inbound = this.direction === "in";
+        var elements;
 
         if(inbound) {
           elements = this.component.querySelectorAll("ceci-listen");
@@ -23,12 +32,11 @@
           elements = this.component.querySelectorAll("ceci-broadcast");
         }
 
-        elements = elements.array();
-        // Remove all existing channel lines
-        var existingLines = this.lines;
-        existingLines.innerHTML = "";
-
-        elements.sort(function(a,b) {
+        this.channelElements = elements.array();
+      },
+      sortChannelElements: function() {
+        var inbound = this.direction === "in";
+        this.channelElements.sort(function(a,b) {
           if(inbound) {
             a = a.for;
             b = b.for;
@@ -41,8 +49,19 @@
           }
           return a === b ? 0 : a<b ? -1 : 1;
         });
+      },
+      clearChannelLines: function() {
+        // Remove all existing channel lines
+        var existingLines = this.lines;
+        existingLines.innerHTML = "";
+      },
+      updateChannelVis: function() {
+        var that = this;
 
-        elements.forEach(function(el,index){
+        this.updateChannelElements();
+        this.clearChannelLines();
+        this.sortChannelElements();
+        this.channelElements.forEach(function(el,index){
           el.addEventListener('signalFired', function(data){
             that.fire(data);
           });
@@ -63,18 +82,21 @@
             }
           }
 
-          var rgb = hexToRgb(that.channels[channelname]);
+          var channelColor = that.channels[channelname];
+          var rgb = hexToRgb(channelColor);
 
-          label.style.background = "#" + that.channels[channelname];
+          label.style.background = "#" + channelColor;
 
           if(that.direction == "in") {
             channel.setAttribute("for",el.getAttribute("for"));
-            channel.style.backgroundImage = "-moz-linear-gradient(left,rgba("+rgb+",0),rgba("+rgb+",.3)";
-            channel.style.backgroundImage = "-webkit-linear-gradient(left,rgba("+rgb+",0),rgba("+rgb+",.3)";
+            channel.classList.add("in-channel-direction");
+            channel.style.backgroundImage = "-moz-linear-gradient(left,rgba("+rgb+",0),rgba("+rgb+",.3))";
+            channel.style.backgroundImage = "-webkit-linear-gradient(left,rgba("+rgb+",0),rgba("+rgb+",.3))";
 
           } else {
-            channel.style.backgroundImage = "-webkit-linear-gradient(left,rgba("+rgb+",.3),rgba("+rgb+",0)";
-            channel.style.backgroundImage = "-moz-linear-gradient(left,rgba("+rgb+",.3),rgba("+rgb+",0)";
+            channel.classList.add("out-channel-direction");
+            channel.style.backgroundImage = "-webkit-linear-gradient(left,rgba("+rgb+",.3),rgba("+rgb+",0))";
+            channel.style.backgroundImage = "-moz-linear-gradient(left,rgba("+rgb+",.3),rgba("+rgb+",0))";
             channel.setAttribute("from",el.getAttribute("from"));
           }
 

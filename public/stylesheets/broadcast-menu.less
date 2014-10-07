@@ -191,7 +191,7 @@
     float: left;
   }
 
-  .color,
+  .channel-button,
   .chosen-color {
     width: 20px;
     padding: 1px 0 2px 0;
@@ -206,7 +206,7 @@
   }
 
 
-  .color,
+  .channel-button,
   .chosen-color {
     width: 20px;
     padding: 1px 0 2px 0;
@@ -214,6 +214,8 @@
     text-align: center;
     .border-radius(20px);
     color: white;
+    background: none repeat scroll 0% 0% #888888;
+    overflow: hidden;
   }
 
   .color-options {
@@ -250,15 +252,20 @@
       width: 160px;
     }
 
-    .color {
+    .custom-channel-input {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .channel-button {
       color: rgba(255,255,255,.75);
       cursor: pointer;
       margin: 0 3px 3px 0;
       opacity: .4;
-      display: block;
       float: left;
       width: 20px;
       padding: 1px 0 2px 0;
+      overflow: hidden;
       -webkit-transition: opacity .05s linear;
 
       &:hover {
@@ -267,21 +274,33 @@
       }
 
       &[data-channel=off] {
-        background: none;
-        text-transform: none;
-        color: #777;
-        color: white;
-        opacity: 1;
-        margin-top: 5px;
         background: #DDD;
-        float: none;
-        width: auto;
-        clear: both;
 
         &:hover {
           text-decoration: none;
           background: #BBB;
         }
+      }
+
+      &.custom-channel-button {
+        background: #CDF;
+
+        &:hover {
+          text-decoration: none;
+          background: #ABD;
+        }
+      }
+
+      &[data-channel=off],
+      &.custom-channel-button {
+        text-transform: none;
+        color: #777;
+        color: white;
+        opacity: 1;
+        margin-top: 5px;
+        float: none;
+        width: auto;
+        clear: both;
 
       }
 

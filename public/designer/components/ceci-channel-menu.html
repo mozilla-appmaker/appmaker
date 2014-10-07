@@ -15,7 +15,11 @@
               <h3></h3>
               <div class="color-options"></div>
               <div>
-                <div data-color="off" class="color" data-channel="off">Disable</div>
+                <div class="channel-button custom-channel-button">Custom</div>
+                <input class="hidden custom-channel-input">
+              </div>
+              <div>
+                <div data-color="off" class="channel-button color-button" data-channel="off">Disable</div>
               </div>
             </div>
             <a class="label"><span class="channel-name"></span><div data-color="off" class="chosen-color"></div></a>
@@ -33,25 +37,35 @@
             e.stopPropagation();
           });
         },
-        attached: function () {
+        domReady: function () {
           this.menuWrapper = this.shadowRoot.querySelector(".channel-menu-wrapper");
           this.menu = this.menuWrapper.querySelector(".channel-menu");
-          this.hideMenu();
           var optionsWrapper = this.menuWrapper.querySelector(".color-options");
+          this.hideMenu();
           var channelNames = Object.keys(this.channels);
-
-          for(var i=0; i < channelNames.length; i++){
-            var channelName = channelNames[i];
-            var color = this.channels[channelName];
-            var option = document.createElement("div");
-            option.classList.add("color");
-            option.textContent = channelName;
-            option.style.background = "#" + color;
-            option.setAttribute("data-channel",channelName);
-            optionsWrapper.appendChild(option);
-          }
-
+          var customChannels = {};
           var that = this;
+
+          channelNames.sort(function(a, b) {
+            if (that.defaultChannelNames.indexOf(a) >= 0 && that.defaultChannelNames.indexOf(b) < 0) {
+              return -1
+            }
+            if (that.defaultChannelNames.indexOf(a) < 0 && that.defaultChannelNames.indexOf(b) >= 0) {
+              return 1
+            }
+            if (a > b) {
+              return 1
+            }
+            if (a < b) {
+              return -1
+            }
+            return 0;
+          });
+
+          channelNames.forEach(function(channelName) {
+            that.addChannel(channelName, that.channels[channelName], optionsWrapper);
+          });
+
           this.onHideMenu = function(){
             that.hideMenu();
           };
@@ -92,6 +106,17 @@
         detached: function() {
           window.removeEventListener("menuOpen", this.onHideMenu);
           window.removeEventListener("designerClick", this.onHideMenu);
+          window.removeEventListener("customchanneladded", this.onCustomChannelAdded);
+        },
+        addChannel: function(channelName, color, optionsWrapper) {
+          color || "888888";
+          var option = document.createElement("div");
+          option.classList.add("channel-button");
+          option.classList.add("color-button");
+          option.textContent = channelName;
+          option.style.background = "#" + color;
+          option.setAttribute("data-channel",channelName);
+          optionsWrapper.appendChild(option);
         },
         toggleMenu : function(){
           this.menuWrapper.classList.toggle("open");
@@ -138,7 +163,7 @@
           var bchans = channelMap.broadcastchannels;
           var lchans = channelMap.listenerchannels;
 
-          var channels = this.shadowRoot.querySelectorAll(".channel-option:not(.option-template) .color-ui .color");
+          var channels = this.shadowRoot.querySelectorAll(".channel-option:not(.option-template) .color-ui .color-button");
 
           // loops through all the channel dots
 
@@ -206,7 +231,7 @@
 
           function colorListClickHandler(handlerType){
             return function(event) {
-              if(event.target.classList.contains("color")){
+              if(event.target.classList.contains("color-button")){
 
                 that.menu.classList.remove("picking-colors");
                 var channelOption = event.target.parentNode.parentNode.parentNode;
@@ -246,8 +271,18 @@
           keys.forEach(function(key) {
             var channelTemplate = that.shadowRoot.querySelector(".option-template");
             var channelOption = channelTemplate.cloneNode(true);
+            var optionsWrapper = channelOption.querySelector(".color-options");
             var heading = channelOption.querySelector("h3");
             var headingText;
+
+            this.onCustomChannelAdded = function(e) {
+              var channelName = e.detail.channelName;
+              var channelColor = "888888";
+              that.channels[channelName] = channelColor;
+              that.addChannel(channelName, channelColor, optionsWrapper);
+            };
+
+            window.addEventListener("customchanneladded", this.onCustomChannelAdded);
 
             var localizedSetter = L10n.get('Set {attribute}') || 'Set {attribute}';
             var matchLabel = key.match(/[^_]*_(.+)/);
@@ -278,7 +313,7 @@
               that.showColorUI(method);
             });
 
-            var colorOptions = channelOption.querySelectorAll(".color-ui .color");
+            var colorOptions = channelOption.querySelectorAll(".color-ui .color-button");
 
             //Check if there's a listener for that element already and set the appropriate color.
             var existingEl = that.component.querySelector("ceci-" + that.channeltype + "["+handlerType+"="+key+"]");
@@ -292,6 +327,30 @@
 
             //Set up all of the click stuff for color options
             channelOption.querySelector(".color-ui").addEventListener("click",colorListClickHandler(handlerType));
+
+            channelOption.querySelector(".custom-channel-button").addEventListener("click", function() {
+              var customChannelInput = channelOption.querySelector(".custom-channel-input");
+              this.classList.add("hidden");
+              customChannelInput.classList.remove("hidden");
+              customChannelInput.focus();
+              function onClose() {
+                customChannelInput.removeEventListener("blur", onClose);
+                customChannelInput.removeEventListener("change", onClose);
+                var value = this.value.trim();
+                if (value) {
+                  this.value = "";
+                  window.dispatchEvent(new CustomEvent("customchanneladded", {
+                    "detail": {
+                      "channelName": value
+                    }
+                  }));
+                }
+                channelOption.querySelector(".custom-channel-button").classList.remove("hidden");
+                customChannelInput.classList.add("hidden");
+              }
+              customChannelInput.addEventListener("blur", onClose);
+              customChannelInput.addEventListener("change", onClose);
+            });
           });
         }
       });
