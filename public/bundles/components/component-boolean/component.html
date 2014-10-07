@@ -1,4 +1,4 @@
-<polymer-element name="ceci-bool" extends="ceci-element" attributes="checkif" checkif="hello">
+<polymer-element name="ceci-bool" extends="ceci-element" attributes="checkif sendiftrue sendiffalse" checkif="hello" sendiftrue="true" sendiffalse="false">
   <ceci-definition>
     {
       "name": "Boolean Gate",
@@ -29,6 +29,16 @@
           "label": "Check If",
           "editable": "Text",
           "default" : true
+        },
+        "sendiftrue": {
+          "description": "Value to send if true.",
+          "label": "If True Value",
+          "editable": "Text"
+        },
+        "sendiffalse": {
+          "description": "Value to send if false.",
+          "label": "If False Value",
+          "editable": "Text"
         }
       }
     }
@@ -54,10 +64,10 @@
         },
         signal : function(value){
           if (value.toString().toLowerCase() === this.checkif.toLowerCase()) {
-            this.broadcast("true", "true");
+            this.broadcast("true", this.sendiftrue);
           }
           else {
-            this.broadcast("false", "false");
+            this.broadcast("false", this.sendiffalse);
           }
         }
       });
