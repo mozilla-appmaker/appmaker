@@ -53,4 +53,4 @@ if(!NodeList.prototype.array) {
 //   }
 // }
 
-global.Designer = Designer;
+window.Designer = Designer;

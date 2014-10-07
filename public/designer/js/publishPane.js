@@ -15,7 +15,7 @@ var mailLink;
 var installQRCode;
 
 // TODO: require explicitly instead of relying on global object.
-var QRCode = global.QRCode;
+var QRCode = window.QRCode;
 
 function findImportantDOMElements () {
   master = document.getElementById('publish-pane');

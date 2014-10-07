@@ -4,7 +4,7 @@
 
 // TODO: Don't depend on TogetherJS attachment to the global object,
 // explicitly require it.
-var TogetherJS = global.TogetherJS;
+var TogetherJS = window.TogetherJS;
 
 module.exports = {
   init: function (userState) {

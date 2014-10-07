@@ -24,7 +24,7 @@ var Editable = require('./editable');
 var CustomEvent = require('vendor/customevent');
 
 // TODO: maybe explicitly require this instead of depending on global scope.
-var Polymer = global.Polymer;
+var Polymer = window.Polymer;
 
 //When we show a new card, check to see if there was a selected element on it previously
 //and select it if there was.
