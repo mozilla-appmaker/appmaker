@@ -32,13 +32,8 @@
 
     <link rel="import" href="/vendor/polymer/polymer.html">
 
-    <% if (!!process.env.BUNDLE) { %>
-      <script src="/javascripts/common.js"></script>
-      <script src="/javascripts/designer-bundle.js"></script>
-    <% } else { %>
-      <script src="/vendor/requirejs/require.js"></script>
-      <script src="/javascripts/requireConfig.js"></script>
-    <% } %>
+    <script src="/build/common.js"></script>
+    <script src="/build/designer-bundle.js"></script>
 
     <script>
       // We need to make sure we have our client-side .json file loaded before

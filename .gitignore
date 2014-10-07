@@ -52,5 +52,6 @@ public/stylesheets/variables.css
 public/bundles/components/mozilla-appmaker.html
 public/bundles/components/mozilla-appmaker-min.html
 /public/designer-components.html
-/public/javascripts/designer-bundle.js
-/public/javascripts/common.js
+
+/public/build/*
+!/public/build/.gitkeep
