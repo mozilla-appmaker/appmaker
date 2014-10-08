@@ -126,10 +126,15 @@
                 ceciApp.remixedfrom = remixedFrom;
               }
             });
-            application.loadAppByUrl(remixedFrom);
-            that.editingmode = 'draft';
-            that.updateAppName(l10n.get("Unsaved App"));
-            analytics.event("Loaded Remix Content");
+            application.loadAppByUrl(remixedFrom, function(error, data) {
+              if (error) {
+                return that.failedAppLoad();
+              }
+
+              that.editingmode = 'remix';
+              that.updateAppName(l10n.get("Remix of") + " " + data.getAttribute("name"));
+              analytics.event("Loaded Remix Content");
+            });
           }
 
           function setupTempApp() {
@@ -235,7 +240,7 @@
 
             // If there are bricks in the app and we're in draft mode,
             // confirm possible loss of work.
-            if(self.editingmode === "draft"){
+            if(self.editingmode !== "saved"){
               var hasBricks = false;
               var cards = document.querySelectorAll("ceci-card").array();
               for(var i = 0; i < cards.length; i++) {
@@ -273,7 +278,13 @@
 
           //Save App As
           var saveAsHandler = function() {
-            var name = window.prompt(l10n.get("What do you want to call this app?"));
+            var name = "";
+            var ceciApp = document.querySelector('ceci-app');
+            if (self.editingmode === "remix") {
+              name = window.prompt(l10n.get("What do you want to call this remix?"), ceciApp.getAttribute("name"));
+            } else {
+              name = window.prompt(l10n.get("What do you want to call this app?"));
+            }
             self.saveAppAs(name);
           };
 
@@ -285,9 +296,9 @@
             e.addEventListener("click", function() {
               var ceciApp = document.querySelector('ceci-app');
               var html = ceciApp.outerHTML;
-              var name = ceciApp.name;
+              var name = ceciApp.getAttribute("name");
 
-              if(self.editingmode === "draft"){
+              if(self.editingmode !== "saved"){
                 saveAsHandler();
                 return;
               }
@@ -319,12 +330,16 @@
             // Need to use querySelector because first-child returns null (bug?)
             app.querySelector("ceci-card").show();
 
-            var name = app.name;
+            var name = app.getAttribute("name");
             // This is a new app, so get a new name for it.
-            if (!name || name === l10n.get("Unsaved App")) {
+            if (self.editingmode !== "saved" || !name || name === l10n.get("Unsaved App")) {
               // window.prompt needs to be made its own thing so it can be called
               // in various places:
-              name = window.prompt("Please name your app first:");
+              if (self.editingmode === "remix") {
+                name = window.prompt("Please name your remix first:", name);
+              } else {
+                name = window.prompt("Please name your app first:");
+              }
               if (name === null) {
                 return self.appRenameFailed(l10n.get("Save was cancelled."));
               } else if (!name.trim()) {
@@ -450,8 +465,8 @@
         updateAppName: function(name){
           this.getOrWaitForCeciApp(function(ceciApp){
             if (ceciApp && name) {
-              ceciApp.name = name;
-              document.querySelector(".phone-top .app-name").textContent = ceciApp.name;
+              ceciApp.setAttribute("name", name);
+              document.querySelector(".phone-top .app-name").textContent = name;
             }
           });
         },
