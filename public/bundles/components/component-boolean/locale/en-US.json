@@ -8,5 +8,9 @@
   "ceci-bool/signal/description": "The signal to match",
   "ceci-bool/signal/label": "Signal",
   "ceci-bool/checkif/description": "Check if the incoming signal matches this string.",
-  "ceci-bool/checkif/label": "Check If"
+  "ceci-bool/checkif/label": "Check If",
+  "ceci-bool/sendiftrue/description": "Value to send if true.",
+  "ceci-bool/sendiftrue/label": "If True Value",
+  "ceci-bool/sendiffalse/description": "Value to send if false.",
+  "ceci-bool/sendiffalse/label": "If False Value"
 }
