@@ -1,4 +1,4 @@
-<polymer-element name="ceci-element-base">
+<polymer-element name="ceci-element-base" attributes="cclsid">
   <template>
     <content></content>
   </template>
@@ -126,6 +126,11 @@
 
       return defaultBroadcasts;
     }
+
+    function uid() {
+      var rand = (Math.random()*100000000)|0;
+      return "uuid-" + Date.now() + "-" + rand;
+    }
   </script>
 
 
@@ -135,6 +140,34 @@
     Polymer('ceci-element-base', {
       elementReady: false,
       eventListeners : [],
+      saveData: function(data) {
+        var id;
+        if(!this.getAttribute("cclsid")) {
+          do { id = uid(); console.log(id); } while(document.querySelector("*[cclsid='']"));
+          this.setAttribute("cclsid", id);
+        }
+        id = this.getAttribute("cclsid");
+        var storage = { data: data };
+        localStorage.setItem("ceci-"+id, JSON.stringify(storage));
+      },
+      loadData: function() {
+        var id = this.getAttribute("cclsid");
+        if(id) {
+          var storage = localStorage.getItem("ceci-"+id);
+          if (!storage) {
+            return false;
+          }
+          try {
+            var data = JSON.parse(storage).data;
+            localStorage.removeItem("ceci-"+id);
+            return data;
+          } catch (e) {
+            console.error("The data stored in association with this element could not be parsed");
+          }
+        } else {
+          console.error("There was no data stored in association with this element");
+        }
+      },
       sounds : {},
       playSound : function(sound,volume){
         if(this.sounds[sound] && this.ctx){
