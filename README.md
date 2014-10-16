@@ -149,9 +149,9 @@ node app
 
 ## Component Development
 
-So you want to make a component? That's great, we want to work with you! <a href="https://github.com/mozilla-appmaker/appmaker/wiki/Contributing-a-component">Here's a guide</a> where you can learn what components are, how they are built, how to make your own and finally how to submit your finished component to Appmaker.
+So you want to make a component? That's great, we want to work with you! <a href="https://github.com/mozilla-appmaker/appmaker/wiki/Contributing-a-brick">Here's a guide</a> where you can learn what components are, how they are built, how to make your own and finally how to submit your finished component to Appmaker.
 
-<a href="https://github.com/mozilla-appmaker/appmaker/wiki/Contributing-a-component">Guide to Contributing a Component</a>
+<a href="https://github.com/mozilla-appmaker/appmaker/wiki/Contributing-a-brick">Guide to Contributing a Component</a>
 
 
 Technical reading:
