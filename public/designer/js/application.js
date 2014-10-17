@@ -5,11 +5,11 @@
 define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"], function($, l10n, reporter, Editable, publishPane) {
 
     return {
-      getCurrentApp: function(){
+      getStoredAppName: function(){
         var currentApp = localStorage.currentApp;
         return currentApp;
       },
-      setCurrentApp: function(name){
+      setStoredAppName: function(name){
         if (name && name !== l10n.get("Unsaved App")) {
           localStorage.currentApp = name;
         }
@@ -18,7 +18,7 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
           history.pushState({}, "", location.origin + location.pathname);
         }
       },
-      clearCurrentApp: function(){
+      clearStoredAppName: function(){
         localStorage.removeItem("currentApp");
         Editable.removeAttributes();
       },
@@ -27,8 +27,8 @@ define(["jquery", "l10n", "reporter","designer/editable", "designer/publishPane"
         var parent = app.parentNode;
         parent.removeChild(app);
         parent.appendChild(document.createElement('ceci-app'));
-//      // TODO https://github.com/mozilla-appmaker/appmaker/issues/897
-//      // we have to decouple appidChanged and initFirebase
+        // TODO https://github.com/mozilla-appmaker/appmaker/issues/897
+        // we have to decouple appidChanged and initFirebase
         app.setAttribute("appid", "ceci-app-"+uuid());
         history.pushState({}, "", location.origin);
       },
