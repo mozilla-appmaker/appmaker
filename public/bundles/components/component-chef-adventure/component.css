@@ -1,0 +1,112 @@
+:host {
+  display: block;
+  width: 100%;
+  position: relative;
+  margin: auto;
+}
+
+:host(.selected) .tile-palette-container {
+  display: block;
+}
+
+:host .tile-palette-container {
+  bottom: -132px;
+  position: absolute;
+  width: 100%;
+  border: 1px solid #000;
+  font-size: 0;
+  display: none;
+  background-color: white;
+}
+
+:host .tile-palette {
+  width: 100%;
+}
+
+:host .palette-button {
+  height: 32px;
+  width: 32px;
+  display: inline-block;
+  padding: 0;
+  cursor: pointer;
+}
+
+:host .palette-block {
+  height: 32px;
+  width: 32px;
+  display: inline-block;
+  padding: 0;
+  cursor: pointer;
+  
+}
+
+:host .palette-selected {
+  opacity: 0.5;
+}
+
+:host .tile-editor-canvas {
+  height: 160px;
+  width: 160px;
+}
+
+:host .palette-clearobject {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  overflow: hidden;
+  border: 1px solid #888;
+  cursor: pointer;
+}
+
+:host .palette-clearobject span {
+  height: 150%;
+  width: 150%;
+  top: 27%;
+  left: 27%;
+  position: absolute;
+  display: inline-block;
+  border-left: 2px solid red;
+  transform: rotate(45deg);
+  cursor: pointer;
+}
+
+:host .tile-editor-container {
+  font-size: 0;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: white;
+  border-style: solid;
+  border-color: black;
+  border-top-width: 1px;
+  border-right-width: 0;
+  border-bottom-width: 0;
+  border-left-width: 0;
+  z-index: 1;
+}
+
+:host .tile-editor-pixel {
+  height: 9px;
+  width: 9px;
+  display: inline-block;
+  border-style: solid;
+  border-color: black;
+  border-bottom-width: 1px;
+  border-right-width: 0;
+  border-top-width: 0;
+  border-left-width: 1px;
+  cursor: pointer;
+}
+
+:host .tile-editor-pixel:hover {
+  opacity: 0.5;
+}
+
+:host .tile-editor-palette {
+  width: 25px;
+  height: 100%;
+}
+
+
+

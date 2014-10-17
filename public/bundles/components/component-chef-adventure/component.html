@@ -1,0 +1,846 @@
+<script src="gamelogic.js"></script>
+<polymer-element name="ceci-chef-adventure" extends="ceci-element"
+  attributes="ground1 ground2 ground3 ground4 ground5 ground6 ground7 ground8 ground9 wall1 wall2 wall3 wall4 wall5 wall6 wall7 wall8 wall9 groundsprite1 groundsprite2 groundsprite3 groundsprite4 groundsprite5 groundsprite6 groundsprite6 groundsprite7 groundsprite8 groundsprite9 wall1sprite wall2sprite wall3sprite wall4sprite wall5sprite wall6sprite wall7sprite wall8sprite wall9sprite playersprite object1sprite object2sprite object3sprite object4sprite object5sprite object6sprite object7sprite object8sprite"
+  object1sprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAzElEQVRYhe3UvQ2DMBAFYIZhA6qMwAbMwAQpYQRYBykrpKSijZSWVFRH9QqecjE/jnxYnPQahPw+2ZaT5JqNk94y+ZV4AShwzd8gwQC84OPzkm8ZplGGaZS676TuO3+QYADechRwMaZ5PxeJD8CFAHEAOHwUwQCuYu0SIkVbSdFW+4/CLEC7hC7A5qMwB+AHZi0gv5eLnBfADwwKtACK4Pt5AAxBMbaSCzj83+GXMDhAW9gF2L31ZgAM0S6Zt0tnFsCQtfFWbAZwTbQzA8rYHDy1wvBhAAAAAElFTkSuQmCC"
+  object2sprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAgklEQVRYhe3VwQ2AIBBEUXqyBzqlJy7Wsh6Q6AIBzAquZEjmKP/FC8Y8P9TY8DMdwAKtMwL0GaAc3LeueWfJOyuCKAPEy8mcy35+2AqAzjAPXt/JIQAAAAAAAPwEkDy/ACwF4JAMEHa78PWwUkDnYngJAIPEpYFKUBxWA6iCZgSHAg7zXEk/1N6i5AAAAABJRU5ErkJggg=="
+  object3sprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAo0lEQVRYhe3WQQ6AIAwEwPX/T/JnXOpBQ0SFtlAsRDfhooadiGkE9CFmdY8bgAAQl54QN4CsOIAQQMu6L0uIG4CA04ZHAQewhPwAN8BjMQfIQeJ1BWRMQGumAIgGTtww3I9HdEQFyByAXLEUMj6A+/i+B7gNFCVAM5rdASZHkb1vPQndAVxqXv0wgARSG7M/Ik9AApGCrs+3FA8DKILeKOwK2AD53p+z3UDayAAAAABJRU5ErkJggg=="
+  object4sprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAo0lEQVRYhe3WQQ6AIAwEwPX/T/JnXOpBQ0SFtlAsRDfhooadiGkE9CFmdY8bgAAQl54QN4CsOIAQQMu6L0uIG4CA04ZHAQewhPwAN8BjMQfIQeJ1BWRMQGumAIgGTtww3I9HdEQFyByAXLEUMj6A+/i+B7gNFCVAM5rdASZHkb1vPQndAVxqXv0wgARSG7M/Ik9AApGCrs+3FA8DKILeKOwK2AD53p+z3UDayAAAAABJRU5ErkJggg=="
+  object5sprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAo0lEQVRYhe3WQQ6AIAwEwPX/T/JnXOpBQ0SFtlAsRDfhooadiGkE9CFmdY8bgAAQl54QN4CsOIAQQMu6L0uIG4CA04ZHAQewhPwAN8BjMQfIQeJ1BWRMQGumAIgGTtww3I9HdEQFyByAXLEUMj6A+/i+B7gNFCVAM5rdASZHkb1vPQndAVxqXv0wgARSG7M/Ik9AApGCrs+3FA8DKILeKOwK2AD53p+z3UDayAAAAABJRU5ErkJggg=="
+  object6sprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAo0lEQVRYhe3WQQ6AIAwEwPX/T/JnXOpBQ0SFtlAsRDfhooadiGkE9CFmdY8bgAAQl54QN4CsOIAQQMu6L0uIG4CA04ZHAQewhPwAN8BjMQfIQeJ1BWRMQGumAIgGTtww3I9HdEQFyByAXLEUMj6A+/i+B7gNFCVAM5rdASZHkb1vPQndAVxqXv0wgARSG7M/Ik9AApGCrs+3FA8DKILeKOwK2AD53p+z3UDayAAAAABJRU5ErkJggg=="
+  object7sprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAo0lEQVRYhe3WQQ6AIAwEwPX/T/JnXOpBQ0SFtlAsRDfhooadiGkE9CFmdY8bgAAQl54QN4CsOIAQQMu6L0uIG4CA04ZHAQewhPwAN8BjMQfIQeJ1BWRMQGumAIgGTtww3I9HdEQFyByAXLEUMj6A+/i+B7gNFCVAM5rdASZHkb1vPQndAVxqXv0wgARSG7M/Ik9AApGCrs+3FA8DKILeKOwK2AD53p+z3UDayAAAAABJRU5ErkJggg=="
+  object8sprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAo0lEQVRYhe3WQQ6AIAwEwPX/T/JnXOpBQ0SFtlAsRDfhooadiGkE9CFmdY8bgAAQl54QN4CsOIAQQMu6L0uIG4CA04ZHAQewhPwAN8BjMQfIQeJ1BWRMQGumAIgGTtww3I9HdEQFyByAXLEUMj6A+/i+B7gNFCVAM5rdASZHkb1vPQndAVxqXv0wgARSG7M/Ik9AApGCrs+3FA8DKILeKOwK2AD53p+z3UDayAAAAABJRU5ErkJggg=="
+  groundsprite1="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAhUlEQVRYhe3XwQ2AIAwF0JowL2ENZiCM5ghsgNa7CQG02C96+Oc+4KcJtO4La4Y+A7CB2AYCBrho2EXzOAQHUErKnlP2Ylfe3QE1wNXBvRBcwGjY+wDSg/EB0oupdAA8QOsCkYLgAaSepLW0+IC7ZaxB8AGjMzFgq2R+wCn4/wKt/AB1wAEpUF7eamflHQAAAABJRU5ErkJggg=="
+  groundsprite2="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAcElEQVRYhWNQndP9nxJsfWg9RZhh0DhAe+M8kjC6A0jVP3gdQCjICTmAUJCPOmDUAaMOGPwOGPCCaMAcMOCV0YA5gFIDKPXA4HEAuYmI0kQ8+BxAakFCaUE26oBRB4w6YPA5YMALogFzwIBXRgPlAACYFuoIz4eN8QAAAABJRU5ErkJggg=="
+  groundsprite3="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAALUlEQVRYhe3OIQEAAAwCMPqXItofAzMxv7S9pQgICAgICAgICAgICAgICKwDD6z98LW6I5kUAAAAAElFTkSuQmCC"
+  groundsprite4="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAALUlEQVRYhe3OIQEAAAwCMPqXItofAzMxv7S9pQgICAgICAgICAgICAgICKwDD6z98LW6I5kUAAAAAElFTkSuQmCC"
+  groundsprite5="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAALUlEQVRYhe3OIQEAAAwCMPqXItofAzMxv7S9pQgICAgICAgICAgICAgICKwDD6z98LW6I5kUAAAAAElFTkSuQmCC"
+  groundsprite6="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAALUlEQVRYhe3OIQEAAAwCMPqXItofAzMxv7S9pQgICAgICAgICAgICAgICKwDD6z98LW6I5kUAAAAAElFTkSuQmCC"
+  groundsprite7="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAALUlEQVRYhe3OIQEAAAwCMPqXItofAzMxv7S9pQgICAgICAgICAgICAgICKwDD6z98LW6I5kUAAAAAElFTkSuQmCC"
+  groundsprite8="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAALUlEQVRYhe3OIQEAAAwCMPqXItofAzMxv7S9pQgICAgICAgICAgICAgICKwDD6z98LW6I5kUAAAAAElFTkSuQmCC"
+  groundsprite9="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAALUlEQVRYhe3OIQEAAAwCMPqXItofAzMxv7S9pQgICAgICAgICAgICAgICKwDD6z98LW6I5kUAAAAAElFTkSuQmCC"
+  wall1sprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAk0lEQVRYhWOom8vzv24uz//de1aQhGH6KNXPMOAOaMhy/t+Q5fx/ydRSkjDMIEr1jzpg5Dlg9+5lEDxiHTDgUTDqAKIdUJ/l9L8+y2kEOABWKcAMIhajV0bk6h88DhhtD5CaiA4dXPP/0ME1BBMhrOjFpX/4O4CQ/uHnAEIF2PB3wIBHwagDRh1AsgMGTXU8UA4AANEaiS8F8jfjAAAAAElFTkSuQmCC"
+  wall2sprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAiUlEQVRYhWM40SPwfyAxw4A7INeK6f9A4MHnAJjAgiBmmuKh4wBqJ7ah5wBq4W21LP+31bIMQQfAxHEZSAgPHwfUOEHwqANwRQk6Rjdn1AGjDhh+DiCEqV4UDxoHEAp6XHjoOOBQK8v/Q62YCsnFQ9cBsCCnFkaPksHvAGo3RgnhweMAeuNB4wAA8HXyXulpvwIAAAAASUVORK5CYII="
+  wall3sprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAeUlEQVRYhWNY3PLo/0BihgF3gKdNzX9Pm5r/bVnnaIJhFuESH7oOgOkjV//QdQCuICXXnFEHDD0HoBuAy0FDzwG0LpBGHTD4HUAvi0cdMHQdQK3ESnaTbMAcgF7UjlwHkFvpUJwIB9wBtMLD1wHEmjf4HDBQeMAdAACZk61XAUosyAAAAABJRU5ErkJggg=="
+  wall4sprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAbElEQVRYhWPwmV3632d26f+JV6cPCGYYcAcYlAT9NygJ+g9zCL3wqAOGvgNgBgx/B8DkycVD3wHkFjDDzwHEJtZRB4w6YNQBw98BhPDwdQAujEvd8HEArfCoA4aOA4htYg19B9Abwxwy4A4AAEMumjQBe3MiAAAAAElFTkSuQmCC"
+  wall5sprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAALUlEQVRYhe3OIQEAAAwCMPqXItofAzMxv7S9pQgICAgICAgICAgICAgICKwDD6z98LW6I5kUAAAAAElFTkSuQmCC"
+  wall6sprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAALUlEQVRYhe3OIQEAAAwCMPqXItofAzMxv7S9pQgICAgICAgICAgICAgICKwDD6z98LW6I5kUAAAAAElFTkSuQmCC"
+  wall7sprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAALUlEQVRYhe3OIQEAAAwCMPqXItofAzMxv7S9pQgICAgICAgICAgICAgICKwDD6z98LW6I5kUAAAAAElFTkSuQmCC"
+  wall8sprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAALUlEQVRYhe3OIQEAAAwCMPqXItofAzMxv7S9pQgICAgICAgICAgICAgICKwDD6z98LW6I5kUAAAAAElFTkSuQmCC"
+  wall9sprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAALUlEQVRYhe3OIQEAAAwCMPqXItofAzMxv7S9pQgICAgICAgICAgICAgICKwDD6z98LW6I5kUAAAAAElFTkSuQmCC"
+  playersprite="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAoUlEQVRYhe3TsQ2AIBBAUXawI1ZOYMIYVi7jLI7gGtc7BCGhtGGBs6LwkGAMipgrfgOX4zUI5xyWTDCAAcUBWmvMGQAcSs2XB1hrMWcUkJpnQD0Auvhq9QG2dXm0egAwTwjzFCxoZYOtbII5eh7bw4B6AFeLQV/7BdkBxphD46BO8w/76L3qO1R9F+zzfRdAITFAKgb8B+AX3Y0BsYc/A9gBIK4UDHNyGoUAAAAASUVORK5CYII=">
+  <ceci-definition>
+    {
+      "name": "Chef Adventure",
+      "thumbnail": "./thumbnail.png",
+      "description": "",
+      "attributes": {
+        "playersprite": {
+          "description": "The player avatar",
+          "label": "Player Sprite",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "groundsprite1": {
+          "description": "",
+          "label": "Ground Sprite One",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "groundsprite2": {
+          "description": "",
+          "label": "Ground Sprite Two",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "groundsprite3": {
+          "description": "",
+          "label": "Ground Sprite Three",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "groundsprite4": {
+          "description": "",
+          "label": "Ground Sprite Four",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "groundsprite5": {
+          "description": "",
+          "label": "Ground Sprite Five",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "groundsprite6": {
+          "description": "",
+          "label": "Ground Sprite Six",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "groundsprite7": {
+          "description": "",
+          "label": "Ground Sprite Sevin",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "groundsprite8": {
+          "description": "",
+          "label": "Ground Sprite Eight",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "groundsprite9": {
+          "description": "",
+          "label": "Ground Sprite Nine",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "wall1sprite": {
+          "description": "",
+          "label": "Wall One Sprite",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "wall2sprite": {
+          "description": "",
+          "label": "Wall Two Sprite",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "wall3sprite": {
+          "description": "",
+          "label": "Wall Three Sprite",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "wall4sprite": {
+          "description": "",
+          "label": "Wall Four Sprite",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "wall5sprite": {
+          "description": "",
+          "label": "Wall Five Sprite",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "wall6sprite": {
+          "description": "",
+          "label": "Wall Six Sprite",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "wall7sprite": {
+          "description": "",
+          "label": "Wall Sevin Sprite",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "wall8sprite": {
+          "description": "",
+          "label": "Wall Eight Sprite",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "wall9sprite": {
+          "description": "",
+          "label": "Wall Nice Sprite",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "object1sprite": {
+          "description": "",
+          "label": "Object One Sprite",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "object2sprite": {
+          "description": "",
+          "label": "Object Two Sprite",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "object3sprite": {
+          "description": "",
+          "label": "Object Three Sprite",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "object4sprite": {
+          "description": "",
+          "label": "Object Four Sprite",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "object5sprite": {
+          "description": "",
+          "label": "Object Five Sprite",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "object6sprite": {
+          "description": "",
+          "label": "Object Six Sprite",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "object7sprite": {
+          "description": "",
+          "label": "Object Sevin Sprite",
+          "editable": "sprite",
+          "scale": 2
+        },
+        "object8sprite": {
+          "description": "",
+          "label": "Object Eight Sprite",
+          "editable": "sprite",
+          "scale": 2
+        }
+      },
+      "broadcasts": {
+        "exitleft": {
+          "description": "",
+          "label": ""
+        },
+        "exitright": {
+          "description": "",
+          "label": ""
+        },
+        "exittop": {
+          "description": "",
+          "label": ""
+        },
+        "exitbottom": {
+          "description": "",
+          "label": ""
+        },
+        "tilestep": {
+          "description": "",
+          "label": "Tile stepped on"
+        },
+        "blockcollision": {
+          "description": "",
+          "label": "Block collision"
+        },
+        "objectcollision": {
+          "description": "",
+          "label": "An object stepped on"
+        }
+      },
+      "listeners": {
+        "buttonpress": {
+          "description": "",
+          "label": ""
+        },
+        "removeplayer": {
+          "description": "",
+          "label": ""
+        },
+        "buttonrelease": {
+          "description": "",
+          "label": ""
+        },
+        "enterleft": {
+          "description": "",
+          "label": ""
+        },
+        "enterright": {
+          "description": "",
+          "label": ""
+        },
+        "entertop": {
+          "description": "",
+          "label": ""
+        },
+        "enterbottom": {
+          "description": "",
+          "label": ""
+        },
+        "entertile": {
+          "description": "",
+          "label": ""
+        },
+        "pushblock": {
+          "description": "",
+          "label": "Push Block"
+        },
+        "destroyblock": {
+          "description": "",
+          "label": "Destroy Block"
+        },
+        "removeobject": {
+          "description": "",
+          "label": "Destroy Object"
+        },
+        "createobject": {
+          "description": "Creates an object infront of the player",
+          "label": "Create Object"
+        },
+        "createwall": {
+          "description": "Creates a wall infront of the player",
+          "label": "Create Wall"
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css"></link>
+    <div class="player-container"></div>
+    <div class="tile-palette-container">
+      <div class="tile-palette">
+        <div class="palette-blocks">
+          <div class="ground-palettes">
+            <span class="palette-block palette-ground1-block palette-selected" data-palette="ground1" on-click="{{onTileClicked}}" style="{{ground1}}"></span>
+            <span class="palette-block palette-ground2-block" data-palette="ground2" on-click="{{onTileClicked}}" style="{{ground2}}"></span>
+            <span class="palette-block palette-ground3-block" data-palette="ground3" on-click="{{onTileClicked}}" style="{{ground3}}"></span>
+            <span class="palette-block palette-ground4-block" data-palette="ground4" on-click="{{onTileClicked}}" style="{{ground4}}"></span>
+            <span class="palette-block palette-ground5-block" data-palette="ground5" on-click="{{onTileClicked}}" style="{{ground5}}"></span>
+            <span class="palette-block palette-ground6-block" data-palette="ground6" on-click="{{onTileClicked}}" style="{{ground6}}"></span>
+            <span class="palette-block palette-ground7-block" data-palette="ground7" on-click="{{onTileClicked}}" style="{{ground7}}"></span>
+            <span class="palette-block palette-ground8-block" data-palette="ground8" on-click="{{onTileClicked}}" style="{{ground8}}"></span>
+            <span class="palette-block palette-ground9-block" data-palette="ground9" on-click="{{onTileClicked}}" style="{{ground9}}"></span>
+          </div>
+          <div class="wall-palettes">
+            <span class="palette-block palette-wall1-block" data-palette="wall1" on-click="{{onWallClicked}}" style="{{wall1}}"></span>
+            <span class="palette-block palette-wall2-block" data-palette="wall2" on-click="{{onWallClicked}}" style="{{wall2}}"></span>
+            <span class="palette-block palette-wall3-block" data-palette="wall3" on-click="{{onWallClicked}}" style="{{wall3}}"></span>
+            <span class="palette-block palette-wall4-block" data-palette="wall4" on-click="{{onWallClicked}}" style="{{wall4}}"></span>
+            <span class="palette-block palette-wall5-block" data-palette="wall5" on-click="{{onWallClicked}}" style="{{wall5}}"></span>
+            <span class="palette-block palette-wall6-block" data-palette="wall6" on-click="{{onWallClicked}}" style="{{wall6}}"></span>
+            <span class="palette-block palette-wall7-block" data-palette="wall7" on-click="{{onWallClicked}}" style="{{wall7}}"></span>
+            <span class="palette-block palette-wall8-block" data-palette="wall8" on-click="{{onWallClicked}}" style="{{wall8}}"></span>
+            <span class="palette-block palette-wall9-block" data-palette="wall9" on-click="{{onWallClicked}}" style="{{wall9}}"></span>
+          </div>
+          <div class="object-palettes">
+            <span class="palette-block palette-object1" data-palette="object1" on-click="{{onObjectClicked}}" style="{{object1}}"></span>
+            <span class="palette-block palette-object2" data-palette="object2" on-click="{{onObjectClicked}}" style="{{object2}}"></span>
+            <span class="palette-block palette-object3" data-palette="object3" on-click="{{onObjectClicked}}" style="{{object3}}"></span>
+            <span class="palette-block palette-object4" data-palette="object4" on-click="{{onObjectClicked}}" style="{{object4}}"></span>
+            <span class="palette-block palette-object5" data-palette="object5" on-click="{{onObjectClicked}}" style="{{object5}}"></span>
+            <span class="palette-block palette-object6" data-palette="object6" on-click="{{onObjectClicked}}" style="{{object6}}"></span>
+            <span class="palette-block palette-object7" data-palette="object7" on-click="{{onObjectClicked}}" style="{{object7}}"></span>
+            <span class="palette-block palette-object8" data-palette="object8" on-click="{{onObjectClicked}}" style="{{object8}}"></span>
+          </div>
+          <div>
+            <span class="palette-block palette-clearobject" data-palette="clearobject" on-click="{{onClearClicked}}" style="{{clearobject}}">
+              <span></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <shadow></shadow>
+  </template>
+  <tags>game</tags>
+    <script>
+      Polymer("ceci-chef-adventure", {
+        ready: function() {
+          this.super();
+          this.rows = 8;
+          this.cols = 8;
+          window.gamelogic.generateBoard(this);
+          this.clearobject = "background-image: rgba(0, 0, 0, 0);";
+          this.groundPalette = "ground1";
+		    },
+        groundsprite1Changed: function() {
+          var color = "url('" + this.groundsprite1 + "')";
+          var palette = this.shadowRoot.querySelector(".palette-ground1-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        groundsprite2Changed: function() {
+          var color = "url('" + this.groundsprite2 + "')";
+          var palette = this.shadowRoot.querySelector(".palette-ground2-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        groundsprite3Changed: function() {
+          var color = "url('" + this.groundsprite3 + "')";
+          var palette = this.shadowRoot.querySelector(".palette-ground3-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        groundsprite4Changed: function() {
+          var color = "url('" + this.groundsprite4 + "')";
+          var palette = this.shadowRoot.querySelector(".palette-ground4-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        groundsprite5Changed: function() {
+          var color = "url('" + this.groundsprite5 + "')";
+          var palette = this.shadowRoot.querySelector(".palette-ground5-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        groundsprite6Changed: function() {
+          var color = "url('" + this.groundsprite6 + "')";
+          var palette = this.shadowRoot.querySelector(".palette-ground6-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        groundsprite7Changed: function() {
+          var color = "url('" + this.groundsprite7 + "')";
+          var palette = this.shadowRoot.querySelector(".palette-ground7-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        groundsprite8Changed: function() {
+          var color = "url('" + this.groundsprite8 + "')";
+          var palette = this.shadowRoot.querySelector(".palette-ground8-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        groundsprite9Changed: function() {
+          var color = "url('" + this.groundsprite9 + "')";
+          var palette = this.shadowRoot.querySelector(".palette-ground9-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        playerspriteChanged: function() {
+          var player = this.querySelector(".player");
+          if (!player) {
+            return;
+          }
+          player.style.backgroundImage = "url('" + this.playersprite + "')";
+        },
+        wall1spriteChanged: function() {
+          var color = "url('" + this.wall1sprite + "')";
+          var palette = this.shadowRoot.querySelector(".palette-wall1-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        wall2spriteChanged: function() {
+          var color = "url('" + this.wall2sprite + "')";
+          var palette = this.shadowRoot.querySelector(".palette-wall2-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        wall3spriteChanged: function() {
+          var color = "url('" + this.wall3sprite + "')";
+          var palette = this.shadowRoot.querySelector(".palette-wall3-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        wall4spriteChanged: function() {
+          var color = "url('" + this.wall4sprite + "')";
+          var palette = this.shadowRoot.querySelector(".palette-wall4-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        wall5spriteChanged: function() {
+          var color = "url('" + this.wall5sprite + "')";
+          var palette = this.shadowRoot.querySelector(".palette-wall5-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        wall6spriteChanged: function() {
+          var color = "url('" + this.wall6sprite + "')";
+          var palette = this.shadowRoot.querySelector(".palette-wall6-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        wall7spriteChanged: function() {
+          var color = "url('" + this.wall7sprite + "')";
+          var palette = this.shadowRoot.querySelector(".palette-wall7-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        wall8spriteChanged: function() {
+          var color = "url('" + this.wall8sprite + "')";
+          var palette = this.shadowRoot.querySelector(".palette-wall8-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        wall9spriteChanged: function() {
+          var color = "url('" + this.wall9sprite + "')";
+          var palette = this.shadowRoot.querySelector(".palette-wall9-block");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        object1spriteChanged: function() {
+          var color = "url('" + this.object1sprite + "')";
+          var palette = this.shadowRoot.querySelector(".palette-object1");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        object2spriteChanged: function() {
+          var color = "url('" + this.object2sprite + "')";
+          var palette = this.shadowRoot.querySelector(".palette-object2");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        object3spriteChanged: function() {
+          var color = "url('" + this.object3sprite + "')";
+          var palette = this.shadowRoot.querySelector(".palette-object3");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        object4spriteChanged: function() {
+          var color = "url('" + this.object4sprite + "')";
+          var palette = this.shadowRoot.querySelector(".palette-object4");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        object5spriteChanged: function() {
+          var color = "url('" + this.object5sprite + "')";
+          var palette = this.shadowRoot.querySelector(".palette-object5");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        object6spriteChanged: function() {
+          var color = "url('" + this.object6sprite + "')";
+          var palette = this.shadowRoot.querySelector(".palette-object6");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        object7spriteChanged: function() {
+          var color = "url('" + this.object7sprite + "')";
+          var palette = this.shadowRoot.querySelector(".palette-object7");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        object8spriteChanged: function() {
+          var color = "url('" + this.object8sprite + "')";
+          var palette = this.shadowRoot.querySelector(".palette-object8");
+          this[palette.getAttribute("data-palette")] = "background-image: " + color + ";";
+        },
+        onTileClicked: function(event, detail, sender) {
+          this.shadowRoot.querySelector(".palette-selected").classList.remove("palette-selected");
+          sender.classList.add("palette-selected");
+          this.groundPalette = sender.getAttribute("data-palette");
+          this.objectPalette = "";
+          this.wallPalette = "";
+        },
+        onObjectClicked: function(event, detail, sender) {
+          this.shadowRoot.querySelector(".palette-selected").classList.remove("palette-selected");
+          sender.classList.add("palette-selected");
+          this.groundPalette = "";
+          this.objectPalette = sender.getAttribute("data-palette");
+          this.wallPalette = "";
+        },
+        onWallClicked: function(event, detail, sender) {
+          this.shadowRoot.querySelector(".palette-selected").classList.remove("palette-selected");
+          sender.classList.add("palette-selected");
+          this.groundPalette = "";
+          this.objectPalette = "";
+          this.wallPalette = sender.getAttribute("data-palette");
+        },
+        onClearClicked: function(event, detail, sender) {
+          this.shadowRoot.querySelector(".palette-selected").classList.remove("palette-selected");
+          sender.classList.add("palette-selected");
+          this.groundPalette = "";
+          this.objectPalette = sender.getAttribute("data-palette");
+          this.wallPalette = sender.getAttribute("data-palette");
+        },
+        removeplayer: function() {
+          var player = this.querySelector(".player");
+          if (player) {
+            player.parentNode.removeChild(player);
+          }
+        },
+        removeobject: function() {
+          var player = this.querySelector(".player");
+          if (!player) {
+            return;
+          }
+          var playerRow = player.offsetTop / 32;
+          var playerCol = player.offsetLeft / 32;
+          var targetRow = this.querySelector('*[data-row="'+ playerRow + '"]');
+          var targetCol = targetRow.querySelector('*[data-col="'+ playerCol + '"]');
+          if (!targetCol) {
+            return;
+          }
+          var objectToRemove = targetCol.querySelector(".object-block");
+          if (!objectToRemove || !objectToRemove.parentNode) {
+            return;
+          }
+          objectToRemove.parentNode.removeChild(objectToRemove)
+        },
+        createobject: function(objectType) {
+          var player = this.querySelector(".player");
+          if (!player) {
+            return;
+          }
+          var playerRow = player.offsetTop / 32;
+          var playerCol = player.offsetLeft / 32;
+          if (this.direction === "up") {
+            playerRow--;
+          }
+          if (this.direction === "down") {
+            playerRow++;
+          }
+          if (this.direction === "left") {
+            playerCol--;
+          }
+          if (this.direction === "right") {
+            playerCol++;
+          }
+          var targetRow = this.querySelector('*[data-row="'+ playerRow + '"]');
+          var targetCol = targetRow.querySelector('*[data-col="'+ playerCol + '"]');
+          if (!targetCol) {
+            return;
+          }
+          var objectBlock = document.createElement("span");
+          objectBlock.classList.add("object-block");
+          objectBlock.style.position = "absolute";
+          objectBlock.style.height = "100%";
+          objectBlock.style.width = "100%";
+          targetCol.appendChild(objectBlock);
+          var paletteBlock = this.shadowRoot.querySelector('.object-palettes > [data-palette="'+ objectType + '"]');
+          if (!paletteBlock) {
+            return;
+          }
+          objectBlock.style.backgroundImage = paletteBlock.style.backgroundImage;
+          objectBlock.setAttribute("data-col-type", objectType);
+        },
+        createwall: function(wallType) {
+          var player = this.querySelector(".player");
+          if (!player) {
+            return;
+          }
+          var playerRow = player.offsetTop / 32;
+          var playerCol = player.offsetLeft / 32;
+          if (this.direction === "up") {
+            playerRow--;
+          }
+          if (this.direction === "down") {
+            playerRow++;
+          }
+          if (this.direction === "left") {
+            playerCol--;
+          }
+          if (this.direction === "right") {
+            playerCol++;
+          }
+          var targetRow = this.querySelector('*[data-row="'+ playerRow + '"]');
+          var targetCol = targetRow.querySelector('*[data-col="'+ playerCol + '"]');
+          if (!targetCol) {
+            return;
+          }
+          var objectBlock = document.createElement("span");
+          objectBlock.classList.add("wall-block");
+          objectBlock.style.position = "absolute";
+          objectBlock.style.height = "100%";
+          objectBlock.style.width = "100%";
+          targetCol.appendChild(objectBlock);
+          var paletteBlock = this.shadowRoot.querySelector('.wall-palettes > [data-palette="'+ wallType + '"]');
+          if (!paletteBlock) {
+            return;
+          }
+          objectBlock.style.backgroundImage = paletteBlock.style.backgroundImage;
+          objectBlock.setAttribute("data-col-type", wallType);
+        },
+        buttonpress: function(direction) {
+          var player = this.querySelector(".player");
+          if (!player) {
+            return;
+          }
+          var playerRow = player.offsetTop / 32;
+          var playerCol = player.offsetLeft / 32;
+          var targetCol;
+
+          if (direction === "up") {
+            this.direction = direction;
+            if (playerRow === 0) {
+              this.broadcast("exittop", playerCol);
+              return;
+            }
+            playerRow--;
+            var targetRow = this.querySelector('*[data-row="'+ playerRow + '"]');
+            targetCol = targetRow.querySelector('*[data-col="'+ playerCol + '"]');
+          } else if (direction === "down") {
+            this.direction = direction;
+            if (playerRow === this.cols) {
+              this.broadcast("exitbottom", playerCol);
+              return;
+            }
+            playerRow++;
+            var targetRow = this.querySelector('*[data-row="'+ playerRow + '"]');
+            targetCol = targetRow.querySelector('*[data-col="'+ playerCol + '"]');
+          } else if (direction === "left") {
+            this.direction = direction;
+            if (playerCol === 0) {
+              this.broadcast("exitleft", playerRow);
+              return;
+            }
+            playerCol--;
+            var targetRow = this.querySelector('*[data-row="'+ playerRow + '"]');
+            targetCol = targetRow.querySelector('*[data-col="'+ playerCol + '"]');
+          } else if (direction === "right") {
+            this.direction = direction;
+            if (playerCol === this.cols) {
+              this.broadcast("exitright", playerRow);
+              return;
+            }
+            playerCol++;
+            var targetRow = this.querySelector('*[data-row="'+ playerRow + '"]');
+            targetCol = targetRow.querySelector('*[data-col="'+ playerCol + '"]');
+          }
+          var objectSteppedOn;
+          if (targetCol) {
+            if (!targetCol.querySelector(".wall-block")) {
+              player.style.top = (playerRow * 32) + "px";
+              player.style.left = (playerCol * 32) + "px";
+              this.broadcast("tilestep", targetCol.getAttribute("data-col-type"));
+              objectSteppedOn = targetCol.querySelector(".object-block");
+              if (objectSteppedOn) {
+                this.broadcast("objectcollision", objectSteppedOn.getAttribute("data-col-type"));
+              }
+            } else {
+              this.broadcast("blockcollision", targetCol.querySelector(".wall-block").getAttribute("data-col-type"));
+            }
+          }
+        },
+        navigateHere: function() {
+          var parent = this.parentNode;
+          while (parent.localName !== "ceci-card") {
+            parent = parent.parentNode;
+          }
+          if (parent) {
+            parent.show();
+          }
+        },
+        enterleft: function(row) {
+          this.enter(row, 1);
+        },
+        enterright: function(row) {
+          this.enter(row, this.cols+1);
+        },
+        entertop: function(col) {
+          this.enter(1, col);
+        },
+        enterbottom: function(col) {
+          this.enter(this.rows+1, col);
+        },
+        entertile: function(tile) {
+          var targetBlock = this.querySelector('*[data-col-type="'+ tile + '"]');
+          if (!targetBlock) {
+            // If we didn't find a valid block, we enter at a default location.
+            // This makes things easier to setup for the first time.
+            this.enter(1, 2);
+            return;
+          }
+          var targetCol = parseInt(targetBlock.getAttribute("data-col"), 10);
+          var targetRow = parseInt(targetBlock.parentNode.getAttribute("data-row"), 10);
+          this.enter(targetRow+1, targetCol+1);
+        },
+        destroyblock: function() {
+          var player = this.querySelector(".player");
+          if (!player) {
+            return;
+          }
+          var that = this;
+          function destroyBlock(row, col) {
+            var targetRow = that.querySelector('*[data-row="'+ row + '"]');
+            var targetCol = targetRow.querySelector('*[data-col="'+ col + '"]');
+            if (targetCol && targetCol.querySelector(".wall-block")) {
+              targetCol.removeChild(targetCol.querySelector(".wall-block"));
+            }
+          }
+          var playerRow = player.offsetTop / 32;
+          var playerCol = player.offsetLeft / 32;
+          var direction = this.direction;
+          if (direction === "up") {
+            if (playerRow === 0) {
+              return;
+            }
+            playerRow--;
+            destroyBlock(playerRow, playerCol);
+          } else if (direction === "down") {
+            if (playerRow === this.rows) {
+              return;
+            }
+            playerRow++;
+            destroyBlock(playerRow, playerCol);
+          } else if (direction === "left") {
+            if (playerCol === 0) {
+              return;
+            }
+            playerCol--;
+            destroyBlock(playerRow, playerCol);
+          } else if (direction === "right") {
+            if (playerCol === this.cols) {
+              return;
+            }
+            playerCol++;
+            destroyBlock(playerRow, playerCol);
+          }
+        },
+        pushblock: function() {
+          var player = this.querySelector(".player");
+          if (!player) {
+            return;
+          }
+          var that = this;
+          var playerRow = player.offsetTop / 32;
+          var playerCol = player.offsetLeft / 32;
+          var targetCol;
+          var direction = this.direction;
+          function pushBlock(row, col) {
+            targetRow = that.querySelector('*[data-row="'+ row + '"]');
+            var otherBlock = targetRow.querySelector('*[data-col="'+ col + '"]');
+            if (otherBlock && !otherBlock.querySelector(".wall-block") && targetCol.querySelector(".wall-block")) {
+              var wallBlock = targetCol.querySelector(".wall-block");
+              targetCol.removeChild(wallBlock);
+              otherBlock.appendChild(wallBlock);
+            }
+          }
+          if (direction === "up") {
+            if (playerRow === 0) {
+              return;
+            }
+            playerRow--;
+            var targetRow = this.querySelector('*[data-row="'+ playerRow + '"]');
+            targetCol = targetRow.querySelector('*[data-col="'+ playerCol + '"]');
+            if (targetCol) {
+              playerRow--;
+              pushBlock(playerRow, playerCol);
+            }
+          } else if (direction === "down") {
+            if (playerRow === this.rows) {
+              return;
+            }
+            playerRow++;
+            var targetRow = this.querySelector('*[data-row="'+ playerRow + '"]');
+            targetCol = targetRow.querySelector('*[data-col="'+ playerCol + '"]');
+            if (targetCol) {
+              playerRow++;
+              pushBlock(playerRow, playerCol);
+            }
+          } else if (direction === "left") {
+            if (playerCol === 0) {
+              return;
+            }
+            playerCol--;
+            var targetRow = this.querySelector('*[data-row="'+ playerRow + '"]');
+            targetCol = targetRow.querySelector('*[data-col="'+ playerCol + '"]');
+            if (targetCol) {
+              playerCol--;
+              pushBlock(playerRow, playerCol);
+            }
+          } else if (direction === "right") {
+            if (playerCol === this.cols) {
+              return;
+            }
+            playerCol++;
+            var targetRow = this.querySelector('*[data-row="'+ playerRow + '"]');
+            targetCol = targetRow.querySelector('*[data-col="'+ playerCol + '"]');
+            if (targetCol) {
+              playerCol++;
+              pushBlock(playerRow, playerCol);
+            }
+          }
+        },
+        enter: function(row, col) {
+          var rows = this.rows+1;
+          var cols = this.cols+1;
+          if (!(row >= 1)) {
+            row = 1;
+          } else if (row > rows) {
+            row = rows;
+          }
+          if (!(col >= 1)) {
+            col = 1;
+          } else if (col > cols) {
+            col = cols;
+          }
+          // row and col start at 1, and not 0.
+          // We need to correct that here.
+          col--;
+          row--;
+          this.async( function() {
+            var player = this.querySelector(".player");
+            if (!player) {
+              player = document.createElement("div");
+              player.style.height = "32px";
+              player.style.width = "32px";
+              player.style.position = "absolute";
+
+              player.classList.add("player");
+              this.querySelector(".board").appendChild(player);
+            }
+            player.style.backgroundImage = "url('" + this.playersprite + "')";
+            player.style.top = (row * 32) + "px";
+            player.style.left = (col * 32) + "px";
+            this.navigateHere();
+          });
+        }
+      });
+    </script>
+</polymer-element>
+

@@ -95,7 +95,8 @@ define(
           "ceci-pad-grid",
           "ceci-hot-potato",
           "ceci-jazzhands",
-          "ceci-game-controller"
+          "ceci-game-controller",
+          "ceci-chef-adventure"
         ]
       },
       "chat": {
