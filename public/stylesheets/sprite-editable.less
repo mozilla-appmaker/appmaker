@@ -1,0 +1,125 @@
+.editable-attributes .sprite-container {
+  div {
+    margin-bottom: 10px;
+  }
+  .sprite-color-picker {
+    background-color: white;
+    cursor: pointer;
+    position: absolute;
+    height: 60%;
+    left: 70%;
+    width: 60%;
+    top: 70%;
+    padding: 0;
+    border-left: solid 1px #000;
+    transform: rotate(45deg);
+    &:hover {
+      height: 80%;
+      left: 60%;
+      width: 80%;
+      top: 60%;
+    }
+  }
+  .sprite-toolbar {
+    height: 32px;
+  }
+  .clear-palette {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    overflow: hidden;
+    border: 1px solid #888;
+    cursor: pointer;
+    &.selected {
+      box-shadow: 0 0 4px black;
+    }
+    span {
+      height: 150%;
+      width: 150%;
+      top: 27%;
+      left: 27%;
+      position: absolute;
+      display: inline-block;
+      border-left: 2px solid red;
+      transform: rotate(45deg);
+      cursor: pointer;
+    }
+  }
+  .colour-div {
+    width: 37px;
+    height: 37px;
+    margin: 2px;
+    border-radius: 4px;
+    position: relative;
+    float: left;
+    cursor: pointer;
+    border: 1px solid #000;
+    overflow: hidden;
+    box-sizing: border-box;
+    &.selected {
+      box-shadow: 0 0 4px black;
+    }
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  input.error {
+    box-shadow: 0px 0px 2px 1px #F00;
+  }
+
+  canvas {
+    margin-bottom: 4px;
+    border: solid #888 1px;
+  }
+
+  .expand-sprite-editor {
+    font-size: 26px;
+    color: #888;
+    vertical-align: top;
+    display: inline-block;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  .colour-container {
+    height: 160px;
+    width: 164px;
+    float: left;
+    margin-left: -2px;
+    margin-top: -2px;
+  }
+
+  .grid-container {
+    border-style: solid;
+    border-color: black;
+    border-top-width: 0;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 0;
+    height: 160px;
+    width: 160px;
+    float: left;
+    margin-right: 10px;
+    background-image: url('/images/transparent.png');
+    .tile-editor-row {
+      margin: 0;
+      height: 10px;
+    }
+    .tile-editor-pixel {
+      height: 9px;
+      width: 9px;
+      float: left;
+      border-style: solid;
+      border-color: black;
+      border-bottom-width: 0;
+      border-right-width: 0;
+      border-top-width: 1px;
+      border-left-width: 1px;
+      cursor: pointer;
+    }
+  }
+}
+
