@@ -79,13 +79,7 @@
       ready: function () {
         this.super();
         this.loadSound("tap","sounds/tap.mp3");
-        var t = this;
-
-        function resetButtons() {
-          t.resetState();
-        }
-
-        t.addEventListener('mouseout', resetButtons);
+        this.addEventListener('mouseout', this.resetState);
       },
       attached : function(){
         this.super();
