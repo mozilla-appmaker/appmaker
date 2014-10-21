@@ -1,4 +1,4 @@
-<polymer-element name="ceci-element-base">
+<polymer-element name="ceci-element-base" attributes="cclsid">
   <template>
     <content></content>
   </template>
@@ -126,6 +126,11 @@
 
       return defaultBroadcasts;
     }
+
+    function uid() {
+      var rand = (Math.random()*100000000)|0;
+      return "uuid-" + Date.now() + "-" + rand;
+    }
   </script>
 
 
@@ -135,6 +140,42 @@
     Polymer('ceci-element-base', {
       elementReady: false,
       eventListeners : [],
+      saveData: function(data) {
+        var id;
+        if (!this.getAttribute("cclsid")) {
+          do { id = uid(); } while(document.querySelector("*[cclsid='"+id+"']"));
+          this.setAttribute("cclsid", id);
+        }
+        id = this.getAttribute("cclsid");
+        var storage = { data: data };
+        localStorage.setItem("ceci-"+id, JSON.stringify(storage));
+      },
+      hasData: function() {
+        var id = this.getAttribute("cclsid");
+        if (!id) return false;
+        var storage = localStorage.getItem("ceci-"+id);
+        return !!storage;
+      },
+      loadData: function() {
+        var id = this.getAttribute("cclsid");
+        if (!id) {
+          return console.error("There was no data stored in association with this element");
+        }
+        var storage = localStorage.getItem("ceci-"+id);
+        if (!storage) {
+          return false;
+        }
+        localStorage.removeItem("ceci-"+id);
+        try {
+          var obj = JSON.parse(storage);
+          if (obj.data) {
+            return obj.data;
+          }
+          console.error("The data stored in association with this element did not have a .data payload");
+        } catch (e) {
+          console.error("The data stored in association with this element could not be parsed");
+        }
+      },
       sounds : {},
       playSound : function(sound,volume){
         if(this.sounds[sound] && this.ctx){
