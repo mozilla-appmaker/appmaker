@@ -1,12 +1,22 @@
 {
-  "ceci-bool/name": "Boolean Gate",
+  "ceci-bool": "Boolean Gate",
   "ceci-bool/description": "Compares input to a value you choose and reports \"true\" or \"false\".",
-  "ceci-bool/true/label": "True",
-  "ceci-bool/true/description": "The signal matches the condition.",
-  "ceci-bool/false/label": "False",
-  "ceci-bool/false/description": "The signal doesn't match the condition.",
-  "ceci-bool/signal/description": "The signal to match",
-  "ceci-bool/signal/label": "Signal",
-  "ceci-bool/checkif/description": "Check if the incoming signal matches this string.",
-  "ceci-bool/checkif/label": "Check If"
+
+  "ceci-bool/broadcasts/true/label": "True",
+  "ceci-bool/broadcasts/true/description": "The signal matches the condition.",
+  "ceci-bool/broadcasts/false/label": "False",
+  "ceci-bool/broadcasts/false/description": "The signal doesn't match the condition.",
+
+  "ceci-bool/listeners/signal/description": "The signal to match",
+  "ceci-bool/listeners/signal/label": "Signal",
+
+  "ceci-bool/attributes/checkif": "hello",
+  "ceci-bool/attributes/checkif/description": "Check if the incoming signal matches this string.",
+  "ceci-bool/attributes/checkif/label": "Check If",
+  "ceci-bool/attributes/sendiftrue": "true",
+  "ceci-bool/attributes/sendiftrue/description": "Value to send if true.",
+  "ceci-bool/attributes/sendiftrue/label": "If True Value",
+  "ceci-bool/attributes/sendiffalse": "false",
+  "ceci-bool/attributes/sendiffalse/description": "Value to send if false.",
+  "ceci-bool/attributes/sendiffalse/label": "If False Value"
 }
