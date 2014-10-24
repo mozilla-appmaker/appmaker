@@ -617,7 +617,7 @@
           if (direction === "up") {
             this.direction = direction;
             if (playerRow === 0) {
-              this.broadcast("exittop", playerCol);
+              this.broadcast("exittop", playerCol+1);
               return;
             }
             playerRow--;
@@ -626,7 +626,7 @@
           } else if (direction === "down") {
             this.direction = direction;
             if (playerRow === this.cols) {
-              this.broadcast("exitbottom", playerCol);
+              this.broadcast("exitbottom", playerCol+1);
               return;
             }
             playerRow++;
@@ -635,7 +635,7 @@
           } else if (direction === "left") {
             this.direction = direction;
             if (playerCol === 0) {
-              this.broadcast("exitleft", playerRow);
+              this.broadcast("exitleft", playerRow+1);
               return;
             }
             playerCol--;
@@ -644,7 +644,7 @@
           } else if (direction === "right") {
             this.direction = direction;
             if (playerCol === this.cols) {
-              this.broadcast("exitright", playerRow);
+              this.broadcast("exitright", playerRow+1);
               return;
             }
             playerCol++;
