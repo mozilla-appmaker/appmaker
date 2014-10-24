@@ -19,6 +19,10 @@
   background-color: white;
 }
 
+:host .player {
+  background-size: 100% 100%;
+}
+
 :host .tile-palette {
   width: 100%;
 }
