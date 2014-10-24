@@ -36,142 +36,138 @@
   </script>
 
   <script>
-    function initCeciApp() {
-      Polymer('ceci-app', {
-        created: function() {
-          window.dispatchEvent(new CustomEvent("CeciAppCreated", { detail: { source: this }} ));
-        },
-        ready: function() {
-          if (this.querySelector('ceci-card')) {
-            if (!this.querySelector('ceci-card[visible]')) {
-              this.querySelector('ceci-card').setAttribute('visible', true);
+    Polymer('ceci-app', {
+      created: function() {
+        window.dispatchEvent(new CustomEvent("CeciAppCreated", { detail: { source: this }} ));
+      },
+      ready: function() {
+        if (this.querySelector('ceci-card')) {
+          if (!this.querySelector('ceci-card[visible]')) {
+            this.querySelector('ceci-card').setAttribute('visible', true);
+          }
+        }
+        else {
+          this.addCard();
+        }
+        if (!this.querySelector('ceci-collections')) {
+          this.appendChild(document.createElement('ceci-collections'));
+        }
+
+        var audioContext = window.AudioContext || window.webkitAudioContext;
+        if(audioContext) {
+          if(!window.audioContext) {
+            window.audioContext = new audioContext();
+          }
+          this.Audiocontext = window.audioContext;
+        }
+
+        window.dispatchEvent(new CustomEvent("CeciAppReady", { detail: { app:this }}));
+      },
+      attached: function() {
+        window.dispatchEvent(new CustomEvent("CeciAppAttached"));
+      },
+      domReady: function() {
+        var loadingPane = document.querySelector(".loading-pane");
+        if (loadingPane) {
+          loadingPane.classList.add("fade");
+        }
+        this.classList.add("loaded");
+        window.dispatchEvent(new CustomEvent("CeciAppDOMReady", {detail: this}));
+      },
+      addCard: function() {
+        var newCard = document.createElement('ceci-card');
+        this.appendChild(newCard);
+        newCard.show();
+        this.dispatchEvent(new CustomEvent('cardAdded', {bubbles: true, detail: newCard}));
+        newCard.show();
+      },
+      removeCard: function(index) {
+        var cards = this.querySelectorAll('ceci-card');
+        var card = cards[index];
+        var nextCard = cards[index + 1] || cards[index - 1];
+
+        if (card) {
+          this.removeChild(card);
+          this.dispatchEvent(new CustomEvent('cardRemoved', {bubbles: true, detail: card}));
+          if (card.getAttribute('visible') && nextCard) {
+            nextCard.show();
+          }
+          return card;
+        }
+
+        console.error('No such card.');
+      },
+      countCards: function() {
+        return this.querySelectorAll('ceci-card').length;
+      },
+      clearCards: function() {
+        var card;
+        while ((card = this.querySelector('ceci-card')) !== null) {
+          this.removeChild(card);
+        }
+      },
+      addComponentToCard: function(name, options) {
+        options = options || {};
+        var card = document.querySelector('ceci-card[visible]');
+        if (card) {
+          var newElement = document.createElement(name);
+          // wait until Polymer has prepared the element completely
+          var handle = function() {
+            var selectedBrick = card.querySelector(".brick.selected");
+            var next = false;
+            if (selectedBrick) {
+              next = selectedBrick.nextSibling;
             }
-          }
-          else {
-            this.addCard();
-          }
-          if (!this.querySelector('ceci-collections')) {
-            this.appendChild(document.createElement('ceci-collections'));
-          }
-
-          var audioContext = window.AudioContext || window.webkitAudioContext;
-          if(audioContext) {
-            if(!window.audioContext) {
-              window.audioContext = new audioContext();
+            var append = options.append || !next;
+            if(append) {
+              card.appendChild(newElement);
+            } else {
+              card.insertBefore(newElement,next);
             }
-            this.Audiocontext = window.audioContext;
-          }
+            // Apply defaults here explicitly so that element doesn't
+            // have to figure out whether or not it's new when it's
+            // attached to the DOM.
+            newElement.applyDefaults();
+          };
 
-          window.dispatchEvent(new CustomEvent("CeciAppReady", { detail: { app:this }}));
-        },
-        attached: function() {
-          window.dispatchEvent(new CustomEvent("CeciAppAttached"));
-        },
-        domReady: function() {
-          var loadingPane = document.querySelector(".loading-pane");
-          if (loadingPane) {
-            loadingPane.classList.add("fade");
-          }
-          this.classList.add("loaded");
-          window.dispatchEvent(new CustomEvent("CeciAppDOMReady", {detail: this}));
-        },
-        addCard: function() {
-          var newCard = document.createElement('ceci-card');
-          this.appendChild(newCard);
-          newCard.show();
-          this.dispatchEvent(new CustomEvent('cardAdded', {bubbles: true, detail: newCard}));
-          newCard.show();
-        },
-        removeCard: function(index) {
-          var cards = this.querySelectorAll('ceci-card');
-          var card = cards[index];
-          var nextCard = cards[index + 1] || cards[index - 1];
+          newElement.onready(handle);
+          return newElement;
+        }
+      },
+      appidChanged: function(){
+        this.initFirebase();
+      },
+      initFirebase: function(){
+        var firebaseHost = "https://flathead.firebaseio.com/";
 
-          if (card) {
-            this.removeChild(card);
-            this.dispatchEvent(new CustomEvent('cardRemoved', {bubbles: true, detail: card}));
-            if (card.getAttribute('visible') && nextCard) {
-              nextCard.show();
-            }
-            return card;
-          }
+        if (!window.Firebase) {
+          console.error('Firebase not loaded. Cannot init for ceci-app.');
+          return;
+        }
 
-          console.error('No such card.');
-        },
-        countCards: function() {
-          return this.querySelectorAll('ceci-card').length;
-        },
-        clearCards: function() {
-          var card;
-          while ((card = this.querySelector('ceci-card')) !== null) {
-            this.removeChild(card);
-          }
-        },
-        addComponentToCard: function(name, options) {
-          options = options || {};
-          var card = document.querySelector('ceci-card[visible]');
-          if (card) {
-            var newElement = document.createElement(name);
-            // wait until Polymer has prepared the element completely
-            var handle = function() {
-              var selectedBrick = card.querySelector(".brick.selected");
-              var next = false;
-              if (selectedBrick) {
-                next = selectedBrick.nextSibling;
-              }
-              var append = options.append || !next;
-              if(append) {
-                card.appendChild(newElement);
-              } else {
-                card.insertBefore(newElement,next);
-              }
-              // Apply defaults here explicitly so that element doesn't
-              // have to figure out whether or not it's new when it's
-              // attached to the DOM.
-              newElement.applyDefaults();
-            };
-
-            newElement.onready(handle);
-            return newElement;
-          }
-        },
-        appidChanged: function(){
-          this.initFirebase();
-        },
-        initFirebase: function(){
-          var firebaseHost = "https://flathead.firebaseio.com/";
-
-          if (!window.Firebase) {
-            console.error('Firebase not loaded. Cannot init for ceci-app.');
-            return;
-          }
-
-          if(this.appid) {
-            this.firebase = new Firebase(firebaseHost+this.appid);
-            window.dispatchEvent(new CustomEvent("CeciDataConnectionLoaded"));
-          }
-        },
-        getFirebaseObject: function(childRefPath, itemName, callback){
-          if(!this.firebase){
-              console.error("Firebase connection was null");
-              return null;
-          }
-          var self = this;
-          this.firebase.child(childRefPath).once("value", function(data) {
-            callback(data.val());
-          });
-        },
-        setFirebaseObject: function(childRefPath, data){
-          if(!this.firebase){
+        if(this.appid) {
+          this.firebase = new Firebase(firebaseHost+this.appid);
+          window.dispatchEvent(new CustomEvent("CeciDataConnectionLoaded"));
+        }
+      },
+      getFirebaseObject: function(childRefPath, itemName, callback){
+        if(!this.firebase){
             console.error("Firebase connection was null");
             return null;
-          }
-          var dataRef = this.firebase.child(childRefPath);
-          dataRef.set(data);
         }
-      });
-    }
-
-    require(['Firebase'], initCeciApp, initCeciApp);
+        var self = this;
+        this.firebase.child(childRefPath).once("value", function(data) {
+          callback(data.val());
+        });
+      },
+      setFirebaseObject: function(childRefPath, data){
+        if(!this.firebase){
+          console.error("Firebase connection was null");
+          return null;
+        }
+        var dataRef = this.firebase.child(childRefPath);
+        dataRef.set(data);
+      }
+    });
   </script>
 </polymer-element>

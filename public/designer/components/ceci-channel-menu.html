@@ -29,7 +29,7 @@
     </content>
   </template>
   <script>
-    require(['l10n'], function(L10n) {
+    (function(L10n) {
       Polymer('ceci-channel-menu', {
         menubuilt : false,
         ready : function (){
@@ -354,6 +354,6 @@
           });
         }
       });
-    })();
+    })(Designer.L10n);
   </script>
 </polymer-element>

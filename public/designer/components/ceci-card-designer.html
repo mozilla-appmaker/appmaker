@@ -18,7 +18,7 @@
         this.super();
         this.classList.add("ceci-card");
 
-        require(['designer/editable', 'analytics'], function(Editable, analytics) {
+        (function(Editable, analytics) {
           function createSortable() {
             var draggedOff = false;
 
@@ -54,7 +54,7 @@
               createSortable();
             }
           }, 100);
-        });
+        })(Designer.Editable, Designer.Analytics);
       }
     });
   </script>
