@@ -49,7 +49,8 @@ var categories = {
       "ceci-text-input",
       "ceci-timer",
       "ceci-stopwatch",
-      "ceci-page-navigation"
+      "ceci-page-navigation",
+      "ceci-navigation"
     ]
   },
   "connection": {
