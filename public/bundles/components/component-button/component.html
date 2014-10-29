@@ -79,6 +79,7 @@
       ready: function () {
         this.super();
         this.loadSound("tap","sounds/tap.mp3");
+        this.addEventListener('mouseout', this.resetState);
       },
       attached : function(){
         this.super();
@@ -96,6 +97,10 @@
         this.$.buttonwrapper.classList.remove("fade");
         this.$.buttonwrapper.offsetWidth = this.$.buttonwrapper.offsetWidth;
         this.$.buttonwrapper.classList.add("fade");
+      },
+      resetState : function(){
+        this.$.buttonwrapper.classList.remove("fade");
+        this.$.buttonwrapper.classList.remove("pressdown");
       }
     });
   </script>
