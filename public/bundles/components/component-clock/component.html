@@ -1,0 +1,53 @@
+<polymer-element name="ceci-clock" extends="ceci-element" attributes="period time" period="1">
+  <ceci-definition>
+    {
+      "name": "Clock",
+      "thumbnail": "./thumbnail.png",
+      "description": "Displays a clock at a varying interval",
+      "broadcasts": {
+        "currentTime": {
+          "label": "Current Time",
+          "description": "Broadcasts the current time.",
+          "default": true
+        }
+      },
+      "attributes": {
+        "period": {
+          "label": "interval",
+          "description": "Interval the clock updates at, in seconds",
+          "editable": "text",
+          "listener": true
+        }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css">
+    <div class="clock">
+      {{ time }}
+    </div>
+    <shadow></shadow>
+  </template>
+  <script>
+    Polymer("ceci-clock", {
+      domReady: function() {
+        this.super();
+        this.interval = -1;
+        this.updateClock();
+      },
+      periodChanged: function() {
+        if (this.interval != -1) {
+          clearTimeout(this.interval);
+          this.updateClock();
+        }
+      },
+      updateClock: function() {
+        var timeString = (new Date()).toLocaleTimeString();
+        this.setAttribute('time', timeString);
+        this.broadcast("currentTime", timeString);
+        var intervalms = 1000 * (this.period >= 1 ? this.period : 1);
+        this.interval = setTimeout(this.updateClock.bind(this), intervalms);
+      }
+    });
+  </script>
+</polymer-element>

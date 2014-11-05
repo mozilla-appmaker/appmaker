@@ -42,6 +42,7 @@ var categories = {
     "description": L10n.get("Add more advanced utilities to your app."),
     "bricks": [
       "ceci-button-with-confirmation",
+      "ceci-clock",
       "ceci-double-button",
       "ceci-dataarray",
       "ceci-list",
