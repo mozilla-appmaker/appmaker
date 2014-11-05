@@ -49,6 +49,10 @@ public/stylesheets/tutorial.css
 public/stylesheets/user-state.css
 public/stylesheets/variables.css
 
+public/vendor/bootstrap/
+public/vendor/makerstrap/
+public/vendor/selectize/
+
 public/bundles/components/mozilla-appmaker.html
 public/bundles/components/mozilla-appmaker-min.html
 /public/designer-components.html

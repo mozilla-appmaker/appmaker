@@ -79,10 +79,11 @@ var makeAPIPublisher = require('./lib/makeapi-publisher').create(process.env.MAK
 var MAX_FONT_AGE_MS = 1000 * 60 * 60 * 24 * 180;
 
 var webmakerAuth = new WebmakerAuth({
+  loginHost: process.env.APP_HOSTNAME,
   loginURL: process.env.LOGINAPI,
   authLoginURL: process.env.LOGINAPI_WITH_AUTH,
   secretKey: process.env.COOKIE_SECRET,
-  forceSSL: process.env.FORCE_SSL,
+  forceSSL: process.env.FORCE_SSL === 'true',
   domain: process.env.COOKIE_DOMAIN
 });
 
@@ -119,11 +120,6 @@ app.configure(function(){
     mappings: require("webmaker-locale-mapping"),
     translation_directory: path.resolve( __dirname, "locale" )
   }));
-
-  var authLocaleJSON = require("./public/vendor/webmaker-auth-client/locale/en_US/create-user-form.json");
-  i18n.addLocaleObject({
-    "en-US": authLocaleJSON
-  }, function (result) {});
 
   app.use(express.favicon());
 
@@ -214,12 +210,16 @@ app.locals({
   currentPath: ''
 });
 
-
-app.post('/verify', webmakerAuth.handlers.verify);
 app.post('/authenticate', webmakerAuth.handlers.authenticate);
-app.post('/create', webmakerAuth.handlers.create);
 app.post('/logout', webmakerAuth.handlers.logout);
-app.post('/check-username', webmakerAuth.handlers.exists);
+app.post('/verify', webmakerAuth.handlers.verify);
+app.post('/auth/v2/create', webmakerAuth.handlers.createUser );
+app.post('/auth/v2/uid-exists', webmakerAuth.handlers.uidExists );
+app.post('/auth/v2/request', webmakerAuth.handlers.request );
+app.post('/auth/v2/authenticateToken', webmakerAuth.handlers.authenticateToken );
+app.post('/auth/v2/verify-password', webmakerAuth.handlers.verifyPassword );
+app.post('/auth/v2/request-reset-code', webmakerAuth.handlers.requestResetCode );
+app.post('/auth/v2/reset-password', webmakerAuth.handlers.resetPassword );
 
 app.get('/', routes.index);
 app.all('/designer', routes.designer);
