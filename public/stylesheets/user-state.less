@@ -1,6 +1,9 @@
 @import "variables.less";
 @import "mixins.less";
 
+@import "../vendor/makerstrap/less/makerstrap";
+@makerstrap-bower-path: "../vendor";
+
 :host(.saved) .menu a.saved {
   display: block;
 }
@@ -57,19 +60,6 @@
     }
   }
 
-  #signin {
-    background: #358CCE;
-    margin-left: 8px;
-
-    &:hover {
-      background: #439add;
-    }
-
-    &:active {
-      background: #2674af;
-    }
-  }
-
   #collaborate {
     background: #750CCE;
     margin-left: 8px;
@@ -91,7 +81,6 @@
   .menu-button {
     display: block;
     padding: 5px 8px;
-    height: 30px;
     cursor: pointer;
   }
 
