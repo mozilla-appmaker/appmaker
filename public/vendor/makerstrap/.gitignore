@@ -1,0 +1,8 @@
+node_modules/
+bower_components/
+demo/compiled/demo.dev.css
+deploy/
+tmp
+.DS_Store
+.idea
+.env

@@ -1,0 +1,54 @@
+
+/*********************************************************
+* Gallery
+*/
+
+.gallery {
+  background: @lightgrey;
+  padding: @grid-gutter-width;
+}
+
+.gallery-title {
+  margin-bottom: @grid-gutter-width;
+  font-weight: 300;
+  small {
+    font-weight: 300;
+  }
+}
+
+// Makes
+// -------------------------
+
+.make {
+  .thumbnail;
+  border: 1px solid darken(@lightgrey, 5%);
+  box-shadow: 0 3px 3px -2px rgba(0,0,0,0.2);
+  font-size: 14px;
+  line-height: 1.2;
+  margin-bottom: @grid-gutter-width;
+  .make-title {
+    margin-top: 0;
+  }
+  @media (min-width: @screen-sm-min) {
+    .make-title {
+      .multi-ellipses(18px, 1.4, 2);
+    }
+    .make-author {
+      .ellipses();
+    }
+    .make-description {
+      .multi-ellipses(14px, 1.4, 3);
+    }
+  }
+}
+
+.thumbnail-wrapper, //deprecated name
+.make-thumbnail
+{
+  width: 100%;
+  padding-bottom: 100%;
+  height: 0;
+  background-size: cover;
+}
+
+

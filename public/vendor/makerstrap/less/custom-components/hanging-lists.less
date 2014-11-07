@@ -1,0 +1,65 @@
+/*********************************************************
+* Hanging (aka correct) Lists
+*/
+
+// People, hang your punctuation.
+// Usage: add .list to ol, ul
+
+@list-padding-left: 15px;
+
+.list {
+
+  margin-left: 0;
+  padding-left: @list-padding-left;
+
+  // Lists should have hanging punctuation, as long as there is padding on the main grid
+  @media (min-width: @grid-float-breakpoint) {
+    padding-left: 0;
+    &.list-inset {
+      padding-left: @list-padding-left;
+    }
+  }
+
+  ul, ol {
+    padding-left: @list-padding-left;
+  }
+
+  li {
+    position: relative;
+    list-style: none;
+    &:before {
+      min-width: @list-padding-left;
+      margin-left: -@list-padding-left;
+      position: absolute;
+      right: 100%;
+      color: #999;
+    }
+  }
+}
+
+// Unordered (dots)
+
+ul.list > li:before,
+.list ul > li:before {
+  content: '\2022';
+}
+
+// Ordered (numerical)
+
+ol.list,
+.list ol {
+  counter-reset: ol-li;
+  > li:before {
+    text-align: right;
+    content: counter(ol-li) '.';
+    counter-increment: ol-li;
+    padding-right: (@list-padding-left/2);
+  }
+}
+
+// Alphabetical
+
+ol.list.list-alphabetical > li:before {
+  content: counter(ol-li, lower-alpha) '.';
+}
+
