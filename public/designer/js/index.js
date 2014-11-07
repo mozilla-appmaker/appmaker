@@ -21,11 +21,10 @@ var Designer = {
   L10n: require('vendor/l10n'),
   Modes: require('./modes'),
   Mutant: require('./mutant'),
-  Reporter: require('vendor/reporter'),
   UserState: require('./userstate'),
   Utils: require('./utils'),
   TogetherJS: require('./togetherjs'),
-  WebmakerLogin: require('webmaker-login-ux')
+  WebmakerAuthClient: require('webmaker-auth-client')
 };
 
 // making things easier for devs of all walks of life

@@ -12,7 +12,7 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
   var App = dbModels.get('App');
 
   var checkAuthorised = function(request, response, next) {
-    if (! request.session.user) {
+    if (! request.session.email) {
       response.json(401, {error: 'need to be signed in'});
       return false;
     }
