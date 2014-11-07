@@ -33,7 +33,7 @@
           <template if="{{ customcomponents }}">
             <h3 id="mycomponentsheading">{{'My components' | l10n}}</h3>
             <div>
-              <a id="addComponent" class="button" on-click={{addComponent}}>{{'Add Component' | l10n}}</a>
+              <a id="addComponent" class="button" on-click="{{addComponent}}">{{'Add Component' | l10n}}</a>
             </div>
             <ul id="mycomponents" class="menu-options">
             </ul>
@@ -43,7 +43,7 @@
       </div>
     </div>
 
-    <a class="saveApp saved button green-button {{ {hidden: user.state == 'signedout'} | tokenList}}" id="saveApp">{{'Save App' | l10n}}</a>
+    <button class="saveApp saved btn btn-primary {{ {hidden: user.state == 'signedout'} | tokenList}}" id="saveApp">{{'Save App' | l10n}}</button>
 
 <!--
     commented off for https://github.com/mozilla-appmaker/appmaker/issues/1618, with the intention of turning it back on after Maker Party
@@ -53,7 +53,8 @@
     </a>
 
 -->
-    <a id="signin" class="button {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">{{'Sign In' | l10n}}</a>
+    <button id="joinwebmaker" class="btn btn-primary join-button {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{createClick}}">{{'Join Webmaker' | l10n}}</button>
+    <button id="signin" class="btn btn-secondary-nav signin-button {{ {hidden: user.state == 'signedin'} | tokenList}}" on-click="{{signinClick}}">{{'Sign In' | l10n}}</button>
     <div id="signInProgress" class="hidden"></div>
 
     <div class="back-to-webmaker">
@@ -62,7 +63,7 @@
 
   </template>
   <script>
-    (function init(togetherjs_extension, l10n, $, application, tray, utils, reporter, analytics, WebmakerAuthClient) {
+    (function init(togetherjs_extension, l10n, $, application, tray, utils, reporter, analytics) {
 
       var user = {
         email: '',
@@ -70,33 +71,6 @@
         preventLoadedAppInsertion: false,
         collaborating: false
       };
-
-      var auth = new WebmakerAuthClient();
-
-      auth.on('error', function(error) {
-        console.error(error);
-      })
-
-      auth.on('login', function(data, reason) {
-        if (reason === 'restored') {
-          return;
-        }
-        document.dispatchEvent(new CustomEvent("signInFinished"));
-        document.querySelector("#publish-pane-panel-email").setAttribute('placeholder', data.email);
-        reporter.consoleReport("You have been logged in as: " + data.email);
-        document.dispatchEvent(new CustomEvent('user-state', {
-          detail: {'state': 'signedin', 'data': data}
-        }));
-      });
-
-      auth.on('logout', function() {
-        document.querySelector("#publish-pane-panel-email").setAttribute('placeholder', 'Your Email');
-        document.dispatchEvent(
-          new CustomEvent('user-state', {
-            detail: {'state': 'signedout', 'data': {}}
-          })
-        );
-      });
 
       Polymer('user-state', {
         l10n: function (str) {
@@ -116,6 +90,44 @@
         },
         ready: function() {
           var that = this;
+
+          var auth = this.auth = new WebmakerLogin({
+            showCTA: false
+          });
+
+          auth.on('error', function(error) {
+            reporter.errorReport(error);
+          });
+
+          function onlogin(data) {
+            document.dispatchEvent(new CustomEvent("signInFinished"));
+            $("#publish-pane-panel-email").attr('placeholder', data.email);
+            reporter.consoleReport("You have been logged in as: " + data.email);
+            document.dispatchEvent(new CustomEvent('user-state', {
+              detail: {state: 'signedin', data: data}
+            }));
+          }
+
+          function onlogout() {
+            $("#publish-pane-panel-email").attr('placeholder', 'Your Email');
+            document.dispatchEvent(
+              new CustomEvent('user-state', {
+                detail: {state: 'signedout'}
+              })
+            );
+          }
+
+          auth.on('verified', function(user) {
+            if (user) {
+              onlogin(user);
+            } else {
+              onlogout();
+            }
+          });
+
+          auth.on('login', onlogin);
+
+          auth.on('logout', onlogout);
 
           this.addEventListener("click", function(e) {
             e.stopPropagation();
@@ -210,8 +222,6 @@
           window.addEventListener('CeciElementAdded', function (e) {
             user.preventLoadedAppInsertion = true;
           }, false);
-
-          auth.verify();
         },
         enteredView : function() {
           var self = this;
@@ -485,11 +495,14 @@
           this.updateAppName(document.querySelector('ceci-app').name || application.getStoredAppName());
           reporter.errorReport(message);
         },
+        createClick: function() {
+          this.auth.create();
+        },
         signinClick: function() {
-          auth.login();
+          this.auth.login();
         },
         signoutClick: function() {
-          auth.logout();
+          this.auth.logout();
         },
         loadLink: function(name, url, callback) {
           if (!this.customcomponents) {
@@ -891,7 +904,6 @@
        Designer.ComponentTray,
        Designer.Utils,
        Designer.Reporter,
-       Designer.Analytics,
-       Designer.WebmakerAuthClient);
+       Designer.Analytics);
   </script>
 </polymer-element>
