@@ -1,0 +1,18 @@
+.video-container {
+  max-width: 100%;
+  width: 60rem;
+}
+.video-letterbox {
+  height: 0;
+  overflow: hidden;
+  padding: 3rem 0 56.25%;
+  position: relative;
+
+  iframe, object, embed {
+    left: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+}
