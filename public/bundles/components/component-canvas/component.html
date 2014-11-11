@@ -169,7 +169,7 @@
             this.$.canvas.addEventListener('mousedown', this._onCanvasMouseDown, false);
             this.$.canvas.addEventListener('touchstart', this._onCanvasMouseDown, false);
           }
-          else {
+          else if (this.readonly === 'true') {
             if (this._onCanvasMouseDown) {
               this.$.canvas.removeEventListener('mousedown', this._onCanvasMouseDown, false);
               this.$.canvas.removeEventListener('touchdown', this._onCanvasMouseDown, false);
