@@ -173,6 +173,16 @@
 
           document.addEventListener('user-state', function (event) {
             that.user.state = event.detail.state;
+
+            if (that.user.state == 'signedout') {
+              if (!user.preventLoadedAppInsertion) {
+                setupTempApp();
+              }
+              that.signedOut();
+              analytics.event("Signed Out");
+              return;
+            }
+
             that.user.email = event.detail.data.email;
             that.user.avatar = event.detail.data.avatar;
             that.user.username = event.detail.data.username;
@@ -185,26 +195,17 @@
               storedAppName = editName;
             }
 
-            if (that.user.state == 'signedin') {
-              that.refreshUserState();
-              if (!user.preventLoadedAppInsertion) {
-                if(storedAppName){
-                  application.loadAppByName(storedAppName);
-                  that.editingmode = "saved";
-                  that.updateAppName(storedAppName);
-                } else {
-                  setupTempApp();
-                }
-              }
-              analytics.event("Signed In");
-            }
-            else if (that.user.state == 'signedout') {
-              if (!user.preventLoadedAppInsertion) {
+            that.refreshUserState();
+            if (!user.preventLoadedAppInsertion) {
+              if(storedAppName){
+                application.loadAppByName(storedAppName);
+                that.editingmode = "saved";
+                that.updateAppName(storedAppName);
+              } else {
                 setupTempApp();
               }
-              that.signedOut();
-              analytics.event("Signed Out");
             }
+            analytics.event("Signed In");
           }, false);
 
           // prepare a temp app regardless of what navigator.id is doing so that user can start playing immediately
