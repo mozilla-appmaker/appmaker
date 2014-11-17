@@ -7,9 +7,7 @@ var l10n = require('vendor/l10n');
 var reporter = require('vendor/reporter');
 var Editable = require('./editable');
 var publishPane = require('./publishPane');
-
-// TODO: should explicitly require this instead of relying on global.
-var uuid = window.uuid;
+var uuid = require('vendor/uuid');
 
 var localStorage = window.localStorage;
 var location = window.location;
