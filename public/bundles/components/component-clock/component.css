@@ -1,0 +1,16 @@
+:host {
+  display: block;
+  padding: 5px 10px;
+}
+
+:host .clock {
+  padding: 5px 10px;
+  background: #000;
+  margin: 0 3px;
+  display: block;
+  border: solid 2px #999;
+  border-radius: 2px;
+  color: #00FF00;
+  font-size: 16pt;
+  text-align: center;
+}

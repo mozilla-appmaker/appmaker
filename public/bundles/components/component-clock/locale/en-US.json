@@ -1,0 +1,7 @@
+{
+	"ceci-clock": "Clock",
+	"ceci-clock/description": "Shows the time in configurable intervals.",
+	"ceci-clock/attributes/period": "Period",
+	"ceci-clock/attributes/period/label": "Set update interval",
+	"ceci-clock/attributes/period/description": "This value controls the (minimum) updating interval for the clock"
+}
