@@ -3,7 +3,7 @@ module.exports = function( grunt ) {
     pkg: grunt.file.readJSON( "package.json" ),
     simplemocha: {
       options: {
-        timeout: 3000,
+        timeout: 30000,
         ignoreLeaks: true,
         ui: 'bdd',
         reporter: 'spec'
