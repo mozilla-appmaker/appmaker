@@ -57,7 +57,7 @@
     "webmaker-i18n": "0.3.24",
     "webmaker-language-picker": "git://github.com/brianloveswords/webmaker-language-picker#v0.0.26-commonjs",
     "webmaker-locale-mapping": "0.0.5",
-    "webmaker-login-ux": "1.1.13"
+    "webmaker-login-ux": "1.1.15"
   },
   "engines": {
     "node": "~0.10.21",
