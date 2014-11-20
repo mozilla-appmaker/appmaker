@@ -223,6 +223,8 @@ app.post('/auth/v2/reset-password', webmakerAuth.handlers.resetPassword);
 
 app.get('/', routes.index);
 app.all('/designer', routes.designer);
+app.all('/designer.html', routes.designer);
+
 
 // remix and publish email notification routes
 app.get('/remix', routes.remix);
