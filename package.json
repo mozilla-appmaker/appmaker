@@ -24,6 +24,7 @@
     "express": "3.3.4",
     "express-bundles": "git://github.com/simonwex/express-bundles#master",
     "express-persona": "0.1.1",
+    "glob": "4.2.*",
     "grunt-gettext-finder": "0.0.5",
     "habitat": "0.4.1",
     "helmet": "0.2.1",
