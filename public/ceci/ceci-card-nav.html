@@ -65,6 +65,9 @@
         newthumb.classList.add("card");
         newthumb.addEventListener("click", showCard);
         newthumb.querySelector("a").onclick = function(e) {
+          if(!window.confirm(l10n.get("Lose Card"))){
+              return;
+          }
           newthumb.removeEventListener("click", showCard);
           t.getOrWaitForCeciApp(function(ceciApp){
             analytics.event("Delete Page", { label : "Page number " + index});
