@@ -59,7 +59,8 @@
             card.removeAttribute('visible');
           }
         });
-        window.dispatchEvent(new CustomEvent('cardShown', {bubbles: true, detail: this}));
+        window.scrollTo(0,0);
+        window.dispatchEvent(new CustomEvent('cardShown', {bubbles: true, detail: this})); 
       }
     });
   </script>
