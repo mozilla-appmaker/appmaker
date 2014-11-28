@@ -59,7 +59,7 @@ globMany(
     console.log(files);
 
     var cacheStr = "CACHE MANIFEST\n" +
-                   "/designer.html\n" +
+                   "/designer\n" +
                    "/strings\n" +
                    "/strings/en-US\n" +
                    "/components/localization.js\n" +
@@ -68,7 +68,10 @@ globMany(
                    "/vendor/font-awesome/font/fontawesome-webfont.ttf?v=3.2.1\n" +
                    "/vendor/platform/platform.js.map\n";
 
-    cacheStr += files.join("\n");
+    cacheStr += files.join("\n") + "\n";
+
+    cacheStr += "NETWORK:\n*\nhttp://*\nhttps://*\n";
+    cacheStr += "FALLBACK:\n/ /fallback.html\n";
 
     fs.writeFile('public/cache.appcache', cacheStr, function(err) {
       if (err) {
