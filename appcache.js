@@ -30,6 +30,7 @@ globMany(
       'public/stylesheets/*.css',
       'public/images/*.png',
       'public/build/*.js',
+      'public/appcache-handler.js',
       'public/vendor/polymer/*.html',
       'public/vendor/polymer/*.js',
       'public/ceci/ceci-*.html',
@@ -70,7 +71,7 @@ globMany(
 
     cacheStr += files.join("\n") + "\n";
 
-    cacheStr += "NETWORK:\n*\nhttp://*\nhttps://*\n";
+    cacheStr += "NETWORK:\n*\n";
     cacheStr += "FALLBACK:\n/ /fallback.html\n";
 
     fs.writeFile('public/cache.appcache', cacheStr, function(err) {

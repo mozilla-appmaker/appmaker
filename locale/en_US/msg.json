@@ -147,5 +147,8 @@
   "Your Appmaker Remix is ready!": "Your Appmaker Remix is ready!",
   "You've Published your App!" : "You've Published your App!",
   "Hi": "Hi",
-  "Please sign in first" : "Please sign in first"
+  "Please sign in first" : "Please sign in first",
+  "Downloading files": "Downloading files to make this application available offline. This may take a few minutes.",
+  "Downloading finished": "Downloading finished - you can now use this app offline.",
+  "New version": "A new version of this app is available - Refresh the page to see it"
 }
