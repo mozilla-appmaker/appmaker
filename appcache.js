@@ -1,6 +1,8 @@
 var glob = require('glob'),
     fs   = require('fs');
 
+var start = new Date().getTime();
+
 /**
  * Given an array of glob patterns, it calls glob on each pattern
  * and retrieves the matching filenames. When files for all the patterns
@@ -57,9 +59,8 @@ globMany(
       files[idx] = file.replace(/^public/, '');
     });
 
-    console.log(files);
-
     var cacheStr = "CACHE MANIFEST\n" +
+                   "# Generated at " + start + "\n" +
                    "/designer\n" +
                    "/strings\n" +
                    "/strings/en-US\n" +
@@ -78,7 +79,9 @@ globMany(
       if (err) {
         throw err;
       }
-      console.log("Wrote appcache file.");
+
+      var end = new Date().getTime();
+      console.log("Wrote appcache file in " + (end-start) + " ms.");
     });
   }
 );
