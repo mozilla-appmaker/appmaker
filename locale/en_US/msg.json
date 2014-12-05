@@ -119,6 +119,7 @@
   "To start remixing the app" : "To start remixing the app you wanted to remix, head over to:",
   "Unsaved App": "Unsaved App",
   "Lose Work": "You will lose your unsaved work. Continue?",
+  "Lose Card": "Are you sure you want to delete the card?",
   "You can add pages to your app here.": "You can add pages to your app here. Each page can contain unique bricks and can send and receive signals to other pages. This allows the display of different screens based on how the user interacts with your app.  <a href=\"https://overt-cows-787.webmak.es/app\">You can play with a simple demo of pages here.</a>",
   "Utility Bricks": "Utility Bricks",
   "View and manage data stored by your App": "View and manage data stored by your App",
