@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="/stylesheets/cards.css" >
   </template>
   <script>
-  (function($, l10n, analytics) {
+  (function($, l10n, reporter, analytics) {
     Polymer('ceci-card-nav', {
       checked : false,
       attached : function(){
@@ -65,7 +65,7 @@
         newthumb.classList.add("card");
         newthumb.addEventListener("click", showCard);
         newthumb.querySelector("a").onclick = function(e) {
-          if(!window.confirm(l10n.get("Lose Card"))){
+          if(!reporter.confirm(l10n.get("Lose Card"))){
               return;
           }
           newthumb.removeEventListener("click", showCard);
@@ -128,6 +128,6 @@
         }
       }
     });
-  })(Designer.jQuery, Designer.L10n, Designer.Analytics);
+  })(Designer.jQuery, Designer.L10n, Designer.Reporter, Designer.Analytics);
   </script>
 </polymer-element>
