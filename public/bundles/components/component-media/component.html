@@ -98,7 +98,7 @@
         this.onPopcornEnded = function (e) { this.broadcast('ended'); }.bind(this);
         this.onPopcornPlaying = function (e) { this.broadcast('playing'); }.bind(this);
 
-        if (this.url) {
+        if (this.url === 'https://www.youtube.com/watch?v=zucBfXpCA6s') {
           this.initPopcorn();
         }
 
