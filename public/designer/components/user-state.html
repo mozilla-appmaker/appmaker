@@ -413,7 +413,7 @@
           if(user.state === 'signedout'){
               reporter.errorReport(l10n.get('Please sign in first'));
           } else if (name === null) {
-            self.appRenameFailed(l10n.get("Save was cancelled."));
+              self.appRenameFailed(l10n.get("Save was cancelled."));
           } else if(name.trim()){
             application.saveApp(name,ceciApp.appid,html, function(err,data){
               if(!err){
