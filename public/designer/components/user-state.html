@@ -14,6 +14,7 @@
           <a class="{{ {hidden: user.state == 'signedout'} | tokenList}}" id="publishApp"><span class="icon icon-mobile-phone"> </span> {{'Publish' | l10n}}</a>
           <a class="{{ {hidden: user.state == 'signedout'} | tokenList}} saved" id="deleteApp"><span class="icon icon-trash"> </span> {{'Delete' | l10n}}</a>
           <a id="newApp"><span class="icon icon-file-alt"> </span> {{'New App' | l10n}}</a>
+          <a id="templateApp"><span class="icon icon-file-alt"> </span> {{'Edit App from Templates' | l10n}}</a>
           <a class="hidden" id="viewlink"><span class="icon icon-external-link"> </span> {{'Preview App' | l10n}}</a>
         </div>
       </div>
@@ -280,6 +281,9 @@
             self.editingmode = "draft";
             window.dispatchEvent(new CustomEvent("resetcards"));
             analytics.event("New App Started");
+          });
+          this.$.templateApp.addEventListener("click",function() {
+            application.templateApp();
           });
 
           function renameAppHandler() {

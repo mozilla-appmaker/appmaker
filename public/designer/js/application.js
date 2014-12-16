@@ -41,6 +41,13 @@ module.exports = {
     app.setAttribute("appid", "ceci-app-"+uuid());
     history.pushState({}, "", location.origin);
   },
+  templateApp: function(){
+    // Open the link in a new tab so as to not interrupt the current instance's workflow
+    window.open(
+      'https://webmaker.org/en-US/gallery?filter=Appmaker',
+      '_blank'
+    );
+  },
   renameApp: function(oldName,newName){
     var userState = document.querySelector('user-state');
     $.ajax('/api/rename_app', {
