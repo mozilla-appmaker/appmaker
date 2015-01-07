@@ -706,7 +706,7 @@
           var targetRow = parseInt(targetBlock.parentNode.getAttribute("data-row"), 10);
           this.enter(targetRow+1, targetCol+1);
         },
-        destroyblock: function() {
+        destroyblock: function(type) {
           var player = this.querySelector(".player");
           if (!player) {
             return;
@@ -716,6 +716,9 @@
             var targetRow = that.querySelector('*[data-row="'+ row + '"]');
             var targetCol = targetRow.querySelector('*[data-col="'+ col + '"]');
             if (targetCol && targetCol.querySelector(".wall-block")) {
+              if (type && type !== targetCol.getAttribute("data-col-type")) {
+                return;
+              }
               targetCol.removeChild(targetCol.querySelector(".wall-block"));
             }
           }

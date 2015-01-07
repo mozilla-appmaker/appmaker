@@ -1,0 +1,15 @@
+/*********************************************************
+* Mobile block button
+*/
+
+// This button is block for mobile, and inline-block elsewhere.
+// Usage: add '.btn .btn-mb-block' to buttons
+
+.btn-mb-block {
+  display: block;
+  width: 100%;
+  @media (min-width: @screen-xs-min) {
+    display: inline-block;
+    width: auto;
+  }
+}

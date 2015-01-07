@@ -1,0 +1,67 @@
+<polymer-element name="ceci-navigation" extends="ceci-element" attributes="url text target" text="Your link here">
+  <ceci-definition>
+    {
+      "name": "URL Navigation",
+      "thumbnail": "./thumbnail.png",
+      "description": "Navigates to a URL",
+      "broadcasts": {
+      },
+      "attributes": {
+        "url": {
+            "label": "URL",
+            "description": "URL to navigate to",
+            "listener": true,
+            "editable": "text"
+          },
+          "text": {
+            "label": "Link text",
+            "description": "Text shown on the link",
+            "listener": true,
+            "editable": "text"
+          },
+          "target": {
+            "label": "Target",
+            "description": "Whether to open on a new window"
+          }
+      }
+    }
+  </ceci-definition>
+  <template>
+    <link rel="stylesheet" href="component.css">
+      <div class="navigation-wrapper">
+        <div class="navigation"><a href="{{url}}" target="{{target}}">{{text}}</a></div>
+        <label>
+          <input type="checkbox" id="opennew" />
+          Open in new window?
+        </label>
+      </div>
+    </div>
+    <shadow></shadow>
+  </template>
+  <tags>starter,math</tags>
+    <script>
+      Polymer("ceci-navigation", {
+        ready: function() {
+          this.defaultLink = '';
+          this.url = this.url || '';
+          this.super();
+          var checkBoxElement = this.shadowRoot.querySelector('#opennew');
+          var that = this;
+          checkBoxElement.onchange = function(e) {
+            that.setAttribute('target', checkBoxElement.checked ? '_blank' : '');
+          }
+        },
+        value: '',
+        urlChanged : function(){
+          if (this.text === this.defaultLink) {
+            this.text = this.url;
+          }
+        },
+        textChanged : function(){
+          if (!this.defaultLink) {
+            this.defaultLink = this.text;
+          }
+        }
+      });
+    </script>
+</polymer-element>

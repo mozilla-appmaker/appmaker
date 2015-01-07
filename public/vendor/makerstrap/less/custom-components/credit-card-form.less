@@ -1,0 +1,27 @@
+/*********************************************************
+* Credit card from
+*/
+
+@state-secure-border: darken(@state-warning-border, 7%);
+@panel-secure-text:          @state-warning-text;
+@panel-secure-border:        @state-secure-border;
+@panel-secure-heading-bg:    @state-warning-border;
+
+.panel-secure {
+  background: lighten(@state-warning-bg, 3%);
+  .panel-variant(@panel-secure-border; @panel-secure-text; @panel-secure-heading-bg; @panel-secure-border);
+
+  // Forms
+  .form-control {
+    .form-control-focus(@state-secure-border);
+  }
+
+  a {
+    color: #496DA5;
+    text-decoration: underline;
+    &:hover {
+      color: lighten(#496DA5, 15%);
+    }
+  }
+
+}

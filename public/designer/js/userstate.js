@@ -6,12 +6,10 @@ This handles...
 - Saving, publishing, loading apps for a logged in user.
 */
 
-define(
-  ["jquery","designer/application"],function($,application) {
-    "use strict";
+// XXX: is this file still worth keeping around?
 
-    function openApp(appName){
-      console.log("loading an app called", appName);
-    }
+module.exports = {
+  openApp: function (appName) {
+    console.log("loading an app called", appName);
   }
-);
+};

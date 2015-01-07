@@ -19,34 +19,26 @@
 
     <link rel="stylesheet" href="/sourcesanspro-extralight,sourcesanspro-light,sourcesanspro-regular,sourcesanspro-semibold/fonts.css" />
 
-    <link rel="stylesheet" href="/vendor/webmaker-auth-client/create-user/create-user-form.css" />
-
+    <!-- platform.js must be the first script loaded or polymer complains -->
     <script src="/vendor/platform/platform.js"></script>
+
+    <script src="/vendor/firebasev0/firebase.v0.js"></script>
+    <script src="/vendor/persona/include.js"></script>
+    <script src="/vendor/jsonlint/lib/jsonlint.js"></script>
+    <script>var TogetherJSConfig_cloneClicks = true;</script>
+    <script src="/vendor/togetherjs/togetherjs-min.js"></script>
+
     <link rel="import" href="/vendor/polymer/polymer.html">
 
-
-    <script src="/vendor/requirejs/require.js"></script>
-    <% if (!!process.env.BUNDLE) { %>
-      <script src="/javascripts/designer-build.js"></script>
-    <% } else { %>
-      <script src="/javascripts/requireConfig.js"></script>
-    <% } %>
-
-    <script src="/vendor/jsonlint/lib/jsonlint.js"></script>
+    <script src="/build/common.js"></script>
+    <script src="/build/designer-bundle.js"></script>
 
     <script>
-      var TogetherJSConfig_cloneClicks = true;
-    </script>
-    <script src="https://togetherjs.com/togetherjs-min.js"></script>
-
-    <script>
-    (function () {
       // We need to make sure we have our client-side .json file loaded before
       // all the components so that we can use it when the HTML file loaded.
-      require(['l10n'], function(localized) {
+      (function(localized) {
         localized.ready({url: "/strings/" + localized.getCurrentLang() });
-      });
-    })();
+      })(require('vendor/l10n'));
     </script>
 
     <% bundles.emit('designer-components.html').forEach(function(href) { %>
@@ -79,7 +71,7 @@
   <body>
     <%- body %>
     <script type="text/javascript">
-      require(['languages'], function(languages) {
+      (function(languages){
         languages.ready({
           css: function() {
             var $currentLang = $('#current-language');
@@ -91,7 +83,7 @@
             };
           }
         });
-      });
+      })(require('webmaker-language-picker'));
     </script>
   </body>
 </html>

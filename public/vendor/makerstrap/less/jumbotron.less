@@ -1,0 +1,24 @@
+/*********************************************************
+* Jumbotron
+*/
+
+.jumbotron {
+  background: @green;
+  background: -moz-linear-gradient(left,  #3fb58e 0%, #75c4a8 50%, #3fb58e 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%,#3fb58e), color-stop(50%,#75c4a8), color-stop(100%,#3fb58e)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(left,  #3fb58e 0%,#75c4a8 50%,#3fb58e 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(left,  #3fb58e 0%,#75c4a8 50%,#3fb58e 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(left,  #3fb58e 0%,#75c4a8 50%,#3fb58e 100%); /* IE10+ */
+  background: linear-gradient(to right,  #3fb58e 0%,#75c4a8 50%,#3fb58e 100%); /* W3C */
+  background-attachment: fixed;
+  @media screen and (min-width: @screen-sm-min) {
+    padding-top: 120px;
+  }
+  h1, p {
+    font-weight: 300;
+  }
+  a {
+    color: white;
+    text-decoration: underline;
+  }
+}

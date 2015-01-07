@@ -1,0 +1,34 @@
+:host {
+  display: block;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 5px 10px;
+}
+
+:host .navigation a:link, .navigation a:visited {
+    display: block;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #98bf21;
+    width: 120px;
+    text-align: center;
+    padding: 4px;
+    text-decoration: none;
+    width: 90%;
+    margin: 5px 2% 0px 2%;
+    padding:10px;
+}
+
+:host .navigation a:hover, .navigation a:active {
+    background-color: #7A991A;
+}
+
+:host .navigation-wrapper label {
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 14pt;
+}

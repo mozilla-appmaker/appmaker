@@ -11,7 +11,7 @@
     "tag"
   ],
   "description": "Selectize is a jQuery-based custom <select> UI control. Useful for tagging, contact lists, country selectors, etc.",
-  "version": "0.9.0",
+  "version": "0.10.1",
   "license": "Apache License, Version 2.0",
   "readmeFilename": "README.md",
   "repository": {
@@ -34,7 +34,8 @@
     ".travis.yml",
     "testem.json",
     "selectize.jquery.json",
-    "*.sh"
+    "*.sh",
+    "package.json"
   ],
   "dependencies": {
     "jquery": ">=1.7.0",
@@ -46,13 +47,13 @@
     "bootstrap3": "bootstrap#3"
   },
   "homepage": "https://github.com/brianreavis/selectize.js",
-  "_release": "0.9.0",
+  "_release": "0.10.1",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.0",
-    "commit": "d6a6f53625f5d9c4de9337978e05b80136983990"
+    "tag": "v0.10.1",
+    "commit": "b64e193be5fad650fb0c271fbc5dcbc507f47dd4"
   },
   "_source": "git://github.com/brianreavis/selectize.js.git",
-  "_target": "0.9.0",
+  "_target": "0.10.1",
   "_originalSource": "selectize"
 }
