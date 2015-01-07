@@ -310,7 +310,7 @@ var editableTypeHandlers = {
       var image = document.createElement("img");
       image.onload = function() {
         dataInput.classList.remove("error");
-        previewCtx.drawImage(image,0,0);
+        previewCtx.drawImage(image,0,0,image.width,image.height,0,0,width,height);
         callback && callback();
       };
       image.onerror = function() {

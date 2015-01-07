@@ -232,6 +232,10 @@
           "description": "",
           "label": ""
         },
+        "setavatar": {
+          "description": "",
+          "label": ""
+        },
         "removeplayer": {
           "description": "",
           "label": ""
@@ -506,6 +510,9 @@
           this.groundPalette = "";
           this.objectPalette = sender.getAttribute("data-palette");
           this.wallPalette = sender.getAttribute("data-palette");
+        },
+        setavatar: function(avatar) {
+          this.playersprite = avatar;
         },
         removeplayer: function() {
           var player = this.querySelector(".player");
