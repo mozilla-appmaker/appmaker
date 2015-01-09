@@ -24,7 +24,7 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
     apps: function(request, response) {
       if (!checkAuthorised(request, response)) return;
 
-      App.find({author:request.session.email}).exec(function (err, apps) {
+      App.find({author:request.session.user.email}).exec(function (err, apps) {
         if (err){
           console.log('Unable to retrieve apps');
           return response.json(500, 'Unable to retrieve apps: ' + err);
@@ -35,7 +35,7 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
     app: function(request, response) {
       if (!checkAuthorised(request, response)) return;
 
-      App.findOne({author:request.session.email, name: request.query.name}, function(err, obj) {
+      App.findOne({author:request.session.user.email, name: request.query.name}, function(err, obj) {
         if (!obj) {
           console.warn('Unable to find app for %s', request.query.name);
           return response.json(500, {error: 'Unable to find app: ' + err});
@@ -52,7 +52,7 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
       var newName = request.body.newName;
 
       //Check if app with same name already exists
-      App.findOne({author:request.session.email, name: newName}, function(err, obj) {
+      App.findOne({author:request.session.user.email, name: newName}, function(err, obj) {
         if (obj) {
           return response.json(500, {error: 'App name must be unique.'});
         }
@@ -62,7 +62,7 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
           setObj['modified-date'] = new Date();
 
           App.update(
-            {author:request.session.email, name: oldName},
+            {author:request.session.user.email, name: oldName},
             {
               $set: setObj
             },
@@ -88,7 +88,7 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
         return;
       }
 
-      App.findOne({author:request.session.email, name: name},function(err, app){
+      App.findOne({author:request.session.user.email, name: name},function(err, app){
         if (err) {
           console.log("Error finding app to delete!");
           return response.json(500, {error: 'App was not deleted due to ' + err});
@@ -99,7 +99,7 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
         }
 
         var makeId = app['makeapi-id'];
-        App.remove({author:request.session.email, name: request.body.name}, function(err) {
+        App.remove({author:request.session.user.email, name: request.body.name}, function(err) {
           if(err){
             console.warn("Error deleting this app!");
             return response.json(500, {error: 'App was not deleted due to ' + err});
@@ -117,13 +117,13 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
       if (!checkAuthorised(request, response)) return;
 
       // Check if app with same name already exists
-      App.findOne({author:request.session.email, name: request.body.name}, function(err, obj) {
+      App.findOne({author:request.session.user.email, name: request.body.name}, function(err, obj) {
         if (obj) {
           return response.json(500, {error: 'App name must be unique.'});
         }
         else {
           var appObj = JSON.parse(JSON.stringify(request.body)) // make a copy
-          appObj.author = request.session.email;
+          appObj.author = request.session.user.email;
           appObj.appid = request.body.appid;
           appObj['created-date'] = appObj['modified-date'] = new Date();
           var newApp = new App(appObj);
@@ -154,7 +154,7 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
       if(url) setObj['last-published-url'] = url;
       setObj['modified-date'] = new Date();
       App.update(
-        {author:request.session.email, name: name},
+        {author:request.session.user.email, name: name},
         { $set: setObj },
         {},
         function(err,obj){
@@ -168,7 +168,7 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
     components: function(request, response) {
       if (!checkAuthorised(request, response)) return;
 
-      Component.find({author:request.session.email}).sort({"name":1}).exec(function (err, components) {
+      Component.find({author:request.session.user.email}).sort({"name":1}).exec(function (err, components) {
         if (err){
           console.log('Unable to retrieve components');
           return response.json(500, 'Unable to retrieve components: ' + err);
@@ -180,12 +180,12 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
       if (!checkAuthorised(request, response)) return;
 
       //Check if component with same url already exists
-      Component.findOne({author:request.session.email, url: request.body.url}, function(err, obj) {
+      Component.findOne({author:request.session.user.email, url: request.body.url}, function(err, obj) {
         if (obj) {
           return response.json(500, {error: 'We already know the component at '+obj.url+' (as '+obj.name+')'});
         }
         var compObj = JSON.parse(JSON.stringify(request.body)) // make a copy
-        compObj.author = request.session.email;
+        compObj.author = request.session.user.email;
         compObj['created-date'] = compObj['modified-date'] = new Date();
         var newComponent = new Component(compObj);
         newComponent.save(function(err, component){
@@ -200,7 +200,7 @@ module.exports = function (mongoose, dbconn, makeAPIPublisher) {
     forgetComponent: function(request, response) {
       if (!checkAuthorised(request, response)) return;
 
-      Component.remove({author:request.session.email, url: request.body.url}, function(err){
+      Component.remove({author:request.session.user.email, url: request.body.url}, function(err){
         if(err){
           console.warn("Error forgetting this component!");
           return response.json(500, {error: 'Component was not deleted due to ' + err});

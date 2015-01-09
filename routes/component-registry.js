@@ -14,11 +14,11 @@ module.exports = function (mongoose, dbconn) {
   return {
     // GET
     components: function (req, res) {
-      if (! request.session.email) {
+      if (! request.session.user) {
         response.json(401, {error: 'need to be signed in'});
         return;
       }
-      Component.find({author: request.session.email}, function (err, components) {
+      Component.find({author: request.session.user.email}, function (err, components) {
         if (err){
           console.log('Unable to retrieve components');
           return res.json(500, 'Unable to retrieve components: ' + err);
@@ -28,7 +28,7 @@ module.exports = function (mongoose, dbconn) {
       });
     },
     component: function (req, res) {
-      if (! request.session.email) {
+      if (! request.session.user) {
         response.json(401, {error: 'need to be signed in'});
         return;
       }
@@ -43,7 +43,7 @@ module.exports = function (mongoose, dbconn) {
     },
 
     addComponent: function (req, res) { // POST
-      if (! request.session.email) {
+      if (! request.session.user) {
         response.json(401, {error: 'need to be signed in'});
         return;
       }
@@ -66,7 +66,7 @@ module.exports = function (mongoose, dbconn) {
     },
     editComponent: function (req, res) { // PUT (Not supported by Angular, boo!)
       // console.log('edit component: %j', req.body);
-      if (! request.session.email) {
+      if (! request.session.user) {
         response.json(401, {error: 'need to be signed in'});
         return;
       }
@@ -87,7 +87,7 @@ module.exports = function (mongoose, dbconn) {
       );
     },
     deleteComponent: function (req, res) { // DEL
-      if (! request.session.email) {
+      if (! request.session.user) {
         response.json(401, {error: 'need to be signed in'});
         return;
       }
