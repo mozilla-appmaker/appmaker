@@ -57,12 +57,12 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
       return;
     }
 
-    if (! req.session.email) {
+    if (! req.session.user) {
       console.warn('Need to be signed in to retrieve components.');
       callback([]);
       return;
     }
-    Component.find({author: req.session.email}, function (err, components) {
+    Component.find({author: req.session.user.email}, function (err, components) {
       if (err){
         console.warn('Unable to retrieve components.');
         callback([]);
@@ -186,7 +186,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
           };
 
           App.update({
-              author: req.session.email,
+              author: req.session.user.email,
               name: inputData.name
             }, {
               $set: setObj
@@ -211,7 +211,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                 }, 200);
                 // Don't wait for the MakeAPI to deliver url to user
                 App.findOne({
-                  author: req.session.email,
+                  author: req.session.user.email,
                   name: inputData.name
                 }, function(err, app) {
                   if (err) {
@@ -225,7 +225,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                     appDescription: appDescription,
                     appTags: inputData.appTags || "",
                     remixedFrom: inputData.remixedFrom,
-                    email: req.session.email,
+                    email: req.session.user.email,
                     author: userName,
                     locale: req.localeInfo.lang
                   };
@@ -240,7 +240,7 @@ module.exports = function (store, viewsPath, urlManager, makeAPIPublisher, dbcon
                     }
                     else if (!publishOptions.id) {
                       App.update({
-                        author: req.session.email,
+                        author: req.session.user.email,
                         name: inputData.name
                       }, {
                         $set: { 'makeapi-id': make.id }
