@@ -78,6 +78,14 @@ module.exports = function( grunt ) {
           /\{\{\s*["'][^|]+["']\s*\|\s*l10n\s*\}\}/g
         ]
       }
+    },
+    shell: {
+      options: {
+        stderr: false
+      },
+      target: {
+        command: 'node appcache.js'
+      }
     }
   });
 
@@ -86,6 +94,7 @@ module.exports = function( grunt ) {
   grunt.loadNpmTasks("grunt-lint-inline");
   grunt.loadNpmTasks("grunt-simple-mocha");
   grunt.loadNpmTasks('grunt-gettext-finder');
+  grunt.loadNpmTasks('grunt-shell');
 
   // TODO: the csslinting is turned off right now, because the number
   //       of warnings is staggering. Some make sense, some don't.
@@ -93,6 +102,7 @@ module.exports = function( grunt ) {
     // "csslint",
     "jshint",
     "inlinelint",
+    "shell",
     "simplemocha",
   ]);
 };
