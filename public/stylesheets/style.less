@@ -2342,5 +2342,45 @@ body > .more-info {
     margin: 0;
     color: #999;
   }
+}
 
+.deprecation {
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2em;
+  background-color: red;
+  color: white;
+  text-align: center;
+  padding-top: 0.25em;
+  font-size: 130%;
+  height: 32px;
+  font-weight: 400;
+
+  .closeWarning {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 50px;
+    cursor: pointer;
+  }
+}
+
+body.deprecation-warning {
+  .top-nav,
+  .top-nav .nav-ui,
+  .page-wrapper {
+      top: 32px;
+  }
+
+  .expand-handle {
+      top: 104px;
+  }
+
+  .right-column,
+  .tray {
+      top: 94px;
+  }
 }
