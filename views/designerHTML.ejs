@@ -1,6 +1,15 @@
 <div class="deprecation" id="deprecation">
-  <div class="closeWarning" id="closeWarning" onclick="this.parentNode.remove()">X</div>
-  Our tools for teaching the Web are evolving. Moving forward, Mozilla will no longer provide support for AppMaker. To learn more, read  <a href="http://mzl.la/1ACom34" target="_blank">our blog post.</a>
+  <a class="closeWarning" id="closeWarning">&times;</a>
+  Our tools for teaching the Web are evolving. As of September 30th, Mozilla will no longer support Appmaker. To learn more, read  <a href="http://mzl.la/webmaker-tools-transition" target="_blank">our blog post.</a>
+  <script>
+    (function () {
+      var closeWarning = document.querySelector('#closeWarning');
+      closeWarning.onclick = function (e) {
+        closeWarning.parentNode.remove();
+        document.body.classList.remove('deprecation-warning');
+      };
+    })();
+  </script>
 </div>
 
 <div class="page-wrapper">
