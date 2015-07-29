@@ -2342,5 +2342,51 @@ body > .more-info {
     margin: 0;
     color: #999;
   }
+}
 
+.deprecation {
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgb(255, 238, 188);
+  text-align: left;
+  padding: 0.55em 0.75em;
+  font-size: 14pt;
+  font-weight: 400;
+  color: rgb(5, 41, 56);
+
+  .closeWarning {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 27px;
+    cursor: pointer;
+    font-size: 27px;
+    line-height: 27px;
+    text-align: center;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+body.deprecation-warning {
+  .top-nav,
+  .top-nav .nav-ui,
+  .page-wrapper {
+      top: 32px;
+  }
+
+  .expand-handle {
+      top: 104px;
+  }
+
+  .right-column,
+  .tray {
+      top: 94px;
+  }
 }

@@ -1,3 +1,18 @@
+<div class="deprecation" id="deprecation">
+  <a class="closeWarning" id="closeWarning">&times;</a>
+  Our tools for teaching the Web are evolving. As of September 30th, Mozilla will no longer support Appmaker. To learn more, read  <a href="http://mzl.la/webmaker-tools-transition" target="_blank">our blog post.</a>
+  <script>
+    (function () {
+      var closeWarning = document.querySelector('#closeWarning');
+      var deprecation = document.querySelector('#deprecation');
+      closeWarning.onclick = function (e) {
+        deprecation.parentNode.removeChild(deprecation);
+        document.body.classList.remove('deprecation-warning');
+      };
+    })();
+  </script>
+</div>
+
 <div class="page-wrapper">
 
   <nav class="top-nav clearfix">
