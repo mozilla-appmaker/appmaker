@@ -4,8 +4,9 @@
   <script>
     (function () {
       var closeWarning = document.querySelector('#closeWarning');
+      var deprecation = document.querySelector('#deprecation');
       closeWarning.onclick = function (e) {
-        closeWarning.parentNode.remove();
+        deprecation.parentNode.removeChild(deprecation);
         document.body.classList.remove('deprecation-warning');
       };
     })();
