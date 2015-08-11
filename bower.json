@@ -1,6 +1,6 @@
 {
   "name": "appmaker",
-  "version": "0.0.0",
+  "version": "0.0.24",
   "main": "server.js",
   "ignore": [
     "**/.*",

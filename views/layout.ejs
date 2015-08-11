@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<%- localeInfo.lang %>" dir="<%- localeInfo.direction %>">
+<html lang="<%- localeInfo.lang %>" dir="<%- localeInfo.direction %>" manifest="cache.appcache">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
@@ -32,6 +32,7 @@
 
     <script src="/build/common.js"></script>
     <script src="/build/designer-bundle.js"></script>
+    <script src="/appcache-handler.js"></script>
 
     <script>
       // We need to make sure we have our client-side .json file loaded before
@@ -51,24 +52,15 @@
 
     <script src="/vendor/qrcodejs/qrcode.js"></script>
     <% if (process.env.GA_ACCOUNT){ %>
+      <script type="text/javascript" charset="utf-8" src="/vendor/googleanalytics.js"></script>
       <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(["_setAccount", "<%- process.env.GA_ACCOUNT %>"]);
-        _gaq.push(["_setDomainName", "<%- process.env.GA_DESIGNER_DOMAIN %>"]);
-        _gaq.push(["_trackPageview"]);
-
-        (function() {
-          var ga = document.createElement("script"); ga.type = "text/javascript";
-          ga.async = true;
-          ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
-          var s = document.getElementsByTagName("script")[0];
-          s.parentNode.insertBefore(ga, s);
-        })();
+        ga('create', '<%- process.env.GA_ACCOUNT %>', 'auto');
+        ga('send', 'pageview');
       </script>
     <% } %>
 
   </head>
-  <body>
+  <body class="deprecation-warning">
     <%- body %>
     <script type="text/javascript">
       (function(languages){
