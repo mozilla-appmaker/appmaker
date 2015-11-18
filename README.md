@@ -1,3 +1,7 @@
+# This project is no longer under active development.
+
+Read about why, here: https://blog.webmaker.org/product-update-for-appmaker-and-popcorn-maker
+
 # Appmaker
 
 [![Build Status](https://travis-ci.org/mozilla-appmaker/appmaker.svg?branch=develop)](https://travis-ci.org/mozilla-appmaker/appmaker)
